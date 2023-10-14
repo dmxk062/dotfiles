@@ -1,0 +1,17 @@
+(defpoll battery :interval "10s" "bin/battery.sh")
+(defvar icons_discharging '[
+"󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
+]' )
+(defvar icons_charging '[
+"󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"
+]' )
+
+(defwidget battery []
+(box :class "menubox-off" 
+    (label :class "${battery.charging ? "battery-charging" : "${battery.perc < 10 ? "battery-critical" : "battery"}"}"
+            :text "${battery.charging ? (icons_charging[(battery.perc - battery.perc % 10)/10]) : (icons_discharging[(battery.perc - battery.perc % 10)/10])}    ${battery.perc}%"
+            :tooltip "${battery.charging ? "Charging at" : "Discharging at"} ${battery.wattage}W
+${battery.time} ${battery.charging ? "until full" : "left"}"
+    )
+)
+)

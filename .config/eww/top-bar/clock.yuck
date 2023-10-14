@@ -1,0 +1,10 @@
+(include "notifs.yuck")
+
+(defwidget clock []
+    (box :space-evenly false :class "notifbox"
+        (button :class "clock" :onclick "gnome-clocks& disown" "${formattime(EWW_TIME, "%H:%M")}")
+        (notification_button)
+        
+))
+
+

@@ -1,0 +1,60 @@
+;; options
+(defvar layout "QWERTY US")
+(defvar left_handed false)
+(defvar tap_click true)
+(defvar ws_swipe true)
+(defvar natural_scroll false)
+(defvar osk false)
+
+;; my default settings from hyprland
+(defvar mouse_sensitivity 50)
+(defvar repeat_rate 25)
+(defvar repeat_delay 600)
+(defvar scroll_speed 100)
+
+(defwidget input_section []
+    (box :visible "${selected_section == 1}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
+        (box :orientation "v" :space-evenly false :class "sidebar"
+        (box :space-evenly false :halign "center"
+        (box :orientation "v" :space-evenly false
+            (button  :class "button${layout == "QWERTZ DE" ? "-active" : ""}":timeout "16s" :onclick "bin/input.sh kbd" :tooltip "Switch Keyboard Layout" "󰌌   ${layout}") 
+            (button :class "button${left_handed ? "-active" : ""}" :onclick "bin/input.sh left_handed" :tooltip "Enable/Disable Left Handed Mode (switches mouse buttons)" "${left_handed ? "󰹆" : "󱠰"}    Left Handed")
+            (button :class "button${tap_click ? "-active" : ""}" :onclick "bin/input.sh tap_click" :tooltip "Enable/Disable Tap to Click" "󱊩    Tap to Click"))
+        (box :orientation "v" :space-evenly false
+            (button :class "button${ws_swipe ? "-active" : ""}" :onclick "bin/input.sh ws_swipe" :tooltip "Enable/Disable Gesture Navigation for Workspaces" "󰵶    Swipe")
+            (button :class "button${natural_scroll ? "-active" : ""}" :onclick "bin/input.sh natural_scroll" :tooltip "Enable/Disable Natural Scrolling
+When enabled, scrolling moves the content, not the view." "󰫀    Natural Scroll")
+            (button :class "button${osk ? "-active" : ""}" :onclick "bin/input.sh osk" :tooltip "Enable/Disable Touch Keyboard" "${osk ? "󰌌" : "󰌐"}    WVKBD"))
+        )
+        (box :orientation "v" :space-evenly false :halign "end"
+            (box :class "sliderbox" :space-evenly false :orientation "v"
+                (label :text "󰍽    Mouse Sensitivity")
+                (box :space-evenly false
+                    (button :class "button" :onclick "bin/sensiv.sh reset" "Reset")
+                    (scale :value "${mouse_sensitivity}" :min 0 :max 100 :class "slider" :onchange "bin/sensiv.sh {}")
+                )
+            )
+            (box :class "sliderbox" :space-evenly false :orientation "v"
+                (label :text "󰫀    Touchpad Scroll Speed")
+                (box :space-evenly false
+                    (button :class "button" :onclick "bin/scroll.sh reset" "Reset")
+                    (scale :value "${scroll_speed}" :min 5 :max 300 :class "slider" :onchange "bin/scroll.sh {}")
+                )
+            )
+            (box :class "sliderbox" :space-evenly false :orientation "v"
+                (label :text "󰧹    Keyboard Repeat Rate")
+                (box :space-evenly false
+                    (button :class "button" :onclick "bin/rate.sh reset" "Reset")
+                    (scale :value "${repeat_rate}" :min 0 :max 100 :class "slider" :onchange "bin/rate.sh {}")
+                )
+            )
+            (box :class "sliderbox" :space-evenly false :orientation "v"
+                (label :text "󰌏    Keyboard Repeat Delay")
+                (box :space-evenly false
+                    (button :class "button" :onclick "bin/delay.sh reset" "Reset")
+                    (scale :value "${repeat_delay}" :min 100 :max 1000 :class "slider" :onchange "bin/delay.sh {}")
+                )
+            )
+        ))
+    )
+)

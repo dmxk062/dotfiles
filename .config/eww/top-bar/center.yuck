@@ -1,0 +1,11 @@
+(include "win.yuck")
+(include "mpris.yuck")
+
+(defwidget center []
+    (box :space-evenly false  :halign "center"
+        (box :space-evenly false :class "centerbox"
+            (window)
+            (mpris_button)
+        )
+    )
+)

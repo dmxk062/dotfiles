@@ -1,0 +1,44 @@
+(defvar user "")
+(defvar boottime 0)
+(defvar hostname "")
+
+(defwidget session_button []
+    (button :class "sbutton" :onclick "bin/open_session_popup.sh" "")
+)
+
+
+(defwindow session_popup 
+        :monitor 0
+        :geometry (geometry :x 0
+                            :y 0
+                            :width 0
+                            :height 0
+                            :anchor "top right"
+                    )
+        :stacking "overlay"
+        :namespace "eww_bar_top"
+    (session)
+)
+
+(defwidget power_button [action class text]
+(button :class "${class}" :onclick "sleep 0.1&&bin/shutdown.sh ${action}&disown&&${EWW_CMD} close session_popup" :timeout "16s" "${text}")
+)
+
+(defwidget session [] 
+    (box :space-evenly false :halign "center" :valign "center"
+        (box :class "popup_box" :orientation "v" :space-evenly false
+            (box :class "section_box" :orientation "v"
+                (label :text "${user} logged in at ${hostname}" :class "title")
+                (label :text "Up: ${formattime(EWW_TIME - boottime,"%Hh %Mm %Ss")} - since ${formattime(boottime, "%H:%M")}")
+            )
+            (box :class "section_box" :orientation "v"
+                (power_button :class "button-error" :action "off" :text "    Power OFF")
+                (power_button :class "button-warn" :action "reboot" :text "    Reboot")
+                (power_button :class "button-yellow" :action "logout" :text "󰍃    Logout")
+                (power_button :class "button-good" :action "lock -nc" :text "    Lock")
+                (power_button :class "button-blue" :action "suspend" :text "󰤄    Suspend")
+                (power_button :class "button-special" :action "uefi" :text "󰘚    Reboot into UEFI Firmware")
+            )
+        )
+    )
+)

@@ -1,0 +1,24 @@
+(defwindow bright_popup
+    :geometry (geometry :x 0
+                        :y 0
+                        :width "10%"
+                        :height "10%"
+                        :anchor "center bottom"
+                )
+    :stacking "overlay"
+    :namespace "eww_popup"
+    (brightscale)
+)
+(defvar brightness 0)
+(defwidget brightscale []
+    (box :space-evenly false :halign "center" :valign "end" 
+        (box :space-evenly false :class "popup-box"
+            (label :text "${brightness > 90 ? "󰃠" : (brightness > 70 ? "󰃟" : (brightness > 50 ? "󰃞" : (brightness > 30 ? "󰃝" : (brightness > 10 ? "󰃜" : "󰃛"))) )}" :class "volicon")
+            (box :orientation "v"
+                (label :text "Brightness: ${round(brightness,0)}%" :limit-width 20 :class "heading")
+                (scale :value "${brightness}" :class "brightslider")
+            )
+        )
+    )
+)
+

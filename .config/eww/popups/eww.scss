@@ -1,0 +1,46 @@
+@import "../style/general.scss"
+
+.popup-box {
+    background-color: $bg;
+    border-radius: $rounding-large;
+  	box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 8px;
+    padding: .5rem;
+    margin: 2rem;
+}
+
+.volslider, .volslider-muted, .brightslider{
+    @extend .slider-large;
+    trough {
+        min-height: .8rem;
+        background-color: $bg1;
+    }
+}
+.volslider-muted trough highlight{
+    background-color: $bg3;
+}
+.brightslider{
+    margin-right: 4rem;
+}
+.brightslider trough highlight{
+    background-color: $yellow;
+}
+.volicon, .volicon-muted{
+    border-radius: $rounding-small;
+    padding: $padding-std;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 8px;
+    font-size: 3rem;
+}
+.volicon {
+    color: $snow2
+}
+.volicon-muted {
+    color: $polar3;
+}
+.vollabel{
+    border-radius: 16px;
+    padding: $padding-std;
+    margin: 1rem;
+    font-size: 1.6rem;
+    min-width: 5rem;
+}

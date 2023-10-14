@@ -1,0 +1,68 @@
+(deflisten mpris "bin/mpris.sh listen")
+(deflisten loop "bin/mpris.sh loop")
+(defpoll mpris_meta :interval "2s" "bin/mpris.sh meta")
+
+(defwidget mpris_button []
+    (box :space-evenly false
+    (button :class "mpris-button${mpris.active ? "-playing" : ""}" :onclick "bin/open_mpris_popup.sh" (label :text "${mpris.active ? "󰐊" : "󰐎"}    ${mpris.title?: "No Player"}" :limit-width 20))
+    )
+)
+
+(defwindow mpris_popup 
+        :monitor 0
+        :geometry (geometry :x 0
+                            :y 0
+                            :width 0
+                            :height 0
+                            :anchor "top center"
+                    )
+        :stacking "overlay"
+        :namespace "eww_bar_top"
+    (mpris)
+)
+
+(defwidget mpris []
+    (box :space-evenly false :halign "center" :valign "center"
+        (box :class "popup_box" :space-evenly false :orientation "v"
+            (box :class "padded_box"
+            (overlay 
+                (box :class "image_overlay")
+                (image :path "${mpris_meta.img}" :image-width 308 )
+            )
+
+            )
+            (box :class "popup_footer" :orientation "v" :space-evenly false
+                (box :halign "center" :space-evenly false :orientation "v"
+                    (label :class "title" :text "${mpris.title?: "Nothing Playing"}" :wrap true)
+                    (label :class "text" :text "${mpris_meta.artist?: "Artist not known"}")
+                    (label :class "text" :text "${mpris.player?: "No Player"}")
+                )
+                
+                (box :visible "${mpris_meta.avail}"
+                    (box :class "padded_box_large" :orientation "v"
+                        (label :text "${formattime(round(mpris_meta.pos / 1000000,0),"%M:%S")}/${formattime(round(mpris_meta.len / 1000000,0),"%M:%S")}")
+                        (scale :value "${(mpris_meta.pos / mpris_meta.len)*100}" :class "slider"
+                        :onchange "bin/mpris.sh jump {} ${mpris_meta.len / 1000000}")
+                    )
+                )
+                (centerbox :space-evenly false
+                    (box :space-evenly false :halign "start"
+                        (button :class "button${loop == "null" ? "-inactive" : (loop != "none" ? "-active" : "")}" 
+                                :timeout "16s"
+                                :onclick "playerctl loop ${loop == "none" ? "Track" : (loop == "track" ? "Playlist" : "None")}"
+                                "${loop == "track" ? "󰑘" : (loop == "list" ? "󰑖" : "󰑗")}")
+                    )
+                    (box
+                        (button :class "button" :timeout "16s" :onclick "playerctl next" "󰒮")
+                        (button :class "button${mpris.active?: false ? "-active" : ""}" :timeout "16s" :onclick "playerctl play-pause" "${mpris.active?: false ? "󰐎" : "󰐊"}")
+                        (button :class "button" :timeout "16s" :onclick "playerctl previous" "󰒭")
+                    )
+                    (box :space-evenly false :halign "end"
+                        (button :class "button" :timeout "16s" :onclick "playerctl stop" "Stop")
+                    )
+                )
+            
+            )
+        )
+    )
+)

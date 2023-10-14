@@ -1,0 +1,38 @@
+(defwindow dock_edge :monitor 0
+:geometry (geometry :x "0%" :y "0%" :width "40%" :height "1px" :anchor "bottom center")
+:stacking "fg"
+:namespace "eww_active_edge"
+(activator))
+(defwidget activator []
+(eventbox :onhover "bin/open_dock.sh& disown" :onclick "bin/open_dock.sh& disown"))
+
+(defwindow dock_window 
+        :monitor 0
+        :geometry (geometry :x 1
+                            :y 1
+                            :width 0
+                            :height 0
+                            :anchor "bottom center"
+                    )
+        :stacking "overlay"
+        :namespace "eww_bar_top"
+    (dock)
+)
+
+(defvar apps "[]")
+(defvar dock_reveal false)
+
+(defwidget dock []
+    (box :space-evenly false :halign "center" :valign "center"
+(revealer :reveal dock_reveal :transition "slideup" :duration "0.2s"
+        (box :class "popup_box_padded"
+            (for app in apps
+                (button :class "image_button" :onclick "${app.exec}&disown" :tooltip "${app.description}"
+                    (image :path "${app.image}" :image-width 48 :image-height 48)
+                )
+            )
+        )
+    )
+)
+)
+

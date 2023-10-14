@@ -1,0 +1,379 @@
+@import "../style/general.scss";
+
+// the system tray
+
+check {
+    border-radius: $rounding-small;
+    min-width: 1rem;
+    min-height: 1rem;
+    background-color: $bg3;
+    margin-right: .5rem;
+
+    &:checked{
+        background-color: $accent;
+
+    }
+}
+
+menu {
+    background-color: $bg1;
+    border-radius: $rounding-large;
+    margin: 2rem;
+    padding: 1rem;
+
+    // border: 2px solid $bg3;
+    
+    menu {
+        border-radius: $rounding-small;
+        padding: .4rem;
+        margin: 1rem;
+    }
+
+    separator {
+        margin: .5rem;
+        margin-top: .8rem;
+        margin-bottom: .8rem;
+        min-height: .2rem;
+        border-radius: 999999px;
+        background-color: $bg3;
+    }
+    > menuitem {
+        margin-right: .2rem;
+        margin-left: .2rem;
+        padding: $padding-std;
+
+        &:disabled{
+            color: $bg3;
+        }
+        &:hover {
+            background-color: mix($bg3, $bg1, 70);
+            border-radius: $rounding-small;
+        }
+    }
+
+}
+
+menubar {
+    > menuitem {
+        padding: $padding-std;
+        border-radius: $rounding-small;
+        background-color: $polar2;
+        margin: .5rem;
+        &:hover{
+            background-color: $bg3;
+        }
+    }
+}
+
+arrow.right, arrow.left {
+    border-radius: 2rem;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid $snow2;
+}
+
+.leftbox{
+    background-color: $bg1;
+    border-radius: 0px 0px 1.2rem 0px;
+    min-height: 3rem;
+    border-bottom: 2px solid $bg3;
+    border-right: 2px solid $accent;
+}
+
+.ws-active, .ws-inactive, .ws-special, .ws-add{
+    padding: $padding-std;
+    border-radius: $rounding-small;
+    background-color: $bg2;
+    margin: .5rem;
+    color: $fg0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.ws-active{
+    background-color: $accent;
+    color: $inverted;
+    &:hover{
+        background-color: fade($accent)
+    }
+}
+.ws-special{
+    background-color: $special;
+    color: $inverted;
+    &:hover{
+        background-color: fade($special)
+    }
+}
+.ws-add{
+    background-color: $green;
+    color: $inverted;
+    &:hover{
+        background-color: fade($green)
+    }
+}
+.ws-inactive:hover{
+    background-color: $bg3;
+}
+
+.centerbox{
+    background-color: $bg1;
+    border-radius: 0px 0px 1.2rem 1.2rem;
+    border-left: 2px solid $accent; 
+    border-right: 2px solid $accent; 
+    border-bottom: 2px solid $bg3; 
+}
+.winicon{
+    padding: .3rem 1rem .3rem .7rem;
+    border-radius: $rounding-small;
+    background-color: $special;
+    margin: .5rem;
+    color: $inverted;
+    &:hover{
+        background-color: fade($special);
+    }
+}
+.winlabel{
+    padding: .3rem 1rem .3rem .7rem;
+    background-color: $polar2;
+    border-radius: $rounding-small;
+    margin: .5rem;
+    &:hover{
+        background-color: $bg3;
+    }
+}
+.sbutton{
+    @extend .button;
+    min-height: 0rem;
+}
+.sbutton-active{
+    @extend .button-active;
+    min-height: 0rem;
+}
+.mpris-button,.mpris-button-playing{
+    @extend .sbutton;
+}
+.mpris-button-playing{
+    animation: mprisWave 2s linear infinite;
+    background: linear-gradient(to left, $accent, $bg3);
+    background-size: 200% 100%;
+    &:hover{
+        background: linear-gradient(to left, fade($accent), $bg3);
+    }
+}
+.sbutton-off{
+    @extend .button;
+    min-height: 0rem;
+    background-color: $bg1;
+    &:hover{
+        background-color: $bg2;
+    }
+    border: 1px solid $bg3;
+}
+.rightbox{
+    background-color: $bg1;
+    border-radius: 0px 0px 0px 1.2rem;
+    min-height: 3rem;
+    border-bottom: 2px solid $bg3;
+    border-left: 2px solid $accent;
+}
+.clock{
+    padding: .3rem 1rem .3rem .7rem;
+    background-color: $polar2;
+    border-radius: $rounding-small;
+    margin: .5rem;
+    &:hover{
+        background-color: $bg3;
+    }
+}
+.notif_button,.notif_button-active,.notif_button-muted,.notif_button-active-muted{
+    padding: .3rem 1rem .3rem .7rem;
+    background-color: $polar2;
+    border-radius: $rounding-small;
+    margin: .5rem;
+    color: $fg0;
+    &:hover{
+        background-color: $bg3;
+    }
+}
+.notif_button-muted{
+    color: mix($fg0, $bg3)
+}
+.notif_button-active-muted,.notif_button-active{
+    background-color: $orange;
+    color: $inverted;
+    &:hover{
+        background-color: fade($orange);
+    }
+}
+
+.battery,.battery-charging,.battery-critical{
+    padding: .3rem 1rem .3rem .7rem;
+    background-color: $polar2;
+    border-radius: $rounding-small;
+    margin: .5rem;
+    color: $fg0;
+}
+.battery-charging{
+    background-color: $green;
+    color: $inverted;
+}
+.battery-critical{
+    background-color: $red;
+    color: $inverted;
+}
+.popup_box,.popup_box_padded{
+    background-color: $bg0;
+    border-radius: 1.2rem;
+    min-height: 3rem;
+  	box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 8px;
+    margin: 1rem;
+}
+.popup_box_padded{
+    padding: .5rem;
+}
+.padded_box{
+    padding: .5rem;
+}
+.padded_box_large{
+    padding: .8rem;
+    margin: .5rem;
+}
+
+.popup_footer,.popup_header{
+    background-color: $bg1;
+    padding: .5rem;
+
+}
+.popup_header{
+    border-radius: 1.2rem 1.2rem 0rem 0rem;
+
+}
+.popup_footer{
+    border-radius: 0rem 0rem 1.2rem 1.2rem;
+
+}
+
+.list_item, .list_item-active{
+    padding: .3rem 1rem .3rem .7rem;
+    background-color: $polar2;
+    border-radius: $rounding-small;
+    margin: .3rem;
+    color: $fg0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    &:hover{
+        background-color:  $polar3;
+    }
+    &:active{
+        background-color: $accent;
+        color: $inverted;
+    }
+}
+.list_item-active{
+    background-color: $accent;
+    color: $inverted;
+    &:hover{
+        background-color: fade($accent)
+    }
+}
+
+.list_button,{
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: $rounding-small;
+    background-color: $polar2;
+    margin: .5rem;
+    padding: .3rem .8rem .3rem .7rem;
+    &:hover{
+        background-color: $red;
+        color: $inverted;
+    }
+}
+
+.notif,.notif-expanded,.notif-urgent,.notif-urgent-expanded{
+    background-color: $bg1;
+    border-radius: $rounding-small;
+  	box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 3px;
+    margin: .5rem;
+    padding: .5rem;
+}
+.notif-expanded,.notif-urgent-expanded{
+    background-color: $bg2;
+}
+.notif-urgent,.notif-urgent-expanded{
+    border-bottom: 2px solid $error;
+}
+.notif-expander-button,.notif-expander-button-expanded{
+    color: $fg0;
+    padding: 0rem 0.5rem 0.1rem 0.3rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    label {
+        font-size: 1.5rem;
+    }
+    &:hover{
+        color: mix($fg2, $bg3, 70);
+        background-color: unset;
+    }
+
+}
+.notif-close-button{
+    @extend .notif-expander-button;
+    color: $error;
+    &:hover{
+        color: fade($error)
+    }
+}
+
+.notif-body{
+    color: $fg;
+    margin-bottom: .5rem;
+    font-size: 1.2rem;
+}
+.notif-action{
+    color: $fg2;
+    label {
+        font-size: 1.2rem;
+    }
+    &:hover{
+        color: fade($fg);
+    }
+}
+.notif-action-box{
+    margin: .5rem 1rem .5rem 1rem;
+    padding: .5rem 2rem .5rem 2rem;
+    border-radius: $rounding-small;
+    background-color: $bg3;
+}
+.notif-image{
+    border-radius: 24px;
+}
+.urgency0{
+    color: $green;
+}
+.urgency1{
+    color: $yellow;
+}
+.urgency2{
+    color: $red;
+}
+.section_box{
+    margin: .5rem 1rem .5rem 1rem;
+    padding: 1rem;
+    background-color: $bg1;
+    border-radius: $rounding-small;
+}
+.image_overlay{
+    min-width: 22rem;
+    min-height: 14rem;
+    border-radius: 24px;
+}
+
+.image_button{
+    padding: .1rem .2rem .1rem .2rem;
+    margin: .2rem .4rem .2rem .4rem;
+    border-radius: 1.2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    &:hover{
+        background-color: $bg2;
+    }
+    &:active{
+        background-color: $bg3;
+    }
+}
