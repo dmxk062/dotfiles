@@ -1,0 +1,67 @@
+window {
+	background-image: url("/home/dmx/.config/background/lock");
+    background-size:cover
+}
+* {
+    font-family: "Torus Pro", sans-serif;     
+    font-weight: 500;
+}
+#window-box {
+	padding: 24px;
+	/* border: 4px #8fbcbb; */
+	border-radius: 32px;
+	box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 12px;
+	background-color: #2e3440;
+    /* border: 3px solid #4c566a; */
+}
+#input-field {
+    padding: 0px 8px 0px 8px;
+    border: 4px #8fbcbb;
+    border-radius: 6px;
+    background-color: #2e3440;
+    color:#eceff4
+}
+#unlock-button {
+    background-color: #8fbcbb;
+    color: #2e3440;
+    border-radius: 6px;
+}
+#error-label {
+    color: #bf616a;
+    background-color: inherit;
+    border-radius:6px;
+    padding: 4px 4px 4px 4px
+}
+#clock-label {
+    background-color: #2e3440;
+    color: #eceff4;
+    padding: 0
+
+}
+#poweroff-button{
+    background-color: #bf616a;
+    color: #2e3440;
+    border-radius: 8px;
+}
+#logout-button{
+    background-color: #d08770;
+    color: #2e3440;
+    border-radius: 8px;
+}
+#reboot-button{
+    background-color: #ebcb8b;
+    color: #2e3440;
+    border-radius: 8px;
+}
+#suspend-button{
+    background-color: #a3be8c;
+    color: #2e3440;
+    border-radius: 8px;
+}
+#powerbar-box{
+    background-color: #2e3440;
+    padding: 16px;
+    margin-bottom: 40px;
+    border-radius: 24px;
+    border: 3px solid #4c566a;
+}

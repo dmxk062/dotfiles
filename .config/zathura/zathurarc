@@ -1,0 +1,37 @@
+set completion-bg \#2e3440
+set completion-fg \#eceff4
+set completion-group-bg \#2e3440
+set completion-group-fg \#d08770
+set completion-highlight-bg \#8fbcbb
+set completion-highlight-fg \#2e3440
+set default-fg \#eceff4
+set default-bg \#2e3440
+set inputbar-bg \#2e3440
+set inputbar-fg \#eceff4
+set notification-bg \#2e3440
+set notification-fg \#a3be8c
+set notification-error-bg \#2e3440
+set notification-error-fg \#bf616a
+set notification-warning-bg \#2e3440
+set notification-warning-fg \#d08770
+set statusbar-bg \#2e3440
+set statusbar-fg \#eceff4
+set highlight-color \#8fbcbb
+set highlight-fg \#8fbcbb
+set highlight-active-color \#b48ead
+set recolor-darkcolor \#2e3440
+set recolor-lightcolor \#eceff4
+set render-loading-bg \#2e3440
+set render-loading-fg \#eceff4
+set statusbar-home-tilde true
+set window-title-home-tilde true
+set selection-notification false
+set index-fg \#eceff4
+set index-bg \#3b4252
+set index-active-fg \#8fbcbb
+set index-active-bg \#3b4252
+set highlight-transparency 0.6
+map <C-r> rotate rotate-ccw
+map <C-m> mark_add
+map <C-M> mark_evaluate
+set font "Torus Pro, 10"

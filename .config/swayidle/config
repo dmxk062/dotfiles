@@ -1,0 +1,5 @@
+timeout 150 'notify-send "Power Management" "Locking the screen in 30 seconds" -a "swayidle"'
+timeout 180 'gtklock -dS'
+timeout 270 'notify-send "Power Management" "Suspending in 30 seconds" -a "swayidle"'
+timeout  300 'systemctl suspend'
+before-sleep 'gtklock -dS'
