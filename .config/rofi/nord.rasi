@@ -1,0 +1,149 @@
+* {
+	nord0: #2e3440;
+	nord1: #3b4252;
+	nord2: #434c5e;
+	nord3: #4c566a;
+
+	nord4: #d8dee9;
+	nord5: #e5e9f0;
+	nord6: #eceff4;
+
+	nord7: #8fbcbb;
+	nord8: #88c0d0;
+	nord9: #81a1c1;
+	nord10: #5e81ac;
+
+	nord11: #bf616a;
+	nord12: #d08770;
+	nord13: #ebcb8b;
+	nord14: #a3be8c;
+	nord15: #b48ead;
+
+    foreground:  @nord15;
+    foreground-color:  @nord15;
+    backlight:   #ccffeedd;
+    background-color:  transparent;
+    special: @nord7;
+    border-color: @special;
+
+    transparent: rgba(46,52,64,1);
+}
+
+window {
+    location: center;
+    anchor:   center;
+    transparency: "real";
+    padding: 0px;
+    border:  0px;
+    border-color: @special;
+    border-radius: 24px;
+
+    background-color: #2e3440aa;
+    spacing: 0;
+    children:  [mainbox];
+    orientation: horizontal;
+}
+
+
+
+message {
+    padding: 5;
+    background-color: inherit;
+    border-radius: 6;
+
+}
+textbox {
+    text-color: #eceff4;
+}
+
+inputbar {
+    color: @nord6;
+    padding: 11px;
+    background-color: inherit;
+
+    border: 0px;
+    border-color: @special;
+    children:   [ "entry", "mode-switcher"];
+}
+
+entry, prompt, case-indicator {
+    text-font: inherit;
+    text-color:inherit;
+}
+
+prompt {
+    margin: 1em 1em;
+}
+
+listview {
+    padding: 8px;
+    border-radius: 18px;
+    border-color: @special;
+    border: 0px 0px 0px 0px;
+    background-color: inherit;
+    dynamic: false;
+}
+
+element {
+    padding: 8px;
+    vertical-align: 0.5;
+    border-radius: 12px;
+    background-color: inherit;
+    color: @foreground;
+    text-color: @nord6;
+    highlight:  bold underline; 
+}
+
+element selected.normal {
+	background-color: @special;
+	text-color: @nord0;
+    border-radius: 12px;
+    border-color: @special;
+    highlight:    bold underline ;
+}
+
+element-text, element-icon {
+    background-color: inherit;
+    text-color:       inherit;
+}
+entry {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 "search";
+    placeholder-color:           #4c566a;
+} 
+mainbox {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               18px;
+    border-color:                @border-color;
+    background-color:            transparent;
+    children:                    [ "inputbar","message", "listview" ];
+}
+mode-switcher{
+    enabled:                     true;
+    spacing:                     0px;
+    margin:                      1px;
+    padding:                     0px;
+    background-color:            transparent;
+    text-color:                  @foreground-color;
+}
+button {
+    padding:                     4px 12px 4px 8px;
+    border:                      0px solid;
+    border-radius:               10px;
+    border-color:                none;
+    background-color:            inherit;
+    text-color:                  #eceff4;
+    cursor:                      pointer;
+    margin:                      4px 4px 4px 4px;
+}
+button selected {
+    background-color:            @special;
+    text-color:                  @nord0;
+}

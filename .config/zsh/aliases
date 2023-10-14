@@ -1,0 +1,20 @@
+#filetype=zsh
+alias tm="tmux attach -t" #makes tmux easier to use
+alias diiee="shutdown now" #funny, and easy
+alias updategrub="sudo grub-mkconfig -o /boot/grub/grub.cfg" #saves some memorization, lol
+alias bc="bc -l" #always use floating point with bc
+alias dust="dust -bd 3" #make dust better
+alias btm="btm -C /home/dmx/.config/bottom/config.toml" #config for btm
+alias open="xdg-open" #open files in xdg apps
+alias updvar='dbus-update-activation-environment --systemd --all' #kinda redundant now, but still useful
+alias vi="nvim" #just so i never get an error when i try to use vi or vim
+alias sudoe="sudoedit" #faster
+alias svim="sudoedit" #faster Sudo VIM 
+alias sv="sudoedit"
+alias dskmem="grep -e Dirty: /proc/meminfo; grep -e Writeback: /proc/meminfo" #zeigt an wie viele pages im cache sind
+alias yay="yay --editmenu --devel"
+alias mpv="mpv --hwdec=auto"
+alias hy120ify="hyprctl keyword monitor DP-1,2560x1440@120,1920x1080,1" 
+alias hy144ify="hyprctl keyword monitor DP-1,2560x1440@144,1920x1080,1" 
+alias nv=nvim
+alias nman="nvim -R -c 'setf man'"

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Eww Audio Settings
+Exec=eww_settings.sh audio
+Icon=multimedia-volume-control
+Type=Application
+Keywords=sound;audio;mixer;mic;speaker

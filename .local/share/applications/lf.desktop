@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=lf
+Comment=Launches the lf file manager
+Icon=system-file-manager
+Terminal=false
+Exec=/home/dmx/Scripts/lflauncher.sh %U
+Categories=System;FileTools;FileManager
+MimeType=inode/directory;
+Keywords=folders;filesystem;explorer;list;files;fs;fl;lf;nemo;

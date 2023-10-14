@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+# mf - make file, a smarter, touch like script for my own use
+# it guesses the filetype for each file based on the extension and runs the associated function
+
+function get_filetype(){
+    extension="${1##*.}"
+    if [[ "$extension" == "$1" ]]
+    then
+        extension=""
+    fi
+    case $extension in
+        "sh")
+            echo "shell";;
+        "md")
+            echo "markdown";;
+        "py")
+            echo "python";;
+        "odt")
+            echo "odt";;
+        "awk")
+            echo "awk";;
+        *)
+            echo "regular";;
+    esac
+
+}
+
+file_exists_error(){
+    lf -remote "send $id echo File $1 already exists, exiting"
+    return
+}
+function notify(){
+    lf -remote "send $id echo $1"
+}
+
+make_shell_file(){
+    if ! [[ -e "$1" ]] || $force
+    then
+        printf "#!/usr/bin/env bash\n\n" > "$1"
+        chmod +x "$1"
+        notify "󱆃 Created Shell Script: $1"
+    else
+        file_exists_error "$1"
+    fi
+}
+
+make_awk_file(){
+    if ! [[ -e "$1" ]] || $force
+    then
+        printf "#!/usr/bin/awk -f\n\n" > "$1"
+        chmod +x "$1"
+        notify "󱆃 Created Awk Script: $1"
+    else
+        file_exists_error "$1"
+    fi
+}
+
+make_markdown_file(){
+    if ! [[ -e "$1" ]] || $force
+    then
+        printf "# Title\n\n" > "$1"
+        notify "󰍔 Created Markdown Document: $1"
+    else
+        file_exists_error "$1"
+    fi
+}
+
+make_python_file(){
+    if ! [[ -e "$1" ]] || $force
+    then
+        printf "#!/usr/bin/env python\n\n" > "$1"
+        chmod +x "$1"
+        notify "󰌠 Created Python Script: $1"
+    else
+        file_exists_error "$1"
+    fi
+}
+
+make_odt_file(){
+    if ! [[ -e "$1" ]] || $force
+    then
+        touch "$1"
+        # this overwrites it, if the file ends in .odt
+        libreoffice --headless --convert-to odt "$1" > /dev/null 2>&1
+        notify "󰈙 Created Open Document Text File: $1"
+    else
+        file_exists_error "$1"
+    fi
+
+}
+
+make_regular_file(){
+    if ! [[ -e "$1" ]] || $force
+    then
+        touch "$1"
+        notify "󰈔 Created File: $1"
+    else
+        file_exists_error "$1"
+    fi
+}
+
+if [[ "$1" == "-f" ]]
+then
+    force=true
+    files=("${@:2}")
+else
+    force=false
+    files=("${@}")
+fi
+
+pids=()
+
+for file in ${files[@]}
+do
+    ft=$(get_filetype "$file")
+    make_${ft}_file "$file"&
+    lf -remote "send $id select $file"
+    pids+=($!)
+done
+wait "${pids[@]}"
