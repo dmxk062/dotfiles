@@ -2,6 +2,8 @@
 
 eww="eww -c $HOME/.config/eww/popups"
 
+[ -f /tmp/.eww_no_popups ]&&exit
+
 case $1 in 
     in)
         oldid=$(pgrep "open_popup" |head -n 1)

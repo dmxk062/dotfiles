@@ -1,27 +1,67 @@
 (defvar idle true)
-(defvar edge true)
 (defvar blueman_tray false)
 (defvar nm_tray false)
 (defvar obs_tray false)
 (defvar hide-notif-popups false)
 (defvar clocks false)
 
+(defvar dock true)
+(defvar bar true)
+(defvar popups true)
+
+
 (defvar system '{}')
 
 (defwidget system_section []
     (box :visible "${selected_section == 3}" :class "section_box" :hexpand true :orientation "h" :space-evenly false  :vexpand true
-        (box :orientation "v" :space-evenly false :class "sidebar" 
-            (label :class "title" :text "Tray Items")
-            (button :class "button${blueman_tray ? "-active" : ""}" :timeout "16s" :onclick "bin/tray.sh blueman" :tooltip "A bluetooth manager for the system tray" "󰂯    Blueman")
-            (button :class "button${nm_tray ? "-active" : ""}" :timeout "16s" :onclick "bin/tray.sh nm" :tooltip "Manage WIFI, Ethernet, VPNs and other network tasks from the system tray" "󰌘    Network Manager")
-            (button :class "button${obs_tray ? "-active" : ""}" :timeout "16s" :onclick "bin/tray.sh obs" :tooltip "Quickly record the screen if needed" "󰑋    OBS")
-            (label :class "title" :text "Background Processes")
-            (button :class "button${idle ? "-active" : ""}" :onclick "bin/system.sh idle" :tooltip "Automatically locks the screen and idles the device after certain intervals of inactivity" "󰒲    Swayidle")
-            (button :class "button${clocks ? "-active" : ""}" :onclick "bin/system.sh clock" :tooltip "Run GNOME Clocks in the background to use alarms" "󰥔    GNOME Clocks")
-            (label :class "title" :text "EWW Shell")
-            (button :class "button${edge ? "-active" : ""}" :onclick "bin/system.sh edge" :tooltip "Activate the bottom dock using a mouse hover on the bottom screen edge" "󱂩    Dock")
-            (label :class "title" :text "Notifications")
-            (button :class "button${hide-notif-popups ? "" : "-active"}" :timeout "16s" :onclick "bin/notif.sh toggle-mode" :tooltip "Show or hide the notification popups sent by Mako" "${hide-notif-popups ? "󱙍" : "󰍡"}    Popups")
+        (box :orientation "h" :space-evenly false :class "sidebar" 
+        (scroll :class "scroll-thin"
+            (box :orientation "v" :space-evenly false
+                (label :class "title" :text "Background Processes")
+                (list_box
+                    (button :class "button${blueman_tray ? "-active" : ""}" :timeout "16s" :onclick "bin/tray.sh blueman" "󰂯    Blueman")
+                    (wrapped_text :text "Control bluetooth devices via the system tray. Also receive notifications on connections")
+                )
+                (list_box
+                    (button :class "button${nm_tray ? "-active" : ""}" :timeout "16s" :onclick "bin/tray.sh nm" "󰌘    Network Manager")
+                    (wrapped_text :text "Manage network devices, WIFI, ethernet and VPNs from the system tray. Also sends notifications on events")
+                )
+                (list_box
+                    (button :class "button${obs_tray ? "-active" : ""}" :timeout "16s" :onclick "bin/tray.sh obs" "󰑋    OBS")
+                    (wrapped_text :text "Let OBS run in the system tray so it's always available when you need to quickly record something")
+                )
+                (list_box
+                    (button :class "button${idle ? "-active" : ""}" :onclick "bin/system.sh idle" "󰒲    Swayidle")
+                    (wrapped_text :text "Swayidle invokes actions after periods of inactivity")
+                )
+                (list_box
+                    (button :class "button${clocks ? "-active" : ""}" :onclick "bin/system.sh clock" "󰥔    GNOME Clocks")
+                    (wrapped_text :text "Let Gnome Clocks run in the background so alarms can be triggered")
+                )
+            )
+        )
+        (separator)
+        (scroll :class "scroll-thin"
+            (box :orientation "v" :space-evenly false 
+                (label :class "title" :text "EWW Shell")
+                (list_box
+                    (button :class "button${dock ? "-active" : ""}" :onclick "bin/shell.sh dock" "󱂩    Dock")
+                    (wrapped_text :text "A dock to launch apps. Hover over the bottom screen edge to activate.")
+                )
+                (list_box
+                    (button :class "button${bar ? "-active" : ""}" :onclick "bin/shell.sh bar""󱔓    Bar")
+                    (wrapped_text :wrap true :text "A bar at the top of the screen showing workspaces, windows, media and other information")
+                )
+                (list_box
+                    (button :class "button${popups ? "-active" : ""}" :onclick "bin/shell.sh popups""󰍦    Popups")
+                    (wrapped_text :text "On screen popups for volume and brightness changes")
+                )
+                (list_box
+                    (button :class "button${hide-notif-popups ? "" : "-active"}" :timeout "16s" :onclick "bin/notif.sh toggle-mode" "${hide-notif-popups ? "󱙍" : "󰍡"}    Notification Popups")
+                    (wrapped_text :text "Notification popups sent by mako, when disabled the notification center can still be used")
+                )
+            )
+        )
         )
         (box :orientation "h" :hexpand true :halign "center" 
             (box :space-evenly false :halign "center" :orientation "v" :valign "center"
@@ -40,7 +80,7 @@
                         (label :class "text-large" :text "CPU Vendor: ${system.cpu_vendor}")
                         (label :class "text-large" :text "CPU Model: ${system.cpu_model}")
                         (label :class "text-large" :text "CPU Instruction Set Architecture: ${system.arch}")
-                        (label :class "text-large" :text "Uptime: ${formattime(EWW_TIME - system.boottime, "%Hh %Mm %Ss")}, since ${formattime(system.boottime, "%H:%M")}")
+                        (label :class "text-large" :text "Uptime: ${formattime(EWW_TIME - system.boottime - 3600, "%T")}, since ${formattime(system.boottime, "%H:%M")}")
                     )
                 )
 

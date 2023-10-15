@@ -1,0 +1,13 @@
+(defwidget wrapped_text [text]
+(label :class "text-np" :wrap true :justify "left" :text "${text}"))
+
+(defwidget list_box []
+(box :class "padding_box_small" :orientation "v" :space-evenly false
+(children)))
+
+(defwidget separator []
+(box :class "separator"))
+
+(defwidget margin []
+(box :class "margin_box"
+(children)))

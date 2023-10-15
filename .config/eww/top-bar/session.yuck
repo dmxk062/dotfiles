@@ -41,7 +41,7 @@
             )
             (box :class "popup_footer" :orientation "v"
                 (label :text "${user} logged in at ${hostname}" :class "title")
-                (label :text "${formattime(EWW_TIME - boottime,"%Hh %Mm %Ss")}
+                (label :text "${formattime(EWW_TIME - boottime - 3600,"%T")}
 Booted: ${formattime(boottime, "%H:%M")}" :class "title")
             )
         )

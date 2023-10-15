@@ -3,17 +3,6 @@ eww="eww -c $HOME/.config/eww/settings"
 
 
 
-edge(){
-    if eww -c "$XDG_CONFIG_HOME/eww/top-bar/" close dock_edge
-    then
-        $eww update edge=false
-        eww -c "$XDG_CONFIG_HOME/eww/top-bar/" close dock_window
-    else
-        eww -c "$XDG_CONFIG_HOME/eww/top-bar" open dock_edge
-        eww -c "$XDG_CONFIG_HOME/eww/top-bar" open dock_window
-        $eww update edge=true
-    fi
-}
 idle(){
     if killall swayidle 
     then

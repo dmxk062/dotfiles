@@ -12,49 +12,88 @@
 (defvar repeat_delay 600)
 (defvar scroll_speed 100)
 
+(defvar test_area_event '')
+
 (defwidget input_section []
     (box :visible "${selected_section == 1}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
-        (box :orientation "v" :space-evenly false :class "sidebar"
-        (box :space-evenly false :halign "center"
-        (box :orientation "v" :space-evenly false
-            (button  :class "button${layout == "QWERTZ DE" ? "-active" : ""}":timeout "16s" :onclick "bin/input.sh kbd" :tooltip "Switch Keyboard Layout" "󰌌   ${layout}") 
-            (button :class "button${left_handed ? "-active" : ""}" :onclick "bin/input.sh left_handed" :tooltip "Enable/Disable Left Handed Mode (switches mouse buttons)" "${left_handed ? "󰹆" : "󱠰"}    Left Handed")
-            (button :class "button${tap_click ? "-active" : ""}" :onclick "bin/input.sh tap_click" :tooltip "Enable/Disable Tap to Click" "󱊩    Tap to Click"))
-        (box :orientation "v" :space-evenly false
-            (button :class "button${ws_swipe ? "-active" : ""}" :onclick "bin/input.sh ws_swipe" :tooltip "Enable/Disable Gesture Navigation for Workspaces" "󰵶    Swipe")
-            (button :class "button${natural_scroll ? "-active" : ""}" :onclick "bin/input.sh natural_scroll" :tooltip "Enable/Disable Natural Scrolling
-When enabled, scrolling moves the content, not the view." "󰫀    Natural Scroll")
-            (button :class "button${osk ? "-active" : ""}" :onclick "bin/input.sh osk" :tooltip "Enable/Disable Touch Keyboard" "${osk ? "󰌌" : "󰌐"}    WVKBD"))
+        (box :space-evenly false :class "sidebar"
+            (scroll :class "scroll-medium"
+                (box :orientation "v" :space-evenly false
+                    (label :class "Title" :text "Keyboard") 
+                    (list_box 
+                        (button  :class "button${layout == "QWERTZ DE" ? "-active" : ""}":timeout "16s" :onclick "bin/input.sh kbd" "󰌌   ${layout}") 
+                        (wrapped_text :text "Switch between the german and english keyboard layouts")
+                    )
+                    (list_box
+                        (button :class "button${osk ? "-active" : ""}" :onclick "bin/input.sh osk" "${osk ? "󰌌" : "󰌐"}    On Screen Keyboard")
+                        (wrapped_text :text "Enable WVKBD (a touch keyboard)")
+                    )
+                    (list_box
+                        (label :text "")
+                        (button :class "button" :onclick "bin/rate.sh reset" "󰧹    Reset Repeat Rate")
+                            (margin
+                                (scale :value "${repeat_rate}" :min 0 :max 100 :class "slider-small" :onchange "bin/rate.sh {}")
+                            )
+                        (wrapped_text :text "Control how often a held down key is pressed")
+                    )
+                    (list_box
+                        (label :text "")
+                        (button :class "button" :onclick "bin/delay.sh reset" "󰌏    Reset Repeat Delay")
+                            (margin
+                                (scale :value "${repeat_delay}" :min 100 :max 1000 :class "slider-small" :onchange "bin/delay.sh {}")
+                            )
+                        (wrapped_text :text "Control how long it takes for a held down key to start to repeat")
+                    )
+               )
+            )
+            (separator)
+            (scroll :class "scroll-medium"
+                (box :orientation "v" :space-evenly false
+                    (label :class "Title" :text "Mouse & Touchpad") 
+                    (list_box 
+                        (button :class "button${left_handed ? "-active" : ""}" :onclick "bin/input.sh left_handed" :onrightclick "bin/input.sh left_handed" "${left_handed ? "󰹆" : "󱠰"}    Left Handed")
+                        (wrapped_text :text "Enable / Disable left handed mode. Inverts mouse buttons when enabled")
+                    )
+                    (list_box
+                        (button :class "button${tap_click ? "-active" : ""}" :onclick "bin/input.sh tap_click" "󱊩    Tap to Click")
+                        (wrapped_text :text "Tap on the touchpad to click. Two fingers and three fingers right and middle click respectively")
+                    )
+                    (list_box
+                        (button :class "button${natural_scroll ? "-active" : ""}" :onclick "bin/input.sh natural_scroll" "󰫀    Natural Scroll")
+                        (wrapped_text :text "Natural scrolling is recommended for touchpads. When enabled, scrolling moves the content, not the view")
+                    )
+                    (list_box
+                        (button :class "button${ws_swipe ? "-active" : ""}" :onclick "bin/input.sh ws_swipe" "󰵶    Swipe")
+                        (wrapped_text :text "Enable switching workspaces by three finger swiping left and right")
+                    )
+                    (list_box
+                        (button :class "button" :onclick "bin/sensiv.sh reset" "󰍽    Reset Mouse Sensitivity")
+                        (margin 
+                            (scale :value "${mouse_sensitivity}" :min 0 :max 100 :class "slider" :onchange "bin/sensiv.sh {}")
+                        )
+                        (wrapped_text :text "Change the mouse cursor speed")
+                    )
+                    (list_box
+                        (button :class "button" :onclick "bin/scroll.sh reset" "󰫀    Reset Touchpad Scroll Speed" )
+                        (margin 
+                            (scale :value "${scroll_speed}" :min 5 :max 300 :class "slider" :onchange "bin/scroll.sh {}")
+                        )
+                        (wrapped_text :text "Set the scroll speed for touchpads")
+                    )
+                )
+            )
         )
-        (box :orientation "v" :space-evenly false :halign "end"
-            (box :class "sliderbox" :space-evenly false :orientation "v"
-                (label :text "󰍽    Mouse Sensitivity")
-                (box :space-evenly false
-                    (button :class "button" :onclick "bin/sensiv.sh reset" "Reset")
-                    (scale :value "${mouse_sensitivity}" :min 0 :max 100 :class "slider" :onchange "bin/sensiv.sh {}")
+        (box :space-evenly false :hexpand true :class "padding_box" :orientation "v"
+            (label :class "title" :text "Test Area")
+            (eventbox :onclick "${EWW_CMD} update test_area_event='left'"
+                        :onrightclick "${EWW_CMD} update test_area_event='right'"
+                        :onmiddleclick "${EWW_CMD} update test_area_event='middle'"
+                        :onscroll "[ {} = up ]&&${EWW_CMD} update test_area_event='up'||${EWW_CMD} update test_area_event='down'"
+                (box :class "test_area${test_area_event != "" ? "-${test_area_event}" : ""}"
+                    (label :class "heading" :text "${test_area_event}")
+
                 )
             )
-            (box :class "sliderbox" :space-evenly false :orientation "v"
-                (label :text "󰫀    Touchpad Scroll Speed")
-                (box :space-evenly false
-                    (button :class "button" :onclick "bin/scroll.sh reset" "Reset")
-                    (scale :value "${scroll_speed}" :min 5 :max 300 :class "slider" :onchange "bin/scroll.sh {}")
-                )
-            )
-            (box :class "sliderbox" :space-evenly false :orientation "v"
-                (label :text "󰧹    Keyboard Repeat Rate")
-                (box :space-evenly false
-                    (button :class "button" :onclick "bin/rate.sh reset" "Reset")
-                    (scale :value "${repeat_rate}" :min 0 :max 100 :class "slider" :onchange "bin/rate.sh {}")
-                )
-            )
-            (box :class "sliderbox" :space-evenly false :orientation "v"
-                (label :text "󰌏    Keyboard Repeat Delay")
-                (box :space-evenly false
-                    (button :class "button" :onclick "bin/delay.sh reset" "Reset")
-                    (scale :value "${repeat_delay}" :min 100 :max 1000 :class "slider" :onchange "bin/delay.sh {}")
-                )
-            )
-        ))
+        )
     )
 )
