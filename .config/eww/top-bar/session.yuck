@@ -26,18 +26,23 @@
 
 (defwidget session [] 
     (box :space-evenly false :halign "center" :valign "center"
-        (box :class "popup_box" :orientation "v" :space-evenly false
-            (box :class "section_box" :orientation "v"
-                (label :text "${user} logged in at ${hostname}" :class "title")
-                (label :text "Up: ${formattime(EWW_TIME - boottime,"%Hh %Mm %Ss")} - since ${formattime(boottime, "%H:%M")}")
+        (box :class "popup_box" :orientation "v" :space-evenly false :width 200
+            (box :class "padded_box" :orientation "v"
+                (box
+                (power_button :class "button-error" :action "off" :text "")
+                (power_button :class "button-warn" :action "reboot" :text "")
+                (power_button :class "button-yellow" :action "logout" :text "󰍃")
+                )
+                (box
+                (power_button :class "button-special" :action "uefi" :text "󰘚")
+                (power_button :class "button-blue" :action "suspend" :text "󰤄")
+                (power_button :class "button-good" :action "lock -nc" :text "")
+                )
             )
-            (box :class "section_box" :orientation "v"
-                (power_button :class "button-error" :action "off" :text "    Power OFF")
-                (power_button :class "button-warn" :action "reboot" :text "    Reboot")
-                (power_button :class "button-yellow" :action "logout" :text "󰍃    Logout")
-                (power_button :class "button-good" :action "lock -nc" :text "    Lock")
-                (power_button :class "button-blue" :action "suspend" :text "󰤄    Suspend")
-                (power_button :class "button-special" :action "uefi" :text "󰘚    Reboot into UEFI Firmware")
+            (box :class "popup_footer" :orientation "v"
+                (label :text "${user} logged in at ${hostname}" :class "title")
+                (label :text "${formattime(EWW_TIME - boottime,"%Hh %Mm %Ss")}
+Booted: ${formattime(boottime, "%H:%M")}" :class "title")
             )
         )
     )
