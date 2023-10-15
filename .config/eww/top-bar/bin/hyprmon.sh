@@ -37,6 +37,7 @@ window_icons='{
 "pavucontrol":"",
 "virt-manager":"",
 "polkit-gnome-authentication-agent-1":"󰟵",
+"io.elementary.desktop.agent-polkit":"󰟵",
 "com.obsproject.Studio":"",
 "hyprland-share-picker":"󰩨",
 "Vial":"󰌌",

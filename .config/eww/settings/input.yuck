@@ -94,6 +94,10 @@
 
                 )
             )
+            (list_box 
+                (label :class "title" :text "Typing test")
+                (input :class "input")
+            )
         )
     )
 )
