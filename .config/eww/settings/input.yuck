@@ -85,8 +85,8 @@
         )
         (box :space-evenly false :hexpand true :class "padding_box" :orientation "v"
             (label :class "title" :text "Test Area")
-            (eventbox :onclick "${EWW_CMD} update test_area_event='left'"
-                        :onrightclick "${EWW_CMD} update test_area_event='right'"
+            (eventbox :onclick "${EWW_CMD} update test_area_event='primary'"
+                        :onrightclick "${EWW_CMD} update test_area_event='secondary'"
                         :onmiddleclick "${EWW_CMD} update test_area_event='middle'"
                         :onscroll "[ {} = up ]&&${EWW_CMD} update test_area_event='up'||${EWW_CMD} update test_area_event='down'"
                 (box :class "test_area${test_area_event != "" ? "-${test_area_event}" : ""}"

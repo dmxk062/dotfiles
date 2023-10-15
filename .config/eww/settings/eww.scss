@@ -107,7 +107,7 @@ $xlarge: 2px 17px 2px 13px;
     border: 2px solid $bg3;
 }
 
-.test_area,.test_area-right,.test_area-left,.test_area-middle,.test_area-up,.test_area-down{
+.test_area,.test_area-secondary,.test_area-primary,.test_area-middle,.test_area-up,.test_area-down{
     background-color: $bg1;
     min-width: 4rem;
     min-height: 16rem;
@@ -115,19 +115,19 @@ $xlarge: 2px 17px 2px 13px;
     margin: 1rem;
     border-radius: $rounding-small;
 }
-.test_area-right{
-    border-right: 1rem solid $red;
+.test_area-secondary{
+    background: linear-gradient(to left, $orange, $bg1)
 }
-.test_area-left{
-    border-left: 1rem solid $red;
+.test_area-primary{
+    background: linear-gradient(to right, $red, $bg1)
 }
 .test_area-middle{
-    border-right: 1rem solid $red;
-    border-left: 1rem solid $red;
+    // background: linear-gradient(to right, $red, $orange)
+    background: radial-gradient(circle at center, $special, $bg1)
 }
 .test_area-up{
-    border-bottom: 1rem solid $green;
+    background: linear-gradient(to top, $green, $bg1)
 }
 .test_area-down{
-    border-top: 1rem solid $yellow;
+    background: linear-gradient(to bottom, $yellow, $bg1)
 }
