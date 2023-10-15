@@ -23,7 +23,7 @@
 :hexpand true
 :vexpand true
 :stacking "overlay"
-:namespace "eww_sidebar"
+:namespace "eww_settings"
 :focusable true
 (settings)
 )
