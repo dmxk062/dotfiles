@@ -1,25 +1,27 @@
-#!/bin/bash
+#!/bin/sh
+IFS='
+'
 file=$1
 w=$2
 h=$3
 x=$4
 y=$5
-function giveOpenHint(){
+giveOpenHint(){
     printf "\033[33m $1 \033[0m \n\n"
 }
-function Title(){
+Title(){
     printf "\033[33m$1 \033[0m\n\n"
 }
 # gives infos, e.g. no previewer
-function giveOpenInfo(){
+giveOpenInfo(){
     printf "\033[34m $1 \033[0m \n\n"
 }
 # warns, not used for anything rn
-function giveOpenWarn(){
+giveOpenWarn(){
     printf "\033[31;1m $1 \033[0m \n\n"
 }
 # checks if we can even read the file, if not exits and tells the user who can read it.
-if ! [[ -r "$file" ]]
+if ! [ -r "$file" ]
 then
     printf "\033[31;1m You don't have read access to the file $file.\n\033[0m"
     perms=$(lsd --blocks permission --color=always $file)
@@ -30,7 +32,7 @@ then
 \033[34mGroup: $group"
     exit 1
 fi
-if [[ -x "$file" ]]
+if [ -x "$file" ]
 then
     giveOpenHint "Use oE to execute"
 fi
@@ -42,7 +44,7 @@ cachedir="$HOME/.cache/lf"
 filename=$(basename "$(echo "$file" | tr ' ' '_')")
 case "$(file --dereference --brief --mime-type -- "$1")" in
     application/*pdf) #convert to png and then view using kitty
-        if [[ ! -f "$cachedir/$filename.png" ]]; then
+        if [ ! -f "$cachedir/$filename.png" ]; then
             pdftoppm -f 1 -l 1 "$file" >> "$cachedir/$filename.png"
         fi
         kitten icat --silent --stdin no --transfer-mode memory --place "${w}x${h}@${x}x${y}" "$cachedir/$filename.png" < /dev/null > /dev/tty
@@ -50,7 +52,7 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
     ;;
     image/*|t) #just kitty
         identify -format 'Format: %m\nSize: %wx%h\nColor Depth: %z Bits per Pixel\n' "$file"
-        if [[ $(stat -c %s "$file") -gt 31457280 ]]
+        if [ $(stat -c %s "$file") -gt 31457280 ]
         then
             giveOpenInfo "Images larger than 30mb won't be displayed."
             exit 1
@@ -59,7 +61,7 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
         exit 1
     ;;
     application/postscript)
-        if [[ $(stat -c %s "$file") -gt 31457280 ]]
+        if [ $(stat -c %s "$file") -gt 31457280 ]
         then
             giveOpenInfo "Postscript Files larger than 30mb won't be displayed."
             exit 1
@@ -68,7 +70,7 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
         exit 1
     ;;  
     video/*)
-        if [[ ! -f "$cachedir/$filename.png" ]]; then
+        if [ ! -f "$cachedir/$filename.png" ]; then
             ffmpegthumbnailer -s 0 -m -i "$file" -o "$cachedir/$filename.png"
         fi
         kitten icat --silent --stdin no --transfer-mode memory --place "${w}x${h}@${x}x${y}" "$cachedir/$filename.png" < /dev/null > /dev/tty
@@ -109,15 +111,16 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
         fc-query "$file"
         exit 1;;
     audio/*)
-        meta=$(mediainfo --Output=JSON "$file"|jq -Mc '.media.track[0]')
-        mapfile -t values <<< "$(echo "$meta" | jq -r '.Title // "-", .Album // "-", .Album_Performer // "-", .Genre // "-", .Format // "-", .Duration, .OverallBitRate')"
-        seconds=${values[5]}
-        seconds=${seconds%.*}
+        output_file=$(mktemp)
+        mediainfo --Output=JSON "$file"|jq -r '.media.track[0]|.Title // "-" , .Album // "-" , .Album_Performer // "-" , .Genre // "-" , .Format // "-" , .Duration, .OverallBitRate'|tr '\n' '\t' > "$output_file"
+        IFS="$(printf '\t')" read -r title album performer genre format duration overall_bitrate < "$output_file"
+        seconds=${duration%.*}
         mins=$((seconds / 60))
         seconds=$((seconds % 60))
         ffmpeg -i "$file" -an -vcodec mjpeg -f image2pipe -|kitty +kitten icat --stdin=yes --transfer-mode memory --place "${w}x$((h-7))@${x}x$((y+7))" > /dev/tty
-        printf "Title: %s\nAlbum: %s\nArtist: %s\nGenre: %s\nFormat: %s\nBitrate: %skbps\n" "${values[0]}" "${values[1]}" "${values[2]}" "${values[3]}" "${values[4]}" $((values[6]/1000))
+        printf "Title: %s\nAlbum: %s\nArtist: %s\nGenre: %s\nFormat: %s\nBitrate: %skbps\n" "${title}" "${album}" "${performer}" "${genre}" "${format}" $((overall_bitrate/1000))
         printf "Length: %02d:%02d\n" $mins $seconds
+        rm "$output_file"
         exit 1;;
 
 esac
