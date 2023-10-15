@@ -24,23 +24,24 @@
             (button :class "button${hide-notif-popups ? "" : "-active"}" :timeout "16s" :onclick "bin/notif.sh toggle-mode" :tooltip "Show or hide the notification popups sent by Mako" "${hide-notif-popups ? "󱙍" : "󰍡"}    Popups")
         )
         (box :orientation "h" :hexpand true :halign "center" 
-            (box :space-evenly false :halign "center" :orientation "v" 
-            
-                (image :path "${system.logo.distro}" :image-width 256 :image-height 256)
-                (box :orientation "v" :halign "start" :space-evenly false :valign "start"
-                    (label :class "text-large" :text "Operating System: ${system.distro}")
-                    (label :class "text-large" :text "Kernel: ${system.kernel} ")
-                    (label :class "text-large" :text "Version: ${system.kernel_ver} ")
-                    (label :class "text-large" :text "Windowing System: ${system.windowing_system}")
-                    (label :class "text-large" :text "${system.windowing_system == "x11" ? "Window Manager" : "Compositor"}: ${system.desktop}")
-                    (label :class "text-large" :text "Memory: ${system.ram}")
-                    (label :class "text-large" :text "CPU Vendor: ${system.cpu_vendor}")
-                    (label :class "text-large" :text "CPU Model: ${system.cpu_model}")
-                    (label :class "text-large" :text "CPU Instruction Set Architecture: ${system.arch}")
-                    
-                )
-                (box :orientation "v" :space-evenly false
-                    (label :class "text-large" :text "Uptime: ${formattime(EWW_TIME - system.boottime, "%Hh %Mm %Ss")}, since ${formattime(system.boottime, "%H:%M")}")
+            (box :space-evenly false :halign "center" :orientation "v" :valign "center"
+                (box :space-evenly false :orientation "v" :class "card" 
+                    (box :class "padding_box"
+                        (image :path "${system.logo.distro}" :image-width 256 :image-height 256)
+                    )
+                    (box :orientation "v" :halign "start" :space-evenly false :class "card_footer" 
+                    (box :halign "start")
+                        (label :class "text-large" :text "Operating System: ${system.distro}")
+                        (label :class "text-large" :text "Kernel: ${system.kernel} ")
+                        (label :class "text-large" :text "Version: ${system.kernel_ver} ")
+                        (label :class "text-large" :text "Windowing System: ${system.windowing_system}")
+                        (label :class "text-large" :text "${system.windowing_system == "x11" ? "Window Manager" : "Compositor"}: ${system.desktop}")
+                        (label :class "text-large" :text "Memory: ${system.ram}")
+                        (label :class "text-large" :text "CPU Vendor: ${system.cpu_vendor}")
+                        (label :class "text-large" :text "CPU Model: ${system.cpu_model}")
+                        (label :class "text-large" :text "CPU Instruction Set Architecture: ${system.arch}")
+                        (label :class "text-large" :text "Uptime: ${formattime(EWW_TIME - system.boottime, "%Hh %Mm %Ss")}, since ${formattime(system.boottime, "%H:%M")}")
+                    )
                 )
 
 

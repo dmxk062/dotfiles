@@ -14,16 +14,12 @@
             "exec":"eww_settings.sh display"
         },
         {
-            "name":"Sound and Media Settings",
+            "name":"Sound Settings",
             "exec":"eww_settings.sh audio"
         },
         {
             "name":"Bluetooth Settings",
             "exec":"eww_settings.sh bluetooth"
-        },
-        {
-            "name":"Appearance",
-            "exec":"eww_settings.sh appearance"
         },
         {
             "name":"Storage Settings",
@@ -36,78 +32,78 @@
     ],
     "firefox":[
         {
-            "name":"    New Window",
+            "name":"New Window",
             "exec":"firefox --new-window"
         },
         {
-            "name":"󱀣    New Private Window",
+            "name":"New Private Window",
             "exec":"firefox --private-window"
         },
         {
-            "name":"󰃢    New Safe Mode Window",
+            "name":"New Safe Mode Window",
             "exec":"firefox --safe-mode --new-instance"
         },
         {
-            "name":"󰗃    Youtube",
+            "name":"Youtube",
             "exec":"firefox --new-window youtube.com"
         },
         {
-            "name":"󰙯    Discord",
+            "name":"Discord",
             "exec":"firefox --new-window https://discord.com/channels/@me"
         }
 
     ],
     "nemo":[
         {
-            "name":"    Root (/)",
+            "name":"Filesystem Root (/)",
             "exec":"nemo /"
         },
         {
-            "name":"󰋩    Photos (~/Pictures/)",
-            "exec":"nemo ~/Pictures/"
+            "name":"Computer",
+            "exec":"nemo computer://"
         },
         {
-            "name":"󱂬    Floating",
+            "name":"Floating",
             "exec":"nemo --name='popup nemo'"
         },
         {
-            "name":"󰥔    Recently Used",
+            "name":"Recently Used",
             "exec":"nemo --name='popup nemo' recent:///" 
         },
         {
-            "name":"    Trash",
+            "name":"Trash",
             "exec":"nemo --name='popup nemo' trash:///" 
         }
     ],
     "office":[
         {
-            "name":"󰼭    Libreoffice Writer",
+            "name":"Libreoffice Writer",
             "exec":"libreoffice --writer"
         },
         {
-            "name":"󰐨    Libreoffice Impress",
+            "name":"Libreoffice Impress",
             "exec":"libreoffice --impress"
         },
         {
-            "name":"󰪚    Libreoffice Calc",
+            "name":"Libreoffice Calc",
             "exec":"libreoffice --calc"
         },
         {
-            "name":"    Libreoffice Math",
+            "name":"Libreoffice Math",
             "exec":"libreoffice --math"
         },
         {
-            "name":"󰇞    Libreoffice Draw",
+            "name":"Libreoffice Draw",
             "exec":"libreoffice --draw"
         }
     ],
     "steam":[
         {
-            "name":"󰗮    Steam Library",
+            "name":"Steam Library",
             "exec":"env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json steam steam://open/games"
         },
         {
-            "name":"    BigPicture Mode",
+            "name":"BigPicture Mode",
             "exec":"env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json steam steam://open/bigpicture"
         },
         {
