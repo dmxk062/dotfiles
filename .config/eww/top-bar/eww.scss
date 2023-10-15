@@ -388,6 +388,7 @@ arrow.right, arrow.left {
     transition: background-color 0.3s ease, color 0.3s ease;
     border-radius: $rounding-small;
     padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+    margin: .2rem;
     &:hover{
         background-color: $bg1;
     }

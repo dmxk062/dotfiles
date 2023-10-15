@@ -47,12 +47,15 @@
 
 (defwidget launch_option_list []
     (box :space-evenly false :halign "center" :valign "center"
-        (box :class "popup_box_padded" :orientation "v"
-            (for entry in icon_menu_entries
-(button :class "lbutton" :onclick "${entry.exec}& disown&&bin/open_icon_menu.sh"
-(label :text "${entry.name}")
-)
+        (box :class "popup_box_padded" :orientation "v" :space-evenly false
+            (box :orientation "v"
+                (for entry in icon_menu_entries
+                    (button :class "lbutton" :onclick "${entry.exec}& disown&&bin/open_icon_menu.sh"
+                    (label :text "${entry.name}")
+                    )
+                )
             )
+            (button :class "lbutton" :onclick "bin/open_icon_menu.sh default" "Cancel")
         )
     )
 )
