@@ -16,11 +16,11 @@ function kbd(){
     then
         hyprctl keyword input:kb_layout us
         $eww update layout="QWERTY US"
-        $HOME/.config/eww/bin/notify.sh "Changed Keyboard Layout" "Now using QWERTY - English(US)"
+        $XDG_CONFIG_HOME/eww/bin/notify.sh "Changed Keyboard Layout" "Now using QWERTY - English(US)"
     else
         hyprctl keyword input:kb_layout de
         $eww update layout="QWERTZ DE"
-        $HOME/.config/eww/bin/notify.sh "Changed Keyboard Layout" "Now using QWERTZ - German(DE)"
+        $XDG_CONFIG_HOME/eww/bin/notify.sh "Changed Keyboard Layout" "Now using QWERTZ - German(DE)"
     fi
 }
 function left_handed(){
@@ -67,11 +67,11 @@ function osk(){
     if killall wvkbd
     then
         $eww update osk=false
-        eww -c "$HOME/.config/eww/hud" update osk=false
+        eww -c "$HOME/.config/eww/top-bar" update osk=false
     else
         $HOME/.local/bin/wvkbd --fn "Torus" --landscape-layers full  &
         $eww update osk=true
-        eww -c "$HOME/.config/eww/hud" update osk=true
+        eww -c "$HOME/.config/eww/top-bar/" update osk=true
     fi
 
 }

@@ -377,3 +377,22 @@ arrow.right, arrow.left {
         background-color: $bg3;
     }
 }
+.vert_separator{
+    min-width: 1px;
+    min-height: 1rem;
+    background-color: $bg3;
+    margin: 0rem .5rem 0rem .5rem;
+}
+
+.lbutton{
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: $rounding-small;
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+    &:hover{
+        background-color: $bg1;
+    }
+    &:active{
+        background-color: $accent;
+    }
+
+}

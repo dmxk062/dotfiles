@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/sh
 
 update(){
     eww -c $XDG_CONFIG_HOME/eww/settings update "$@"& # send whatever to eww

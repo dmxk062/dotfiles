@@ -1,0 +1,126 @@
+{
+    "default":[],
+    "settings": [
+        {
+            "name":"Appearance Settings",
+            "exec":"eww_settings.sh appearance"
+        },
+        {
+            "name":"Input Settings",
+            "exec":"eww_settings.sh input"
+        },
+        {
+            "name":"Display Settings",
+            "exec":"eww_settings.sh display"
+        },
+        {
+            "name":"Sound and Media Settings",
+            "exec":"eww_settings.sh audio"
+        },
+        {
+            "name":"Bluetooth Settings",
+            "exec":"eww_settings.sh bluetooth"
+        },
+        {
+            "name":"Appearance",
+            "exec":"eww_settings.sh appearance"
+        },
+        {
+            "name":"Storage Settings",
+            "exec":"eww_settings.sh storage"
+        },
+        {
+            "name":"About the System",
+            "exec":"eww_settings.sh system"
+        }
+    ],
+    "firefox":[
+        {
+            "name":"    New Window",
+            "exec":"firefox --new-window"
+        },
+        {
+            "name":"󱀣    New Private Window",
+            "exec":"firefox --private-window"
+        },
+        {
+            "name":"󰃢    New Safe Mode Window",
+            "exec":"firefox --safe-mode --new-instance"
+        },
+        {
+            "name":"󰗃    Youtube",
+            "exec":"firefox --new-window youtube.com"
+        },
+        {
+            "name":"󰙯    Discord",
+            "exec":"firefox --new-window https://discord.com/channels/@me"
+        }
+
+    ],
+    "nemo":[
+        {
+            "name":"    Root (/)",
+            "exec":"nemo /"
+        },
+        {
+            "name":"󰋩    Photos (~/Pictures/)",
+            "exec":"nemo ~/Pictures/"
+        },
+        {
+            "name":"󱂬    Floating",
+            "exec":"nemo --name='popup nemo'"
+        },
+        {
+            "name":"󰥔    Recently Used",
+            "exec":"nemo --name='popup nemo' recent:///" 
+        },
+        {
+            "name":"    Trash",
+            "exec":"nemo --name='popup nemo' trash:///" 
+        }
+    ],
+    "office":[
+        {
+            "name":"󰼭    Libreoffice Writer",
+            "exec":"libreoffice --writer"
+        },
+        {
+            "name":"󰐨    Libreoffice Impress",
+            "exec":"libreoffice --impress"
+        },
+        {
+            "name":"󰪚    Libreoffice Calc",
+            "exec":"libreoffice --calc"
+        },
+        {
+            "name":"    Libreoffice Math",
+            "exec":"libreoffice --math"
+        },
+        {
+            "name":"󰇞    Libreoffice Draw",
+            "exec":"libreoffice --draw"
+        }
+    ],
+    "steam":[
+        {
+            "name":"󰗮    Steam Library",
+            "exec":"env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json steam steam://open/games"
+        },
+        {
+            "name":"    BigPicture Mode",
+            "exec":"env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json steam steam://open/bigpicture"
+        },
+        {
+            "name":"Sid Meiers's Civilization VI",
+            "exec":"gtk-launch Civ6"
+        },
+        {
+            "name":"Sid Meier's Civilization V",
+            "exec":"gtk-launch Civ5"
+        },
+        {
+            "name":"No Man's Sky",
+            "exec":"gtk-launch nms"
+        }
+    ]
+}

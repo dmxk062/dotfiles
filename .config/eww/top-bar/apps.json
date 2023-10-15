@@ -2,7 +2,8 @@
     {
         "description":"Mozilla Firefox Web Browsr",
         "exec":"gtk-launch firefox",
-        "image":"/usr/share/icons/Tela/scalable/apps/firefox.svg"
+        "image":"/usr/share/icons/Tela/scalable/apps/firefox.svg",
+        "menu":"firefox"
     },
     {
         "description":"Mozilla Thunderbird Mail Client",
@@ -22,7 +23,8 @@
     {
         "description":"Nemo File Manager",
         "exec":"gtk-launch nemo",
-        "image":"/usr/share/icons/Tela/scalable/apps/file-manager.svg"
+        "image":"/usr/share/icons/Tela/scalable/apps/file-manager.svg",
+        "menu":"nemo"
     },
     {
         "description":"Kitty Terminal Emulator",
@@ -37,7 +39,8 @@
     {
         "description":"LibreOffice Office Suite",
         "exec":"gtk-launch libreoffice-startcenter",
-        "image":"/usr/share/icons/Tela/scalable/apps/libreoffice.svg"
+        "image":"/usr/share/icons/Tela/scalable/apps/libreoffice.svg",
+        "menu":"office"
     },
     {
         "description":"Rnote Note Taking App",
@@ -47,7 +50,8 @@
     {
         "description":"Steam Game Store",
         "exec":"gtk-launch steam",
-        "image":"/usr/share/icons/Tela/scalable/apps/steam.svg"
+        "image":"/usr/share/icons/Tela/scalable/apps/steam.svg",
+        "menu":"steam"
     },
     {
         "description":"Prismlauncher Minecraft Launcher",
@@ -58,11 +62,6 @@
         "description":"Gnome Clocks",
         "exec":"gtk-launch org.gnome.clocks",
         "image":"/usr/share/icons/Tela/scalable/apps/preferences-system-time.svg"
-    },
-    {
-        "description":"Settings for the EWW shell",
-        "exec":"gtk-launch eww_settings",
-        "image":"/usr/share/icons/Tela/scalable/apps/preferences-system.svg"
     }
 
 ]

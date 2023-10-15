@@ -20,16 +20,59 @@
 )
 
 (defvar apps "[]")
+
+(defvar icon_menu_entries '[]')
+(defvar open_icon_menu '')
 (defvar dock_reveal false)
+(defvar osk false)
+
+
+(defwidget icon_button [path exec tooltip menu]
+    (button :class "image_button" :onclick "${exec}&disown" :tooltip "${tooltip}" :onrightclick "bin/open_icon_menu.sh ${menu}& disown" :timeout "16s"
+        (image :path "${path}" :image-width 48 :image-height 48)
+    )
+)
+
+(defwindow icon_popup 
+        :stacking "fg"
+        :namespace "special"
+        :geometry (geometry :x 0
+                            :y 0
+                            :width 0
+                            :height 0
+                    )
+        :stacking "overlay"
+    (launch_option_list)
+)
+
+(defwidget launch_option_list []
+    (box :space-evenly false :halign "center" :valign "center"
+        (box :class "popup_box_padded" :orientation "v"
+            (for entry in icon_menu_entries
+(button :class "lbutton" :onclick "${entry.exec}& disown&&bin/open_icon_menu.sh"
+(label :text "${entry.name}")
+)
+            )
+        )
+    )
+)
 
 (defwidget dock []
     (box :space-evenly false :halign "center" :valign "center"
 (revealer :reveal dock_reveal :transition "slideup" :duration "0.2s"
-        (box :class "popup_box_padded"
-            (for app in apps
-                (button :class "image_button" :onclick "${app.exec}&disown" :tooltip "${app.description}"
-                    (image :path "${app.image}" :image-width 48 :image-height 48)
+        (box :space-evenly false :class "popup_box_padded"
+            (box
+                (for app in apps
+                    (icon_button :path "${app.image}" :exec "${app.exec}" :tooltip "${app.description}" :menu "${app.menu?: ""}")
                 )
+            )
+            (box :class "vert_separator")
+            (box 
+                (button :class "image_button" :onclick "../settings/bin/input.sh osk" :tooltip "WVKBD"
+                    (image :path "/usr/share/icons/Tela/scalable/devices/input-keyboard.svg" :image-width 48 :image-height 48)
+                )
+                (icon_button :exec "eww_settings.sh" :tooltip "EWW Settings" :path "/usr/share/icons/Tela/scalable/apps/preferences-system.svg" :menu "settings")
+                
             )
         )
     )
