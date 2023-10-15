@@ -1,16 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 
 noconfirm=$2
-function prompt(){
+prompt(){
     question=$1
     action=$2
-    if [[ $noconfirm == "-nc" ]]
+    if [ $noconfirm = "-nc" ]
     then
-        bash -c "$action"
+        sh -c "$action"
     else
         if zenity --question --text="$question"
         then
-            bash -c "$action"
+            sh -c "$action"
         else
             exit
         fi

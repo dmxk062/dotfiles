@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 
 eww_settings="eww -c $HOME/.config/eww/settings"
 
-function list(){
+list(){
     hyprctl -j monitors|jq 'sort_by(.x)' -c
 }
 case $1 in

@@ -1,15 +1,15 @@
-#!/bin/zsh
+#!/bin/sh
 
 eww="eww -c $HOME/.config/eww/settings"
-function set(){
+set_delay(){
     val=$1
     hyprctl keyword input:repeat_delay $val
-    eval "$eww update repeat_delay=$val"
+    $eww update repeat_delay=$val
 }
 
 case $1 in
     reset)
-        set 600;;
+        set_delay 600;;
     *)
-        set $1;;
+        set_delay $1;;
 esac

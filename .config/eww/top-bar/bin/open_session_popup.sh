@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 eww="eww -c $HOME/.config/eww/top-bar"
 

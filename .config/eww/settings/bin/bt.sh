@@ -11,7 +11,6 @@ declare -A ICONS=(
 [fallback]="/usr/share/icons/Tela/scalable/devices/bluetooth.svg"
 )
 eww_settings="eww -c $HOME/.config/eww/settings"
-eww_bar="eww -c $HOME/.config/eww/top-bar"
 
 function update(){
    $eww_settings update "$@" 

@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 eww="eww -c $XDG_CONFIG_HOME/eww/top-bar"
 
-function update(){
+update(){
     hyprctl -j clients|jq 'map({
 title:.title,
 floating:.floating,

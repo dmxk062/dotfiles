@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 eww="eww -c $HOME/.config/eww/settings"
 
-source /etc/os-release
+. /etc/os-release
 
 distro=$ID
 distro_name=$PRETTY_NAME
@@ -23,7 +23,7 @@ case $1 in
     *)
         logo="${logo_path}${distro}.svg"
 esac
-if [[ -f "$logo" ]]
+if [ -f "$logo" ]
 then
     true
 else

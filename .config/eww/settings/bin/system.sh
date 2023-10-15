@@ -3,7 +3,7 @@ eww="eww -c $HOME/.config/eww/settings"
 
 
 
-function edge(){
+edge(){
     if eww -c "$XDG_CONFIG_HOME/eww/top-bar/" close dock_edge
     then
         $eww update edge=false
@@ -14,7 +14,7 @@ function edge(){
         $eww update edge=true
     fi
 }
-function idle(){
+idle(){
     if killall swayidle 
     then
         $eww update idle=false
@@ -23,7 +23,7 @@ function idle(){
         $eww update idle=true
     fi
 }
-function clock(){
+clock(){
     if killall gnome-clocks
     then
         $eww update clocks=false
