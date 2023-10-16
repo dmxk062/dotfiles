@@ -63,8 +63,8 @@
 App: ${win.class ?: "No Class"}
 Running under: ${win.legacy ? "XWayland" : "Native Wayland"}
 Address: ${win.address}
-Process: ${win.pid}
-In Workspace: ${win.workspace.name}
+Process: ${win.pid?: "No Program"}
+In Workspace: ${win.workspace.name?: win.workspace.id}
 Size: ${win.size[0]}x${win.size[1]}px
 Position: ${win.position[0]}x${win.position[1]}"
                                 (box :space-evenly false :hexpand true

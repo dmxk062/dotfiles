@@ -7,7 +7,7 @@ do
     then
         echo '{"player":null,"active":false,"title":null}'
     else
-        echo "$line"|sed -e 's/&quot;/\\"/g' -e 's/playing/true/' -e 's/paused/false/' -e 's/stopped/false/' -e "s/&apos;/\\'/g"
+        echo "$line"|sed -e 's/&quot;/\\"/g' -e 's/playing/true/' -e 's/paused/false/' -e 's/stopped/false/' -e "s/&apos;/\\'/g" -e "s/\&amp;/\&/g"
     fi
 done
 }
