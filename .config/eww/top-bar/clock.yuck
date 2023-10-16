@@ -39,9 +39,14 @@
                     (label :class "text-large" :text "Wind: ${round(weather.wind.speed / 3.6,1)}km/h")
                 )
             )
-            (box :space-evenly false :class "popup_footer"
-                (button :class "button" :onclick "bin/weather.sh upd ${city}" "${weather_load ? "" : "󰑓"}")
-                (button :class "button":onclick "bin/weather.sh change& disown ${city}" :timeout "128s" "󱅙    ${city}")
+            (box :space-evenly false :class "popup_footer" :orientation "v"
+                (box :space-evenly false
+                    (button :class "button" :onclick "bin/weather.sh upd ${city}" "${weather_load ? "" : "󰑓"}")
+                    (button :class "button":onclick "bin/weather.sh change& disown ${city}" :timeout "128s" "󱅙    ${city}")
+                    (button :class "button":onclick "gtk-launch org.gnome.clocks" :timeout "128s" "󰥔    Clocks")
+                    (label :class "button" :text "${formattime(EWW_TIME,"%d.%m.%Y")}")
+                )
+                (label :class "button" :text "${formattime(EWW_TIME,"%T")}")
             )
         )
     )
