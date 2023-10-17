@@ -1,51 +1,22 @@
-(defvar audio_state '{}')
-(defvar active_sinks '{}')
-(defvar active_sources '{}')
-
-(defvar show_out_slider false)
-(defvar show_in_slider false)
-
-
-
 (include "clock.yuck")
+(include "audio.yuck")
 (include "performance.yuck")
 (include "session.yuck")
 
-
-
-
-
-
-
-(defwidget quick_info []
-(box :space-evenly false :class "infobox"
-
-(button :timeout "16s" :class "sbutton${audio_state.sink.mute ? "-off" : ""}" :onclick "pamixer -t &&../settings/bin/audio_state.sh"  "${audio_state.sink.mute ? active_sinks.icon.muted : active_sinks.icon.unmuted}  ${audio_state.sink.vol}%")
-
-(button   :timeout "16s" :class "sbutton${audio_state.source.mute ? "-off" : ""}" :onclick "pamixer -t --default-source&&../settings/bin/audio_state.sh" "${audio_state.source.mute ? active_sources.icon.muted : active_sources.icon.unmuted}  ${audio_state.source.vol}%")
-)
-)
-
-
-(defvar sidebar false)
-
-
-
-
-
-
-
 (defwidget tray []
-(box :class "traybox" 
-(systray :pack_direction "ltr")))
-(defwidget right [] 
-(box :space-evenly false :halign "end"
-(box :space-evenly false :class "rightbox"
-(tray)
-(performance_button)
-(clock)
-(quick_info)
-(session_button)
-;; (system_button)
+    (box :class "traybox" 
+        (systray :pack_direction "ltr")
+    )
+)
 
-)))
+(defwidget right [] 
+    (box :space-evenly false :halign "end"
+        (box :space-evenly false :class "rightbox"
+            (tray)
+            (performance_button)
+            (clock)
+            ;; (audio_buttons)
+            (session_button)
+        )
+    )
+)

@@ -2,7 +2,7 @@
 (defvar launcher_open false)
 (defwidget window []
         (box :space-evenly false  
-            (button :class "winicon" :onclick "bin/open_window_popup.sh menu" (label :text "${window[0].icon ?: ""}"))
+            (button :class "winicon" :onclick "${EWW_CMD} open window_controls --toggle" (label :text "${window[0].icon ?: ""}"))
             (button :class "winlabel":onclick "bin/open_window_list.sh" :onmiddleclick "hyprctl dispatch killactive" (label :text "${window[0].legacy ? "(X11) " : ""}${window[0].title ?: "No Window Selected"}" :limit-width 40  ))
         )
         )

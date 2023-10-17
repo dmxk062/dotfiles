@@ -4,7 +4,7 @@
 (defpoll net :interval "4s" "bin/netspeed.sh")
 
 (defwidget performance_button []
-    (button :class "sbutton" :onclick "bin/open_performance_popup.sh" 
+    (button :class "sbutton" :onclick "${EWW_CMD} open performance_popup --toggle" 
         (label :text "${mem.mem.nice.used} / ${mem.mem.nice.total}")
     )
 )
