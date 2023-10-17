@@ -1,5 +1,4 @@
 (include "notifs.yuck")
-(include "../style/common.yuck")
 
 (defwidget clock []
     (box :space-evenly false :class "notifbox"
@@ -30,7 +29,7 @@
     (box :space-evenly false :halign "center" :valign "center"
         (box :space-evenly false :orientation "v" :class "popup_box"
             (box :space-evenly false :class "padding_box" :halign "center" :valign "center"
-                (image :path "${weather.icon_path?:'/usr/share/icons/Tela/scalable/apps/apport.svg'}" :image-width 128 :image-height 128)
+                (icon_large :name "${weather.icon_path?:'scalable/apps/apport.svg'}")
                 (separator)
                 (box :space-evenly false :orientation "v" :visible "${weather != '[]'}" :valign "center"
                     (label :class "text-large" :text "${weather.main.temp}°C in ${weather.name}")

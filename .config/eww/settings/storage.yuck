@@ -30,7 +30,7 @@
                 (box :vexpand true :orientation "v" :halign "start"  :space-evenly false :class "sidebar_extension"
                     (box  :space-evenly false :orientation "v" :halign "center" :vexpand true
                         (box :space-evenly false :orientation "v" :vexpand true
-                            (image :path "${disk.icon_g}" :image-width 128 :image-height 128)
+                            (image :path "${icon_theme}/${disk.icon_g}" :image-width 128 :image-height 128)
                             (button :class "button" :timeout "16s" :onclick "bin/disks.sh eject ${disk.path}&&bin/disks.sh upd"  :visible "${disk.hotplug}" "󰇪    Eject")
                             (label :class "text-large" :text "Model: ${disk.device.model?: "No Information"}")
                             (label :class "text-large" :text "Made By: ${disk.device.vendor?: "No Information"}")

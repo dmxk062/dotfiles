@@ -36,7 +36,7 @@
                             (box :space-evenly false :orientation "v" :class "card" 
                                 (box :class "padding_box" :space-evenly false :orientation "v"
                                     (label :text "${dev.name}" :class "card-label" :limit-width 12 :tooltip "${dev.name}")
-                                    (image :path "${dev.icon}" :image-width 64 :image-height 64)
+                                    (icon :name "${dev.icon}")
                                 )
                                 (box :class "card_footer"
                                     (button :class "button" :timeout "256s" :onclick "bin/suspend.sh 'blueman-sendto -d ${dev.mac}'& disown" :tooltip "Send a File to the device. Only works with phones and other devices capable of accepting them." "    Send")
@@ -54,7 +54,7 @@
                     (box :space-evenly false :orientation "v" :class "card" :halign "center" :hexpand true
                         (box :class "padding_box" :space-evenly false :orientation "v"
                             (label :text "${dev.name}" :limit-width 16 :tooltip "${dev.name}" :class "card-label")
-                            (image :path "${dev.icon}" :image-width 64 :image-height 64)
+                            (icon :name "${dev.icon}")
                         )
                         (box :space-evenly false
                             (box :orientation "v" :class "card_footer"

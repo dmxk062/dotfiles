@@ -57,7 +57,7 @@
                                     )
                                 )
                                 (eventbox :visible "${notif.icon != ""}" :onclick "xdg-open ${notif.icon}"
-                                (image :path "${notif.icon?:"/usr/share/icons/Tela/scalable/apps/preferences-desktop-notification.svg"}" :image-width 240 :image-height 135)
+                                (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width 240 :image-height 135)
                                 )
                             )
                             (box :space-evenly false

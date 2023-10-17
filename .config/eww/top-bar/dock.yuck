@@ -29,7 +29,7 @@
 
 (defwidget icon_button [path exec tooltip menu]
     (button :class "image_button" :onclick "${exec}&disown" :tooltip "${tooltip}" :onrightclick "bin/open_icon_menu.sh ${menu}& disown" :timeout "16s"
-        (image :path "${path}" :image-width 48 :image-height 48)
+        (image :path "${icon_theme}/${path}" :image-width 48 :image-height 48)
     )
 )
 
@@ -69,12 +69,12 @@
                     (icon_button :path "${app.image}" :exec "${app.exec}" :tooltip "${app.description}" :menu "${app.menu?: ""}")
                 )
             )
-            (box :class "vert_separator")
+            (separator)
             (box 
                 (button :class "image_button" :onclick "../settings/bin/input.sh osk" :tooltip "WVKBD"
-                    (image :path "/usr/share/icons/Tela/scalable/devices/input-keyboard.svg" :image-width 48 :image-height 48)
+                    (image :path "${icon_theme}/scalable/devices/input-keyboard.svg" :image-width 48 :image-height 48)
                 )
-                (icon_button :exec "eww_settings.sh" :tooltip "EWW Settings" :path "/usr/share/icons/Tela/scalable/apps/preferences-system.svg" :menu "settings")
+                (icon_button :exec "eww_settings.sh" :tooltip "EWW Settings" :path "scalable/apps/preferences-system.svg" :menu "settings")
                 
             )
         )

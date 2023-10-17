@@ -67,7 +67,7 @@
             (box :space-evenly false :halign "center" :orientation "v" :valign "center"
                 (box :space-evenly false :orientation "v" :class "card" 
                     (box :class "padding_box"
-                        (image :path "${system.logo.distro}" :image-width 256 :image-height 256)
+                        (image :path "${icon_theme}/${system.logo.distro}" :image-width 256 :image-height 256)
                     )
                     (box :orientation "v" :halign "start" :space-evenly false :class "card_footer" 
                     (box :halign "start")

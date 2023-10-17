@@ -58,7 +58,7 @@
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :text "${sink.name}" :limit-width 20 :class "card-label" :tooltip "${sink.name}")
                                     (box :class "sliderbox" :space-evenly false
-                                        (image :path "${sink.icon_g}" :image-width 64 :image-height 64 :class "icon")
+                                        (image :path "${icon_theme}/${sink.icon_g}" :image-width 64 :image-height 64 :class "icon")
                                         (scale :class "slider" :value "${sink.volume}" :timeout "16s" :onchange "pactl set-sink-volume ${sink.id} {}%&&bin/audio_state.sh")
                                     )
                                 )
@@ -86,7 +86,7 @@
                                 (box :class "padding_box" :space-evenly false :orientation "v"
                                     (label :text "${source.name}" :limit-width 20  :class "card-label" :tooltip "${source.name}")
                                     (box :class "sliderbox" :space-evenly false
-                                        (image :path "${source.icon_g}" :image-width 64 :image-height 64 :class "icon")
+                                        (icon :name "${source.icon_g}" :class "icon")
                                         (scale :class "slider" :value "${source.volume}" :timeout "16s" :onchange "pactl set-source-volume ${source.id} {}%&&bin/audio_state.sh")
                                     )
                                 )

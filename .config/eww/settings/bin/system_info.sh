@@ -14,7 +14,7 @@ processor_model="$(< /proc/cpuinfo awk -F: '/^model name[[:space:]]+/ {print $2;
 mem_total=$(awk '/MemTotal/ {print $2}' /proc/meminfo|numfmt --to=iec --from-unit=1024)
 windowing_system=$XDG_SESSION_TYPE
 window_manager=$XDG_CURRENT_DESKTOP
-logo_path="/usr/share/icons/Tela/scalable/apps/distributor-logo-"
+logo_path="scalable/apps/distributor-logo-"
 boottime="$(awk '/btime/ {print $2}' /proc/stat)"
 get_logo(){
 case $1 in
@@ -23,7 +23,7 @@ case $1 in
     *)
         logo="${logo_path}${distro}.svg"
 esac
-if [ -f "$logo" ]
+if [ -f "/usr/share/icons/Tela/$logo" ]
 then
     true
 else
@@ -35,9 +35,9 @@ fi
 get_logo $distro
 case $windowing_system in
     wayland)
-        windowing_system_logo="/usr/share/icons/Tela/scalable/apps/wayland.svg";;
+        windowing_system_logo="scalable/apps/wayland.svg";;
     x11)
-        windowing_system_logo="/usr/share/icons/Tela/scalable/apps/xorg.svg";;
+        windowing_system_logo="scalable/apps/xorg.svg";;
 esac
 formatted=$(printf '{"distro":"%s","arch":"%s","cpu_vendor":"%s","cpu_model":"%s","kernel":"%s","kernel_ver":"%s","ram":"%s","windowing_system":"%s","desktop":"%s", "logo":{"distro":"%s", "windowing_system":"%s"}, "boottime":%s}' "$distro_name" "$architecture" \
     "$processor_vendor" "$processor_model" "$kernel_name" "$kernel_ver" "$mem_total" "$windowing_system" "$window_manager" "$logo" "$windowing_system_logo" "$boottime")  

@@ -57,7 +57,7 @@ get_formatted(){
     response=$(curl -sf "http://api.openweathermap.org/data/2.5/weather?appid=${KEY}&q=${city}&units=metric")
     code=$(jq '.weather.[]|.id' <<< "$response")
     icon_name=$(get_icon $code)
-    echo "$response"|jq -Mc --arg icon "/usr/share/icons/Tela/32/status/weather-$icon_name$(get_daytime).svg" '. + {"icon_path": $icon}'
+    echo "$response"|jq -Mc --arg icon "32/status/weather-$icon_name$(get_daytime).svg" '. + {"icon_path": $icon}'
 }
 
 case $1 in

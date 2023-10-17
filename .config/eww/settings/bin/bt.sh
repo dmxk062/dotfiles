@@ -1,14 +1,14 @@
 #!/bin/bash
 
 declare -A ICONS=(
-[audio-headset]="/usr/share/icons/Tela/scalable/devices/audio-headphones.svg"
-[phone]="/usr/share/icons/Tela/scalable/devices/phone.svg"
-[audio-card]="/usr/share/icons/Tela/scalable/devices/audio-speakers.svg"
-[computer]="/usr/share/icons/Tela/scalable/devices/computer.svg"
-[input-gaming]="/usr/share/icons/Tela/scalable/devices/input-gaming.svg"
-[input-keyboard]="/usr/share/icons/Tela/scalable/devices/input-keyboard.svg"
-[input-mouse]="/usr/share/icons/Tela/scalable/devices/input-mouse.svg"
-[fallback]="/usr/share/icons/Tela/scalable/devices/bluetooth.svg"
+[audio-headset]="scalable/devices/audio-headphones.svg"
+[phone]="scalable/devices/phone.svg"
+[audio-card]="scalable/devices/audio-speakers.svg"
+[computer]="scalable/devices/computer.svg"
+[input-gaming]="scalable/devices/input-gaming.svg"
+[input-keyboard]="scalable/devices/input-keyboard.svg"
+[input-mouse]="scalable/devices/input-mouse.svg"
+[fallback]="scalable/devices/bluetooth.svg"
 )
 eww_settings="eww -c $HOME/.config/eww/settings"
 

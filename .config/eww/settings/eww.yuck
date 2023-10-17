@@ -11,7 +11,8 @@
 (include "wifi.yuck")
 (include "display.yuck")
 (include "storage.yuck")
-(include "../style/common.yuck")
+(include "../common/widgets.yuck")
+(include "../common/variables.yuck")
 
 
 (defwindow settings 
