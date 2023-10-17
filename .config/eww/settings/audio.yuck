@@ -51,14 +51,14 @@
                 )
             )
             (box :visible "${audio_section == 0}" :space-evenly false :halign "center"
-                (scroll :vscroll true :height 460 :width 400
+                (scroll :vscroll true :class "scroll-huge"
                     (box :orientation "v" :space-evenly false
                         (for sink in sinks
                             (box :space-evenly false :orientation "v" :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :text "${sink.name}" :limit-width 20 :class "card-label" :tooltip "${sink.name}")
                                     (box :class "sliderbox" :space-evenly false
-                                        (image :path "${icon_theme}/${sink.icon_g}" :image-width 64 :image-height 64 :class "icon")
+                                        (icon :name "${sink.icon_g}" :class "icon")
                                         (scale :class "slider" :value "${sink.volume}" :timeout "16s" :onchange "pactl set-sink-volume ${sink.id} {}%&&bin/audio_state.sh")
                                     )
                                 )
@@ -79,7 +79,7 @@
                 )
             )
             (box :visible "${audio_section == 1}" :space-evenly false :halign "center"
-                (scroll :vscroll true :height 460 :width 400
+                (scroll :vscroll true :class "scroll-huge"
                     (box :orientation "v" :space-evenly false 
                         (for source in sources
                             (box :space-evenly false :orientation "v" :class "card"
@@ -108,7 +108,7 @@
             )
         
             (box :visible "${audio_section == 2}" :space-evenly false :halign "center"
-                (scroll :vscroll true :height 460 :width 430
+                (scroll :vscroll true :class "scroll-huge"
                     (box :orientation "v" :space-evenly false
                         (for stream in streams
                             (box :class "card" :space-evenly false :orientation "v"
