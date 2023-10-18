@@ -32,8 +32,8 @@
                 (icon_large :name "${weather.icon_path?:'scalable/apps/apport.svg'}")
                 (separator)
                 (box :space-evenly false :orientation "v" :visible "${weather != '[]'}" :valign "center"
-                    (label :class "text-large" :text "${weather.main.temp}°C in ${weather.name}")
-                    (label :class "text-large" :text "Feels like ${weather.main.feels_like}°C")
+                    (label :class "text-large" :text "${round(weather.main.temp,1)}°C in ${weather.name}")
+                    (label :class "text-large" :text "Feels like ${round(weather.main.feels_like,1)}°C")
                     (label :class "text-large" :text "Humidity: ${weather.main.humidity}%")
                     (label :class "text-large" :text "Wind: ${round(weather.wind.speed / 3.6,1)}km/h")
                 )

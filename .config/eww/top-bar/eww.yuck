@@ -1,5 +1,6 @@
 (include "../common/widgets.yuck")
 (include "../common/variables.yuck")
+
 (defwindow bar 
         :monitor 0
         :geometry (geometry :x "0px"
