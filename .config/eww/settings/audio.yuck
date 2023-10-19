@@ -51,7 +51,7 @@
                 )
             )
             (box :visible "${audio_section == 0}" :space-evenly false :halign "center"
-                (scroll :vscroll true :class "scroll-huge"
+                (scroll :vscroll true :class "scroll-huge-wider"
                     (box :orientation "v" :space-evenly false
                         (for sink in sinks
                             (box :space-evenly false :orientation "v" :class "card"
@@ -79,7 +79,7 @@
                 )
             )
             (box :visible "${audio_section == 1}" :space-evenly false :halign "center"
-                (scroll :vscroll true :class "scroll-huge"
+                (scroll :vscroll true :class "scroll-huge-wider"
                     (box :orientation "v" :space-evenly false 
                         (for source in sources
                             (box :space-evenly false :orientation "v" :class "card"
@@ -108,7 +108,7 @@
             )
         
             (box :visible "${audio_section == 2}" :space-evenly false :halign "center"
-                (scroll :vscroll true :class "scroll-huge"
+                (scroll :vscroll true :class "scroll-huge-wider" :hexpand true
                     (box :orientation "v" :space-evenly false
                         (for stream in streams
                             (box :class "card" :space-evenly false :orientation "v"
@@ -118,7 +118,7 @@
                                         (scale :class "slider-large" :value "${stream.volume}" :min 0 :max 101 :timeout "16s" :onchange "pactl set-sink-input-volume ${stream.id} {}%&&bin/mixer.sh&disown")
                                     )
                                 )
-                                (box :space-evenly false :class "card_footer"
+                                (box :space-evenly false :class "card_footer" :halign "center"
                                     (button :timeout "16s" :class "button${stream.mute ? "" : "-active"}":onclick "pactl set-sink-input-mute ${stream.id} toggle&&bin/mixer.sh" "${stream.mute ? "󰝟    Muted" : "󰖀    Unmuted"}")
                                     (button :timeout "16s" :class "button" :onclick "pactl set-sink-input-volume ${stream.id} 50%&&bin/mixer.sh" "50%")
                                     (button :timeout "16s" :class "button" :onclick "pactl set-sink-input-volume ${stream.id} 100%&&bin/mixer.sh" "100%")
