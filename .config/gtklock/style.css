@@ -6,13 +6,13 @@ window {
   font-family: "Torus Pro", "Torus";
   font-weight: 500;
   font-size: 16px;
-  color: #2e3440; }
+  color: #eceff4; }
 
 #window-box {
   padding: 3rem;
   border-radius: 2.2rem;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 12px;
-  background-color: #eceff4; }
+  background-color: #2e3440; }
 
 #error-label {
   background-color: inherit;
@@ -21,19 +21,17 @@ window {
 #input-field {
   padding: .2rem .6rem .2rem .6rem;
   border-radius: .6rem;
-  border: 2px solid #bcc3d0;
-  background-color: #d8dee9;
-  color: #2e3440;
-  caret-color: #2e3440; }
+  background-color: #3b4252;
+  color: #eceff4;
+  border: unset;
+  caret-color: #eceff4; }
   #input-field label {
-    color: #2e3440; }
-  #input-field:focused {
-    border: 2px solid #9dbec1; }
+    color: #eceff4; }
   #input-field selection {
     color: #2e3440;
     background-color: #8fbcbb; }
   #input-field image {
-    color: #2e3440; }
+    color: #eceff4; }
 
 #unlock-button {
   background-color: #8fbcbb;
@@ -41,11 +39,11 @@ window {
   border-radius: .6rem;
   transition: background-color 0.3s ease, color 0.3s ease; }
   #unlock-button:hover {
-    background-color: #9dbec1; }
+    background-color: #7b9da3; }
 
 #clock-label {
-  background-color: #eceff4;
-  color: #2e3440;
+  background-color: #2e3440;
+  color: #eceff4;
   font-size: 6rem;
   font-weight: 800; }
 
@@ -57,25 +55,25 @@ window {
 #poweroff-button {
   background-color: #bf616a; }
   #poweroff-button:hover {
-    background-color: #be7e89; }
+    background-color: #9d5e6a; }
 
 #logout-button {
   background-color: #d08770; }
   #logout-button:hover {
-    background-color: #ca998d; }
+    background-color: #a8786e; }
 
 #reboot-button {
   background-color: #ebcb8b; }
   #reboot-button:hover {
-    background-color: #ddc9a0; }
+    background-color: #bba881; }
 
 #suspend-button {
   background-color: #a3be8c; }
   #suspend-button:hover {
-    background-color: #abc0a0; }
+    background-color: #899f82; }
 
 #powerbar-box {
-  background-color: #eceff4;
+  background-color: #2e3440;
   padding: 1.5rem;
   margin: 8rem;
   border-radius: 2rem;

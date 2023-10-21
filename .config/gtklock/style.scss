@@ -26,14 +26,14 @@ window {
 #input-field{
     padding: .2rem .6rem .2rem .6rem;
     border-radius: .6rem;
-    border: 2px solid $bg3;
     background-color: $bg1;
     color: $fg;
+    border: unset;
     label{
         color: $fg;
     }
     &:focused{
-        border: 2px solid fade($accent);
+        // border: 2px solid fade($accent);
     }
     caret-color: $fg;
     selection{
