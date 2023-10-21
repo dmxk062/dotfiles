@@ -37,7 +37,7 @@
                     (list_box
                         (box 
                         (button :class "button${nightlight ? "-active" : ""}" :onclick "bin/settings.sh nightlight" :timeout "16s" "    Nightlight")
-                        (button :class "button${colorscheme == "light" ? "-active" : ""}" :onclick "bin/colorscheme.sh" :timeout "128s" "${colorscheme == "light" ? "󰖨    Light theme" : "󰖔    Dark theme"}")
+                        (button :class "button" :onclick "bin/colorscheme.sh" :timeout "128s" "${colorscheme == "light" ? "󰖨    Light theme" : "󰖔    Dark theme"}")
                         )
                         (wrapped_text :text "Reduce the blue light content of the screen")
                     )
