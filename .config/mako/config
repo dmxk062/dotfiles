@@ -1,7 +1,8 @@
+# ft=ini
+
 background-color=#2E3440
 icon-path="/usr/share/icons/Tela-dark/"
 font=Torus Pro, sans-serif 14
-text-color=#ECEFF4FF
 width=300
 height=200
 border-size=2
@@ -16,49 +17,24 @@ on-button-right=invoke-default-action
 on-button-middle=exec makoctl menu -n "$id" rofi -dmenu -n -p Action:
 on-notify=exec paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
 
-border-color=#4c566a
 default-timeout=30000
-background-color=#434c5e
+# background-color=#2e3440
+background-color=#ECEFF4
+# text-color=#ECEFF4FF
+text-color=#2e3440
+# border-color=#4c566a
+border-color=#687183
 
 [urgency=critical]
-border-color=#bf616a
+# border-color=#9c5e6a
+border-color=#c5808a
 
 [category=screenshot]
 width=532
 height=600
 format=%s
 max-icon-size=512
-anchor=top-center
 icon-location=bottom
-
-[category=udiskmon]
-width=400
-height=200
-anchor=top-center
-border-color=#5281ac
-
-[category=udiskmon_success]
-anchor=top-center
-history=0
-border-color=#a3be8c
-default-timeout=3000
-
-[category=udiskmon_fail]
-anchor=top-center
-history=0
-default-timeout=3000
-border-color=#bf616a
-
-[category=wifi]
-history=0
-border-color=#5e81ac
-default-timeout=3000
-
-
-[category=wifi-error]
-history=0
-border-color=#bf616a
-default-timeout=3000
 
 # used to hide the popups
 [mode=eww_override]
