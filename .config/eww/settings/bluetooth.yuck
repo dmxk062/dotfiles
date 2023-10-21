@@ -29,7 +29,7 @@
             )
             )
             ;; (label :class "title" :text "${arraylength(bt_connected)} connected device${arraylength(bt_connected) == 1 ? "" : "s"}")
-            (scroll :vscroll true :class "scroll-small"
+            (scroll :vscroll true :class "scroll-short"
                 (box :space-evenly false :halign "center"
                     (box :orientation "v" :space-evenly false
                         (for dev in bt_connected
@@ -48,7 +48,7 @@
                 )
             )
         )
-        (scroll :vscroll true :class "scroll-narrow"
+        (scroll :vscroll true :class "scroll-narrow" :visible "${bt_status.power}"
             (box :orientation "v"
                 (for dev in bt_devices
                     (box :space-evenly false :orientation "v" :class "card" :halign "center" :hexpand true
@@ -72,6 +72,13 @@
                 )   
             )
         )
+        (box :visible "${!bt_status.power}" :hexpand true :vexpand true :class "padding_box" :orientation "v" :space-evenly false :valign "center"
+            (box :class "padding_box"
+                (icon_background :name "32/status/dialog-error.svg")
+            )
+            (label :class "heading" :text "Bluetooth is either turned off or not available")
+        )
+
     )
 )
 

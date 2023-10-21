@@ -89,5 +89,12 @@
                 )
             )
         )
+        (box :visible "${!wlan_power}" :hexpand true :vexpand true :class "padding_box" :orientation "v" :space-evenly false :valign "center"
+        (box :class "padding_box"
+            (icon_background :name "32/status/dialog-error.svg")
+        )
+        (label :class "heading" :text "WIFI is either turned off or not available")
+
+        )
     )
 )
