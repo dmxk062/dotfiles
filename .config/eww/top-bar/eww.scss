@@ -154,7 +154,7 @@ arrow.right, arrow.left {
 }
 .mpris-button-playing{
     animation: mprisWave 2s linear infinite;
-    background: linear-gradient(to left, $accent, $bg3);
+    background: linear-gradient(to left, $accent, $bg2);
     background-size: 200% 100%;
     &:hover{
         background: linear-gradient(to left, fade($accent), $bg3);
@@ -281,6 +281,7 @@ arrow.right, arrow.left {
     transition: background-color 0.3s ease, color 0.3s ease;
     border-radius: $rounding-small;
     background-color: $bg2;
+    color: $fg;
     margin: .5rem;
     padding: .3rem .8rem .3rem .7rem;
     &:hover{
