@@ -19,14 +19,11 @@
 	nord14: #a3be8c;
 	nord15: #b48ead;
 
-    foreground:  @nord15;
-    foreground-color:  @nord15;
-    backlight:   #ccffeedd;
-    background-color:  transparent;
-    special: @nord7;
-    border-color: @special;
+    fg0: @nord4;
+    fg1: @nord5;
+    fg2: @nord6;
+    accent: @nord7;
 
-    transparent: rgba(46,52,64,1);
 }
 
 window {
@@ -38,10 +35,12 @@ window {
     border-color: @special;
     border-radius: 24px;
 
-    background-color: #2e3440aa;
+    background-color: @background;
     spacing: 0;
     children:  [mainbox];
     orientation: horizontal;
+    border: 2px;
+    border-color: @nord3;
 }
 
 
@@ -53,7 +52,7 @@ message {
 
 }
 textbox {
-    text-color: #eceff4;
+    text-color: @foreground;
 }
 
 inputbar {

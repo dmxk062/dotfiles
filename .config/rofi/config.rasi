@@ -24,7 +24,7 @@ configuration {
     display-emoji: "Emoji";
     show-icons:     true;
 }
-@theme "~/.config/rofi/nord.rasi"
+@theme "~/.config/rofi/theme.rasi"
 
 
 

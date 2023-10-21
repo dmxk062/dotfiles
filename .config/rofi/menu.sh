@@ -244,17 +244,17 @@ Exit"
     chosen=$(display_menu "$opts_power")
     case $chosen in
         "$off")
-            ~/.config/eww/hud/bin/shutdown.sh off;;
+            ~/.config/eww/top-bar/bin/shutdown.sh off;;
         "$reboot")
-            ~/.config/eww/hud/bin/shutdown.sh reboot;;
+            ~/.config/eww/top-bar/bin/shutdown.sh reboot;;
         "$lock")
-            ~/.config/eww/hud/bin/shutdown.sh lock true;;
+            ~/.config/eww/top-bar/bin/shutdown.sh lock -nc;;
         "$suspend")
-            ~/.config/eww/hud/bin/shutdown.sh suspend true;;
+            ~/.config/eww/top-bar/bin/shutdown.sh suspend -nc;;
         "$logout")
-            ~/.config/eww/hud/bin/shutdown.sh logout;;
+            ~/.config/eww/top-bar/bin/shutdown.sh logout;;
         "$uefi")
-            ~/.config/eww/hud/bin/shutdown.sh uefi;;
+            ~/.config/eww/top-bar/bin/shutdown.sh uefi;;
         Back)
             main_menu;;
         Exit)
