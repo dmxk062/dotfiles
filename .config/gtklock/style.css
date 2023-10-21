@@ -1,67 +1,79 @@
 window {
-	background-image: url("/home/dmx/.config/background/lock");
-    background-size:cover
-}
-* {
-    font-family: "Torus Pro", sans-serif;     
-    font-weight: 500;
-}
-#window-box {
-	padding: 24px;
-	/* border: 4px #8fbcbb; */
-	border-radius: 32px;
-	box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 12px;
-	background-color: #2e3440;
-    /* border: 3px solid #4c566a; */
-}
-#input-field {
-    padding: 0px 8px 0px 8px;
-    border: 4px #8fbcbb;
-    border-radius: 6px;
-    background-color: #2e3440;
-    color:#eceff4
-}
-#unlock-button {
-    background-color: #8fbcbb;
-    color: #2e3440;
-    border-radius: 6px;
-}
-#error-label {
-    color: #bf616a;
-    background-color: inherit;
-    border-radius:6px;
-    padding: 4px 4px 4px 4px
-}
-#clock-label {
-    background-color: #2e3440;
-    color: #eceff4;
-    padding: 0
+  background-image: url("/home/dmx/.config/background/lock");
+  background-size: cover; }
 
-}
-#poweroff-button{
-    background-color: #bf616a;
+* {
+  font-family: "Torus Pro", "Torus";
+  font-weight: 500;
+  font-size: 16px;
+  color: #2e3440; }
+
+#window-box {
+  padding: 3rem;
+  border-radius: 2.2rem;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 12px;
+  background-color: #eceff4; }
+
+#error-label {
+  background-color: inherit;
+  color: #bf616a; }
+
+#input-field {
+  padding: .2rem .6rem .2rem .6rem;
+  border-radius: .6rem;
+  border: 2px solid #bcc3d0;
+  background-color: #d8dee9;
+  color: #2e3440;
+  caret-color: #2e3440; }
+  #input-field label {
+    color: #2e3440; }
+  #input-field:focused {
+    border: 2px solid #9dbec1; }
+  #input-field selection {
     color: #2e3440;
-    border-radius: 8px;
-}
-#logout-button{
-    background-color: #d08770;
-    color: #2e3440;
-    border-radius: 8px;
-}
-#reboot-button{
-    background-color: #ebcb8b;
-    color: #2e3440;
-    border-radius: 8px;
-}
-#suspend-button{
-    background-color: #a3be8c;
-    color: #2e3440;
-    border-radius: 8px;
-}
-#powerbar-box{
-    background-color: #2e3440;
-    padding: 16px;
-    margin-bottom: 40px;
-    border-radius: 24px;
-    border: 3px solid #4c566a;
-}
+    background-color: #8fbcbb; }
+  #input-field image {
+    color: #2e3440; }
+
+#unlock-button {
+  background-color: #8fbcbb;
+  color: #2e3440;
+  border-radius: .6rem; }
+
+#clock-label {
+  background-color: #eceff4;
+  color: #2e3440;
+  font-size: 6rem;
+  font-weight: 800; }
+
+#poweroff-button, #logout-button, #reboot-button, #suspend-button {
+  border-radius: .6rem;
+  color: #2e3440;
+  transition: background-color 0.3s ease, color 0.3s ease; }
+
+#poweroff-button {
+  background-color: #bf616a; }
+  #poweroff-button:hover {
+    background-color: #be7e89; }
+
+#logout-button {
+  background-color: #d08770; }
+  #logout-button:hover {
+    background-color: #ca998d; }
+
+#reboot-button {
+  background-color: #ebcb8b; }
+  #reboot-button:hover {
+    background-color: #ddc9a0; }
+
+#suspend-button {
+  background-color: #a3be8c; }
+  #suspend-button:hover {
+    background-color: #abc0a0; }
+
+#powerbar-box {
+  background-color: #eceff4;
+  padding: 1.5rem;
+  margin: 8rem;
+  border-radius: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 12px; }
