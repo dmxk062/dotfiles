@@ -29,7 +29,9 @@
     (box :space-evenly false :halign "center" :valign "center"
         (box :space-evenly false :orientation "v" :class "popup_box"
             (box :space-evenly false :class "padding_box" :halign "center" :valign "center"
+                (box :halign "center" :class "padding_box"
                 (icon_large :name "${weather.icon_path?:'scalable/apps/apport.svg'}")
+                )
                 (separator)
                 (box :space-evenly false :orientation "v" :visible "${weather != '[]'}" :valign "center"
                     (label :class "text-large" :text "${round(weather.main.temp,1)}°C in ${weather.name}")
