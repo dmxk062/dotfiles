@@ -49,6 +49,10 @@ window {
     background-color: $accent;
     color: $inverted;
     border-radius: .6rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    &:hover{
+        background-color: fade($accent)
+    }
 }
 #clock-label{
     background-color: $bg;

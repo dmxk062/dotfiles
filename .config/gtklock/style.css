@@ -38,7 +38,10 @@ window {
 #unlock-button {
   background-color: #8fbcbb;
   color: #2e3440;
-  border-radius: .6rem; }
+  border-radius: .6rem;
+  transition: background-color 0.3s ease, color 0.3s ease; }
+  #unlock-button:hover {
+    background-color: #9dbec1; }
 
 #clock-label {
   background-color: #eceff4;
