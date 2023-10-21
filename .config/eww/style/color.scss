@@ -31,34 +31,11 @@ $green:     #a3be8c;
 // custom preferences
 
 // comment out the theme you dont want to use
-
-// dark
-$bg: $polar0;
-$bg0: $polar0;
-$bg1: $polar1;
-$bg2: $polar2;
-$bg3: $polar3;
-
-$fg: $snow0;
-$fg0: $snow2;
-$fg1: $snow1;
-$fg2: $snow2;
-$inverted: $polar0;
+// @import "./dark.scss";
+@import "./light.scss";
 
 
 
-// light
-$bg: $snow0;
-$bg0: $snow0;
-$bg1: $snow2;
-$bg2: mix($snow2, $polar3, 90);
-$bg3: mix($snow2, $polar3, 80);
-
-$fg: $polar0;
-$fg0: $polar0;
-$fg1: $polar1;
-$fg2: $polar2;
-$inverted: $polar0;
 
 
 
