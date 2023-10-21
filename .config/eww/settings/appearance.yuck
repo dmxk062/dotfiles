@@ -20,6 +20,7 @@
 (defvar blur_brightness 100)
 (defvar blur_contrast 80)
 (defvar blur_noise 1.17)
+(defvar colorscheme "dark")
 
 
 (defwidget appearance_section []
@@ -34,7 +35,10 @@
                         
                     )
                     (list_box
+                        (box 
                         (button :class "button${nightlight ? "-active" : ""}" :onclick "bin/settings.sh nightlight" :timeout "16s" "    Nightlight")
+                        (button :class "button${colorscheme == "light" ? "-active" : ""}" :onclick "bin/colorscheme.sh" :timeout "128s" "${colorscheme == "light" ? "󰖨    Light theme" : "󰖔    Dark theme"}")
+                        )
                         (wrapped_text :text "Reduce the blue light content of the screen")
                     )
                     (list_box 

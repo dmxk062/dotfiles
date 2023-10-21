@@ -2,13 +2,11 @@
 
 
 // the nord colors
-// dark
 $polar0:    #2e3440;
 $polar1:    #3b4252;
 $polar2:    #434c5e;
 $polar3:    #4c566a;
 
-// light
 $snow0:     #eceff4;
 $snow1:     #e4e9f0;
 $snow2:     #d8dee9;
@@ -31,8 +29,8 @@ $green:     #a3be8c;
 // custom preferences
 
 // comment out the theme you dont want to use
-// @import "./dark.scss";
 @import "./light.scss";
+// @import "./light.scss";
 
 
 
