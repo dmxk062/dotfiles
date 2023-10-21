@@ -37,7 +37,7 @@
                             )
                         )
                     )
-                    (box :visible show_qr :class "card" :space-evenly false :orientation "v"
+                    (box :visible show_qr :class "card-no_shadow" :space-evenly false :orientation "v"
                         (box :class "padding_box" :vexpand true
                             (image :path "${wifi_status.qrpath}" :image-width 180 :image-height 180) 
                         )

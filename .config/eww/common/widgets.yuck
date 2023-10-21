@@ -1,5 +1,8 @@
 (defwidget wrapped_text [text]
 (label :class "text-np" :wrap true :justify "left" :text "${text}"))
+(defwidget lwrapped_text [text]
+(box :halign "start"
+(label :class "text-np" :wrap true :justify "left" :text "${text}")))
 
 (defwidget list_box []
 (box :class "padding_box_small" :orientation "v" :space-evenly false
@@ -21,3 +24,8 @@
 (defwidget icon_background [name ?class]
 (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]*4}" :image-height "${icon_size[1]*4}" :class "${class ?: ""}")
 )
+;; a button to open a directory
+(defwidget path_button [path text type] 
+    (eventbox :class "path" :cursor "pointer" :onclick "../common/bin/open_path.sh ${path}& disown" (label :text "${type == "dir" ? "" : "󰈔"}    ${text}"))
+)
+

@@ -61,12 +61,15 @@ $xlarge: 2px 17px 2px 13px;
 }
 
 
-.card{
+.card,.card-no_shadow{
     background-color: $bg0;
     border-radius: 12px;
     margin: .5rem 1rem .5rem 1rem;
     // border: 2px solid $bg3;
     box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 8px;
+}
+.card-no_shadow{
+    box-shadow: unset;
 }
 
 .wallpaper{
@@ -85,12 +88,15 @@ $xlarge: 2px 17px 2px 13px;
     font-size: 1.4rem;
 }
 .display,.display-active{
-    background-color: $bg1;
+    background-color: $bg2;
     border-radius: $rounding-small;
     margin: 1rem;
     box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 8px;
     &:hover{
         background-color: $bg3;
+    }
+    label {
+        color: $fg;
     }
 }
 .display-active{
