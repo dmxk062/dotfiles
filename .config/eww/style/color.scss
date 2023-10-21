@@ -1,6 +1,7 @@
 // colors for my eww shell
 
 
+// the nord colors
 // dark
 $polar0:    #2e3440;
 $polar1:    #3b4252;
@@ -12,6 +13,7 @@ $snow0:     #eceff4;
 $snow1:     #e4e9f0;
 $snow2:     #d8dee9;
 
+// those are colorscheme independant, change them if you want different colors
 // blues
 $dcyan:     #8fbcbb;
 $lcyan:     #88c0d0;
@@ -28,15 +30,15 @@ $green:     #a3be8c;
 
 // custom preferences
 
+// comment out the theme you dont want to use
+
 // dark
-// background colors
 $bg: $polar0;
 $bg0: $polar0;
 $bg1: $polar1;
 $bg2: $polar2;
 $bg3: $polar3;
 
-// forground colors
 $fg: $snow0;
 $fg0: $snow2;
 $fg1: $snow1;
@@ -44,20 +46,21 @@ $fg2: $snow2;
 $inverted: $polar0;
 
 
-// // light
-// // background colors
+
+// light
 // $bg: $snow0;
 // $bg0: $snow0;
-// $bg1: $snow1;
-// $bg2: $snow2;
-// $bg3: $polar3;
+// $bg1: $snow2;
+// $bg2: mix($snow2, $polar3, 90);
+// $bg3: mix($snow2, $polar3, 80);
 //
-// // forground colors
 // $fg: $polar0;
 // $fg0: $polar0;
 // $fg1: $polar1;
-// $fg2: $polar3;
+// $fg2: $polar2;
 // $inverted: $polar0;
+
+
 
 $accent: $dcyan;
 $error: $red;

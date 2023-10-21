@@ -56,7 +56,7 @@ menubar {
     > menuitem {
         padding: $padding-std;
         border-radius: $rounding-small;
-        background-color: $polar2;
+        background-color: $bg2;
         margin: .5rem;
         &:hover{
             background-color: $bg3;
@@ -68,7 +68,7 @@ arrow.right, arrow.left {
     border-radius: 2rem;
     border-top: 7px solid transparent;
     border-bottom: 7px solid transparent;
-    border-left: 7px solid $snow2;
+    border-left: 7px solid $fg0;
 }
 
 .leftbox{
@@ -131,7 +131,7 @@ arrow.right, arrow.left {
 }
 .winlabel{
     padding: .3rem 1rem .3rem .7rem;
-    background-color: $polar2;
+    background-color: $bg2;
     border-radius: $rounding-small;
     margin: .5rem;
     &:hover{
@@ -175,7 +175,7 @@ arrow.right, arrow.left {
 }
 .clock{
     padding: .3rem 1rem .3rem .7rem;
-    background-color: $polar2;
+    background-color: $bg2;
     border-radius: $rounding-small;
     margin: .5rem;
     &:hover{
@@ -184,7 +184,7 @@ arrow.right, arrow.left {
 }
 .notif_button,.notif_button-active,.notif_button-muted,.notif_button-active-muted{
     padding: .3rem 1rem .3rem .7rem;
-    background-color: $polar2;
+    background-color: $bg2;
     border-radius: $rounding-small;
     margin: .5rem;
     color: $fg0;
@@ -205,7 +205,7 @@ arrow.right, arrow.left {
 
 .battery,.battery-charging,.battery-critical{
     padding: .3rem 1rem .3rem .7rem;
-    background-color: $polar2;
+    background-color: $bg2;
     border-radius: $rounding-small;
     margin: .5rem;
     color: $fg0;
@@ -252,13 +252,13 @@ arrow.right, arrow.left {
 
 .list_item, .list_item-active{
     padding: .3rem 1rem .3rem .7rem;
-    background-color: $polar2;
+    background-color: $bg2;
     border-radius: $rounding-small;
     margin: .3rem;
     color: $fg0;
     transition: background-color 0.3s ease, color 0.3s ease;
     &:hover{
-        background-color:  $polar3;
+        background-color:  $bg3;
     }
     &:active{
         background-color: $accent;
@@ -276,7 +276,7 @@ arrow.right, arrow.left {
 .list_button,{
     transition: background-color 0.3s ease, color 0.3s ease;
     border-radius: $rounding-small;
-    background-color: $polar2;
+    background-color: $bg2;
     margin: .5rem;
     padding: .3rem .8rem .3rem .7rem;
     &:hover{
@@ -331,7 +331,7 @@ arrow.right, arrow.left {
         font-size: 1.2rem;
     }
     &:hover{
-        color: fade($fg);
+        color: fade($fg2);
     }
 }
 .notif-action-box{
