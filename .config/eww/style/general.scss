@@ -240,6 +240,9 @@
 .off{
     color: $bg3;
 }
+.on{
+    color: $accent;
+}
 
 // circular-progress widgets
 .circle{
@@ -251,7 +254,6 @@
     label{
         margin: 4rem 4rem 4rem 2.6rem;
         font-size: 4.5rem;
-        color: inherit;
     }
 }
 

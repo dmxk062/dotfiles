@@ -2,7 +2,7 @@
 (defvar selected_disk "")
 (defvar selected_part "")
 (defvar crypt_passwd "")
-(defvar hide_passwd true)
+(defvar hide_crypt_passwd true)
 
 (defwidget path_button [path text] 
     (eventbox :class "link" :cursor "pointer" :onclick "bin/open_path.sh ${path}& disown" (label :text "${text}"))
@@ -96,8 +96,8 @@
                             (box :visible "${part.crypt}" :orientation "v" :space-evenly false :halign "center"
                                 (label :class "text-large" :text "Encrypted Partition")
                                 (box :space-evenly false
-                                (button :onclick "${EWW_CMD} update hide_passwd=${hide_passwd ? "false" : "true"}" :class "button${hide_passwd ? "" : "-active"}" "${hide_passwd ? "󰈉" : "󰈈"}")
-                                (input :class "input" :timeout "128s" :password "${hide_passwd}" :onchange "${EWW_CMD} update crypt_passwd={}" 
+                                (button :onclick "${EWW_CMD} update hide_crypt_passwd=${!hide_crypt_passwd}" :class "button${hide_crypt_passwd? "" : "-active"}" "${hide_crypt_passwd ? "󰈉" : "󰈈"}")
+                                (input :class "input" :timeout "128s" :password "${hide_crypt_passwd}" :onchange "${EWW_CMD} update crypt_passwd={}" 
                                 :onaccept "bin/disks.sh decrypt ${part.path} ${crypt_passwd}||../bin/notify.sh 'Wrong Password?' 'Failed to decrypt ${part.path}' ")
                                 (button :class "button${part.decrypt != "null" ? "-active" : ""}" :timeout "128s" :onclick "${part.decrypt != "null" ? "bin/disks.sh encrypt ${part.path}||../bin/notify.sh 'Failed to lock ${part.decrypt.label?: part.decrypt.name}' 'Try unmounting it'" : "bin/disks.sh decrypt ${part.path} ${crypt_passwd}||../bin/notify.sh 'Wrong Password?' 'Failed to decrypt ${part.path}'"}" "${part.decrypt != "null" ? "󰌿" : "󰌾"}")
 

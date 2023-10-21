@@ -5,50 +5,65 @@
 (defvar wifi_password_reveal false)
 (defvar connect_ssid "")
 (defvar wifi_passwd "")
+(defvar hide_wifi_passwd true)
 (defvar empty "")
-(defvar show_qr true)
+(defvar show_qr false)
 
 (defwidget wifi_section []
     (box :visible "${selected_section == 6}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
-        (box :orientation "v" :space-evenly false :class "sidebar"
-            (box :class "card" :orientation "v" :space-evenly false
-                (box :space-evenly false :halign "center" :orientation "v" :class "padding_box"
-                    (box  :orientation "v" :space-evenly false
-                        (circular-progress :value "${wifi_status.strength?: 0}" :thickness 8 :class "circle"
-                            (label :class "${wifi_status.ssid == "" ? "off" : ""}" :text "${wifi_status.icon ?: "󰤭"}")
+        (box :space-evenly false :class "sidebar"
+            (box :class "padding_box" :orientation "v" :space-evenly false
+                (overlay
+                    (box :class "card" :orientation "v" :space-evenly false
+                        (box :space-evenly false :halign "center" :orientation "v" :class "padding_box" :vexpand true
+                            (box  :orientation "v" :space-evenly false
+                                (circular-progress :value "${wifi_status.strength?: 0}" :thickness 8 :class "circle"
+                                    (label :class "${wifi_status.ssid == "" ? "off" : "on"}" :text "${wifi_status.icon ?: "󰤭"}")
+                                )
+                            )
+                        )
+                        (box :class "card_footer" :orientation "v" :space-evenly false
+                            (box :orientation "v"
+                                (label :text "${wifi_status.ssid?: "No Network"}" :limit-width 32 :class "card-label")
+                                (label :text "Signal Strength: ${wifi_status.strength ?: 0}%" :class "text-np")
+                            )
+                            (box
+                                (button :timeout "256s" :onclick "bin/wlan.sh toggle&&sleep 1&&bin/wlan.sh upd" :class "button${wlan_power ? "-active" : ""}" "    Power")
+                                (button :timeout "256s" :onclick "bin/wlan.sh upd" :class "button" "${wifi_search_icon}    Reload")
+                            )
+                            (box :visible "${wifi_status.ssid != "" ? true : false}"
+                                (button :class "button" :onclick "${EWW_CMD} update show_qr=true" "    QR Code")
+                                (button :class "button" :onclick "bin/edit_connection.sh ${wifi_status.ssid}&" :timeout "16s" "󱆠    Edit")
+                            )
+                        )
+                    )
+                    (box :visible show_qr :class "card" :space-evenly false :orientation "v"
+                        (box :class "padding_box" :vexpand true
+                            (image :path "${wifi_status.qrpath}" :image-width 180 :image-height 180) 
+                        )
+                        (box :class "card_footer" :orientation "v"
+                            (button :class "button" :onclick "${EWW_CMD} update show_qr=false" "Close")
                         )
                     )
                 )
-                (box :class "card_footer" :orientation "v" :space-evenly false
-                    (label :text "Current: ${wifi_status.ssid?: "No Network"}" :limit-width 32)
-                    (label :text "Signal Strength: ${wifi_status.strength ?: 0}%")
-                    (box :space-evenly false
-                        (button :timeout "256s" :onclick "bin/wlan.sh toggle&&sleep 1&&bin/wlan.sh upd" :class "button${wlan_power ? "-active" : ""}" "    Power")
-                        (button :timeout "256s" :onclick "bin/wlan.sh upd" :class "button" "${wifi_search_icon}    Reload")
+            )
+            (box :orientation "h" :space-evenly false :visible "${wifi_password_reveal && wlan_power}"
+                (separator)
+                (box :space-evenly false :class "padding_box" :orientation "v" :vexpand true
+                    (box :class "card" :orientation "v" :space-evenly false
+                        (box :class "padding_box" :space-evenly false :orientation "v"
+                            (label :class "title" :text "Password for: ${connect_ssid}" :limit-width 19)
+                            (input :timeout "128s" :onchange "${EWW_CMD} update wifi_passwd='{}'" :onaccept "bin/wlan.sh connect '${connect_ssid}' true '${wifi_passwd}'& disown" :password hide_wifi_passwd :class "input" :value wifi_passwd)
+                        )
+                        (box :class "card_footer" :space-evenly false :halign "center"
+                            (button :onclick "${EWW_CMD} update hide_wifi_passwd=${!hide_wifi_passwd}" :class "button${hide_wifi_passwd? "" : "-active"}" "${hide_wifi_passwd ? "󰈉" : "󰈈"}")
+                            (button :timeout "16s" :onclick "${EWW_CMD} update wifi_passwd=''&&${EWW_CMD} update wifi_password_reveal=false" :class "button" "Cancel")
+                            (button :timeout "16s" :onclick "bin/wlan.sh connect '${connect_ssid}' true '${wifi_passwd}'& disown" :class "button-active" "Connect")
+                        )
                     )
                 )
-            )
-            (box :visible "${wifi_status.ssid != "" ? true : false}" :orientation "v" :space-evenly false
-                (box 
-                    (button :class "button" :onclick "${EWW_CMD} update show_qr=${show_qr ? "false" : "true"}" "    QR Code")
-                )
-                (box :visible show_qr
-                    (image :path "${wifi_status.qrpath}" :image-width 180 :image-height 180) 
-                )
-            )
-        )
-        (box :orientation "v" :space-evenly false :class "sidebar_extension" :visible "${wifi_password_reveal && wlan_power}"
-            (box :class "card" :orientation "v" :space-evenly false
-                (box :class "padding_box" :space-evenly false :orientation "v"
-                    (label :class "title" :text "Password for: ${connect_ssid}" :limit-width 19)
-                    (input :timeout "128s" :onchange "${EWW_CMD} update wifi_passwd='{}'" :onaccept "bin/wlan.sh connect '${connect_ssid}' true '${wifi_passwd}'& disown" :password true :class "input" :value wifi_passwd)
-                )
-                (box :class "card_footer"
-                    (button :timeout "16s" :onclick "${EWW_CMD} update wifi_passwd=''&&${EWW_CMD} update wifi_password_reveal=false" :class "button" "Cancel")
-                    (button :timeout "16s" :onclick "bin/wlan.sh connect '${connect_ssid}' true '${wifi_passwd}'& disown" :class "button-active" "Connect")
-                )
-            )
 
+            )
         )
         (box :visible wlan_power :hexpand true :halign "start"
             (scroll :vscroll true :class "scroll-narrow" :visible wlan_power
