@@ -19,7 +19,7 @@
         (box :space-evenly false :class "sidebar"
             (scroll :class "scroll-medium"
                 (box :orientation "v" :space-evenly false
-                    (label :class "Title" :text "Keyboard") 
+                    (label :class "title" :text "Keyboard") 
                     (list_box 
                         (button  :class "button${layout == "QWERTZ DE" ? "-active" : ""}":timeout "16s" :onclick "bin/input.sh kbd" "󰌌   ${layout}") 
                         (wrapped_text :text "Switch between the german and english keyboard layouts")
@@ -49,7 +49,7 @@
             (separator)
             (scroll :class "scroll-medium"
                 (box :orientation "v" :space-evenly false
-                    (label :class "Title" :text "Mouse & Touchpad") 
+                    (label :class "title" :text "Mouse & Touchpad") 
                     (list_box 
                         (button :class "button${left_handed ? "-active" : ""}" :onclick "bin/input.sh left_handed" :onrightclick "bin/input.sh left_handed" "${left_handed ? "󰹆" : "󱠰"}    Left Handed")
                         (wrapped_text :text "Enable / Disable left handed mode. Inverts mouse buttons when enabled")

@@ -33,10 +33,10 @@
     font-size: 3rem;
 }
 .volicon {
-    color: $snow2
+    color: $fg;
 }
 .volicon-muted {
-    color: $polar3;
+    color: $bg3;
 }
 .vollabel{
     border-radius: 16px;
@@ -44,4 +44,5 @@
     margin: 1rem;
     font-size: 1.6rem;
     min-width: 5rem;
+    color: $fg;
 }
