@@ -134,6 +134,7 @@ arrow.right, arrow.left {
     background-color: $bg2;
     border-radius: $rounding-small;
     margin: .5rem;
+    color: $fg;
     &:hover{
         background-color: $bg3;
     }
@@ -178,6 +179,7 @@ arrow.right, arrow.left {
     background-color: $bg2;
     border-radius: $rounding-small;
     margin: .5rem;
+    color: $fg;
     &:hover{
         background-color: $bg3;
     }

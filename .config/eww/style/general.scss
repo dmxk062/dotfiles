@@ -165,6 +165,7 @@
     &:focused{
         border: 2px solid fade($accent);
     }
+    caret-color: $fg0;
     selection{
         color: $inverted;
         background-color: $accent;
