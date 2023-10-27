@@ -188,7 +188,7 @@ arrow.right, arrow.left {
         background-color: $bg3;
     }
 }
-.notif_button,.notif_button-active,.notif_button-muted,.notif_button-active-muted{
+.notif_button,.notif_button-active{
     padding: .3rem 1rem .3rem .7rem;
     background-color: $bg2;
     border-radius: $rounding-small;
@@ -198,10 +198,7 @@ arrow.right, arrow.left {
         background-color: $bg3;
     }
 }
-.notif_button-muted{
-    color: mix($fg0, $bg3)
-}
-.notif_button-active-muted,.notif_button-active{
+..notif_button-active{
     background-color: $orange;
     color: $inverted;
     &:hover{
