@@ -47,7 +47,9 @@ window {
 
 #unlock-button{
     background-color: $accent;
-    color: $inverted;
+    label {
+        color: $inverted;
+    }
     border-radius: .6rem;
     transition: background-color 0.3s ease, color 0.3s ease;
     &:hover{
@@ -62,7 +64,9 @@ window {
 }
 #poweroff-button, #logout-button, #reboot-button, #suspend-button{
     border-radius: .6rem;
-    color: $inverted;
+    image{
+        color: $inverted;
+    }
     transition: background-color 0.3s ease, color 0.3s ease;
 
 }

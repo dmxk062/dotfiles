@@ -35,9 +35,10 @@ window {
 
 #unlock-button {
   background-color: #8fbcbb;
-  color: #2e3440;
   border-radius: .6rem;
   transition: background-color 0.3s ease, color 0.3s ease; }
+  #unlock-button label {
+    color: #2e3440; }
   #unlock-button:hover {
     background-color: #7b9da3; }
 
@@ -49,8 +50,9 @@ window {
 
 #poweroff-button, #logout-button, #reboot-button, #suspend-button {
   border-radius: .6rem;
-  color: #2e3440;
   transition: background-color 0.3s ease, color 0.3s ease; }
+  #poweroff-button image, #logout-button image, #reboot-button image, #suspend-button image {
+    color: #2e3440; }
 
 #poweroff-button {
   background-color: #bf616a; }
