@@ -40,7 +40,7 @@
                 
                 (box :visible "${mpris_meta.avail}"
                     (box :class "padded_box_large" :orientation "v"
-                        (label :text "${formattime(round(mpris_meta.pos / 1000000,0),"%M:%S")}/${formattime(round(mpris_meta.len / 1000000,0),"%M:%S")}")
+                        (label :text "${formattime(mpris_meta.pos / 1000000 - 3600,"%H:%M:%S")}/${formattime(mpris_meta.len / 1000000 - 3600,"%H:%M:%S")}")
                         (scale :value "${(mpris_meta.pos / mpris_meta.len)*100}" :class "slider"
                         :onchange "bin/mpris.sh jump {} ${mpris_meta.len / 1000000}")
                     )
