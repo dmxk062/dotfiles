@@ -17,9 +17,10 @@ then
             exec Hyprland
         else
             printf "\033[31mHyprland is not installed\033[0m\nDropping you to a shell (${SHELL})\n\n"
+            exec $SHELL
         fi
     fi
 else 
-    printf "You logged in at \033[1m$TTY\033[0m.\nTo get a graphical environment with Hyprland, please log in at \033[1m/dev/tty1 \033[0m(press \033[1m<C-M-F1>\033[0m to get there)\nDropping you to a shell (${SHELL}).\n\n"
+    printf "You logged in at \033[1m${TTY}\033[0m.\nTo get a graphical environment with Hyprland, please log in at \033[1m/dev/tty1 \033[0m(press \033[1m<C-M-F1>\033[0m to get there)\nDropping you to a shell (${SHELL}).\n\n"
     exec $SHELL
 fi
