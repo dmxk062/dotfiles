@@ -30,7 +30,7 @@
         (box :space-evenly false :orientation "v" :class "popup_box"
             (box :space-evenly false :class "padding_box" :halign "center" :valign "center"
                 (box :halign "center" :class "padding_box"
-                (icon_large :name "${weather.icon_path?:'scalable/apps/apport.svg'}")
+                (icon_large :name "${weather.icon_path?:'scalable/apps/apport.svg'}" :class "icon-backdrop")
                 )
                 (separator)
                 (box :space-evenly false :orientation "v" :visible "${weather != '[]'}" :valign "center"

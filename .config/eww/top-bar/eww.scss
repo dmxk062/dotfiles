@@ -77,6 +77,7 @@ arrow.right, arrow.left {
     background-color: $bg1;
     border-radius: 0px 0px 1.2rem 0px;
     min-height: 3rem;
+    margin-right: 3rem;
     border-bottom: 2px solid $bg3;
     border-right: 2px solid $accent;
 }
@@ -173,6 +174,7 @@ arrow.right, arrow.left {
     background-color: $bg1;
     border-radius: 0px 0px 0px 1.2rem;
     min-height: 3rem;
+    margin-left: 2rem;
     border-bottom: 2px solid $bg3;
     border-left: 2px solid $accent;
 }
@@ -226,7 +228,7 @@ arrow.right, arrow.left {
     background-color: $bg0;
     border-radius: 1.2rem;
     min-height: 3rem;
-  	box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 8px;
+  	box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
     margin: 1rem;
 }
 .popup_box_padded{
