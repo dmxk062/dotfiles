@@ -1,5 +1,4 @@
 configuration {
-    font: "Torus Pro 12";
     show-icons: true;
     terminal: "kitty";
     icon-theme: "Tela-dark";
@@ -24,13 +23,9 @@ configuration {
     display-emoji: "Emoji";
     show-icons:     true;
 }
-@theme "~/.config/rofi/theme.rasi"
+@theme "~/.config/rofi/style/theme.rasi"
 
 
 
 
-window {
-	width: 15%;
-    height: 30%;
-}
 
