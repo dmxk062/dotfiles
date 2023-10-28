@@ -21,7 +21,7 @@
     )
     (box :class "card_footer" :space-evenly false :orientation "v"
         (box :space-evenly false :halign "center"
-            (button :timeout "16s" :onclick "pactl set-${type}-mute ${device.id} ${device.mute ? "0" : "1"}&&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh" :class "button${device.mute ? "" : "-active"}" "${type == "source" ? "${device.mute ? "" : ""}" : "${device.mute ? "󰓄" : "󰓃"}"}    Mute")
+            (button :timeout "16s" :onclick "pactl set-${type}-mute ${device.id} ${device.mute ? "0" : "1"}&&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh" :class "button${device.mute ? "" : "-active"}" "${type == "source" ? "${device.mute ? "" : ""}" : "${device.mute ? "${device.icon.muted}" : "${device.icon.unmuted}"}"}    Mute")
             (button :timeout "16s" :onclick "pactl set-default-${type} ${device.id} &&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh" :class "button${device.active ? "-active" : ""}" "Set as Default")
         )
         (box :class "padding_box" :visible "${arraylength(device.ports) > 1}" :orientation "v" :space-evenly false
