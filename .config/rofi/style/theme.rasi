@@ -59,7 +59,7 @@ listview {
     dynamic: false;
 }
 
-element {
+element{
     padding: 8px;
     border-radius: 12px;
     background-color: @bg0;
@@ -67,13 +67,17 @@ element {
     text-color: @fg0;
     highlight: bold underline;
 }
-element selected.normal {
+element selected.normal,element selected.active{
     padding: 8px;
     border-radius: 12px;
     background-color: @accent;
     color: @invert;
     text-color: @invert;
     highlight: bold underline;
+}
+element normal.active{
+    background-color: @bg3;
+    text-color: @fg0;
 }
 element-text, element-icon {
     background-color: inherit;

@@ -17,7 +17,7 @@ mainbox {
     padding: 10px;
     border-radius: 18px;
     children: [listbox];
-    // background-color: @bg0;
+    background-color: @bg0;
 }
 listbox{
     children: [imagebox, promptbox, listview];
@@ -43,6 +43,7 @@ prompt{
     border-radius: 12px;
     padding: 1em;
     margin: 1em;
+    color: @fg0;
 }
 button {
     background-color: @bg2;
@@ -108,8 +109,7 @@ inputbar {
 }
 entry {
     background-color:            @bg2;
-    text-color:                  inherit;
-    cursor:                      text;
+    text-color:                  @fg0;
     placeholder:                 "Power";
     placeholder-color:           @bg3;
     horizontal-align: 0.5;
@@ -119,3 +119,6 @@ entry {
     padding: 1em;
     margin: 1em;
 } 
+dummy {
+background-color: transparent;
+}
