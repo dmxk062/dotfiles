@@ -9,7 +9,7 @@ window {
     border-radius: 18px;
     border: 2px;
     width: 32em;
-    height: 16em;
+    height: 24em;
 }
 
 mainbox {
