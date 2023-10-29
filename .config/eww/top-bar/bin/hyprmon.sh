@@ -58,7 +58,7 @@ window_icons='{
 
 function get_active_window_info(){
     win="$(hyprctl activewindow -j)"
-    if echo "$win" |jq -Mc --argjson icons "$window_icons" '[.]|map({
+    if echo "$win" |jq -Mc '[.]|map({
         id:.address,
         pid:.pid,
         class:.class,
@@ -70,13 +70,12 @@ function get_active_window_info(){
         pin:.pinned,
         legacy:.xwayland,
         fullscreen:.fullscreen,
-        mode:.fullscreenMode,
-        icon:$icons[.class]
+        mode:.fullscreenMode
     })'
     then 
         true
     else
-        printf '[{"id":null,"pid":null,"class":null,"title":null,"wsname":null,"shown":false,"hidden":false,"float":false,"pin":false,"legacy":false,"fullscreen":true,"mode":null,"icon":""}]\n'
+        printf '[{"id":null,"pid":null,"class":null,"title":null,"wsname":null,"shown":false,"hidden":false,"float":false,"pin":false,"legacy":false,"fullscreen":true,"mode":null}]\n'
     fi
 }
 

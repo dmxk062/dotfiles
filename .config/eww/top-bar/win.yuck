@@ -2,37 +2,10 @@
 (defvar launcher_open false)
 (defwidget window []
         (box :space-evenly false  
-            (button :class "winicon" :onclick "${EWW_CMD} open window_controls --toggle" (label :text "${window[0].icon ?: ""}"))
-            (button :class "winlabel":onclick "bin/open_window_list.sh" :onmiddleclick "hyprctl dispatch killactive" (label :text "${window[0].legacy ? "(X11) " : ""}${window[0].title ?: "No Window Selected"}" :limit-width 40  ))
+            (button :class "winlabel":onclick "bin/open_window_list.sh" :onmiddleclick "hyprctl dispatch killactive" (label :text "${window[0].legacy?: false ? "(X11) " : ""}${window[0].title ?: "No Window Selected"}" :limit-width 40  ))
         )
         )
 
-
-(defwidget controls []
-    (box :space-evenly false :halign "center" :valign "start"  
-    (box :orientation "h" :class "popup_box_padded" :space-evenly false
-        (button :class "button${window[0].float ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch togglefloating" "${window[0].float ? "Unfloat" : "Float"}")
-        (button :class "button${window[0].fullscreen ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch fullscreen 0" "${window[0].fullscreen ? "Unfullscreen" : "Fullscreen"}")
-        (button :class "button${window[0].fullscreen ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch fullscreen 1" "${window[0].fullscreen ? "Unmaximize" : "Maximize"}") 
-        (button :class "button${window[0].pin ? "-active" : (window[0].float ? "" : "-inactive")}" :timeout "16s" :onclick "hyprctl dispatch pin" "${window[0].pin ? "Unpin" : "Pin"}") 
-        (button :class "button-error" :timeout "16s" :onclick "hyprctl dispatch killactive&&${EWW_CMD} close window_controls" "Close")
-        (button :class "button" :timeout "16s" :onclick "${EWW_CMD} close window_controls" "Quit")
-    )
-    )
-)
-
-(defwindow window_controls 
-        :monitor 0
-        :geometry (geometry :x 0
-                            :y 0
-                            :width 0
-                            :height 0
-                            :anchor "top center"
-                    )
-        :stacking "overlay"
-        :namespace "eww_bar_top"
-    (controls)
-)
 
 (defwindow window_list 
         :monitor 0
@@ -88,7 +61,7 @@ Position: ${win.position[0]}x${win.position[1]}"
             )
             (box :space-evenly false :halign "center"
                 (button :class "button${show_hidden ? "-active" : ""}" :onclick "${EWW_CMD} update show_hidden=${!show_hidden}" "Show Unnamed")
-                (button :class "button" :onclick "bin/open_window_list.sh upd" :timeout "16s" "Reload")
+                (button :class "button" :timeout "16s" :onclick "bin/open_window_list.sh upd" :timeout "16s" "Reload")
             )
             )
         )
