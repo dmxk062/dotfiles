@@ -122,16 +122,6 @@ arrow.right, arrow.left {
     border-right: 2px solid $accent; 
     border-bottom: 2px solid $bg3; 
 }
-.winicon{
-    padding: .3rem 1rem .3rem .7rem;
-    border-radius: $rounding-small;
-    background-color: $special;
-    margin: .5rem;
-    color: $inverted;
-    &:hover{
-        background-color: fade($special);
-    }
-}
 .winlabel{
     padding: .3rem 1rem .3rem .7rem;
     background-color: $bg2;
@@ -154,7 +144,6 @@ arrow.right, arrow.left {
     @extend .sbutton;
 }
 .mpris-button-playing{
-    animation: mprisWave 2s linear infinite;
     background: linear-gradient(to left, $accent, $bg2);
     background-size: 200% 100%;
     &:hover{

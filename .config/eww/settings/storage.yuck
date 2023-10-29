@@ -61,7 +61,7 @@
                                                 (disk.device.transport == "nvme" ? "NVME PCIE SSD" :
                                                 (disk.device.transport == "mmc" ? "MMC/SD Storage Card" :
                                                 (disk.device.transport == "usb" ? "USB Mass Storage Device" :
-                                                (disk.device.transport == "scsi" ? "SCSI Disk" : "Unknown connection type")))))}")
+                                                (disk.device.transport == "scsi" ? "SCSI Disk" : (matches(disk.name,".*loop.*") ? "Loop device" : "Unknown Device Type" ))))))}")
                                             )
                                         )
                                         
