@@ -54,10 +54,10 @@ Position: ${win.position[0]}x${win.position[1]}"
             )
             (box :orientation "v" :space-evenly false :class "popup_footer"
             (box :space-evenly false :halign "center"
-                (button :class "button${window[0].float ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch togglefloating" "Float")
-                (button :class "button${window[0].fullscreen ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch fullscreen 0" "Fullscreen")
-                (button :class "button${window[0].fullscreen ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch fullscreen 1" "Maximize") 
-                (button :class "button${window[0].pin ? "-active" : (window[0].float ? "" : "-inactive")}" :timeout "16s" :onclick "hyprctl dispatch pin" "Pin") 
+                (button :class "button${window[0].float?: false ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch togglefloating" "Float")
+                (button :class "button${window[0].fullscreen?: false ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch fullscreen 0" "Fullscreen")
+                (button :class "button${window[0].fullscreen?: false ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch fullscreen 1" "Maximize") 
+                (button :class "button${window[0].pin?: false ? "-active" : (window[0].float?: false ? "" : "-inactive")}" :timeout "16s" :onclick "hyprctl dispatch pin" "Pin") 
             )
             (box :space-evenly false :halign "center"
                 (button :class "button${show_hidden ? "-active" : ""}" :onclick "${EWW_CMD} update show_hidden=${!show_hidden}" "Show Unnamed")

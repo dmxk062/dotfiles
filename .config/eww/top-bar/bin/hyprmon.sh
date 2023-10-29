@@ -10,55 +10,55 @@ function update(){
 #
 
 
-window_icons='{
-"kitty":"󰄛",
-"firefox":"",
-"nemo":"",
-"zenity":"󰙵",
-"steam":"󰓓",
-"gamescope":"󰊴",
-"org.prismlauncher.PrismLauncher":"󰍳",
-"Tor Browser":"󰖟",
-"mpv":"󱜅",
-"gnome-boxes":"",
-"gnome-disks":"󰋊",
-"org.gnome.clocks":"󰥔",
-"eog":"󰋩",
-"libreoffice-startcenter":"󰈙",
-"libreoffice-writer":"󰼭",
-"libreoffice-calc":"󱖦",
-"org.pwmt.zathura":"",
-"thunderbird":"󰺻",
-"Zotero":"󱫆",
-"com.transmissionbt.transmission_39_364746":"",
-"vinagre":"󰢹",
-"Timeshift-gtk":"󰁯",
-"valent":"",
-"pavucontrol":"",
-"virt-manager":"",
-"polkit-gnome-authentication-agent-1":"󰟵",
-"io.elementary.desktop.agent-polkit":"󰟵",
-"com.obsproject.Studio":"",
-"hyprland-share-picker":"󰩨",
-"Vial":"󰌌",
-"cava":"",
-"simple-scan":"󰚫",
-"com.github.flxzt.rnote":"󱦹",
-"blueman-manager":"",
-"blueman-sendto":"",
-"nm-connection-editor":"󰖟",
-"yuzu":"󰟡",
-"soffice":"󰼭",
-"seahorse":"󰌆",
-"com.github.neithern.g4music":"󰁧",
-"discord":"󰙯",
-"fractal":"󰍩",
-"io.github.celluloid_player.Celluloid":"󱜏"
-}'
+# window_icons='{
+# "kitty":"󰄛",
+# "firefox":"",
+# "nemo":"",
+# "zenity":"󰙵",
+# "steam":"󰓓",
+# "gamescope":"󰊴",
+# "org.prismlauncher.PrismLauncher":"󰍳",
+# "Tor Browser":"󰖟",
+# "mpv":"󱜅",
+# "gnome-boxes":"",
+# "gnome-disks":"󰋊",
+# "org.gnome.clocks":"󰥔",
+# "eog":"󰋩",
+# "libreoffice-startcenter":"󰈙",
+# "libreoffice-writer":"󰼭",
+# "libreoffice-calc":"󱖦",
+# "org.pwmt.zathura":"",
+# "thunderbird":"󰺻",
+# "Zotero":"󱫆",
+# "com.transmissionbt.transmission_39_364746":"",
+# "vinagre":"󰢹",
+# "Timeshift-gtk":"󰁯",
+# "valent":"",
+# "pavucontrol":"",
+# "virt-manager":"",
+# "polkit-gnome-authentication-agent-1":"󰟵",
+# "io.elementary.desktop.agent-polkit":"󰟵",
+# "com.obsproject.Studio":"",
+# "hyprland-share-picker":"󰩨",
+# "Vial":"󰌌",
+# "cava":"",
+# "simple-scan":"󰚫",
+# "com.github.flxzt.rnote":"󱦹",
+# "blueman-manager":"",
+# "blueman-sendto":"",
+# "nm-connection-editor":"󰖟",
+# "yuzu":"󰟡",
+# "soffice":"󰼭",
+# "seahorse":"󰌆",
+# "com.github.neithern.g4music":"󰁧",
+# "discord":"󰙯",
+# "fractal":"󰍩",
+# "io.github.celluloid_player.Celluloid":"󱜏"
+# }'
 
 function get_active_window_info(){
     win="$(hyprctl activewindow -j)"
-    if echo "$win" |jq -Mc '[.]|map({
+    echo "$win" |jq -Mc '[.]|map({
         id:.address,
         pid:.pid,
         class:.class,
@@ -72,11 +72,6 @@ function get_active_window_info(){
         fullscreen:.fullscreen,
         mode:.fullscreenMode
     })'
-    then 
-        true
-    else
-        printf '[{"id":null,"pid":null,"class":null,"title":null,"wsname":null,"shown":false,"hidden":false,"float":false,"pin":false,"legacy":false,"fullscreen":true,"mode":null}]\n'
-    fi
 }
 
 
