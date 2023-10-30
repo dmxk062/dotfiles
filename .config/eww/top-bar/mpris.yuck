@@ -32,12 +32,6 @@
 
             )
             (box :class "popup_footer" :orientation "v" :space-evenly false
-                (box :halign "center" :space-evenly false :orientation "v"
-                    (label :class "title" :text "${mpris.title?: "Nothing Playing"}" :wrap true)
-                    (label :class "text" :text "${mpris_meta.artist?: "Artist not known"}")
-                    (label :class "text" :text "${mpris.player?: "No Player"}")
-                )
-                
                 (box :visible "${mpris_meta.avail}"
                     (box :class "padded_box_large" :orientation "v"
                         (label :text "${formattime(mpris_meta.pos / 1000000 - 3600,"%H:%M:%S")}/${formattime(mpris_meta.len / 1000000 - 3600,"%H:%M:%S")}")
@@ -61,6 +55,12 @@
                         (button :class "button" :timeout "16s" :onclick "playerctl stop" "Stop")
                     )
                 )
+                (box :halign "center" :space-evenly false :orientation "v"
+                    (label :class "title" :text "${mpris.title?: "Nothing Playing"}" :wrap true)
+                    (label :class "text" :text "${mpris_meta.artist?: "Artist not known"}")
+                    (label :class "text" :text "${mpris.player?: "No Player"}")
+                )
+                
             
             )
         )
