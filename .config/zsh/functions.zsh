@@ -1,6 +1,6 @@
 # fancy command not found that opens files
 
-function command_not_found_handler {
+function command_not_found_handler() {
     printf 'zsh: command not found: %s\n' "$1"
     file="$1"
     if [[ -f "./$file" ]]
@@ -62,7 +62,10 @@ function md(){
     done
 }
 
-function alert(){ #alert function to notify after a command.
+
+# alert function to notify after a command.
+
+function alert(){
     prog=$@
     start=$(date "+%s")
     eval $prog
@@ -70,8 +73,8 @@ function alert(){ #alert function to notify after a command.
     time=$(( $(date +%s) - $start ))
     if [ $exit = 0 ]
     then
-        notify-send -i "/usr/share/icons/Tela/scalable/apps/terminal.svg" "Command $prog finished successfully" "Took $(date -d @$time "+%M:%S")"
+        notify-send -i "/usr/share/icons/Tela/scalable/apps/terminal.svg" "Command finished" "$prog took $(date -d @$time "+%M:%S")"
     else
-        notify-send -i "/usr/share/icons/Tela/scalable/apps/gksu-root-terminal.svg" "Command $prog failed with error code: $exit" "Took $(date -d @$time "+%M:%S")"
+        notify-send -i "/usr/share/icons/Tela/scalable/apps/gksu-root-terminal.svg" "Command failed" "$prog failed after $(date -d @$time "+%M:%S") with error code $exit"
     fi
 }
