@@ -112,7 +112,7 @@ workspace_icons='{
 "external":"󰍹  ext",
 "special:1":"󱓥  1",
 "special:2":"󱓥  2",
-"special:3":"",
+"special:3":"󱜏",
 "special:4":"󰥔",
 "vm":"󰒋"
 }'

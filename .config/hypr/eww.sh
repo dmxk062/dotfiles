@@ -18,6 +18,7 @@ do
 done
 
 ~/.config/eww/settings/bin/notif.sh monitor & disown
+$EWWDIR/top-bar/bin/open_dock.sh & disown
 sleep 2
 
 
@@ -25,6 +26,4 @@ $EWWDIR/settings/bin/audio_state.sh
 $EWWDIR/settings/bin/sinks_sources.sh upd sinks & disown
 $EWWDIR/settings/bin/sinks_sources.sh upd sources & disown
 $EWWDIR/top-bar/bin/hyprmon.sh monitor & disown
-$EWWDIR/top-bar/bin/open_dock.sh & disown
-$EWWDIR/top-bar/bin/open_dock.sh
 # ~/.config/HOME/panel/bin/notif.sh monitor & disown

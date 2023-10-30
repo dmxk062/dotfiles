@@ -4,7 +4,7 @@
 printf "Hi ${USER}!\n"
 
 
-if [[ "${tty}" == "/dev/tty1" ]]
+if [[ "${TTY}" == "/dev/tty1" ]]
 then
     if [[ -n $DISPLAY ]]
     then
