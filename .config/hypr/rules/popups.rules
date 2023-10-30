@@ -1,0 +1,50 @@
+# vim: ft=hyprland.conf
+
+windowrulev2=float, class:popup
+windowrule=center, class:popup
+
+
+windowrule=size 400 400,class:Timer
+windowrulev2=float, class:Timer
+windowrule=center, class:Timer
+windowrule=size 400 400,class:popup
+windowrulev2=float, class:org.gnome.clocks
+windowrule=center, class:org.gnome.clocks
+windowrulev2=float, class:valent
+windowrule=center, class:valent
+windowrule=size 400 400,class:org.gnome.clocks
+windowrulev2=float,title:^(Compress)$
+windowrulev2=float,class:pavucontrol
+windowrulev2=float,title:^(Cava)$
+windowrule=size 400 400,title:Cava
+windowrule=center,title:Cava  
+windowrulev2=float,title:^(Bottom)$
+windowrule=size 800 600,title:Bottom
+windowrule=center,title:btop
+windowrulev2=float,title:btop
+windowrule=size 800 600,title:btop
+windowrule=center,class:com.github.neithern.g4music
+windowrulev2=float,class:com.github.neithern.g4music
+windowrule=size 800 600,class:com.github.neithern.g4music
+windowrulev2=float,title:^(GPUTop)$
+windowrule=size 800 600,title:GPUTop
+windowrulev2=float,title:^(nvtop)$
+windowrule=size 800 600,title:^(nvtop)$
+windowrule=center,title:nvtop
+windowrule=center,title:Bottom
+windowrulev2=float,class:^.*(blueman).*$
+windowrulev2=center,class:^.*(blueman).*$
+windowrulev2=float,class:^.*(nm-connection-editor).*$
+windowrulev2=center,class:^.*(nm-connection-editor).*$
+windowrulev2=size 800 600,class:^.*(blueman).*$
+windowrulev2=float,title:^.*Properties.*$
+windowrulev2=center,title:zenity_passwd
+windowrulev2=float,title:zenity_passwd
+windowrulev2=center,title:^.*Properties.*$
+windowrulev2=center,class:zenity
+windowrulev2=float,class:zenity
+windowrulev2=float,class:org.prismlauncher.PrismLauncher
+windowrulev2=center,class:org.prismlauncher.PrismLauncher
+windowrulev2=idleinhibit always,class:gamescope
+windowrulev2=float,class:yad
+

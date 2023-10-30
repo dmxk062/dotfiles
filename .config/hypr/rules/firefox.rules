@@ -1,0 +1,4 @@
+# vim:ft=hyprland.conf
+
+windowrule = float,title:^Extension:.*$
+windowrule = center,title:^Extension:.*$
