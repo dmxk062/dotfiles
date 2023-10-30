@@ -311,7 +311,7 @@ map – push :chown<space>
 
 #some dirs
 map gh cd ~
-map gm cd ~/Utils/media
+map gm cd ~/places/media
 map gM cd /mnt
 map gS cd ~/Documents/school/
 map gT cd ~/Tmp
@@ -323,8 +323,8 @@ map gc cd ~/.config
 map gd cd /dev/disk/by-label
 map gD cd /dev
 map gv cd ~/Media
-map gV cd ~/Utils/gvfs
-map gU cd ~/Utils
+map gV cd ~/places/gvfs
+map gU cd ~/places
 map gp cd ~/Pictures
 map gs cd ~/Pictures/Screenshots
 map gw cd ~/Workspace/

@@ -20,6 +20,8 @@ function get_filetype(){
             echo "odt";;
         "awk")
             echo "awk";;
+        "gp")
+            echo "gnuplot";;
         *)
             echo "regular";;
     esac
@@ -43,6 +45,38 @@ make_shell_file(){
     else
         file_exists_error "$1"
     fi
+}
+
+make_gnuplot_file(){
+    if ! [[ -e "$1" ]] || $force
+    then
+        cat << EOF > "$1"
+# vim:ft=gnuplot
+
+set title ""
+
+set xlabel "x"
+set ylabel "f(x)"
+set grid
+unset border
+set xrange [-10:10]
+set yrange[-10:100]
+
+set terminal svg enhanced font "Cantarell,12"
+set output "graph.svg"
+
+set xzeroaxis linetype 1 lc rgb "black" lw 1
+set yzeroaxis linetype 1 lc rgb "black" lw 1
+
+
+plot x**2 with lines linecolor "black" notitle
+
+set terminal wxt
+set output
+EOF
+else
+    file_exists_error "$1"
+fi
 }
 
 make_awk_file(){
