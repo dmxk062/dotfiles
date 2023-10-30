@@ -1,19 +1,30 @@
 #!/bin/bash
-killall eww
-killall wifi.sh
-killall mpris.sh
-killall ws.sh
-killall notif.sh
-killall hyprmon.sh
-eww -c $XDG_CONFIG_HOME/eww/top-bar daemon & disown
-eww -c $XDG_CONFIG_HOME/eww/top-bar open bar & disown
-eww -c $XDG_CONFIG_HOME/eww/top-bar open dock_edge & disown
-eww -c $XDG_CONFIG_HOME/eww/popups daemon & disown
-eww -c $XDG_CONFIG_HOME/eww/settings daemon & disown
+
+EWWDIR="$XDG_CONFIG_HOME/eww"
+
+for proc in eww  mpris.sh ws.sh notif.sh hyprmon.sh
+do
+    killall $proc
+done
+
+for eww_daemon in top-bar popups settings 
+do
+    eww -c $EWWDIR/$eww_daemon daemon & disown
+done
+
+for eww_window in bar dock_edge
+do
+    eww -c $EWWDIR/top-bar open $eww_window & disown
+done
+
 ~/.config/eww/settings/bin/notif.sh monitor & disown
 sleep 2
-$XDG_CONFIG_HOME/eww/settings/bin/audio_state.sh
-$XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sinks & disown
-$XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sources & disown
-$XDG_CONFIG_HOME/eww/top-bar/bin/hyprmon.sh monitor & disown
+
+
+$EWWDIR/settings/bin/audio_state.sh
+$EWWDIR/settings/bin/sinks_sources.sh upd sinks & disown
+$EWWDIR/settings/bin/sinks_sources.sh upd sources & disown
+$EWWDIR/top-bar/bin/hyprmon.sh monitor & disown
+$EWWDIR/top-bar/bin/open_dock.sh & disown
+$EWWDIR/top-bar/bin/open_dock.sh
 # ~/.config/HOME/panel/bin/notif.sh monitor & disown

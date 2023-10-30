@@ -8,7 +8,10 @@ function set(){
         swww init
         sleep 1
     fi
-    swww img -t center "$HOME/.config/background/wall"
+    swww img -t grow \
+        --transition-pos bottom \
+        --transition-duration 1.2 \
+        "$HOME/.config/background/wall"
 }
 function set_as_wall(){
     echo "new wall: $1"
