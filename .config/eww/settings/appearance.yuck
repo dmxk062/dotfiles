@@ -93,19 +93,19 @@
                 (box :orientation "v" :space-evenly false
                     (label :class "title" :text "Wallpapers")
                     (list_box
-                        (button :class "button${walls != "[]" ? "-active" : ""}" :timeout "16s" :onclick "${walls != "[]" ? '${EWW_CMD} update walls=\'[]\'' : '${EWW_CMD} update walls="$(< /home/dmx/.config/background/walls.json)"&&${EWW_CMD} update activelock=$(realpath /home/dmx/.config/background/lock)&&${EWW_CMD} update activewall=$(realpath /home/dmx/.config/background/wall)'}" "󰋩    Show Wallpapers")
+                        (button :class "button${walls != "[]" ? "-active" : ""}" :timeout "16s" :onclick "${walls != "[]" ? '${EWW_CMD} update walls=\'[]\'' : '${EWW_CMD} update walls="$(< ~/.config/background/walls.json)"&&${EWW_CMD} update activelock=$(realpath ~/.config/background/lock)&&${EWW_CMD} update activewall=$(realpath ~/.config/background/wall)'}" "󰋩    Show Wallpapers")
                         (wrapped_text :text "Show all the configured wallpapers. Unload them before closing the window for faster load times")
                     )
                     (list_box
-                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh '/home/dmx/.config/eww/settings/bin/wallfile.sh'" "󰉋    Browse")
+                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh '~/.config/eww/settings/bin/wallfile.sh'" "󰉋    Browse")
                         (wrapped_text :text "Browse the filesystem for wallpapers")
                     )
                     (list_box
-                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh '/home/dmx/.config/eww/settings/bin/wallcolor.sh'" "    Color")
+                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh '~/.config/eww/settings/bin/wallcolor.sh'" "    Color")
                         (wrapped_text :text "Set a solid color as a wallpaper")
                     )
                     (list_box
-                        (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'kitty -e nvim /home/dmx/.config/background/walls.json'" "󰂮    Edit Wallpapers")
+                        (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'kitty -e nvim ~/.config/background/walls.json'" "󰂮    Edit Wallpapers")
                         (wrapped_text :text "Edit walls.json in neovim")
                     )
                 )
@@ -123,8 +123,8 @@
                         (box :hexpand true :class "card_footer" :orientation "v"
                             (label :class "title" :text "${wall.name}")
                             (box :space-evenly false :halign "center"
-                                (button :class "button${wall.path == activewall ? "-active" : ""}" :timeout "16s"  :onclick "/home/dmx/.config/background/wallpaper.sh wall '${wall.path}'&&${EWW_CMD} update activewall=$(realpath /home/dmx/.config/background/wall)" "󰋩    Desktop")
-                                (button :class "button${wall.path == activelock ? "-active" : ""}" :timeout "16s" :onclick "/home/dmx/.config/background/wallpaper.sh lock '${wall.path}'&&${EWW_CMD} update activelock=$(realpath /home/dmx/.config/background/lock)" "󱪰    Lockscreen")
+                                (button :class "button${wall.path == activewall ? "-active" : ""}" :timeout "16s"  :onclick "~/.config/background/wallpaper.sh wall '${wall.path}'&&${EWW_CMD} update activewall=$(realpath ~/.config/background/wall)" "󰋩    Desktop")
+                                (button :class "button${wall.path == activelock ? "-active" : ""}" :timeout "16s" :onclick "~/.config/background/wallpaper.sh lock '${wall.path}'&&${EWW_CMD} update activelock=$(realpath ~/.config/background/lock)" "󱪰    Lockscreen")
                             )
                         )
                     )
