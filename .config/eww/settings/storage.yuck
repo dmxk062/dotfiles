@@ -126,8 +126,8 @@
                                     (box
                                         (button :class "button${part.mounted ? "-active" : ""}" :timeout "16s" 
                                         :onclick "${part.mounted ? 
-                                        "bin/disks.sh unmount ${part.path}||../bin/notify.sh 'An error occured while unmounting ${part.label?: part.name}'&&bin/disks.sh upd" :
-                                        "bin/disks.sh mount ${part.path}||../bin/notify.sh 'An error occured while mounting ${part.label?: part.name}'&&bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
+                                        "bin/disks.sh unmount ${part.path}||../common/bin/notify.sh 'An error occured while unmounting ${part.label?: part.name}'&&bin/disks.sh upd" :
+                                        "bin/disks.sh mount ${part.path}||../common/bin/notify.sh 'An error occured while mounting ${part.label?: part.name}'&&bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
                                         )
                                     )
                                 )
@@ -155,10 +155,10 @@
                                     (box
                                         (button :class "button${part.mounted ? "-active" : ""}" :timeout "16s" 
                                         :onclick "${part.mounted ? 
-                                        "bin/disks.sh unmount ${part.decrypt.path}||../bin/notify.sh 'An error occured while unmounting ${part.decrypt.label?: part.decrypt.name}'&&bin/disks.sh upd" :
-                                        "bin/disks.sh mount ${part.decrypt.path}||../bin/notify.sh 'An error occured while mounting ${part.decrypt.label?: part.decrypt.name}'&&bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
+                                        "bin/disks.sh unmount ${part.decrypt.path}||../common/bin/notify.sh 'An error occured while unmounting ${part.decrypt.label?: part.decrypt.name}'&&bin/disks.sh upd" :
+                                        "bin/disks.sh mount ${part.decrypt.path}||../common/bin/notify.sh 'An error occured while mounting ${part.decrypt.label?: part.decrypt.name}'&&bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
                                         )
-                                        (button :class "button" :onclick "bin/disks.sh encrypt ${part.path}||../bin/notify.sh 'Failed to lock ${part.decrypt.label?: part.decrypt.name}' 'Try unmounting it'" "󰌾    Lock")
+                                        (button :class "button" :onclick "bin/disks.sh encrypt ${part.path}||../common/bin/notify.sh 'Failed to lock ${part.decrypt.label?: part.decrypt.name}' 'Try unmounting it'" "󰌾    Lock")
                                     )
                                 )
                             )
@@ -167,11 +167,11 @@
                                     (label :class "heading" :text "${part.name} is locked")
                                     (box :space-evenly false :halign "center"
                                        (button :class "button${hide_crypt_passwd ? "" : "-active"}" :onclick "${EWW_CMD} update hide_crypt_passwd=${!hide_crypt_passwd}" "${hide_crypt_passwd ? "󰈉" : "󰈈"}") 
-                                       (input :class "input" :timeout "128s" :password "${hide_crypt_passwd}" :onchange "${EWW_CMD} update crypt_passwd={}" :onaccept "bin/disks.sh decrypt ${part.path} ${crypt_passwd}||../bin/notify.sh 'Wrong Password?' 'Failed to decrypt ${part.path}' ")
+                                       (input :class "input" :timeout "128s" :password "${hide_crypt_passwd}" :onchange "${EWW_CMD} update crypt_passwd={}" :onaccept "bin/disks.sh decrypt ${part.path} ${crypt_passwd}||../common/bin/notify.sh 'Wrong Password?' 'Failed to decrypt ${part.path}' ")
                                     )
                                 )
                                 (box :class "card_footer" :orientation "v" :space-evenly false
-                                    (button :class "button${part.decrypt != "null" ? "-active" : ""}" :timeout "128s" :onclick "bin/disks.sh decrypt ${part.path} ${crypt_passwd}||../bin/notify.sh 'Wrong Password?' 'Failed to decrypt ${part.path}'" "󰌿    Unlock")
+                                    (button :class "button${part.decrypt != "null" ? "-active" : ""}" :timeout "128s" :onclick "bin/disks.sh decrypt ${part.path} ${crypt_passwd}||../common/bin/notify.sh 'Wrong Password?' 'Failed to decrypt ${part.path}'" "󰌿    Unlock")
                                 )
                             )
                         )

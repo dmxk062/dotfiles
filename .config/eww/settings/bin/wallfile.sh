@@ -7,5 +7,5 @@ if [[ "$(file --dereference --brief --mime-type -- "$file")" == image/* ]]
 then
     swww img -t center "$file"
 else
-    $XDG_CONFIG_HOME/eww/bin/notify.sh "Selected file isn't an image" "Try selecting another file"
+    $XDG_CONFIG_HOME/eww/common/bin/notify.sh "Selected file isn't an image" "Try selecting another file"
 fi

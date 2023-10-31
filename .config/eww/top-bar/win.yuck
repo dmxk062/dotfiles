@@ -1,5 +1,7 @@
 (defvar window "[]")
 (defvar launcher_open false)
+(defvar show_hidden_windows false)
+(defvar windows "[]")
 (defwidget window []
         (box :space-evenly false  
             (button :class "winlabel":onclick "bin/open_window_list.sh" :onmiddleclick "hyprctl dispatch killactive" (label :text "${window[0].legacy?: false ? "(X11) " : ""}${window[0].title ?: "No Window Selected"}" :limit-width 40  ))
@@ -19,8 +21,6 @@
         :namespace "eww_bar_top"
     (window_list)
 )
-(defvar show_hidden false)
-(defvar windows "[]")
 (defwidget window_list []
     (box :space-evenly false :halign "center" :valign "start"  
         (box :orientation "v" :class "popup_box" :space-evenly false
@@ -28,7 +28,7 @@
                 (scroll :vscroll true :class "scroll"
                     (box :orientation "v" :space-evenly false
                         (for win in windows
-                            (box :space-evenly false :visible "${show_hidden ? true : (win.title != "")}"
+                            (box :space-evenly false :visible "${show_hidden_windows ? true : (win.title != "")}"
                             (box :halign "start" :space-evenly false
                                 (button :class "list_button" :onclick "hyprctl dispatch closewindow address:${win.address}&&sleep 0.1&&bin/open_window_list.sh upd" :timeout "16s" "󰅖")
                             )
@@ -60,7 +60,7 @@ Position: ${win.position[0]}x${win.position[1]}"
                 (button :class "button${window[0].pin?: false ? "-active" : (window[0].float?: false ? "" : "-inactive")}" :timeout "16s" :onclick "hyprctl dispatch pin" "Pin") 
             )
             (box :space-evenly false :halign "center"
-                (button :class "button${show_hidden ? "-active" : ""}" :onclick "${EWW_CMD} update show_hidden=${!show_hidden}" "Show Unnamed")
+                (button :class "button${show_hidden_windows ? "-active" : ""}" :onclick "${EWW_CMD} update show_hidden_windows=${!show_hidden_windows}" "Show Unnamed")
                 (button :class "button" :timeout "16s" :onclick "bin/open_window_list.sh upd" :timeout "16s" "Reload")
             )
             )

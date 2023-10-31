@@ -29,14 +29,14 @@
         (box :class "popup_box" :orientation "v" :space-evenly false :width 200
             (box :class "padded_box" :orientation "v"
                 (box
-                (power_button :class "button-error" :action "off" :text "")
-                (power_button :class "button-warn" :action "reboot" :text "")
-                (power_button :class "button-yellow" :action "logout" :text "󰍃")
+                    (power_button :class "button-error" :action "off" :text "")
+                    (power_button :class "button-warn" :action "reboot" :text "")
+                    (power_button :class "button-yellow" :action "logout" :text "󰍃")
                 )
                 (box
-                (power_button :class "button-special" :action "uefi" :text "󰘚")
-                (power_button :class "button-blue" :action "suspend" :text "󰤄")
-                (power_button :class "button-good" :action "lock -nc" :text "")
+                    (power_button :class "button-special" :action "uefi" :text "󰘚")
+                    (power_button :class "button-blue" :action "suspend" :text "󰤄")
+                    (power_button :class "button-good" :action "lock -nc" :text "")
                 )
             )
             (box :class "popup_footer" :orientation "v"

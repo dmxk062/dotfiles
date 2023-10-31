@@ -20,7 +20,7 @@
     (weather)
 )
 
-(defvar city "Vienna")
+(defvar city "Graz")
 (defvar weather '{}')
 (defvar weather_load false)
 (defvar last_forecast 0)

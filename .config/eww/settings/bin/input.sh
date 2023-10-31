@@ -16,11 +16,9 @@ function kbd(){
     then
         hyprctl keyword input:kb_layout us
         $eww update layout="QWERTY US"
-        $XDG_CONFIG_HOME/eww/bin/notify.sh "Changed Keyboard Layout" "Now using QWERTY - English(US)"
     else
         hyprctl keyword input:kb_layout de
         $eww update layout="QWERTZ DE"
-        $XDG_CONFIG_HOME/eww/bin/notify.sh "Changed Keyboard Layout" "Now using QWERTZ - German(DE)"
     fi
 }
 function left_handed(){
