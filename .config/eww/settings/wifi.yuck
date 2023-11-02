@@ -8,6 +8,8 @@
 (defvar hide_wifi_passwd true)
 (defvar empty "")
 (defvar show_qr false)
+(defvar wifi_connect_error false)
+(defvar wifi_connect_error_reason "")
 
 (defwidget wifi_section []
     (box :visible "${selected_section == 6}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
@@ -61,6 +63,8 @@
                             (button :timeout "16s" :onclick "bin/wlan.sh connect '${connect_ssid}' true '${wifi_passwd}'& disown" :class "button-active" "Connect")
                         )
                     )
+                    (error :if "${wifi_connect_error}" :text "Failed to connect.
+${wifi_connect_error_reason}")
                 )
 
             )

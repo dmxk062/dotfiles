@@ -74,39 +74,10 @@ Coordinates: ${mon.x}x${mon.y}
 Refresh Rate: ${mon.refreshRate}Hz
 Scaling: ${mon.scale}x")
                             )
-                                ;; (box :space-evenly false :halign "start"
-                                ;; )
-                                ;; (centerbox :orientation "h" :hexpand true
-                                ;;     (box :orientation "v"
-                                ;;         (box :halign "start"
-                                ;;             (label :text "Manufacturer: ${mon.make}" :class "footer_text" :justify "left"))
-                                ;;         (box :halign "start"
-                                ;;             (label :text "Model: ${mon.model}" :class "footer_text"))
-                                ;;         (box :halign "start"
-                                ;;             (label :text "Serial Number: ${mon.serial}" :class "footer_text"))
-                                ;;     )
-                                ;;     (box :orientation "v" :halign "start" :hexpand true
-                                ;;         (box :halign "start"
-                                ;;             (label :text "Resolution: ${mon.width}×${mon.height}" :class "footer_text" :justify "left"))
-                                ;;         (box :halign "start"
-                                ;;             (label :text "Refresh Rate: ${mon.refreshRate}hz" :class "footer_text"))
-                                ;;         (box :halign "start"
-                                ;;             (label :text "Scale: ${mon.scale}x" :class "footer_text"))
-                                ;;     )
-                                ;;     (box :orientation "v"
-                                ;;         (box :halign "start"
-                                ;;         (label :text "Coordinates: ${mon.x}×${mon.y}" :class "footer_text" :justify "left"))
-                                ;;             (box :halign "start"
-                                ;;                 (label :text "Variable refresh rate: ${mon.vrr ? "Yes" : "No"}" :class "footer_text" :justify "left"))
-                                ;;             (box :halign "start"
-                                ;;                 (label :text "Rotation: ${transform_states[mon.transform]}" :class "footer_text" :justify "left"))
-                                ;;     )
-                                ;;
-                                ;; )
-                        )
                         )
                     )
                 )
+            )
         )
         (box :valign "center" :hexpand true :vexpand true :orientation "v" :class "section_inside"
             (box   :space-evenly false  :halign "center" :valign "center" :hexpand true :vexpand true :orientation "h"

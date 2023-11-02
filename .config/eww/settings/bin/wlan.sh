@@ -67,20 +67,22 @@ function connect(){
     then 
         if ! nmcli device wifi connect "$ssid" password "$passwd"
         then
-            notify-send -c "wifi-error" -u "critical" "Failed to connect to $ssid. Wrong password?"
+            $eww_settings update wifi_connect_error=true
+            $eww_settings update wifi_connect_error_reason="Wrong Password?"
         else
-            notify-send -c "wifi" -u "normal" "Now Connected to $ssid"
             $eww_settings update wifi_password_reveal=false
+            $eww_settings update wifi_connect_error=false
             $eww_settings update wifi_passwd=""
             $eww_settings update connect_ssid=""
         fi
     else
         if ! nmcli device wifi connect "$ssid"
         then
-            notify-send -c "wifi-error" -u "critical" "Failed to connect to $ssid. Weak connection?"
+            $eww_settings update wifi_connect_error=true
+            $eww_settings update wifi_connect_error_reason="Weak Connection?"
         else
-            notify-send -c "wifi" -u "normal" "Now Connected to $ssid"
             $eww_settings update wifi_password_reveal=false
+            $eww_settings update wifi_connect_error=false
             $eww_settings update wifi_passwd=""
             $eww_settings update connect_ssid=""
         fi
