@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Eww Display Settings
-Exec=eww_settings.sh display
-Icon=preferences-desktop-display-randr
-Type=Application

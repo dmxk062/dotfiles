@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Eww Bluetooth Settings
-Exec=eww_settings.sh bluetooth
-Icon=bluetooth
-Type=Application

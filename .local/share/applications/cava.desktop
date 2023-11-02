@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Cava
+GenericName=Music Visualizer
+Exec=kitty --title "Cava" --class "cava" -e cava
+Type=Application
+Keywords=Music,cava,audio
+Icon=utilities-system-monitor
