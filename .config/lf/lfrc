@@ -262,7 +262,7 @@ cmd deject ${{
 cmd fileinfo &{{
     file=$f
     type=$(xdg-mime query filetype $file)
-    lf -remote "send $id echo 󰈔 File $file is $type"
+    lf -remote "send $id echo 󰈔 $type"
 }}
 #backup
 cmd backup &{{
