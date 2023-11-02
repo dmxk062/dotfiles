@@ -97,15 +97,15 @@
                         (wrapped_text :text "Show all the configured wallpapers. Unload them before closing the window for faster load times")
                     )
                     (list_box
-                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh '~/.config/eww/settings/bin/wallfile.sh'" "󰉋    Browse")
+                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh ~/.config/eww/settings/bin/wallfile.sh" "󰉋    Browse")
                         (wrapped_text :text "Browse the filesystem for wallpapers")
                     )
                     (list_box
-                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh '~/.config/eww/settings/bin/wallcolor.sh'" "    Color")
+                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh ~/.config/eww/settings/bin/wallcolor.sh" "    Color")
                         (wrapped_text :text "Set a solid color as a wallpaper")
                     )
                     (list_box
-                        (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'kitty -e nvim ~/.config/background/walls.json'" "󰂮    Edit Wallpapers")
+                        (button :class "button" :timeout "16s" :onclick "bin/suspend.sh kitty -e nvim ~/.config/background/walls.json" "󰂮    Edit Wallpapers")
                         (wrapped_text :text "Edit walls.json in neovim")
                     )
                 )
@@ -115,10 +115,8 @@
             (box :orientation "v" :space-evenly false
                 (for wall in walls
                     (box :space-evenly false :class "card" :orientation "v"
-                            (eventbox :onclick "swww img ${wall.path} -t center& disown" :tooltip "Set ${wall.name} as a temporary wallpaper"
-                            (box :class "padding_box_small"
-                                (image :path "${wall.path}" :image-width 200 :image-height 120)
-                            )
+                        (box :class "padding_box_small"
+                            (image :path "${wall.path}" :image-width 200 :image-height 120)
                         )
                         (box :hexpand true :class "card_footer" :orientation "v"
                             (label :class "title" :text "${wall.name}")
