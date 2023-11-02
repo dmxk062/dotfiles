@@ -30,13 +30,18 @@ case $1 in
                 file="$screen/modes"
             fi
         done
-        if cat "$file"|grep -q "${3}"
+        if cat "$file"|grep -q "${3}$"
         then
             cmdline="${2},${3}@${current_refresh},${current_a}x${current_b},${current_scale},transform, ${current_transform}"
             hyprctl keyword monitor "$cmdline"
+            eww -c $XDG_CONFIG_HOME/eww/settings/ update monitor_err_vrr=false
         else
-            notify-send -u "critical" "Error changing resolution:" "The file ${file} does not contain the video mode ${3}"
+            eww -c $XDG_CONFIG_HOME/eww/settings/ update monitor_err_vrr=true
         fi;;
+    position)
+        cmdline="${2},${current_x}x${current_y}@${current_refresh},${3},${current_scale},transform, ${current_transform}"
+        hyprctl keyword monitor "$cmdline"
+        ;;
     transform)
         cmdline="${2},${current_x}x${current_y}@${current_refresh},${current_a}x${current_b},${current_scale},transform, ${3}"
         hyprctl keyword monitor "$cmdline"

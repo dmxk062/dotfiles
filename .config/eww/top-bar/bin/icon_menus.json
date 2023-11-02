@@ -117,6 +117,10 @@
         {
             "name":"No Man's Sky",
             "exec":"gtk-launch nms"
+        },
+        {
+            "name":"Celeste",
+            "exec":"gtk-launch Celeste"
         }
     ]
 }

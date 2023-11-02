@@ -1,80 +1,125 @@
 (defvar monitors '[]')
 (defvar selected_monitor "")
 (defvar transform_states '[
-"No",
-"90°",
-"180°",
-"270°",
-"flipped",
-"90° flipped",
-"180° flipped",
-"270° flipped"
+"None",
+"Rotated by 90°",
+"Rotated by 180°",
+"Rotated by 270°",
+"Flipped",
+"Rotated by 90° and flipped",
+"Rotated by 180° and flipped",
+"Rotated by 270° and flipped"
 ]')
 
 ;; default values for the input fields
 (defvar refresh 0)
 (defvar resolution "")
+(defvar position "")
 (defvar scale 1)
+
+(defvar monitor_err_vrr false)
 
 
 (defwidget display_section []
-    (box :visible "${selected_section == 2}" :class "section_box"  :valign "fill" :hexpand true :vexpand true :orientation "v" :space-evenly false
+    (box :visible "${selected_section == 2}" :class "section_box"  :valign "fill" :hexpand true :vexpand true :orientation "h" :space-evenly false
+        (box :orientation "h" :space-evenly false :class "sidebar"
+            (scroll :class "scroll-medium"
+                (box :orientation "v" :space-evenly false
+                    (for mon in monitors
+                        (box :visible "${mon.name == selected_monitor}" :orientation "v" :hexpand true  :space-evenly false
+                            (list_box
+                                (button :class "button${mon.dpmsStatus ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch dpms ${mon.dpmsStatus ? "off" : "on"} ${mon.name}&&bin/display.sh upd" "    Power")
+                                (wrapped_text :text "Control the DPMS Power State of the Monitor. Current: ${mon.dpmsStatus ? "On" : "Off"}")
+                            )
+                            (list_box
+                                (box
+                                    (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh transform ${mon.name} ${mon.transform == 0 ? "3" : (mon.transform - 1)}&&bin/display.sh upd" :tooltip "Rotate" "")
+                                    (button :timeout "16s" :class "button${mon.transform > 3 ? "-active" : ""}" :onclick "bin/monitor_settings.sh transform ${mon.name} ${mon.transform > 3 ? (mon.transform - 4) : (mon.transform + 4)}&&bin/display.sh upd" :tooltip "Flip" "󱃧    Flip")
+                                    (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh transform ${mon.name} ${mon.transform == 3 ? "0" : (mon.transform + 1)}&&bin/display.sh upd" :tooltip "Rotate" "")
+                                )
+                                (wrapped_markup :text "Transform the Monitor in Hyprland. 
+Current Transformation: ${transform_states[mon.transform]}
+Raw Value as seen by Hyprland: <tt>${mon.transform}</tt>")
+                            )
+                            (list_box
+                                (box
+                                    (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh scale ${mon.name} ${mon.scale + 0.1}&&bin/display.sh upd" "")
+                                    (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh scale ${mon.name} 1&&bin/display.sh upd" "Reset")
+                                    (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh scale ${mon.name} ${mon.scale - 0.1}&&bin/display.sh upd" "")
+                                )
+                                (wrapped_markup :text "Configure Scaling. Integer scales like <tt>1</tt> or <tt>2</tt> are more likely to work without any issues.
+Current Monitor Scale: ${mon.scale}x")
+                            )
+                            (list_box 
+                                (input :value "${mon.refreshRate}" :class "input" :onchange "${EWW_CMD} update refresh={}" :onaccept "bin/monitor_settings.sh refresh ${mon.name} ${refresh}&&bin/display.sh upd&&${EWW_CMD} update refresh=${mon.refreshRate}")
+                                (wrapped_text :text "Set the Refresh Rate of the Monitor (in Hz). Please note that it isn't checked for validity, so make sure to check if your monitor actually supports it")
+                                
+                            )
+                            (list_box
+                                (input :value "${mon.width}x${mon.height}" :class "input" :onchange "${EWW_CMD} update resolution={}" :onaccept "bin/monitor_settings.sh resolution ${mon.name} ${resolution}&&bin/display.sh upd&&${EWW_CMD} update resolution=${mon.width}x${mon.height}")
+                                (wrapped_text :text "Set the Resolution for the monitor(in the <horizontal>x<vertical> format)")
+                                (error :text "Error while setting resolution for monitor: Resolution not supported by monitor" :if "${monitor_err_vrr}")
+                            )
+                            (list_box
+                                (input :value "${mon.x}x${mon.y}" :class "input" :onchange "${EWW_CMD} update position={}" :onaccept "bin/monitor_settings.sh position ${mon.name} ${position}&&bin/display.sh upd&&${EWW_CMD} update position=${mon.width}x${mon.height}")
+                                (wrapped_text :text "Set the Position for the monitor(in <horizontal offset>x<vertical offset> format)")
+                            )
+                            (list_box
+                                (label :class "title" :text "About ${mon.name}")
+                                (lwrapped_text :text "Manufacturer: ${mon.make?:"Not Known"}
+Model: ${mon.model?:"Not Known"}
+Serial: ${mon.serial?:"Not Known"}
+Resolution: ${mon.width}x${mon.height}
+Coordinates: ${mon.x}x${mon.y}
+Refresh Rate: ${mon.refreshRate}Hz
+Scaling: ${mon.scale}x")
+                            )
+                                ;; (box :space-evenly false :halign "start"
+                                ;; )
+                                ;; (centerbox :orientation "h" :hexpand true
+                                ;;     (box :orientation "v"
+                                ;;         (box :halign "start"
+                                ;;             (label :text "Manufacturer: ${mon.make}" :class "footer_text" :justify "left"))
+                                ;;         (box :halign "start"
+                                ;;             (label :text "Model: ${mon.model}" :class "footer_text"))
+                                ;;         (box :halign "start"
+                                ;;             (label :text "Serial Number: ${mon.serial}" :class "footer_text"))
+                                ;;     )
+                                ;;     (box :orientation "v" :halign "start" :hexpand true
+                                ;;         (box :halign "start"
+                                ;;             (label :text "Resolution: ${mon.width}×${mon.height}" :class "footer_text" :justify "left"))
+                                ;;         (box :halign "start"
+                                ;;             (label :text "Refresh Rate: ${mon.refreshRate}hz" :class "footer_text"))
+                                ;;         (box :halign "start"
+                                ;;             (label :text "Scale: ${mon.scale}x" :class "footer_text"))
+                                ;;     )
+                                ;;     (box :orientation "v"
+                                ;;         (box :halign "start"
+                                ;;         (label :text "Coordinates: ${mon.x}×${mon.y}" :class "footer_text" :justify "left"))
+                                ;;             (box :halign "start"
+                                ;;                 (label :text "Variable refresh rate: ${mon.vrr ? "Yes" : "No"}" :class "footer_text" :justify "left"))
+                                ;;             (box :halign "start"
+                                ;;                 (label :text "Rotation: ${transform_states[mon.transform]}" :class "footer_text" :justify "left"))
+                                ;;     )
+                                ;;
+                                ;; )
+                        )
+                        )
+                    )
+                )
+        )
         (box :valign "center" :hexpand true :vexpand true :orientation "v" :class "section_inside"
             (box   :space-evenly false  :halign "center" :valign "center" :hexpand true :vexpand true :orientation "h"
                 (for mon in monitors
                     (box :space-evenly false :halign "start" :valign "end"
                         (eventbox :onclick "${EWW_CMD} update selected_monitor='${mon.name}'&&${EWW_CMD} update refresh='${mon.refreshRate}'&&${EWW_CMD} update scale='${mon.scale}'"
                             (box :width "${mon.transform % 2 == 1 ? "${round(mon.height / 10,0)}": "${round(mon.width / 10,0)}"}" :height "${mon.transform % 2 == 1 ? "${round(mon.width / 10,0)}": "${round(mon.height / 10,0)}"}" :class "display${mon.name == selected_monitor ? "-active" : ""}" 
-                                (label :text "${mon.name}")
+                                (label :text "${mon.name}
+at ${mon.x}x${mon.y}")
                             )
                         )
                     )       
                 )
-            )
-        )
-        (for mon in monitors
-            (box :visible "${mon.name == selected_monitor}" :orientation "v" :hexpand true  :space-evenly false
-                (box :space-evenly false :halign "end"
-                    (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh transform ${mon.name} ${mon.transform == 0 ? "3" : (mon.transform - 1)}&&bin/display.sh upd" :tooltip "Rotate" "")
-                    (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh transform ${mon.name} ${mon.transform == 3 ? "0" : (mon.transform + 1)}&&bin/display.sh upd" :tooltip "Rotate" "")
-                    (button :timeout "16s" :class "button${mon.transform > 3 ? "-active" : ""}" :onclick "bin/monitor_settings.sh transform ${mon.name} ${mon.transform > 3 ? (mon.transform - 4) : (mon.transform + 4)}&&bin/display.sh upd" :tooltip "Flip" "󱃧    Flip")
-                    (button :timeout "16s" :class "button${mon.vrr ? "-active" : ""}" :onclick "bin/monitor_settings.sh vrr ${mon.name} ${mon.vrr ? "0" : "2"}&&bin/display.sh upd" "󱄄    Vrr")
-                )
-            (box :class "footer" :space-evenly false  :hexpand true :orientation "v"
-                (box :space-evenly false :halign "start"
-                    (button :class "button${mon.dpmsStatus ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch dpms ${mon.dpmsStatus ? "off" : "on"} ${mon.name}&&bin/display.sh upd" "    Power")
-                    (input :value "${mon.refreshRate}" :class "input" :onchange "${EWW_CMD} update refresh={}" :onaccept "bin/monitor_settings.sh refresh ${mon.name} ${refresh}&&bin/display.sh upd&&${EWW_CMD} update refresh=${mon.refreshRate}")
-                    (input :value "${mon.scale}" :class "input" :onchange "${EWW_CMD} update scale={}" :onaccept "bin/monitor_settings.sh scale ${mon.name} ${scale}&&bin/display.sh upd&&${EWW_CMD} update scale=${mon.scale}")
-                    (input :value "${mon.width}x${mon.height}" :class "input" :onchange "${EWW_CMD} update resolution={}" :onaccept "bin/monitor_settings.sh resolution ${mon.name} ${resolution}&&bin/display.sh upd&&${EWW_CMD} update resolution=${mon.width}x${mon.height}")
-                )
-            (centerbox :orientation "h" :hexpand true
-                (box :orientation "v"
-                    (box :halign "start"
-                        (label :text "Manufacturer: ${mon.make}" :class "footer_text" :justify "left"))
-                    (box :halign "start"
-                        (label :text "Model: ${mon.model}" :class "footer_text"))
-                    (box :halign "start"
-                        (label :text "Serial Number: ${mon.serial}" :class "footer_text"))
-                )
-                (box :orientation "v" :halign "start" :hexpand true
-                    (box :halign "start"
-                        (label :text "Resolution: ${mon.width}×${mon.height}" :class "footer_text" :justify "left"))
-                    (box :halign "start"
-                        (label :text "Refresh Rate: ${mon.refreshRate}hz" :class "footer_text"))
-                    (box :halign "start"
-                        (label :text "Scale: ${mon.scale}x" :class "footer_text"))
-                )
-                (box :orientation "v"
-                    (box :halign "start"
-                    (label :text "Coordinates: ${mon.x}×${mon.y}" :class "footer_text" :justify "left"))
-                        (box :halign "start"
-                            (label :text "Variable refresh rate: ${mon.vrr ? "Yes" : "No"}" :class "footer_text" :justify "left"))
-                        (box :halign "start"
-                            (label :text "Rotation: ${transform_states[mon.transform]}" :class "footer_text" :justify "left"))
-                )
-
-            )
-            )
             )
         )
 
