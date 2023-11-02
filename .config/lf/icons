@@ -22,18 +22,18 @@
 # file types (with matching order)
 ln      󰌷       # LINK
 or      󰌸       # ORPHAN
-tw      󱇨       # STICKY_OTHER_WRITABLE
-ow      󱇨       # OTHER_WRITABLE
+tw      󱇧       # STICKY_OTHER_WRITABLE
+ow      󱇧       # OTHER_WRITABLE
 st      s       # STICKY
 di             # DIR
 pi      󰟥       # FIFO
 so      󰛳       # SOCK
 bd      󰋊       # BLK
-cd            # CHR
-su      u       # SETUID
-sg      g       # SETGID
-ex             # EXEC
-fi      󰈤       # FILE
+cd      󰈮      # CHR
+su             # SETUID
+sg             # SETGID
+ex      󰣆       # EXEC
+fi      󰈔       # FILE
 
 # file extensions (vim-devicons)
 *.yuck          
@@ -67,21 +67,21 @@ fi      󰈤       # FILE
 *.coffee        
 *.mustache      
 *.hbs           
-*.conf          
-*.ini           
-*.yml           
-*.yaml          
-*.toml          
+*.conf          󱁻
+*.ini           󱁻
+*.yml           󱁻
+*.yaml          󱁻
+*.toml          󱁻
 *.bat           
 *.exe           
 *.mk            
-*.jpg           
-*.jpeg          
-*.bmp           
-*.png           
-*.webp          
-*.gif           
-*.ico           
+*.jpg           󰋩
+*.jpeg          󰋩
+*.bmp           󰋩
+*.png           󰋩
+*.webp          󰋩
+*.gif           󰋩
+*.ico           󰋩
 *.twig          
 *.cpp           
 *.c++           
@@ -109,7 +109,7 @@ fi      󰈤       # FILE
 *.ps1           
 *.ml            λ
 *.mli           λ
-*.diff          
+*.diff          󰢪
 *.db            
 *.sql           
 *.dump          
@@ -170,17 +170,17 @@ fi      󰈤       # FILE
 *.docx          󰈙
 *.doc           󰈙
 *.rtf           󰈙
-*.epub          
-*.pptx          󰐨
-*.pps          󰐨
-*.odp           󰐨
-*.ods           󱎏
-*.xlsx          󱎏
-*.csl           󰗀
+*.epub          󰈧
+*.pptx          󰈧
+*.pps           󰈧
+*.odp           󰈧
+*.ods           󰱾
+*.xlsx          󰱾
+*.csl           󰈮
 *.cache         
 *.sqlite        
-*.lock          
-*.xml           󰗀
+*.lock          󰈡
+*.xml           󰈮
 *.mca           󰍳
 *.dat           
 
@@ -196,20 +196,20 @@ fi      󰈤       # FILE
 *gulpfile.ls            
 *mix.lock               
 *dropbox                
-*.ds_store              
-*.gitconfig             
-*.gitignore             
-*.gitattributes         
+*.ds_store              󱁻
+*.gitconfig             󱁻
+*.gitignore             󱁻
+*.gitattributes         󱁻
 *.gitlab-ci.yml         
-*.bashrc                
-*.zshrc                 
-*.zshenv                
-*.zprofile              
+*.bashrc                󱁻
+*.zshrc                 󱁻
+*.zshenv                󱁻
+*.zprofile              󱁻
 *.vimrc                 
 *.gvimrc                
 *_vimrc                 
 *_gvimrc                
-*.bashprofile           
+*.bashprofile           󱁻
 *favicon.ico            
 *license                
 *node_modules           
@@ -220,8 +220,8 @@ fi      󰈤       # FILE
 *rakefile               
 *config.ru              
 *gemfile                
-*makefile               
-*cmakelists.txt         
+*makefile               󱁻
+*cmakelists.txt         󱁻
 *robots.txt             ﮧ
 
 # file names (case-sensitive adaptations)
@@ -232,7 +232,7 @@ fi      󰈤       # FILE
 *Gulpfile.js            
 *Gulpfile.ls            
 *Dropbox                
-*.DS_Store              
+*.DS_Store              󱁻
 *LICENSE                
 *React.jsx              
 *Procfile               
@@ -276,127 +276,130 @@ Tmp/                    󰪺
 .config/                󱁿
 config/                 󱁿
 Workspace/              󰣞
+ws/                     󰣞
+tools/                  󱁿
 Trash/                  󰉘
 Games/                  󰖺
+.git/                   󰴋
 
 
 # archives or compressed (extensions from dircolors defaults)
 *.pkg.tar.gz   
-*.tar   
-*.tgz   
-*.arc   
-*.arj   
-*.taz   
-*.lha   
-*.lz4   
-*.lzh   
-*.lzma  
-*.tlz   
-*.txz   
-*.tzo   
-*.t7z   
-*.zip   
-*.z     
-*.dz    
-*.gz    
-*.lrz   
-*.lz    
-*.lzo   
-*.xz    
-*.zst   
-*.tzst  
-*.bz2   
-*.bz    
-*.tbz   
-*.tbz2  
-*.tz    
-*.deb   
-*.rpm   
+*.tar   󰛫
+*.tgz   󰛫
+*.arc   󰛫
+*.arj   󰛫
+*.taz   󰛫
+*.lha   󰛫
+*.lz4   󰛫
+*.lzh   󰛫
+*.lzma  󰛫
+*.tlz   󰛫
+*.txz   󰛫
+*.tzo   󰛫
+*.t7z   󰛫
+*.zip   󰛫
+*.z     󰛫
+*.dz    󰛫
+*.gz    󰛫
+*.lrz   󰛫
+*.lz    󰛫
+*.lzo   󰛫
+*.xz    󰛫
+*.zst   󰛫
+*.tzst  󰛫
+*.bz2   󰛫
+*.bz    󰛫
+*.tbz   󰛫
+*.tbz2  󰛫
+*.tz    󰛫
+*.deb   󰛫
+*.rpm   󰛫
 *.jar   
-*.war   
-*.ear   
-*.sar   
-*.rar   
-*.alz   
-*.ace   
-*.zoo   
-*.cpio  
-*.7z    
-*.rz    
-*.cab   
-*.wim   
-*.swm   
-*.dwm   
-*.esd   
+*.war   󰛫
+*.ear   󰛫
+*.sar   󰛫
+*.rar   󰛫
+*.alz   󰛫
+*.ace   󰛫
+*.zoo   󰛫
+*.cpio  󰛫
+*.7z    󰛫
+*.rz    󰛫
+*.cab   󰛫
+*.wim   󰛫
+*.swm   󰛫
+*.dwm   󰛫
+*.esd   󰛫
 *.deb   
 # image formats (extensions from dircolors defaults)
-*.jpg   
-*.jpeg  
-*.mjpg  
-*.mjpeg 
-*.gif   
-*.bmp   
-*.pbm   
-*.pgm   
-*.ppm   
-*.tga   
-*.xbm   
-*.xpm   
-*.tif   
-*.tiff  
-*.png   
-*.svg   
-*.svgz  
-*.mng   
-*.pcx   
-*.mov   
-*.mpg   
-*.mpeg  
-*.m2v   
+*.jpg   󰋩
+*.jpeg  󰋩
+*.mjpg  󰋩
+*.mjpeg 󰋩
+*.gif   󰋩
+*.bmp   󰋩
+*.pbm   󰋩
+*.pgm   󰋩
+*.ppm   󰋩
+*.tga   󰋩
+*.xbm   󰋩
+*.xpm   󰋩
+*.tif   󰋩
+*.tiff  󰋩
+*.png   󰋩
+*.svg   󰋩
+*.svgz  󰋩
+*.mng   󰋩
+*.pcx   󰋩
+*.mov   󰋩
+*.mpg   󰋩
+*.mpeg  󰋩
+*.m2v   󰋩
 *.mkv   󰎁
-*.webm  
-*.ogm   
+*.webm  󰋩
+*.ogm   󰋩
 *.mp4   󰎁
 *.m4v   󰎁
 *.mp4v  󰎁
-*.vob   
-*.qt    
-*.nuv   
-*.wmv   
-*.asf   
-*.rm    
-*.rmvb  
-*.flc   
-*.avi   
-*.fli   
-*.flv   
-*.gl    
-*.dl    
-*.xcf   
-*.xwd   
-*.yuv   
-*.cgm   
-*.emf   
-*.ogv   
-*.ogx   
+*.vob   󰋩
+*.qt    󰋩
+*.nuv   󰋩
+*.wmv   󰋩
+*.asf   󰋩
+*.rm    󰋩
+*.rmvb  󰋩
+*.flc   󰋩
+*.avi   󰋩
+*.fli   󰋩
+*.flv   󰋩
+*.gl    󰋩
+*.dl    󰋩
+*.xcf   󰋩
+*.xwd   󰋩
+*.yuv   󰋩
+*.cgm   󰋩
+*.emf   󰋩
+*.ogv   󰋩
+*.ogx   󰋩
 
 # audio formats (extensions from dircolors defaults)
-*.aac   
-*.au    
-*.flac  
-*.m4a   
-*.mid   
-*.midi  
-*.mka   
-*.mp3   
-*.mpc   
-*.ogg   
-*.ra    
-*.wav   
-*.oga   
-*.opus  
-*.spx   
-*.xspf  
+*.aac   󰈣
+*.au    󰈣
+*.flac  󰈣
+*.m4a   󰈣
+*.mid   󰈣
+*.midi  󰈣
+*.mka   󰈣
+*.mp3   󰈣
+*.mpc   󰈣
+*.ogg   󰈣
+*.ra    󰈣
+*.wav   󰈣
+*.oga   󰈣
+*.opus  󰈣
+*.spx   󰈣
+*.xspf  󰈣
 
 # other formats
 *.pdf   󰈙

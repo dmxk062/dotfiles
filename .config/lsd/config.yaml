@@ -1,0 +1,17 @@
+classic: false
+blocks:
+  - permission
+  - user
+  - size
+  - date
+  - name
+color:
+  when: always
+  theme: custom
+date: '+%X %d.%m.%y'
+icons:
+  when: always
+  seperator: " "
+sorting:
+    dir-grouping: first
+symlink-arrow: 
