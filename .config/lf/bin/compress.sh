@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 IFS=$'\n' 
 
-icon=""
+icon="󰛫"
 
 notify() {
     msg="$1"

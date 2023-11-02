@@ -19,7 +19,7 @@ function unBackup(){
     newname="$(echo $file|sed 's/\.~.~//')"
     if [[ -f "$newname" ]]
     then
-        lf -remote "send $id echoerr  File $newname already exists, aborting."
+        lf -remote "send $id echoerr 󰩋 File $newname already exists, aborting."
         exit
     fi
     mv "$file" "$newname"

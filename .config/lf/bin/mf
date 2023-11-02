@@ -74,6 +74,7 @@ plot x**2 with lines linecolor "black" notitle
 set terminal wxt
 set output
 EOF
+    notify "󰈕 Created GnuPlot Script: $1"
 else
     file_exists_error "$1"
 fi
