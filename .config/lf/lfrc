@@ -43,17 +43,17 @@ cmd tar &{{
     cp -r $fx $1
     tar czf $1.tar.gz $1
     rm -rf $1
-    lf -remote "send $id echo   Compressing Files with gzip finished."
+    lf -remote "send $id echo  󰛫 Compressing Files with gzip finished."
 }}
 #tar whole dir
 cmd tardir &{{
     tar czf $f.tar.gz $f
-    lf -remote "send $id echo   Compressing Directory $f with gzip finished."
+    lf -remote "send $id echo  󰛫 Compressing Directory $f with gzip finished."
 }}
 #tar and compress using lzma
 cmd xz_tardir &{{
    tar -c --use-compress-program='xz -7 -T0' -f $f.tar.xz $f 
-    lf -remote "send $id echo   Compressing Directory $f with lzma finished."
+    lf -remote "send $id echo  󰛫 Compressing Directory $f with lzma finished."
 }}
 #zip
 cmd zip &{{
@@ -62,12 +62,12 @@ cmd zip &{{
     cp -r $fx $1
     zip -r $1.zip $1
     rm -rf $1
-    lf -remote "send $id echo   Zipping Files finished."
+    lf -remote "send $id echo  󰛫 Zipping Files finished."
 }}
 #zip selected item
 cmd zipdir ${{
     zip -r $f.zip $f
-    lf -remote "send $id echo   Zipping File $f finished."
+    lf -remote "send $id echo  󰛫 Zipping File $f finished."
 }}
 #simple chmod
 cmd chmod %{{
@@ -104,7 +104,7 @@ cmd mkdir %{{
 cmd touch %{{
     touch "$@"
     lf -remote "send $id select $1"
-    printf " Created File(s): $@"
+    printf "󰈔 Created File(s): $@"
 }}
 #create a .odt file
 cmd mkodt %{{
@@ -149,13 +149,13 @@ cmd copy_fname &{{
 cmd copy_file &{{
     wl-copy < $f
     echo $f|xargs -n 1 basename > /tmp/workspaces_dmx/cache/clip/.current.txt
-    lf -remote "send $id echo  File copied to clipboard"
+    lf -remote "send $id echo 󰈔 File copied to clipboard"
 }} 
 cmd paste_file &{{
     wl-paste > "$(cat /tmp/workspaces_dmx/cache/clip/.current.txt)"
     if [[ $? -eq 0 ]]
     then
-        lf -remote "send $id echo  File copied from clipboard"
+        lf -remote "send $id echo 󰈔 File copied from clipboard"
     else
         lf -remote "send $id echoerr  No file in clipboard"
     fi
@@ -165,7 +165,7 @@ cmd Paste ${{
     wl-paste > $1
     if [[ $? -eq 0 ]]
     then
-        lf -remote "send $id echo  File copied from clipboard"
+        lf -remote "send $id echo 󰈔 File copied from clipboard"
     else
         lf -remote "send $id echoerr  No file in clipboard"
     fi
@@ -212,7 +212,7 @@ cmd pasteasync &{{
         move) mv -n -- "$@" .;;
     esac
     rm ~/.local/share/lf/files
-    lf -remote "send $id echo  Finished copying/moving files."
+    lf -remote "send $id echo 󰈔 Finished copying/moving files."
 }}
 #mounting
 cmd dmount ${{
@@ -262,7 +262,7 @@ cmd deject ${{
 cmd fileinfo &{{
     file=$f
     type=$(xdg-mime query filetype $file)
-    lf -remote "send $id echo  File $file is $type"
+    lf -remote "send $id echo 󰈔 File $file is $type"
 }}
 #backup
 cmd backup &{{
