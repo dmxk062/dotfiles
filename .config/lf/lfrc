@@ -21,6 +21,7 @@ set waitmsg ' Press any key to continue to lf.'
 set mouse
 
 source "~/.config/lf/fmt.conf"
+source "~/.config/lf/binds/open.conf"
 # sets the same reverse cursor style for right pane
 # sets the prompt to user PDW/FILE
 set ratios '1:2:3'
@@ -381,32 +382,7 @@ filter
 }}
 set incfilter true
 map <c-f> search
-#vim
-map e
-map oe $nvim $fx -O
-map we $kitty @ launch --type=window  zsh -ic "nvim $f"
-map We $kitty @ launch --type=tab  zsh -ic "nvim $f"
-map op !bat $f
-map wp $kitty @ launch --type=window zsh -ic "bat $f&&read"
-map Wp $kitty @ launch --type=tab zsh -ic "bat $f&&read"
-map wl $kitty @ launch --type=window zsh -ic "lf $PWD"
-map Wl $kitty @ launch --type=tab zsh -ic "lf $PWD"
-map w<enter> $kitty @ launch --type=window zsh -ic "lf $PWD"
-map W<enter> $kitty @ launch --type=tab zsh -ic "lf $PWD"
-map ws $kitty @ launch --type=window --cwd $PWD
-map Ws $kitty  @ launch  --type=tab --cwd $PWD
-#execute
-map oE push !$f<space>
 #open using xdg-open
-map oo &xdg-open $f
-#use it instead of mpv for music
-map om &g4music $f
-#pdfs
-map oP &evince $f
-#music
-map oa $mpv --no-audio-display -- $fx
-map ota $kitty @ launch --type=tab mpv --no-audio-display -- $fx
-#mount/unmount a disk image
 map oDm fmount
 map oDu fumount
 #mount/unmount a device

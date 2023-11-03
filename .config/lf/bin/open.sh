@@ -22,7 +22,7 @@ case $(file --mime-type -b --dereference -- "$f" ) in
         ;;
 #same for audio
     audio/*)
-    shortname=$(echo $(basename $f)|head -c 16)
+    shortname=$(basename $f|head -c 16)
     kitty @ launch --title="mpv: ${shortname}~" --type=tab mpv --no-audio-display -- $fx
         ;;
 #use zathura for pdf

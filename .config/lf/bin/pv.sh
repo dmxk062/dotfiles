@@ -34,7 +34,7 @@ then
 fi
 if [ -x "$file" ]
 then
-    giveOpenHint "Use oE to execute"
+    giveOpenHint "Use ee or eE to execute"
 fi
 # hints at a way to open files
 # creates a cache directory for pdfs converted to images

@@ -162,8 +162,8 @@ fi      󰈔       # FILE
 *.iso           󰗮
 *.img           󰗮
 *.dmg           󰗮
-*.desktop       󱓞
-*.torrent       
+*.desktop       󰣆
+*.torrent       󰥥
 *.apk           /
 *.odt           󰈙
 *.ott           󰈙
