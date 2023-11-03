@@ -7,6 +7,13 @@
 (defvar hide_crypt_passwd true)
 
 
+(defvar disk_decrypt_error false)
+(defvar disk_encrypt_error false)
+(defvar disk_mount_error false)
+(defvar disk_unmount_error false)
+(defvar disk_eject_error false)
+
+
 
 (defwidget copy_text [text info] 
     (eventbox :class "copy" :onclick "wl-copy ${text}& disown" :cursor "pointer" :tooltip "Click to Copy" (label :limit-width 24 :text "${info} ${text}"))
@@ -109,13 +116,13 @@
                                     (label :class "heading" :text "${part.label?:part.name}")
                                     (label :class "text-large" :text "Filesystem: ${part.type}")
                                     (label :class "text-large" :text "Filesystem Type: ${part.parttype}")
-                                    (box :class "padding_box"
+                                    (box :class "padding_box" :visible "${part.type != "swap"}"
                                         (overlay
                                             (scale :value "${part.usage.perc?: 0}" :class "slider-thick" :active false )
                                             (label :class "text-large dark" :text "${part.mounted ? "${part.usage.used} / ${part.usage.size}" : "Mount to see disk usage"}")
                                         )
                                     )
-                                    (box :visible "${part.mount[0] != 'null'}" :orientation "v" :space-evenly false
+                                    (box :visible "${part.mount[0] != 'null' && part.type != "swap"}" :orientation "v" :space-evenly false
                                         (label :class "title" :text "Mountpoints")
                                         (for mount in "${part.mount?: '[]'}"
                                             (path_button :path "${mount}" :text "${mount}" :type "dir")
@@ -126,8 +133,8 @@
                                     (box
                                         (button :class "button${part.mounted ? "-active" : ""}" :timeout "16s" 
                                         :onclick "${part.mounted ? 
-                                        "bin/disks.sh unmount ${part.path}||../common/bin/notify.sh 'An error occured while unmounting ${part.label?: part.name}'&&bin/disks.sh upd" :
-                                        "bin/disks.sh mount ${part.path}||../common/bin/notify.sh 'An error occured while mounting ${part.label?: part.name}'&&bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
+                                        "bin/disks.sh unmount ${part.path} ${part.type == "swap" ? "swap" : ""};bin/disks.sh upd" :
+                                        "bin/disks.sh mount ${part.path} ${part.type == "swap" ? "swap" : ""};bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
                                         )
                                     )
                                 )
@@ -155,10 +162,10 @@
                                     (box
                                         (button :class "button${part.mounted ? "-active" : ""}" :timeout "16s" 
                                         :onclick "${part.mounted ? 
-                                        "bin/disks.sh unmount ${part.decrypt.path}||../common/bin/notify.sh 'An error occured while unmounting ${part.decrypt.label?: part.decrypt.name}'&&bin/disks.sh upd" :
-                                        "bin/disks.sh mount ${part.decrypt.path}||../common/bin/notify.sh 'An error occured while mounting ${part.decrypt.label?: part.decrypt.name}'&&bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
+                                        "bin/disks.sh unmount ${part.decrypt.path};bin/disks.sh upd" :
+                                        "bin/disks.sh mount ${part.decrypt.path};bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
                                         )
-                                        (button :class "button" :onclick "bin/disks.sh encrypt ${part.path}||../common/bin/notify.sh 'Failed to lock ${part.decrypt.label?: part.decrypt.name}' 'Try unmounting it'" "󰌾    Lock")
+                                        (button :class "button" :onclick "bin/disks.sh encrypt ${part.path}" "󰌾    Lock")
                                     )
                                 )
                             )
@@ -167,11 +174,12 @@
                                     (label :class "heading" :text "${part.name} is locked")
                                     (box :space-evenly false :halign "center"
                                        (button :class "button${hide_crypt_passwd ? "" : "-active"}" :onclick "${EWW_CMD} update hide_crypt_passwd=${!hide_crypt_passwd}" "${hide_crypt_passwd ? "󰈉" : "󰈈"}") 
-                                       (input :class "input" :timeout "128s" :password "${hide_crypt_passwd}" :onchange "${EWW_CMD} update crypt_passwd={}" :onaccept "bin/disks.sh decrypt ${part.path} ${crypt_passwd}||../common/bin/notify.sh 'Wrong Password?' 'Failed to decrypt ${part.path}' ")
+                                       (input :class "input" :timeout "128s" :password "${hide_crypt_passwd}" :onchange "${EWW_CMD} update crypt_passwd={}" :onaccept "bin/disks.sh decrypt ${part.path} ${crypt_passwd}")
                                     )
+                                    (error :if "${disk_decrypt_error}" :text "Failed to unlock. Wrong Password?")
                                 )
                                 (box :class "card_footer" :orientation "v" :space-evenly false
-                                    (button :class "button${part.decrypt != "null" ? "-active" : ""}" :timeout "128s" :onclick "bin/disks.sh decrypt ${part.path} ${crypt_passwd}||../common/bin/notify.sh 'Wrong Password?' 'Failed to decrypt ${part.path}'" "󰌿    Unlock")
+                                    (button :class "button${part.decrypt != "null" ? "-active" : ""}" :timeout "128s" :onclick "bin/disks.sh decrypt ${part.path} ${crypt_passwd}" "󰌿    Unlock")
                                 )
                             )
                         )

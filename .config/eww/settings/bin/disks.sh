@@ -72,45 +72,64 @@ function upd(){
 function eject(){
     if ! udisksctl power-off -b "$1"
     then
-        exit 1
+        $eww update disk_eject_error=true
+    else
+        $eww update disk_eject_error=false
     fi
 }
 
 function mount(){
     $eww close settings
+    if [[ $2 == "swap" ]]
+    then
+        pkexec swapon "$1"
+    fi
     if ! udisksctl mount -b "$1"
     then
         $eww open settings --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
-        exit 1
+        $eww update disk_mount_error=true
+    else
+        $eww open settings --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
+        $eww update disk_mount_error=false
     fi
-    $eww open settings --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
 }
 function unmount(){
     $eww close settings
+    if [[ $2 == "swap" ]]
+    then
+        pkexec swapoff "$1"
+    fi
     if ! udisksctl unmount -b "$1"
     then
         $eww open settings --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
-        exit 1
+        $eww update disk_unmount_error=true
+    else
+        $eww open settings --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
+        $eww update disk_unmount_error=false
     fi
-    $eww open settings --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
 }
 function decrypt(){
     if ! udisksctl unlock -b "$1" --key-file <(echo -n "$2")
     then
         upd
-        eww -c "$HOME/.config/eww/settings" update crypt_passwd=""
-        exit 1
+        $eww update disk_decrypt_error=true
+        $eww update crypt_passwd=""
+    else
+        $eww update disk_decrypt_error=false
+        upd
+        $eww update crypt_passwd=""
     fi
-    upd
-    eww -c "$HOME/.config/eww/settings" update crypt_passwd=""
 }
 function encrypt(){
     if ! udisksctl lock -b "$1"
     then
         upd
-        exit 1
+        $eww update disk_encrypt_error=true
+    else
+        $eww update disk_encrypt_error=false
+        $eww update disk_decrypt_error=false
+        upd
     fi
-    upd
 }
 
 case $1 in
@@ -121,9 +140,9 @@ case $1 in
     eject)
         eject "$2";;
     mount)
-        mount "$2";;
+        mount "$2" "$3";;
     unmount)
-        unmount "$2";;
+        unmount "$2" "$3";;
     decrypt)
         decrypt "$2" "$3";;
     encrypt)
