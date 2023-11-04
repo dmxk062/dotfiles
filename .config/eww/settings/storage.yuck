@@ -23,6 +23,11 @@
     (box :visible "${selected_section == 7}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
         (box :orientation "h" :space-evenly false :class "sidebar"
             (box :orientation "v" :space-evenly false
+                (box 
+                    (button :class "button" :timeout "16s" :onclick "bin/suspend.sh gnome-disks" "󰋊    Disk Utility")
+                    (button :class "button" :timeout "16s" :onclick "bin/disks.sh upd" "󰑓    Reload")
+                    (button :class "button" :timeout "128s" :onclick "bin/loop.sh add&&bin/disks.sh upd" "󰗮    Disk Image")
+                )
                 (scroll :class "scroll-disks"
                 (box :orientation "v" :space-evenly false 
                     (for disk in disks
@@ -97,11 +102,6 @@
 
                     )
                 )
-                )
-                (box :class "sidebar"
-                    (button :class "button" :timeout "16s" :onclick "bin/suspend.sh gnome-disks" "󰋊    Disk Utility")
-                    (button :class "button" :timeout "16s" :onclick "bin/disks.sh upd" "󰑓    Reload")
-                    (button :class "button" :timeout "128s" :onclick "bin/loop.sh add&&bin/disks.sh upd" "󰗮    Disk Image")
                 )
             )
         )
