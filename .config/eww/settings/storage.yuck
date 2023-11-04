@@ -39,7 +39,7 @@
                             (box :orientation "v" :space-evenly false :class "card"
                                 (box :class "padding_box" :space-evenly false :orientation "v"
                                     (icon :name "${disk.icon_g}")
-                                    (label :class "heading" :text "${disk.device.model?:disk.path}")
+                                    (label :class "heading" :text "${disk.device.model?:disk.name}")
                                 )
                                 (box :orientation "v" :space-evenly false :class "card_footer"
                                     (centerbox :space-evenly false
