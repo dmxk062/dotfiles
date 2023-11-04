@@ -12,8 +12,9 @@ remove(){
 
 add_image_file(){
     $eww close settings
-    file=$(zenity --file-selection --file-filter="Disk Images | *.iso *.img *.bin *.vhd"||exit)
-    udisksctl loop-setup --file=$file
+    if file=$(zenity --file-selection --file-filter="Disk Images | *.iso *.img *.bin *.vhd"||exit); then
+        udisksctl loop-setup --file=$file
+    fi
     $eww open settings --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
 
 
