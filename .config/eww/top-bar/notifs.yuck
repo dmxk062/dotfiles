@@ -31,40 +31,46 @@
             (scroll :vscroll true :class "scroll-large"
                 (box :orientation "v" :space-evenly false :hexpand true
                     (for notif in notifs 
-                        (box :class "notif${notif.urgency == 2 ? "-urgent" : ""}${notif.id == expanded_notif ? "-expanded" : ""}" :orientation "v" :space-evenly false :hexpand true
-                            (box :space-evenly false :hexpand true
-                                (box :hexpand true :space-evenly false :halign "start"
-                                    (button :class "notif-close-button" :onclick "makoctl dismiss -n ${notif.id}" "󰩹")
-                                    (label :markup "${notif.title}" :wrap true :justify "left" :class "title")
+                        (eventbox :onmiddleclick "makoctl dismiss -n ${notif.id}"
+                        (box :class "notif${notif.urgency == 2 ? "-urgent" : ""}${notif.id == expanded_notif ? "-expanded" : ""}" :orientation "h" :space-evenly false :hexpand true
+                            (box :space-evenly false :orientation "v"
+                                (box :orientation "v" :space-evenly false :valign "start" :vexpand true (button :class "notif-close-button" :onclick "makoctl dismiss -n ${notif.id}" "󰩹"))
+                                (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width "${icon_size[0]/2}" :image-height "${icon_size[1]/2}" :visible "${notif.icon != ""&&notif.id != expanded_notif}")
+                            )
+                            (box :orientation "v" :space-evenly false :hexpand true
+                                (box :space-evenly false :hexpand true
+                                    (box :hexpand true :space-evenly false :halign "start"
+                                        (label :markup "${notif.title}" :wrap true :justify "left" :class "title")
+                                    )
+                                    (button :class "notif-expander-button${notif.id == expanded_notif ? "-expanded" : ""}" :onclick "${EWW_CMD} update expanded_notif=${notif.id == expanded_notif ? "" : notif.id}" "${notif.id == expanded_notif ? "󰁢" : "󰁊"}")
                                 )
-                                (button :class "notif-expander-button${notif.id == expanded_notif ? "-expanded" : ""}" :onclick "${EWW_CMD} update expanded_notif=${notif.id == expanded_notif ? "" : notif.id}" "${notif.id == expanded_notif ? "󰁢" : "󰁊"}")
-                            )
-                            (box :visible "${notif.id != expanded_notif}"
-                                (label :text "${notif.text}" :limit-width 32 :class "notif-body")
-                            )
-                            (box :visible "${notif.id == expanded_notif}" :orientation "v" :space-evenly false
-                                (label :markup "${notif.text}" :wrap true :class "notif-body")
-                                (box :space-evenly false :halign "center"
-                                    (box :space-evenly false :orientation "v" :class "notif-action-box" :halign "center" :visible "${notif.actions != "[]"}"
-                                        (for action in "${notif?.["actions"]}"
-                                            (box :halign "start" :space-evenly false
-                                                (button :tooltip "Invoke `${action.action}` on the notification" :class "notif-action" :timeout "16s" :onclick "makoctl invoke -n ${notif.id} ${action.action}&disown"(label :text "${action.name}" :limit-width 24)
+                                (box :visible "${notif.id != expanded_notif}"
+                                    (label :text "${notif.text}" :limit-width 32 :class "notif-body")
+                                )
+                                (box :visible "${notif.id == expanded_notif}" :orientation "v" :space-evenly false
+                                    (label :markup "${notif.text}" :wrap true :class "notif-body")
+                                    (box :space-evenly false :halign "center"
+                                        (box :space-evenly false :orientation "v" :class "notif-action-box" :halign "center" :visible "${notif.actions != "[]"}"
+                                            (for action in "${notif?.["actions"]}"
+                                                (box :halign "start" :space-evenly false
+                                                    (button :tooltip "Invoke `${action.action}` on the notification" :class "notif-action" :timeout "16s" :onclick "makoctl invoke -n ${notif.id} ${action.action}&disown"(label :text "${action.name}" :limit-width 24)
+                                                    )
                                                 )
                                             )
                                         )
+                                        (eventbox :visible "${notif.icon != "" && notif.actions == "[]"}" :onclick "xdg-open ${notif.icon}"
+                                        (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width 240 :image-height 135)
+                                        )
                                     )
-                                    (eventbox :visible "${notif.icon != ""}" :onclick "xdg-open ${notif.icon}"
-                                    (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width 240 :image-height 135)
+                                    (box :space-evenly false
+                                        (box :space-evenly false :halign "start" :hexpand true
+                                            (label :text "By: ${notif.name}" :class "text" :limit-width 32)
+                                        )
+                                        (label :class "urgency${notif.urgency}" :text "${notif.level?: "normal"}")
                                     )
-                                )
-                                (box :space-evenly false
-                                    (box :space-evenly false :halign "start" :hexpand true
-                                        (label :text "By: ${notif.name}" :class "text" :limit-width 32)
-                                    )
-                                    (label :class "urgency${notif.urgency}" :text "${notif.level?: "normal"}")
                                 )
                             )
-                        )
+                        ))
                     )
                 )
             )
