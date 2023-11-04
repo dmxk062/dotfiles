@@ -5,37 +5,53 @@
 
 
 (defwidget error [text if]
-(box :class "err-box" :visible "${if}" :hexpand true :vexpand true
-(label :class "text-np" :wrap true :justify "left" :text "${text}")))
+    (box :class "err-box" :visible "${if}" :hexpand true :vexpand true
+        (label :class "text-np" :wrap true :justify "left" :text "${text}")
+    )
+)
+
 (defwidget lwrapped_text [text]
-(box :halign "start"
-(label :class "text-np" :wrap true :justify "left" :text "${text}")))
+    (box :halign "start"
+        (label :class "text-np" :wrap true :justify "left" :text "${text}")
+    )
+)
 
 (defwidget list_box []
-(box :class "padding_box_small" :orientation "v" :space-evenly false
-(children)))
+    (box :class "padding_box_small" :orientation "v" :space-evenly false
+        (children)
+    )
+)
 
 (defwidget separator []
-(box :class "separator"))
+    (box :class "separator")
+)
 
 (defwidget margin []
-(box :class "margin_box"
-(children)))
+    (box :class "margin_box"
+        (children)
+    )
+)
 
 (defwidget icon_tiny [name ?class]
-(image :path "${icon_theme}/${name}" :image-width "${icon_size[0]/4}" :image-height "${icon_size[1]/4}" :class "${class ?: ""}")
+    (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]/4}" :image-height "${icon_size[1]/4}" :class "${class ?: ""}")
 )
+
 (defwidget icon [name ?class]
-(image :path "${icon_theme}/${name}" :image-width "${icon_size[0]}" :image-height "${icon_size[1]}" :class "${class ?: ""}")
+    (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]}" :image-height "${icon_size[1]}" :class "${class ?: ""}")
 )
+
 (defwidget icon_large [name ?class]
-(image :path "${icon_theme}/${name}" :image-width "${icon_size[0]*2}" :image-height "${icon_size[1]*2}" :class "${class ?: ""}")
+    (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]*2}" :image-height "${icon_size[1]*2}" :class "${class ?: ""}")
 )
+
 (defwidget icon_background [name ?class]
-(image :path "${icon_theme}/${name}" :image-width "${icon_size[0]*4}" :image-height "${icon_size[1]*4}" :class "${class ?: ""}")
+    (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]*4}" :image-height "${icon_size[1]*4}" :class "${class ?: ""}")
 )
 ;; a button to open a directory
 (defwidget path_button [path text type] 
     (eventbox :class "path" :cursor "pointer" :onclick "../common/bin/open_path.sh ${path}& disown" (label :text "${type == "dir" ? "" : "󰈔"}    ${text}"))
 )
 
+(defwidget clipboard_button [content label ?icon]
+    (button :class "button" :timeout "128s" :onclick "wl-copy ${content}" "${icon?: "󰅇"}    ${label}")
+)

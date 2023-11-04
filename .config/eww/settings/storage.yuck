@@ -14,11 +14,6 @@
 (defvar disk_eject_error false)
 
 
-
-(defwidget copy_text [text info] 
-    (eventbox :class "copy" :onclick "wl-copy ${text}& disown" :cursor "pointer" :tooltip "Click to Copy" (label :limit-width 24 :text "${info} ${text}"))
-)
-
 (defwidget storage_section []
     (box :visible "${selected_section == 7}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
         (box :orientation "h" :space-evenly false :class "sidebar"
@@ -73,7 +68,7 @@
                                     )
                                     (box :class "card_footer" :space-evenly false
                                         (box :hexpand true :space-evenly false
-                                            (button :class "button" :onclick "wl-copy ${disk.path}" "󰅇    Copy path to clipboard")
+                                            (clipboard_button :content "${disk.path}" :label "Copy Path to Clipboard")
                                         )
                                         (button :class "button" :onclick "${EWW_CMD} update disk_info=''" "Close")
                                     )
@@ -137,6 +132,7 @@
                                         "bin/disks.sh unmount ${part.path} ${part.type == "swap" ? "swap" : ""};bin/disks.sh upd" :
                                         "bin/disks.sh mount ${part.path} ${part.type == "swap" ? "swap" : ""};bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
                                         )
+                                        (clipboard_button :content "${part.partuuid}" :label "Copy UUID")
                                     )
                                 )
                             )
@@ -169,6 +165,7 @@
                                         "bin/disks.sh mount ${part.decrypt.path};bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
                                         )
                                         (button :class "button" :onclick "bin/disks.sh encrypt ${part.path}" "󰌾    Lock")
+                                        (clipboard_button :content "${part.partuuid}" :label "Copy UUID")
                                     )
                                 )
                             )
