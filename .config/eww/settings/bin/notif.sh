@@ -63,7 +63,6 @@ case $1 in
             eww -c "$HOME/.config/eww/settings" update hide-notif-popups=true
         fi;;
     upd)
-        paplay "/usr/share/sounds/freedesktop/stereo/bell.oga"
         update_panel notifs="$(handle_event)"
         update_panel notif-count="$(update_count)"
         ;;

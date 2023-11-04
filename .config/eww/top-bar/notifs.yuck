@@ -71,6 +71,7 @@
         )
         (box :class "popup_footer"
             (button :class "button${hide-notif-popups ? "" : "-active"}" :timeout "16s" :onclick "../settings/bin/notif.sh toggle-mode" "${hide-notif-popups ? "󱙍" : "󰍡"}    Popups")
+            (button :class "button-good" :timeout "16s" :onclick "makoctl restore&&../settings/bin/notif.sh upd" "󰦛    Restore")
             (button :class "button-error" :timeout "16s" :onclick "makoctl dismiss -a" "    Dismiss All")
         )
             
