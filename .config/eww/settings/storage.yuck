@@ -23,22 +23,13 @@
     (box :visible "${selected_section == 7}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
         (box :orientation "h" :space-evenly false :class "sidebar"
             (box :orientation "v" :space-evenly false
-                (box :class "padding_box" :orientation "v" :space-evenly false
-                    (label :class "title" :text "Utilities")
-                    (box
-                        (button :class "button" :timeout "16s" :onclick "bin/suspend.sh gnome-disks" "󰋊    Disk Utility")
-                        (button :class "button" :timeout "16s" :onclick "bin/disks.sh upd" "󰑓    Reload")
-                        (button :class "button" :timeout "128s" :onclick "bin/loop.sh add&&bin/disks.sh upd" "󰗮    Disk Image")
-                    )
-                )
-                (label :class "title" :text "Devices")
                 (scroll :class "scroll-disks"
                 (box :orientation "v" :space-evenly false 
                     (for disk in disks
                         (overlay
                             (box :orientation "v" :space-evenly false :class "card"
                                 (box :class "padding_box" :space-evenly false :orientation "v"
-                                    (icon :name "${disk.icon_g}")
+                                    (icon :name "${matches(disk.name,"loop.*") ? "scalable/devices/media-optical.svg" : disk.icon_g}")
                                     (label :class "heading" :text "${disk.device.model?:disk.name}")
                                 )
                                 (box :orientation "v" :space-evenly false :class "card_footer"
@@ -88,7 +79,8 @@
                                             (box :orientation "v" :space-evenly false :valign "center"
                                                 (box :space-evenly false
                                                     (for part in "${disk.partitions}"
-                                                        (button :class "button${selected_part == part.partuuid ? "-active" : ""}" :timeout "16s" :onclick "${EWW_CMD} update selected_part=${part.partuuid}&&${EWW_CMD} update selected_part_disk=${disk.path}" "${part.label?:part.name}")
+                                                        (button :class "button${selected_part == part.partuuid ? "-active" : ""}" :timeout "16s" :onclick "${EWW_CMD} update selected_part=${part.partuuid}&&${EWW_CMD} update selected_part_disk=${disk.path}" 
+                                                        (label :text "${part.label?:"${replace(part.name,disk.name,"")}"}" :limit-width 6))
                                                     )
                                                 )
                                             )
@@ -106,6 +98,11 @@
                     )
                 )
                 )
+                (box :class "sidebar"
+                    (button :class "button" :timeout "16s" :onclick "bin/suspend.sh gnome-disks" "󰋊    Disk Utility")
+                    (button :class "button" :timeout "16s" :onclick "bin/disks.sh upd" "󰑓    Reload")
+                    (button :class "button" :timeout "128s" :onclick "bin/loop.sh add&&bin/disks.sh upd" "󰗮    Disk Image")
+                )
             )
         )
         (box :space-evenly false :hexpand true :halign "center"
@@ -116,7 +113,7 @@
                         (box :orientation "v" :visible "${selected_part == part.partuuid && ! part.crypt}" :space-evenly false :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :class "heading" :text "${part.label?:part.name}")
-                                    (label :class "text-large" :text "Filesystem: ${part.type}")
+                                    (label :class "text-large" :text "Filesystem: ${part.type?: "Not Detected"}")
                                     (label :class "text-large" :text "Filesystem Type: ${part.parttype}")
                                     (box :class "padding_box" :visible "${part.type != "swap"}"
                                         (overlay
@@ -124,10 +121,12 @@
                                             (label :class "text-large dark" :text "${part.mounted ? "${part.usage.used} / ${part.usage.size}" : "Mount to see disk usage"}")
                                         )
                                     )
-                                    (box :visible "${part.mount[0] != 'null' && part.type != "swap"}" :orientation "v" :space-evenly false
+                                    (box :visible "${part.mount[0] != 'null' && part.type != "swap"}" :orientation "v" :space-evenly false :halign "center"
                                         (label :class "title" :text "Mountpoints")
                                         (for mount in "${part.mount?: '[]'}"
-                                            (path_button :path "${mount}" :text "${mount}" :type "dir")
+                                            (box :halign "start"
+                                                (path_button :path "${mount}" :text "${mount}" :type "dir")
+                                            )
                                         )
                                     )
                                 )
@@ -145,7 +144,7 @@
                             (box :orientation "v" :space-evenly false :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :class "heading" :text "${part.decrypt.label?:part.decrypt.name}")
-                                    (label :class "text-large" :text "Filesystem: ${part.decrypt.type}")
+                                    (label :class "text-large" :text "Filesystem: ${part.decrypt.type?: "Not Detected"}")
                                     (label :class "text-large" :text "Filesystem Type: LUKS Encrypted Partition")
                                     (box :class "padding_box"
                                         (overlay
@@ -153,10 +152,12 @@
                                             (label :class "text-large dark" :text "${part.decrypt.mounted ? "${part.decrypt.usage.used} / ${part.decrypt.usage.size}" : "Mount to see disk usage"}")
                                         )
                                     )
-                                    (box :visible "${part.decrypt.mount[0] != 'null'}" :orientation "v" :space-evenly false
+                                    (box :visible "${part.decrypt.mount[0] != 'null'}" :orientation "v" :space-evenly false :halign "center"
                                         (label :class "title" :text "Mountpoints")
                                         (for mount in "${part.decrypt.mount?: '[]'}"
-                                            (path_button :path "${mount}" :text "${mount}" :type "dir")
+                                            (box :halign "start"
+                                                (path_button :path "${mount}" :text "${mount}" :type "dir")
+                                            )
                                         )
                                     )
                                 )
