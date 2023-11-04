@@ -89,5 +89,5 @@ stdbuf -oL -- udevadm monitor --udev -s block | while read -r -- _ _ event devpa
             fi
         fi
         # update my settings menu's disk section
-        $XDG_CONFIG_HOMR/eww/settings/bin/disks.sh upd
+        $XDG_CONFIG_HOME/eww/settings/bin/disks.sh upd
 done

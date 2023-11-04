@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Qt Assistant
+Comment=Shows Qt documentation and examples
+Exec=assistant
+Icon=assistant
+Terminal=false
+Type=Application
+Hidden=true
+Categories=Qt;Development;Documentation;

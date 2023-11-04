@@ -28,6 +28,7 @@
                     (box
                         (button :class "button" :timeout "16s" :onclick "bin/suspend.sh gnome-disks" "󰋊    Disk Utility")
                         (button :class "button" :timeout "16s" :onclick "bin/disks.sh upd" "󰑓    Reload")
+                        (button :class "button" :timeout "128s" :onclick "bin/loop.sh add&&bin/disks.sh upd" "󰗮    Disk Image")
                     )
                 )
                 (label :class "title" :text "Devices")
@@ -44,6 +45,7 @@
                                     (centerbox :space-evenly false
                                         (box :space-evenly false :halign "start"
                                             (button :class "button" :visible "${disk.hotplug}" :timeout "128s" :onclick "bin/disks.sh eject ${disk.path}&&bin/disks.sh upd" "   Eject")
+                                            (button :class "button" :timeout "128s" :onclick "bin/loop.sh remove ${disk.path}&&bin/disks.sh upd" :visible "${matches(disk.name,"loop.*")}" "󰮘    Remove")
                                         )
                                         (box :space-evenly false :halign "center"
                                             (button :class "button${selected_part_disk == disk.path ? "-active" : ""}" :onclick "${arraylength(disk.partitions) == 1 ? "${EWW_CMD} update selected_part=${disk.partitions[0].partuuid}&&${EWW_CMD} update selected_part_disk=${disk.path}" : "${EWW_CMD} update disk_parts=${disk.path}"}" "${arraylength(disk.partitions?: '[]')} partition${arraylength(disk.partitions?: '[]') == 1 ? "" : "s"}")

@@ -18,12 +18,12 @@ on-button-middle=exec makoctl menu -n "$id" rofi -dmenu -n -p Action:
 on-notify=exec paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
 
 default-timeout=30000
-# background-color=#2e3440
-background-color=#ECEFF4
-# text-color=#ECEFF4FF
-text-color=#2e3440
-# border-color=#4c566a
-border-color=#687183
+background-color=#2e3440
+# background-color=#ECEFF4
+text-color=#ECEFF4FF
+# text-color=#2e3440
+border-color=#4c566a
+# border-color=#687183
 
 [urgency=critical]
 # border-color=#9c5e6a
