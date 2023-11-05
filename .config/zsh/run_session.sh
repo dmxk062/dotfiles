@@ -3,7 +3,6 @@
 
 printf "Hi ${USER}!\n"
 
-
 if [[ "${TTY}" == "/dev/tty1" ]]
 then
     if [[ -n $DISPLAY ]]

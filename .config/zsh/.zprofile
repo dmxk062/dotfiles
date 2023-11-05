@@ -19,4 +19,7 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 PATH=$PATH:/home/dmx/.config/scripts/:$HOME/.local/bin/:$HOME/.cargo/bin/
 
 
-exec $ZDOTDIR/run_session.sh
+if [[ $(tty) == /dev/tty* ]]
+then
+    exec $ZDOTDIR/run_session.sh
+fi
