@@ -20,9 +20,15 @@ update() {
    $eww update "${1}=${2}" 
 }
 open_if_eww(){
-    if [[ $1 != "noeww" ]]
+    if [[ $EWW != "noeww" ]]
     then 
         open
+    fi
+}
+close_if_eww(){
+    if [[ $EWW != "noeww" ]]
+    then 
+        close
     fi
 }
 create_temp() {
@@ -43,7 +49,7 @@ screen_clip() {
     else
         screen="$1"
     fi
-    close
+    close_if_eww
     sleep 0.5
     if ! grim -o "$screen" "$file"
     then
@@ -53,8 +59,8 @@ screen_clip() {
     notify "Copied Image to Clipboard" "$file"
 }
 section_clip() {
+    close_if_eww
     file="$(create_temp)"
-    close
     region="$(choose_region)"
     if ! grim -g "$region" "$file"
     then
@@ -72,7 +78,7 @@ screen_file() {
     else
         screen="$1"
     fi
-    close
+    close_if_eww
     sleep 0.5
     if ! grim -o "$screen" "$file"
     then
@@ -82,7 +88,7 @@ screen_file() {
 }
 section_file() {
     file="$(create_file)"
-    close
+    close_if_eww
     region="$(choose_region)"
     if ! grim -g "$region" "$file"
     then
@@ -91,7 +97,6 @@ section_file() {
     fi
     notify "Took Screenshot: $(basename $file)" "$file"
 }
-
 case $1 in 
     toggle)
         if ! close
@@ -102,25 +107,27 @@ case $1 in
     list_monitors)
         update "screenshot_screens" "$(hyprctl -j monitors |jq 'sort_by(.x)')";;
     screen)
+        EWW=$4
         case $2 in
             clip)
                 screen_clip "$3"
-                open_if_eww "$4"
+                open_if_eww
                 ;;
             disk)
                 screen_file "$3"
-                open_if_eww "$4"
+                open_if_eww
                 ;;
         esac;;
     region)
+        EWW=$3
         case $2 in
             clip)
                 section_clip $3
-                open_if_eww $3
+                open_if_eww
                 ;;
             disk)
                 section_file "$3"
-                open_if_eww "$3"
+                open_if_eww
                 ;;
         esac;;
 esac
