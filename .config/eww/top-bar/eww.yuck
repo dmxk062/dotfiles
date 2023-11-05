@@ -1,5 +1,6 @@
 (include "../common/widgets.yuck")
 (include "../common/variables.yuck")
+(include "icons.yuck")
 
 (defwindow bar 
         :monitor 0
