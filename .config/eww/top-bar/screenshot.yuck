@@ -1,0 +1,87 @@
+(defwindow screenshot_popup 
+        :geometry (geometry :x 0
+                            :y 0
+                            :width 0
+                            :height 0
+                            :anchor "center"
+                    )
+        :stacking "overlay"
+        :namespace "eww_bar_top"
+    (screenshot)
+)
+
+(defvar screenshot_section 0)
+(defvar screenshot_screens '[]')
+(defvar screenshot_dest "disk")
+(defvar screenshot_selected_display "")
+
+;; (defvar colorp_zoom true)
+;; (defvar colorp_freeze false)
+;; (defvar colorp_color"")
+
+
+(defwidget screenshot_screen [] 
+    (box :orientation "v" :space-evenly false :visible "${screenshot_section == 0}" :hexpand true :vexpand true
+        (label :class "heading" :text "Select a Screen")
+        (box   :space-evenly false  :halign "center" :valign "center" :hexpand true :vexpand true :orientation "h" :class "padding_box"
+            (for screen in screenshot_screens
+                (box :space-evenly false :halign "start" :valign "end"
+                    (button :class "screenshot-display${screenshot_selected_display == screen.name ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_selected_display=${screen.name}" :timeout "128s"
+                        (box :width "${screen.transform % 2 == 1 ? "${round(screen.height / 15,0)}": "${round(screen.width / 15,0)}"}" :height "${screen.transform % 2 == 1 ? "${round(screen.width / 15,0)}": "${round(screen.height / 15,0)}"}"
+                            (label :text "${screen.name}")
+                        )
+                    )
+                )
+            )
+        )
+        (box :space-evenly false :halign "center" :visible "${screenshot_selected_display != ""}"
+            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh screen disk ${screenshot_selected_display}" "󰈟    Save to Disk")
+            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh screen clip ${screenshot_selected_display}" "󰅇    Copy to Clipboard")
+        )
+    )
+)
+(defwidget screenshot_selection [] 
+    (box :orientation "v" :space-evenly false :visible "${screenshot_section == 1}":hexpand true :vexpand true
+        (label :class "heading" :text "Select a Region")
+        (box :vexpand true :class "padding_box"
+        (icon_large :name "scalable/apps/accessories-screenshot.svg")
+        )
+        (box :space-evenly false :halign "center"
+            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh region disk ${screenshot_selected_display}" "󰈟    Save to Disk")
+            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh region clip ${screenshot_selected_display}" "󰅇    Copy to Clipboard")
+        )
+    )
+)
+;; (defwidget screenshot_color [] 
+;;     (box :orientation "v" :space-evenly false :visible "${screenshot_section == 2}":hexpand true
+;;         (label :class "heading" :text "Select a Color")
+;;         (box :vexpand true :class "padding_box"
+;;             (label :text "${colorp_color ?: "test"}")
+;;         )
+;;         (box :space-evenly false :halign "center"
+;;             (button :class "button${colorp_zoom ? "-active" : ""}" :onclick "${EWW_CMD} update colorp_zoom=${!colorp_zoom}" "    Zoom")
+;;             (button :class "button${colorp_freeze ? "-active" : ""}" :onclick "${EWW_CMD} update colorp_freeze=${!colorp_freeze}" "    Freeze Displays")
+;;             (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh color ${colorp_freeze} ${colorp_zoom}" "󰴱    Select Color")
+;;         )
+;;     )
+;; )
+
+
+(defwidget screenshot []
+    (box :space-evenly false :halign "center" :valign "center"
+        (box :space-evenly false :orientation "v" :class "popup_box-sc"
+            (box :class "" :space-evenly false  :hexpand true :vexpand true
+               (screenshot_screen) 
+               (screenshot_selection) 
+               ;; (screenshot_color) 
+            )
+            (box :class "popup_footer"
+                (button :class "button${screenshot_section == 0 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=0&&bin/screenshot_menu.sh list_monitors" "󰍹    Screen")
+                (button :class "button${screenshot_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=1" "󰲎    Selection")
+                ;; (button :class "button${screenshot_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=2" "󰴱    Colorpicker")
+                (button :class "button" :timeout "16s" :onclick "${EWW_CMD} close screenshot_popup" "Quit")
+            )
+        )
+    )
+
+)

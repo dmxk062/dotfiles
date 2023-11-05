@@ -1,6 +1,7 @@
 (include "../common/widgets.yuck")
 (include "../common/variables.yuck")
 (include "icons.yuck")
+(include "screenshot.yuck")
 
 (defwindow bar 
         :monitor 0
@@ -22,7 +23,6 @@
 (include "right.yuck")
 (include "dock.yuck")
 (include "center.yuck")
-;; (screenshot)
 
 (defwidget top-bar []
     (centerbox :class "top-bar"
