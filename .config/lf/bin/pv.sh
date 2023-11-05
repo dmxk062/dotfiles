@@ -3,7 +3,9 @@ IFS='
 '
 file=$1
 w=$2
+COLUMNS=$w
 h=$3
+LINES=$h
 x=$4
 y=$5
 giveOpenHint(){
@@ -87,7 +89,8 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
     ;;
     # don't open binary files
     *octet-stream)
-        printf "\033[7mBinary"
+        printf "\033[7mBinary\033[0m\n"
+        xxd -R always -u -c 12 "$1"
         exit 1
     ;; 
     application/x-sharedlib|application/x-pie-executable|application/x-executable|application/x-object)
@@ -132,4 +135,5 @@ case $file in #archives
     ;;
 esac
 # if we don't know the file yet
-giveOpenInfo "No previewer configured for files of type $(file --dereference --brief --mime-type -- "$1")"
+giveOpenInfo "No previewer configured for files of type:
+$(file --dereference --brief --mime-type -- "$1")"
