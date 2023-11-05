@@ -31,9 +31,15 @@ create_file() {
 }
 screen_clip() {
     file="$(create_temp)"
+    if [[ $1 == "current" ]]
+    then
+        screen=$(hyprctl -j monitors|jq '.[]|select(.focused).name' -r)
+    else
+        screen="$1"
+    fi
     close
     sleep 0.5
-    if ! grim -o "$1" "$file"
+    if ! grim -o "$screen" "$file"
     then
         exit
     fi
@@ -44,11 +50,6 @@ section_clip() {
     file="$(create_temp)"
     close
     region="$(choose_region)"
-    if [[ "$region" == "" ]]
-    then
-        open
-        exit
-    fi
     if ! grim -g "$region" "$file"
     then
         exit
@@ -58,9 +59,15 @@ section_clip() {
 }
 screen_file() {
     file="$(create_file)"
+    if [[ $1 == "current" ]]
+    then
+        screen=$(hyprctl -j monitors|jq '.[]|select(.focused).name' -r)
+    else
+        screen="$1"
+    fi
     close
     sleep 0.5
-    if ! grim -o "$1" "$file"
+    if ! grim -o "$screen" "$file"
     then
         exit
     fi
@@ -70,11 +77,6 @@ section_file() {
     file="$(create_file)"
     close
     region="$(choose_region)"
-    if [[ "$region" == "" ]]
-    then
-        open
-        exit
-    fi
     if ! grim -g "$region" "$file"
     then
         exit

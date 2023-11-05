@@ -122,5 +122,28 @@
             "name":"Celeste",
             "exec":"gtk-launch Celeste"
         }
+    ],
+    "screenshot":[
+        {
+            "name":"Screen to Disk",
+            "exec":"bin/screenshot_menu.sh screen disk current noeww"
+        },
+        {
+            "name":"Screen to Clipboard",
+            "exec":"bin/screenshot_menu.sh screen clip current noeww"
+        },
+        {
+            "name":"Selection to Disk",
+            "exec":"bin/screenshot_menu.sh region disk noeww"
+        },
+        {
+            "name":"Selection to Clipboard",
+            "exec":"bin/screenshot_menu.sh region clip noeww"
+        },
+        {
+            "name":"Open Screenshot Folder",
+            "exec":"nemo --name='popup nemo' ~/Pictures/Screenshots/"
+        }
     ]
+
 }
