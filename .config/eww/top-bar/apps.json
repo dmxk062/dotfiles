@@ -43,11 +43,6 @@
         "menu":"office"
     },
     {
-        "description":"Rnote Note Taking App",
-        "exec":"gtk-launch com.github.flxzt.rnote",
-        "image":"scalable/apps/rnote.svg"
-    },
-    {
         "description":"Steam Game Store",
         "exec":"gtk-launch steam",
         "image":"scalable/apps/steam.svg",
@@ -57,11 +52,6 @@
         "description":"Prismlauncher Minecraft Launcher",
         "exec":"gtk-launch org.prismlauncher.PrismLauncher",
         "image":"../hicolor/scalable/apps/org.prismlauncher.PrismLauncher.svg"
-    },
-    {
-        "description":"Gnome Clocks",
-        "exec":"gtk-launch org.gnome.clocks",
-        "image":"scalable/apps/preferences-system-time.svg"
     }
 
 ]

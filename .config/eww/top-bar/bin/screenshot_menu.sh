@@ -19,6 +19,12 @@ choose_region() {
 update() {
    $eww update "${1}=${2}" 
 }
+open_if_eww(){
+    if [[ $1 != "noeww" ]]
+    then 
+        open
+    fi
+}
 create_temp() {
     mkdir -p /tmp/eww/cache/clip
     timestamp="$(date +'%d.%m_%Y_%H:%M:%S_grim')"
@@ -52,6 +58,7 @@ section_clip() {
     region="$(choose_region)"
     if ! grim -g "$region" "$file"
     then
+        open_if_eww "$1"
         exit
     fi
     wl-copy < "$file"& disown
@@ -79,15 +86,10 @@ section_file() {
     region="$(choose_region)"
     if ! grim -g "$region" "$file"
     then
+        open_if_eww "$1"
         exit
     fi
     notify "Took Screenshot: $(basename $file)" "$file"
-}
-open_if_eww(){
-    if [[ $1 != "noeww" ]]
-    then 
-        open
-    fi
 }
 
 case $1 in 
@@ -113,11 +115,11 @@ case $1 in
     region)
         case $2 in
             clip)
-                section_clip
-                open_if_eww "$3"
+                section_clip $3
+                open_if_eww $3
                 ;;
             disk)
-                section_file
+                section_file "$3"
                 open_if_eww "$3"
                 ;;
         esac;;
