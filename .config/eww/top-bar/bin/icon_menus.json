@@ -56,11 +56,11 @@
     "nemo":[
         {
             "name":"Filesystem Root (/)",
-            "exec":"nemo /"
+            "exec":"nemo --name='popup nemo' /"
         },
         {
             "name":"Computer",
-            "exec":"nemo computer://"
+            "exec":"nemo --name='popup nemo' computer://"
         },
         {
             "name":"Floating",
