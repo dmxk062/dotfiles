@@ -39,7 +39,6 @@ screen_clip() {
     fi
     wl-copy < "$file"& disown
     notify "Copied Image to Clipboard" "$file"
-    open
 }
 section_clip() {
     file="$(create_temp)"
@@ -56,7 +55,6 @@ section_clip() {
     fi
     wl-copy < "$file"& disown
     notify "Copied Image to Clipboard" "$file"
-    open
 }
 screen_file() {
     file="$(create_file)"
@@ -67,7 +65,6 @@ screen_file() {
         exit
     fi
     notify "Took Screenshot: $(basename $file)" "$file"
-    open
 }
 section_file() {
     file="$(create_file)"
@@ -83,8 +80,12 @@ section_file() {
         exit
     fi
     notify "Took Screenshot: $(basename $file)" "$file"
-    open
-
+}
+open_if_eww(){
+    if [[ $1 != "noeww" ]]
+    then 
+        open
+    fi
 }
 
 case $1 in 
@@ -99,16 +100,24 @@ case $1 in
     screen)
         case $2 in
             clip)
-                screen_clip "$3";;
+                screen_clip "$3"
+                open_if_eww "$4"
+                ;;
             disk)
-                screen_file "$3";;
+                screen_file "$3"
+                open_if_eww "$4"
+                ;;
         esac;;
     region)
         case $2 in
             clip)
-                section_clip;;
+                section_clip
+                open_if_eww "$3"
+                ;;
             disk)
-                section_file;;
+                section_file
+                open_if_eww "$3"
+                ;;
         esac;;
 esac
 
