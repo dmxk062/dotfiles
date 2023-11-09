@@ -11,6 +11,7 @@ function set(){
     swww img -t grow \
         --transition-pos bottom \
         --transition-duration 1.2 \
+        --transition-fps=60 \
         "$HOME/.config/background/wall"
 }
 function set_as_wall(){
