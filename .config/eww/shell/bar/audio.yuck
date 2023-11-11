@@ -1,0 +1,10 @@
+(defvar audio_state "{}")
+(defvar active_sinks '[]')
+(defvar active_sources '[]')
+
+(defwidget audio_buttons []
+    (box :space-evenly false 
+        (button :class "sbutton" :timeout "16s" :onclick "pamixer -t&&../settings/bin/audio_state.sh" "${audio_state.sink.mute ? active_sinks.icon.muted : active_sinks.icon.unmuted}    ${audio_state.sink.vol}%")
+        (button :class "sbutton" :timeout "16s" :onclick "pamixer -t --default-source&&../settings/bin/audio_state.sh" "${audio_state.source.mute ? active_sources.icon.muted : active_sources.icon.unmuted}    ${audio_state.source.vol}%")
+    )
+)

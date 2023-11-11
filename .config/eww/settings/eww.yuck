@@ -12,6 +12,7 @@
 (include "display.yuck")
 (include "storage.yuck")
 (include "../common/widgets.yuck")
+(include "../common/widgets/icons.yuck")
 (include "../common/variables.yuck")
 
 

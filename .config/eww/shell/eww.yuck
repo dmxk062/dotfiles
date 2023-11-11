@@ -1,7 +1,6 @@
 (include "../common/widgets.yuck")
 (include "../common/widgets/icons.yuck")
 (include "../common/variables.yuck")
-(include "vars/audio.yuck")
 (include "screenshot.yuck")
 (include "popups/volume.yuck")
 (include "popups/bright.yuck")

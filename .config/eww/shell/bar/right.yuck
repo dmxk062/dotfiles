@@ -1,6 +1,8 @@
 (include "bar/clock.yuck")
 (include "bar/performance.yuck")
 (include "bar/session.yuck")
+(include "bar/audio.yuck")
+
 
 (defwidget tray []
     (box :class "traybox" 
