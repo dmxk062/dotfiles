@@ -32,11 +32,6 @@
         "image":"scalable/apps/kitty.svg"
     },
     {
-        "description":"Microsoft Office 365",
-        "exec":"firefox --new-window https://www.office.com/?auth=2&home=1",
-        "image":"scalable/apps/ms-office.svg"
-    },
-    {
         "description":"LibreOffice Office Suite",
         "exec":"gtk-launch libreoffice-startcenter",
         "image":"scalable/apps/libreoffice.svg",

@@ -27,12 +27,12 @@
             (box :class "padded_box"
             (overlay 
                 (box :class "image_overlay")
-                (image :path "${mpris_meta.img}" :image-width 308 )
+                (image :path "${mpris_meta.img?:"${mpris.title == "null" ? "${icon_theme}/24/actions/media-album-track.svg" : "${icon_theme}/scalable/apps/accessories-media-converter.svg"}"}" :image-width 308 :image-height 180 )
             )
 
             )
             (box :class "popup_footer" :orientation "v" :space-evenly false
-                (box :visible "${mpris_meta.avail}"
+                (box :visible "${mpris_meta.avail && mpris_meta.pos != ""}"
                     (box :class "padded_box_large" :orientation "v"
                         (label :text "${formattime(mpris_meta.pos / 1000000 - 3600,"%H:%M:%S")}/${formattime(mpris_meta.len / 1000000 - 3600,"%H:%M:%S")}")
                         (scale :value "${(mpris_meta.pos / mpris_meta.len)*100}" :class "slider"
