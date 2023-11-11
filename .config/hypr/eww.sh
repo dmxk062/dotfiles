@@ -26,4 +26,5 @@ $EWWDIR/settings/bin/audio_state.sh
 $EWWDIR/settings/bin/sinks_sources.sh upd sinks & disown
 $EWWDIR/settings/bin/sinks_sources.sh upd sources & disown
 $EWWDIR/shell/bin/hyprmon.sh monitor & disown
+$EWWDIR/settings/bin/colorscheme.sh get
 # ~/.config/HOME/panel/bin/notif.sh monitor & disown

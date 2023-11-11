@@ -2,6 +2,17 @@
 
 colorfile="$XDG_CONFIG_HOME/eww/style/color.scss"
 
+if [[ $1 == 'get' ]]
+then
+    if grep -q 'dark' "$colorfile"
+    then
+        eww -c $XDG_CONFIG_HOME/eww/settings update colorscheme="dark"
+    else
+        eww -c $XDG_CONFIG_HOME/eww/settings update colorscheme="light"
+    fi
+    exit
+fi
+
 if grep -q 'dark' "$colorfile"
 then
     sed -i 's/dark/light/' $XDG_CONFIG_HOME/eww/style/color.scss
