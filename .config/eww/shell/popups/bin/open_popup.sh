@@ -1,6 +1,6 @@
 #!/bin/bash
 
-eww="eww -c $HOME/.config/eww/popups"
+eww="eww -c $HOME/.config/eww/shell"
 
 [ -f /tmp/.eww_no_popups ]&&exit
 

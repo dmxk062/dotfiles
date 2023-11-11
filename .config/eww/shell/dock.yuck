@@ -74,7 +74,7 @@
                 (button :class "image_button" :onclick "../settings/bin/input.sh osk" :tooltip "WVKBD"
                     (image :path "${icon_theme}/scalable/devices/input-keyboard.svg" :image-width 48 :image-height 48)
                 )
-                (icon_button :exec "../top-bar/bin/screenshot_menu.sh toggle" :tooltip "Screenshots" :path "scalable/apps/accessories-screenshot.svg" :menu "screenshot")
+                (icon_button :exec "bin/screenshot_menu.sh toggle" :tooltip "Screenshots" :path "scalable/apps/accessories-screenshot.svg" :menu "screenshot")
                 (icon_button :exec "eww_settings.sh" :tooltip "EWW Settings" :path "scalable/apps/preferences-system.svg" :menu "settings")
                 
             )

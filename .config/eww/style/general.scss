@@ -112,6 +112,23 @@
         }
     }
 }
+.slider-vol,.slider-vol-off,.slider-bright{
+    @extend .slider-large;
+    trough{
+        min-height: .8rem;
+        background-color:  $bg1;
+    }
+}
+.slider-vol-off{
+    trough highlight{
+        background-color: $bg3;
+    }
+}
+.slider-bright{
+    trough highlight{
+        background-color: $yellow;
+    }
+}
 .slider-small trough{
     min-width: 12rem;
 }
@@ -265,6 +282,16 @@
 }
 .dark{
     color: $inverted;
+}
+.charicon,.charicon-off{
+    padding: $padding-std;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: .6rem;
+    font-size: 3rem;
+    color: $fg;
+}
+.charicon-off{
+    color: $bg3;
 }
 
 // circular-progress widgets

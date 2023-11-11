@@ -1,6 +1,6 @@
 #!/bin/bash
 
-eww="eww -c $HOME/.config/eww/top-bar"
+eww="eww -c $HOME/.config/eww/shell"
 
 create_temp() {
     mkdir -p /tmp/eww/cache/clip

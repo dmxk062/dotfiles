@@ -224,6 +224,12 @@ arrow.right, arrow.left {
 .popup_box_padded{
     padding: .5rem;
 }
+.audio_popup_box{
+    @extend .popup_box_padded;
+    border-radius: $rounding-large;
+    margin-bottom: 6rem;
+    min-width: 38rem;
+}
 .padded_box{
     padding: .5rem;
 }

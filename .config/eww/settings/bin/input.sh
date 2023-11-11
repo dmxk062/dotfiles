@@ -65,11 +65,11 @@ function osk(){
     if killall wvkbd
     then
         $eww update osk=false
-        eww -c "$HOME/.config/eww/top-bar" update osk=false
+        eww -c "$HOME/.config/eww/shell" update osk=false
     else
         $HOME/.local/bin/wvkbd --fn "Torus" --landscape-layers full  &
         $eww update osk=true
-        eww -c "$HOME/.config/eww/top-bar/" update osk=true
+        eww -c "$HOME/.config/eww/shell/" update osk=true
     fi
 
 }

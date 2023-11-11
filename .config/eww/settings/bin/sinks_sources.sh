@@ -128,8 +128,7 @@ set_sink(){
 }
 update(){
     eww -c $HOME/.config/eww/settings update "$@"&
-    eww -c $HOME/.config/eww/top-bar update "$@"&
-    eww -c $HOME/.config/eww/popups update "$@"&
+    eww -c $HOME/.config/eww/shell update "$@"&
 }
 case $1 in
     upd)

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-eww="eww -c $HOME/.config/eww/top-bar"
+eww="eww -c $HOME/.config/eww/shell"
 
 if ! $eww close weather_popup 
 then

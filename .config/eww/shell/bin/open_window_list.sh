@@ -1,6 +1,6 @@
 #!/bin/sh
 
-eww="eww -c $XDG_CONFIG_HOME/eww/top-bar"
+eww="eww -c $XDG_CONFIG_HOME/eww/shell"
 workspace_order='{
 "web":1,
 "web2":2,

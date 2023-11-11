@@ -1,8 +1,3 @@
-(defvar audio_state '{}')
-(defvar active_sinks '{}')
-(defvar active_sources '{}')
-
-
 (defwindow out_popup
     :geometry (geometry :x 0
                         :y 0
@@ -18,13 +13,13 @@
 
 (defwidget output []
     (box :space-evenly false :halign "center" :valign "center"
-        (box :space-evenly false :class "popup-box"
-            (label :text "${audio_state.sink.mute ? "󰝟" : (audio_state.sink.vol > 70 ? "󰕾" : ( audio_state.sink.vol > 33 ? "󰖀" : "󰕿"))}" :class "volicon${audio_state.sink.mute ? "-muted" : ""}")
+        (box :space-evenly false :class "audio_popup_box"
+            (label :text "${audio_state.sink.mute ? "󰝟" : (audio_state.sink.vol > 70 ? "󰕾" : ( audio_state.sink.vol > 33 ? "󰖀" : "󰕿"))}" :class "charicon${audio_state.sink.mute ? "-off" : ""}")
             (box :orientation "v"
                 (label :text "Out: ${active_sinks.name}" :limit-width 20 :class "heading")
-                    (scale :value "${audio_state.sink.vol}" :class "volslider${audio_state.sink.mute ? "-muted" : ""}")
+                    (scale :value "${audio_state.sink.vol}" :class "slider-vol${audio_state.sink.mute ? "-off" : ""}")
             )
-            (label :text "${audio_state.sink.vol}%" :class "vollabel")
+            (label :text "${audio_state.sink.vol}%" :class "charicon")
         )
     )   
 )
@@ -43,13 +38,13 @@
 
 (defwidget inputscale []
     (box :space-evenly false :halign "center" :valign "center"
-        (box :space-evenly false :class "popup-box"
-            (label :text "${audio_state.source.mute ? "󰝟" : (audio_state.source.vol > 70 ? "󰕾" : ( audio_state.source.vol > 33 ? "󰖀" : "󰕿"))}" :class "volicon${audio_state.source.mute ? "-muted" : ""}")
+        (box :space-evenly false :class "audio_popup_box"
+            (label :text "${audio_state.source.mute ? "󰝟" : (audio_state.source.vol > 70 ? "󰕾" : ( audio_state.source.vol > 33 ? "󰖀" : "󰕿"))}" :class "charicon${audio_state.source.mute ? "-off" : ""}")
             (box :orientation "v"
                 (label :text "In: ${active_sources.name}" :limit-width 20 :class "heading")
-                (scale :value "${audio_state.source.vol}" :class "volslider${audio_state.source.mute ? "-muted" : ""}")
+                (scale :value "${audio_state.source.vol}" :class "slider-vol${audio_state.source.mute ? "-off" : ""}")
             )
-            (label :text "${audio_state.source.vol}%" :class "vollabel")
+            (label :text "${audio_state.source.vol}%" :class "charicon")
         )
     )
 )

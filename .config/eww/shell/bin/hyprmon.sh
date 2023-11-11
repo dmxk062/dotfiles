@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function update(){
-    eww -c "$HOME/.config/eww/top-bar/" update "$@"
+    eww -c "$HOME/.config/eww/shell/" update "$@"
 }
 
 workspace_order='{

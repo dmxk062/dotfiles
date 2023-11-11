@@ -2,7 +2,7 @@
 
 CITY="graz"
 KEY=$(< "$XDG_DATA_HOME/keys/openweather")
-eww="eww -c $XDG_CONFIG_HOME/eww/top-bar"
+eww="eww -c $XDG_CONFIG_HOME/eww/shell"
 
 get_icon(){
     case $1 in

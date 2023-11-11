@@ -15,7 +15,7 @@ function update(){
     eww -c $HOME/.config/eww/hud/ update "$@"
 }
 function update_panel(){
-    eww -c $HOME/.config/eww/top-bar/ update "$@"
+    eww -c $HOME/.config/eww/shell/ update "$@"
 }
 function handle_event(){
     time=$(date +'%H:%M')

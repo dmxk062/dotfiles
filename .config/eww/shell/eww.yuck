@@ -2,6 +2,9 @@
 (include "../common/variables.yuck")
 (include "icons.yuck")
 (include "screenshot.yuck")
+(include "popups/volume.yuck")
+(include "popups/bright.yuck")
+
 
 (defwindow bar 
         :monitor 0

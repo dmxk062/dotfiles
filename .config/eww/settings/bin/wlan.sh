@@ -1,7 +1,6 @@
 #!/bin/bash
 
 eww_settings="eww -c $HOME/.config/eww/settings"
-eww_bar="eww -c $HOME/.config/eww/top-bar"
 
 function status(){
     if [[ $(nmcli radio wifi) == "enabled" ]]

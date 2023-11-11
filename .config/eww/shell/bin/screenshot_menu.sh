@@ -1,5 +1,5 @@
 #!/bin/bash
-eww="eww -c $HOME/.config/eww/top-bar"
+eww="eww -c $HOME/.config/eww/shell"
 
 notify(){
     notify-send "$1" -i "$2" -c "screenshot"

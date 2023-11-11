@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 eww="eww -c $HOME/.config/eww/settings"
-eww_bar="eww -c $XDG_CONFIG_HOME/eww/top-bar/"
+eww_bar="eww -c $XDG_CONFIG_HOME/eww/shell/"
 
 dock(){
     if  $eww_bar close dock_edge

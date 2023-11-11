@@ -1,6 +1,6 @@
 #!/bin/bash
 
-eww="eww -c $HOME/.config/eww/top-bar"
+eww="eww -c $HOME/.config/eww/shell"
 
 if ! $eww close session_popup
 then
