@@ -33,12 +33,12 @@ close_if_eww(){
 }
 create_temp() {
     mkdir -p /tmp/eww/cache/clip
-    timestamp="$(date +'%d.%m_%Y_%H:%M:%S_grim')"
+    timestamp="$(date +'%Y_%m.%d_%H:%M:%S_sc')"
     echo "/tmp/eww/cache/clip/${timestamp}.png"
 }
 create_file() {
     dir="$(xdg-user-dir PICTURES)/Screenshots"
-    timestamp="$(date +'%d.%m_%Y_%H:%M:%S_grim')"
+    timestamp="$(date +'%Y_%m.%d_%H:%M:%S_sc')"
     echo "${dir}/${timestamp}.png"
 }
 screen_clip() {

@@ -53,5 +53,5 @@
 )
 
 (defwidget clipboard_button [content label ?icon]
-    (button :class "button" :timeout "128s" :onclick "wl-copy ${content}" "${icon?: "󰅇"}    ${label}")
+    (button :class "button" :timeout "128s" :onclick "wl-copy '${content}'" "${icon?: "󰅇"}    ${label}")
 )

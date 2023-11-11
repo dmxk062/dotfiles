@@ -18,6 +18,8 @@
 ;; (defvar colorp_zoom true)
 ;; (defvar colorp_freeze false)
 ;; (defvar colorp_color"")
+(defvar qr_data '{}')
+(defvar qr_error false)
 
 
 (defwidget screenshot_screen [] 
@@ -52,6 +54,27 @@
         )
     )
 )
+(defwidget screenshot_qr [] 
+    (box :orientation "v" :space-evenly false :visible "${screenshot_section == 2}":hexpand true :vexpand true
+        (label :class "heading" :text "Select a QR Code")
+        (box :vexpand true :class "padding_box"
+            (box  :visible "${qr_data.type == "wifi"}"
+                (box :orientation "v" :space-evenly false
+                    (icon_large :name "scalable/devices/network-wireless.svg")
+                    (label :text "${qr_data.ssid}" :class "heading")
+                )
+                (box :orientation "v" :space-evenly false
+                    (clipboard_button :content "${qr_data.password}" :label "Copy Password")
+                    (clipboard_button :content "${qr_data.ssid}" :label "Copy SSID")
+                )
+            )
+        )
+        (box :space-evenly false :halign "center"
+            (button :class "button" :timeout "256s" :onclick "bin/qr_decode.sh" "󰐳    Scan QR Code")
+            (error :if "${qr_error}" :text "Failed to Process QR Code. Make sure that you select the whole QR Code")
+        )
+    )
+)
 ;; (defwidget screenshot_color [] 
 ;;     (box :orientation "v" :space-evenly false :visible "${screenshot_section == 2}":hexpand true
 ;;         (label :class "heading" :text "Select a Color")
@@ -73,12 +96,12 @@
             (box :class "" :space-evenly false  :hexpand true :vexpand true
                (screenshot_screen) 
                (screenshot_selection) 
-               ;; (screenshot_color) 
+               ;; (screenshot_qr) 
             )
             (box :class "popup_footer"
                 (button :class "button${screenshot_section == 0 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=0&&bin/screenshot_menu.sh list_monitors" "󰍹    Screen")
                 (button :class "button${screenshot_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=1" "󰲎    Selection")
-                ;; (button :class "button${screenshot_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=2" "󰴱    Colorpicker")
+                ;; (button :class "button${screenshot_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=2" "󰐳    Scan")
                 (button :class "button" :timeout "16s" :onclick "${EWW_CMD} close screenshot_popup" "Quit")
             )
         )
