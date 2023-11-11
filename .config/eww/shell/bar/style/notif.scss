@@ -1,0 +1,79 @@
+.notif_button,.notif_button-active{
+    @extend .sbutton;
+}
+.notif_button-active{
+    background-color: $orange;
+    color: $inverted;
+    &:hover{
+        background-color: fade($orange);
+    }
+}
+
+.notif,.notif-expanded,.notif-urgent,.notif-urgent-expanded{
+    background-color: $bg1;
+    border-radius: $rounding-small;
+  	box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 3px;
+    margin: .5rem;
+    padding: .5rem;
+}
+.notif-expanded,.notif-urgent-expanded{
+    background-color: $bg2;
+}
+.notif-urgent,.notif-urgent-expanded{
+    border-bottom: 2px solid $error;
+}
+.notif-expander-button,.notif-expander-button-expanded{
+    color: $fg0;
+    padding: 0rem 0.5rem 0.1rem 0.3rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    label {
+        font-size: 1.5rem;
+    }
+    &:hover{
+        color: mix($fg2, $bg3, 70);
+        background-color: unset;
+    }
+
+}
+.notif-close-button{
+    @extend .notif-expander-button;
+    color: $error;
+    &:hover{
+        color: fade($error)
+    }
+}
+
+.notif-body{
+    color: $fg;
+    margin-bottom: .5rem;
+    font-size: 1.2rem;
+}
+.notif-action{
+    color: $fg2;
+    label {
+        font-size: 1.2rem;
+    }
+    &:hover{
+        color: fade($fg2);
+    }
+}
+.notif-action-box{
+    margin: .5rem 1rem .5rem 1rem;
+    padding: .5rem 2rem .5rem 2rem;
+    border-radius: $rounding-small;
+    background-color: $bg3;
+}
+.notif-image{
+    border-radius: 24px;
+}
+.urgency0{
+    color: $green;
+}
+.urgency1{
+    color: $yellow;
+}
+.urgency2{
+    color: $red;
+}
+

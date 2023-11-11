@@ -1,0 +1,16 @@
+.battery,.battery-charging,.battery-critical{
+    padding: .3rem 1rem .3rem .7rem;
+    background-color: $bg2;
+    border-radius: $rounding-small;
+    margin: .5rem;
+    color: $fg0;
+}
+.battery-charging{
+    background-color: $green;
+    color: $inverted;
+}
+.battery-critical{
+    background-color: $red;
+    color: $inverted;
+}
+

@@ -21,7 +21,7 @@
 )
 
 (defwidget power_button [action class text]
-(button :class "${class}" :onclick "sleep 0.1&&bin/shutdown.sh ${action}&disown&&${EWW_CMD} close session_popup" :timeout "16s" "${text}")
+    (button :class "${class}" :onclick "sleep 0.1&&bin/shutdown.sh ${action}&disown&&${EWW_CMD} close session_popup" :timeout "16s" "${text}")
 )
 
 (defwidget session [] 

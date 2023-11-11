@@ -1,4 +1,4 @@
-(include "notifs.yuck")
+(include "bar/notifs.yuck")
 
 (defwidget clock []
     (box :space-evenly false :class "notifbox"

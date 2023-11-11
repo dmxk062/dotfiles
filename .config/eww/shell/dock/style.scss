@@ -1,0 +1,27 @@
+.image_button{
+    padding: .1rem .2rem .1rem .2rem;
+    margin: .2rem .4rem .2rem .4rem;
+    border-radius: 1.2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    &:hover{
+        background-color: $bg2;
+    }
+    &:active{
+        background-color: $bg3;
+    }
+}
+.lbutton{
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: $rounding-small;
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+    margin: .2rem;
+    color: $fg;
+    &:hover{
+        background-color: $bg1;
+    }
+    &:active{
+        background-color: $accent;
+    }
+
+}
+

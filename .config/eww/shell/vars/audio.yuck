@@ -1,0 +1,3 @@
+(defvar audio_state "{}")
+(defvar active_sinks '[]')
+(defvar active_sources '[]')

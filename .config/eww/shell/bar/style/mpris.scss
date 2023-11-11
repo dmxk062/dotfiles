@@ -1,0 +1,11 @@
+.mpris-button,.mpris-button-playing{
+    @extend .sbutton;
+}
+.mpris-button-playing{
+    background: linear-gradient(to left, $accent, $bg2);
+    background-size: 200% 100%;
+    &:hover{
+        background: linear-gradient(to left, fade($accent), $bg3);
+    }
+}
+

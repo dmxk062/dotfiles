@@ -1,0 +1,72 @@
+
+check {
+    border-radius: $rounding-small;
+    min-width: 1rem;
+    min-height: 1rem;
+    background-color: $bg3;
+    margin-right: .5rem;
+
+    &:checked{
+        background-color: $accent;
+
+    }
+}
+
+menu {
+    background-color: $bg1;
+    border-radius: $rounding-large;
+    margin: 2rem;
+    padding: 1rem;
+    border: 2px solid $bg3;
+    
+    menu {
+        border-radius: $rounding-small;
+        padding: .4rem;
+        margin: 1rem;
+    }
+
+    separator {
+        margin: .5rem;
+        margin-top: .8rem;
+        margin-bottom: .8rem;
+        min-height: .2rem;
+        border-radius: 999999px;
+        background-color: $bg3;
+    }
+    > menuitem {
+        margin-right: .2rem;
+        margin-left: .2rem;
+        padding: $padding-std;
+        color: $fg;
+
+        &:disabled{
+            color: $bg3;
+        }
+        &:hover {
+            background-color: mix($bg3, $bg1, 70);
+            border-radius: $rounding-small;
+        }
+    }
+
+}
+
+menubar {
+    > menuitem {
+        padding: $padding-std;
+        border-radius: $rounding-small;
+        background-color: $bg2;
+        color: $fg;
+        margin: .5rem;
+        &:hover{
+            background-color: $bg3;
+        }
+    }
+}
+
+arrow.right, arrow.left {
+    border-radius: 2rem;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid $fg0;
+}
+

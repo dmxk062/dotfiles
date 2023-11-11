@@ -1,0 +1,24 @@
+.slider-vol,.slider-vol-off,.slider-bright{
+    @extend .slider-large;
+    trough{
+        min-height: .8rem;
+        background-color:  $bg1;
+    }
+}
+.slider-vol-off{
+    trough highlight{
+        background-color: $bg3;
+    }
+}
+.slider-bright{
+    trough highlight{
+        background-color: $yellow;
+    }
+}
+.audio_popup_box{
+    @extend .popup_box_padded;
+    border-radius: $rounding-large;
+    margin-bottom: 6rem;
+    min-width: 38rem;
+}
+

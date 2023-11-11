@@ -1,0 +1,16 @@
+(defwidget icon_tiny [name ?class]
+    (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]/4}" :image-height "${icon_size[1]/4}" :class "${class ?: ""}")
+)
+
+(defwidget icon [name ?class]
+    (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]}" :image-height "${icon_size[1]}" :class "${class ?: ""}")
+)
+
+(defwidget icon_large [name ?class]
+    (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]*2}" :image-height "${icon_size[1]*2}" :class "${class ?: ""}")
+)
+
+(defwidget icon_background [name ?class]
+    (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]*4}" :image-height "${icon_size[1]*4}" :class "${class ?: ""}")
+)
+

@@ -1,0 +1,30 @@
+(include "bar/ws.yuck")
+(include "bar/right.yuck")
+(include "bar/center.yuck")
+(include "bar/icons.yuck")
+
+
+
+
+(defwidget top-bar []
+    (centerbox :class "top-bar"
+    (workspaces)
+    (center)
+    (right)))
+
+
+(defwindow bar 
+        :monitor 0
+        :geometry (geometry :x "0px"
+                            :y "0px"
+                            :width "100%"
+                            :height "32px"
+                            :anchor "top center"
+                    )
+        :stacking "fg"
+        :exclusive "true"
+        :namespace "eww_bar_top"
+        :hexpand false
+        :vexpand false
+    (top-bar)
+)

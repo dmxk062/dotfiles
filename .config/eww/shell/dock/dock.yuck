@@ -4,7 +4,7 @@
 :namespace "eww_active_edge"
 (activator))
 (defwidget activator []
-(eventbox :onhover "bin/open_dock.sh& disown" :onclick "bin/open_dock.sh& disown"))
+(eventbox :onhover "dock/bin/open_dock.sh& disown" :onclick "dock/bin/open_dock.sh& disown"))
 
 (defwindow dock_window 
         :monitor 0
@@ -28,7 +28,7 @@
 
 
 (defwidget icon_button [path exec tooltip menu]
-    (button :class "image_button" :onclick "${exec}&disown" :tooltip "${tooltip}" :onrightclick "bin/open_icon_menu.sh ${menu}& disown" :timeout "16s"
+    (button :class "image_button" :onclick "${exec}&disown" :tooltip "${tooltip}" :onrightclick "dock/bin/open_icon_menu.sh ${menu}& disown" :timeout "16s"
         (image :path "${icon_theme}/${path}" :image-width 48 :image-height 48)
     )
 )
@@ -50,12 +50,12 @@
         (box :class "popup_box_padded" :orientation "v" :space-evenly false
             (box :orientation "v"
                 (for entry in icon_menu_entries
-                    (button :class "lbutton" :onclick "${entry.exec}& disown&&bin/open_icon_menu.sh"
+                    (button :class "lbutton" :onclick "${entry.exec}& disown&&dock/bin/open_icon_menu.sh"
                     (label :text "${entry.name}")
                     )
                 )
             )
-            (button :class "lbutton" :onclick "bin/open_icon_menu.sh default" "Cancel")
+            (button :class "lbutton" :onclick "dock/bin/open_icon_menu.sh default" "Cancel")
         )
     )
 )

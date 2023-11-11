@@ -1,0 +1,33 @@
+.ws-active, .ws-inactive, .ws-special, .ws-add{
+    padding: $padding-std;
+    border-radius: $rounding-small;
+    background-color: $bg2;
+    margin: .5rem;
+    color: $fg0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.ws-active{
+    background-color: $accent;
+    color: $inverted;
+    &:hover{
+        background-color: fade($accent)
+    }
+}
+.ws-special{
+    background-color: $special;
+    color: $inverted;
+    &:hover{
+        background-color: fade($special)
+    }
+}
+.ws-add{
+    background-color: $green;
+    color: $inverted;
+    &:hover{
+        background-color: fade($green)
+    }
+}
+.ws-inactive:hover{
+    background-color: $bg3;
+}
+
