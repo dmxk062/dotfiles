@@ -103,7 +103,7 @@
                     (for stream in streams
                         (box :class "card" :space-evenly false :orientation "v"
                             (box :class "padding_box" :orientation "v" :space-evenly false
-                                (label :class "card-label" :text "${stream.name} - ${stream.app}" :limit-width 32 :tooltip "${stream.name} in ${stream.app}")
+                                (label :class "card-label" :text "${stream.name} - ${stream.app}" :limit-width 30 :tooltip "${stream.name} in ${stream.app}")
                                 (box :class "sliderbox" :space-evenly false
                                     (scale :class "slider-large" :value "${stream.volume}" :min 0 :max 101 :timeout "16s" :onchange "pactl set-sink-input-volume ${stream.id} {}%&&bin/mixer.sh&disown")
                                 )

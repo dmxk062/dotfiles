@@ -25,7 +25,7 @@ else
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     color="dark"
 fi
-for EWW in popups settings shell
+for EWW in settings shell
 do
     eww -c $XDG_CONFIG_HOME/eww/$EWW reload
 done
