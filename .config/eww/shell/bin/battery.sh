@@ -20,9 +20,14 @@ then
 else
     remaining=$current
 fi
-time=$(echo "scale=2; $remaining / $wattage * 60"|bc)
-hours=$(echo "$time / 60" | bc)
-minutes=$(echo "scale=0; $time % 60" | bc)
+printf '{"max":%s,"perc":%s,"charging":%s,"watts":%s,"current":%s,"remaining":%s}' "$max" "$percentage" "$status" "$wattage" "$current" "$remaining"
+# printf '{"max":71690000,"perc":50,"charging":false,"watts":8097000,"current":54040000,"remaining":71690000}'
 
-LC_NUMERIC="en_US.UTF-8" printf '{"perc":%s,"time":"%.0fh %.0fm","charging":%s,"wattage":%s}' "$percentage" "${hours}" "${minutes}" "$charging" $(echo "scale=2;$wattage / 1000000"|bc)
+
+
+# time=$(echo "scale=2; $remaining / $wattage * 60"|bc)
+# hours=$(echo "$time / 60" | bc)
+# minutes=$(echo "scale=0; $time % 60" | bc)
+#
+# LC_NUMERIC="en_US.UTF-8" printf '{"perc":%s,"time":"%.0fh %.0fm","charging":%s,"wattage":%s}' "$percentage" "${hours}" "${minutes}" "$charging" $(echo "scale=2;$wattage / 1000000"|bc)
 

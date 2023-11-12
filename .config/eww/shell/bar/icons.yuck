@@ -33,7 +33,7 @@
 "special:2":"󱓥  2",
 "special:3":"󱜏",
 "special:4":"󰥔",
-"vm":"󰒋"
+"srv":"󰒋"
 }')
 
 ;; (defvar win_icons '{

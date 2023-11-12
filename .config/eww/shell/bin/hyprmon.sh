@@ -35,7 +35,7 @@ workspace_order='{
 "23":33,
 "24":34,
 "games":300,
-"vm":350,
+"srv":350,
 "external":370,
 "special:1":400,
 "special:2":401,
