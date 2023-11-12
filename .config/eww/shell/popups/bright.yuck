@@ -15,9 +15,10 @@
         (box :space-evenly false :class "audio_popup_box"
             (label :text "${brightness > 90 ? "󰃠" : (brightness > 70 ? "󰃟" : (brightness > 50 ? "󰃞" : (brightness > 30 ? "󰃝" : (brightness > 10 ? "󰃜" : "󰃛"))) )}" :class "charicon")
             (box :orientation "v"
-                (label :text "Brightness: ${round(brightness,0)}%" :limit-width 20 :class "heading")
+                (label :text "Brightness" :limit-width 20 :class "heading")
                 (scale :value "${brightness}" :class "slider-bright")
             )
+            (label :text "${round(brightness,0)}%" :class "charicon")
         )
     )
 )
