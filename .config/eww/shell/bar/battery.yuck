@@ -1,4 +1,4 @@
-(defpoll battery :interval "1s" "bin/battery.sh")
+(defpoll battery :interval "12s" "bin/battery.sh")
 
 (defvar icons_discharging '[
 "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
