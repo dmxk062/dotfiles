@@ -1,0 +1,9 @@
+(defwidget lbutton [onclick label ?visible ?tooltip]
+    (button :class "lbutton" :timeout "128s" 
+        :onclick "${onclick}"
+        :visible "${visible ?: true}"
+        :tooltip "${tooltip ?: ""}"
+        "${label}"
+    )
+
+)

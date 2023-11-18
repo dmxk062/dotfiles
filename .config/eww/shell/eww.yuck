@@ -5,6 +5,7 @@
 (include "popups/volume.yuck")
 (include "popups/bright.yuck")
 
+(include "widgets/lbutton.yuck")
 (include "bar/bar.yuck")
 (include "dock/dock.yuck")
 (include "rightclick/rightclick.yuck")

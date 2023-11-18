@@ -1,6 +1,7 @@
 (defvar rc_win_area 0)
 (defvar rc_show_more false)
 
+
 (defwindow rightclick_area 
         :geometry (geometry :x 0
                             :y 0
@@ -45,30 +46,30 @@
             )
             (box :orientation "v" :visible {window.title != "null"} :space-evenly false
                 (box :space-evenly false :orientation "v" :visible {rc_win_area == 0}
-                    (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch togglefloating& ${EWW_CMD} close rc_popup" "${window.floating ? "Unfloat" : "Float"}")
-                    (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch fullscreen 0& ${EWW_CMD} close rc_popup" "${window.fullscreen ? "Unfullscreen" : "Fullscreen"}")
-                    (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch pin& ${EWW_CMD} close rc_popup" :visible {window.floating} "${window.pinned ? "Unpin" : "Pin"}")
-                    (button :class "lbutton" :timeout "128s" :onclick "" :visible {window.floating} "${window.pinned ? "Unpin" : "Pin"}")
-                    (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch killactive& ${EWW_CMD} close rc_popup" "Close Window")
-                    (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=2" "Screenshot")
-                    (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=1" "Move to")
+                    (lbutton :onclick "hyprctl dispatch togglefloating& ${EWW_CMD} close rc_popup" :label "${window.floating ? "Unfloat" : "Float"}")
+                    (lbutton :onclick "hyprctl dispatch fullscreen 0& ${EWW_CMD} close rc_popup" :visible {!window.floating} :label "${window.fullscreen ? "Unfullscreen" : "Fullscreen"}")
+                    (lbutton :onclick "hyprctl dispatch pin& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "${window.pinned ? "Unpin" : "Pin"}")
+                    (lbutton :onclick "hyprctl dispatch killactive& ${EWW_CMD} close rc_popup" :label "Close Window")
+                    (lbutton :onclick "sleep 0.1&&rightclick/mods/resize.sh ${window.address}& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "Resize")
+                    (lbutton :onclick "${EWW_CMD} update rc_win_area=2" :label "Screenshot")
+                    (lbutton :onclick "${EWW_CMD} update rc_win_area=1" :label "Move to")
                 )
                 (box :orientation "v" :space-evenly false :visible {rc_win_area == 1}
                     (box :space-evenly false :halign "center"
-                        (button :class "lbutton" :timeout "128s" :tooltip "Previous" :onclick "hyprctl dispatch movetoworkspace -1& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" "󰁍")
-                        (button :class "lbutton" :timeout "128s" :tooltip "Main" :onclick "hyprctl dispatch movetoworkspace name:main& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" "Home")
-                        (button :class "lbutton" :timeout "128s" :tooltip "Next" :onclick "hyprctl dispatch movetoworkspace +1& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" "󰁔")
+                        (lbutton :tooltip "Previous" :onclick "hyprctl dispatch movetoworkspace -1& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :label "󰁍")
+                        (lbutton :tooltip "Main" :onclick "hyprctl dispatch movetoworkspace name:main& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false"  :label "Home")
+                        (lbutton :tooltip "Next" :onclick "hyprctl dispatch movetoworkspace +1& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :label "󰁔")
                     )
                     (separator)
                     (box :orientation "v" (for ws in workspaces 
-                        (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch movetoworkspacesilent ${ws.name}& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :visible {ws.id != window.workspace.id} "${ws.name}")
+                        (lbutton :onclick "hyprctl dispatch movetoworkspacesilent ${ws.name}& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :visible {ws.id != window.workspace.id} :label "${ws.name}")
                     ))
                     (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=0" "Back")
                 )
                 (box :orientation "v" :space-evenly false :visible {rc_win_area == 2}
-                    (button :class "lbutton" :onclick "rightclick/mods/sc.sh clip" :timeout "128s" "Copy to Clipboard")
-                    (button :class "lbutton" :onclick "rightclick/mods/sc.sh disk" :timeout "128s" "Save to Disk")
-                    (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=0" "Back")
+                    (lbutton :onclick "rightclick/mods/sc.sh clip" :label "Copy to Clipboard")
+                    (lbutton :onclick "rightclick/mods/sc.sh disk" :label "Save to Disk")
+                    (lbutton :onclick "${EWW_CMD} update rc_win_area=0" :label "Back")
                 )
 
             )
