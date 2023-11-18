@@ -71,6 +71,13 @@ function monitor_changes(){
     refresh
     socat -u "UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |while read -r line;
     do
+        if [[ $line == urgent* ]]
+        then
+            IFS=">" read -r _ _ addr <<< "$line"
+            addr="0x${addr}"
+            update urgent_win="${addr}"
+            update urgent_ws="$(hyprctl clients -j|jq --arg addr "$addr" '.[]|select(.address == $addr)|.workspace.id')"
+        fi
         refresh
     done
 }

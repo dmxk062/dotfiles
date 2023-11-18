@@ -48,7 +48,7 @@
 
 }
 
-.list_item, .list_item-active{
+.list_item, .list_item-active, .list_item-urgent{
     padding: .3rem 1rem .3rem .7rem;
     background-color: $bg2;
     border-radius: $rounding-small;
@@ -68,6 +68,13 @@
     color: $inverted;
     &:hover{
         background-color: fade($accent)
+    }
+}
+.list_item-urgent{
+    background-color: $red;
+    color: $inverted;
+    &:hover{
+        background-color: fade($red)
     }
 }
 
