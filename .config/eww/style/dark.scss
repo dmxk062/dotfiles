@@ -11,9 +11,9 @@ $fg1: $snow1;
 $fg2: $snow2;
 $inverted: $polar0;
 
-$accent: mix($snow2, $yellow);
+// $accent: mix($snow2, $yellow);
 // $accent: mix($snow2, $dcyan);
-// $accent: $dcyan;
+$accent: $dcyan;
 $error: $red;
 $warn: $orange;
 $attention: $yellow;

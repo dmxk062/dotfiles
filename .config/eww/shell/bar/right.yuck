@@ -2,7 +2,7 @@
 (include "bar/performance.yuck")
 (include "bar/session.yuck")
 (include "bar/audio.yuck")
-(include "bar/battery.yuck")
+;; (include "bar/battery.yuck")
 
 
 (defwidget tray []
@@ -17,7 +17,7 @@
             (tray)
             (performance_button)
             (clock)
-            (battery)
+            ;; (battery)
             ;; (audio_buttons)
             (session_button)
         )

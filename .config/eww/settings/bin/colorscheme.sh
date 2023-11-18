@@ -32,6 +32,7 @@ done
 $HOME/.local/bin/eww_settings.sh
 sleep 0.1
 eww -c $XDG_CONFIG_HOME/eww/settings update colorscheme="$color"
+eww -c $XDG_CONFIG_HOME/eww/shell open rightclick_area --screen 0
 $XDG_CONFIG_HOME/eww/settings/bin/audio_state.sh
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sinks & disown
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sources & disown

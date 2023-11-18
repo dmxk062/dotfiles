@@ -1,0 +1,52 @@
+(defwindow rightclick_area 
+        :geometry (geometry :x 0
+                            :y 0
+                            :width "100%"
+                            :height "100%"
+                    )
+        :stacking "bg"
+        :namespace "eww_rightclick"
+    (rightclick_menu)
+)
+
+(defwidget rightclick_menu []
+    (eventbox :onrightclick "rightclick/bin/open_rc_menu.sh& disown" :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"  :timeout "128s"
+    (box :class "" :hexpand true :vexpand true))
+)
+
+
+
+
+(defwindow rc_popup 
+        :stacking "fg"
+        :namespace "special"
+        :geometry (geometry :x 0
+                            :y 0
+                            :width 0
+                            :height 0
+                    )
+        :stacking "overlay"
+    (rc_popup_menu)
+)
+
+(defwidget rc_popup_menu []
+    (box :class "popup_box_padded"
+        (box :orientation "v" :space-evenly false
+            (button :class "lbutton" :onclick "sleep 0.1&&rightclick/mods/term.sh" :timeout "128s" "New Terminal")
+            (button :class "lbutton" :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :timeout "128s" "Open Settings")
+            (button :class "lbutton" :timeout "128s" :onclick "bin/screenshot_menu.sh region disk noeww& ${EWW_CMD} close rc_popup" "Screenshot Disk")
+            (button :class "lbutton" :timeout "128s" :onclick "bin/screenshot_menu.sh region clip noeww& ${EWW_CMD} close rc_popup" "Screenshot Clipboard")
+            (box :orientation "v" :visible {window.title != "null"}
+                (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch togglefloating& ${EWW_CMD} close rc_popup" "${window.floating ? "Unfloat" : "Float"}")
+                (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch fullscreen 0& ${EWW_CMD} close rc_popup" "${window.fullscreen ? "Unfullscreen" : "Fullscreen"}")
+                (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch pin& ${EWW_CMD} close rc_popup" :visible {window.floating} "${window.pinned ? "Unpin" : "Pin"}")
+                (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch killactive& ${EWW_CMD} close rc_popup" "Close Window")
+
+            )
+            ;; (box 
+            ;;     (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch workspace -1" "󰍞    Prev")
+            ;;     (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch workspace +1" "Next  󰍟")
+            ;; )
+        )
+    )
+)

@@ -7,4 +7,4 @@
 
 (include "bar/bar.yuck")
 (include "dock/dock.yuck")
-
+(include "rightclick/rightclick.yuck")

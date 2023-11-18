@@ -15,6 +15,18 @@ dock(){
     fi
 }
 
+rightclick(){
+    if  $eww_bar close rightclick_area
+    then
+        $eww update rightclick=false
+        $eww_bar close rightclick_area
+    else
+        $eww_bar open rightclick_area --screen 0
+        $eww update rightclick=true
+    fi
+}
+
+
 bar(){
     if  $eww_bar close bar
     then
@@ -47,4 +59,6 @@ bar)
     bar;;
 popups)
     popups;;
+rightclick)
+    rightclick;;
 esac

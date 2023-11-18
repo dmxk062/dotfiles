@@ -8,6 +8,7 @@
 (defvar dock true)
 (defvar bar true)
 (defvar popups true)
+(defvar rightclick true)
 
 
 (defvar system '{}')
@@ -51,6 +52,10 @@
                 (list_box
                     (button :class "button${bar ? "-active" : ""}" :onclick "bin/shell.sh bar""󱔓    Bar")
                     (wrapped_text :wrap true :text "A bar at the top of the screen showing workspaces, windows, media and other information")
+                )
+                (list_box
+                    (button :class "button${rightclick ? "-active" : ""}" :onclick "bin/shell.sh rightclick""󰍜    Desktop Menu")
+                    (wrapped_text :wrap true :text "A desktop context menu activated by right clicking on the desktop")
                 )
                 (list_box
                     (button :class "button${popups ? "-active" : ""}" :onclick "bin/shell.sh popups""󰍦    Popups")
