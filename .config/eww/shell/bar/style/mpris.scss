@@ -2,9 +2,9 @@
     @extend .sbutton;
 }
 .mpris-button-playing{
-    background: linear-gradient(to right, $accent, $bg2 70%);
+    background: linear-gradient(to left, $accent, $bg2 70%);
     &:hover{
-        background: linear-gradient(to right, fade($accent), $bg3);
+        background: linear-gradient(to left, fade($accent), $bg3);
     }
 }
 

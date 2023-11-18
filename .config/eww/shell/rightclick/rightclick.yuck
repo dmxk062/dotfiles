@@ -73,10 +73,6 @@
                 )
 
             )
-            ;; (box 
-            ;;     (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch workspace -1" "󰍞    Prev")
-            ;;     (button :class "lbutton" :timeout "128s" :onclick "hyprctl dispatch workspace +1" "Next  󰍟")
-            ;; )
         )
     )
 )
