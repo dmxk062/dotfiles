@@ -71,10 +71,10 @@
     }
 }
 .list_item-urgent{
-    background-color: $red;
+    background-color: $light-red;
     color: $inverted;
     &:hover{
-        background-color: fade($red)
+        background-color: fade($light-red)
     }
 }
 

@@ -1,6 +1,6 @@
 (defvar rc_win_area 0)
 (defvar rc_show_more false)
-
+(defvar rc_start_desktop true)
 
 (defwindow rightclick_area 
         :geometry (geometry :x 0
@@ -14,7 +14,7 @@
 )
 
 (defwidget rightclick_menu []
-    (eventbox :onrightclick "rightclick/bin/open_rc_menu.sh& disown" :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"  :timeout "128s"
+    (eventbox :onrightclick "rightclick/bin/open_rc_menu.sh desktop&" :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"  :timeout "128s"
     (box :class "" :hexpand true :vexpand true))
 )
 
@@ -36,7 +36,7 @@
 (defwidget rc_popup_menu []
     (box :class "popup_box_padded"
         (box :orientation "v" :space-evenly false
-            (box :orientation "v" :visible {window.title == "null"} :space-evenly false
+            (box :orientation "v" :visible {window.title == "null" || rc_start_desktop} :space-evenly false
                 (button :class "lbutton" :onclick "sleep 0.1&&rightclick/mods/term.sh" :timeout "128s" "New Terminal")
                 (revealer :reveal rc_show_more :transition "slideup" :duration "0.2s" (box :orientation "v" :space-evenly false
                     (button :class "lbutton" :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :timeout "128s" "Open Settings")
@@ -44,7 +44,7 @@
                 ))
                 (button :class "lbutton" :onclick "${EWW_CMD} update rc_show_more=${!rc_show_more}" "${rc_show_more ? "Less" : "More"}")
             )
-            (box :orientation "v" :visible {window.title != "null"} :space-evenly false
+            (box :orientation "v" :visible {window.title != "null" && !rc_start_desktop} :space-evenly false
                 (box :space-evenly false :orientation "v" :visible {rc_win_area == 0}
                     (lbutton :onclick "hyprctl dispatch killactive& ${EWW_CMD} close rc_popup" :label "Close Window")
                     (lbutton :onclick "hyprctl dispatch togglefloating& ${EWW_CMD} close rc_popup" :label "${window.floating ? "Unfloat" : "Float"}")

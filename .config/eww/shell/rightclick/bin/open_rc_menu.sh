@@ -7,3 +7,9 @@ get_relative_cursor(){
     echo "$((x-x_r-90))x$((y-y_r-100))" # those values are based on window size, i found these to be decent
 }
 $eww open --screen 0 --toggle rc_popup --pos=$(get_relative_cursor)
+case $1 in
+    desktop)
+        $eww update rc_start_desktop=true;;
+    window)
+        $eww update rc_start_desktop=false;;
+esac
