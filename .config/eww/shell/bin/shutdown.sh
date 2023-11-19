@@ -18,7 +18,7 @@ prompt(){
 }
 case $1 in
     off)
-        prompt "Shutdown System?" "systemctl poweroff"
+        prompt "Perform Shutdown?" "systemctl poweroff"
         ;;
     reboot)
         prompt "Reboot System?" "systemctl reboot"
@@ -34,4 +34,8 @@ case $1 in
         ;;
     uefi)
         prompt "Reboot into Firmware Setup?" "systemctl reboot --firmware-setup"
+        ;;
+    hibernate)
+        prompt "Suspend to Disk?" "systemctl hibernate"
+        ;;
 esac
