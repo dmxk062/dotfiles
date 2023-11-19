@@ -22,8 +22,8 @@
 # file types (with matching order)
 ln      󰌷       # LINK
 or      󰌸       # ORPHAN
-tw      󱇧       # STICKY_OTHER_WRITABLE
-ow      󱇧       # OTHER_WRITABLE
+tw      󰣞       # STICKY_OTHER_WRITABLE
+ow      󰣞       # OTHER_WRITABLE
 st      s       # STICKY
 di             # DIR
 pi      󰟥       # FIFO
