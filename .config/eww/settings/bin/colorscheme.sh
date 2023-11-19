@@ -4,7 +4,7 @@ colorfile="$XDG_CONFIG_HOME/eww/style/color.scss"
 
 if [[ $1 == 'get' ]]
 then
-    if grep -q 'dark' "$colorfile"
+    if grep -q 'dark.css' "$colorfile"
     then
         eww -c $XDG_CONFIG_HOME/eww/settings update colorscheme="dark"
     else
