@@ -1,3 +1,9 @@
+(defvar apps "[]")
+(defvar dock_reveal false)
+(defvar osk false)
+
+(include "dock/menu.yuck")
+
 (defwindow dock_edge :monitor 0
 :geometry (geometry :x "0%" :y "0%" :width "40%" :height "1px" :anchor "bottom center")
 :stacking "fg"
@@ -19,44 +25,7 @@
     (dock)
 )
 
-(defvar apps "[]")
 
-(defvar icon_menu_entries '[]')
-(defvar open_icon_menu '')
-(defvar dock_reveal false)
-(defvar osk false)
-
-
-(defwidget icon_button [path exec tooltip menu]
-    (button :class "image_button" :onclick "${exec}&disown" :tooltip "${tooltip}" :onrightclick "dock/bin/open_icon_menu.sh ${menu}& disown" :timeout "16s"
-        (image :path "${icon_theme}/${path}" :image-width 48 :image-height 48)
-    )
-)
-
-(defwindow icon_popup 
-        :stacking "fg"
-        :namespace "special"
-        :geometry (geometry :x 0
-                            :y 0
-                            :width 0
-                            :height 0
-                    )
-        :stacking "overlay"
-    (launch_option_list)
-)
-
-(defwidget launch_option_list []
-    (box :space-evenly false :halign "center" :valign "center"
-        (box :class "popup_box_padded" :orientation "v" :space-evenly false
-            (box :orientation "v"
-                (for entry in icon_menu_entries
-                    (lbutton :onclick "${entry.exec}& disown&&dock/bin/open_icon_menu.sh" :label "${entry.name}")
-                )
-            )
-            (lbutton :onclick "dock/bin/open_icon_menu.sh default" :label "Cancel")
-        )
-    )
-)
 
 (defwidget dock []
     (box :space-evenly false :halign "center" :valign "center"
