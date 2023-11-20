@@ -47,6 +47,12 @@ function get_active_workspace_id(){
     hyprctl activeworkspace -j|jq  '.id'
 }
 
+sleep_urgent() {
+   sleep 10
+   eww -c $XDG_CONFIG_HOME/eww/shell update urgent_ws=''
+   eww -c $XDG_CONFIG_HOME/eww/shell update urgent_win=''
+}
+
 function list_workspaces(){
         active=$(get_active_workspace_id)
         hyprctl workspaces -j|jq --argjson order "$workspace_order" --argjson activeid "$active" 'map({
@@ -77,6 +83,7 @@ function monitor_changes(){
             addr="0x${addr}"
             update urgent_win="${addr}"
             update urgent_ws="$(hyprctl clients -j|jq --arg addr "$addr" '.[]|select(.address == $addr)|.workspace.id')"
+            sleep_urgent& 
         fi
         refresh
     done

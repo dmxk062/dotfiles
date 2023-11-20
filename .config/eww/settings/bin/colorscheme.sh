@@ -16,12 +16,12 @@ fi
 if grep -q 'dark.scss' "$colorfile"
 then
     sed -i 's/dark.scss/light.scss/' $XDG_CONFIG_HOME/eww/style/color.scss
-    sed -i 's/dark.scss/light.scss/' $XDG_CONFIG_HOME/rofi/style/color.rasi
+    sed -i 's/dark/light/' $XDG_CONFIG_HOME/rofi/style/color.rasi
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
     color="light"
 else
     sed -i 's/light.scss/dark.scss/' $XDG_CONFIG_HOME/eww/style/color.scss
-    sed -i 's/light.scss/dark.scss/' $XDG_CONFIG_HOME/rofi/style/color.rasi
+    sed -i 's/light/dark/' $XDG_CONFIG_HOME/rofi/style/color.rasi
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     color="dark"
 fi
