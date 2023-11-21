@@ -12,7 +12,7 @@ do
     eww -c $EWWDIR/$eww_daemon daemon & disown
 done
 
-for eww_window in bar dock_edge "rightclick_area --screen 0"
+for eww_window in bar dock_edge "desktop_area --screen 0"
 do
     eww -c $EWWDIR/shell open $eww_window  & disown
 done

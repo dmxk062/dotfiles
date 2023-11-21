@@ -16,12 +16,12 @@ dock(){
 }
 
 rightclick(){
-    if  $eww_bar close rightclick_area
+    if  $eww_bar close desktop_area
     then
         $eww update rightclick=false
-        $eww_bar close rightclick_area
+        $eww_bar close desktop_area
     else
-        $eww_bar open rightclick_area --screen 0
+        $eww_bar open desktop_area --screen 0
         $eww update rightclick=true
     fi
 }

@@ -3,7 +3,7 @@
 (defvar rc_show_session false)
 (defvar rc_start_desktop true)
 
-(defwindow rightclick_area 
+(defwindow desktop_area 
         :geometry (geometry :x 0
                             :y 0
                             :width "100%"
