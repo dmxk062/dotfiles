@@ -48,7 +48,7 @@ function get_active_workspace_id(){
 }
 
 sleep_urgent() {
-   sleep 10
+   sleep 16
    eww -c $XDG_CONFIG_HOME/eww/shell update urgent_ws=''
    eww -c $XDG_CONFIG_HOME/eww/shell update urgent_win=''
 }

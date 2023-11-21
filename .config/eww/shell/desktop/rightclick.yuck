@@ -15,7 +15,7 @@
 )
 
 (defwidget rightclick_menu []
-    (eventbox :onrightclick "rightclick/bin/open_rc_menu.sh desktop&" :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"  :timeout "128s"
+    (eventbox :onrightclick "desktop/bin/open_rc_menu.sh desktop&" :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"  :timeout "128s"
     (box :class "" :hexpand true :vexpand true))
 )
 
@@ -36,7 +36,7 @@
 
 (defwidget rc_section_desktop []
 (box :orientation "v" :visible {window.title == "null" || rc_start_desktop} :space-evenly false
-    (button :class "lbutton" :onclick "sleep 0.1&&rightclick/mods/term.sh" :timeout "128s" "New Terminal")
+    (button :class "lbutton" :onclick "sleep 0.1&&desktop/mods/term.sh" :timeout "128s" "New Terminal")
     (revealer :reveal rc_show_more :transition "slideup" :duration "0.2s" (box :orientation "v" :space-evenly false
         (lbutton :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :label "Open Settings")
         (lbutton :onclick "bin/screenshot_menu.sh toggle& ${EWW_CMD} close rc_popup" :label "Screenshot")
@@ -51,7 +51,7 @@
         (lbutton :onclick "hyprctl dispatch togglefloating& ${EWW_CMD} close rc_popup" :label "${window.floating ? "Unfloat" : "Float"}")
         (lbutton :onclick "hyprctl dispatch fullscreen 0& ${EWW_CMD} close rc_popup" :visible {!window.floating} :label "${window.fullscreen ? "Unfullscreen" : "Fullscreen"}")
         (lbutton :onclick "hyprctl dispatch pin& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "${window.pinned ? "Unpin" : "Pin"}")
-        (lbutton :onclick "sleep 0.2&&rightclick/mods/resize.sh ${window.address}& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "Resize")
+        (lbutton :onclick "sleep 0.2&&desktop/mods/resize.sh ${window.address}& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "Resize")
         (lbutton :onclick "${EWW_CMD} update rc_win_area=2" :label "Screenshot")
         (lbutton :onclick "${EWW_CMD} update rc_win_area=1" :label "Move to")
     )
@@ -68,8 +68,8 @@
         (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=0" "Back")
     )
     (box :orientation "v" :space-evenly false :visible {rc_win_area == 2}
-        (lbutton :onclick "rightclick/mods/sc.sh clip" :label "Copy to Clipboard")
-        (lbutton :onclick "rightclick/mods/sc.sh disk" :label "Save to Disk")
+        (lbutton :onclick "desktop/mods/sc.sh clip" :label "Copy to Clipboard")
+        (lbutton :onclick "desktop/mods/sc.sh disk" :label "Save to Disk")
         (lbutton :onclick "${EWW_CMD} update rc_win_area=0" :label "Back")
     )
 
