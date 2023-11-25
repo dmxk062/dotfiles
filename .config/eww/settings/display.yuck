@@ -37,7 +37,7 @@
                                     (button :timeout "16s" :class "button${mon.transform > 3 ? "-active" : ""}" :onclick "bin/monitor_settings.sh transform ${mon.name} ${mon.transform > 3 ? (mon.transform - 4) : (mon.transform + 4)}&&bin/display.sh upd" :tooltip "Flip" "󱃧    Flip")
                                     (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh transform ${mon.name} ${mon.transform == 3 ? "0" : (mon.transform + 1)}&&bin/display.sh upd" :tooltip "Rotate" "")
                                 )
-                                (wrapped_markup :text "Transform the Monitor in Hyprland. 
+                                (wrapped_text :text "Transform the Monitor in Hyprland. 
 Current Transformation: ${transform_states[mon.transform]}
 Raw Value as seen by Hyprland: <tt>${mon.transform}</tt>")
                             )
@@ -47,7 +47,7 @@ Raw Value as seen by Hyprland: <tt>${mon.transform}</tt>")
                                     (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh scale ${mon.name} 1&&bin/display.sh upd" "Reset")
                                     (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh scale ${mon.name} ${mon.scale - 0.1}&&bin/display.sh upd" "")
                                 )
-                                (wrapped_markup :text "Configure Scaling. Integer scales like <tt>1</tt> or <tt>2</tt> are more likely to work without any issues.
+                                (wrapped_text :text "Configure Scaling. Integer scales like 1 or 2 are more likely to work without any issues.
 Current Monitor Scale: ${mon.scale}x")
                             )
                             (list_box 

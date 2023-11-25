@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 addr="$1"
+if [ "$addr" == "auto" ]
+then
+    win="$(hyprctl activewindow -j)"
+    addr="$(echo "$win"|jq '.address' -r)"
+    if ! echo "$win"|jq -e '.floating'
+    then
+        hyprctl dispatch "togglefloating address:${addr}"
+    fi
+fi
 read -r pos size <<< "$(slurp -w 0 -b "#4c566acc" -s "#ffffff00")"
 x=${pos%%,*} 
 y=${pos#*,}
