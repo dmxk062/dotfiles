@@ -3,6 +3,10 @@ addr="$1"
 if [ "$addr" == "auto" ]
 then
     win="$(hyprctl activewindow -j)"
+    if [ "$win" == "{}" ]
+    then
+        exit
+    fi
     addr="$(echo "$win"|jq '.address' -r)"
     if ! echo "$win"|jq -e '.floating'
     then
