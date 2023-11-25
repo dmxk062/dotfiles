@@ -1,0 +1,19 @@
+(defwindow desktop_area 
+        :geometry (geometry :x 0
+                            :y 0
+                            :width "100%"
+                            :height "100%"
+                    )
+        :stacking "bg"
+        :namespace "eww_rightclick"
+    (desktop)
+)
+
+(defwidget desktop []
+;; (overlay
+(rightclick_menu)
+;; (box)
+;; )
+)
+
+(include "desktop/rightclick.yuck")

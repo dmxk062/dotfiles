@@ -76,6 +76,7 @@
                 (button :timeout "16s" :onclick "${EWW_CMD} update audio_section=0&&bin/sinks_sources.sh upd sinks" :class "button${audio_section == 0 ? "-active" : ""}" "󰓃    Output")
                 (button :timeout "16s" :onclick "${EWW_CMD} update audio_section=1&&bin/sinks_sources.sh upd sources" :class "button${audio_section == 1 ? "-active" : ""}" "    Input")
                 (button :timeout "16s" :onclick "${EWW_CMD} update audio_section=2&&bin/mixer.sh" :class "button${audio_section == 2 ? "-active" : ""}" "󰺂    Mixer")
+                (button :timeout "16s" :onclick "bin/suspend.sh 'pavucontrol'&" :class "button" "󰭴    Control")
             )
         )
         (box :visible "${audio_section == 0}" :space-evenly false

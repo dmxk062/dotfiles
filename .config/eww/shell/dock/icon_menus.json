@@ -144,6 +144,28 @@
             "name":"Open Screenshot Folder",
             "exec":"nemo --name='popup nemo' ~/Pictures/Screenshots/"
         }
+    ],
+    "minecraft":[
+        {
+            "name":"Main Instance",
+            "exec":"prismlauncher --launch main"
+        },
+        {
+            "name":"Open Instance Folder",
+            "exec":"nemo --name='popup nemo' /mnt/Games/Minecraft/prismlauncher_instances/"
+        },
+        {
+            "name":"Open Main Folder",
+            "exec":"nemo --name='popup nemo' /mnt/Games/Minecraft/prismlauncher_instances/main/.minecraft/"
+        },
+        {
+            "name":"Edit Main",
+            "exec":"prismlauncher --show main"
+        },
+        {
+            "name":"Minecraft Server Console",
+            "exec":"kitty --class=popup ssh dmxerv"
+        }
     ]
 
 }

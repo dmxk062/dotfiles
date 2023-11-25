@@ -3,19 +3,13 @@
 (defvar rc_show_session false)
 (defvar rc_start_desktop true)
 
-(defwindow desktop_area 
-        :geometry (geometry :x 0
-                            :y 0
-                            :width "100%"
-                            :height "100%"
-                    )
-        :stacking "bg"
-        :namespace "eww_rightclick"
-    (rightclick_menu)
-)
 
 (defwidget rightclick_menu []
-    (eventbox :onrightclick "desktop/bin/open_rc_menu.sh desktop&" :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"  :timeout "128s"
+    (eventbox 
+    :onrightclick "desktop/bin/open_rc_menu.sh desktop&" 
+    :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"   
+    :timeout "128s"
+    ;; :onscroll "desktop/mods/ws_scroll.sh {}"
     (box :class "" :hexpand true :vexpand true))
 )
 
