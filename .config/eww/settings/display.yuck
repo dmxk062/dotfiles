@@ -42,6 +42,7 @@ Current Transformation: ${transform_states[mon.transform]}
 Raw Value as seen by Hyprland: ${mon.transform}")
                             )
                             (list_box
+                                (input :class "input" :value {mon.scale} :onaccept "bin/monitor_settings.sh scale ${mon.name} {}")
                                 (box
                                     (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh scale ${mon.name} ${mon.scale + 0.1}&&bin/display.sh upd" "")
                                     (button :timeout "16s" :class "button" :onclick "bin/monitor_settings.sh scale ${mon.name} 1&&bin/display.sh upd" "Reset")
