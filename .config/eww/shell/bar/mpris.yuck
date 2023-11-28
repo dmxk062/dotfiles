@@ -4,17 +4,15 @@
 
 (defwidget mpris_button []
     (box :space-evenly false
-    (button :class "mpris-button${mpris.active ? "-playing" : ""}" :onclick "${EWW_CMD} open mpris_popup --toggle" :onmiddleclick "playerctl play-pause" :timeout "16s" (label :text "${mpris.active ? "󰐊" : "󰐎"}    ${mpris.title?: "No Player"}" :limit-width 20))
+    (button :class "mpris-button${mpris.active ? "-playing" : ""}" :onclick "${EWW_CMD} open mpris_popup --toggle --screen 0 --anchor 'top center'" :onmiddleclick "playerctl play-pause" :timeout "16s" (label :text "${mpris.active ? "󰐊" : "󰐎"}    ${mpris.title?: "No Player"}" :limit-width 20))
     )
 )
 
 (defwindow mpris_popup 
-        :monitor 0
         :geometry (geometry :x 0
                             :y 0
                             :width 0
                             :height 0
-                            :anchor "top center"
                     )
         :stacking "overlay"
         :namespace "eww_bar_top"
@@ -34,7 +32,7 @@
             (box :class "popup_footer" :orientation "v" :space-evenly false
                 (box :visible "${mpris_meta.avail && mpris_meta.pos != ""}"
                     (box :class "padded_box_large" :orientation "v"
-                        (label :text "${formattime(round(mpris_meta.pos / 1000000,0),"%M:%S")} of ${formattime(round(mpris_meta.len / 1000000,0),"%M:%S")}" :class "text")
+                        (label :text "${formattime(round(mpris_meta.pos / 1000000,0),"%H:%M:%S", "UTC")} of ${formattime(round(mpris_meta.len / 1000000,0),"%H:%M:%S", "UTC")}" :class "text")
                         (scale :value "${(mpris_meta.pos / mpris_meta.len)*100}" :class "slider"
                         :onchange "bin/mpris.sh jump {} ${mpris_meta.len / 1000000}")
                     )

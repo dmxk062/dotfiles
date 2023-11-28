@@ -32,4 +32,16 @@ case $1 in
             $eww close bright_popup
         fi
         $eww update brightness=$(light -G)
+        ;;
+    mpris)
+        oldid=$(pgrep "open_popup" |head -n 1)
+        if [[ $oldid == $BASHPID ]]
+        then
+            $eww open mpris_popup --screen 0 --anchor "center"
+            sleep 1
+            $eww close mpris_popup
+        fi
+        ;;
+
+        
 esac

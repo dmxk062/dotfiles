@@ -1,4 +1,5 @@
 (include "bar/notifs.yuck")
+(include "bar/weather.yuck")
 
 (defwidget clock []
     (box :space-evenly false :class "notifbox"
@@ -7,48 +8,3 @@
         
 ))
 
-(defwindow weather_popup 
-        :monitor 0
-        :geometry (geometry :x 0
-                            :y 0
-                            :width 0
-                            :height 0
-                            :anchor "top right"
-                    )
-        :stacking "overlay"
-        :namespace "eww_bar_top"
-    (weather)
-)
-
-(defvar city "Graz")
-(defvar weather '{}')
-(defvar weather_load false)
-(defvar last_forecast 0)
-(defvar last_weather 0)
-(defwidget weather []
-    (box :space-evenly false :halign "center" :valign "center"
-        (box :space-evenly false :orientation "v" :class "popup_box"
-            (box :space-evenly false :class "padding_box" :halign "center" :valign "center"
-                (box :halign "center" :class "padding_box"
-                (icon_large :name "${weather.icon_path?:'scalable/apps/apport.svg'}" :class "icon-backdrop")
-                )
-                (separator)
-                (box :space-evenly false :orientation "v" :visible "${weather != '[]'}" :valign "center"
-                    (label :class "text-large" :text "${round(weather.main.temp,1)}°C in ${weather.name}")
-                    (label :class "text-large" :text "Feels like ${round(weather.main.feels_like,1)}°C")
-                    (label :class "text-large" :text "Humidity: ${weather.main.humidity}%")
-                    (label :class "text-large" :text "Wind: ${round(weather.wind.speed / 3.6,1)}km/h")
-                )
-            )
-            (box :space-evenly false :class "popup_footer" :orientation "v"
-                (box :space-evenly false
-                    (button :class "button" :onclick "bin/weather.sh upd ${city}" "${weather_load ? "" : "󰑓"}")
-                    (button :class "button":onclick "bin/weather.sh change& disown ${city}" :timeout "128s" "󱅙    ${city}")
-                    (button :class "button":onclick "gtk-launch org.gnome.clocks" :timeout "128s" "󰥔    Clocks")
-                    (label :class "button" :text "${formattime(EWW_TIME,"%d.%m.%Y")}")
-                )
-                (label :class "button" :text "${formattime(EWW_TIME,"%T")}")
-            )
-        )
-    )
-)

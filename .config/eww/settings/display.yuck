@@ -39,7 +39,7 @@
                                 )
                                 (wrapped_text :text "Transform the Monitor in Hyprland. 
 Current Transformation: ${transform_states[mon.transform]}
-Raw Value as seen by Hyprland: <tt>${mon.transform}</tt>")
+Raw Value as seen by Hyprland: ${mon.transform}")
                             )
                             (list_box
                                 (box

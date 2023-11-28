@@ -48,7 +48,7 @@ Size: ${win.size[0]}x${win.size[1]}
 Position: ${win.position[0]}x${win.position[1]}"
                                 (box :space-evenly false :hexpand true
                                     (box :space-evenly false :hexpand true
-                                        (label :text "${win.title ?: win.class ?: "No class or title"}" :limit-width 32 :class "list_l")
+                                        (label :text "${win.title ?: win.class ?: "No class or title"}" :limit-width 30 :class "list_l")
                                     )
                                     (label :text "${ws_icons[win.workspace.name]?: win.workspace.name?: "id: ${win.workspace.id}"}" :class "list_r")
                                 )

@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+urldecode() {
+    local i="${*//+/ }"
+    i="${i//"file://"/}"
+    echo -e "${i//%/\\x}" 
+}
+
 function listen(){
     playerctl -F metadata -f '{ "player":"{{playerName}}","active":"{{lc(status)}}","title":"{{markup_escape(title)}}" }'|while read -r line
 do
@@ -14,7 +20,7 @@ done
 
 
 function metadata(){
-    img_path="$(playerctl metadata 'mpris:artUrl'|sed 's/file:\/\///')"
+    img_path="$(urldecode "$(playerctl metadata 'mpris:artUrl')")"
     if ! [[ -f "$img_path" ]]
     then
         img_path="null"
