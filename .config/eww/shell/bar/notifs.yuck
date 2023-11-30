@@ -28,7 +28,7 @@
     (box :space-evenly false :halign "end" :valign "start"
         (box :class "popup_box" :space-evenly false :orientation "v"
         (box :class "padding_box"
-            (scroll :vscroll true :class "scroll-large"
+            (scroll :vscroll true :class "scroll-notif" :vexpand true
                 (box :orientation "v" :space-evenly false :hexpand true
                     (for notif in notifs 
                         (eventbox :onmiddleclick "makoctl dismiss -n ${notif.id}"
@@ -49,17 +49,22 @@
                                 )
                                 (box :visible "${notif.id == expanded_notif}" :orientation "v" :space-evenly false
                                     (label :markup "${notif.text}" :wrap true :class "notif-body")
-                                    (box :space-evenly false :halign "center"
-                                        (box :space-evenly false :orientation "v" :class "notif-action-box" :halign "center" :visible "${notif.actions != "[]"}"
-                                            (for action in "${notif?.["actions"]}"
+                                    (box :halign "start"
+                                        (box :space-evenly false  :visible "${notif.actions != "[]"}" :hexpand true
+                                            (box :orientation "v" :halign "center" :space-evenly false (for action in "${notif?.["actions"]}" 
                                                 (box :halign "start" :space-evenly false
-                                                    (button :tooltip "Invoke `${action.action}` on the notification" :class "notif-action" :timeout "16s" :onclick "makoctl invoke -n ${notif.id} ${action.action}&disown"(label :text "${action.name}" :limit-width 24)
+                                                    (button :tooltip "Invoke `${action.action}` on the notification"
+                                                            :class "lbutton" 
+                                                            :timeout "16s" 
+                                                            :onclick "makoctl invoke -n ${notif.id} ${action.action}&disown"
+                                                            (label :text "${action.name}" :limit-width 16)
                                                     )
                                                 )
-                                            )
+                                            ))
+                                            (separator)
                                         )
-                                        (eventbox :visible "${notif.icon != "" && notif.actions == "[]"}" :onclick "xdg-open ${notif.icon}"
-                                        (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width 240 :image-height 135)
+                                        (eventbox :visible "${notif.icon != ""}" :onclick "xdg-open ${notif.icon}"
+                                            (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width 128 :image-height 128)
                                         )
                                     )
                                     (box :space-evenly false

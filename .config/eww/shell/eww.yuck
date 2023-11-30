@@ -4,6 +4,7 @@
 (include "screenshot.yuck")
 (include "popups/volume.yuck")
 (include "popups/bright.yuck")
+(include "popups/workspace.yuck")
 
 (include "widgets/lbutton.yuck")
 (include "bar/bar.yuck")

@@ -22,3 +22,9 @@
     min-width: 38rem;
 }
 
+.ws_popup_box{
+    @extend .popup_box_padded;
+    border-radius: $rounding-large;
+    margin-bottom: 12rem;
+    padding: unset;
+}

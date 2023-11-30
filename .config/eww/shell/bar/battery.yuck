@@ -52,7 +52,7 @@
             )
             (box :class "popup_footer" :orientation "v"
                 (label :class "text" :text "${battery.charging ? "Charging" : "Discharging"} at ${battery.watts/1000000}W")
-                (label :class "text" :text "${formattime(round((battery.remaining / battery.watts * 3600) - 3600,0),"%H:%M")} ${battery.charging ? "until full" : "until empty"}")
+                (label :class "text" :text "${formattime(round((battery.remaining / battery.watts * 3600),0),"%H:%M","UTC")} ${battery.charging ? "until full" : "until empty"}")
             )
         )
     )

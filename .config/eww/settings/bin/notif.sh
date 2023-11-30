@@ -27,7 +27,7 @@ function handle_event(){
         new_notif_array=$(echo "$notifs $notifs_new_all"|jq -s 'flatten|unique_by(.id)'|jq  '. | to_entries | map(.value + { "index": .key | tonumber })' -Mc)
     fi
     notifs=$new_notif_array
-    echo "$notifs"|tee /tmp/.notifs.json
+    echo "$notifs"
 
 }
 function update_count(){
@@ -35,7 +35,6 @@ function update_count(){
 }
 
 function monitor(){ 
-    [[ -f /tmp/.notifs.json ]]&&touch /tmp/.notifs.json
     dbus-monitor "interface='org.freedesktop.Notifications'" |while read -r line
     do
         if echo "$line"|grep -q "signal"||echo "$line"|grep -q "member="
