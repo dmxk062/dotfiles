@@ -7,6 +7,6 @@ then
     $eww update look_nightlight=false
 else
     $eww update look_nightlight=true
-    wlsunset -T 4000 -t 3000
+    wlsunset -T 4000 -t 3000& disown
 fi
 

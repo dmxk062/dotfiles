@@ -59,6 +59,7 @@ bar)
     bar;;
 popups)
     popups;;
-rightclick)
+desktop)
     rightclick;;
 esac
+
