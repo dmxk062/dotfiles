@@ -49,7 +49,7 @@
                                 )
                                 (box :visible "${notif.id == expanded_notif}" :orientation "v" :space-evenly false
                                     (label :markup "${notif.text}" :wrap true :class "notif-body")
-                                    (box :halign "start"
+                                    (box  :space-evenly {notif.actions != '[]' && notif.icon != "" ? "true ": "false" }
                                         (box :space-evenly false  :visible "${notif.actions != "[]"}" :hexpand true
                                             (box :orientation "v" :halign "center" :space-evenly false (for action in "${notif?.["actions"]}" 
                                                 (box :halign "start" :space-evenly false
@@ -64,7 +64,7 @@
                                             (separator)
                                         )
                                         (eventbox :visible "${notif.icon != ""}" :onclick "xdg-open ${notif.icon}"
-                                            (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width 128 :image-height 128)
+                                            (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width {notif.actions != "[]" ? 128 : 350} :image-height {notif.actions != "[]" ? 128 : 150})
                                         )
                                     )
                                     (box :space-evenly false
