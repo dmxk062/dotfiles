@@ -3,11 +3,11 @@
 (defvar wifi_search_icon "󰑓")
 (deflisten wifi_status "bin/wlan.sh listen")
 (defvar wifi_password_reveal false)
-(defvar connect_ssid "")
+(defvar wifi_connect_ssid "")
 (defvar wifi_passwd "")
 (defvar hide_wifi_passwd true)
 (defvar empty "")
-(defvar show_qr false)
+(defvar wifi_show_qr false)
 (defvar wifi_connect_error false)
 (defvar wifi_connect_error_reason "")
 
@@ -34,17 +34,17 @@
                                 (button :timeout "256s" :onclick "bin/wlan.sh upd" :class "button" "${wifi_search_icon}    Reload")
                             )
                             (box :visible "${wifi_status.ssid != "" ? true : false}"
-                                (button :class "button" :onclick "${EWW_CMD} update show_qr=true" "    QR Code")
+                                (button :class "button" :onclick "${EWW_CMD} update wifi_show_qr=true" "    QR Code")
                                 (button :class "button" :onclick "bin/edit_connection.sh ${wifi_status.ssid}&" :timeout "16s" "󱆠    Edit")
                             )
                         )
                     )
-                    (box :visible show_qr :class "card-no_shadow" :space-evenly false :orientation "v"
+                    (box :visible wifi_show_qr :class "card-no_shadow" :space-evenly false :orientation "v"
                         (box :class "padding_box" :vexpand true
                             (image :path "${wifi_status.qrpath}" :image-width 180 :image-height 180) 
                         )
                         (box :class "card_footer" :orientation "v"
-                            (button :class "button" :onclick "${EWW_CMD} update show_qr=false" "Close")
+                            (button :class "button" :onclick "${EWW_CMD} update wifi_show_qr=false" "Close")
                         )
                     )
                 )
@@ -54,13 +54,13 @@
                 (box :space-evenly false :class "padding_box" :orientation "v" :vexpand true
                     (box :class "card" :orientation "v" :space-evenly false
                         (box :class "padding_box" :space-evenly false :orientation "v"
-                            (label :class "title" :text "Password for: ${connect_ssid}" :limit-width 19)
-                            (input :timeout "128s" :onchange "${EWW_CMD} update wifi_passwd='{}'" :onaccept "bin/wlan.sh connect '${connect_ssid}' true '${wifi_passwd}'& disown" :password hide_wifi_passwd :class "input" :value wifi_passwd)
+                            (label :class "title" :text "Password for: ${wifi_connect_ssid}" :limit-width 19)
+                            (input :timeout "128s" :onchange "${EWW_CMD} update wifi_passwd='{}'" :onaccept "bin/wlan.sh connect '${wifi_connect_ssid}' true '${wifi_passwd}'& disown" :password hide_wifi_passwd :class "input" :value wifi_passwd)
                         )
                         (box :class "card_footer" :space-evenly false :halign "center"
                             (button :onclick "${EWW_CMD} update hide_wifi_passwd=${!hide_wifi_passwd}" :class "button${hide_wifi_passwd? "" : "-active"}" "${hide_wifi_passwd ? "󰈉" : "󰈈"}")
                             (button :timeout "16s" :onclick "${EWW_CMD} update wifi_passwd=''&&${EWW_CMD} update wifi_password_reveal=false" :class "button" "Cancel")
-                            (button :timeout "16s" :onclick "bin/wlan.sh connect '${connect_ssid}' true '${wifi_passwd}'& disown" :class "button-active" "Connect")
+                            (button :timeout "16s" :onclick "bin/wlan.sh connect '${wifi_connect_ssid}' true '${wifi_passwd}'& disown" :class "button-active" "Connect")
                         )
                     )
                     (error :if "${wifi_connect_error}" :text "Failed to connect.
@@ -83,7 +83,7 @@ ${wifi_connect_error_reason}")
                                 (label :class "card-label" :text "${wifi.ssid}" :limit-width 20)
                                 (box :orientation "v" :space-evenly false :class "card_footer"
                                     (box :space-evenly false :halign "center"
-                                        (button :class "button${wifi.ssid == wifi_status.ssid ? "-active" : ""}" :timeout "256s" :onclick "${wifi.password ? "${EWW_CMD} update wifi_password_reveal=true&&${EWW_CMD} update connect_ssid=${wifi.ssid}": "bin/wlan.sh connect ${wifi.ssid} false"}" "Connect${wifi.ssid == wifi_status.ssid ? "ed" : ""}")
+                                        (button :class "button${wifi.ssid == wifi_status.ssid ? "-active" : ""}" :timeout "256s" :onclick "${wifi.password ? "${EWW_CMD} update wifi_password_reveal=true&&${EWW_CMD} update wifi_connect_ssid=${wifi.ssid}": "bin/wlan.sh connect ${wifi.ssid} false"}" "Connect${wifi.ssid == wifi_status.ssid ? "ed" : ""}")
                                         (label :class "button${wifi.password ? "" : "-nice"}" :text "${wifi.password ? "󰒘    ${wifi.security}" : "󰦞    No Password"}")
                                     )
                                 )

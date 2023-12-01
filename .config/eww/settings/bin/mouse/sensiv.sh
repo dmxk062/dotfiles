@@ -7,7 +7,7 @@ function set(){
         then
             newval="$(((val * 2.0 - 100.0)/100.0))"
             hyprctl keyword input:sensitivity $newval
-            eval "$eww update mouse_sensitivity=$val"
+            eval "$eww update input_mouse_sensitivity=$val"
     fi
 }
 

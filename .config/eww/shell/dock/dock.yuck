@@ -1,6 +1,6 @@
 (defvar apps "[]")
 (defvar dock_reveal false)
-(defvar osk false)
+(defvar input_osk false)
 
 (include "dock/menu.yuck")
 

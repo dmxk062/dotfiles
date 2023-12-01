@@ -72,7 +72,7 @@ function connect(){
             $eww_settings update wifi_password_reveal=false
             $eww_settings update wifi_connect_error=false
             $eww_settings update wifi_passwd=""
-            $eww_settings update connect_ssid=""
+            $eww_settings update wifi_connect_ssid=""
         fi
     else
         if ! nmcli device wifi connect "$ssid"
@@ -83,7 +83,7 @@ function connect(){
             $eww_settings update wifi_password_reveal=false
             $eww_settings update wifi_connect_error=false
             $eww_settings update wifi_passwd=""
-            $eww_settings update connect_ssid=""
+            $eww_settings update wifi_connect_ssid=""
         fi
     fi
 }

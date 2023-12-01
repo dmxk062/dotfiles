@@ -1,18 +1,19 @@
 ;; options
-(defvar layout "QWERTY US")
-(defvar left_handed false)
-(defvar tap_click true)
-(defvar ws_swipe true)
-(defvar natural_scroll false)
-(defvar osk false)
+(defvar input_layout "QWERTY US")
+(defvar input_left_handed false)
+(defvar input_tap_to_click true)
+(defvar input_ws_swipe true)
+(defvar input_natural_scroll false)
+(defvar input_osk false)
 
 ;; my default settings from hyprland
-(defvar mouse_sensitivity 50)
-(defvar repeat_rate 25)
-(defvar repeat_delay 600)
-(defvar scroll_speed 100)
+(defvar input_repeat_rate 25)
+(defvar input_repeat_delay 600)
 
-(defvar test_area_event '')
+(defvar input_scroll_speed 100)
+(defvar input_mouse_sensitivity 50)
+
+(defvar input_test_area_event '')
 
 (defwidget input_section []
     (box :visible "${selected_section == 1}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
@@ -21,26 +22,26 @@
                 (box :orientation "v" :space-evenly false
                     (label :class "title" :text "Keyboard") 
                     (list_box 
-                        (button  :class "button${layout == "QWERTZ DE" ? "-active" : ""}":timeout "16s" :onclick "bin/input.sh kbd" "󰌌   ${layout}") 
-                        (wrapped_text :text "Switch between the german and english keyboard layouts")
+                        (button  :class "button${input_layout == "QWERTZ DE" ? "-active" : ""}":timeout "16s" :onclick "bin/input.sh kbd" "󰌌   ${input_layout}") 
+                        (wrapped_text :text "Switch between the german and english keyboard Layout")
                     )
                     (list_box
-                        (button :class "button${osk ? "-active" : ""}" :onclick "bin/input.sh osk" "${osk ? "󰌌" : "󰌐"}    On Screen Keyboard")
+                        (button :class "button${input_osk ? "-active" : ""}" :onclick "bin/input.sh osk" "${input_osk ? "󰌌" : "󰌐"}    On Screen Keyboard")
                         (wrapped_text :text "Enable WVKBD (a touch keyboard)")
                     )
                     (list_box
                         (label :text "")
-                        (button :class "button" :onclick "bin/rate.sh reset" "󰧹    Reset Repeat Rate")
+                        (button :class "button" :onclick "bin/kbd/rate.sh reset" "󰧹    Reset Repeat Rate")
                             (margin
-                                (scale :value "${repeat_rate}" :min 0 :max 100 :class "slider-small" :onchange "bin/rate.sh {}")
+                                (scale :value "${input_repeat_rate}" :min 0 :max 100 :class "slider-small" :onchange "bin/kbd/rate.sh {}")
                             )
                         (wrapped_text :text "Control how often a held down key is pressed")
                     )
                     (list_box
                         (label :text "")
-                        (button :class "button" :onclick "bin/delay.sh reset" "󰌏    Reset Repeat Delay")
+                        (button :class "button" :onclick "bin/kbd/delay.sh reset" "󰌏    Reset Repeat Delay")
                             (margin
-                                (scale :value "${repeat_delay}" :min 100 :max 1000 :class "slider-small" :onchange "bin/delay.sh {}")
+                                (scale :value "${input_repeat_delay}" :min 100 :max 1000 :class "slider-small" :onchange "bin/kbd/delay.sh {}")
                             )
                         (wrapped_text :text "Control how long it takes for a held down key to start to repeat")
                     )
@@ -51,32 +52,32 @@
                 (box :orientation "v" :space-evenly false
                     (label :class "title" :text "Mouse & Touchpad") 
                     (list_box 
-                        (button :class "button${left_handed ? "-active" : ""}" :onclick "bin/input.sh left_handed" :onrightclick "bin/input.sh left_handed" "${left_handed ? "󰹆" : "󱠰"}    Left Handed")
+                        (button :class "button${input_left_handed ? "-active" : ""}" :onclick "bin/input.sh left_handed" :onrightclick "bin/input.sh left_handed" "${input_left_handed ? "󰹆" : "󱠰"}    Left Handed")
                         (wrapped_text :text "Enable / Disable left handed mode. Inverts mouse buttons when enabled")
                     )
                     (list_box
-                        (button :class "button${tap_click ? "-active" : ""}" :onclick "bin/input.sh tap_click" "󱊩    Tap to Click")
+                        (button :class "button${input_tap_to_click ? "-active" : ""}" :onclick "bin/input.sh tap_click" "󱊩    Tap to Click")
                         (wrapped_text :text "Tap on the touchpad to click. Two fingers and three fingers right and middle click respectively")
                     )
                     (list_box
-                        (button :class "button${natural_scroll ? "-active" : ""}" :onclick "bin/input.sh natural_scroll" "󰫀    Natural Scroll")
+                        (button :class "button${input_natural_scroll ? "-active" : ""}" :onclick "bin/input.sh natural_scroll" "󰫀    Natural Scroll")
                         (wrapped_text :text "Natural scrolling is recommended for touchpads. When enabled, scrolling moves the content, not the view")
                     )
                     (list_box
-                        (button :class "button${ws_swipe ? "-active" : ""}" :onclick "bin/input.sh ws_swipe" "󰵶    Swipe")
+                        (button :class "button${input_ws_swipe ? "-active" : ""}" :onclick "bin/input.sh ws_swipe" "󰵶    Swipe")
                         (wrapped_text :text "Enable switching workspaces by three finger swiping left and right")
                     )
                     (list_box
-                        (button :class "button" :onclick "bin/sensiv.sh reset" "󰍽    Reset Mouse Sensitivity")
+                        (button :class "button" :onclick "bin/mouse/sensiv.sh reset" "󰍽    Reset Mouse Sensitivity")
                         (margin 
-                            (scale :value "${mouse_sensitivity}" :min 0 :max 100 :class "slider" :onchange "bin/sensiv.sh {}")
+                            (scale :value "${input_mouse_sensitivity}" :min 0 :max 100 :class "slider" :onchange "bin/mouse/sensiv.sh {}")
                         )
                         (wrapped_text :text "Change the mouse cursor speed")
                     )
                     (list_box
-                        (button :class "button" :onclick "bin/scroll.sh reset" "󰫀    Reset Touchpad Scroll Speed" )
+                        (button :class "button" :onclick "bin/mouse/scroll.sh reset" "󰫀    Reset Touchpad Scroll Speed" )
                         (margin 
-                            (scale :value "${scroll_speed}" :min 5 :max 300 :class "slider" :onchange "bin/scroll.sh {}")
+                            (scale :value "${input_scroll_speed}" :min 5 :max 300 :class "slider" :onchange "bin/mouse/scroll.sh {}")
                         )
                         (wrapped_text :text "Set the scroll speed for touchpads")
                     )
@@ -85,12 +86,12 @@
         )
         (box :space-evenly false :hexpand true :class "padding_box" :orientation "v"
             (label :class "title" :text "Test Area")
-            (eventbox :onclick "${EWW_CMD} update test_area_event='primary'"
-                        :onrightclick "${EWW_CMD} update test_area_event='secondary'"
-                        :onmiddleclick "${EWW_CMD} update test_area_event='middle'"
-                        :onscroll "[ {} = up ]&&${EWW_CMD} update test_area_event='up'||${EWW_CMD} update test_area_event='down'"
-                (box :class "test_area${test_area_event != "" ? "-${test_area_event}" : ""}"
-                    (label :class "heading" :text "${test_area_event}")
+            (eventbox :onclick "${EWW_CMD} update input_test_area_event='primary'"
+                        :onrightclick "${EWW_CMD} update input_test_area_event='secondary'"
+                        :onmiddleclick "${EWW_CMD} update input_test_area_event='middle'"
+                        :onscroll "[ {} = up ]&&${EWW_CMD} update input_test_area_event='up'||${EWW_CMD} update input_test_area_event='down'"
+                (box :class "test_area${input_test_area_event != "" ? "-${input_test_area_event}" : ""}"
+                    (label :class "heading" :text "${input_test_area_event}")
 
                 )
             )

@@ -17,9 +17,9 @@
 (defvar gaps_out true)
 
 ;; and the adjustable values
-(defvar blur_brightness 100)
-(defvar blur_contrast 80)
-(defvar blur_noise 1.17)
+;; (defvar blur_brightness 100)
+;; (defvar blur_contrast 80)
+;; (defvar blur_noise 1.17)
 (defvar colorscheme "dark")
 
 
@@ -69,23 +69,23 @@
                         )
                         (wrapped_text :text "Make floating windows and overlapping layers look through to the wallpaper. Enable / Disable shadows for windows")
                     )
-                    (list_box 
-                        (list_box
-                            (button :class "button" :onclick "bin/blur.sh 100 brightness" "    Reset Blur Brightness")
-                            (margin(scale :value "${blur_brightness}" :min 0 :max 200 :class "slider" :onchange "bin/blur.sh {} brightness"))
-                            (wrapped_text :text "Control how bright the blurred content becomes")
-                        )
-                        (list_box
-                            (button :class "button" :onclick "bin/blur.sh 80 contrast" "󰆕    Reset Blur Contrast")
-                            (margin(scale :value "${blur_contrast}" :min 0 :max 200 :class "slider" :onchange "bin/blur.sh {} contrast"))
-                            (wrapped_text :text "Control the contrast of the blur")
-                        )
-                        (list_box
-                            (button :class "button" :onclick "bin/blur.sh 1.17 noise" "󰂸    Reset Blur Noise")
-                            (margin(scale :value "${blur_noise}" :min 0 :max 50 :class "slider" :onchange "bin/blur.sh {} noise"))
-                            (wrapped_text :text "Control the noise level of the blur")
-                        )
-                    )
+                    ;; (list_box 
+                    ;;     (list_box
+                    ;;         (button :class "button" :onclick "bin/blur.sh 100 brightness" "    Reset Blur Brightness")
+                    ;;         (margin(scale :value "${blur_brightness}" :min 0 :max 200 :class "slider" :onchange "bin/blur.sh {} brightness"))
+                    ;;         (wrapped_text :text "Control how bright the blurred content becomes")
+                    ;;     )
+                    ;;     (list_box
+                    ;;         (button :class "button" :onclick "bin/blur.sh 80 contrast" "󰆕    Reset Blur Contrast")
+                    ;;         (margin(scale :value "${blur_contrast}" :min 0 :max 200 :class "slider" :onchange "bin/blur.sh {} contrast"))
+                    ;;         (wrapped_text :text "Control the contrast of the blur")
+                    ;;     )
+                    ;;     (list_box
+                    ;;         (button :class "button" :onclick "bin/blur.sh 1.17 noise" "󰂸    Reset Blur Noise")
+                    ;;         (margin(scale :value "${blur_noise}" :min 0 :max 50 :class "slider" :onchange "bin/blur.sh {} noise"))
+                    ;;         (wrapped_text :text "Control the noise level of the blur")
+                    ;;     )
+                    ;; )
                 )
             )
             (separator)

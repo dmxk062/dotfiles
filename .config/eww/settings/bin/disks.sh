@@ -113,11 +113,11 @@ function decrypt(){
     then
         upd
         $eww update disk_decrypt_error=true
-        $eww update crypt_passwd=""
+        $eww update disk_crypt_passwd=""
     else
         $eww update disk_decrypt_error=false
         upd
-        $eww update crypt_passwd=""
+        $eww update disk_crypt_passwd=""
     fi
 }
 function encrypt(){

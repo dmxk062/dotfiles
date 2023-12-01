@@ -1,10 +1,10 @@
 (defvar disks "[]")
-(defvar selected_part "")
-(defvar selected_part_disk "")
+(defvar disk_selected_part "")
+(defvar disk_selected_part_disk "")
 (defvar disk_info "")
 (defvar disk_parts "")
-(defvar crypt_passwd "")
-(defvar hide_crypt_passwd true)
+(defvar disk_crypt_passwd "")
+(defvar hide_disk_crypt_passwd true)
 
 
 (defvar disk_decrypt_error false)
@@ -39,7 +39,7 @@
                                             (button :class "button" :timeout "128s" :onclick "bin/loop.sh remove ${disk.path}&&bin/disks.sh upd" :visible "${matches(disk.name,"loop.*")}" "󰮘    Remove")
                                         )
                                         (box :space-evenly false :halign "center"
-                                            (button :class "button${selected_part_disk == disk.path ? "-active" : ""}" :onclick "${arraylength(disk.partitions) == 1 ? "${EWW_CMD} update selected_part=${disk.partitions[0].partuuid}&&${EWW_CMD} update selected_part_disk=${disk.path}" : "${EWW_CMD} update disk_parts=${disk.path}"}" "${arraylength(disk.partitions?: '[]')} partition${arraylength(disk.partitions?: '[]') == 1 ? "" : "s"}")
+                                            (button :class "button${disk_selected_part_disk == disk.path ? "-active" : ""}" :onclick "${arraylength(disk.partitions) == 1 ? "${EWW_CMD} update disk_selected_part=${disk.partitions[0].partuuid}&&${EWW_CMD} update disk_selected_part_disk=${disk.path}" : "${EWW_CMD} update disk_parts=${disk.path}"}" "${arraylength(disk.partitions?: '[]')} partition${arraylength(disk.partitions?: '[]') == 1 ? "" : "s"}")
                                         )
                                         (box :space-evenly false :halign "end"
                                             (button :class "button" :onclick "${EWW_CMD} update disk_info=${disk.path}" "󰋼")
@@ -79,7 +79,7 @@
                                             (box :orientation "v" :space-evenly false :valign "center"
                                                 (box :space-evenly false
                                                     (for part in "${disk.partitions}"
-                                                        (button :class "button${selected_part == part.partuuid ? "-active" : ""}" :timeout "16s" :onclick "${EWW_CMD} update selected_part=${part.partuuid}&&${EWW_CMD} update selected_part_disk=${disk.path}" 
+                                                        (button :class "button${disk_selected_part == part.partuuid ? "-active" : ""}" :timeout "16s" :onclick "${EWW_CMD} update disk_selected_part=${part.partuuid}&&${EWW_CMD} update disk_selected_part_disk=${disk.path}" 
                                                         (label :text "${part.label?:"${replace(part.name,disk.name,"")}"}" :limit-width 6))
                                                     )
                                                 )
@@ -105,7 +105,7 @@
                 (box :space-evenly false :orientation "v" :valign "center"
                     (for part in "${disk.partitions}"
                         (box :space-evenly false
-                        (box :orientation "v" :visible "${selected_part == part.partuuid && ! part.crypt}" :space-evenly false :class "card"
+                        (box :orientation "v" :visible "${disk_selected_part == part.partuuid && ! part.crypt}" :space-evenly false :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :class "heading" :text "${part.label?:part.name}")
                                     (label :class "text-large" :text "Filesystem: ${part.type?: "Not Detected"}")
@@ -136,7 +136,7 @@
                                     )
                                 )
                             )
-                        (overlay :visible "${selected_part == part.partuuid && part.crypt}"
+                        (overlay :visible "${disk_selected_part == part.partuuid && part.crypt}"
                             (box :orientation "v" :space-evenly false :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :class "heading" :text "${part.decrypt.label?:part.decrypt.name}")
@@ -173,13 +173,13 @@
                                 (box :class "padding_box" :orientation "v" :space-evenly false :vexpand true
                                     (label :class "heading" :text "${part.name} is locked")
                                     (box :space-evenly false :halign "center"
-                                       (button :class "button${hide_crypt_passwd ? "" : "-active"}" :onclick "${EWW_CMD} update hide_crypt_passwd=${!hide_crypt_passwd}" "${hide_crypt_passwd ? "󰈉" : "󰈈"}") 
-                                       (input :class "input" :timeout "128s" :password "${hide_crypt_passwd}" :onchange "${EWW_CMD} update crypt_passwd={}" :onaccept "bin/disks.sh decrypt ${part.path} ${crypt_passwd}")
+                                       (button :class "button${hide_disk_crypt_passwd ? "" : "-active"}" :onclick "${EWW_CMD} update hide_disk_crypt_passwd=${!hide_disk_crypt_passwd}" "${hide_disk_crypt_passwd ? "󰈉" : "󰈈"}") 
+                                       (input :class "input" :timeout "128s" :password "${hide_disk_crypt_passwd}" :onchange "${EWW_CMD} update disk_crypt_passwd={}" :onaccept "bin/disks.sh decrypt ${part.path} ${disk_crypt_passwd}")
                                     )
                                     (error :if "${disk_decrypt_error}" :text "Failed to unlock. Wrong Password?")
                                 )
                                 (box :class "card_footer" :orientation "v" :space-evenly false
-                                    (button :class "button${part.decrypt != "null" ? "-active" : ""}" :timeout "128s" :onclick "bin/disks.sh decrypt ${part.path} ${crypt_passwd}" "󰌿    Unlock")
+                                    (button :class "button${part.decrypt != "null" ? "-active" : ""}" :timeout "128s" :onclick "bin/disks.sh decrypt ${part.path} ${disk_crypt_passwd}" "󰌿    Unlock")
                                 )
                             )
                         )

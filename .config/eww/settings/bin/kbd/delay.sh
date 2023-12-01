@@ -4,7 +4,7 @@ eww="eww -c $HOME/.config/eww/settings"
 set_delay(){
     val=$1
     hyprctl keyword input:repeat_delay $val
-    $eww update repeat_delay=$val
+    $eww update input_repeat_delay=$val
 }
 
 case $1 in
