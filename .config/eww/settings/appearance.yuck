@@ -1,26 +1,28 @@
-(defvar walls "[]")
-(defvar activewall "")
-(defvar activelock "")
+(defvar look_walls "[]")
+(defvar look_activewall "")
+(defvar look_activelock "")
 
 
 ;; all the appearance options rn:
-(defvar nightlight false) ;; wlsunset
-(defvar blur true)
-(defvar blur_xray false)
-(defvar opacity false) ;; only for kitty, as that is my only opaque app
-(defvar rounding true)
-(defvar border false)
-(defvar special_blur false)
-(defvar shadow true)
+(defvar look_colorscheme "dark") ;; theming
+(defvar look_nightlight false) ;; wlsunset
+
+(defvar look_blur_win true)
+(defvar look_blur_xray false)
+(defvar look_blur_special false)
+
+(defvar look_opacity false) ;; only for kitty, as that is my only opaque app
+(defvar look_rounding true)
+(defvar look_border false)
+(defvar look_shadow true)
 ;; both of these are on off, not values
-(defvar gaps_in true)
-(defvar gaps_out true)
+(defvar look_gaps_in true)
+(defvar look_gaps_out true)
 
 ;; and the adjustable values
-;; (defvar blur_brightness 100)
-;; (defvar blur_contrast 80)
-;; (defvar blur_noise 1.17)
-(defvar colorscheme "dark")
+;; (defvar look_blur_brightness 100)
+;; (defvar look_blur_contrast 80)
+;; (defvar look_blur_noise 1.17)
 
 
 (defwidget appearance_section []
@@ -30,60 +32,60 @@
                 (box :space-evenly false :orientation "v"
                     (label :class "title" :text "Appearance")
                     (list_box
-                        (button :class "button${opacity ? "-active" : ""}" :onclick "bin/settings.sh opacity" :timeout "16s" "󱡓    Transparency")
-                        (wrapped_text :text "Make kitty transparent, use blur to make it nicer to use")
+                        (button :class "button${look_opacity ? "-active" : ""}" :onclick "bin/look/decoration.sh opacity" :timeout "16s" "󱡓    Transparency")
+                        (wrapped_text :text "Make kitty transparent, use Blur to make it nicer to use")
                         
                     )
                     (list_box
                         (box 
-                        (button :class "button${nightlight ? "-active" : ""}" :onclick "bin/settings.sh nightlight" :timeout "16s" "    Nightlight")
-                        (button :class "button" :onclick "bin/colorscheme.sh" :timeout "128s" "${colorscheme == "light" ? "󰖨    Light theme" : "󰖔    Dark theme"}")
+                        (button :class "button${look_nightlight ? "-active" : ""}" :onclick "bin/look/nightlight.sh" :timeout "16s" "    Nightlight")
+                        (button :class "button" :onclick "bin/look/color.sh" :timeout "128s" "${look_colorscheme == "light" ? "󰖨    Light theme" : "󰖔    Dark theme"}")
                         )
                         (wrapped_text :text "Reduce the blue light content of the screen")
                     )
                     (list_box 
                         (box
-                        (button :class "button${blur ? "-active" : ""}" :onclick "bin/settings.sh blur" :timeout "16s"  "${blur ? "󰂵" : "󰂷"}    Windows")
-                        (button :class "button${special_blur ? "-active" : ""}" :onclick "bin/settings.sh special_blur" :timeout "16s"  "󰂶    Special")
+                        (button :class "button${look_blur_win ? "-active" : ""}" :onclick "bin/look/blur.sh win" :timeout "16s"  "${look_blur_win ? "󰂵" : "󰂷"}    Windows")
+                        (button :class "button${look_blur_special ? "-active" : ""}" :onclick "bin/look/blur.sh ws" :timeout "16s"  "󰂶    Special")
                         )
                         (wrapped_text :text "Enable blur for windows or special workspaces")
                     )
                     (list_box
                         (box
-                        (button :class "button${gaps_out ? "-active" : ""}" :onclick "bin/settings.sh gaps_out" :timeout "16s" :tooltip "Enable/Disable Gaps between Windows and the Edge" "󰹑    Screen")
-                        (button :class "button${gaps_in ? "-active" : ""}" :onclick "bin/settings.sh gaps_in" :timeout "16s" :tooltip "Enable/Disable Gaps between Windows" "󱁐    Windows")
+                        (button :class "button${look_gaps_out ? "-active" : ""}" :onclick "bin/look/gaps.sh out" :timeout "16s" :tooltip "Enable/Disable Gaps between Windows and the Edge" "󰹑    Screen")
+                        (button :class "button${look_gaps_in ? "-active" : ""}" :onclick "bin/look/gaps.sh in" :timeout "16s" :tooltip "Enable/Disable Gaps between Windows" "󱁐    Windows")
                         )
                         (wrapped_text :text "Where gaps should be. Both around the monitor itself or other windows")
                     )
                     (list_box
                         (box
-                        (button :class "button${border ? "-active" : ""}" :onclick "bin/settings.sh border" :timeout "16s" :tooltip "Enable/Disable Window Borders" "󰢡    Borders")
-                        (button :class "button${rounding ? "-active" : ""}" :onclick "bin/settings.sh rounding" :timeout "16s" :tooltip "Enable/Disable Rounded Corners on Windows" "󱓼    Rounding")
+                        (button :class "button${look_border ? "-active" : ""}" :onclick "bin/look/decoration.sh border" :timeout "16s" :tooltip "Enable/Disable Window Borders" "${look_border ? "󰢡" : "󰢤"}    Borders")
+                        (button :class "button${look_rounding ? "-active" : ""}" :onclick "bin/look/decoration.sh rounding" :timeout "16s" :tooltip "Enable/Disable Rounded Corners on Windows" "${look_rounding ? "󱓼" : "󰢡"}    Rounding")
                         )
                         (wrapped_text :text "Enable / Disable borders and make them round")
                     )
                     (list_box
                         (box
-                        (button :class "button${blur_xray ? "-active" : ""}" :onclick "bin/settings.sh blur_xray" :timeout "16s" "${blur_xray ? "" : ""}    Blur Xray")
-                        (button :class "button${shadow ? "-active" : ""}" :onclick "bin/settings.sh shadow" :timeout "16s" :tooltip "Enable/Disable Border Shadow on Windows" "󰘷    Shadow")
+                        (button :class "button${look_blur_xray ? "-active" : ""}" :onclick "bin/look/blur.sh xray" :timeout "16s" "${look_blur_xray ? "" : ""}    Blur Xray")
+                        (button :class "button${look_shadow ? "-active" : ""}" :onclick "bin/look/decoration.sh shadow" :timeout "16s" :tooltip "Enable/Disable Border Shadow on Windows" "󰘷    Shadow")
                         )
                         (wrapped_text :text "Make floating windows and overlapping layers look through to the wallpaper. Enable / Disable shadows for windows")
                     )
                     ;; (list_box 
                     ;;     (list_box
-                    ;;         (button :class "button" :onclick "bin/blur.sh 100 brightness" "    Reset Blur Brightness")
-                    ;;         (margin(scale :value "${blur_brightness}" :min 0 :max 200 :class "slider" :onchange "bin/blur.sh {} brightness"))
-                    ;;         (wrapped_text :text "Control how bright the blurred content becomes")
+                    ;;         (button :class "button" :onclick "bin/look_blur.sh 100 brightness" "    Reset look_blur Brightness")
+                    ;;         (margin(scale :value "${look_blur_brightness}" :min 0 :max 200 :class "slider" :onchange "bin/look_blur.sh {} brightness"))
+                    ;;         (wrapped_text :text "Control how bright the look_blurred content becomes")
                     ;;     )
                     ;;     (list_box
-                    ;;         (button :class "button" :onclick "bin/blur.sh 80 contrast" "󰆕    Reset Blur Contrast")
-                    ;;         (margin(scale :value "${blur_contrast}" :min 0 :max 200 :class "slider" :onchange "bin/blur.sh {} contrast"))
-                    ;;         (wrapped_text :text "Control the contrast of the blur")
+                    ;;         (button :class "button" :onclick "bin/look_blur.sh 80 contrast" "󰆕    Reset look_blur Contrast")
+                    ;;         (margin(scale :value "${look_blur_contrast}" :min 0 :max 200 :class "slider" :onchange "bin/look_blur.sh {} contrast"))
+                    ;;         (wrapped_text :text "Control the contrast of the look_blur")
                     ;;     )
                     ;;     (list_box
-                    ;;         (button :class "button" :onclick "bin/blur.sh 1.17 noise" "󰂸    Reset Blur Noise")
-                    ;;         (margin(scale :value "${blur_noise}" :min 0 :max 50 :class "slider" :onchange "bin/blur.sh {} noise"))
-                    ;;         (wrapped_text :text "Control the noise level of the blur")
+                    ;;         (button :class "button" :onclick "bin/look_blur.sh 1.17 noise" "󰂸    Reset look_blur Noise")
+                    ;;         (margin(scale :value "${look_blur_noise}" :min 0 :max 50 :class "slider" :onchange "bin/look_blur.sh {} noise"))
+                    ;;         (wrapped_text :text "Control the noise level of the look_blur")
                     ;;     )
                     ;; )
                 )
@@ -93,15 +95,15 @@
                 (box :orientation "v" :space-evenly false
                     (label :class "title" :text "Wallpapers")
                     (list_box
-                        (button :class "button${walls != "[]" ? "-active" : ""}" :timeout "16s" :onclick "${walls != "[]" ? '${EWW_CMD} update walls=\'[]\'' : '${EWW_CMD} update walls="$(< ~/.config/background/walls.json)"&&${EWW_CMD} update activelock=$(realpath ~/.config/background/lock)&&${EWW_CMD} update activewall=$(realpath ~/.config/background/wall)'}" "󰋩    Show Wallpapers")
+                        (button :class "button${look_walls != "[]" ? "-active" : ""}" :timeout "16s" :onclick "${look_walls != "[]" ? '${EWW_CMD} update look_walls=\'[]\'' : '${EWW_CMD} update look_walls="$(< ~/.config/background/walls.json)"&&${EWW_CMD} update look_activelock=$(realpath ~/.config/background/lock)&&${EWW_CMD} update look_activewall=$(realpath ~/.config/background/wall)'}" "󰋩    Show Wallpapers")
                         (wrapped_text :text "Show all the configured wallpapers. Unload them before closing the window for faster load times")
                     )
                     (list_box
-                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh ~/.config/eww/settings/bin/wallfile.sh" "󰉋    Browse")
+                        (button :class "button" :timeout "128s" :onclick "bin/look/wallpaper.sh file" "󰉋    Browse")
                         (wrapped_text :text "Browse the filesystem for wallpapers")
                     )
                     (list_box
-                        (button :class "button" :timeout "128s" :onclick "bin/suspend.sh ~/.config/eww/settings/bin/wallcolor.sh" "    Color")
+                        (button :class "button" :timeout "128s" :onclick "bin/look/wallpaper.sh color" "    Color")
                         (wrapped_text :text "Set a solid color as a wallpaper")
                     )
                     (list_box
@@ -113,7 +115,7 @@
         )
         (scroll :vscroll true :class "scroll-high"
             (box :orientation "v" :space-evenly false
-                (for wall in walls
+                (for wall in look_walls
                     (box :space-evenly false :class "card" :orientation "v"
                         (box :class "padding_box_small"
                             (image :path "${wall.path}" :image-width 200 :image-height 120)
@@ -121,8 +123,8 @@
                         (box :hexpand true :class "card_footer" :orientation "v"
                             (label :class "title" :text "${wall.name}")
                             (box :space-evenly false :halign "center"
-                                (button :class "button${wall.path == activewall ? "-active" : ""}" :timeout "16s"  :onclick "~/.config/background/wallpaper.sh wall '${wall.path}'&&${EWW_CMD} update activewall=$(realpath ~/.config/background/wall)" "󰋩    Desktop")
-                                (button :class "button${wall.path == activelock ? "-active" : ""}" :timeout "16s" :onclick "~/.config/background/wallpaper.sh lock '${wall.path}'&&${EWW_CMD} update activelock=$(realpath ~/.config/background/lock)" "󱪰    Lockscreen")
+                                (button :class "button${wall.path == look_activewall ? "-active" : ""}" :timeout "16s"  :onclick "~/.config/background/wallpaper.sh wall '${wall.path}'&&${EWW_CMD} update look_activewall=$(realpath ~/.config/background/wall)" "󰋩    Desktop")
+                                (button :class "button${wall.path == look_activelock ? "-active" : ""}" :timeout "16s" :onclick "~/.config/background/wallpaper.sh lock '${wall.path}'&&${EWW_CMD} update look_activelock=$(realpath ~/.config/background/lock)" "󱪰    Lockscreen")
                             )
                         )
                     )
