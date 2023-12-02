@@ -1,0 +1,8 @@
+.audio-slider,.audio-slider-overload{
+    @extend .slider-large;
+}
+.audio-slider-overload{
+    trough highlight {
+        background: $warn;
+    }
+}

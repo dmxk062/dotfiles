@@ -84,6 +84,9 @@ function monitor_changes(){
             update urgent_win="${addr}"
             update urgent_ws="$(hyprctl clients -j|jq --arg addr "$addr" '.[]|select(.address == $addr)|.workspace.id')"
             sleep_urgent& 
+        # elif [[ $line == workspace* ]]
+        # then
+        #     $HOME/.config/eww/shell/popups/bin/ws_popup.sh & disown
         fi
         refresh
     done
