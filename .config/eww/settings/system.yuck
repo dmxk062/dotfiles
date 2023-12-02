@@ -8,6 +8,7 @@
 (defvar bar true)
 (defvar popups true)
 (defvar rightclick true)
+(defvar titlebars false)
 
 
 (defvar system '{}')
@@ -55,6 +56,10 @@
                 (list_box
                     (button :class "button${rightclick ? "-active" : ""}" :onclick "bin/sys/eww_shell.sh desktop""󰍜    Desktop Menu")
                     (wrapped_text :wrap true :text "A desktop context menu activated by right clicking on the desktop")
+                )
+                (list_box
+                    (button :class "button${titlebars ? "-active" : ""}" :onclick "bin/sys/eww_shell.sh titlebar""󱔓    Window Decorations")
+                    (wrapped_text :text "Add a titlebar to windows to make controlling the environment via a mouse easier")
                 )
                 (list_box
                     (button :class "button${popups ? "-active" : ""}" :onclick "bin/sys/eww_shell.sh popups""󰍦    Popups")

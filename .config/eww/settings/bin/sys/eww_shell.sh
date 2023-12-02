@@ -61,5 +61,12 @@ popups)
     popups;;
 desktop)
     rightclick;;
+titlebar)
+    if $XDG_CONFIG_HOME/hypr/plugins/plugins.sh toggle hyprbars
+    then
+        $eww update titlebars=true
+    else
+        $eww update titlebars=false
+    fi
 esac
 

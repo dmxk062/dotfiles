@@ -1,0 +1,8 @@
+[
+    {
+        "name":"Hyprbars",
+        "description":"Enable window decorations for hyprland.",
+        "file":"/home/dmx/.config/hypr/plugins/hyprbars.so",
+        "default": true
+    }
+]

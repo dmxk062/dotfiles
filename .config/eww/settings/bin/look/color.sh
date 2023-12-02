@@ -18,10 +18,12 @@ then
     sed -i 's/dark.scss/light.scss/' $XDG_CONFIG_HOME/eww/style/color.scss
     sed -i 's/dark/light/' $XDG_CONFIG_HOME/rofi/style/color.rasi
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+    sed -i 's/dark.conf/light.conf/' $XDG_CONFIG_HOME/hypr/theme/colors.conf
     color="light"
 else
     sed -i 's/light.scss/dark.scss/' $XDG_CONFIG_HOME/eww/style/color.scss
     sed -i 's/light/dark/' $XDG_CONFIG_HOME/rofi/style/color.rasi
+    sed -i 's/light.conf/dark.conf/' $XDG_CONFIG_HOME/hypr/theme/colors.conf
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     color="dark"
 fi

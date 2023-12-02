@@ -3,8 +3,19 @@
 eww="eww -c $XDG_CONFIG_HOME/eww/shell"
 get_relative_cursor(){
     read -r x y <<< $(hyprctl cursorpos |sed 's/,//')
-    read -r x_r y_r <<< "$(hyprctl monitors -j|jq '.[]|select(.focused)|.x, .y' --raw-output0|tr '\0' ' ')"
-    echo "$((x-x_r-90))x$((y-y_r-70))" # those values are based on window size, i found these to be decent
+    monitors="$(hyprctl -j monitors)"
+    read -r x_r y_r <<< "$(echo "$monitors"|jq '.[]|select(.focused)|.x, .y' --raw-output0|tr '\0' ' ')"
+    case $(echo "$monitors"|jq -r '.[]|select(.focused)|.name') in
+        DP-1)
+            scalex=50
+            scaley=70
+            ;;
+        *)
+            scalex=70
+            scaley=25
+            ;;
+    esac
+    echo "$(((x-x_r)-scalex))x$(((y-y_r)-scaley))" 
 }
 $eww open --screen 0 --toggle rc_popup --pos=$(get_relative_cursor)
 case $1 in
