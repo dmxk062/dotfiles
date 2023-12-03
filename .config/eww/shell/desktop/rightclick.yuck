@@ -54,14 +54,16 @@
     (box :orientation "v" :space-evenly false :visible {rc_win_area == 1}
         (box :space-evenly false :halign "center"
             (lbutton :tooltip "Previous" :onclick "hyprctl dispatch movetoworkspace -1& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :label "󰁍")
-            (lbutton :tooltip "Main" :onclick "hyprctl dispatch movetoworkspace name:main& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false"  :label "Home")
+            (lbutton :tooltip "Main" :onclick "hyprctl dispatch movetoworkspace name:main& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false"  :label "Main")
             (lbutton :tooltip "Next" :onclick "hyprctl dispatch movetoworkspace +1& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :label "󰁔")
         )
         (separator)
         (box :orientation "v" (for ws in workspaces 
-            (lbutton :onclick "hyprctl dispatch movetoworkspacesilent ${ws.name}& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :visible {ws.id != window.workspace.id} :label "${ws.name}")
+            (lbutton :onclick "hyprctl dispatch movetoworkspacesilent ${ws.name}& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :visible {ws.id != window.workspace.id} :label "${ws.name}" :tooltip "${ws.count} ${ws.count != 1 ? "windows" : "window"} in workspace")
         ))
-        (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=0" "Back")
+        (separator)
+        ;; (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=0" "Back")
+        (lbutton :onclick "${EWW_CMD} close rc_popup" :label "Cancel")
     )
     (box :orientation "v" :space-evenly false :visible {rc_win_area == 2}
         (lbutton :onclick "desktop/mods/sc.sh clip" :label "Copy to Clipboard")

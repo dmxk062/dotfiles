@@ -15,11 +15,8 @@ get_icon(){
         5*)
             echo "showers"
             ;;
-        600)
+        600|601|602)
             echo "snow-scattered"
-            ;;
-        601|602)
-            echo "snow"
             ;;
         611|612|613)
             echo "hail"

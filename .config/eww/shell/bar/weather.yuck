@@ -25,6 +25,7 @@
                 )
                 (separator)
                 (box :space-evenly false :orientation "v" :visible "${weather != '[]'}" :valign "center"
+                    (label :class "text-large" :text "${weather.weather[0].main}")
                     (label :class "text-large" :text "${round(weather.main.temp,1)}°C in ${weather.name}")
                     (label :class "text-large" :text "Feels like ${round(weather.main.feels_like,1)}°C")
                     (label :class "text-large" :text "Humidity: ${weather.main.humidity}%")
