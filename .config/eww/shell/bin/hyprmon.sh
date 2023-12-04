@@ -68,50 +68,38 @@ function list_workspaces(){
         })'|jq -Mc 'sort_by(.pos)'
 
 }
-function refresh(){
-    update window="$(hyprctl activewindow -j)"
-    update workspaces="$(list_workspaces)"
-}
 
 function monitor_changes(){
-    refresh
+    update window="$(hyprctl activewindow -j)"
+    update workspaces="$(list_workspaces)"
     socat -u "UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |while read -r line;
     do
-        if [[ $line == urgent* ]]
-        then
-            IFS=">" read -r _ _ addr <<< "$line"
-            addr="0x${addr}"
-            update urgent_win="${addr}"
-            update urgent_ws="$(hyprctl clients -j|jq --arg addr "$addr" '.[]|select(.address == $addr)|.workspace.id')"
-            sleep_urgent& 
-        # elif [[ $line == workspace* ]]
-        # then
-        #     $HOME/.config/eww/shell/popups/bin/ws_popup.sh & disown
-        elif [[ $line == submap* ]]
-        then
-            IFS=">" read -r _ _ map <<< "$line"
-            update hypr_submap="$map"
-        fi
+        case "$line" in
+            urgent*)
+                IFS=">" read -r _ _ addr <<< "$line"
+                addr="0x${addr}"
+                update urgent_win="${addr}"
+                update urgent_ws="$(hyprctl clients -j|jq --arg addr "$addr" '.[]|select(.address == $addr)|.workspace.id')"
+                sleep_urgent& 
+                ;;
+            submap*)
+                IFS=">" read -r _ _ map <<< "$line"
+                update hypr_submap="$map"
+                ;;
+            *)
+                update window="$(hyprctl activewindow -j)"
+                update workspaces="$(list_workspaces)"
+        esac
 
-        refresh
     done
 }
-function display_changes(){
-    get_active_window_info
-    socat -u "UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |while read -r line;
-    do
-    get_active_window_info
-    done
-}
+
 function switch_to_workspace(){
     id=$1
     name=$2
     workspaces="$(list_workspaces)"
-    echo "$workspaces"|jq
-    if echo "$workspaces"|jq -e --argjson id "$id" '.[]|select(.id == $id)|.active'
+    if ! echo "$workspaces"|jq -e --argjson id "$id" '.[]|select(.id == $id)|.active'
     then
-        true
-    else
         hyprctl dispatch workspace "$name"
     fi
 
