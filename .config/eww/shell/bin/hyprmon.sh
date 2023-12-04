@@ -87,7 +87,12 @@ function monitor_changes(){
         # elif [[ $line == workspace* ]]
         # then
         #     $HOME/.config/eww/shell/popups/bin/ws_popup.sh & disown
+        elif [[ $line == submap* ]]
+        then
+            IFS=">" read -r _ _ map <<< "$line"
+            update hypr_submap="$map"
         fi
+
         refresh
     done
 }

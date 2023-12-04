@@ -1,0 +1,66 @@
+# vim: ft=hyprland.conf
+
+
+bind = $submapLeader, Space, submap, workspace
+
+# ------------------------------------ #
+submap = workspace
+
+# Numbered Workspaces ---------------- #
+
+bind = , 1, workspace, 1
+bind = , 2, workspace, 2
+bind = , 3, workspace, 3
+bind = , 4, workspace, 4
+bind = , 5, workspace, 5
+bind = , 6, workspace, 6
+bind = , 7, workspace, 7
+bind = , 8, workspace, 8
+bind = , 9, workspace, 9
+bind = , 0, workspace, 10
+
+bind = Shift, 1, movetoworkspace, 1
+bind = Shift, 2, movetoworkspace, 2
+bind = Shift, 3, movetoworkspace, 3
+bind = Shift, 4, movetoworkspace, 4
+bind = Shift, 5, movetoworkspace, 5
+bind = Shift, 6, movetoworkspace, 6
+bind = Shift, 7, movetoworkspace, 7
+bind = Shift, 8, movetoworkspace, 8
+bind = Shift, 9, movetoworkspace, 9
+bind = Shift, 0, movetoworkspace, 10
+
+# Named Workspaces ------------------- #
+
+bind = , Space, workspace, name:main
+bind = , G,     workspace, name:games
+bind = , V,     workspace, name:srv
+
+bind = Shift, Space, movetoworkspace, name:main
+bind = Shift, G,     movetoworkspace, name:games
+bind = Shift, V,     movetoworkspace, name:srv
+
+# Special Workspaces ----------------- #
+
+bind = Control, 1, togglespecialworkspace, 1
+bind = Control, 2, togglespecialworkspace, 2
+bind = Control, 3, togglespecialworkspace, 3
+
+# Relative Movement ------------------ #
+
+bind = , Left,  exec, ~/.config/eww/shell/popups/bin/ws_popup.sh next
+bind = , Right, exec, ~/.config/eww/shell/popups/bin/ws_popup.sh prev
+
+bind = , Up,   workspace, +1
+bind = , Down, workspace, -1
+
+bind = , Next,   workspace, m+1
+bind = , Prior,  workspace, m-1
+bind = , Home,   workspace, name:main
+
+bind = , Escape, submap, reset
+bind = $submapLeader, Space, submap, reset
+
+submap = reset
+# ------------------------------------ #
+

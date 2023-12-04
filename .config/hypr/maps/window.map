@@ -1,0 +1,49 @@
+# vim: ft=hyprland.conf
+
+
+bind = $submapLeader, W, submap, window
+
+$resizeUnit = 16
+
+# ------------------------------------ #
+submap = window
+
+# State Stuff ------------------------ #
+
+bind = , F, fullscreen, 0
+bind = , M, fullscreen, 1
+bind = , V, togglefloating
+bind = , P, pin
+bind = , Q, killactive
+bind = , Q, submap, reset
+
+# Growing, hacky, i know ------------- #
+
+binde = , right, resizeactive,  $resizeUnit 0 
+binde = , left,  resizeactive, $resizeUnit 0
+binde = , left,  moveactive, -$resizeUnit 0
+binde = , up,    resizeactive, 0 $resizeUnit
+binde = , up,    moveactive,    0 -$resizeUnit
+binde = , down,  resizeactive,   0 $resizeUnit
+
+# Shrinking -------------------------- #
+
+binde = Shift, right, resizeactive,  -$resizeUnit 0 
+binde = Shift, right,  moveactive,  $resizeUnit 0
+binde = Shift, left,  resizeactive, -$resizeUnit 0
+binde = Shift, up,    resizeactive, 0 -$resizeUnit
+binde = Shift, down,  resizeactive,   0 -$resizeUnit
+binde = Shift, down,    moveactive,    0 $resizeUnit
+
+# Moving ----------------------------- #
+
+binde = , H, moveactive, -$resizeUnit 0
+binde = , J, moveactive, 0 $resizeUnit
+binde = , K, moveactive, 0 -$resizeUnit 
+binde = , L, moveactive, $resizeUnit 0
+
+bind = , Escape, submap, reset
+bind = $submapLeader, W, submap, reset
+
+submap = reset
+# ------------------------------------ #

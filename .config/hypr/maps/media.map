@@ -1,0 +1,33 @@
+# vim: ft=hyprland.conf
+
+
+bind = $submapLeader, M, submap, media
+
+# ------------------------------------ #
+submap = media
+
+bind = , Space,exec, playerctl play-pause
+binde = , L,exec, playerctl position 5+
+binde = , H,exec, playerctl position 5-
+
+binde = Shift, L,exec, playerctl next
+binde = Shift, H,exec, playerctl previous
+
+
+binde = , K, exec, wpctl set-volume @DEFAULT_SINK@ 3%+ -l 1& ~/.config/eww/settings/bin/audio_state.sh& .config/eww/shell/popups/bin/open_popup.sh out    
+binde = , J, exec, wpctl set-volume @DEFAULT_SINK@ 3%- -l 1& ~/.config/eww/settings/bin/audio_state.sh& .config/eww/shell/popups/bin/open_popup.sh out    
+
+bind = , M, exec, pactl set-sink-mute @DEFAULT_SINK@ toggle& ~/.config/eww/settings/bin/audio_state.sh& .config/eww/shell/popups/bin/open_popup.sh out    
+bind = , I, exec, pactl set-source-mute @DEFAULT_SOURCE@ toggle& ~/.config/eww/settings/bin/audio_state.sh& .config/eww/shell/popups/bin/open_popup.sh in
+
+bind = , S, exec, ~/.local/bin/eww_settings.sh audio
+bind = , S, submap, reset
+
+
+bind = , Escape, submap, reset
+bind = $submapLeader, M, submap, reset
+
+submap = reset
+# ------------------------------------ #
+
+

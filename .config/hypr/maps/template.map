@@ -1,0 +1,18 @@
+# vim: ft=hyprland.conf
+
+
+bind = $submapLeader, KEY, submap, NAME
+
+# ------------------------------------ #
+submap = NAME
+
+#
+# binds go here
+#
+
+bind = , Escape, submap, reset
+
+submap = reset
+bind = $submapLeader, KEY, submap, reset
+# ------------------------------------ #
+

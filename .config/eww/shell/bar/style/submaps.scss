@@ -1,0 +1,24 @@
+.submap_,.submap_window,.submap_workspace,.submap_media{
+    @extend .sbutton;
+}
+
+.submap_window{
+    background-color: $lblue;
+    &:hover{
+        background-color: fade($lblue);
+    }
+}
+
+.submap_media{
+    background-color: $special;
+    &:hover{
+        background-color: fade($special);
+    }
+}
+
+.submap_workspace{
+    background-color: $green;
+    &:hover{
+        background-color: fade($green);
+    }
+}

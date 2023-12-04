@@ -1,11 +1,14 @@
+(include "bar/submap.yuck")
 (defvar window "{}")
 (defvar launcher_open false)
 (defvar show_hidden_windows false)
 (defvar windows "[]")
 (defvar urgent_win '')
 
+
 (defwidget window []
         (box :space-evenly false  
+            (submap)
             (button :class "sbutton":onclick "bin/open_window_list.sh" :onmiddleclick "hyprctl dispatch killactive" (label :text "${window.xwayland?: false ? "(X11) " : ""}${window.title ?: "No Window Selected"}" :limit-width 32  ))
         )
         )
