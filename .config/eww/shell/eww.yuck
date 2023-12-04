@@ -5,7 +5,9 @@
 (include "popups/volume.yuck")
 (include "popups/bright.yuck")
 (include "popups/workspace.yuck")
+(include "popups/submap.yuck")
 
+(include "vars/submaps.yuck")
 
 (include "widgets/lbutton.yuck")
 (include "bar/bar.yuck")

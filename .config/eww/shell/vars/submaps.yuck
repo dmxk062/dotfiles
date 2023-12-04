@@ -1,0 +1,53 @@
+(defvar hypr_submap_icons '{
+"window":"󱂬",
+"workspace":"󰾍",
+"media":"󱜏",
+"default":"󰌌"
+}')
+
+
+(defvar hypr_submap_options '{
+"media":[
+    {
+        "keys":"󱁐",
+        "action":"󰐎    Play-Pause"
+    },
+    {
+        "keys":"L",
+        "action":"󱇸    Advance 5 Seconds"
+    },
+    {
+        "keys":"H",
+        "action":"󱇹    Rewind 5 Seconds"
+    },
+    {
+        "keys":"󰘶  + L",
+        "action":"󰒭    Next Track"
+    },
+    {
+        "keys":"󰘶  + H",
+        "action":"󰒮    Previous Track"
+    },
+    {
+        "keys":"M",
+        "action":"󰝟    Toggle Output Mute"
+    },
+    {
+        "keys":"I",
+        "action":"󰍭    Toggle Input Mute"
+    },
+    {
+        "keys":"K",
+        "action":"󰝝    Raise Volume"
+    },
+    {
+        "keys":"J",
+        "action":"󰝞    Lower Volume"
+    },
+    {
+        "keys":"S",
+        "action":"󰭴    Open Audio Settings"
+    }
+]
+
+}')

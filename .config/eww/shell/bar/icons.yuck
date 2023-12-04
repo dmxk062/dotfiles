@@ -36,12 +36,6 @@
 "srv":"󰒋"
 }')
 
-(defvar hypr_submap_icons '{
-"window":"󱂬",
-"workspace":"󰾍",
-"media":"󱜏",
-"default":"󰌌"
-}')
 
 
 ;; (defvar win_icons '{
