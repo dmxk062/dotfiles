@@ -12,12 +12,8 @@
         "name":"Growth in the Ocean"
     },
     {
-        "path":"/home/dmx/.config/background/img/robot",
-        "name":"Trans²"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/electric_dawn",
-        "name":"Nightfall with Clouds"
+        "path":"/home/dmx/.config/background/img/cutefish-res",
+        "name":"Bubbles"
     },
     {
         "path":"/home/dmx/.config/background/img/dawn",
@@ -28,6 +24,10 @@
         "name":"Desert"
     },
     {
+        "path":"/home/dmx/.config/background/img/dunes",
+        "name":"Dunes"
+    },
+    {
         "path":"/home/dmx/.config/background/img/expanse",
         "name":"Expansive Mountains"
     },
@@ -36,20 +36,8 @@
         "name":"Celeste"
     },
     {
-        "path":"/home/dmx/.config/background/img/lake_cozy",
-        "name":"Cozy Lake"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/morning",
-        "name":"Bright Morning"
-    },
-    {
         "path":"/home/dmx/.config/background/img/arch",
         "name":"Arch Linux"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/peak",
-        "name":"Peak"
     },
     {
         "path":"/home/dmx/.config/background/img/peaks",

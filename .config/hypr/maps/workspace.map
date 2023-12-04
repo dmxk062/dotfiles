@@ -1,7 +1,8 @@
 # vim: ft=hyprland.conf
 
 
-bind = $submapLeader, Space, submap, workspace
+bind = $submapLeader, Space,  submap, workspace
+bind = $submapLeader, Escape, submap, workspace
 
 # ------------------------------------ #
 submap = workspace
@@ -60,6 +61,7 @@ bind = , Home,   workspace, name:main
 
 bind = , Escape, submap, reset
 bind = $submapLeader, Space, submap, reset
+bind = $submapLeader, Escape, submap, reset
 
 submap = reset
 # ------------------------------------ #
