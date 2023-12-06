@@ -9,7 +9,7 @@
             (box :space-evenly false :class "inner-leftbox"
                 (for ws in workspaces
                     (button :class "ws-${ws.id == urgent_ws ? "urgent" : (ws.active ? "active" : (ws.special ? "special" : "inactive"))}"  
-                    :onclick "${ws.id == urgent_ws ? "${EWW_CMD} update urgent_ws='';${EWW_CMD} update urgent_win='';" : ""} ${ws.special ? "hyprctl dispatch togglespecialworkspace ${replace(ws.name,"special:","")}" : "bin/hyprmon.sh switch ${ws.id} ${ws.name}"}"  :tooltip "Name: ${ws.name}
+                    :onclick "${ws.special ? "hyprctl dispatch togglespecialworkspace ${replace(ws.name,"special:","")}" : "bin/hyprmon.sh switch ${ws.id} ${ws.name}"}"  :tooltip "Name: ${ws.name}
 Active: ${ws.title ?: "No Window"}
 Type: ${ws.special ? "Special" : (ws.name == ws.id ? "Numeric" : "Named")} 
 Windows: ${ws.count}

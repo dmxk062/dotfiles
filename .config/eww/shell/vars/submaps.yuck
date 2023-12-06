@@ -48,6 +48,16 @@
         "keys":"S",
         "action":"󰭴    Open Audio Settings"
     }
+],
+"workspace":[
+    {
+        "keys":"[0-9]",
+        "action":"    Switch to Workspace"
+    },
+    {
+        "keys":"󰘶  + [0-9]",
+        "action":"    Move Window to Workspace"
+    }
 ]
 
 }')

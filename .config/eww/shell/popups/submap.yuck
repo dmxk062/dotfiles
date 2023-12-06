@@ -12,7 +12,7 @@
 
 (defwidget submap_notif []
     (box :space-evenly false :halign "center" :valign "center"
-        (box :space-evenly false :class "ws_popup_box" :orientation "v"
+        (box :space-evenly false :class "submap_popup_box" :orientation "v"
             (box :class "padding_box" :orientation "v" :space-evenly false
                 (label :text "${hypr_submap_icons[hypr_submap] ?: hypr_submap_icons["default"]}   ${hypr_submap}" :class "charicon")
                 (label :class "text" :text "Press <ESC> to return to default mappings")
