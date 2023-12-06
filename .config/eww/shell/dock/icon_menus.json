@@ -107,11 +107,11 @@
             "exec":"env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json steam steam://open/bigpicture"
         },
         {
-            "name":"Sid Meiers's Civilization VI",
+            "name":"Civilization VI",
             "exec":"gtk-launch Civ6"
         },
         {
-            "name":"Sid Meier's Civilization V",
+            "name":"Civilization V",
             "exec":"gtk-launch Civ5"
         },
         {
@@ -163,7 +163,7 @@
             "exec":"prismlauncher --show main"
         },
         {
-            "name":"Minecraft Server Console",
+            "name":"Server Console",
             "exec":"kitty --class=popup ssh dmxerv"
         }
     ]

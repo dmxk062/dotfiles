@@ -9,7 +9,7 @@
 (defwidget window []
         (box :space-evenly false  
             (submap)
-            (button :class "sbutton":onclick "bin/open_window_list.sh" :onmiddleclick "hyprctl dispatch killactive" (label :text "${window.xwayland?: false ? "(X11) " : ""}${window.title ?: "No Window Selected"}" :limit-width 32  ))
+            (button :class "sbutton":onclick "bin/open_window_list.sh" :onmiddleclick "hyprctl dispatch killactive" (label :text "${window.xwayland?: false ? "    " : ""}${window.title ?: "No Window Selected"}" :limit-width 32  ))
         )
         )
 
@@ -43,7 +43,7 @@
                                 :timeout "16s" 
                                 :hexpand true :tooltip "${win.title ?: "No title"}
 App: ${win.class ?: "No Class"}
-Running under: ${win.legacy ? "XWayland" : "Native Wayland"}
+Running under: ${win.legacy ? "XWayland(legacy) " : "Native Wayland"}
 Address: ${win.address}
 Process: ${win.pid?: "No Program"}
 In Workspace: ${win.workspace.name?: win.workspace.id}
