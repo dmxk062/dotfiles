@@ -92,8 +92,11 @@ function monitor_changes(){
                eww -c $XDG_CONFIG_HOME/eww/shell update urgent_ws=''
                eww -c $XDG_CONFIG_HOME/eww/shell update urgent_win=''
                ;;
-            activewindowv2) # ignore the activewindowv2 signal cause activewindow already tells us to update
+            activewindowv2*|closelayer*|openlayer*) # ignore stuff we dont really care about
                 continue;;
+            changefloatingmode*) # we dont care about workspaces here
+                update window="$(hyprctl activewindow -j)"
+                ;;
             *)
                 update window="$(hyprctl activewindow -j)"
                 update workspaces="$(list_workspaces)"
