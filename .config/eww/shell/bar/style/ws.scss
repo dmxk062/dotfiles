@@ -1,4 +1,4 @@
-.ws-active, .ws-inactive, .ws-special, .ws-urgent{
+.ws-active, .ws-inactive, .ws-special-active, .ws-special-inactive, .ws-urgent{
     padding: $padding-std;
     border-radius: $rounding-small;
     background-color: $bg2;
@@ -13,12 +13,15 @@
         background-color: fade($accent)
     }
 }
-.ws-special{
+.ws-special-inactive{
     background-color: $special;
     color: $inverted;
     &:hover{
         background-color: fade($special)
     }
+}
+.ws-special-active{
+    @extend .ws-active;
 }
 .ws-urgent{
     background-color: $light-red;

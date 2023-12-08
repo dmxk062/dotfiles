@@ -8,7 +8,7 @@
         (box :space-evenly false :halign "start" :class "leftbox"
             (box :space-evenly false :class "inner-leftbox"
                 (for ws in workspaces
-                    (button :class "ws-${ws.id == urgent_ws ? "urgent" : (ws.active ? "active" : (ws.special ? "special" : "inactive"))}"  
+                    (button :class "ws-${ws.id == urgent_ws ? "urgent" : (ws.active ? "active" : (ws.special ? ( ws.id == window?.workspace?.id ? "special-active" : "special-inactive") : "inactive"))}"  
                     :onclick "${ws.special ? "hyprctl dispatch togglespecialworkspace ${replace(ws.name,"special:","")}" : "bin/hyprmon.sh switch ${ws.id} ${ws.name}"}"  :tooltip "Name: ${ws.name}
 Active: ${ws.title ?: "No Window"}
 Type: ${ws.special ? "Special" : (ws.name == ws.id ? "Numeric" : "Named")} 

@@ -24,10 +24,10 @@ case $1 in
         prompt "Reboot System?" "systemctl reboot"
         ;;
     lock)
-        prompt "Lock Screen?" "gtklock -dS"
+        prompt "Lock Screen?" "swaylock"
         ;;
     suspend)
-        prompt "Suspend System?" "gtklock -dS&& sleep 1 &&systemctl suspend"
+        prompt "Suspend System?" "swaylock&& sleep 1 &&systemctl suspend"
         ;;
     logout)  
         prompt "Logout to TTY?" "hyprctl dispatch exit 1"
