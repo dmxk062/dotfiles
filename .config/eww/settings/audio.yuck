@@ -106,7 +106,7 @@
                             (box :class "padding_box" :orientation "v" :space-evenly false
                                 (label :class "card-label" :text "${stream.name} - ${stream.app}" :limit-width 30 :tooltip "${stream.name} in ${stream.app}")
                                 (box :class "sliderbox" :space-evenly false
-                                    (scale :class "audio-slider${stream.volume > 100 ? "-overload" : ""}" :value {stream.volume} :min 1 :max 150 :onchange "bin/audio/streamval.sh ${stream.id} {}&")
+                                    (scale :class "audio-slider" :value {stream.volume} :min 1 :max 100 :onchange "bin/audio/streamval.sh ${stream.id} {}&")
                                 )
                             )
                             (box :space-evenly false :class "card_footer"

@@ -4,6 +4,7 @@
 
 .submap_window{
     background-color: $lblue;
+    color: $inverted;
     &:hover{
         background-color: fade($lblue);
     }
@@ -11,6 +12,7 @@
 
 .submap_media{
     background-color: $special;
+    color: $inverted;
     &:hover{
         background-color: fade($special);
     }
@@ -18,6 +20,7 @@
 
 .submap_workspace{
     background-color: $green;
+    color: $inverted;
     &:hover{
         background-color: fade($green);
     }
