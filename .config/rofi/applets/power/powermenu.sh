@@ -71,10 +71,10 @@ $NO
         "$YES")
             case $ROFI_DATA in
                 lock)
-                    gtklock -dS
+                    swaylock
                     ;;
                 suspend)
-                    gtklock -dS
+                    swaylock
                     sleep 1
                     systemctl suspend
                     ;;

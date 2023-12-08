@@ -7,8 +7,8 @@ bind = $submapLeader, M, submap, media
 submap = media
 
 bind = , Space,exec, playerctl play-pause
-binde = , L,exec, playerctl position 5+
-binde = , H,exec, playerctl position 5-
+binde = , L,exec, playerctl position +5
+binde = , H,exec, playerctl position -5
 
 binde = Shift, L,exec, playerctl next
 binde = Shift, H,exec, playerctl previous
