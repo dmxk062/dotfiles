@@ -13,7 +13,6 @@ then
         hyprctl dispatch "togglefloating address:${addr}"
     fi
 fi
-exit
 read -r pos size <<< "$(slurp -w 0 -b "#4c566acc" -s "#ffffff00")"
 x=${pos%%,*} 
 y=${pos#*,}
