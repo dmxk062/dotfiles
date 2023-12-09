@@ -29,7 +29,7 @@
         (box :class "popup_box" :space-evenly false :orientation "v"
         (box :class "padding_box"
             (scroll :vscroll true :class "scroll-notif" :vexpand true
-                (box :orientation "v" :space-evenly false :hexpand true
+                (box :orientation "v" :space-evenly false :hexpand true :class "padding_box"
                     (for notif in notifs 
                         (eventbox :onmiddleclick "makoctl dismiss -n ${notif.id}"
                         (box :class "notif${notif.urgency == 2 ? "-urgent" : ""}${notif.id == expanded_notif ? "-expanded" : ""}" :orientation "h" :space-evenly false :hexpand true
@@ -71,7 +71,7 @@
                                         (box :space-evenly false :halign "start" :hexpand true
                                             (label :text "By: ${notif.name}" :class "text" :limit-width 32)
                                         )
-                                        (label :class "urgency${notif.urgency}" :text "${notif.level?: "normal"}")
+                                        (label :class "urgency${notif.urgency == 255 ? 0 : notif.urgency}" :text "${notif.level?: "normal"}")
                                     )
                                 )
                             )
