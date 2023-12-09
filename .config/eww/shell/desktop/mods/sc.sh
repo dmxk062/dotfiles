@@ -27,7 +27,7 @@ case $1 in
 esac
 
 active_window="$(hyprctl -j activewindow)"
-geometry="$(echo "$active_window"|jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')"
+geometry="$(echo "$active_window"|jaq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')"
 grim -g "$geometry" "$file"
 if $clip
 then

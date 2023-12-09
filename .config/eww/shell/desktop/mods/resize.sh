@@ -7,12 +7,13 @@ then
     then
         exit
     fi
-    addr="$(echo "$win"|jq '.address' -r)"
-    if ! echo "$win"|jq -e '.floating'
+    addr="$(echo "$win"|jaq '.address' -r)"
+    if ! echo "$win"|jaq -e '.floating'
     then
         hyprctl dispatch "togglefloating address:${addr}"
     fi
 fi
+exit
 read -r pos size <<< "$(slurp -w 0 -b "#4c566acc" -s "#ffffff00")"
 x=${pos%%,*} 
 y=${pos#*,}

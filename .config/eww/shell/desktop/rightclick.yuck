@@ -43,7 +43,7 @@
     (box :space-evenly false :orientation "v" :visible {rc_win_area == 0}
         (label :class "lbutton" :text "Window")
         (lbutton :onclick "hyprctl dispatch killactive& ${EWW_CMD} close rc_popup" :label "Close")
-        (lbutton :onclick "hyprctl dispatch togglefloating& ${EWW_CMD} close rc_popup" :label "${window.floating ? "Unfloat" : "Float"}")
+        (lbutton :onclick "hyprctl dispatch togglefloating& ${EWW_CMD} close rc_popup" :label "${window.floating ? "Tile" : "Float"}")
         (lbutton :onclick "hyprctl dispatch fullscreen 0& ${EWW_CMD} close rc_popup" :visible {!window.floating} :label "${window.fullscreen ? "Unfullscreen" : "Fullscreen"}")
         (lbutton :onclick "hyprctl dispatch pin& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "${window.pinned ? "Unpin" : "Pin"}")
         (lbutton :onclick "sleep 0.2&&desktop/mods/resize.sh ${window.address}& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "Resize")
