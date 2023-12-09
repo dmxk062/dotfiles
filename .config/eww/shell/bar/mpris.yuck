@@ -2,6 +2,7 @@
 (deflisten loop "bin/mpris.sh loop")
 (defpoll mpris_meta :interval "2s" "bin/mpris.sh meta")
 
+
 (defwidget mpris_button []
     (box :space-evenly false
     (button :class "mpris-button${mpris.active ? "-playing" : ""}" :onclick "${EWW_CMD} open mpris_popup --toggle --screen 0 --anchor 'top center'" :onmiddleclick "playerctl play-pause" :timeout "16s" (label :text "${mpris.active ? "󰐊" : "󰐎"}    ${mpris.title?: "No Player"}" :limit-width 20))
@@ -25,7 +26,13 @@
             (box :class "padded_box"
             (overlay 
                 (box :class "image_overlay")
-                (image :path "${mpris_meta.img?:"${mpris.title == "null" ? "${icon_theme}/24/actions/media-album-track.svg" : "${icon_theme}/scalable/apps/accessories-media-converter.svg"}"}" :image-width 308 :image-height 180 )
+                (image :path {mpris_meta.img?: 
+                (mpris.title == "null" ? 
+                "${icon_theme}/24/actions/media-album-track.svg" : 
+                (mpris.title == "Netflix" ? "../assets/images/netflix.svg" :
+                "${icon_theme}/scalable/apps/accessories-media-converter.svg"))}
+                :image-width 308 :image-height 180
+                :visible {mpris.title != "null"})
             )
 
             )
