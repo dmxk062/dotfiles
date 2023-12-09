@@ -9,6 +9,8 @@ clock
 timestr=%H:%M
 datestr=
 
+daemonize
+
 bs-hl-color=bf616a
 caps-lock-bs-hl-color=bf616a
 caps-lock-key-hl-color=8fbcbb

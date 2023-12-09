@@ -5,6 +5,8 @@ font=TorusPro
 indicator-idle-visible
 indicator-radius=64
 
+daemonize
+
 clock
 timestr=%H:%M
 datestr=
