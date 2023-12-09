@@ -23,7 +23,7 @@
                             :anchor "top center"
                     )
         :stacking "overlay"
-        :namespace "eww_bar_top"
+        :namespace "eww_popup"
     (window_list)
 )
 (defwidget window_list []

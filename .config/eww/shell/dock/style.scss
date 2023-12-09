@@ -21,3 +21,7 @@
     }
 }
 
+
+.dock {
+    @extend .popup_box_padded;
+}

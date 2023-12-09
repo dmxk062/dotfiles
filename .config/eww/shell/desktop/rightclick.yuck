@@ -18,7 +18,7 @@
 
 (defwindow rc_popup 
         :stacking "fg"
-        :namespace "special"
+        :namespace "eww_noblur"
         :geometry (geometry :x 0
                             :y 0
                             :width 0
@@ -76,7 +76,7 @@
 
 
 (defwidget rc_popup_menu []
-    (box :class "popup_box_padded"
+    (box :class "rightclick_popup"
         (box :orientation "v" :space-evenly false
             (rc_section_desktop)
             (rc_section_window)

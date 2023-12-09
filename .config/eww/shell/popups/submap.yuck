@@ -6,7 +6,7 @@
                         :anchor "center bottom"
                 )
     :stacking "overlay"
-    :namespace "eww_submap"
+    :namespace "eww_blurred"
     (submap_notif)
 )
 

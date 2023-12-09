@@ -18,7 +18,7 @@
                             :anchor "top right"
                     )
         :stacking "overlay"
-        :namespace "eww_bar_top"
+        :namespace "eww_popup"
     (performance_list)
 )
 

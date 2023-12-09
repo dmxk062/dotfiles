@@ -10,7 +10,7 @@
 
 (defwindow icon_popup 
         :stacking "fg"
-        :namespace "special"
+        :namespace "eww_popup"
         :geometry (geometry :x 0
                             :y 0
                             :width 0

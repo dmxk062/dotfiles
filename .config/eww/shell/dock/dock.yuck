@@ -21,7 +21,7 @@
                             :anchor "bottom center"
                     )
         :stacking "overlay"
-        :namespace "eww_bar_top"
+        :namespace "eww_noblur"
     (dock)
 )
 
@@ -30,7 +30,7 @@
 (defwidget dock []
     (box :space-evenly false :halign "center" :valign "center"
 (revealer :reveal dock_reveal :transition "slideup" :duration "0.2s"
-        (box :space-evenly false :class "popup_box_padded"
+        (box :space-evenly false :class "dock"
             (box
                 (for app in apps
                     (icon_button :path "${app.image}" :exec "${app.exec}" :tooltip "${app.description}" :menu "${app.menu?: ""}")

@@ -6,7 +6,7 @@
                             :anchor "center"
                     )
         :stacking "overlay"
-        :namespace "eww_bar_top"
+        :namespace "eww_noblur"
     (screenshot)
 )
 
