@@ -1,0 +1,8 @@
+(defwidget split_title [left right]
+    (box :space-evenly false :hexpand true
+        (box :halign "start" :hexpand true
+            (label :class "title" :text left)
+        )
+        (label :class "title" :text right)
+    )
+)

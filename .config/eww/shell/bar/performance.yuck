@@ -27,23 +27,27 @@
     (box :space-evenly false :halign "start" :valign "start"
         (box :class "popup_box_padded" :orientation "v" :space-evenly false
             (box :class "section_box" :orientation "v" :space-evenly false
-                (label :class "title" :text "󰍛    Memory: ${mem.mem.nice.used} / ${mem.mem.nice.total} - ${round(mem.mem.raw.perc,0)}%")
+                (split_title :left "Memory" :right "${mem.mem.nice.used} of ${mem.mem.nice.total}")
                 (scale :value {mem.mem.raw.perc} :class "slider-yellow" :active false)
-                (label :class "title" :text "    Swap: ${mem.swap.nice.used} / ${mem.swap.nice.total} - ${round(mem.swap.raw.perc,0)}%")
+
+                (split_title :left "Swap" :right "${mem.swap.nice.used} of ${mem.swap.nice.total}")
                 (scale :value {mem.swap.raw.perc} :class "slider-blue" :active false)
-                (label :class "title" :text "󰢮    Video Memory: ${gpu.used_nice} / ${gpu.total_nice} - ${round(gpu.perc,0)}%")
+
+                (split_title :left "Video Memory" :right "${gpu.used_nice} of ${gpu.total_nice}")
                 (scale :value {gpu.perc} :class "slider-red" :active false)
             )
             (box :class "section_box" :orientation "v" :space-evenly false
-                (label :class "title" :text "    Upload Speed: ${net.nice.up == 0 ? "None" : "${net.nice.up}/s"}")
+                (split_title :left "Upload" :right {net.nice.up == 0 ? "None" : "${net.nice.up}/s"})
                 (scale :value {net.raw.up} :class "slider" :min 0 :max 4000 :active false)
-                (label :class "title" :text "    Download Speed: ${net.nice.down == 0 ? "None" : "${net.nice.down}/s"}")
+
+                (split_title :left "Download" :right {net.nice.down == 0 ? "None" : "${net.nice.down}/s"})
                 (scale :value {net.raw.down} :class "slider-blue" :min 0 :max 19200 :active false)
             )
             (box :class "section_box" :orientation "v" :space-evenly false
-                (label :class "title" :text "󰻠    CPU Usage: ${cpu.usage}% at ${cpu.temp}°C")
+                (split_title :left "CPU Usage" :right "${cpu.usage}% at ${cpu.temp}°C")
                 (scale :value {cpu.usage} :class "${cpu.temp > 30 ? (cpu.temp > 50 ? (cpu.temp > 60 ? "slider-red" : "slider-orange") : "slider-yellow") : "slider-green"}" :min 0 :max 100 :active false)
-                (label :class "title" :text "󰢮    GPU Usage: ${gpu.utilization}% at ${gpu.temp}°C")
+
+                (split_title :left "GPU Usage" :right "${gpu.utilization}% at ${gpu.temp}°C")
                 (scale :value {gpu.utilization} :class "${gpu.temp > 30 ? (gpu.temp > 50 ? (gpu.temp > 60 ? "slider-red" : "slider-orange") : "slider-yellow") : "slider-green"}" :min 0 :max 100 :active false)
             )
         )

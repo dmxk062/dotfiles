@@ -1,5 +1,6 @@
 (include "../common/widgets.yuck")
 (include "../common/widgets/icons.yuck")
+(include "../common/widgets/row.yuck")
 (include "../common/variables.yuck")
 (include "screenshot.yuck")
 (include "popups/volume.yuck")
