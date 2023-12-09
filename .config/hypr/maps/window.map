@@ -3,7 +3,7 @@
 
 bind = $submapLeader, W, submap, window
 
-$resizeUnit = 16
+$resizeUnit = 32
 
 # ------------------------------------ #
 submap = window
@@ -19,22 +19,35 @@ bind = , Q, submap, reset
 
 # Growing, hacky, i know ------------- #
 
-binde = , right, resizeactive,  $resizeUnit 0 
-binde = , left,  resizeactive, $resizeUnit 0
-binde = , left,  moveactive, -$resizeUnit 0
-binde = , up,    resizeactive, 0 $resizeUnit
-binde = , up,    moveactive,    0 -$resizeUnit
-binde = , down,  resizeactive,   0 $resizeUnit
+# bind = , right, resizeactive,  $resizeUnit 0 
+# bind = , left,  resizeactive, $resizeUnit 0
+# bind = , left,  moveactive, -$resizeUnit 0
+# bind = , up,    resizeactive, 0 $resizeUnit
+# bind = , up,    moveactive,    0 -$resizeUnit
+# bind = , down,  resizeactive,   0 $resizeUnit
 
 # Shrinking -------------------------- #
 
-binde = Shift, right, resizeactive,  -$resizeUnit 0 
-binde = Shift, right,  moveactive,  $resizeUnit 0
-binde = Shift, left,  resizeactive, -$resizeUnit 0
-binde = Shift, up,    resizeactive, 0 -$resizeUnit
-binde = Shift, down,  resizeactive,   0 -$resizeUnit
-binde = Shift, down,    moveactive,    0 $resizeUnit
+# bind = Shift, right, resizeactive,  -$resizeUnit 0 
+# bind = Shift, right,  moveactive,  $resizeUnit 0
+# bind = Shift, left,  resizeactive, -$resizeUnit 0
+# bind = Shift, up,    resizeactive, 0 -$resizeUnit
+# bind = Shift, down,  resizeactive,   0 -$resizeUnit
+# bind = Shift, down,    moveactive,    0 $resizeUnit
 
+bind = Alt, L, resizeactive,  -$resizeUnit 0 
+bind = Alt, L,  moveactive,  $resizeUnit 0
+bind = Alt, H,  resizeactive, -$resizeUnit 0
+bind = Alt, K,    resizeactive, 0 -$resizeUnit
+bind = Alt, J,  resizeactive,   0 -$resizeUnit
+bind = Alt, J,    moveactive,    0 $resizeUnit
+
+bind = Shift, L, resizeactive,  $resizeUnit 0 
+bind = Shift, H,  resizeactive, $resizeUnit 0
+bind = Shift, H,  moveactive, -$resizeUnit 0
+bind = Shift, K,    resizeactive, 0 $resizeUnit
+bind = Shift, K,    moveactive,    0 -$resizeUnit
+bind = Shift, J,  resizeactive,   0 $resizeUnit
 # Moving ----------------------------- #
 
 binde = , H, moveactive, -$resizeUnit 0

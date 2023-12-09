@@ -27,9 +27,9 @@
 }
 
 .submap_popup_box{
-    background-color: $bg3;
+    background-color: rgba($bg, 0.4);
     border-radius: 16px 16px 0 0;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+    // box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
     margin: 2rem 2rem 0 2rem;
 
 }

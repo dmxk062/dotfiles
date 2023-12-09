@@ -21,11 +21,11 @@
         "action":"󱇹    Rewind 5 Seconds"
     },
     {
-        "keys":"󰘶  + L",
+        "keys":"shift + L",
         "action":"󰒭    Next Track"
     },
     {
-        "keys":"󰘶  + H",
+        "keys":"shift + H",
         "action":"󰒮    Previous Track"
     },
     {
@@ -55,9 +55,44 @@
         "action":"    Switch to Workspace"
     },
     {
-        "keys":"󰘶  + [0-9]",
+        "keys":"shift + [0-9]",
         "action":"    Move Window to Workspace"
     }
+],
+"window":[
+    {
+        "keys":"F",
+        "action":"Toggle Fullscreen"
+    },
+    {
+        "keys":"M",
+        "action":"Toggle Maximize"
+    },
+    {
+        "keys":"V",
+        "action":"Toggle Floating"
+    },
+    {
+        "keys":"P",
+        "action":"Pin Window"
+    },
+    {
+        "keys":"Q",
+        "action":"Close Window"
+    },
+    {
+        "keys":"[h j k l ]",
+        "action":"Move Window"
+    },
+    {
+        "keys":"shift + [h j k l ]",
+        "action":"Grow Window"
+    },
+    {
+        "keys":"alt + [h j k l ]",
+        "action":"Shrink Window"
+    }
+
 ]
 
 }')

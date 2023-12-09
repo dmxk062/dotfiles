@@ -6,9 +6,9 @@ LOCKFILE="/tmp/.eww_ws_popup_shown"
 
 case $1 in
     next)
-        hyprctl dispatch workspace r-1;;
+        hyprctl dispatch workspace m-1;;
     prev)
-        hyprctl dispatch workspace r+1;;
+        hyprctl dispatch workspace m+1;;
 esac
 
 [ -f /tmp/.eww_no_popups ]&&exit
