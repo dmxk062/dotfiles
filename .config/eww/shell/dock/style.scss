@@ -25,3 +25,7 @@
 .dock {
     @extend .popup_box_padded;
 }
+
+.invisible{
+    font-size: 1px;
+}

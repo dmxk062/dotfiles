@@ -10,7 +10,7 @@
 :namespace "eww_active_edge"
 (activator))
 (defwidget activator []
-(eventbox :onhover "dock/bin/open_dock.sh& disown" :onclick "dock/bin/open_dock.sh& disown"))
+(eventbox :onhover "dock/bin/open_dock.sh& disown" :onclick "dock/bin/open_dock.sh& disown" ))
 
 (defwindow dock_window 
         :monitor 0
@@ -28,7 +28,8 @@
 
 
 (defwidget dock []
-    (box :space-evenly false :halign "center" :valign "center"
+    (box :space-evenly false :halign "center" :valign "center" :orientation "v"
+    (label :class "invisible" dock_reveal)
 (revealer :reveal dock_reveal :transition "slideup" :duration "0.2s"
         (box :space-evenly false :class "dock"
             (box

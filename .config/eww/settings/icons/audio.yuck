@@ -68,7 +68,6 @@
 "hdmi-output-2":"󰽟",
 "hdmi-output-3":"󰽟"
 }')
-
 (defvar sink_images '{
 "headset":"scalable/devices/audio-card.svg",
 "audio-headset":"scalable/devices/audio-headphones.svg",
