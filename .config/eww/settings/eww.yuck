@@ -3,6 +3,7 @@
 ;; Some of these modules and settings are very system specific and are not tested for other configurations than mine
 ;; To adjust them for your machine, edit the .yuck files and the asssociated shell scripts in ./bin to your liking
 
+(include "icons/audio.yuck")
 (include "appearance.yuck")
 (include "input.yuck")
 (include "audio.yuck")

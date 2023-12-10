@@ -12,7 +12,7 @@
 (box :space-evenly false :class "card" :orientation "v"
     (box :space-evenly false :orientation "v"
         (box :class "padding_box" :orientation "v" :space-evenly false :halign "center"
-            (icon :name "${device.icon_g}")
+            (icon :name {type == 'sink' ? sink_images[device.icon?:"speaker"] : source_images[device.icon?:"microphone"]})
             (label :class "card-label" :text "${device.name}" :limit-width 20)
         )
         (box :class "padding_box" :orientation "v" :space-evenly false
@@ -21,14 +21,18 @@
     )
     (box :class "card_footer" :space-evenly false :orientation "v"
         (box :space-evenly false :halign "center"
-            (button :timeout "16s" :onclick "pactl set-${type}-mute ${device.id} ${device.mute ? "0" : "1"}&&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh" :class "button${device.mute ? "" : "-active"}" "${type == "source" ? "${device.mute ? "" : ""}" : "${device.mute ? "${device.icon.muted}" : "${device.icon.unmuted}"}"}    Mute")
+            (button :timeout "16s" :onclick "pactl set-${type}-mute ${device.id} ${device.mute ? "0" : "1"}&&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh"
+            :class "button${device.mute ? "" : "-active"}"
+            "${type == "source" ? (device.mute ? "" : "")
+            : (device.mute ? sink_icons[device.icon].muted : sink_icons[device.icon].unmuted)}    Mute")
             (button :timeout "16s" :onclick "pactl set-default-${type} ${device.id} &&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh" :class "button${device.active ? "-active" : ""}" "Set as Default")
         )
         (box :class "padding_box" :visible "${arraylength(device.ports) > 1}" :orientation "v" :space-evenly false
             (label :class "title" :text "Ports")
             (box :space-evenly false 
                 (for port in "${device.ports}"
-                    (button :timeout "16s" :onclick "pactl set-${type}-port ${device.id} ${port.name}&&bin/sinks_sources.sh upd ${type}s" :class "button${port.name == device.port ?"-active" : ""}" (label :text "${port.icon}     ${port.desc}" :limit-width 20))
+                    (button :timeout "16s" :onclick "pactl set-${type}-port ${device.id} ${port.name}&&bin/sinks_sources.sh upd ${type}s" :class "button${port.name == device.port ?"-active" : ""}"
+                    (label :text "${port_icons[port.name]}     ${port.desc}" :limit-width 20))
                 )
 
             )
@@ -45,12 +49,13 @@
                 (box  :orientation "v" :space-evenly false :spacing 16
                     (box :orientation "v" :space-evenly false :halign "center" :class "card"
                         (box :orientation "v" :space-evenly false :class "padding_box"
-                            (icon :name "${active_sinks.icon_g}")
+                            (icon :name {sink_images[active_sinks.icon?: "speaker"]})
                             (label :class "title" :text "Out: ${active_sinks.name}" :limit-width 20 :class "title")
                             (scale :value "${audio_state.sink.vol}" :class "slider" :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%" :timeout "16s")
                         )
                         (box :space-evenly false :class "card_footer"
-                            (button :class "button${audio_state.sink.mute ? "" : "-active"}" :onclick "pamixer -t&&bin/audio_state.sh" :timeout "16s" "${audio_state.sink.mute ? "${active_sinks.icon.muted}" : "${active_sinks.icon.unmuted}"}    Mute")
+                            (button :class "button${audio_state.sink.mute ? "" : "-active"}" :onclick "pamixer -t&&bin/audio_state.sh" :timeout "16s"
+                            "${audio_state.sink.mute ? "${sink_icons[active_sinks.icon?: "speaker"].muted}" : "${sink_icons[active_sinks.icon?: "speaker"].unmuted}"}    Mute")
                             (button :class "button" :onclick "pactl set-sink-volume @DEFAULT_SINK@ 50%&&bin/audio_state.sh" :timeout "24s" "50%")
                             (button :class "button" :onclick "pactl set-sink-volume @DEFAULT_SINK@ 100%&&bin/audio_state.sh" :timeout "24s" "100%")
                         )
@@ -58,12 +63,13 @@
                 
                     (box :orientation "v" :space-evenly false :halign "center" :class "card"
                         (box :orientation "v" :space-evenly false :class "padding_box"
-                            (icon :name "${active_sources.icon_g}")
+                            (icon :name {source_images[active_sources.icon?: "microphone"]})
                             (label :class "title" :text "In: ${active_sources.name}" :limit-width 20 :class "title")
                             (scale :value "${audio_state.source.vol}" :class "slider" :onchange "pactl set-source-volume @DEFAULT_SOURCE@ {}%" :timeout "16s")
                         )
                         (box :space-evenly false :class "card_footer"
-                            (button :class "button${audio_state.source.mute ? "" : "-active"}" :onclick "pamixer -t --default-source&&bin/audio_state.sh" :timeout "16s" "${audio_state.source.mute ? "${active_sources.icon.muted}" : "${active_sources.icon.unmuted}"}    Mute")
+                            (button :class "button${audio_state.source.mute ? "" : "-active"}" :onclick "pamixer -t --default-source&&bin/audio_state.sh" :timeout "16s" 
+                            "${audio_state.source.mute ? "${source_icons[active_sources.icon?: "microphone"].muted}" : "${source_icons[active_sources.icon?: "microphone"].unmuted}"}    Mute")
                             (button :class "button" :onclick "pactl set-source-volume @DEFAULT_SOURCE@ 50%&&bin/audio_state.sh" :timeout "24s" "50%")
                             (button :class "button" :onclick "pactl set-source-volume @DEFAULT_SOURCE@ 100%&&bin/audio_state.sh" :timeout "24s" "100%")
                         )

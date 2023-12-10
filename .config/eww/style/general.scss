@@ -197,12 +197,15 @@
     font-size: 2rem;
     padding: 0.14rem 1.2rem 0.14rem 0.92rem; 
 }
-.title,.stitle{
+.title,.stitle,.title-row{
     color: $fg;
     font-size: 1.2rem;
     padding: 0.28rem 1.2rem 0.28rem 0.92rem; 
     margin-top: .7rem;
     margin-bottom: .2rem;
+}
+.title-row{
+    padding: .28rem 0rem .28rem 0rem;
 }
 .stitle{
     padding: 0.2rem 1.2rem 0.2rem 0.92rem;

@@ -1,0 +1,87 @@
+(defvar sink_icons '{
+"headset":{
+    "muted":"󰟎",
+    "unmuted":"󰋋"
+},
+"audio-headset":{
+    "muted":"󰟎",
+    "unmuted":"󰋋"
+},
+"audio-headset-bluetooth":{
+    "muted":"󰗿",
+    "unmuted":"󰗾"
+},
+"audio-card-analog-pci":{
+    "muted":"󰓄",
+    "unmuted":"󰓃"
+},
+"audio-headset-analog-usb":{
+    "muted":"󰟎",
+    "unmuted":"󰋋"
+},
+"speaker":{
+    "muted":"󰓄",
+    "unmuted":"󰓃"
+}
+}')
+(defvar source_icons '{
+"headset":{
+    "muted":"󰋐",
+    "unmuted":"󰋎"
+},
+"audio-headset-analog-usb":{
+    "muted":"󰋐",
+    "unmuted":"󰋎"
+},
+"audio-headset":{
+    "muted":"󰋐",
+    "unmuted":"󰋎"
+},
+"audio-headset-bluetooth":{
+    "muted":"󰋐",
+    "unmuted":"󰋎"
+},
+"audio-card-analog-pci":{
+    "muted":"󰢮",
+    "unmuted":"󰢮"
+},
+"microphone":{
+    "muted":"",
+    "unmuted":""
+}
+}')
+(defvar port_icons '{
+"analog-input-front-mic":"",
+"analog-input-rear-mic":"",
+"analog-input-mic":"",
+"[Out] Speaker":"󰓃",
+"[Out] Headphones":"󰋋",
+"[In] Mic2":"",
+"[In] Mic1":"",
+"analog-input-linein":"󱡬",
+"analog-output-lineout":"󱡬",
+"analog-output-headphones":"󰋋",
+"headset-output":"󰋋",
+"analog-output":"󱡫",
+"hdmi-output-0":"󰽟",
+"hdmi-output-1":"󰽟",
+"hdmi-output-2":"󰽟",
+"hdmi-output-3":"󰽟"
+}')
+
+(defvar sink_images '{
+"headset":"scalable/devices/audio-card.svg",
+"audio-headset":"scalable/devices/audio-headphones.svg",
+"audio-headset-bluetooth":"scalable/devices/audio-headphones.svg",
+"audio-card-analog-pci":"scalable/devices/audio-speakers.svg",
+"audio-headset-analog-usb":"scalable/devices/audio-headphones.svg",
+"speaker":"scalable/devices/audio-speakers.svg"
+}')
+(defvar source_images '{
+"headset":"scalable/devices/audio-headphones.svg",
+"audio-headset-analog-usb":"scalable/devices/audio-headphones.svg",
+"audio-headset":"scalable/devices/audio-headphones.svg",
+"audio-headset-bluetooth":"scalable/devices/audio-headphones.svg",
+"audio-card-analog-pci":"scalable/devices/audio-card.svg",
+"microphone":"scalable/devices/audio-input-microphone.svg"
+}')
