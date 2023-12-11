@@ -38,9 +38,7 @@
                 (power_button :action "uefi"         :text "Reboot to Firmware"   :icon "󰘚")
             )
             (box :class "popup_footer" :orientation "v" :space-evenly false
-                (label :text "${user} logged in at ${hostname}" :class "title")
-                (label :text "${formattime(EWW_TIME - boottime - 3600,"%T")}
-Booted: ${formattime(boottime, "%H:%M")}" :class "title")
+                (split_text :left {formattime(EWW_TIME - boottime - 3600,"%T")} :right "Booted: ${formattime(boottime, "%H:%M")}" )
             )
         )
     )
