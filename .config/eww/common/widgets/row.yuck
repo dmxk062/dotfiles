@@ -6,3 +6,11 @@
         (label :class "title-row" :text right)
     )
 )
+(defwidget split_text [left right]
+    (box :space-evenly false :hexpand true
+        (box :halign "start" :hexpand true
+            (label :class "text" :text left)
+        )
+        (label :class "text" :text right)
+    )
+)

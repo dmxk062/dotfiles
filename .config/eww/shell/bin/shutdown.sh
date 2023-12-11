@@ -1,41 +1,53 @@
-#!/bin/sh
+#!/bin/bash
 
 noconfirm=$2
 prompt(){
     question=$1
     action=$2
-    if [ $noconfirm = "-nc" ]
+    if [[ $noconfirm = "-nc" ]]
     then
         sh -c "$action"
     else
-        if zenity --question --text="$question"
+        if ! zenity --question --text="$question"
         then
-            sh -c "$action"
-        else
             exit
         fi
     fi
 }
 case $1 in
     off)
-        prompt "Perform Shutdown?" "systemctl poweroff"
+        prompt "Perform Shutdown?" 
+        systemctl poweroff
         ;;
     reboot)
-        prompt "Reboot System?" "systemctl reboot"
+        prompt "Reboot System?" 
+        systemctl reboot
         ;;
     lock)
-        prompt "Lock Screen?" "swaylock"
+        prompt "Lock Screen?" 
+        swaylock
         ;;
     suspend)
-        prompt "Suspend System?" "swaylock&& sleep 1 &&systemctl suspend"
+        prompt "Suspend System?" 
+        swaylock
+        sleep 1
+        systemctl suspend
         ;;
     logout)  
-        prompt "Logout to TTY?" "hyprctl dispatch exit 1"
+        prompt "Logout to TTY?" 
+        hyprctl dispatch exit 1
         ;;
     uefi)
-        prompt "Reboot into Firmware Setup?" "systemctl reboot --firmware-setup"
+        prompt "Reboot into Firmware Setup?" 
+        systemctl reboot --firmware-setup
         ;;
     hibernate)
-        prompt "Suspend to Disk?" "systemctl hibernate"
+        prompt "Hibernate to Disk?" 
+        if ! systemctl hibernate; then
+            notify-send "Failed to Hibernate" \
+                -a eww \
+                -i /usr/share/icons/Tela/32/devices/drive-harddisk-root.svg \
+                "Make sure you have enough physical swap"
+        fi
         ;;
 esac

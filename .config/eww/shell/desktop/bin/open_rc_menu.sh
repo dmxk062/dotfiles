@@ -6,7 +6,7 @@ get_relative_cursor(){
     monitors="$(hyprctl -j monitors)"
     read -r x_r y_r <<< "$(echo "$monitors"|jq '.[]|select(.focused)|.x, .y' --raw-output0|tr '\0' ' ')"
     case $(echo "$monitors"|jq -r '.[]|select(.focused)|.name') in
-        DP-1)
+        DP-1|eDP-1)
             scalex=50
             scaley=70
             ;;

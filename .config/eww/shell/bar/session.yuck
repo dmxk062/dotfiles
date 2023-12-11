@@ -20,26 +20,24 @@
     (session)
 )
 
-(defwidget power_button [action class text]
-    (button :class "${class}" :onclick "sleep 0.1&&bin/shutdown.sh ${action}&disown&&${EWW_CMD} close session_popup" :timeout "16s" "${text}")
+(defwidget power_button [action icon text]
+    (button :class "lbutton" :onclick "sleep 0.1&&bin/shutdown.sh ${action}&disown; ${EWW_CMD} close session_popup" :timeout "16s" 
+    (split_text :left icon :right text))
 )
 
 (defwidget session [] 
     (box :space-evenly false :halign "center" :valign "center"
         (box :class "popup_box" :orientation "v" :space-evenly false :width 200
-            (box :class "padded_box" :orientation "v"
-                (box
-                    (power_button :class "button-error" :action "off" :text "")
-                    (power_button :class "button-warn" :action "reboot" :text "")
-                    (power_button :class "button-yellow" :action "logout" :text "󰍃")
-                )
-                (box
-                    (power_button :class "button-special" :action "uefi" :text "󰘚")
-                    (power_button :class "button-blue" :action "suspend" :text "󰤄")
-                    (power_button :class "button-good" :action "lock -nc" :text "")
-                )
+            (box :class "padded_box" :orientation "v" :space-evenly false
+                (power_button :action "off"          :text "Poweroff"             :icon "󰐥")
+                (power_button :action "reboot"       :text "Reboot"               :icon "󰑓")
+                (power_button :action "logout"       :text "Exit Session"         :icon "󰿅")
+                (power_button :action "lock -nc"     :text "Lock Session"         :icon "󰍁")
+                (power_button :action "suspend"      :text "Suspend to RAM"       :icon "󰒲")
+                (power_button :action "hibernate"    :text "Hibernate to Disk"    :icon "󰤄")
+                (power_button :action "uefi"         :text "Reboot to Firmware"   :icon "󰘚")
             )
-            (box :class "popup_footer" :orientation "v"
+            (box :class "popup_footer" :orientation "v" :space-evenly false
                 (label :text "${user} logged in at ${hostname}" :class "title")
                 (label :text "${formattime(EWW_TIME - boottime - 3600,"%T")}
 Booted: ${formattime(boottime, "%H:%M")}" :class "title")
