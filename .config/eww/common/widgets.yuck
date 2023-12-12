@@ -36,6 +36,9 @@
 (defwidget path_button [path text type] 
     (eventbox :class "path" :cursor "pointer" :onclick "../common/bin/open_path.sh ${path}& disown" (label :text "${type == "dir" ? "" : "󰈔"}    ${text}"))
 )
+(defwidget link_button [url text] 
+    (eventbox :class "url" :cursor "pointer" :onclick "../common/bin/open_web.sh ${url}& disown" (label :text "󰌷    ${text}"))
+)
 
 (defwidget clipboard_button [content label ?icon]
     (button :class "button" :timeout "128s" :onclick "wl-copy '${content}'" "${icon?: "󰅇"}    ${label}")

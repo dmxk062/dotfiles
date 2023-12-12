@@ -134,9 +134,19 @@ $xlarge: 2px 17px 2px 13px;
 .test_area-down{
     background: linear-gradient(to bottom, $yellow, $bg1)
 }
-.scroll-disks{
+.scroll-disks,.scroll-sys{
     min-height: 35.4rem;
     min-width: 31rem;
 }
+.scroll-sys{
+    min-height: 38rem;
+}
+.category_box{
+    margin: .5rem 1rem .5rem 1rem;
+    padding: 1rem;
+    background-color: $bg1;
+    border-radius: $rounding-small;
+}
+
 
 @import "style/audio.scss"

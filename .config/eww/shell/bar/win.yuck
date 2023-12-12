@@ -43,7 +43,7 @@
                                 :timeout "16s" 
                                 :hexpand true :tooltip "${win.title ?: "No title"}
 App: ${win.class ?: "No Class"}
-Running under: ${win.legacy ? "XWayland(legacy) " : "Native Wayland"}
+Running under: ${win.legacy ? "XWayland" : "Native Wayland"}
 Address: ${win.address}
 Process: ${win.pid?: "No Program"}
 In Workspace: ${win.workspace.name?: win.workspace.id}

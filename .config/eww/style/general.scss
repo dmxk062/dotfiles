@@ -246,6 +246,20 @@
         color: $bg3;
     }
 }
+.url{
+    color: $dblue;
+    padding: 0.14rem 1.2rem 0.14rem 0.92rem; 
+    transition: background-color 75ms cubic-bezier(0, 0, 0.2, 1);
+    label{
+        font-size: 1rem;
+    }
+    &:hover{
+        color: $lblue;
+    }
+    &:active{
+        color: $bg3;
+    }
+}
 .copy{
     color: $fg0;
     padding: 0.14rem 1.2rem 0.14rem 0.92rem; 
@@ -387,3 +401,4 @@ scrollbar{
 .icon{
     margin-right: 1rem;
 }
+

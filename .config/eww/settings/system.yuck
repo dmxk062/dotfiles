@@ -73,27 +73,56 @@
         )
         )
         (box :orientation "h" :hexpand true :halign "center" 
-            (box :space-evenly false :halign "center" :orientation "v" :valign "center"
-                (box :space-evenly false :orientation "v" :class "card" 
+            (box :space-evenly false :halign "center" :orientation "v" 
+            (scroll :class "scroll-sys"
+                (box :space-evenly false :orientation "v"
                     (box :class "padding_box"
-                        (image :path "${icon_theme}/${system.logo.distro}" :image-width 256 :image-height 256)
+                        (icon_huge :name "scalable/apps/${system.distro.icon}" :class "np")
                     )
-                    (box :orientation "v" :halign "start" :space-evenly false :class "card_footer" 
-                    (box :halign "start")
-                        (label :class "text-large" :text "Operating System: ${system.distro}")
-                        (label :class "text-large" :text "Kernel: ${system.kernel} ")
-                        (label :class "text-large" :text "Version: ${system.kernel_ver} ")
-                        (label :class "text-large" :text "Windowing System: ${system.windowing_system}")
-                        (label :class "text-large" :text "${system.windowing_system == "x11" ? "Window Manager" : "Compositor"}: ${system.desktop}")
-                        (label :class "text-large" :text "Memory: ${system.ram}")
-                        (label :class "text-large" :text "CPU Vendor: ${system.cpu_vendor}")
-                        (label :class "text-large" :text "CPU Model: ${system.cpu_model}")
-                        (label :class "text-large" :text "CPU Instruction Set Architecture: ${system.arch}")
-                        (label :class "text-large" :text "Uptime: ${formattime(EWW_TIME - system.boottime - 3600, "%T")}, since ${formattime(system.boottime, "%H:%M")}")
+                    (box :class "category_box" :orientation "v" :space-evenly false
+                        (split_text :left "Operating System" :right {system.os.name})
+                        (split_text :left "Kernel" :right {system.os.kernel})
+                        (split_text :left "Kernel Version" :right {system.os.version})
                     )
+                    (box :class "category_box" :orientation "v" :space-evenly false
+                        (box :space-evenly false :hexpand true
+                            (box :halign "start" :hexpand true 
+                                (label :class "text" :text "Distribution")
+                            )
+                            (link_button :url {system.distro.url} :text {system.distro.name})
+                        )
+                        (split_text :left "Version" :right "${system.distro.build}")
+                    )
+                    (box :class "category_box" :orientation "v" :space-evenly false
+                        (split_text :left "CPU Architecture" :right {system.platform.arch})
+                        (split_text :left "CPU Model" :right {system.platform.cpu})
+                        (split_text :left "Processors" :right {system.platform.count})
+                        (split_text :left "Memory" :right {system.platform.mem})
+                    )
+                    (box :class "category_box" :orientation "v" :space-evenly false
+                        (split_text :left "Windowing System" :right {system.windowing.system})
+                        (split_text :left {system.windowing.system == "wayland" ? "Compositor" : "Window Manager"} :right {system.windowing.wm})
+                    )
+                    (box :class "category_box" :orientation "v" :space-evenly false
+                        (split_text :left "Hostname" :right {system.os.hostname})
+                        (split_text :left "Uptime" :right {formattime(EWW_TIME - system.platform.boottime, "%T", "UTC")})
+                        (split_text :left "Boottime" :right {formattime(system.platform.boottime, "%H:%M")})
+                    )
+                        ;; (split_title :left "Operating System" :right "${system.distro}")
+                        ;; (label :class "text-large" :text "Operating System: ${system.distro}")
+                        ;; (label :class "text-large" :text "Kernel: ${system.kernel} ")
+                        ;; (label :class "text-large" :text "Version: ${system.kernel_ver} ")
+                        ;; (label :class "text-large" :text "Windowing System: ${system.windowing_system}")
+                        ;; (label :class "text-large" :text "${system.windowing_system == "x11" ? "Window Manager" : "Compositor"}: ${system.desktop}")
+                        ;; (label :class "text-large" :text "Memory: ${system.ram}")
+                        ;; (label :class "text-large" :text "CPU Vendor: ${system.cpu_vendor}")
+                        ;; (label :class "text-large" :text "CPU Model: ${system.cpu_model}")
+                        ;; (label :class "text-large" :text "CPU Instruction Set Architecture: ${system.arch}")
+                        ;; (label :class "text-large" :text "Uptime: ${formattime(EWW_TIME - system.boottime - 3600, "%T")}, since ${formattime(system.boottime, "%H:%M")}")
                 )
 
 
+            )
             )
         )
     )   

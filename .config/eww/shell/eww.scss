@@ -91,12 +91,6 @@
     }
 }
 
-.section_box{
-    margin: .5rem 1rem .5rem 1rem;
-    padding: 1rem;
-    background-color: $bg1;
-    border-radius: $rounding-small;
-}
 .image_overlay{
     min-width: 22rem;
     min-height: 14rem;
@@ -126,6 +120,13 @@
         border: 2px solid $accent;
     }
 }
+.section_box{
+    margin: .5rem 1rem .5rem 1rem;
+    padding: 1rem;
+    background-color: $bg1;
+    border-radius: $rounding-small;
+}
+
 
 
 @import "popups/style.scss";

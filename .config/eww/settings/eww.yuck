@@ -14,6 +14,7 @@
 (include "storage.yuck")
 (include "../common/widgets.yuck")
 (include "../common/widgets/icons.yuck")
+(include "../common/widgets/row.yuck")
 (include "../common/variables.yuck")
 
 
@@ -39,7 +40,7 @@
         (button :class "button${selected_section == 0 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=0" "    Appearance")
         (button :class "button${selected_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=1" "󰌌    Input")
         (button :class "button${selected_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=2&&bin/display.sh upd" "󰍹    Display")
-        (button :class "button${selected_section == 3 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=3&&bin/system_info.sh" "    System")
+        (button :class "button${selected_section == 3 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=3&&bin/sys/info.sh" "    System")
         (button :class "button${selected_section == 4 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=4&&bin/sinks_sources.sh upd sinks&&bin/sinks_sources.sh upd sources" "󰓃    Audio")
         (button :class "button${selected_section == 5 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=5&&bin/bt.sh upd" "󰂯    Bluetooth")
         (button :class "button${selected_section == 6 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=6&&bin/wlan.sh upd" "    WIFI")
