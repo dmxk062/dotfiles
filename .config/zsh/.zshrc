@@ -63,18 +63,27 @@ DISABLE_AUTO_TITLE="true"
 # enables commenting with # in interactive shells
 setopt INTERACTIVE_COMMENTS
 
+# add whatever directories you want to be hashed(accessible via ~shortcut) here
 
+local -A DIRSHORTCUTS=(
+    ["cfg"]="$HOME/.config"
+    ["dl"]="$HOME/Downloads"
+    ["tmp"]="$HOME/Tmp"
+    ["ws"]="$HOME/ws"
+    ["build"]="$HOME/ws/build"
+    ["music"]="$HOME/Media/Music"
+    ["docs"]="$HOME/Documents"
+    ["school"]="$HOME/Documents/school"
+    ["mnt"]="/mnt"
+    ["media"]="/run/media/$USER"
+)
 
-#paths
-hash -d cfg=$HOME/.config
-hash -d eww=$HOME/.config/eww
-hash -d ags=$HOME/.config/ags
-hash -d tmp=$HOME/Tmp
-hash -d music=$HOME/Media/Music/
-hash -d school=$HOME/Documents/school/
+for shortcut in ${(k)DIRSHORTCUTS}; do
+    hash -d ${shortcut}=${DIRSHORTCUTS[$shortcut]}
+done
 
-
-
+unset DIRSHORTCUTS
+#------------------------------------------------------------------------------
 
 function preexec() {
   timer=$(($(date +%s%0N)/1000000))

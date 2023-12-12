@@ -78,3 +78,17 @@ function alert(){
         notify-send -i "/usr/share/icons/Tela/scalable/apps/gksu-root-terminal.svg" "Command failed" "$prog failed after $(date -d @$time "+%M:%S") with error code $exit"
     fi
 }
+
+function qi(){
+    echo "Calculator"
+    printf "\033]0;qalc\007"
+    qalc
+}
+
+get_package(){
+    pkgfile "/usr/bin/$1"
+}
+
+ft(){
+    file --dereference --mime-type "$@"
+}
