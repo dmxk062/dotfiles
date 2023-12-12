@@ -8,6 +8,10 @@
         "name":"Fire"
     },
     {
+        "path":"/home/dmx/.config/background/img/valley",
+        "name":"Autumn Valley"
+    },
+    {
         "path":"/home/dmx/.config/background/img/underwater_whale",
         "name":"Growth in the Ocean"
     },
@@ -34,10 +38,6 @@
     {
         "path":"/home/dmx/.config/background/img/celeste",
         "name":"Celeste"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/arch",
-        "name":"Arch Linux"
     },
     {
         "path":"/home/dmx/.config/background/img/peaks",
