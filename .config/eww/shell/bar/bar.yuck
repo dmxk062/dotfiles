@@ -24,7 +24,7 @@
                     )
         :stacking "fg"
         :exclusive "true"
-        :namespace "eww_bar_top"
+        :namespace "eww_bar"
         :hexpand false
         :vexpand false
     (top-bar)
