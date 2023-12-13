@@ -89,8 +89,7 @@ function monitor_changes(){
                 ;;
             "activewindowv2>>$urgent_win")
                urgent_win=''
-               eww -c $XDG_CONFIG_HOME/eww/shell update urgent_ws=''
-               eww -c $XDG_CONFIG_HOME/eww/shell update urgent_win=''
+               eww -c $XDG_CONFIG_HOME/eww/shell update urgent_win='' urgent_ws=''
                ;;
             activewindowv2*|closelayer*|openlayer*) # ignore stuff we dont really care about
                 continue;;

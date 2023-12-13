@@ -18,7 +18,8 @@ get_relative_cursor(){
     echo "$(((x-x_r)-scalex))x$(((y-y_r)-scaley))" 
 }
 $eww open --screen 0 --toggle rc_popup --pos=$(get_relative_cursor)
-$eww update rc_win_area=0
+$eww update rc_win_area=0 rc_desktop_area=0
+ 
 case $1 in
     desktop)
         $eww update rc_start_desktop=true;;
