@@ -1,6 +1,5 @@
 # ft=ini
 
-background-color=#2E3440
 icon-path="/usr/share/icons/Tela-dark/"
 font=Torus Pro, sans-serif 14
 width=300
@@ -16,14 +15,17 @@ on-button-left=dismiss
 on-button-right=invoke-default-action
 on-button-middle=exec makoctl menu -n "$id" rofi -dmenu -n -p Action:
 on-notify=exec paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
-
 default-timeout=30000
+
+
 background-color=#ECEFF465
 text-color=#2e3440FF
 border-color=#687183
-# border-color=#4c566a
-# text-color=#ECEFF4FF
-# background-color=#2e344065
+
+[mode=dark_theme]
+border-color=#4c566a
+text-color=#ECEFF4FF
+background-color=#2e344065
 
 
 [category=screenshot]

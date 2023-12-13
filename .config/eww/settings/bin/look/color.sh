@@ -7,6 +7,7 @@ then
     if grep -q 'dark.scss' "$colorfile"
     then
         eww -c $XDG_CONFIG_HOME/eww/settings update look_colorscheme="dark"
+        makoctl mode -a "dark_theme"
     else
         eww -c $XDG_CONFIG_HOME/eww/settings update look_colorscheme="light"
     fi
@@ -21,6 +22,7 @@ then
     sed -i 's/dark.conf/light.conf/' $XDG_CONFIG_HOME/hypr/theme/colors.conf
     unlink $XDG_CONFIG_HOME/swaylock/config
     ln -s $XDG_CONFIG_HOME/swaylock/config.light $XDG_CONFIG_HOME/swaylock/config
+    makoctl mode -r "dark_theme"
     color="light"
 else
     sed -i 's/light.scss/dark.scss/' $XDG_CONFIG_HOME/eww/style/color.scss
@@ -29,6 +31,7 @@ else
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     unlink $XDG_CONFIG_HOME/swaylock/config
     ln -s $XDG_CONFIG_HOME/swaylock/config.dark $XDG_CONFIG_HOME/swaylock/config
+    makoctl mode -a "dark_theme"
     color="dark"
 fi
 for EWW in settings shell
