@@ -18,14 +18,14 @@ on-notify=exec paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
 default-timeout=30000
 
 
-background-color=#ECEFF465
+background-color=#ECEFF490
 text-color=#2e3440FF
 border-color=#687183
 
 [mode=dark_theme]
 border-color=#4c566a
 text-color=#ECEFF4FF
-background-color=#2e344065
+background-color=#2e344090
 
 
 [category=screenshot]
