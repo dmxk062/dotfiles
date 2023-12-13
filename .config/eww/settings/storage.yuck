@@ -23,7 +23,7 @@
                     (button :class "button" :timeout "16s" :onclick "bin/disks.sh upd" "󰑓    Reload")
                     (button :class "button" :timeout "128s" :onclick "bin/loop.sh add&&bin/disks.sh upd" "󰗮    Disk Image")
                 )
-                (scroll :class "scroll-disks"
+                (scroll :class "scroll-disks" :vexpand true
                 (box :orientation "v" :space-evenly false 
                     (for disk in disks
                         (overlay

@@ -7,8 +7,8 @@ width=300
 height=200
 border-size=2
 border-radius=12
-max-visible=5
-max-history=20
+max-visible=8
+max-history=32
 layer=overlay
 anchor=center-right
 format=<span font='Torus Pro, sans-serif 18'>%s</span>\n%b
@@ -18,16 +18,13 @@ on-button-middle=exec makoctl menu -n "$id" rofi -dmenu -n -p Action:
 on-notify=exec paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
 
 default-timeout=30000
-background-color=#2e3440
-# background-color=#ECEFF4
-text-color=#ECEFF4FF
-# text-color=#2e3440
-border-color=#4c566a
-# border-color=#687183
+background-color=#ECEFF465
+text-color=#2e3440FF
+border-color=#687183
+# border-color=#4c566a
+# text-color=#ECEFF4FF
+# background-color=#2e344065
 
-[urgency=critical]
-# border-color=#9c5e6a
-border-color=#c5808a
 
 [category=screenshot]
 width=532
@@ -35,6 +32,9 @@ height=600
 format=%s
 max-icon-size=512
 icon-location=bottom
+
+[hidden]
+format=%h of %t hidden
 
 # used to hide the popups
 [mode=eww_override]

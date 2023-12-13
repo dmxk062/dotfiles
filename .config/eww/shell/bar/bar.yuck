@@ -24,7 +24,7 @@
                     )
         :stacking "fg"
         :exclusive "true"
-        :namespace "eww_bar"
+        :namespace "eww_blurred"
         :hexpand false
         :vexpand false
     (top-bar)
