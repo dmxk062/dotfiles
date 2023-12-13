@@ -38,13 +38,16 @@ for EWW in settings shell
 do
     eww -c $XDG_CONFIG_HOME/eww/$EWW reload
 done
-$HOME/.local/bin/eww_settings.sh
+if [[ $1 != "noeww" ]]; then
+    $HOME/.local/bin/eww_settings.sh
+fi
 killall hyprmon.sh
 sleep 0.1
-$XDG_CONFIG_HOME/eww/shell/bin/hyprmon.sh monitor & disown
 eww -c $XDG_CONFIG_HOME/eww/settings update look_colorscheme="$color"
 eww -c $XDG_CONFIG_HOME/eww/shell open desktop_area --screen 0
 $XDG_CONFIG_HOME/eww/settings/bin/audio_state.sh
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sinks & disown
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sources & disown
 # sassc $XDG_CONFIG_HOME/gtklock/style.scss > $XDG_CONFIG_HOME/gtklock/style.css
+sleep 0.2
+$XDG_CONFIG_HOME/eww/shell/bin/hyprmon.sh monitor & disown
