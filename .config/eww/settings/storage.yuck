@@ -17,20 +17,14 @@
 (defwidget storage_section []
     (box :visible "${selected_section == 7}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
         (box :orientation "h" :space-evenly false :class "sidebar"
-            (box :orientation "v" :space-evenly false
-                (box 
-                    (button :class "button" :timeout "16s" :onclick "bin/suspend.sh gnome-disks" "󰋊    Disk Utility")
-                    (button :class "button" :timeout "16s" :onclick "bin/disks.sh upd" "󰑓    Reload")
-                    (button :class "button" :timeout "128s" :onclick "bin/loop.sh add&&bin/disks.sh upd" "󰗮    Disk Image")
-                )
-                (scroll :class "scroll-disks" :vexpand true
+            (scroll :class "scroll-huge" :vexpand true
                 (box :orientation "v" :space-evenly false 
                     (for disk in disks
                         (overlay
                             (box :orientation "v" :space-evenly false :class "card"
                                 (box :class "padding_box" :space-evenly false :orientation "v"
                                     (icon :name "${matches(disk.name,"loop.*") ? "scalable/devices/media-optical.svg" : disk.icon_g}")
-                                    (label :class "heading" :text "${disk.device.model?:disk.name}")
+                                    (label :class "heading" :text "${disk.device.model?:disk.name}" :limit-width 16)
                                 )
                                 (box :orientation "v" :space-evenly false :class "card_footer"
                                     (centerbox :space-evenly false
@@ -93,12 +87,17 @@
                                         (button :class "button" :onclick "${EWW_CMD} update disk_parts=''" "Close")
                                     )
                                 )
+                            )
                         )
                         )
 
                     )
-                )
-                )
+            )
+            (separator)
+            (box :space-evenly false :valign "center" :orientation "v"
+                (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'gnome-disks --name=popup'" "󰋊    Disks")
+                (button :class "button" :timeout "16s" :onclick "bin/disks.sh upd" "󰑓    Reload")
+                (button :class "button" :timeout "128s" :onclick "bin/loop.sh add&&bin/disks.sh upd" "󰗮    Image")
             )
         )
         (box :space-evenly false :hexpand true :halign "center"
@@ -113,8 +112,8 @@
                                     (label :class "text-large" :text "Filesystem Type: ${part.parttype}")
                                     (box :class "padding_box" :visible "${part.type != "swap"}"
                                         (overlay
-                                            (scale :value "${part.usage.perc?: 0}" :class "slider-thick" :active false )
-                                            (label :class "text-large dark" :text "${part.mounted ? "${part.usage.used} / ${part.usage.size}" : "Mount to see disk usage"}")
+                                            (scale :value "${part.usage.perc?: 0}" :class "slider-usage${part.usage.perc > 90 ? "-high" : (part.usage.perc > 40 ? "-medium" : "-low")}" :orientation "v" :active false :flipped true )
+                                            (label :class "text-large ${part.usage.perc > 50 ? "dark" : ""}" :text "${part.mounted ? "${part.usage.used} / ${part.usage.size}" : "Mount to see disk usage"}")
                                         )
                                     )
                                     (box :visible "${part.mount[0] != 'null' && part.type != "swap"}" :orientation "v" :space-evenly false :halign "center"
@@ -131,7 +130,7 @@
                                         (button :class "button${part.mounted ? "-active" : ""}" :timeout "16s" 
                                         :onclick "${part.mounted ? 
                                         "bin/disks.sh unmount ${part.path} ${part.type == "swap" ? "swap" : ""};bin/disks.sh upd" :
-                                        "bin/disks.sh mount ${part.path} ${part.type == "swap" ? "swap" : ""};bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
+                                        "bin/disks.sh mount ${part.path} ${part.type == "swap" ? "swap" : ""};bin/disks.sh upd"}" "${part.mounted ? "󱧴    Unmount" : "󱧺    Mount"}"
                                         )
                                         (clipboard_button :content "${part.partuuid}" :label "Copy UUID")
                                     )
@@ -142,11 +141,11 @@
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :class "heading" :text "${part.decrypt.label?:part.decrypt.name}")
                                     (label :class "text-large" :text "Filesystem: ${part.decrypt.type?: "Not Detected"}")
-                                    (label :class "text-large" :text "Filesystem Type: LUKS Encrypted Partition")
+                                    (label :class "text-large" :text "Filesystem Type: Encrypted Partition")
                                     (box :class "padding_box"
                                         (overlay
-                                            (scale :value "${part.decrypt.usage.perc?: 0}" :class "slider-thick" :active false )
-                                            (label :class "text-large dark" :text "${part.decrypt.mounted ? "${part.decrypt.usage.used} / ${part.decrypt.usage.size}" : "Mount to see disk usage"}")
+                                            (scale :value "${part.decrypt.usage.perc?: 0}" :class "slider-usage${part.decrypt.usage.perc > 90 ? "-high" : (part.decrypt.usage.perc > 40 ? "-medium" : "-low")}"  :active false :flipped true :orientation "v" )
+                                            (label :class "text-large ${part.decrypt.usage.perc > 50 ? "dark" : ""}" :text "${part.decrypt.mounted ? "${part.decrypt.usage.used} / ${part.decrypt.usage.size}" : "Mount to see disk usage"}")
                                         )
                                     )
                                     (box :visible "${part.decrypt.mount[0] != 'null'}" :orientation "v" :space-evenly false :halign "center"
@@ -163,10 +162,9 @@
                                         (button :class "button${part.mounted ? "-active" : ""}" :timeout "16s" 
                                         :onclick "${part.mounted ? 
                                         "bin/disks.sh unmount ${part.decrypt.path};bin/disks.sh upd" :
-                                        "bin/disks.sh mount ${part.decrypt.path};bin/disks.sh upd"}" "${part.mounted ? "Unmount" : "Mount"}"
+                                        "bin/disks.sh mount ${part.decrypt.path};bin/disks.sh upd"}" "${part.mounted ? "󱧴    Unmount" : "󱧺    Mount"}"
                                         )
                                         (button :class "button" :onclick "bin/disks.sh encrypt ${part.path}" "󰌾    Lock")
-                                        (clipboard_button :content "${part.partuuid}" :label "Copy UUID")
                                     )
                                 )
                             )

@@ -1,0 +1,37 @@
+.slider-usage-low,.slider-usage-medium,.slider-usage-high{
+    trough{
+        all: unset;
+        min-height: 0.42rem;
+        min-width: 16rem;
+        border-radius: $rounding-small;
+        background-color: $bg3;
+        min-height: 15rem;
+        min-width: 16rem;
+
+        highlight{
+            border-radius: $rounding-small;
+            background-color: $accent;
+        }
+    }
+}
+.slider-usage-low{
+    trough {
+        highlight {
+            background-color: $green;
+        }
+    }
+}
+.slider-usage-medium{
+    trough {
+        highlight {
+            background-color: $accent;
+        }
+    }
+}
+.slider-usage-high{
+    trough {
+        highlight {
+            background-color: $red;
+        }
+    }
+}
