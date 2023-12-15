@@ -1,15 +1,5 @@
 #!/bin/bash
 
-declare -A ICONS=(
-[audio-headset]="scalable/devices/audio-headphones.svg"
-[phone]="scalable/devices/phone.svg"
-[audio-card]="scalable/devices/audio-speakers.svg"
-[computer]="scalable/devices/computer.svg"
-[input-gaming]="scalable/devices/input-gaming.svg"
-[input-keyboard]="scalable/devices/input-keyboard.svg"
-[input-mouse]="scalable/devices/input-mouse.svg"
-[fallback]="scalable/devices/bluetooth.svg"
-)
 eww_settings="eww -c $HOME/.config/eww/settings"
 
 function update(){
@@ -37,10 +27,10 @@ function scan_status(){
 function toggle_scan(){
     if scan_status
     then
-        killall "bluetoothctl"
-        bluetoothctl scan off
+        dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0 org.bluez.Adapter1.StopDiscovery
     else
         bluetoothctl scan on & disown
+        dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0 org.bluez.Adapter1.StartDiscovery
     fi
 }
 
@@ -79,17 +69,17 @@ function list_devices(){
     do
         info="$(bluetoothctl info $mac)"
         iconType="$(echo "$info"|grep "Icon: "|cut -d ' ' -f 2-)"
-        if [[ "$iconType" == "" ]]
-        then
-            icon=${ICONS["fallback"]}
-        else
-            icon=${ICONS[$iconType]}
-        fi
         echo "$info"|grep -q "Connected: yes"&&connected=true||connected=false
         echo "$info"|grep -q "Paired: yes"&&paired=true||paired=false
         echo "$info"|grep -q "Trusted: yes"&&trusted=true||trusted=false
         echo "$info"|grep -q "Blocked: yes"&&blocked=true||blocked=false
-        printf '{"mac":"%s","name":"%s","icon":"%s","connected":%s,"paired":%s,"trusted":%s,"blocked":%s}' "$mac" "$name" "$icon" "$connected" "$paired" "$trusted" "$blocked"
+        echo "$info"|grep -q "Battery"&&battery_present=true||battery_present=false
+        if $battery_present; then
+            battery_level="$(echo "$info"|grep "Battery Percentage" | cut -d ' ' -f 4-| sed 's/(\|)//g')"
+        else
+            battery_level="null"
+        fi
+        printf '{"mac":"%s","name":"%s","icon":"%s","connected":%s,"paired":%s,"trusted":%s,"blocked":%s,"hasBattery":%s,"battery":%s}' "$mac" "$name" "$iconType" "$connected" "$paired" "$trusted" "$blocked" "$battery_present" "$battery_level"
         if [[ line_nr -ne $length ]]
         then
             printf ","
@@ -99,16 +89,13 @@ function list_devices(){
     printf ']'
 }
 function upd(){
-    $eww_settings update bt_search_icon=""
+    $eww_settings update bt_search=true
     devs="$(list_devices)"
     power_status&&power=true||power=false
     pair_status&&pairable=true||pairable=false
     scan_status&&scanning=true||scanning=false
     discover_status&&discoverable=true||discoverable=false
-    $eww_settings update bt_status="$(printf '{"power":%s,"pairable":%s,"scanning":%s,"discoverable":%s}' $power $pairable $scanning $discoverable)"
-    $eww_settings update bt_devices="$devs"
-    $eww_settings update bt_connected="$(echo "$devs"|jq 'map(select(.connected == true))')"
-    $eww_settings update bt_search_icon="󰑓"
+    $eww_settings update bt_status="$(printf '{"power":%s,"pairable":%s,"scanning":%s,"discoverable":%s}' $power $pairable $scanning $discoverable)" bt_devices="$devs" bt_connected="$(echo "$devs"|jq 'map(select(.connected == true))')" bt_search=false
 }
 case $1 in
     search)

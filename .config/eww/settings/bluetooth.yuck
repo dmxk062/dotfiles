@@ -1,42 +1,41 @@
 (defvar bt_status '{}')
 (defvar bt_devices '[]')
 (defvar bt_connected '[]')
-(defvar bt_search_icon "󰑓")
+(defvar bt_search false)
+
+(defvar bt_battery_icons '[
+"󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
+]' )
+
+
+(defvar bt_icons '{
+    "audio-headset":"scalable/devices/audio-headphones.svg",
+    "phone":"scalable/devices/phone.svg",
+    "audio-card":"scalable/devices/audio-speakers.svg",
+    "computer":"scalable/devices/computer.svg",
+    "input-gaming":"scalable/devices/input-gaming.svg",
+    "input-keyboard":"scalable/devices/input-keyboard.svg",
+    "input-mouse":"scalable/devices/input-mouse.svg",
+    "fallback":"scalable/devices/bluetooth.svg"
+}')
 
 (defwidget bluetooth_section []
     (box :visible "${selected_section == 5}" :class "section_box" :hexpand true :space-evenly false 
-        (box :orientation "v" :space-evenly false :class "sidebar" :spacing 16
-            (box :space-evenly false :halign "center"
-            (box :class "card" :orientation "v" :space-evenly false
-                (box :class "padding_box"
-                    (label :class "title" :text "Controller Properties")
-                )
-                (box :class "card_footer" :orientation "v"
-                    (box :space-evenly false :halign "center"
-                        (button :class "button${bt_status.power ? "-active" : ""}" :timeout "16s" :onclick "bin/bt.sh toggle power&&bin/bt.sh upd" "    Power")
-                        (button :class "button${bt_status.discoverable ? "-active" : ""}" :timeout "16s" :onclick "bin/bt.sh toggle discover&&bin/bt.sh upd" "󰈈    Visible")
-                    )
-                    (box :space-evenly false :halign "center"
-                        (button :class "button${bt_status.pairable ? "-active" : ""}" :timeout "16s" :onclick "bin/bt.sh toggle pair&&bin/bt.sh upd" "󰌹    Pairable")
-                        (button :class "button${bt_status.scanning ? "-active" : ""}" :timeout "16s" :onclick "bin/bt.sh toggle scan&&sleep 1&&bin/bt.sh upd" "    Scan")
-                    )
-                    (box :space-evenly false :halign "center"
-                        (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'blueman-manager'& disown" :tooltip "Blueman is a GTK+ Bluetooth Settings application" "    Blueman")
-                        (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'valent'& disown" :tooltip "Valent is a client for KDEConnect to connect to phones." "    Valent")
-                        (button :class "button" :timeout "16s" :onclick "bin/bt.sh upd" :tooltip "Reload and Rescan" "${bt_search_icon}")
-                    )
-                )
-            )
-            )
-            ;; (label :class "title" :text "${arraylength(bt_connected)} connected device${arraylength(bt_connected) == 1 ? "" : "s"}")
-            (scroll :vscroll true :class "scroll-short"
-                (box :space-evenly false :halign "center"
-                    (box :orientation "v" :space-evenly false
+        (box :orientation "h" :space-evenly false :class "sidebar" 
+            (box :space-evenly false :class "padding_box" :orientation "v"
+                (scroll :vscroll true :class "scroll-short" :vexpand true
+                    (box :orientation "v" :space-evenly false :spacing 8
                         (for dev in bt_connected
                             (box :space-evenly false :orientation "v" :class "card" 
                                 (box :class "padding_box" :space-evenly false :orientation "v"
                                     (label :text "${dev.name}" :class "card-label" :limit-width 12 :tooltip "${dev.name}")
-                                    (icon :name "${dev.icon}")
+                                    (box 
+                                        (icon :name "${bt_icons[dev.icon?:"fallback"]}")
+                                        (circular-progress :value {dev.battery} :thickness 6 :class "bat_circle-${dev.battery < 20 ? "critical" :
+                                        (dev.battery < 40 ? "low" : (dev.battery < 80 ? "medium" : "high") )}" :tooltip "${dev.battery}%" :visible {dev.hasBattery}
+                                            (label  :text "${bt_battery_icons[(dev.battery - dev.battery % 10) /10]}")
+                                        )
+                                    )
                                 )
                                 (box :class "card_footer"
                                     (button :class "button" :timeout "256s" :onclick "bin/suspend.sh 'blueman-sendto -d ${dev.mac}'& disown" :tooltip "Send a File to the device. Only works with phones and other devices capable of accepting them." "    Send")
@@ -47,6 +46,17 @@
                     )   
                 )
             )
+            (separator)
+            (box :class "padding_box" :orientation "v" :space-evenly false :vexpand true :valign "center"
+                (button :class "button" :timeout "16s" :onclick "bin/bt.sh upd"  "${bt_search ? "" : "󰑓"}    Reload")
+                (button :class "button${bt_status.power ? "-active" : ""}" :timeout "16s" :onclick "bin/bt.sh toggle power&&bin/bt.sh upd"              "    Power")
+                (button :class "button${bt_status.discoverable ? "-active" : ""}" :timeout "16s" :onclick "bin/bt.sh toggle discover&&bin/bt.sh upd"    "󰈈    Visible")
+                (button :class "button${bt_status.pairable ? "-active" : ""}" :timeout "16s" :onclick "bin/bt.sh toggle pair&&bin/bt.sh upd"            "󰌹    Pairable")
+                (button :class "button${bt_status.scanning ? "-active" : ""}" :timeout "16s" :onclick "bin/bt.sh toggle scan&&sleep 1&&bin/bt.sh upd"   "    Search")
+                (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'blueman-manager'& disown"                                              "    Blueman")
+                (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'valent'& disown"                                                       "    Phone")
+            )
+            ;; (label :class "title" :text "${arraylength(bt_connected)} connected device${arraylength(bt_connected) == 1 ? "" : "s"}")
         )
         (scroll :vscroll true :class "scroll-narrow" :visible "${bt_status.power}"
             (box :orientation "v"
@@ -54,7 +64,7 @@
                     (box :space-evenly false :orientation "v" :class "card" :halign "center" :hexpand true
                         (box :class "padding_box" :space-evenly false :orientation "v"
                             (label :text "${dev.name}" :limit-width 16 :tooltip "${dev.name}" :class "card-label")
-                            (icon :name "${dev.icon}")
+                            (icon :name "${bt_icons[dev.icon?:"fallback"]}")
                         )
                         (box :space-evenly false
                             (box :orientation "v" :class "card_footer"

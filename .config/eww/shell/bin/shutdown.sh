@@ -8,7 +8,7 @@ prompt(){
     then
         sh -c "$action"
     else
-        if ! zenity --question --text="$question"
+        if ! zenity --question --text="$question" --title="Power Management"
         then
             exit
         fi

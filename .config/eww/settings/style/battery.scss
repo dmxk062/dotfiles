@@ -1,0 +1,29 @@
+.test{
+    color: $accent;
+    background-color: $bg3;
+    label{
+        margin: 4rem 4rem 4rem 2.6rem;
+        font-size: 4.5rem;
+    }
+}
+
+.bat_circle-critical,.bat_circle-low,.bat_circle-medium,.bat_circle-high{
+    @extend .circle;
+    label{
+        margin: 1.2rem 1.2rem 1.2rem 1.4rem;
+        font-size: 2.4rem;
+ 
+    }
+}
+.bat_circle-critical{
+    color: $red;
+}
+.bat_circle-low{
+    color: $orange;
+}
+.bat_circle-medium{
+    color: $yellow;
+}
+.bat_circle-high{
+    color: $green;
+}

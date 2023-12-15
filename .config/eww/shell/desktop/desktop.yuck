@@ -10,10 +10,13 @@
 )
 
 (defwidget desktop []
-;; (overlay
-(rightclick_menu)
-;; (box)
+(overlay
+;; (box
+;; (desktop-clock)
 ;; )
+(rightclick_menu)
+)
 )
 
+;; (include "desktop/widgets/clock.yuck")
 (include "desktop/rightclick.yuck")

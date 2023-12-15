@@ -72,7 +72,7 @@ case $1 in
         $eww update last_weather=$(date +%s)
         ;;
     change)
-        city="$(zenity --entry --text="Choose new City" --entry-text="$2")"
+        city="$(zenity --entry --text="Choose new City" --entry-text="$2" --title="Weather")"
         $eww update city="$city"
         $eww update weather_load=true
         $eww update weather="$(get_formatted)" 

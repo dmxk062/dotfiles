@@ -10,53 +10,41 @@
 "media":[
     {
         "keys":"󱁐",
-        "action":"󰐎    Play-Pause"
+        "action":"Play-Pause"
     },
     {
-        "keys":"L",
-        "action":"󱇸    Advance 5 Seconds"
+        "keys":"[H L]",
+        "action":"Skip 5 Seconds"
     },
     {
-        "keys":"H",
-        "action":"󱇹    Rewind 5 Seconds"
-    },
-    {
-        "keys":"shift + L",
-        "action":"󰒭    Next Track"
-    },
-    {
-        "keys":"shift + H",
-        "action":"󰒮    Previous Track"
+        "keys":"shift + [H L]",
+        "action":"Switch Track"
     },
     {
         "keys":"M",
-        "action":"󰝟    Toggle Output Mute"
+        "action":"Toggle Output Mute"
     },
     {
         "keys":"I",
-        "action":"󰍭    Toggle Input Mute"
+        "action":"Toggle Input Mute"
     },
     {
-        "keys":"K",
-        "action":"󰝝    Raise Volume"
-    },
-    {
-        "keys":"J",
-        "action":"󰝞    Lower Volume"
+        "keys":"[J K]",
+        "action":"Change Volume"
     },
     {
         "keys":"S",
-        "action":"󰭴    Open Audio Settings"
+        "action":"Open Audio Settings"
     }
 ],
 "workspace":[
     {
         "keys":"[0-9]",
-        "action":"    Switch to Workspace"
+        "action":"Switch to Workspace"
     },
     {
         "keys":"shift + [0-9]",
-        "action":"    Move Window to Workspace"
+        "action":"Move Window to Workspace"
     }
 ],
 "window":[
