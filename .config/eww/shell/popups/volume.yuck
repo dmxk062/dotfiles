@@ -6,7 +6,7 @@
                         :anchor "center bottom"
                 )
     :stacking "overlay"
-    :namespace "eww_popup"
+    :namespace "eww_noblur"
     (output)
 )
 
@@ -32,7 +32,7 @@
                         :anchor "center bottom"
                 )
     :stacking "overlay"
-    :namespace "eww_popup"
+    :namespace "eww_noblur"
     (inputscale)
 )
 

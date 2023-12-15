@@ -1,5 +1,7 @@
 (include "bar/win.yuck")
 (include "bar/mpris.yuck")
+(include "bar/audio.yuck")
+
 
 
 (defwidget center []
@@ -7,6 +9,7 @@
         (box :space-evenly false :class "centerbox"
             (window)
             (mpris_button)
+            ;; (audio_button)
         )
     )
 )

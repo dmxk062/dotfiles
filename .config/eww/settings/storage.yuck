@@ -13,7 +13,6 @@
 (defvar disk_unmount_error false)
 (defvar disk_eject_error false)
 
-
 (defwidget storage_section []
     (box :visible "${selected_section == 7}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
         (box :orientation "h" :space-evenly false :class "sidebar"
@@ -105,7 +104,7 @@
                 (box :space-evenly false :orientation "v" :valign "center"
                     (for part in "${disk.partitions}"
                         (box :space-evenly false
-                        (box :orientation "v" :visible "${disk_selected_part == part.partuuid && ! part.crypt}" :space-evenly false :class "card"
+                        (box :orientation "v" :visible {disk_selected_part == part.partuuid && ! part.crypt} :space-evenly false :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :class "heading" :text "${part.label?:part.name}")
                                     (label :class "text-large" :text "Filesystem: ${part.type?: "Not Detected"}")
@@ -136,7 +135,7 @@
                                     )
                                 )
                             )
-                        (overlay :visible "${disk_selected_part == part.partuuid && part.crypt}"
+                        (overlay :visible {disk_selected_part == part.partuuid && part.crypt}
                             (box :orientation "v" :space-evenly false :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
                                     (label :class "heading" :text "${part.decrypt.label?:part.decrypt.name}")

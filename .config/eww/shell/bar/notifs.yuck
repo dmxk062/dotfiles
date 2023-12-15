@@ -20,7 +20,7 @@
                             :anchor "top right"
                     )
         :stacking "overlay"
-        :namespace "eww_popup"
+        :namespace "eww_blurred"
     (notifications)
 )
 

@@ -134,7 +134,8 @@ function encrypt(){
 
 case $1 in
     upd)
-        upd;;
+        upd
+        ;;
     list)
         list;;
     eject)

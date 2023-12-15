@@ -1,7 +1,6 @@
 (include "bar/clock.yuck")
 (include "bar/performance.yuck")
 (include "bar/session.yuck")
-(include "bar/audio.yuck")
 ;; (include "bar/battery.yuck")
 
 
@@ -18,7 +17,6 @@
             (performance_button)
             (clock)
             ;; (battery)
-            ;; (audio_buttons)
             (session_button)
         )
     )

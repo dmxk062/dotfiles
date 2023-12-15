@@ -18,6 +18,7 @@
 .audio_popup_box{
     @extend .popup_box_padded;
     border-radius: $rounding-large;
+    background-color: $bg0;
     margin-bottom: 6rem;
     min-width: 38rem;
 }

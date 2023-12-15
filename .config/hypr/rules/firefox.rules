@@ -1,4 +1,8 @@
 # vim:ft=hyprland.conf
 
-windowrule = float,title:^Extension:.*$
-windowrule = center,title:^Extension:.*$
+windowrule = float, title:^Extension:.*$
+windowrule = center, title:^Extension:.*$
+windowrule = float, title:Picture-in-Picture
+windowrule = center, title:Picture-in-Picture
+windowrule = size 800 600, title:Picture-in-Picture
+

@@ -40,6 +40,7 @@ windowrulev2=size 800 600,class:^.*(blueman).*$
 windowrulev2=float,title:^.*Properties.*$
 windowrulev2=center,title:zenity_passwd
 windowrulev2=float,title:zenity_passwd
+windowrulev2=size 800 900,title:File Picker
 windowrulev2=center,title:^.*Properties.*$
 windowrulev2=center,class:zenity
 windowrulev2=float,class:zenity
