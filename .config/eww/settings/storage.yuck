@@ -17,7 +17,7 @@
     (box :visible "${selected_section == 7}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
         (box :orientation "h" :space-evenly false :class "sidebar"
             (scroll :class "scroll-huge" :vexpand true
-                (box :orientation "v" :space-evenly false 
+                (box :orientation "v" :space-evenly false :spacing 8
                     (for disk in disks
                         (overlay
                             (box :orientation "v" :space-evenly false :class "card"

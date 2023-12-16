@@ -69,6 +69,7 @@ function list_devices(){
     do
         info="$(bluetoothctl info $mac)"
         iconType="$(echo "$info"|grep "Icon: "|cut -d ' ' -f 2-)"
+        deviceName="$(echo "$info"|grep "Name: "|cut -d ' ' -f 2-)"
         echo "$info"|grep -q "Connected: yes"&&connected=true||connected=false
         echo "$info"|grep -q "Paired: yes"&&paired=true||paired=false
         echo "$info"|grep -q "Trusted: yes"&&trusted=true||trusted=false
@@ -79,7 +80,7 @@ function list_devices(){
         else
             battery_level="null"
         fi
-        printf '{"mac":"%s","name":"%s","icon":"%s","connected":%s,"paired":%s,"trusted":%s,"blocked":%s,"hasBattery":%s,"battery":%s}' "$mac" "$name" "$iconType" "$connected" "$paired" "$trusted" "$blocked" "$battery_present" "$battery_level"
+        printf '{"mac":"%s","name":"%s","originalName":"%s","icon":"%s","connected":%s,"paired":%s,"trusted":%s,"blocked":%s,"hasBattery":%s,"battery":%s}' "$mac" "$name" "$deviceName" "$iconType" "$connected" "$paired" "$trusted" "$blocked" "$battery_present" "$battery_level"
         if [[ line_nr -ne $length ]]
         then
             printf ","

@@ -1,6 +1,7 @@
 (defvar bt_status '{}')
 (defvar bt_devices '[]')
 (defvar bt_connected '[]')
+(defvar bt_edit_device '')
 (defvar bt_search false)
 
 (defvar bt_battery_icons '[
@@ -58,28 +59,50 @@
             )
             ;; (label :class "title" :text "${arraylength(bt_connected)} connected device${arraylength(bt_connected) == 1 ? "" : "s"}")
         )
-        (scroll :vscroll true :class "scroll-narrow" :visible "${bt_status.power}"
-            (box :orientation "v"
+        (scroll :vscroll true :class "scroll-huge" :visible "${bt_status.power}" :vexpand true 
+            (box :orientation "v" :space-evenly false :halign "center"
                 (for dev in bt_devices
-                    (box :space-evenly false :orientation "v" :class "card" :halign "center" :hexpand true
-                        (box :class "padding_box" :space-evenly false :orientation "v"
-                            (label :text "${dev.name}" :limit-width 16 :tooltip "${dev.name}" :class "card-label")
-                            (icon :name "${bt_icons[dev.icon?:"fallback"]}")
-                        )
-                        (box :space-evenly false
-                            (box :orientation "v" :class "card_footer"
-                                (box
-                                    (button :class "button${dev.trusted ? "-active" : ""}" :timeout "16s" :onclick "${dev.trusted ? "bluetoothctl untrust ${dev.mac}" : "bluetoothctl trust ${dev.mac}"}&&bin/bt.sh upd"  "󰒘    Trust")
-                                    (button :class "button${dev.blocked ? "-error" : ""}" :timeout "16s" :onclick "${dev.blocked ? "bluetoothctl unblock ${dev.mac}" : "bluetoothctl block ${dev.mac}"}&&bin/bt.sh upd"  "󰂭    Block")
-                                )
-                                (box
-                                    (button :class "button${dev.paired ? "-active" : ""}" :timeout "16s" :onclick "${dev.paired ? "bluetoothctl remove ${dev.mac}" : "bluetoothctl pair ${dev.mac}"}&&bin/bt.sh upd"  "    Pair")
-                                    (button :class "button${dev.connected ? "-active" : ""}" :timeout "16s" :onclick "${dev.connected ? "bluetoothctl disconnect ${dev.mac}" : "bluetoothctl connect ${dev.mac}"}&&bin/bt.sh upd"  "󰂱    Connect")
+                    (overlay
+                        (box :space-evenly false :orientation "v" :class "card" :hexpand true
+                            (box :class "padding_box" :space-evenly false :orientation "v"
+                                (label :text "${dev.name}" :limit-width 16 :class "card-label")
+                                (icon :name "${bt_icons[dev.icon?:"fallback"]}")
+                            )
+                            (box :space-evenly false
+                                (box :orientation "v" :class "card_footer"
+                                    (box
+                                        (button :class "button${dev.paired ? "-active" : ""}" :timeout "16s" :onclick "${dev.paired ? "bluetoothctl remove ${dev.mac}" : "bluetoothctl pair ${dev.mac}"}&&bin/bt.sh upd"  "    Pair")
+                                        (button :class "button" :timeout "16s" :onclick "bluetoothctl remove ${dev.mac}; bin/bt.sh upd"  "󰅖    Remove")
+                                    )
+                                    (box
+                                        (button :class "button${dev.connected ? "-active" : ""}" :timeout "16s" :onclick "${dev.connected ? "bluetoothctl disconnect ${dev.mac}" : "bluetoothctl connect ${dev.mac}"}&&bin/bt.sh upd"  "󰂱    Connect")
+                                        (button :class "button" :timeout "16s" :onclick {bt_edit_device == dev.mac ? "${EWW_CMD} update bt_edit_device=''" : "${EWW_CMD} update bt_edit_device=${dev.mac}"}  "󰂳    Properties")
+                                    )
                                 )
                             )
+                        )            
+                        (box :space-evenly false :orientation "v" :class "card-no_shadow"  :visible {bt_edit_device == dev.mac}
+                            (box :class "padding_box" :vexpand true :orientation "v" :space-evenly false
+                                (box :vexpand true :space-evenly false :valign "start"
+                                    (box :space-evenly false
+                                        (input :class "input" :value "${dev.name}" :onaccept "bt-device --set ${dev.mac} Alias '{}'; bin/bt.sh upd")
+                                        (button :class "button" :timeout "16s" :onclick "bt-device --set ${dev.mac} Alias '${dev.originalName}'; bin/bt.sh upd" :tooltip "Reset Device Name" "󰕌")
+                                    )
+                                )
+                                (box
+                                    (button :class "button${dev.blocked ? "-error" : ""}" :timeout "16s" :onclick "${dev.blocked ? "bluetoothctl unblock ${dev.mac}" : "bluetoothctl block ${dev.mac}"}&&bin/bt.sh upd"  "󰂭    Block")
+                                    (button :class "button${dev.trusted ? "-active" : ""}" :timeout "16s" :onclick "${dev.trusted ? "bluetoothctl untrust ${dev.mac}" : "bluetoothctl trust ${dev.mac}"}&&bin/bt.sh upd"  "󰒘    Trust")
+                                )
+                            )
+                            (box :class "card_footer" :space-evenly false
+                                (box :hexpand true :space-evenly false
+                                    (clipboard_button :content {dev.mac} :label {dev.mac})
+                                )
+                                    (button :class "button" :onclick "${EWW_CMD} update bt_edit_device=''" "Close")
+                            )
                         )
-                    )            
-                )   
+                    )   
+                )
             )
         )
         (box :visible "${!bt_status.power}" :hexpand true :vexpand true :class "padding_box" :orientation "v" :space-evenly false :valign "center"
