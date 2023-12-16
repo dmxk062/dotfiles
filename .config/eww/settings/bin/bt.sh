@@ -105,4 +105,16 @@ case $1 in
         upd;;
     toggle)
         toggle_$2;;
+    rename)
+        shift
+        mac="$1"
+        name="$2"
+        oldname="$3"
+        if [[ "$name" == "" ]]; then
+            name="$oldname"
+        fi
+        bt-device --set "$mac" Alias "$name"
+        sleep 0.1
+        upd
+        ;;
 esac

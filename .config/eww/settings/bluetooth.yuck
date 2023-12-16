@@ -83,13 +83,9 @@
                         )            
                         (box :space-evenly false :orientation "v" :class "card-no_shadow"  :visible {bt_edit_device == dev.mac}
                             (box :class "padding_box" :vexpand true :orientation "v" :space-evenly false
-                                (box :vexpand true :space-evenly false :valign "start"
-                                    (box :space-evenly false
-                                        (input :class "input" :value "${dev.name}" :onaccept "bt-device --set ${dev.mac} Alias '{}'; bin/bt.sh upd")
-                                        (button :class "button" :timeout "16s" :onclick "bt-device --set ${dev.mac} Alias '${dev.originalName}'; bin/bt.sh upd" :tooltip "Reset Device Name" "󰕌")
-                                    )
-                                )
-                                (box
+                                (input :class "input" :value "${dev.name}" :onaccept "bin/bt.sh rename ${dev.mac} '{}' '${dev.originalName}'&")
+                                (box 
+                                    ;; (button :class "button" :timeout "16s" :onclick "bt-device --set ${dev.mac} Alias ${dev.originalName}; bin/bt.sh upd" :tooltip "Reset Name to Device Name" "󰕌")
                                     (button :class "button${dev.blocked ? "-error" : ""}" :timeout "16s" :onclick "${dev.blocked ? "bluetoothctl unblock ${dev.mac}" : "bluetoothctl block ${dev.mac}"}&&bin/bt.sh upd"  "󰂭    Block")
                                     (button :class "button${dev.trusted ? "-active" : ""}" :timeout "16s" :onclick "${dev.trusted ? "bluetoothctl untrust ${dev.mac}" : "bluetoothctl trust ${dev.mac}"}&&bin/bt.sh upd"  "󰒘    Trust")
                                 )
@@ -114,4 +110,5 @@
 
     )
 )
+
 
