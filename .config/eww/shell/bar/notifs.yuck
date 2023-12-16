@@ -20,7 +20,7 @@
                             :anchor "top right"
                     )
         :stacking "overlay"
-        :namespace "eww_blurred"
+        :namespace "eww_noblur"
     (notifications)
 )
 

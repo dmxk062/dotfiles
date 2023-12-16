@@ -106,7 +106,7 @@
                         (box :space-evenly false
                         (box :orientation "v" :visible {disk_selected_part == part.partuuid && ! part.crypt} :space-evenly false :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
-                                    (label :class "heading" :text "${part.label?:part.name}")
+                                    (label :class "heading" :text "${part.label?:part.name}" :limit-width 20)
                                     (label :class "text-large" :text "Filesystem: ${part.type?: "Not Detected"}")
                                     (label :class "text-large" :text "Filesystem Type: ${part.parttype}")
                                     (box :class "padding_box" :visible "${part.type != "swap"}"
@@ -138,7 +138,7 @@
                         (overlay :visible {disk_selected_part == part.partuuid && part.crypt}
                             (box :orientation "v" :space-evenly false :class "card"
                                 (box :class "padding_box" :orientation "v" :space-evenly false
-                                    (label :class "heading" :text "${part.decrypt.label?:part.decrypt.name}")
+                                    (label :class "heading" :text "${part.decrypt.label?:part.decrypt.name}" :limit-width 20)
                                     (label :class "text-large" :text "Filesystem: ${part.decrypt.type?: "Not Detected"}")
                                     (label :class "text-large" :text "Filesystem Type: Encrypted Partition")
                                     (box :class "padding_box"

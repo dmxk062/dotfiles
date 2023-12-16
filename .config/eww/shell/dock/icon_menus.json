@@ -63,8 +63,8 @@
             "exec":"nemo --name='popup nemo' computer://"
         },
         {
-            "name":"Floating",
-            "exec":"nemo --name='popup nemo'"
+            "name":"Network",
+            "exec":"nemo --name='popup nemo' network://"
         },
         {
             "name":"Recently Used",
