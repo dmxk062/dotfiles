@@ -5,6 +5,7 @@
 (defvar input_ws_swipe true)
 (defvar input_natural_scroll false)
 (defvar input_osk false)
+(defvar input_osk_overlay false)
 
 ;; my default settings from hyprland
 (defvar input_repeat_rate 25)
@@ -30,7 +31,10 @@
                         (wrapped_text :text "Enable On Screen Keyboard")
                     )
                     (list_box
-                        (label :text "")
+                        (button :class "button${input_osk_overlay ? "-active" : ""}" :onclick "../shell/kbd/change_layer.sh toggle" "${input_osk_overlay ? "󰌌" : "󱂩"}     OSK Layer: ${input_osk_overlay ? "Floating" : "Bottom"}")
+                        (wrapped_text :text "Whether the On Screen Keyboard should float or be tiled at the bottom of the screen")
+                    )
+                    (list_box
                         (button :class "button" :onclick "bin/kbd/rate.sh reset" "󰧹    Reset Repeat Rate")
                             (margin
                                 (scale :value "${input_repeat_rate}" :min 0 :max 100 :class "slider-small" :onchange "bin/kbd/rate.sh {}")
@@ -38,7 +42,6 @@
                         (wrapped_text :text "Control how often a held down key is pressed")
                     )
                     (list_box
-                        (label :text "")
                         (button :class "button" :onclick "bin/kbd/delay.sh reset" "󰌏    Reset Repeat Delay")
                             (margin
                                 (scale :value "${input_repeat_delay}" :min 100 :max 1000 :class "slider-small" :onchange "bin/kbd/delay.sh {}")
