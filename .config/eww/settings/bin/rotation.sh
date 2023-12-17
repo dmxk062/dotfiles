@@ -1,22 +1,30 @@
 #!/usr/bin/env bash
 
+eww="eww -c $XDG_CONFIG_HOME/eww/shell"
 # THIS IS HARDCODED FOR MY CURRENT LAPTOP
 
 function rotate_ms {
     case $1 in
         "normal")
             rotate 0
+            $eww update vertical=false
             ;;
         "right-up")
             rotate 3
+            $eww update vertical=true
             ;;
         "bottom-up")
             rotate 2
+            $eww update vertical=false
             ;;
         "left-up")
             rotate 1
+            $eww update vertical=true
             ;;
     esac
+    sleep 0.5
+    $XDG_CONFIG_HOME/background/wallpaper.sh set
+
 }
 
 function rotate {

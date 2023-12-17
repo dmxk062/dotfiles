@@ -5,7 +5,7 @@
 
 (defwidget mpris_button []
     (box :space-evenly false
-    (button :class "mpris-button${mpris.active ? "-playing" : ""}" :onclick "${EWW_CMD} open mpris_popup --toggle --screen 0 --anchor 'top center'" :onmiddleclick "playerctl play-pause" :timeout "16s" (label :text "${mpris.active ? "󰐊" : "󰐎"}    ${mpris.title?: "No Player"}" :limit-width 20))
+    (button :class "mpris-button${mpris.active ? "-playing" : ""}" :onclick "${EWW_CMD} open mpris_popup --toggle --screen 0 --anchor 'top center'" :onmiddleclick "playerctl play-pause" :timeout "16s" (label :text "${mpris.active ? "󰐊" : "󰐎"}    ${mpris.title?: "No Player"}" :limit-width {vertical ? 8 : 20}))
     )
 )
 

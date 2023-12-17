@@ -3,6 +3,7 @@
 (include "bar/center.yuck")
 (include "bar/icons.yuck")
 
+(defvar vertical false)
 
 
 
