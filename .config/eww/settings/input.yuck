@@ -16,6 +16,8 @@
 
 (defvar input_test_area_event '')
 
+(defvar autorotate false)
+
 (defwidget input_section []
     (box :visible "${selected_section == 1}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
         (box :space-evenly false :class "sidebar"
@@ -33,6 +35,10 @@
                     (list_box
                         (button :class "button${input_osk_overlay ? "-active" : ""}" :onclick "../shell/kbd/change_layer.sh toggle" "${input_osk_overlay ? "󰌌" : "󱂩"}     OSK Layer: ${input_osk_overlay ? "Floating" : "Bottom"}")
                         (wrapped_text :text "Whether the On Screen Keyboard should float or be tiled at the bottom of the screen")
+                    )
+                    (list_box
+                        (button :class "button${autorotate ? "-active" : ""}" :onclick "bin/rotation.sh toggle" "${autorotate ? "󰑵" : "󰑵"}    Auto Rotate Screen")
+                        (wrapped_text :text "Automatically rotates Screen")
                     )
                     (list_box
                         (button :class "button" :onclick "bin/kbd/rate.sh reset" "󰧹    Reset Repeat Rate")

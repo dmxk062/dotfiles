@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+LOCKFILE='/tmp/.eww_no_rotate'
 eww="eww -c $XDG_CONFIG_HOME/eww/shell"
 # THIS IS HARDCODED FOR MY CURRENT LAPTOP
 
 function rotate_ms {
+    [ -f $LOCKFILE ] && return
     case $1 in
         "normal")
             rotate 0
@@ -34,8 +36,21 @@ function rotate {
     echo "$1"
     eww -c $HOME/.config/eww/shell reload
 }
-while IFS=$'\n' read -r line; do
-    rotation="$(echo $line | sed -En "s/^.*orientation changed: (.*)/\1/p")"
-    [[ -n  $rotation  ]] && rotate_ms $rotation
-done < <(stdbuf -oL monitor-sensor)
+case $1 in
+    monitor)
+        while IFS=$'\n' read -r line; do
+            rotation="$(echo $line | sed -En "s/^.*orientation changed: (.*)/\1/p")"
+            [[ -n  $rotation  ]] && rotate_ms $rotation
+        done < <(stdbuf -oL monitor-sensor)
+        ;;
+    toggle)
+        if [ -f $LOCKFILE ]; then
+            rm $LOCKFILE
+            eww -c $XDG_CONFIG_HOME/eww/settings update autorotate=true
+        else
+            touch $LOCKFILE
+            eww -c $XDG_CONFIG_HOME/eww/settings update autorotate=false
+        fi
+        ;;
+esac
 
