@@ -22,7 +22,7 @@
 
 (defwidget bluetooth_section []
     (box :visible "${selected_section == 5}" :class "section_box" :hexpand true :space-evenly false 
-        (box :orientation "h" :space-evenly false :class "sidebar" 
+        (box :orientation "h" :space-evenly false :class "sidebar" :visible {bt_status.power}
             (box :space-evenly false :class "padding_box" :orientation "v"
                 (scroll :vscroll true :class "scroll-short" :vexpand true
                     (box :orientation "v" :space-evenly false :spacing 8
@@ -106,6 +106,9 @@
                 (icon_background :name "32/status/dialog-error.svg")
             )
             (label :class "heading" :text "Bluetooth is either turned off or not available")
+            (box :space-evenly false :halign "center"
+                (button :class "button-active" :timeout "16s" :onclick "bin/bt.sh toggle power&&bin/bt.sh upd"              "    Turn Bluetooth On")
+            )
         )
 
     )
