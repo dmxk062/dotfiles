@@ -14,3 +14,4 @@
 (include "bar/bar.yuck")
 (include "dock/dock.yuck")
 (include "desktop/desktop.yuck")
+(include "kbd/kbd.yuck")

@@ -39,7 +39,7 @@
             )
             (separator)
             (box 
-                (button :class "image_button" :onclick "../settings/bin/input.sh osk" :tooltip "WVKBD"
+                (button :class "image_button" :onclick "kbd/open.sh" 
                     (image :path "${icon_theme}/scalable/devices/input-keyboard.svg" :image-width 48 :image-height 48)
                 )
                 (icon_button :exec "bin/screenshot_menu.sh toggle" :tooltip "Screenshots" :path "scalable/apps/accessories-screenshot.svg" :menu "screenshot")

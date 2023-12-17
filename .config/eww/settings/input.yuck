@@ -26,8 +26,8 @@
                         (wrapped_text :text "Switch between the german and english keyboard Layout")
                     )
                     (list_box
-                        (button :class "button${input_osk ? "-active" : ""}" :onclick "bin/input.sh osk" "${input_osk ? "󰌌" : "󰌐"}    On Screen Keyboard")
-                        (wrapped_text :text "Enable WVKBD (a touch keyboard)")
+                        (button :class "button${input_osk ? "-active" : ""}" :onclick "../shell/kbd/open.sh" "${input_osk ? "󰌌" : "󰌐"}    On Screen Keyboard")
+                        (wrapped_text :text "Enable On Screen Keyboard")
                     )
                     (list_box
                         (label :text "")

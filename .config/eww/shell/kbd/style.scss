@@ -1,0 +1,43 @@
+.kbd_button,.kbd_button-active,.kbd_button-warn,.kbd_button-special{
+    @extend .button;
+    background-color: mix($bg0, $bg1);
+    margin: .2rem;
+    &:hover{
+        background-color: $bg1;
+    }
+    min-width: 2.5rem;
+    min-height: 3rem;
+}
+.kbd_button-active{
+    background-color: $accent;
+    color: $inverted;
+    &:hover{
+        background-color: fade($accent);
+    }
+}
+.kbd_button-warn{
+    background-color: $error;
+    color: $inverted;
+    &:hover{
+        background-color: fade($error);
+    }
+}
+.kbd_button-special{
+    background-color: $special;
+    color: $inverted;
+    &:hover{
+        background-color: fade($special);
+    }
+}
+
+.keyboard{
+    @extend .popup_box_padded;
+}
+
+.kbd_separator{
+    min-width: 2px;
+    margin: .2rem .5rem .2rem .5rem;
+    background-color: $bg1;
+    border-radius: 1rem;
+
+}
