@@ -476,6 +476,11 @@
             "code":57
         },
         {
+            "icon":"",
+            "code":100,
+            "kind":"-compose"
+        },
+        {
             "icon":"󰁍",
             "fn":true,
             "fnicon":"Home",
