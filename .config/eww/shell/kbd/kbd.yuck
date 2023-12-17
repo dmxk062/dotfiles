@@ -34,8 +34,8 @@
 )
 
 (defwidget kbd [win]
-    (box :space-evenly false :orientation "h" :class "keyboard"
-        (box :orientation "v" :space-evenly false :valign "center"
+    (box :space-evenly false :orientation {vertical ? "v" : "h"} :class "keyboard"
+        (box :orientation {vertical ? "h" : "v"} :space-evenly false :valign "center"
             (button :class "kbd_button" :onclick "sleep 0.2;eww_settings.sh" :timeout "16s" "")
             (button :class "kbd_button" :onclick "sleep 0.2;desktop/mods/term.sh" :timeout "16s" "")
             (button :class "kbd_button" :onclick "sleep 0.2;desktop/mods/fm.sh" :timeout "16s" "󰉋")

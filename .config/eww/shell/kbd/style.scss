@@ -1,4 +1,4 @@
-.kbd_button,.kbd_button-active,.kbd_button-warn,.kbd_button-special{
+.kbd_button,.kbd_button-active,.kbd_button-warn,.kbd_button-special,.kbd_button-vert,.kbd_button-vert-active,.kbd_button-vert-warn,.kbd_button-vert-special{
     @extend .button;
     background-color: mix($bg0, $bg1);
     margin: .2rem;
@@ -8,26 +8,29 @@
     min-width: 2.5rem;
     min-height: 3rem;
 }
-.kbd_button-active{
+.kbd_button-active,.kbd_button-vert-active{
     background-color: $accent;
     color: $inverted;
     &:hover{
         background-color: fade($accent);
     }
 }
-.kbd_button-warn{
+.kbd_button-warn,.kbd_button-vert-warn{
     background-color: $error;
     color: $inverted;
     &:hover{
         background-color: fade($error);
     }
 }
-.kbd_button-special{
+.kbd_button-special,.kbd_button-vert-special{
     background-color: $special;
     color: $inverted;
     &:hover{
         background-color: fade($special);
     }
+}
+.kbd_button-vert-special,.kbd_button-vert-warn,.kbd_button-vert-active,.kbd_button-vert{
+    min-width: 1.5rem;
 }
 
 .keyboard{

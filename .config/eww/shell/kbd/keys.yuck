@@ -36,7 +36,7 @@
 
 (defwidget kbd_button [key]
     (button 
-    :class "kbd_button${key.kind == "function_lock" ? (kbd_fn ? "-active" : "") : (key.mod?: false ?
+    :class "kbd_button${vertical ? "-vert" : ""}${key.kind == "function_lock" ? (kbd_fn ? "-active" : "") : (key.mod?: false ?
         (key.code == "super" ? (kbd_super ? "-active" : "")
         : (key.code == "ctrl" ? (kbd_ctrl ? "-active" : "")
         : (key.code == "shift" ? (kbd_shift ? "-active" : "") 
