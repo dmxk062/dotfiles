@@ -4,6 +4,19 @@
 
 (defwindow kbd_window
         :monitor 0
+        :exclusive true
+        :geometry (geometry :x 1
+                            :y 1
+                            :width 0
+                            :height 0
+                            :anchor "bottom center"
+                    )
+        :stacking "fg"
+        :namespace "eww_noblur"
+    (kbd)
+)
+(defwindow kbd_window_overlay
+        :monitor 0
         :geometry (geometry :x 1
                             :y 1
                             :width 0
