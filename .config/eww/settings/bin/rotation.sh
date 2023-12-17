@@ -23,6 +23,7 @@ function rotate_ms {
             ;;
     esac
     sleep 0.5
+        eww -c $XDG_CONFIG_HOME/eww/shell update kbd_layout="$(< $XDG_CONFIG_HOME/eww/shell/kbd/layout.json)"
     $XDG_CONFIG_HOME/background/wallpaper.sh set
 
 }
