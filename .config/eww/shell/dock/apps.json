@@ -27,9 +27,9 @@
         "menu":"nemo"
     },
     {
-        "description":"Kitty Terminal Emulator",
-        "exec":"kitty ~",
-        "image":"scalable/apps/kitty.svg"
+        "description":"Rnote",
+        "exec":"gtk-launch com.github.flxzt.rnote",
+        "image":"scalable/apps/rnote.svg"
     },
     {
         "description":"LibreOffice Office Suite",

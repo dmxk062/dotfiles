@@ -38,11 +38,11 @@
         (box :orientation {vertical ? "h" : "v"} :space-evenly false :valign "center"
             (box :hexpand true :space-evenly false :orientation {vertical ? "h" : "v"}
                 (button :class "kbd_button" :onclick "${EWW_CMD} close ${win}" :timeout "16s" "󰌏")
+                (button :class "kbd_button" :onclick "dock/bin/open_dock.sh" :timeout "16s" "󱂩")
                 (button :class "kbd_button" :onclick "sleep 0.2;eww_settings.sh" :timeout "16s" "")
                 (button :class "kbd_button" :onclick "sleep 0.2;desktop/mods/term.sh" :timeout "16s" "")
                 (button :class "kbd_button" :onclick "sleep 0.2;desktop/mods/fm.sh" :timeout "16s" "󰉋")
                 (button :class "kbd_button" :onclick "gtk-launch firefox" :timeout "16s" "󰈹")
-                (button :class "kbd_button" :onclick "gtk-launch com.github.flxzt.rnote" :timeout "16s" "󱦹")
             )
             (box :space-evenly false :visible {vertical && window.title != "null"}
                 (button :class "kbd_button" :onclick "hyprctl dispatch togglefloating" :timeout "128s" "${window.floating ? "Tile Window" : "Float Window"}")    
