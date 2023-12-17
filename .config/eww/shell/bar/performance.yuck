@@ -5,7 +5,7 @@
 
 (defwidget performance_button []
     (button :class "sbutton" :onclick "${EWW_CMD} open performance_popup --toggle" 
-        (label :text {vertical ? "${mem.mem.nice.used} / ${mem.mem.nice.total}" : ""})
+        (label :text {!vertical ? "${mem.mem.nice.used} / ${mem.mem.nice.total}" : ""})
     )
 )
 
