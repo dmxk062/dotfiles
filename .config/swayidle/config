@@ -1,5 +1,5 @@
 timeout 150 '~/.config/swayidle/idle.sh notify lock'
 timeout 175 '~/.config/swayidle/idle.sh lock'
 timeout 270 '~/.config/swayidle/idle.sh notify sleep'
-timeout 00 '~/.config/swayidle/idle.sh sleep'
+timeout 300 '~/.config/swayidle/idle.sh sleep'
 before-sleep '~/.config/swayidle/idle.sh pre'
