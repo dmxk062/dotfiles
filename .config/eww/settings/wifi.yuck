@@ -13,7 +13,7 @@
 
 (defwidget wifi_section []
     (box :visible "${selected_section == 6}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
-        (box :space-evenly false :class "sidebar"
+        (box :space-evenly false :class "sidebar" :visible {wlan_power}
             (box :class "padding_box" :orientation "v" :space-evenly false
                 (overlay
                     (box :class "card" :orientation "v" :space-evenly false
@@ -98,6 +98,10 @@ ${wifi_connect_error_reason}")
             (icon_background :name "32/status/dialog-error.svg")
         )
         (label :class "heading" :text "WIFI is either turned off or not available")
+        (box :space-evenly false :halign "center"
+             (button :class "button-active" :timeout "16s" :onclick "bin/wlan.sh toggle; sleep 1; bin/wlan.sh update"              "    Turn WiFi On")
+        )
+
 
         )
     )

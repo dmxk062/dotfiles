@@ -66,24 +66,24 @@ function connect(){
     then 
         if ! nmcli device wifi connect "$ssid" password "$passwd"
         then
-            $eww_settings update wifi_connect_error=true
-            $eww_settings update wifi_connect_error_reason="Wrong Password?"
+            $eww_settings update wifi_connect_error=true \
+            wifi_connect_error_reason="Wrong Password?"
         else
-            $eww_settings update wifi_password_reveal=false
-            $eww_settings update wifi_connect_error=false
-            $eww_settings update wifi_passwd=""
-            $eww_settings update wifi_connect_ssid=""
+            $eww_settings update wifi_password_reveal=false \
+            wifi_connect_error=false \
+            wifi_passwd="" \
+            wifi_connect_ssid="" 
         fi
     else
         if ! nmcli device wifi connect "$ssid"
         then
-            $eww_settings update wifi_connect_error=true
-            $eww_settings update wifi_connect_error_reason="Weak Connection?"
+            $eww_settings update wifi_connect_error=true \
+            wifi_connect_error_reason="Weak Connection?"
         else
-            $eww_settings update wifi_password_reveal=false
-            $eww_settings update wifi_connect_error=false
-            $eww_settings update wifi_passwd=""
-            $eww_settings update wifi_connect_ssid=""
+            $eww_settings update wifi_password_reveal=false \
+            wifi_connect_error=false \
+            wifi_passwd="" \
+            wifi_connect_ssid=""
         fi
     fi
 }
