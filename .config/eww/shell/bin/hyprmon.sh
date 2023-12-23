@@ -4,6 +4,9 @@ function update(){
     eww -c "$HOME/.config/eww/shell/" update "$@"
 }
 
+NOTIFID=1000
+SUBMAP_ICON="/usr/share/icons/Tela/scalable/apps/preferences-desktop-theme-windowdecorations.svg"
+
 workspace_order='{
 "web":1,
 "web2":2,
@@ -79,6 +82,15 @@ function monitor_changes(){
             submap*)
                 IFS=">" read -r _ _ map <<< "$line"
                 update hypr_submap="$map"
+                if [[ "$map" == "" ]]; then
+                    NOTIFID=$(notify-send "Exited Submap" \
+                        -i "$SUBMAP_ICON" \
+                        -a "eww" -r $NOTIFID -p "")
+                else
+                    NOTIFID=$(notify-send "Entered Submap" \
+                        -i "$SUBMAP_ICON" \
+                        -a "eww" -r $NOTIFID -p "$map")
+                fi
                 # if [[ $map != "" ]]
                 # then
                 #     $XDG_CONFIG_HOME/eww/shell/popups/bin/submap.sh on
