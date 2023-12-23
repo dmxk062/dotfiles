@@ -85,11 +85,11 @@ function monitor_changes(){
                 if [[ "$map" == "" ]]; then
                     NOTIFID=$(notify-send "Exited Submap" \
                         -i "$SUBMAP_ICON" \
-                        -a "eww" -r $NOTIFID -p "")
+                        -a "eww_submap" -r $NOTIFID -p "")
                 else
                     NOTIFID=$(notify-send "Entered Submap" \
                         -i "$SUBMAP_ICON" \
-                        -a "eww" -r $NOTIFID -p "$map")
+                        -a "eww_submap" -r $NOTIFID -p "$map")
                 fi
                 # if [[ $map != "" ]]
                 # then
