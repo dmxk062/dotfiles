@@ -12,10 +12,10 @@ notifs='[]'
 
 
 function update(){
-    eww -c $HOME/.config/eww/hud/ update "$@"
+    ~/.local/bin/eww -c $HOME/.config/eww/hud/ update "$@"
 }
 function update_panel(){
-    eww -c $HOME/.config/eww/shell/ update "$@"
+    ~/.local/bin/eww -c $HOME/.config/eww/shell/ update "$@"
 }
 function handle_event(){
     time=$(date +'%H:%M')
