@@ -1,6 +1,10 @@
 (defvar user "")
 (defvar boottime 0)
 (defvar hostname "")
+(defvar session_confirm false)
+(defvar session_confirm_entry "")
+(defvar session_action "")
+(defvar session_icon "")
 
 (defwidget session_button []
     (button :class "sbutton" :onclick "bin/open_session_popup.sh" "")
@@ -20,26 +24,38 @@
     (session)
 )
 
-(defwidget power_button [action icon text]
-    (button :class "lbutton" :onclick "sleep 0.1&&bin/shutdown.sh ${action}&disown; ${EWW_CMD} close session_popup" :timeout "16s" 
+(defwidget power_button [action icon text desc]
+    (button :class "lbutton" :onclick "${EWW_CMD} update session_confirm='true' session_action=${action} session_confirm_entry='${desc}' session_icon='${icon}'" :timeout "16s" 
     (split_text :left icon :right text))
 )
 
 (defwidget session [] 
     (box :space-evenly false :halign "center" :valign "center"
-        (box :class "popup_box" :orientation "v" :space-evenly false :width 200
-            (box :class "padded_box" :orientation "v" :space-evenly false
-                (power_button :action "off"          :text "Poweroff"             :icon "󰐥")
-                (power_button :action "reboot"       :text "Reboot"               :icon "󰑓")
-                (power_button :action "logout"       :text "Exit Session"         :icon "󰿅")
-                (power_button :action "lock -nc"     :text "Lock Session"         :icon "󰍁")
-                (power_button :action "suspend"      :text "Suspend to RAM"       :icon "󰒲")
-                (power_button :action "hibernate"    :text "Hibernate to Disk"    :icon "󰤄")
-                (power_button :action "uefi"         :text "Reboot to Firmware"   :icon "󰘚")
+            (overlay
+                (box :class "popup_box" :orientation "v" :space-evenly false
+                    (box :class "padding_box" :orientation "v" :space-evenly false
+                        (power_button :action "off"          :text "Poweroff"             :icon "󰐥" :desc "Perform System Shutdown?")
+                        (power_button :action "reboot"       :text "Reboot"               :icon "󰑓" :desc "Reboot System?")
+                        (power_button :action "logout"       :text "Exit Session"         :icon "󰿅" :desc "Log out to the TTY?")
+                        (power_button :action "lock"         :text "Lock Session"         :icon "󰍁" :desc "Lock the Session?")
+                        (power_button :action "suspend"      :text "Suspend to RAM"       :icon "󰒲" :desc "Suspend System to RAM?")
+                        (power_button :action "hibernate"    :text "Hibernate to Disk"    :icon "󰤄" :desc "Hibernate System to Swap?")
+                        (power_button :action "uefi"         :text "Reboot to Firmware"   :icon "󰘚" :desc "Reboot into UEFI Firmware?")
+                    )
+                    (box :class "popup_footer" :orientation "v" :space-evenly false
+                        (split_text :left {formattime(EWW_TIME - boottime - 3600,"%T")} :right "Booted: ${formattime(boottime, "%H:%M")}" )
+                    )
+                )
+                (box :visible session_confirm :hexpand true :vexpand true :class "popup_box-no_shadow" :orientation "v" :space-evenly false
+                    (box :vexpand true :orientation "v" :space-evenly false
+                        (label :class "charicon-large" :text session_icon)
+                        (label :class "text" :text session_confirm_entry)
+                    )
+                    (box :class "popup_footer" :hexpand true
+                        (button :onclick "${EWW_CMD} update session_confirm=false session_confirm_entry='' session_action='' session_icon=''" :class "button" "Cancel")
+                        (button :onclick "${EWW_CMD} update session_confirm=false session_confirm_entry='' session_action='' session_icon=''; ${EWW_CMD} close session_popup; bin/shutdown.sh ${session_action} -nc&" :class "button" "Confirm")
+                    )
+                )
             )
-            (box :class "popup_footer" :orientation "v" :space-evenly false
-                (split_text :left {formattime(EWW_TIME - boottime - 3600,"%T")} :right "Booted: ${formattime(boottime, "%H:%M")}" )
-            )
-        )
     )
 )

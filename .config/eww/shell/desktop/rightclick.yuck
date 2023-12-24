@@ -38,7 +38,7 @@
         (revealer :reveal rc_show_more :transition "slideup" :duration "0.2s" (box :orientation "v" :space-evenly false
             (lbutton :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :label "Open Settings")
             (lbutton :onclick "bin/screenshot_menu.sh toggle& ${EWW_CMD} close rc_popup" :label "Screenshot")
-            (lbutton :onclick "../settings/bin/look/color.sh noeww" :label "Switch Color")
+            ;; (lbutton :onclick "../settings/bin/look/color.sh noeww" :label "Switch Color")
         ))
         ;; (lbutton :onclick "bin/open_window_list.sh upd& ${EWW_CMD} update rc_desktop_area=1" :label "Windows")
         (button :class "lbutton" :onclick "${EWW_CMD} update rc_show_more=${!rc_show_more}" "${rc_show_more ? "Less" : "More"}")

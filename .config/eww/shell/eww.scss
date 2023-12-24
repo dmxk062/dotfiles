@@ -12,7 +12,7 @@
     }
 }
 
-.popup_box,.popup_box_padded,.popup_box-sc{
+.popup_box,.popup_box_padded,.popup_box-sc,.popup_box-no_shadow{
     background-color: $bg0;
     border-radius: 1.2rem;
     min-height: 3rem;
@@ -22,6 +22,9 @@
 .popup_box-sc{
     min-width: 32rem;
     min-height: 24rem;
+}
+.popup_box-no_shadow{
+    box-shadow: unset;
 }
 .popup_box_padded{
     padding: .5rem;
