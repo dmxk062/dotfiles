@@ -5,7 +5,7 @@
 (defvar input_ws_swipe true)
 (defvar input_natural_scroll false)
 (defvar input_osk false)
-(defvar input_osk_overlay false)
+(defvar input_osk_overlay true)
 
 ;; my default settings from hyprland
 (defvar input_repeat_rate 25)
