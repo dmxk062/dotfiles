@@ -11,13 +11,23 @@ check {
 
     }
 }
+window {
+    decoration {
+        // box-shadow: 0 8px 6px -5px rgba(0,0,0,0.5);
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
 
+        background-clip: padding-box;
+        margin: 1rem;
+        border-radius: $rounding-large;
+    }
+
+}
 menu {
-    background-color: $bg1;
+    background-color: $bg0;
     border-radius: $rounding-large;
     margin: 2rem;
-    padding: 1rem;
-    border: 2px solid $bg3;
+    padding: .5rem;
+    padding-top: 1rem;
     
     menu {
         border-radius: $rounding-small;
@@ -26,16 +36,16 @@ menu {
     }
 
     separator {
-        margin: .5rem;
+        margin: 4px;
         margin-top: .8rem;
         margin-bottom: .8rem;
         min-height: .2rem;
-        border-radius: 999999px;
-        background-color: $bg3;
+        border-radius: 2rem;
+        background-color: $bg1;
     }
     > menuitem {
-        margin-right: .2rem;
-        margin-left: .2rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: $rounding-small;
         padding: $padding-std;
         color: $fg;
 
@@ -43,12 +53,12 @@ menu {
             color: $bg3;
         }
         &:hover {
-            background-color: mix($bg3, $bg1, 70);
-            border-radius: $rounding-small;
+            background-color: $bg1;
         }
     }
 
 }
+
 
 menubar {
     > menuitem {
