@@ -1,10 +1,41 @@
 (defvar dragndrop_value '{}')
+(defvar dragndrop_icons '{
+"default":"󰒉",
+"image":"󰋩",
+"text":"󰈙",
+"disk_image":"󰈔",
+"directory":"󰉋",
+"file":"󰈔",
+"web":"󰖟",
+"plaintext":"󰈚"
+}')
+(defwindow dragndrop_popup 
+        :monitor 0
+        :geometry (geometry :x 0
+                            :y 0
+                            :width 0
+                            :height 0
+                            :anchor "top center"
+                    )
+        :stacking "overlay"
+        :namespace "eww_popup"
+    (dragndrop)
+)
+
+(defwidget dragndrop []
+    (box :space-evenly false :halign "center" :valign "center"
+        (box :class "popup_box" :space-evenly false :orientation "v"
+            (icon_large :name "scalable/${dragndrop_value.type == "directory" ? "places/default-folder.svg" : ""}")
+        )
+    )
+
+)
 
 
 (defwidget dragndrop_area []
-(eventbox :ondropped "bin/drag_handler.sh '{}'&" 
-    (button :class "sbutton" :onclick "${EWW_CMD} update dragndrop_value='{}'"
-        {dragndrop_value.icon?:"󰒉"}
+(eventbox :ondropped "bin/drag/decode.sh '{}'&" 
+    (button :class "sbutton" :onclick "${EWW_CMD} open --toggle dragndrop_popup"
+        {dragndrop_icons[dragndrop_value.type ?: "default"]}
     )
 )
 )
