@@ -7,7 +7,7 @@ length=$(echo $SINK_INPUTS|jq 'length')
 i=1
 for media in $(echo "$SINK_INPUTS"|jq -c '.[]')
 do
-    mapfile -t stream <<< "$(echo "$media"|jq -r '.properties."media.name", .index, .properties."application.name", .volume."front-left".value_percent, .mute')"
+    mapfile -t stream <<< "$(echo "$media"|jq -r '.properties."media.name", .index, .properties."application.name"//.properties."node.name", .volume."front-left".value_percent, .mute')"
     name=${stream[0]}
     volume=${stream[3]}
     volume=${volume%?}

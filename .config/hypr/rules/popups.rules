@@ -8,6 +8,7 @@ windowrule=size 400 400,class:Timer
 windowrulev2=float, class:Timer
 windowrule=center, class:Timer
 windowrule=size 400 400,class:popup
+windowrule=size 800 600,class:web_preview
 windowrulev2=float, class:org.gnome.clocks
 windowrule=center, class:org.gnome.clocks
 windowrulev2=float, class:valent

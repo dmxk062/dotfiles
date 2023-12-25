@@ -16,8 +16,9 @@ add_image_file(){
         udisksctl loop-setup --file=$file
     fi
     $eww open settings --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
-
-
+}
+add_file_path(){
+    udisksctl loop-setup --file="$1"
 }
 
 case $1 in 
@@ -26,6 +27,9 @@ case $1 in
         ;;
     add)
         add_image_file 
+        ;;
+    add_path)
+        add_file_path "$2"
         ;;
 
 esac

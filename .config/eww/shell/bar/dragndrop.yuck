@@ -1,0 +1,10 @@
+(defvar dragndrop_value '{}')
+
+
+(defwidget dragndrop_area []
+(eventbox :ondropped "bin/drag_handler.sh '{}'&" 
+    (button :class "sbutton" :onclick "${EWW_CMD} update dragndrop_value='{}'"
+        {dragndrop_value.icon?:"󰒉"}
+    )
+)
+)

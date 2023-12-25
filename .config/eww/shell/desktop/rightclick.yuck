@@ -34,8 +34,8 @@
     (box :space-evenly false :orientation "v" :visible {rc_desktop_area == 0}
         (button :class "lbutton" :onclick "sleep 0.1&&desktop/mods/term.sh" :timeout "128s" "New Terminal")
         (button :class "lbutton" :onclick "sleep 0.2&&desktop/mods/fm.sh" :timeout "128s" "File Manager")
-        (button :class "lbutton" :onclick "sleep 0.1&&desktop/mods/edit.sh" :timeout "128s" "Edit File")
         (revealer :reveal rc_show_more :transition "slideup" :duration "0.2s" (box :orientation "v" :space-evenly false
+            (button :class "lbutton" :onclick "sleep 0.1&&desktop/mods/edit.sh" :timeout "128s" "Edit File")
             (lbutton :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :label "Open Settings")
             (lbutton :onclick "bin/screenshot_menu.sh toggle& ${EWW_CMD} close rc_popup" :label "Screenshot")
             ;; (lbutton :onclick "../settings/bin/look/color.sh noeww" :label "Switch Color")
