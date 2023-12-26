@@ -10,12 +10,7 @@
 )
 
 (defwidget desktop []
-(overlay
-;; (box
-;; (desktop-clock)
-;; )
 (rightclick_menu)
-)
 )
 
 ;; (include "desktop/widgets/clock.yuck")

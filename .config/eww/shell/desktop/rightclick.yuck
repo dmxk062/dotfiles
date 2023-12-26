@@ -7,6 +7,7 @@
 
 (defwidget rightclick_menu []
     (eventbox 
+    :ondropped "desktop/drop/on_dropped.sh '{}'&"
     :onrightclick "desktop/bin/open_rc_menu.sh desktop&" 
     :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"   
     :timeout "128s"

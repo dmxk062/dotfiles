@@ -1,7 +1,6 @@
 (include "bar/win.yuck")
 (include "bar/mpris.yuck")
 (include "bar/audio.yuck")
-;; (include "bar/dragndrop.yuck")
 (include "bar/submap.yuck")
 
 
@@ -10,7 +9,6 @@
 (defwidget center []
     (box :space-evenly false  :halign "center"
         (box :space-evenly false :class "centerbox"
-            ;; (dragndrop_area)
             (submap)
             (window)
             (mpris_button)
