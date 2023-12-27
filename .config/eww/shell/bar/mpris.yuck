@@ -1,11 +1,24 @@
+(include "bar/audio.yuck")
+
 (deflisten mpris "bin/mpris.sh listen")
 (deflisten loop "bin/mpris.sh loop")
 (defpoll mpris_meta :interval "2s" "bin/mpris.sh meta")
 
 
+
 (defwidget mpris_button []
-    (eventbox :onscroll "[ {} == 'up' ]&&wpctl set-volume @DEFAULT_SINK@ 3%+||wpctl set-volume @DEFAULT_SINK@ 3%-; ../settings/bin/audio_state.sh; popups/bin/open_popup.sh out&"
-    (button :class "mpris-button${mpris.active ? "-playing" : ""}" :onclick "${EWW_CMD} open mpris_popup --toggle --screen 0 --anchor 'top center'" :onmiddleclick "playerctl play-pause" :timeout "16s" (label :text "${mpris.active ? "󰐊" : "󰐎"}${vertical ? "" : "    ${mpris.title?: "No Player"}"}" :limit-width 20))
+    (eventbox 
+    :onscroll "[ {} == 'up' ]&&wpctl set-volume @DEFAULT_SINK@ 3%+||wpctl set-volume @DEFAULT_SINK@ 3%-; ../settings/bin/audio_state.sh; popups/bin/open_popup.sh out&"
+    (button 
+    :class "mpris-button${mpris.active ? "-playing" : ""}" 
+    :onclick "${EWW_CMD} open mpris_popup --toggle --screen 0 --anchor 'top center'" 
+    :onmiddleclick "playerctl play-pause" :timeout "16s" 
+    ;; :onrightclick "${EWW_CMD} open audio_sink_selector_popup --toggle"
+        (box :space-evenly false
+            (label :text "${mpris.active ? sink_icons[active_sinks.icon ?: "speaker"].unmuted : "󰐊"}${vertical ? "" : "    ${mpris.title?: "No Player"}"}" 
+            :limit-width 20)
+        )
+    )
     )
 )
 

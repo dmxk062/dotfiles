@@ -12,7 +12,7 @@
     :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"   
     :timeout "128s"
     ;; :onscroll "desktop/mods/ws_scroll.sh {}"
-    (box :class "" :hexpand true :vexpand true))
+    (box :class "desktop_area" :hexpand true :vexpand true))
 )
 
 

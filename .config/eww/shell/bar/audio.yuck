@@ -6,9 +6,27 @@
 
 (include "../settings/icons/audio.yuck")
 
-
-(defwidget audio_button []
-    (box :space-evenly false 
-        (button :class "sbutton" :timeout "16s" :onclick "pamixer -t&&../settings/bin/audio_state.sh" "${audio_state.sink.mute ? sink_icons[active_sinks.icon].muted : sink_icons[active_sinks.icon].unmuted}    ${audio_state.sink.vol}%")
+(defwidget audio_sink_selector []
+    (box :space-evenly false :halign "center" :valign "center"
+        (box :class "popup_box" :orientation "v"
+            (box :class "padding_box" :orientation "v"
+                (for sink in sinks
+                    (lbutton :label {sink.name} :onclick "" :length 16)
+                )
+            )
+        )
     )
+) 
+(defwindow audio_sink_selector_popup 
+        :monitor 0
+        :geometry (geometry :x '52%'
+                            :y 0
+                            :width 0
+                            :height 0
+                    )
+        :stacking "overlay"
+        :namespace "eww_popup"
+
+    (audio_sink_selector)
 )
+

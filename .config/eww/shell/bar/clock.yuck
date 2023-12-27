@@ -2,8 +2,8 @@
 (include "bar/weather.yuck")
 
 (defwidget clock []
-    (box :space-evenly false :class "notifbox"
-        (button :class "sbutton" :timeout "16s" :onclick "${EWW_TIME - last_weather < 300 ? "${EWW_CMD} open weather_popup --toggle" : "bin/weather.sh upd ${city}&&${EWW_CMD} open weather_popup --toggle"}" "${formattime(EWW_TIME, "%H:%M")}")
+    (box :space-evenly false 
+        (button  :class "sbutton" :timeout "16s" :onclick "${EWW_TIME - last_weather < 300 ? "${EWW_CMD} open weather_popup --toggle" : "bin/weather.sh upd ${city}&&${EWW_CMD} open weather_popup --toggle"}" "${formattime(EWW_TIME, "%H:%M")}")
         (notification_button)
         
 ))

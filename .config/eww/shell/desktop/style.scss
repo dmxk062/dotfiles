@@ -1,5 +1,11 @@
 .rightclick_popup {
     @extend .popup_box_padded;
 }
+.desktop_area{
+    &:drop(active){
+        background-color: rgba($bg, 0.1);
+    }
+}
+
 
 // @import 'widgets/style.scss';

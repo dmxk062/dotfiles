@@ -1,5 +1,6 @@
 @import "./color.scss";
 @import "./size.scss";
+@import "./menu.scss";
 
 * {
     all: unset;
@@ -97,6 +98,10 @@
         background-color: $bg3;
     }
 
+}
+
+.menubutton{
+    @extend .button;
 }
 // some sliders
 .slider, .slider-small, .slider-large, .slider-thick, .slider-red, .slider-orange, .slider-yellow, .slider-green, .slider-blue, .slider-off{

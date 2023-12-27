@@ -1,6 +1,5 @@
 (include "bar/win.yuck")
 (include "bar/mpris.yuck")
-(include "bar/audio.yuck")
 (include "bar/submap.yuck")
 
 

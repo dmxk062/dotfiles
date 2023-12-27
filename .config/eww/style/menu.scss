@@ -1,12 +1,13 @@
-
 check {
     border-radius: $rounding-small;
     min-width: 1rem;
     min-height: 1rem;
-    background-color: $bg2;
+    background-color: $bg3;
     margin-right: .5rem;
+
     &:checked{
         background-color: $accent;
+
     }
 }
 window {
@@ -68,9 +69,6 @@ menubar {
         &:hover{
             background-color: $bg3;
         }
-        image {
-        }
-
     }
 }
 
@@ -80,4 +78,5 @@ arrow.right, arrow.left {
     border-bottom: 7px solid transparent;
     border-left: 7px solid $fg0;
 }
+
 
