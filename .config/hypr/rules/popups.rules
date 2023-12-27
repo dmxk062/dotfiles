@@ -6,6 +6,8 @@ windowrule=center, class:popup
 
 windowrule=size 400 400,class:Timer
 windowrulev2=float, class:Timer
+windowrulev2=float, class:org.gnome.Nautilus
+windowrulev2=float, class:com.github.GradienceTeam.Gradience
 windowrule=center, class:Timer
 windowrule=size 400 400,class:popup
 windowrule=size 800 600,class:web_preview

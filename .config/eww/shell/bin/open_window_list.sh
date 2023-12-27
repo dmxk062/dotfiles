@@ -41,17 +41,7 @@ workspace_order='{
 }'
 
 update(){
-    hyprctl -j clients|jq --argjson order "$workspace_order" 'map({
-title:.title,
-floating:.floating,
-class:.class,
-pid:.pid,
-legacy:.xwayland,
-workspace:.workspace,
-size:.size,
-position:.at,
-address:.address,
-pos:$order[.workspace.name],
+    hyprctl -j clients|jq --argjson order "$workspace_order" 'map(. + {pos:$order[.workspace.name],
 })|sort_by(.pos)'
 }
 

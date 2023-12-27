@@ -11,11 +11,12 @@ edit_in_nvim(){
     hyprctl --batch "dispatch togglefloating pid:${pid} ; dispatch resizewindowpixel exact ${w} ${h},pid:${pid}; dispatch movewindowpixel exact ${x} ${y},pid:${pid}"
 
 }
-open_in_nemo(){
+open_in_fm(){
     read -r x y h w <<< "$(slurp -w 0 -b "#4c566acc" -s "#ffffff00" -f "%x %y %h %w")"
     [[ "$x" == "" ]]&&exit
-    nemo --geometry=${w}x${h}+0+0 --name=popup "$1"& disown
-    sleep 0.2
+    gsettings set org.gnome.nautilus.window-state initial-size "(${w}, ${h})"
+    nautilus -w & disown
+    sleep 0.3
     hyprctl dispatch movewindowpixel exact ${x} ${y},address:$(hyprctl -j activewindow|jq -r ".address")
 }
 open_for_mime(){
@@ -51,7 +52,7 @@ case $URI in
         path="$(echo -e "$url")"
 
         if [ -d "$path" ]; then
-            open_in_nemo "$URI"
+            open_in_fm "$URI"
         elif [ -f "$path" ]; then
             open_for_mime "$path"
         fi
@@ -60,7 +61,7 @@ case $URI in
         open_for_web "$URI"
         ;;
     smb://*)
-        open_in_nemo "$URI"
+        open_in_fm "$URI"
         ;;
     *)
         escaped="${URI//\%/\\x}"

@@ -25,6 +25,16 @@
     (dock)
 )
 
+;; (defwidget app_button [app]
+;;     (button :class "image_button${app.address == window.address ? "-active" : ""}" 
+;;     :onclick "hyprctl dispatch focuswindow address:${app.address}"
+;;     :visible {app.mapped && app.size != '[0, 0]' && app.class != ""}
+;;     :tooltip {app.title}
+;;     (image :path "${icon_theme}/scalable/apps/${app.class}.svg"
+;;             :image-width 48
+;;             :image-height 48)
+;;     )
+;; )
 
 
 (defwidget dock []
@@ -32,6 +42,12 @@
     (label :class "invisible" dock_reveal)
 (revealer :reveal dock_reveal :transition "slideup" :duration "0.2s"
         (box :space-evenly false :class "dock"
+            ;; (box :space-evenly false
+            ;;     (for win in windows 
+            ;;         (app_button :app {win})
+            ;;     )
+            ;; )
+            ;; (separator)
             (box
                 (for app in apps
                     (icon_button :path "${app.image}" :exec "${app.exec}" :tooltip "${app.description}" :menu "${app.menu?: ""}")

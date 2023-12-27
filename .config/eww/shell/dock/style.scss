@@ -1,4 +1,4 @@
-.image_button{
+.image_button, .image_button-active{
     padding: .1rem .2rem .1rem .2rem;
     margin: .2rem .4rem .2rem .4rem;
     border-radius: 1.2rem;
@@ -9,6 +9,9 @@
     &:active{
         background-color: $bg3;
     }
+}
+.image_button-active{
+    background-color: rgba(mix($accent, $bg2), 0.7);
 }
 .lbutton{
     transition: background-color 0.3s ease, color 0.3s ease;

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function update(){
-    eww -c "$HOME/.config/eww/shell/" update "$@"
+    eww -c "$HOME/.config/eww/shell/" update $@
 }
 
 NOTIFID=1000
@@ -109,8 +109,7 @@ function monitor_changes(){
                 update window="$(hyprctl activewindow -j)"
                 ;;
             *)
-                update window="$(hyprctl activewindow -j)"
-                update workspaces="$(list_workspaces)"
+                eww -c $XDG_CONFIG_HOME/eww/shell update window="$(hyprctl activewindow -j)" workspaces="$(list_workspaces)"
         esac
 
     done

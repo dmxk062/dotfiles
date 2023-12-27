@@ -6,30 +6,10 @@
         "menu":"firefox"
     },
     {
-        "description":"Mozilla Thunderbird Mail Client",
-        "exec":"gtk-launch org.mozilla.Thunderbird",
-        "image":"scalable/apps/thunderbird.svg"
-    },
-    {
-        "description":"G4Music Music Player",
-        "exec":"g4music",
-        "image":"scalable/apps/gnome-music.svg"
-    },
-    {
-        "description":"Celluloid Media Player",
-        "exec":"celluloid",
-        "image":"scalable/apps/celluloid.svg"
-    },
-    {
-        "description":"Nemo File Manager",
-        "exec":"gtk-launch nemo",
+        "description":"File Manager",
+        "exec":"gtk-launch org.gnome.Nautilus",
         "image":"scalable/apps/file-manager.svg",
-        "menu":"nemo"
-    },
-    {
-        "description":"Rnote",
-        "exec":"gtk-launch com.github.flxzt.rnote",
-        "image":"scalable/apps/rnote.svg"
+        "menu":"files"
     },
     {
         "description":"LibreOffice Office Suite",

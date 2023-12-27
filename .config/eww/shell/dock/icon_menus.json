@@ -53,26 +53,26 @@
         }
 
     ],
-    "nemo":[
+    "files":[
         {
             "name":"Filesystem Root (/)",
-            "exec":"nemo --name='popup nemo' /"
+            "exec":"nautilus /"
         },
         {
             "name":"Computer",
-            "exec":"nemo --name='popup nemo' computer://"
+            "exec":"nautilus computer://"
         },
         {
             "name":"Network",
-            "exec":"nemo --name='popup nemo' network://"
+            "exec":"nautilus network://"
         },
         {
             "name":"Recently Used",
-            "exec":"nemo --name='popup nemo' recent:///" 
+            "exec":"nautilus recent:///" 
         },
         {
             "name":"Trash",
-            "exec":"nemo --name='popup nemo' trash:///" 
+            "exec":"nautilus trash:///" 
         }
     ],
     "office":[
@@ -142,7 +142,7 @@
         },
         {
             "name":"Open Screenshot Folder",
-            "exec":"nemo --name='popup nemo' ~/Pictures/Screenshots/"
+            "exec":"nautilus ~/Pictures/Screenshots/"
         }
     ],
     "minecraft":[
@@ -152,11 +152,11 @@
         },
         {
             "name":"Open Instance Folder",
-            "exec":"nemo --name='popup nemo' /mnt/Games/Minecraft/prismlauncher_instances/"
+            "exec":"nautilus /mnt/Games/Minecraft/prismlauncher_instances/"
         },
         {
             "name":"Open Main Folder",
-            "exec":"nemo --name='popup nemo' /mnt/Games/Minecraft/prismlauncher_instances/main/.minecraft/"
+            "exec":"nautilus /mnt/Games/Minecraft/prismlauncher_instances/main/.minecraft/"
         },
         {
             "name":"Edit Main",
