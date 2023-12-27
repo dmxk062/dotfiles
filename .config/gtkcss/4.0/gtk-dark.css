@@ -115,3 +115,8 @@ windowcontrols .close image:hover {
 
 .navigation-sidebar {
   background-color: transparent; }
+
+toast {
+  background-color: #2e3440;
+  color: #eceff4;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 6px; }
