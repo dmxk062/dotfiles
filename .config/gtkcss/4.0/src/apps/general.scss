@@ -1,0 +1,16 @@
+.floating-bar{
+    box-shadow: unset;
+    background-color: $bg1;
+}
+windowcontrols {
+    .close {
+        image:hover{
+            background-color: fade($red);
+        }
+    }
+}
+// doesnt cause too many issues for now and fixes g4music
+.navigation-sidebar {
+		background-color: transparent;
+}
+

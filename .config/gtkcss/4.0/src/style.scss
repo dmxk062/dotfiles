@@ -1,0 +1,21 @@
+@import "./colors.scss";
+@import "./named_colors.scss";
+
+tooltip {
+    background-color: $bg1;
+    
+}
+tooltip label {
+	font-weight: 600;
+        color: $fg;
+	padding: .3rem;
+
+}
+.navigation-sidebar {
+background-color: $bg1;
+}
+
+
+@import "./apps/g4music.scss";
+@import "./apps/nautilus.scss";
+@import "./apps/general.scss";

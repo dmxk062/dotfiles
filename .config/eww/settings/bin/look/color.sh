@@ -22,6 +22,8 @@ then
     sed -i 's/dark.conf/light.conf/' $XDG_CONFIG_HOME/hypr/theme/colors.conf
     unlink $XDG_CONFIG_HOME/swaylock/config
     ln -s $XDG_CONFIG_HOME/swaylock/config.light $XDG_CONFIG_HOME/swaylock/config
+    unlink $XDG_CONFIG_HOME/gtk-4.0/gtk.css
+    ln -s $XDG_CONFIG_HOME/gtkcss/4.0/gtk-light.css $XDG_CONFIG_HOME/gtk-4.0/gtk.css
     makoctl mode -r "dark_theme"
     color="light"
 else
@@ -31,6 +33,8 @@ else
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     unlink $XDG_CONFIG_HOME/swaylock/config
     ln -s $XDG_CONFIG_HOME/swaylock/config.dark $XDG_CONFIG_HOME/swaylock/config
+    unlink $XDG_CONFIG_HOME/gtk-4.0/gtk.css
+    ln -s $XDG_CONFIG_HOME/gtkcss/4.0/gtk-dark.css $XDG_CONFIG_HOME/gtk-4.0/gtk.css
     makoctl mode -a "dark_theme"
     color="dark"
 fi

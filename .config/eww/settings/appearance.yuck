@@ -41,7 +41,7 @@
                         (button :class "button${look_nightlight ? "-active" : ""}" :onclick "bin/look/nightlight.sh" :timeout "16s" "    Nightlight")
                         (button :class "button" :onclick "bin/look/color.sh" :timeout "128s" "${look_colorscheme == "light" ? "󰖨    Light theme" : "󰖔    Dark theme"}")
                         )
-                        (wrapped_text :text "Reduce the blue light content of the screen")
+                        (wrapped_text :text "Reduce the blue light content of the screen. For themes to apply for all applications, restarting or reloading the session might be required.")
                     )
                     (list_box 
                         (box
@@ -109,6 +109,10 @@
                     (list_box
                         (button :class "button" :timeout "16s" :onclick "bin/suspend.sh kitty -e nvim ~/.config/background/walls.json" "󰂮    Edit Wallpapers")
                         (wrapped_text :text "Edit walls.json in neovim")
+                    )
+                    (list_box
+                        (button :class "button" :timeout "16s" :onclick "bin/suspend.sh 'gradience'" "    Edit Adwaita Colors")
+                        (wrapped_text :text "Use Gradience to edit your current GTK 4.0/Adwaita color scheme. (requires session restart to take effect)")
                     )
                 )
             )

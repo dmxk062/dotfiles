@@ -2,8 +2,9 @@
     @extend .popup_box_padded;
 }
 .desktop_area{
+    transition: background-color 0.3s ease, color 0.3s ease;
     &:drop(active){
-        background-color: rgba($bg, 0.1);
+        background-color: rgba($accent, 0.1);
     }
 }
 

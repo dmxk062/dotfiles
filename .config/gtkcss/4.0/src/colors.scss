@@ -1,0 +1,32 @@
+$polar0:    #2e3440;
+$polar1:    #3b4252;
+$polar2:    #434c5e;
+$polar3:    #4c566a;
+
+$snow0:     #eceff4;
+$snow1:     #e4e9f0;
+$snow2:     #d8dee9;
+
+$dcyan:     #8fbcbb;
+$lcyan:     #88c0d0;
+$lblue:     #81a1c1;
+$dblue:     #5e81ac;
+
+// the aurora colors
+$magenta:   #b48ead;
+$pink:      mix($magenta, $snow2);
+$red:       #bf616a;
+$light-red: mix($red, $snow2);
+$orange:    #d08770;
+$yellow:    #ebcb8b;
+$green:     #a3be8c;
+
+
+@import "./dark.scss";
+
+
+
+
+@function fade($color){
+    @return mix($color, $bg3, 70)
+}

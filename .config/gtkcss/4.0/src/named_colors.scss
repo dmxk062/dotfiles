@@ -1,0 +1,57 @@
+@define-color accent_color #{$accent};
+@define-color accent_bg_color #{$accent};
+
+@define-color success_color #{$success};
+@define-color success_bg_color #{$success};
+
+@define-color destructive_color #{$error};
+@define-color destructive_bg_color #{$error};
+
+@define-color error_color #{$error};
+@define-color error_bg_color #{$error};
+
+@define-color warning_color #{$warn};
+@define-color warning_bg_color #{$warn};
+
+// make the fg color the same for all of the "special" buttons
+$fgcolors_dark: accent, destructive, success, warning, error;
+
+@each $color in $fgcolors_dark {
+    @define-color #{$color}_fg_color #{$inverted};
+}
+
+// use the same fg color for everything basically
+$fgcolors_white: window, view, headerbar, card, dialog, popover, sidebar, secondary_sidebar, thumbnail;
+
+@each $color in $fgcolors_white {
+    @define-color #{$color}_fg_color #{$fg};
+}
+
+$full_backgrounds: window, view, headerbar, card, dialog, popover;
+
+@each $color in $full_backgrounds {
+    @define-color #{$color}_bg_color #{$bg};
+}
+
+$faded_backgrounds: sidebar, secondary_sidebar, thumbnail;
+
+@each $color in $faded_backgrounds {
+    @define-color #{$color}_bg_color #{$bg1};
+}
+
+$no_shadows: headerbar, sidebar, secondary_sidebar, popover;
+
+@each $shadow in $no_shadows {
+    @define-color #{$shadow}_shade_color rgba(0, 0, 0, 0);
+}
+
+@define-color headerbar_backdrop_color #{$bg};
+@define-color sidebar_backdrop_color #{$bg1};
+@define-color secondary_sidebar_backdrop_color #{$bg1};
+
+@define-color headerbar_border_color #{$bg};
+@define-color shade_color #{$bg};
+@define-color card_shade_color #{$bg1};
+
+@define-color scrollbar_outline_color rgba(#{$bg1}, 0.7);
+@import "./palette_colors.scss"
