@@ -4,14 +4,17 @@ LOCK_CMD="swaylock --grace=6 --fade-in=5"
 LOCK_PRE_SUSPEND_CMD="swaylock"
 SLEEP_CMD="systemctl suspend"
 ICON="${ICONDIR}/apps/preferences-desktop-screensaver.svg"
+PIDFILE=/tmp/.swayidle_timeout_pid
 
 
 function notify_loop() {
-    i=25
+    echo $BASHPID > $PIDFILE
+    i=30
     id=$(notify-send "Power Management" \
                 -a "swayidle" \
                 --print-id \
                 -i "$ICON" \
+                -t 5500 \
                 "Locking the session in 30 seconds")
     sleep 5
     while ((i >= 5)); do
@@ -22,8 +25,9 @@ function notify_loop() {
                     -i "$ICON" \
                     -t 5500 \
                     "Locking the session in ${i} seconds"
-    ((i >= 0))&&sleep 5
+        ((i>=0))&&sleep 5
     done
+    rm $PIDFILE
 }
 
 if [ "$1" == "notify" ]; then
