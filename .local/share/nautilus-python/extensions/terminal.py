@@ -33,24 +33,11 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
             args = f"{args} '{filepath}'"
         os.system(f"kitty --detach --class=popup -- nvim -O {args}")
 
-    def open_lf(self, _: Nautilus.MenuItem, file: Nautilus.FileInfo) -> None:
-        filepath = unquote(file.get_uri()[7:])
-        os.system(f"kitty --class=popup --detach --directory='{filepath}' -- zsh -ic lf")
-
 
     def get_file_items(
         self,
         files: List[Nautilus.FileInfo],
     ) -> List[Nautilus.MenuItem]:
-        terminal_menu_item = Nautilus.MenuItem(
-            name="TerminalMenu::Terminal",
-            label="Terminal",
-            tip="",
-            icon="",
-        )
-
-        submenu = Nautilus.Menu()
-        menu_count = 0
         if len(files) == 1 and files[0].is_directory():
             open_folder_item = Nautilus.MenuItem(
                 name="Terminal::terminal_open_submenu",
@@ -59,18 +46,7 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
                 icon="",
             )
             open_folder_item.connect("activate", self.open_term_for_dir, files[0])
-            submenu.append_item(open_folder_item)
-            open_lf_item = Nautilus.MenuItem(
-                name="Terminal::terminal_lf_submenu",
-                label="Open in Terminal File Manager",
-                tip="",
-                icon="",
-            )
-            open_lf_item.connect("activate", self.open_lf, files[0])
-            submenu.append_item(open_lf_item)
-            menu_count += 1
-            terminal_menu_item.set_submenu(submenu)
-            return [terminal_menu_item]
+            return [open_folder_item]
         else:
             textfiles = []
             for file in files:
