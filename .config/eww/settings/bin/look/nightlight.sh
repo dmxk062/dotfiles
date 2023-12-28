@@ -2,11 +2,11 @@
 
 eww="eww -c $HOME/.config/eww/settings"
 
-if killall wlsunset
+if killall gammastep
 then
     $eww update look_nightlight=false
 else
     $eww update look_nightlight=true
-    wlsunset -T 4000 -t 3000& disown
+    gammastep -O 3000 & disown
 fi
 
