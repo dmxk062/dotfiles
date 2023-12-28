@@ -28,7 +28,7 @@
         (box :class "popup_box_padded" :orientation "v" :space-evenly false
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "Memory" :right "${mem.mem.nice.used} of ${mem.mem.nice.total}")
-                (scale :value {mem.mem.raw.perc} :class "slider-yellow" :active false)
+                (scale :value {mem.mem.raw.perc} :class "slider" :active false)
 
                 (split_title :left "Swap" :right "${mem.swap.nice.used} of ${mem.swap.nice.total}")
                 (scale :value {mem.swap.raw.perc} :class "slider-blue" :active false)

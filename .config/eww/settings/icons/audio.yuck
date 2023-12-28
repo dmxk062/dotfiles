@@ -72,7 +72,7 @@
 "headset":"scalable/devices/audio-card.svg",
 "audio-headset":"scalable/devices/audio-headphones.svg",
 "audio-headset-bluetooth":"scalable/devices/audio-headphones.svg",
-"audio-card-analog-pci":"scalable/devices/audio-speakers.svg",
+"audio-card-analog-pci":"scalable/devices/audio-card.svg",
 "audio-headset-analog-usb":"scalable/devices/audio-headphones.svg",
 "speaker":"scalable/devices/audio-speakers.svg"
 }')
