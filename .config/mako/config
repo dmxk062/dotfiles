@@ -41,6 +41,9 @@ format=%h of %t hidden
 [app-name=eww_submap]
 anchor=top-center
 
+[app-name=swayidle]
+anchor=center
+
 # used to hide the popups
 [mode=eww_override]
 invisible=1
