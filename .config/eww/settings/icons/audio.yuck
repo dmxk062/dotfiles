@@ -22,6 +22,10 @@
 "speaker":{
     "muted":"󰓄",
     "unmuted":"󰓃"
+},
+"default":{
+ "muted":"󰎊",
+ "unmuted":"󰎈"
 }
 }')
 (defvar source_icons '{

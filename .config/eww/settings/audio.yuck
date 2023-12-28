@@ -12,7 +12,7 @@
 (box :space-evenly false :class "card" :orientation "v"
     (box :space-evenly false :orientation "v"
         (box :class "padding_box" :orientation "v" :space-evenly false :halign "center"
-            (icon :name {type == 'sink' ? sink_images[device.icon?:"speaker"] : source_images[device.icon?:"microphone"]})
+            (icon :name {type == 'sink' ? sink_images[device.icon?:"audio-card"] : source_images[device.icon?:"microphone"]})
             (label :class "card-label" :text "${device.name}" :limit-width 20)
         )
         (box :class "padding_box" :orientation "v" :space-evenly false
@@ -49,13 +49,13 @@
                 (box  :orientation "v" :space-evenly false :spacing 16
                     (box :orientation "v" :space-evenly false :halign "center" :class "card"
                         (box :orientation "v" :space-evenly false :class "padding_box"
-                            (icon :name {sink_images[active_sinks.icon?: "speaker"]})
+                            (icon :name {sink_images[active_sinks.icon?: "audio-card"]})
                             (label :class "title" :text "Out: ${active_sinks.name}" :limit-width 20 :class "title")
                             (scale :value "${audio_state.sink.vol}" :class "slider" :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%" :timeout "16s")
                         )
                         (box :space-evenly false :class "card_footer"
                             (button :class "button${audio_state.sink.mute ? "" : "-active"}" :onclick "pamixer -t&&bin/audio_state.sh" :timeout "16s"
-                            "${audio_state.sink.mute ? "${sink_icons[active_sinks.icon?: "speaker"].muted}" : "${sink_icons[active_sinks.icon?: "speaker"].unmuted}"}    Mute")
+                            "${audio_state.sink.mute ? "${sink_icons[active_sinks.icon?: "default"].muted}" : "${sink_icons[active_sinks.icon?: "default"].unmuted}"}    Mute")
                             (button :class "button" :onclick "pactl set-sink-volume @DEFAULT_SINK@ 50%&&bin/audio_state.sh" :timeout "24s" "50%")
                             (button :class "button" :onclick "pactl set-sink-volume @DEFAULT_SINK@ 100%&&bin/audio_state.sh" :timeout "24s" "100%")
                         )

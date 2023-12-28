@@ -15,7 +15,7 @@
     :onmiddleclick "playerctl play-pause" :timeout "16s" 
     ;; :onrightclick "${EWW_CMD} open audio_sink_selector_popup --toggle"
         (box :space-evenly false
-            (label :text "${mpris.active ? "󰎈" : "󰐊"}${vertical ? "" : "    ${mpris.title?: "No Player"}"}" 
+            (label :text "${mpris.active ? (sink_icons[active_sinks.icon ?: "default"].unmuted) : "󰐊"}${vertical ? "" : "    ${mpris.title?: "No Player"}"}" 
             :limit-width 20)
         )
     )
