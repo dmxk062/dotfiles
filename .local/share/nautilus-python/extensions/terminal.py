@@ -42,7 +42,7 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
         self,
         files: List[Nautilus.FileInfo],
     ) -> List[Nautilus.MenuItem]:
-        top_menuitem = Nautilus.MenuItem(
+        terminal_menu_item = Nautilus.MenuItem(
             name="TerminalMenu::Terminal",
             label="Terminal",
             tip="",
@@ -54,7 +54,7 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
         if len(files) == 1 and files[0].is_directory():
             open_folder_item = Nautilus.MenuItem(
                 name="Terminal::terminal_open_submenu",
-                label="Open In Terminal",
+                label="Open in Terminal",
                 tip="",
                 icon="",
             )
@@ -62,13 +62,15 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
             submenu.append_item(open_folder_item)
             open_lf_item = Nautilus.MenuItem(
                 name="Terminal::terminal_lf_submenu",
-                label="Open In Terminal File Manager",
+                label="Open in Terminal File Manager",
                 tip="",
                 icon="",
             )
             open_lf_item.connect("activate", self.open_lf, files[0])
             submenu.append_item(open_lf_item)
             menu_count += 1
+            terminal_menu_item.set_submenu(submenu)
+            return [terminal_menu_item]
         else:
             textfiles = []
             for file in files:
@@ -77,30 +79,21 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
             if len(textfiles) > 0:
                 edit_term_item = Nautilus.MenuItem(
                     name="Terminal::terminal_edit_submenu",
-                    label="Edit In Terminal",
+                    label="Edit in Terminal",
                     tip="",
                     icon="",
                 )
                 edit_term_item.connect("activate", self.edit_term, textfiles)
-                submenu.append_item(edit_term_item)
-                menu_count += 1
+                return [edit_term_item]
 
-
-        if menu_count == 0:
-            return []
-
-        top_menuitem.set_submenu(submenu)
-
-        return [
-            top_menuitem,
-        ]
+        return []
 
     def get_background_items(
         self,
         current_folder: Nautilus.FileInfo,
     ) -> List[Nautilus.MenuItem]:
         openInItem = Nautilus.MenuItem(
-            name="TerminalMenu::Terminal",
+            name="TerminalMenu::terminal_open_menu",
             label="Open in Terminal",
             tip="",
             icon="",
