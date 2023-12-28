@@ -5,15 +5,29 @@ LOCK_PRE_SUSPEND_CMD="swaylock"
 SLEEP_CMD="systemctl suspend"
 ICON="${ICONDIR}/apps/preferences-desktop-screensaver.svg"
 
-function notify(){
-    notify-send "Power Management" \
+
+function notify_loop() {
+    i=25
+    id=$(notify-send "Power Management" \
                 -a "swayidle" \
+                --print-id \
                 -i "$ICON" \
-                "$2"
+                "Locking the session in 30 seconds")
+    sleep 5
+    while ((i >= 5)); do
+        ((i-=5))
+        notify-send "Power Management" \
+                    -a "swayidle" \
+                    -r $id \
+                    -i "$ICON" \
+                    -t 5500 \
+                    "Locking the session in ${i} seconds"
+    ((i >= 0))&&sleep 5
+    done
 }
 
 if [ "$1" == "notify" ]; then
-    notify lock "Locking the session in 30 seconds"
+    notify_loop
 else
     if pgrep swaylock; then
         eval "$SLEEP_CMD"
