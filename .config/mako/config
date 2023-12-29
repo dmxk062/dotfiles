@@ -1,6 +1,6 @@
 # ft=ini
 
-icon-path="/usr/share/icons/Tela-dark/"
+icon-path="/usr/share/icons/Tela-dark"
 font=Torus Pro, sans-serif 14
 width=300
 height=200
@@ -43,7 +43,11 @@ anchor=top-center
 
 [app-name=swayidle]
 anchor=center
-
+icon-location=top
+max-icon-size=128
+on-button-left=invoke-default-action
+on-button-right=invoke-default-action
+on-button-middle=invoke-default-action
 # used to hide the popups
 [mode=eww_override]
 invisible=1
