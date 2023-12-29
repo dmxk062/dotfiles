@@ -41,7 +41,7 @@
 @define-color headerbar_border_color #eceff4;
 @define-color shade_color #eceff4;
 @define-color card_shade_color #d8dee9;
-@define-color scrollbar_outline_color rgba(#d8dee9, 0.7);
+@define-color scrollbar_outline_color rgba(216, 222, 233, 0.7);
 @define-color blue_1 #99c1f1;
 @define-color blue_2 #62a0ea;
 @define-color blue_3 #3584e4;
@@ -110,7 +110,7 @@ tooltip label {
   box-shadow: unset;
   background-color: #d8dee9; }
 
-windowcontrols .close image:hover {
+windowcontrols .close image:hover, .titlebutton.close:hover {
   background-color: #be7e89; }
 
 .navigation-sidebar {
