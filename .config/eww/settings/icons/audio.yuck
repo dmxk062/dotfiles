@@ -24,8 +24,8 @@
     "unmuted":"󰓃"
 },
 "default":{
- "muted":"󰎊",
- "unmuted":"󰎈"
+     "muted":"󰎊",
+     "unmuted":"󰎈"
 }
 }')
 (defvar source_icons '{
