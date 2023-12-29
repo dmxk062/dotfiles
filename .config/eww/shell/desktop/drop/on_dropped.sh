@@ -41,7 +41,7 @@ open_for_mime(){
     esac
 }
 open_for_web(){
-    firefox --new-window "$1" & disown
+    env GTK_THEME=Graphite-teal-Dark-nord firefox --new-window "$1" & disown
     
 }
 

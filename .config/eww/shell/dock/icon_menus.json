@@ -55,20 +55,20 @@
     ],
     "files":[
         {
-            "name":"Filesystem Root (/)",
-            "exec":"nautilus /"
+            "name":"Places",
+            "exec":"nautilus starred://"
         },
         {
             "name":"Computer",
             "exec":"nautilus computer://"
         },
         {
-            "name":"Network",
-            "exec":"nautilus network://"
-        },
-        {
             "name":"Recently Used",
             "exec":"nautilus recent:///" 
+        },
+        {
+            "name":"Filesystem Root (/)",
+            "exec":"nautilus /"
         },
         {
             "name":"Trash",
