@@ -140,6 +140,8 @@ eval "$(zoxide init zsh)"
 
 
 
+export BAT_THEME="Nord"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT='-c'
 
 # changes to the directory specified if started from lf

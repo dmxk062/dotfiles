@@ -2,7 +2,7 @@
 
 function command_not_found_handler() {
     printf 'zsh: command not found: %s\n' "$1"
-    file="$1"
+    local file="$1"
     if [[ -f "./$file" ]]
     then
         printf 'zsh: file %s found. Open it in %s? [y/N] ' "$file" "$EDITOR"
@@ -61,6 +61,10 @@ function md(){
         mkdir -p $dir
     done
 }
+function mcd(){
+    mkdir "$1"
+    cd "$1"
+}
 
 
 # alert function to notify after a command.
@@ -91,4 +95,25 @@ get_package(){
 
 ft(){
     file --dereference --mime-type "$@"
+}
+
+url(){
+    file="${*//+/ }"
+    file="${file//file:\/\//}"
+    file="${file//\%/\\x}"
+    file="$(echo -e "$file")"
+    if [[ -d "$file" ]]; then
+        cd "$file"
+    elif [[ -f "$file" ]]; then
+        case "$(file --dereference --mime-type --brief "$file")" in
+            text/*)
+                nvim "$file"
+                ;;
+        esac
+    fi
+}
+
+gtk_debug(){
+    export GTK_DEBUG=interactive
+    "$@" & disown
 }
