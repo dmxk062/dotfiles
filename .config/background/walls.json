@@ -1,15 +1,19 @@
 [
     {
-        "path":"/home/dmx/.config/background/img/mountain_lake",
-        "name":"Mountain Lake"
+        "path":"/home/dmx/.config/background/img/wave-res",
+        "name":"Wave"
     },
     {
         "path":"/home/dmx/.config/background/img/pink_blue",
         "name":"Pink & Blue"
     },
     {
-        "path":"/home/dmx/.config/background/img/pink_cloud",
-        "name":"Pink Clouds"
+        "path":"/home/dmx/.config/background/img/evening",
+        "name":"Evening Forrest"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/morning",
+        "name":"Bright Morning"
     },
     {
         "path":"/home/dmx/.config/background/img/forrest_mountains",
@@ -17,7 +21,7 @@
     },
     {
         "path":"/home/dmx/.config/background/img/water",
-        "name":"Water Mirrow"
+        "name":"Water Mirror"
     },
     {
         "path":"/home/dmx/.config/background/img/cutefish-res",
@@ -36,19 +40,15 @@
         "name":"Fire"
     },
     {
-        "path":"/home/dmx/.config/background/img/road",
-        "name":"Autumn Road"
+        "path":"/home/dmx/.config/background/img/pink_flowers",
+        "name":"Flowers"
     },
     {
-        "path":"/home/dmx/.config/background/img/peaks",
-        "name":"Mountain Peaks"
+        "path":"/home/dmx/.config/background/img/peak-res",
+        "name":"High Peak"
     },
     {
-        "path":"/home/dmx/.config/background/img/expanse",
-        "name":"Mountain Expanse"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/space",
-        "name":"Space"
+        "path":"/home/dmx/.config/background/img/gay2",
+        "name":"Rainbow"
     }
 ]
