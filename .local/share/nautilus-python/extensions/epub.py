@@ -86,21 +86,21 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
             with file.open(metapath) as metafile:
                 content = metafile.read()
 
-            metadata = ET.fromstring(content)
-            isbn = None
-            identifiers = metadata.findall('.//dc:identifier', namespaces=META_NS)
-            for identifier in identifiers:
-                scheme =  identifier.attrib.get("{http://www.idpf.org/2007/opf}scheme")
-                if scheme and scheme == "ISBN":
-                    isbn = identifier.text
+        metadata = ET.fromstring(content)
+        isbn = None
+        identifiers = metadata.findall('.//dc:identifier', namespaces=META_NS)
+        for identifier in identifiers:
+            scheme =  identifier.attrib.get("{http://www.idpf.org/2007/opf}scheme")
+            if scheme and scheme == "ISBN":
+                isbn = identifier.text
 
-            return {
-                'publisher': metadata.find('.//dc:publisher', namespaces=META_NS).text,
-                'description': self._sanitize_html(metadata.find('.//dc:description', namespaces=META_NS).text),
-                'language': metadata.find('.//dc:language', namespaces=META_NS).text,
-                'creators': metadata.find('.//dc:creator', namespaces=META_NS).text.strip().split(";"),
-                'title': metadata.find('.//dc:title', namespaces=META_NS).text,
-                'date': metadata.find('.//dc:date', namespaces=META_NS).text,
-                'genres': [subject.text for subject in metadata.findall('.//dc:subject', namespaces=META_NS)],
-                'isbn': isbn
-                    }
+        return {
+            'publisher': metadata.find('.//dc:publisher', namespaces=META_NS).text,
+            'description': self._sanitize_html(metadata.find('.//dc:description', namespaces=META_NS).text),
+            'language': metadata.find('.//dc:language', namespaces=META_NS).text,
+            'creators': metadata.find('.//dc:creator', namespaces=META_NS).text.strip().split(";"),
+            'title': metadata.find('.//dc:title', namespaces=META_NS).text,
+            'date': metadata.find('.//dc:date', namespaces=META_NS).text,
+            'genres': [subject.text for subject in metadata.findall('.//dc:subject', namespaces=META_NS)],
+            'isbn': isbn
+                }
