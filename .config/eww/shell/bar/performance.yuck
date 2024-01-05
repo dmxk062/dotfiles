@@ -4,11 +4,9 @@
 (defpoll mem :interval "16s" "bin/mem.awk /proc/meminfo")
 
 
-(defvar net_more_details false)
-
 (defwidget performance_button []
     (button :class "sbutton" :onclick "bin/open_performance_popup.sh" 
-        (label :text {!vertical ? "${mem.mem.nice.used} / ${mem.mem.nice.total} ${net.raw.down > 1 ? " " : ""}" : ""})
+        (label :text {!vertical ? "${mem.mem.nice.used} / ${mem.mem.nice.total} ${net.raw.down > 1 ? " 󰦗" : ""}" : ""})
     )
 )
 
