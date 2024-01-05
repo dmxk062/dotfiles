@@ -76,6 +76,12 @@ element-text, element-icon {
     background-color: inherit;
     text-color:       inherit;
 }
+element-icon{
+    size: 2.5em;
+}
+element-text{
+    horizontal-align: 0.5;
+}
 inputbar {
     color: @fg0;
     padding: 12px;
