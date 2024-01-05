@@ -1,7 +1,7 @@
+(deflisten cpu "bin/cpu.sh")
+(deflisten gpu "bin/gpu.sh")
+(deflisten net "bin/netspeed.sh")
 (defpoll mem :interval "16s" "bin/mem.awk /proc/meminfo")
-(defpoll gpu :interval "4s" "bin/gpu.sh")
-(defpoll cpu :interval "4s" "bin/cpu.sh")
-(defpoll net :interval "4s" "bin/netspeed.sh")
 
 (defwidget performance_button []
     (button :class "sbutton" :onclick "bin/open_performance_popup.sh" 
@@ -38,10 +38,10 @@
             )
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "Upload" :right {net.nice.up == 0 ? "None" : "${net.nice.up}/s"})
-                (scale :value {net.raw.up} :class "slider" :min 0 :max 4000 :active false)
+                (scale :value {net.raw.up} :class "slider" :min 0 :max {net.max.up} :active false)
 
                 (split_title :left "Download" :right {net.nice.down == 0 ? "None" : "${net.nice.down}/s"})
-                (scale :value {net.raw.down} :class "slider-blue" :min 0 :max 19200 :active false)
+                (scale :value {net.raw.down} :class "slider-blue" :min 0 :max {net.max.down} :active false)
             )
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "CPU Usage" :right "${cpu.usage}% at ${cpu.temp}°C")
