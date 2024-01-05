@@ -4,40 +4,49 @@
 window {
     location: center;
     anchor: center;
-    border-color: @bg2;
+    border-color: @bg3;
     background-color: @bg0;
     children: [mainbox];
     border-radius: 18px;
     border: 2px;
-    width: 32em;
-    height: 28em;
+    width: 64em;
+    height: 12em;
 }
 
 mainbox {
     spacing: 10px;
+    padding: 10px;
     border-radius: 18px;
-    children: [top-box, listbox];
+    children: [listbox, inputbar];
     background-color: @bg0;
     orientation: vertical;
 }
 listbox{
-    children: [listview, mode-switcher];
+    children: [listview];
+    expand: true;
     background-color: transparent;
 }
-mode-switcher{
+rightbox {
+    children: [mode-switcher, imagebox];
+    expand: true;
     background-color: transparent;
-    background-color: @bg0;
     border-radius: 12px;
 }
 button {
-    background-color: @bg0;
+    background-color: @bg2;
     border-radius: 12px;
     padding: 0.5em 0.9em 0.5em 0.6em;
     text-color: @fg0;
     width: 5em;
 }
 button selected{
+    background-color: @accent;
+    text-color: @invert;
+}
+imagebox{
+    border-radius: 12px;
     background-color: @bg2;
+    background-image: url("~/.config/background/wall", height);
 }
 
 listview {
@@ -45,24 +54,25 @@ listview {
     border-radius: 18px;
     background-color: transparent;
     dynamic: true;
-    fixed-columns: true;
-    fixed-height: true;
-    columns: 4;
-    lines: 3;
-    flow: horizontal;
+    expand: true;
+    cycle: true;
+    columns: 16;
+    lines: 1;
 }
 
 element{
     padding: 8px;
     border-radius: 12px;
-    margin: 4px;
     background-color: @bg0;
     color: @fg0;
     text-color: @fg0;
-    highlight: bold underline;
+    children: [element-icon, element-text];
     orientation: vertical;
+    highlight: bold underline;
 }
 element selected.normal,element selected.active{
+    padding: 8px;
+    border-radius: 12px;
     background-color: @accent;
     color: @invert;
     text-color: @invert;
@@ -76,10 +86,13 @@ element-text, element-icon {
     background-color: inherit;
     text-color:       inherit;
 }
+element-icon {
+    size: 3em;
+}
 inputbar {
     color: @fg0;
     padding: 12px;
-    background-color: transparent;
+    background-color: inherit;
     border-color: @accent;
     children:   [entry];
 }
@@ -87,15 +100,6 @@ entry {
     background-color:            @bg0;
     text-color:                  inherit;
     cursor:                      text;
-    placeholder:                 "search";
+    placeholder:                 "search windows";
     placeholder-color:           @bg3;
-    border-radius: 16px;
-    padding: 12px;
 } 
-
-top-box{
-    background-image: url("~/.config/background/wall", width);
-    expand: true;
-    children: [inputbar];
-
-}

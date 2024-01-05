@@ -1,3 +1,4 @@
+// vim: ft=rasi
 configuration {
     show-icons: true;
     terminal: "kitty";
@@ -22,6 +23,11 @@ configuration {
     display-calc: "Calculator";
     display-emoji: "Emoji";
     show-icons:     true;
+    window {
+        fallback-icon: "desktop";
+        hide-active-window: true;
+    }
+    window-format: "{t}";
 }
 @theme "~/.config/rofi/style/theme.rasi"
 
