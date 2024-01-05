@@ -5,7 +5,7 @@
 
 (defwidget notification_button []
     (box :space-evenly false
-        (button :onclick "${EWW_CMD} open notifcenter --toggle" 
+        (button :onclick "bin/open_notif_popup.sh" 
                 :class "notif_button${notif-count > 0 ? "-active" : ""}" 
     "${hide-notif-popups ? "󰂛${notif-count > 0 ? "  ${notif-count}" : ""}" : "${notif-count > 0 ? "󱅫  ${notif-count}" : "󰂚"}"}")
     )

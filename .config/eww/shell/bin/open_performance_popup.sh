@@ -2,7 +2,9 @@
 
 eww="eww -c $HOME/.config/eww/shell"
 
-if ! $eww close performance_popup
-then
+if $eww active-windows | grep "performance_popup"; then
+    sleep 0.1
+    $eww close performance_popup
+else
     $eww open performance_popup
 fi

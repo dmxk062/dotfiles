@@ -49,8 +49,10 @@ case $1 in
     upd)
         $eww update windows="$(update)";;
     *)
-        if ! $eww close window_list
-        then
+        if $eww active-windows | grep "window_list"; then
+            sleep 0.2
+            $eww close window_list
+        else
             $eww update windows="$(update)"
             $eww open window_list
         fi;;

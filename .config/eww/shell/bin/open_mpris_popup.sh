@@ -2,9 +2,11 @@
 
 eww="eww -c $HOME/.config/eww/shell"
 
-if ! $eww close mpris_popup 
-then
-    $eww open mpris_popup --screen 0 --anchor "top center"
+if $eww active-windows | grep "mpris_popup"; then
+    sleep 0.1
+    $eww close mpris_popup
+else
+    $eww open mpris_popup --anchor "top center"
 fi
 
 

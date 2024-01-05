@@ -17,8 +17,13 @@ get_relative_cursor(){
     esac
     echo "$(((x-x_r)-scalex))x$(((y-y_r)-scaley))" 
 }
-$eww open --screen $(hyprctl monitors -j | jq '.[]|select(.focused)|.id') --toggle rc_popup --pos=$(get_relative_cursor)
-$eww update rc_win_area=0 rc_desktop_area=0
+if $eww active-windows | grep "rc_popup"; then
+    sleep 0.1
+    $eww close rc_popup
+else
+    $eww open --screen $(hyprctl monitors -j | jq '.[]|select(.focused)|.id') --toggle rc_popup --pos=$(get_relative_cursor)
+    $eww update rc_win_area=0 rc_desktop_area=0
+fi
  
 case $1 in
     desktop)

@@ -6,7 +6,7 @@
 
 
 (defwidget window []
-        (button :class "sbutton":onclick "bin/open_window_list.sh"
+        (button :class "sbutton":onclick "bin/open_window_list.sh&"
         ;; :onrightclick "desktop/bin/open_rc_menu.sh window"
         :onmiddleclick "hyprctl dispatch killactive" (label :text "${window.xwayland?: false ? "    " : ""}${window.title ?: "No Window Selected"}" :limit-width {vertical ? 8 : 32}  ))
         )
