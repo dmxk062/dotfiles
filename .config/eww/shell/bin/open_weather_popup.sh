@@ -3,7 +3,7 @@
 eww="eww -c $HOME/.config/eww/shell"
 
 if $eww active-windows | grep "weather_popup"; then
-    sleep 0.1
+    sleep 0.2
     $eww close weather_popup
 else
     $eww open weather_popup

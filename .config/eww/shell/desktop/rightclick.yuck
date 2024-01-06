@@ -9,7 +9,7 @@
     (eventbox 
     :ondropped "desktop/drop/on_dropped.sh '{}'&"
     :onrightclick "desktop/bin/open_rc_menu.sh desktop&" 
-    :onclick "${EWW_CMD} close icon_popup; ${EWW_CMD} close rc_popup"   
+    :onclick "sleep 0.1; ${EWW_CMD} close rc_popup icon_popup&"   
     :timeout "128s"
     ;; :onscroll "desktop/mods/ws_scroll.sh {}"
     (box :class "desktop_area" :hexpand true :vexpand true))
