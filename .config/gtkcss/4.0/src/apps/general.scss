@@ -9,6 +9,9 @@ windowcontrols .close image:hover, .titlebutton.close:hover{
 .navigation-sidebar {
 		background-color: transparent;
 }
+.dialog placessidebar, dialog placessidebar { //get rid of the mistmatching colors in filepicker
+background-color: unset
+}
 
 toast{
     background-color: $bg;

@@ -116,6 +116,9 @@ windowcontrols .close image:hover, .titlebutton.close:hover {
 .navigation-sidebar {
   background-color: transparent; }
 
+.dialog placessidebar, dialog placessidebar {
+  background-color: unset; }
+
 toast {
   background-color: #2e3440;
   color: #eceff4;
