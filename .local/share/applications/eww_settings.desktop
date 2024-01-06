@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Eww System Settings
 Exec=eww_settings.sh
-Icon=systemsettings
+Icon=preferences-system
 Type=Application
 Keywords=eww;settings;wifi;
