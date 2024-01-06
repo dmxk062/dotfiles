@@ -319,7 +319,6 @@
 tooltip{
     background-color: $bg2;
     border-radius: $rounding-small;
-    border: 3px solid $bg3;
     padding: 1rem;
     color: $fg0;
     label{
@@ -327,6 +326,13 @@ tooltip{
         font-size: 1rem;
         margin: .2rem;
     }
+    decoration {
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+        margin: 1rem;
+        background-clip: padding-box;
+        border-radius: $rounding-small;
+    }
+
 }
 
 scrollbar{

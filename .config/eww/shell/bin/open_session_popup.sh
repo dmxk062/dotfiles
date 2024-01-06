@@ -3,7 +3,7 @@
 eww="eww -c $HOME/.config/eww/shell"
 
 if $eww active-windows | grep "session_popup"; then
-    sleep 0.1
+    sleep 0.2
     $eww close session_popup
 else
     $eww open session_popup

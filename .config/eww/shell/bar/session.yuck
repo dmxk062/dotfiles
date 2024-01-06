@@ -7,7 +7,7 @@
 (defvar session_icon "")
 
 (defwidget session_button []
-    (button :class "sbutton" :onclick "bin/open_session_popup.sh" "")
+    (button :class "sbutton" :onclick "bin/open_session_popup.sh&" "")
 )
 
 
