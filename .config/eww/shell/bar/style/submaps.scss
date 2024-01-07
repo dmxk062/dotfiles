@@ -1,4 +1,4 @@
-.submap_,.submap_window,.submap_workspace,.submap_media{
+.submap_,.submap_window,.submap_workspace,.submap_media, .submap_overview{
     @extend .sbutton;
 }
 
@@ -23,6 +23,14 @@
     color: $inverted;
     &:hover{
         background-color: fade($green);
+    }
+}
+
+.submap_overview{
+    background-color: $accent;
+    color: $inverted;
+    &:hover{
+        background-color: fade($accent);
     }
 }
 

@@ -2,6 +2,6 @@
 
 (defwidget overview_button []
     (button :class "sbutton${overview ? "-active" : ""}" :timeout "128s"
-    :onclick "hyprctl dispatch hycov:toggleoverview"
+    :onclick "sleep 0.1; ~/.config/hypr/plugins/overview.sh"
     "󰺕")
 )
