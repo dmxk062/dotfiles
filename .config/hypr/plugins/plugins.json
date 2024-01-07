@@ -3,6 +3,18 @@
         "name":"Hyprbars",
         "description":"Enable window decorations for hyprland.",
         "file":"/home/dmx/.config/hypr/plugins/hyprbars.so",
+        "default": false
+    },
+    {
+        "name":"Hyprgrass",
+        "description":"Touch Gestures for Hyprland",
+        "file":"/home/dmx/.config/hypr/plugins/gestures.so",
         "default": true
+    },
+    {
+        "name":"Hycov",
+        "description":"GNOME-like overview for Hyprland",
+        "file":"/home/dmx/.config/hypr/plugins/overview.so",
+        "default": false
     }
 ]
