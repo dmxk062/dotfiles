@@ -19,12 +19,12 @@ inside-color=eceff4
 inside-clear-color=eceff4
 inside-caps-lock-color=eceff4
 inside-ver-color=eceff4
-inside-wrong-color=bf616a88
+inside-wrong-color=eceff4
 
 separator-color=00000000
 
 ring-color=d8dee944
-ring-wrong-color=bf616a88
+ring-wrong-color=bf616a
 ring-ver-color=5e81ac88
 ring-caps-lock-color=ebcb8b
 ring-clear-color=5e81ac88
