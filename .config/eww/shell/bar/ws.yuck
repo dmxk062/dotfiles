@@ -1,11 +1,12 @@
 (defvar workspaces "[]")
 (defvar urgent_ws '')
-
+(include "bar/overview.yuck")
 
 (defwidget workspaces[]
 
     (box :space-evenly false
         (box :space-evenly false :halign "start" :class "leftbox"
+            (overview_button)
             (box :space-evenly false :class "inner-leftbox"
                 (for ws in workspaces
                     (button :class "ws-${ws.id == urgent_ws ? "urgent" : (ws.active ? "active" : (ws.special ? ( ws.id == window?.workspace?.id ? "special-active" : "special-inactive") : "inactive"))}"  

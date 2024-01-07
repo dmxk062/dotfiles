@@ -43,7 +43,8 @@ workspace_order='{
 "special:1":400,
 "special:2":401,
 "special:3":402,
-"special:4":403
+"special:4":403,
+"OVERVIEW":500
 }'
 
 function get_active_workspace_id(){
@@ -107,6 +108,15 @@ function monitor_changes(){
                 continue;;
             changefloatingmode*) # we dont care about workspaces here
                 update window="$(hyprctl activewindow -j)"
+                ;;
+            "renameworkspace"*"OVERVIEW")
+                IFS=">" read -r _ _ val <<< "$line"
+                IFS="," read -r overview_id _ <<< "$val"
+                eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=true
+                ;;
+            "renameworkspace>>$overview_id,"*)
+                eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=false
+                overview_id=""
                 ;;
             *)
                 eww -c $XDG_CONFIG_HOME/eww/shell update window="$(hyprctl activewindow -j)" workspaces="$(list_workspaces)"
