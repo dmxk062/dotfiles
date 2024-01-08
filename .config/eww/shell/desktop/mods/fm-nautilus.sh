@@ -5,4 +5,4 @@ read -r x y h w <<< "$(slurp -w 0 -b "#4c566acc" -s "#ffffff00" -f "%x %y %h %w"
 gsettings set org.gnome.nautilus.window-state initial-size "(${w}, ${h})"
 nautilus -w & disown
 sleep 0.3
-hyprctl dispatch movewindowpixel exact ${x} ${y},address:$(hyprctl -j activewindow|jq -r ".address")
+hyprctl --batch "dispatch togglefloating; dispatch movewindowpixel exact ${x} ${y},address:$(hyprctl -j activewindow|jq -r ".address")"
