@@ -7,8 +7,8 @@
     (box :space-evenly false
         (box :space-evenly false :halign "start" :class "leftbox"
             (overview_button)
-            (box :space-evenly false :class "inner-leftbox"
-                (for ws in workspaces
+            (revealer :reveal {!overview} :transition "slideleft" :duration "200ms" (box :space-evenly false :class "inner-leftbox" 
+                (box :space-evenly false (for ws in workspaces
                     (button :class "ws-${ws.id == urgent_ws ? "urgent" : (ws.active ? "active" : (ws.special ? ( ws.id == window?.workspace?.id ? "special-active" : "special-inactive") : "inactive"))}"  
                     :onclick "${ws.special ? "hyprctl dispatch togglespecialworkspace ${replace(ws.name,"special:","")}" : "bin/hyprmon.sh switch ${ws.id} ${ws.name}"}"
                     :visible {ws.name != "OVERVIEW"}
@@ -20,12 +20,12 @@ Display: ${ws.display}
 Id: ${ws.id}
 Fullscreen: ${ws.fullscreen}"
     (label :text "${ws_icons[ws.name] ?: ws.name}${vertical ? "" : "    ${ws.title ?: "empty"}"}" :limit-width 14))
-                )
-            )
+                ))
             (button :class "ws-inactive" :timeout "16s"
             :onclick "hyprctl dispatch workspace empty"
             :tooltip "Open next empty Workspace"
             "󰾍${!vertical ? "    New" : ""}")
+            ))
         )
         )
 )
