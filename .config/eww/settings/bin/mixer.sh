@@ -13,8 +13,13 @@ do
     volume=${stream[3]}
     volume=${volume%?}
     icon="${stream[5]}"
-    if ! [[ -f "${ICON_THEME}/apps/${icon}.svg" ]]; then
-        icon="accessories-media-converter"
+    if ! [[ -f "${ICON_THEME}/apps/${icon}.svg" ]]; then # so that all the org.smth.app names work
+        if ls "${ICON_THEME}/apps/"*"${icon}.svg" > /dev/null; then
+            icon="$(basename "${ICON_THEME}/apps/"*"${icon}.svg")"
+            icon="${icon%.*}"
+        else
+            icon="accessories-media-converter"
+        fi
     fi
     if [[ "$name" == "(null)" ]]
     then
@@ -31,4 +36,9 @@ do
 done
 printf "]"
 }
-eww -c "$HOME/.config/eww/settings" update streams="$(list)"
+case $1 in
+    ls)
+        list;;
+    *)
+        eww -c "$HOME/.config/eww/settings" update streams="$(list)";;
+esac
