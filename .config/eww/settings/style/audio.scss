@@ -1,7 +1,10 @@
-.audio-slider,.audio-slider-overload{
-    @extend .slider-large;
+.audio-slider,.audio-slider-overamplified{
+    @extend .slider;
+    trough {
+        min-width: 20rem;
+    }
 }
-.audio-slider-overload{
+.audio-slider-overamplified{
     trough highlight {
         background: $warn;
     }

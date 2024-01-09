@@ -109,17 +109,24 @@
                 (box :orientation "v" :space-evenly false
                     (for stream in streams
                         (box :class "card" :space-evenly false :orientation "v"
-                            (box :class "padding_box" :orientation "v" :space-evenly false
-                                (label :class "card-label" :text "${stream.name} - ${stream.app}" :limit-width 30 :tooltip "${stream.name} in ${stream.app}")
-                                (box :class "sliderbox" :space-evenly false
-                                    (scale :class "audio-slider" :value {stream.volume} :min 1 :max 100 :onchange "bin/audio/streamval.sh ${stream.id} {}&")
+                            (box :class "padding_box" :space-evenly false
+                                (icon :name "scalable/apps/${stream.icon}.svg")
+                                (box :orientation "v" :space-evenly false
+                                    (label :class "card-label" :text "${stream.name}" :limit-width 24 :tooltip "${stream.name} in ${stream.app}")
+                                    (box :class "sliderbox" :space-evenly false :hexpand true
+                                        (scale :class "audio-slider${stream.volume > 100 ? "-overamplified" : ""}" :value {stream.volume} :min 1 :max 100 :onchange "bin/audio/streamval.sh ${stream.id} {}&" :hexpand true)
+                                    )
                                 )
                             )
                             (box :space-evenly false :class "card_footer"
-                                (button :timeout "16s" :class "button${stream.mute ? "" : "-active"}":onclick "pactl set-sink-input-mute ${stream.id} toggle&&bin/mixer.sh" "${stream.mute ? "󰝟" : "󰖀"}    Mute")
-                                (button :timeout "16s" :class "button" :onclick "pactl set-sink-input-volume ${stream.id} 50%&&bin/mixer.sh" "50%")
-                                (button :timeout "16s" :class "button" :onclick "pactl set-sink-input-volume ${stream.id} 100%&&bin/mixer.sh" "100%")
-                                (label :class "button" :text "Current: ${stream.volume}%")
+                                (box :hexpand true :space-evenly false
+                                    (button :timeout "16s" :class "button${stream.mute ? "" : "-active"}":onclick "pactl set-sink-input-mute ${stream.id} toggle&&bin/mixer.sh" "${stream.mute ? "󰝟    Muted" : "󰖀    Unmuted"}")
+                                    (button :timeout "16s" :class "button" :onclick "pactl set-sink-input-volume ${stream.id} 50%; bin/mixer.sh" "50%")
+                                    (button :timeout "16s" :class "button" :onclick "pactl set-sink-input-volume ${stream.id} 100%; bin/mixer.sh" "100%")
+                                )
+                                (button :timeout "16s" :class "button${stream.volume > 100 ? "-warn" : ""}" 
+                                :onclick "pactl set-sink-input-volume ${stream.id} ${stream.volume > 100 ? 100 : 120}%; bin/mixer.sh" 
+                                "󰕾    Overamplify")
                             )
                         )
                     )
