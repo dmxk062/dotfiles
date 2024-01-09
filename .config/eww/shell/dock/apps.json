@@ -12,6 +12,18 @@
         "menu":"files"
     },
     {
+        "description":"E-Book Reader",
+        "exec":"foliate",
+        "image":"scalable/apps/foliate.svg",
+        "menu":""
+    },
+    {
+        "description":"Notes",
+        "exec":"rnote",
+        "image":"scalable/apps/rnote.svg",
+        "menu":""
+    },
+    {
         "description":"LibreOffice Office Suite",
         "exec":"gtk-launch libreoffice-startcenter",
         "image":"scalable/apps/libreoffice.svg",

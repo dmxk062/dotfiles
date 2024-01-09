@@ -1,6 +1,7 @@
 (include "bar/win.yuck")
 (include "bar/mpris.yuck")
 (include "bar/submap.yuck")
+;; (include "bar/tiling_mode.yuck")
 
 
 
@@ -8,6 +9,7 @@
 (defwidget center []
     (box :space-evenly false  :halign "center"
         (box :space-evenly false :class "centerbox"
+            ;; (tiling_layout_button)
             (submap)
             (window)
             (mpris_button)

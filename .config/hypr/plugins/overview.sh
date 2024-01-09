@@ -3,7 +3,11 @@
 
 case $1 in
     off)
-        hyprctl --batch "dispatch hycov:toggleoverview; dispatch submap reset; keyword general:border_size 0" 
+        req="dispatch submap reset; keyword general:border_size 0" 
+        if hyprctl workspaces | grep -q "OVERVIEW"; then
+            req="dispatch hycov:toggleoverview; ${req}"
+        fi
+        hyprctl --batch "$req"
         ;;
     *)
         if hyprctl workspaces | grep -q "OVERVIEW"; then
@@ -15,3 +19,6 @@ case $1 in
         fi;;
 esac
 
+if [[ "$1" == "alttab" ]]; then
+    hyprctl dispatch cyclenext
+fi
