@@ -8,34 +8,43 @@
 
 (defvar audio_section 0)
 
+(defvar audio_current_ports '')
+
 (defwidget device_card [device type]
 (box :space-evenly false :class "card" :orientation "v"
-    (box :space-evenly false :orientation "v"
-        (box :class "padding_box" :orientation "v" :space-evenly false :halign "center"
-            (icon :name {type == 'sink' ? sink_images[device.icon?:"audio-card"] : source_images[device.icon?:"microphone"]})
+    (box :class "padding_box" :space-evenly false
+        (icon :name {type == 'sink' ? sink_images[device.icon?:"audio-card"] : source_images[device.icon?:"microphone"]})
+        (box :orientation "v" :space-evenly false
             (label :class "card-label" :text "${device.name}" :limit-width 20)
-        )
-        (box :class "padding_box" :orientation "v" :space-evenly false
-            (scale :class "slider-small" :value "${device.volume}" :timeout "16s" :onchange "pactl set-${type}-volume ${device.id} {}%&&bin/audio_state.sh")
+            (box :class "sliderbox"
+                (scale :class "audio-slider" :value "${device.volume}" :timeout "16s" :onchange "pactl set-${type}-volume ${device.id} {}%&&bin/audio_state.sh")
+            )
         )
     )
     (box :class "card_footer" :space-evenly false :orientation "v"
-        (box :space-evenly false :halign "center"
-            (button :timeout "16s" :onclick "pactl set-${type}-mute ${device.id} ${device.mute ? "0" : "1"}&&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh"
-            :class "button${device.mute ? "" : "-active"}"
-            "${type == "source" ? (device.mute ? "" : "")
-            : (device.mute ? sink_icons[device.icon].muted : sink_icons[device.icon].unmuted)}    ${device.mute ? "Muted" : "Not Muted"}")
-            (button :timeout "16s" :onclick "pactl set-default-${type} ${device.id} &&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh" :class "button${device.active ? "-active" : ""}" "Set as Default")
+        (box :space-evenly false
+            (box :space-evenly false :hexpand true
+                (button :timeout "16s" :onclick "pactl set-default-${type} ${device.id} &&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh" :class "button${device.active ? "-active" : ""}" "Set as Default")
+                (button :timeout "16s" :onclick "pactl set-${type}-mute ${device.id} ${device.mute ? "0" : "1"}&&bin/sinks_sources.sh upd ${type}s&&bin/audio_state.sh"
+                :class "button${device.mute ? "" : "-active"}"
+                "${type == "source" ? (device.mute ? "" : "")
+                : (device.mute ? sink_icons[device.icon].muted : sink_icons[device.icon].unmuted)}    ${device.mute ? "Muted" : "Unmuted"}")
+            )
+            (button :class "button${audio_current_ports == device.id ? "-active" : ""}" 
+            :timeout "128s"
+            :visible {arraylength(device.ports) > 1}
+            :onclick "${EWW_CMD} update audio_current_ports=${audio_current_ports == device.id ? "" : device.id}"
+            "${arraylength(device.ports)} Ports"
+            )
         )
-        (box :class "padding_box" :visible "${arraylength(device.ports) > 1}" :orientation "v" :space-evenly false
-            (label :class "title" :text "Ports")
-            (box :space-evenly false 
+        (box :class "padding_box" :visible {audio_current_ports == device.id} :orientation "v" :space-evenly false 
                 (for port in "${device.ports}"
-                    (button :timeout "16s" :onclick "pactl set-${type}-port ${device.id} ${port.name}&&bin/sinks_sources.sh upd ${type}s" :class "button${port.name == device.port ?"-active" : ""}"
-                    (label :text "${port_icons[port.name]}     ${port.desc}" :limit-width 12))
+                    (box :space-evenly false :halign "end" :hexpand true
+                        (button :timeout "16s" :onclick "pactl set-${type}-port ${device.id} ${port.name}&&bin/sinks_sources.sh upd ${type}s" :class "button${port.name == device.port ?"-active" : ""}"
+                            (label :text "${port_icons[port.name]}     ${port.desc}" :limit-width 24))
+                    )
                 )
 
-            )
         )
     )
 )
@@ -86,7 +95,7 @@
             )
         )
         (box :visible "${audio_section == 0}" :space-evenly false
-            (scroll :vscroll true :class "scroll-huge"
+            (scroll :vscroll true :class "scroll-huge-wider" :hexpand true
                 (box :orientation "v" :space-evenly false
                     (for sink in sinks
                         (device_card :device "${sink}" :type "sink")
@@ -95,7 +104,7 @@
             )
         )
         (box :visible "${audio_section == 1}" :space-evenly false
-            (scroll :vscroll true :class "scroll-huge"
+            (scroll :vscroll true :class "scroll-huge-wider" :hexpand true
                 (box :orientation "v" :space-evenly false 
                     (for source in sources
                         (device_card :device "${source}" :type "source")
