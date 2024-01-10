@@ -17,7 +17,8 @@ open_in_fm(){
     gsettings set org.gnome.nautilus.window-state initial-size "(${w}, ${h})"
     nautilus -w "$1" & disown
     sleep 0.3
-    hyprctl dispatch movewindowpixel exact ${x} ${y},address:$(hyprctl -j activewindow|jq -r ".address")
+    hyprctl --batch "dispatch togglefloating; dispatch movewindowpixel exact ${x} ${y},address:$(hyprctl -j activewindow|jq -r ".address")"
+
 }
 open_for_mime(){
     path="$1"
