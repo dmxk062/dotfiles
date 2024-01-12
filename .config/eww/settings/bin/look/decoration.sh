@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 eww="eww -c $HOME/.config/eww/settings"
+KITTY_OPACITY=0.9
 
 function hyprctl_keywd(){
     value="$(hyprctl -j getoption $1)"
@@ -12,13 +13,13 @@ function hyprctl_keywd(){
 }
 
 opacity() {
-    if [[ $(< "$HOME/.config/kitty/opacity.conf") != "background_opacity 0.9" ]]
+    if [[ $(< "$HOME/.config/kitty/opacity.conf") != "background_opacity $KITTY_OPACITY" ]]
     then
         for kitty in /tmp/kitty-*
         do
-        kitten @ --to unix:$kitty set-background-opacity 0.9
+        kitten @ --to unix:$kitty set-background-opacity $KITTY_OPACITY
         done
-        echo "background_opacity 0.9" > "$HOME/.config/kitty/opacity.conf"
+        echo "background_opacity $KITTY_OPACITY" > "$HOME/.config/kitty/opacity.conf"
         $eww update look_opacity=true
     else
         for kitty in /tmp/kitty-*

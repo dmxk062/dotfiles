@@ -134,7 +134,7 @@
                                     (button :timeout "16s" :class "button" :onclick "pactl set-sink-input-volume ${stream.id} 100%; bin/mixer.sh" "100%")
                                 )
                                 (button :timeout "16s" :class "button${stream.volume > 100 ? "-warn" : ""}" 
-                                :onclick "pactl set-sink-input-volume ${stream.id} ${stream.volume > 100 ? 100 : 120}%; bin/mixer.sh" 
+                                :onclick "pactl set-sink-input-volume ${stream.id} ${stream.volume > 100 ? 100 : 130}%; bin/mixer.sh" 
                                 "󰕾    Overamplify")
                             )
                         )

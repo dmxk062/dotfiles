@@ -8,7 +8,7 @@ length=$(echo $SINK_INPUTS|jq 'length')
 i=1
 for media in $(echo "$SINK_INPUTS"|jq -c '.[]')
 do
-    mapfile -t stream <<< "$(echo "$media"|jq -r '.properties."media.name", .index, .properties."application.name"//.properties."node.name", .volume."front-left".value_percent, .mute, .properties."application.process.binary"//null')"
+    mapfile -t stream <<< "$(echo "$media"|jq -r '.properties."media.name", .index, .properties."application.name"//.properties."node.name", .volume."front-left".value_percent, .mute, .properties."application.process.binary"//.properties."application.icon_name"')"
     name=${stream[0]}
     volume=${stream[3]}
     volume=${volume%?}
@@ -23,7 +23,7 @@ do
     fi
     if [[ "$name" == "(null)" ]]
     then
-        name="$(pactl list sink-inputs|grep "${stream[1]}" -A30|grep media.name|awk -F = '{print $2}')" 
+        name="$(pactl list sink-inputs|grep "${stream[1]}" -A30|grep media.name|awk -F = '{print $2}')"
     else
         name=$(printf '"%s"' "$(echo "$name"|sed 's/"/\\"/g')")
     fi

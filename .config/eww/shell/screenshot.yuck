@@ -37,8 +37,8 @@
             )
         )
         (box :space-evenly false :halign "center" :visible "${screenshot_selected_display != ""}"
-            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh screen disk ${screenshot_selected_display}" "󰈟    Save to Disk")
-            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh screen clip ${screenshot_selected_display}" "󰅇    Copy to Clipboard")
+            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh screen disk ${screenshot_selected_display}&" "󰈟    Save to Disk")
+            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh screen clip ${screenshot_selected_display}&" "󰅇    Copy to Clipboard")
         )
     )
 )
@@ -49,8 +49,8 @@
         (icon_large :name "scalable/apps/accessories-screenshot.svg")
         )
         (box :space-evenly false :halign "center"
-            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh region disk ${screenshot_selected_display}" "󰈟    Save to Disk")
-            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh region clip ${screenshot_selected_display}" "󰅇    Copy to Clipboard")
+            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh region disk ${screenshot_selected_display}&" "󰈟    Save to Disk")
+            (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh region clip ${screenshot_selected_display}&" "󰅇    Copy to Clipboard")
         )
     )
 )
