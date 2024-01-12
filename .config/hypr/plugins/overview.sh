@@ -3,11 +3,7 @@
 
 case $1 in
     off)
-        req="dispatch submap reset; keyword general:border_size 0" 
-        if hyprctl workspaces | grep -q "OVERVIEW"; then
-            req="dispatch hycov:toggleoverview; ${req}"
-        fi
-        hyprctl --batch "$req"
+        hyprctl --batch "dispatch submap reset; keyword general:border_size 0; dispatch hycov:leaveoverview" 
         ;;
     *)
         if hyprctl workspaces | grep -q "OVERVIEW"; then
