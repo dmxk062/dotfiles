@@ -1,6 +1,6 @@
 (defvar wlans "[]")
 (defvar wlan_power false)
-(defvar wifi_search_icon "󰑓")
+(defvar wifi_search false)
 (deflisten wifi_status "bin/wlan.sh listen")
 (defvar wifi_password_reveal false)
 (defvar wifi_connect_ssid "")
@@ -10,6 +10,10 @@
 (defvar wifi_show_qr false)
 (defvar wifi_connect_error false)
 (defvar wifi_connect_error_reason "")
+
+(defvar wifi_connecting false)
+
+(defvar wifi_edit_menu false)
 
 (defwidget wifi_section []
     (box :visible "${selected_section == 6}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
@@ -31,12 +35,33 @@
                             )
                             (box
                                 (button :timeout "256s" :onclick "bin/wlan.sh toggle&&sleep 1&&bin/wlan.sh upd" :class "button${wlan_power ? "-active" : ""}" "    Power")
-                                (button :timeout "256s" :onclick "bin/wlan.sh upd" :class "button" "${wifi_search_icon}    Reload")
+                                (button :timeout "256s" :onclick "bin/wlan.sh upd" :class "button" "${wifi_search ? "" : "󰑓"}    Reload")
                             )
-                            (box :visible "${wifi_status.ssid != "" ? true : false}"
-                                (button :class "button" :onclick "${EWW_CMD} update wifi_show_qr=true" "    QR Code")
-                                (button :class "button" :onclick "bin/edit_connection.sh ${wifi_status.ssid}&" :timeout "16s" "󱆠    Edit")
+                            (box :visible {wifi_status.ssid != ""} :orientation "v"
+                                (box
+                                    (button :class "button" :onclick "${EWW_CMD} update wifi_show_qr=true" "    QR Code")
+                                    (button :class "button" :onclick "${EWW_CMD} update wifi_edit_menu=true" "󱚾    Edit")
+                                )
+                                (box
+                                    (button :class "button-error" :onclick "nmcli connection down ${wifi_status.ssid}; bin/wlan.sh upd" 
+                                    :timeout "128s" :visible {wifi_status.ssid != ""} "󰤭    Disconnect")
+                                )
                             )
+                            (button :class "button" :onclick "nmcli connection down '${wifi_connect_ssid}'; bin/wlan.sh upd" 
+                            :timeout "128s" :visible wifi_connecting "󱚼    Cancel")
+                        )
+                    )
+                    (box :visible wifi_edit_menu :class "card-no_shadow" :space-evenly false :orientation "v"
+                        (box :class "padding_box" :vexpand true :space-evenly false :orientation "v"
+                            (button :class "button" :onclick "bin/edit_connection.sh ${wifi_status.ssid}&" :timeout "16s" "󱆠    Edit in NM-Applet")
+                        )
+                        (box :class "card_footer" :space-evenly false
+                            (box :space-evenly false :hexpand true
+                                (button :class "button-error" :onclick "nmcli connection delete ${wifi_status.ssid}; bin/wlan.sh upd" 
+                                :timeout "128s" :visible {wifi_status.ssid != ""} "󰩹    Forget")
+                            )
+                            (button :class "button" :onclick "${EWW_CMD} update wifi_edit_menu=false" "Close")
+
                         )
                     )
                     (box :visible wifi_show_qr :class "card-no_shadow" :space-evenly false :orientation "v"
@@ -56,15 +81,21 @@
                         (box :class "padding_box" :space-evenly false :orientation "v"
                             (label :class "title" :text "Password for: ${wifi_connect_ssid}" :limit-width 19)
                             (input :timeout "128s" :onchange "${EWW_CMD} update wifi_passwd='{}'" :onaccept "bin/wlan.sh connect '${wifi_connect_ssid}' true '${wifi_passwd}'& disown" :password hide_wifi_passwd :class "input" :value wifi_passwd)
+                            (box :space-evenly false :orientation "v" :visible wifi_connect_error
+                                    (scroll :style 'min-height: 10rem;'
+                                    (box :orientation "v" :space-evenly false (box :class "err-box" :hexpand true :space-evenly false :orientation "v"
+                                            (label :class "text-np" :wrap true :justify "left" :markup "<b>Failed to connect to ${wifi_connect_ssid}</b>:
+    ${wifi_connect_error_reason}")
+                                        ))
+                                    )
+                            )
                         )
-                        (box :class "card_footer" :space-evenly false :halign "center"
+                        (box :class "card_footer" :space-evenly false :halign "center" :hexpand true
                             (button :onclick "${EWW_CMD} update hide_wifi_passwd=${!hide_wifi_passwd}" :class "button${hide_wifi_passwd? "" : "-active"}" "${hide_wifi_passwd ? "󰈉" : "󰈈"}")
                             (button :timeout "16s" :onclick "${EWW_CMD} update wifi_passwd=''&&${EWW_CMD} update wifi_password_reveal=false" :class "button" "Cancel")
                             (button :timeout "16s" :onclick "bin/wlan.sh connect '${wifi_connect_ssid}' true '${wifi_passwd}'& disown" :class "button-active" "Connect")
                         )
                     )
-                    (error :if "${wifi_connect_error}" :text "Failed to connect.
-${wifi_connect_error_reason}")
                 )
 
             )
@@ -83,7 +114,8 @@ ${wifi_connect_error_reason}")
                                 (label :class "card-label" :text "${wifi.ssid}" :limit-width 20)
                                 (box :orientation "v" :space-evenly false :class "card_footer"
                                     (box :space-evenly false :halign "center"
-                                        (button :class "button${wifi.ssid == wifi_status.ssid ? "-active" : ""}" :timeout "256s" :onclick "${wifi.password ? "${EWW_CMD} update wifi_password_reveal=true&&${EWW_CMD} update wifi_connect_ssid=${wifi.ssid}": "bin/wlan.sh connect ${wifi.ssid} false"}" "Connect${wifi.ssid == wifi_status.ssid ? "ed" : ""}")
+                                        (button :class "button${wifi.ssid == wifi_status.ssid ? "-active" : ""}" :timeout "256s" 
+                                        :onclick "${wifi.password ? "bin/wlan.sh connect '${wifi.ssid}' try|| ${EWW_CMD} update wifi_password_reveal=true wifi_connect_ssid=${wifi.ssid}": "bin/wlan.sh connect ${wifi.ssid} false"}" "Connect${wifi.ssid == wifi_status.ssid ? "ed" : ""}")
                                         (label :class "button${wifi.password ? "" : "-nice"}" :text "${wifi.password ? "󰒘    ${wifi.security}" : "󰦞    No Password"}")
                                     )
                                 )

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 eww_settings="eww -c $HOME/.config/eww/settings"
+QR_PATH="/tmp/eww/cache/wifi"
 
 function status(){
     if [[ $(nmcli radio wifi) == "enabled" ]]
@@ -26,7 +27,7 @@ function toggle_state(){
 }
 
 function list_wlans(){
-    $eww_settings update wifi_search_icon=""
+    $eww_settings update wifi_search=true
     nmcli device wifi rescan
     nmcli -g IN-USE,SIGNAL,SECURITY,SSID dev wifi list|while read -r line
     do
@@ -54,7 +55,7 @@ function list_wlans(){
         fi
     done
     IFS=$' \t\n'
-    $eww_settings update wifi_search_icon="󰑓"
+    $eww_settings update wifi_search=false
 
 }
 
@@ -62,12 +63,20 @@ function connect(){
     ssid="$1"
     sec=$2
     passwd="$3"
+    $eww_settings update wifi_connecting=true
+    if nmcli connection up "$ssid"; then
+        $eww_settings update wifi_connecting=false
+        exit
+    elif [[ "$sec" == "try" ]]; then
+        $eww_settings update wifi_connecting=false
+        exit 1
+    fi
     if $sec
     then 
         if ! nmcli device wifi connect "$ssid" password "$passwd"
         then
             $eww_settings update wifi_connect_error=true \
-            wifi_connect_error_reason="Wrong Password?"
+            wifi_connect_error_reason="Wrong Password? Check for capitalization and similar letters like I and l"
         else
             $eww_settings update wifi_password_reveal=false \
             wifi_connect_error=false \
@@ -78,7 +87,8 @@ function connect(){
         if ! nmcli device wifi connect "$ssid"
         then
             $eww_settings update wifi_connect_error=true \
-            wifi_connect_error_reason="Weak Connection?"
+            wifi_connect_error_reason="Weak Connection? Try moving closer to the access point. If that does not work, consider using \`nmtui\` on the command line"
+            exit 1
         else
             $eww_settings update wifi_password_reveal=false \
             wifi_connect_error=false \
@@ -86,15 +96,18 @@ function connect(){
             wifi_connect_ssid=""
         fi
     fi
+    $eww_settings update wifi_connecting=false
 }
 function genqr(){
     if ! status; then return; fi
     SSID="$(nmcli device wifi show-password|grep "SSID:"|cut -d ' ' -f 2)"
     SEC="$(nmcli device wifi show-password|grep "Security:"|cut -d ' ' -f 2)"
     PASSWD="$(nmcli device wifi show-password|grep "Password:"|cut -d ' ' -f 2)"
-    path="/tmp/workspaces_dmx/cache/$SSID.qr.png"
+    timestamp="$(date +'%H_qr')"
+    mkdir -p "$QR_PATH"
+    path="${QR_PATH}/$SSID.$timestamp.png"
     qrencode -s 6 -l H -o "$path" "WIFI:T:$SEC;S:$SSID;P:$PASSWD;;" --foreground=2E3440 --background=ECEFF4 
-    echo $path
+    echo "$path"
 
 }
 listen(){
