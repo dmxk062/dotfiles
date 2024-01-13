@@ -13,8 +13,7 @@ window {
   border-radius: 16px;
   color: #eceff4;
   border: 2px solid #4c566a;
-  caret-color: #eceff4;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px; }
+  caret-color: #eceff4; }
   .search:focused {
     border: 2px solid #7b9da3; }
   .search selection {
