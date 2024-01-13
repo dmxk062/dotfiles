@@ -65,8 +65,13 @@
                         )
                     )
                     (box :visible wifi_show_qr :class "card-no_shadow" :space-evenly false :orientation "v"
-                        (box :class "padding_box" :vexpand true
-                            (image :path "${wifi_status.qrpath}" :image-width 180 :image-height 180) 
+                        (box :class "padding_box" :vexpand true :space-evenly false :orientation "v"
+                            (box :space-evenly false :orientation "v" :vexpand true
+                            (image :path "${wifi_status.qrpath}" :image-width 180 :image-height 180))
+                            (button :class "button" :timeout "128s" 
+                                :onclick "${EWW_CMD} close settings; ../common/bin/save.sh 'Save QR-Code as' '${wifi_status.qrpath}' '${wifi_status.ssid}.png'"  "󰆓    Save")
+
+
                         )
                         (box :class "card_footer" :orientation "v"
                             (button :class "button" :onclick "${EWW_CMD} update wifi_show_qr=false" "Close")
