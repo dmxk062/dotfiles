@@ -87,14 +87,16 @@ flowboxchild > button {
 }
 
 #files-box{
-    background-color: $bg0;
-    border-radius: 16px;
-    padding: 1rem;
+    // background-color: $bg0;
+    // border-radius: 16px;
+    // padding: 1rem;
     button {
         padding: .5rem;
-        margin: .1rem .5rem .1rem .5rem;
+        margin: .5rem;
+        @include shadow;
         border-radius: 12px;
         transition: background-color 0.3s ease, color 0.3s ease;
+        background-color: $bg0;
         &:hover{
             background-color: $bg2;
         }
