@@ -20,6 +20,9 @@
 
 // basic, reusable widgets:
 
+.circle {
+    border-radius: 50%;
+}
 
 // buttons
 .button,.button-active,.button-warn,.button-error,.button-good,.button-inactive,.button-single,.button-yellow,.button-special,.button-blue{
@@ -107,6 +110,37 @@
 
 }
 
+.tick, .tick-on {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 20%;
+    margin: 0.4rem;
+    margin-right: 0rem;
+    color: $bg1;
+    border: 2px solid $bg3;
+    min-height: 1rem;
+    min-width: 1rem;
+    padding: .2rem;
+    &:hover{
+        background-color: $bg2;
+    }
+    image {
+        margin: .1rem;
+    }
+
+}
+
+.tick-on{
+    background-color: $accent;
+    color: $inverted;
+    background-image: -gtk-icontheme('dino-tick-symbolic');
+    background-repeat: no-repeat;
+    border: 2px solid $accent;
+    background-position: center;
+    &:hover{
+        background-color: fade($accent);
+        border: 2px solid fade($accent);
+    }
+}
 .menubutton{
     @extend .button;
 }
@@ -222,10 +256,13 @@
 .stitle{
     padding: 0.2rem 1.2rem 0.2rem 0.92rem;
 }
-.heading{
+.heading,.heading-np{
     color: $fg;
     font-size: 1.8rem;
     padding: 0.28rem 1.2rem 0.28rem 0.92rem; 
+}
+.heading-np {
+    padding: unset;
 }
 .sheading{
     font-size: 1.4rem;

@@ -23,10 +23,14 @@
 
 (defvar qr_icons '{"bar":"󰁱","qr":"󰐲","misc":"󱔢"}')
 
+(defvar colorpicker_freeze false)
+(defvar colorpicker_zoom true)
+(defvar colorpicker_colors '[]')
+
 
 (defwidget screenshot_screen [] 
     (box :orientation "v" :space-evenly false :visible "${screenshot_section == 0}" :hexpand true :vexpand true
-        (label :class "heading" :text "Select a Screen")
+        ;; (label :class "heading-np" :text "Select a Screen")
         (box   :space-evenly false  :halign "center" :valign "center" :hexpand true :vexpand true :orientation "h" :class "padding_box"
             (for screen in screenshot_screens
                 (box :space-evenly false :halign "start" :valign "end"
@@ -46,7 +50,7 @@
 )
 (defwidget screenshot_selection [] 
     (box :orientation "v" :space-evenly false :visible "${screenshot_section == 1}":hexpand true :vexpand true
-        (label :class "heading" :text "Select a Region")
+        ;; (label :class "heading-np" :text "Select a Region")
         (box :vexpand true :class "padding_box"
         (icon_large :name "scalable/apps/accessories-screenshot.svg")
         )
@@ -66,15 +70,15 @@
             )
             (box :halign "end" :hexpand true :space-evenly false
                 (box :visible {qr_elem.data.type == "web"} :orientation "v"
-                    (link_button :url {qr_elem.data.str} :text {qr_elem.data.str})
-                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str})
+                    (link_button :url {qr_elem.data.str} :text {qr_elem.data.str} :length 48)
+                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str} :length 48)
                 ) 
                 (box :visible {qr_elem.data.type == "email"} :orientation "v"
                     (link_button :url "mailto:${qr_elem.data.str}" :text "Mail to ${qr_elem.data.str}" :icon "󰺻")
                     (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str})
                 ) 
                 (box :visible {qr_elem.data.type == "text"} :orientation "v"
-                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str})
+                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str} :length 48)
                 ) 
                 (box :visible {qr_elem.data.type == "wifi"} :space-evenly false :spacing 16
                     (wrapped_text :text "SSID: ${qr_elem.data.ssid}
@@ -107,7 +111,7 @@ Password: ${qr_elem.data.passwdRequired ? "Yes" : "No"}")
 
 (defwidget screenshot_qr [] 
     (box :orientation "v" :space-evenly false :visible "${screenshot_section == 2}":hexpand true :vexpand true
-        (label :class "heading" :text "Select a QR or Bar Code")
+        ;; (label :class "heading-np" :text "Select a QR or Bar Code")
         (box :vexpand true :class "padding_box"
             (scroll :class "scroll-tiny"
                 (box :orientation "v" :space-evenly false
@@ -125,6 +129,40 @@ Password: ${qr_elem.data.passwdRequired ? "Yes" : "No"}")
     )
 )
 
+(defwidget screenshot_color [] 
+    (box :orientation "v" :space-evenly false :visible "${screenshot_section == 3}":hexpand true :vexpand true
+        ;; (label :class "heading-np" :text "Pick a Color")
+        (box :vexpand true :class "padding_box" :orientation "v" :space-evenly false
+            (box :vexpand true 
+                (scroll :class "scroll-tiny"
+                    (box :orientation "v" :space-evenly false
+                        (for color in colorpicker_colors 
+                            (box :class "row" :orientation "v"
+                                (box :class "padding_box" :space-evenly false
+                                    (box :class "circle" :style "background-color: ${color.hex};" :width 48 :height 48)
+                                    (box :halign "end" :hexpand true :space-evenly false
+                                        (clipboard_button :label "Rgb: ${color.r} ${color.g} ${color.b}" 
+                                            :content "rgb(${color.r}, ${color.g}, ${color.b})")
+                                        (clipboard_button :label "Hex: ${color.hex}" :content {color.hex})
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (box :space-evenly false
+            (box :space-evenly false :valign "center" :hexpand true
+                (tick :var colorpicker_freeze :varstr "colorpicker_freeze" :label "Freeze")
+                (tick :var colorpicker_zoom   :varstr "colorpicker_zoom" :label "Zoom")
+            )
+        (button :class "button" :timeout "128s" :onclick "ZOOM=${colorpicker_zoom} FREEZE=${colorpicker_freeze} bin/colorpicker.sh" "󰴱    Select color")
+            (button :class "button-error" :timeout "16s" :onclick "${EWW_CMD} update colorpicker_colors='[]'" "󰩹    Clear")
+        )
+    )
+)
+
 (defwidget screenshot []
     (box :space-evenly false :halign "center" :valign "center"
         (box :space-evenly false :orientation "v" :class "popup_box-sc"
@@ -135,11 +173,13 @@ Password: ${qr_elem.data.passwdRequired ? "Yes" : "No"}")
                (screenshot_screen) 
                (screenshot_selection) 
                (screenshot_qr) 
+               (screenshot_color)
             )
             (box :class "popup_footer"
                 (button :class "button${screenshot_section == 0 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=0&&bin/screenshot_menu.sh list_monitors" "󰍹    Screen")
                 (button :class "button${screenshot_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=1" "󰲎    Selection")
                 (button :class "button${screenshot_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=2" "󰐳    QR")
+                (button :class "button${screenshot_section == 3 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=3" "    Color")
             )
         )
     )
