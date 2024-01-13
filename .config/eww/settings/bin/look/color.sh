@@ -54,5 +54,7 @@ $XDG_CONFIG_HOME/eww/settings/bin/audio_state.sh
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sinks & disown
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sources & disown
 sassc $XDG_CONFIG_HOME/nwg-drawer/drawer.scss > $XDG_CONFIG_HOME/nwg-drawer/drawer.css
+killall nwg-drawer
+$XDG_CONFIG_HOME/eww/shell/dock/bin/nwg_drawer.sh --initial
 sleep 0.2
 $XDG_CONFIG_HOME/eww/shell/bin/hyprmon.sh monitor & disown

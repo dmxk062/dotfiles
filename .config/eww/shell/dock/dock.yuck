@@ -60,7 +60,7 @@
                 )
                 (icon_button :exec "bin/screenshot_menu.sh toggle" :tooltip "Screenshots" :path "scalable/apps/accessories-screenshot.svg" :menu "screenshot")
                 (icon_button :exec "eww_settings.sh" :tooltip "EWW Settings" :path "scalable/apps/preferences-system.svg" :menu "settings")
-                (button :class "image_button" :onclick "dock/bin/nwg_drawer.sh" :tooltip "Open App Grid"
+                (button :class "image_button" :onclick "sleep 0.1; nwg-drawer" :tooltip "Open App Grid" :timeout "16s"
                     (image :path "../assets/images/app-grid-${look_colorscheme}.svg" :image-width 48 :image-height 48)
                 )
                 
