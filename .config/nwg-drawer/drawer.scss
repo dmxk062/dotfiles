@@ -70,7 +70,7 @@ window {
 
 }
 
-flowboxchild button {
+flowboxchild > button {
     padding: .5rem;
     margin: .2rem .4rem .2rem .4rem;
     border-radius: 1.2rem;
@@ -86,3 +86,23 @@ flowboxchild button {
     }
 }
 
+#files-box{
+    background-color: $bg0;
+    border-radius: 16px;
+    padding: 1rem;
+    button {
+        padding: .5rem;
+        margin: .1rem .5rem .1rem .5rem;
+        border-radius: 12px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        &:hover{
+            background-color: $bg2;
+        }
+        &:focus{
+            background-color: $bg2;
+        }
+        &:active{
+            background-color: $bg3;
+        }
+    }
+}

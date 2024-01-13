@@ -44,14 +44,30 @@ window {
   padding: 1rem;
   border-radius: 16px; }
 
-flowboxchild button {
+flowboxchild > button {
   padding: .5rem;
   margin: .2rem .4rem .2rem .4rem;
   border-radius: 1.2rem;
   transition: background-color 0.3s ease, color 0.3s ease; }
-  flowboxchild button:hover {
+  flowboxchild > button:hover {
     background-color: rgba(67, 76, 94, 0.2); }
-  flowboxchild button:focus {
+  flowboxchild > button:focus {
     background-color: rgba(67, 76, 94, 0.2); }
-  flowboxchild button:active {
+  flowboxchild > button:active {
     background-color: rgba(76, 86, 106, 0.4); }
+
+#files-box {
+  background-color: #2e3440;
+  border-radius: 16px;
+  padding: 1rem; }
+  #files-box button {
+    padding: .5rem;
+    margin: .1rem .5rem .1rem .5rem;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease; }
+    #files-box button:hover {
+      background-color: #434c5e; }
+    #files-box button:focus {
+      background-color: #434c5e; }
+    #files-box button:active {
+      background-color: #4c566a; }
