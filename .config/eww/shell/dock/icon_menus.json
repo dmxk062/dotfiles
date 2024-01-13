@@ -148,7 +148,7 @@
     "minecraft":[
         {
             "name":"Main Instance",
-            "exec":"prismlauncher --launch main"
+            "exec":"XDG_CURRENT_DESKTOP=gnome prismlauncher --launch main"
         },
         {
             "name":"Open Instance Folder",
@@ -160,7 +160,7 @@
         },
         {
             "name":"Edit Main",
-            "exec":"prismlauncher --show main"
+            "exec":"XDG_CURRENT_DESKTOP=gnome prismlauncher --show main"
         },
         {
             "name":"Server Console",

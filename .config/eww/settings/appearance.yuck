@@ -127,8 +127,13 @@
                         (box :hexpand true :class "card_footer" :orientation "v"
                             (label :class "title" :text "${wall.name}")
                             (box :space-evenly false :halign "center"
-                                (button :class "button${wall.path == look_activewall ? "-active" : ""}" :timeout "16s"  :onclick "~/.config/background/wallpaper.sh wall '${wall.path}'&&${EWW_CMD} update look_activewall=$(realpath ~/.config/background/wall)" "󰋩    Desktop")
-                                (button :class "button${wall.path == look_activelock ? "-active" : ""}" :timeout "16s" :onclick "~/.config/background/wallpaper.sh lock '${wall.path}'&&${EWW_CMD} update look_activelock=$(realpath ~/.config/background/lock)" "󱪰    Lockscreen")
+                                (button :class "button${wall.path == look_activewall ? "-active" : ""}" :timeout "16s" 
+                                :onclick "~/.config/background/wallpaper.sh wall '${wall.path}'; ${EWW_CMD} update look_activewall=$(realpath ~/.config/background/wall); ../shell/dock/bin/nwg_drawer.sh" 
+                                "󰋩    Desktop")
+                                (button :class "button${wall.path == look_activelock ? "-active" : ""}" :timeout "16s" 
+                                :onclick "~/.config/background/wallpaper.sh lock '${wall.path}'; ${EWW_CMD} update look_activelock=$(realpath ~/.config/background/lock)"
+
+                                "󱪰    Lockscreen")
                             )
                         )
                     )
