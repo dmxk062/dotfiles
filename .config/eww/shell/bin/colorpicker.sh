@@ -42,4 +42,5 @@ new="$(printf '{"r":%s,"g":%s,"b":%s,"hex":"%s"}' $r $g $b $hex)"
 old="$(get colorpicker_colors)"
 updated="$(echo "$old"|jq --argjson new "$new" '. |= [$new] + .')"
 update colorpicker_colors "$updated"
+update screenshot_section 3
 popup open

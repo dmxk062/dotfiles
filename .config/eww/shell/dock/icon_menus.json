@@ -141,6 +141,14 @@
             "exec":"bin/screenshot_menu.sh region clip noeww"
         },
         {
+            "name":"Colorpicker",
+            "exec":"bin/colorpicker.sh"
+        },
+        {
+            "name":"QR Code Scanner",
+            "exec":"bin/qr_decode.sh"
+        },
+        {
             "name":"Open Screenshot Folder",
             "exec":"nautilus ~/Pictures/Screenshots/"
         }
