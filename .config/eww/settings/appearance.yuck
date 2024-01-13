@@ -8,7 +8,7 @@
 (defvar look_nightlight false) ;; wlsunset
 
 (defvar look_blur_win true)
-(defvar look_blur_xray false)
+(defvar look_blur_xray true)
 (defvar look_blur_special false)
 
 (defvar look_opacity false) ;; only for kitty, as that is my only opaque app

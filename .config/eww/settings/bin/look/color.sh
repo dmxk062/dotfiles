@@ -53,6 +53,6 @@ eww -c $XDG_CONFIG_HOME/eww/shell open desktop_area --screen 0
 $XDG_CONFIG_HOME/eww/settings/bin/audio_state.sh
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sinks & disown
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sources & disown
-# sassc $XDG_CONFIG_HOME/gtklock/style.scss > $XDG_CONFIG_HOME/gtklock/style.css
+sassc $XDG_CONFIG_HOME/nwg-drawer/drawer.scss > $XDG_CONFIG_HOME/nwg-drawer/drawer.css
 sleep 0.2
 $XDG_CONFIG_HOME/eww/shell/bin/hyprmon.sh monitor & disown

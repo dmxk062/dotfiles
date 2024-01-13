@@ -43,6 +43,7 @@ $green:     #a3be8c;
 
 $blurred: rgba($bg, 0.4);
 $blurred-light: rgba($bg3, 0.4);
+$blurred-dark: rgba($polar0, 0.4);
 
 @function fade($color){
     @return mix($color, $bg3, 70)

@@ -104,8 +104,16 @@ function monitor_changes(){
                urgent_win=''
                eww -c $XDG_CONFIG_HOME/eww/shell update urgent_win='' urgent_ws=''
                ;;
-            activewindowv2*|closelayer*|openlayer*) # ignore stuff we dont really care about
+            activewindowv2*) # ignore stuff we dont really care about
                 continue;;
+            'openlayer>>gtk-layer-shell') # this is for nwg-look
+                old_layer_blur="$(hyprctl getoption decoration:blur:xray -j|jq '.set')"
+                hyprctl keyword decoration:blur:xray true
+            ;;
+            'closelayer>>gtk-layer-shell')
+                hyprctl keyword decoration:blur:xray $old_layer_blur
+            ;;
+
             changefloatingmode*) # we dont care about workspaces here
                 update window="$(hyprctl activewindow -j)"
                 ;;
