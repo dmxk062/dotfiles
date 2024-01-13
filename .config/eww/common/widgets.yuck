@@ -36,10 +36,16 @@
 (defwidget path_button [path text type] 
     (eventbox :class "path" :cursor "pointer" :onclick "../common/bin/open_path.sh ${path}& disown" (label :text "${type == "dir" ? "" : "󰈔"}    ${text}" :limit-width 32))
 )
-(defwidget link_button [url text] 
-    (eventbox :class "url" :cursor "pointer" :onclick "../common/bin/open_web.sh ${url}& disown" (label :text "󰌷    ${text}"))
+(defwidget link_button [url text ?icon] 
+    (eventbox :class "url" :cursor "pointer" :onclick "xdg-open '${url}'& disown" (label :text "${icon?: "󰌷"}    ${text}"))
 )
 
+(defwidget clipboard_text [content label ?icon]
+    (button :class "url" :timeout "128s" :onclick "wl-copy '${content}'" "${icon?: "󰅇"}    ${label}")
+)
 (defwidget clipboard_button [content label ?icon]
     (button :class "button" :timeout "128s" :onclick "wl-copy '${content}'" "${icon?: "󰅇"}    ${label}")
+)
+(defwidget clipboard_file_button [content label ?icon]
+    (button :class "button" :timeout "128s" :onclick "wl-copy < '${content}'" "${icon?: "󰅇"}    ${label}")
 )

@@ -1,86 +1,151 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-eww="eww -c $HOME/.config/eww/shell"
 
-create_temp() {
-    mkdir -p /tmp/eww/cache/clip
-    timestamp="$(date +'%Y_%m.%d_%H:%M:%S_qr')"
-    echo "/tmp/eww/cache/clip/${timestamp}.png"
+CACHE_DIR="/tmp/eww/cache/qr"
+
+update(){
+    eww -c $XDG_CONFIG_HOME/eww/shell update "$1"="$2"
 }
+update_many(){
+    eww -c $XDG_CONFIG_HOME/eww/shell update "$@"
+}
+
+popup(){
+    if [[ "$1" == "open" ]]; then
+        eww -c $XDG_CONFIG_HOME/eww/shell "open" screenshot_popup --screen "$(hyprctl monitors -j|jq '.[]|select(.focused)|.id')"
+    else
+        eww -c $XDG_CONFIG_HOME/eww/shell "close" screenshot_popup
+    fi
+}
+
+get(){
+    eww -c $XDG_CONFIG_HOME/eww/shell get "$1"
+}
+
 choose_region() {
     sleep 0.1
     area=$(slurp -w 0 -b "#4c566acc" -s "#ffffff00")
     sleep 0.5
     echo "$area"
 }
-close() {
-    $eww close screenshot_popup
-}
-open() {
-    $eww open screenshot_popup --screen $(hyprctl -j monitors|jq '.[]|select(.focused).id')
-}
 
-take_sc() {
-    file="$(create_temp)"
+scan_code(){
+    mkdir -p "$CACHE_DIR"
+    timestamp="$(date +'%Y_%m.%d_%H:%M:%S_qr')"
+    path="${CACHE_DIR}/${timestamp}.png"
     region="$(choose_region)"
-    if ! grim -g "$region" "$file"
-    then
-        open
-        exit
+    if ! grim -g "$region" "$path"; then
+        exit 1
     fi
-    echo "$file"
+    echo "$path"
+
 }
 
-wifi() {
-    IFS=';' read -ra fields <<< "$1"
-    declare -A map
-    for field in "${fields[@]}"
-    do
-        if [[ $field == "" ]]
-        then
-            continue
-        fi
-        IFS=":" read -r key val <<< "$field"
-        map["$key"]="$val"
-    done
-    $eww update qr_data="$(printf '{"type":"wifi","ssid":"%s","password":"%s","algorithm":"%s"}\n' "${map["S"]}" "${map["P"]}" "${map["T"]}")"
-
-
-}
-url(){
-    $eww update qr_data="$(printf '{"type":"url","url":"%s"}\n' "$1")"
-}
-
-main(){
-    close
-    file=$(take_sc)
-    if [[ $file == "" ]]
-    then
-        exit
+decode_qr(){
+    path="$1"
+    if ! raw="$(zbarimg -q "$path")"; then 
+        exit 1
     fi
-    contents=$(zbarimg -q "$file")
-    if [[ $contents == "" ]]
-    then
-        $eww update qr_error=true
-        $eww update qr_data='{}'
-        open
-        exit
-    else
-        $eww update qr_error=false
+    if [[ "$raw" == "" ]]; then
+        exit 1
     fi
-    IFS=":" read -r type datatype content <<< "$contents"
-    case $datatype in
-        WIFI)
-            wifi "$content";;
-        http|https)
-            url "$content";;
+    content="$(echo "$raw"|head -n1| tr -dc '[:print:]')"
+    raw="${raw/QR-Code:}"
+    IFS=":" read -r type data <<< "$content"
+    case $type in
+        QR-Code)
+            format="qr"
+            ;;
+        Codabar|CODE-*|DataBar|EAN-*)
+            format="bar"
+            ;;
         *)
-            echo "$datatype";;
+            format="misc"
+            ;;
     esac
-    open
+    if [[ "$format" != "qr" ]]; then
+        printf '{"path":"%s","type":"%s","encoding":"%s", "data": {"type":"text", "str":"%s"}}\n' "$path" "$format" "$type" "$data"
+        return
+    fi
+    IFS=":" read -r contentType data_np <<< "$data"
+    case $contentType in
+        http*)
+            printf '{"path":"%s","type":"%s", "encoding":"%s", "data":{"type":"web","str":"%s"}}' "$path" "$format" "$type" "$data"
+            exit
+            ;;
+        WIFI)
+            IFS=";" read -ra fields <<< "$data_np"
+            for field in "${fields[@]}"; do
+                case $field in 
+                    S*)
+                        ssid="${field:2}";;
+                    T*)
+                        sectype="${field:2}";;
+                    P*)
+                        passwd="${field:2}";;
+                    H*)
+                        hidden="${field:2}";;
+                esac
+            done
+            if [[ "$sectype" == "nopass" ]] || [[ "$passwd" == "" ]]; then
+                passwdRequired=false
+            else
+                passwdRequired=true
+            fi
+            printf '{"path":"%s","type":"%s", "encoding":"%s", "data":{"type":"wifi", "ssid":"%s", "security":"%s", "passwd":"%s", "passwdRequired":%s, "hidden":%s}}' \
+               "$path" "$format" "$type" "$ssid" "$sectype" "$passwd" "$passwdRequired" "${hidden:-false}"
+            ;;
+        BEGIN)
+            if ! [[ "$data" == "BEGIN:VCARD" ]]; then
+                exit 1
+            fi
+            while IFS= read -r line; do
+                case $line in 
+                    VERSION:*)
+                        version="${line:8}";;
+                    FN:*)
+                        name="${line:3}";;
+                    N:*)
+                        IFS=";" read -r lastname firstname <<< "${line:2}";;
+                    TITLE:*)
+                        title="${line:5}";;
+                esac
+            done <<< "$raw"
+            echo "$raw" >> "${path}.vcs"
+            printf '{"path":"%s","type":"%s", "encoding":"%s", "data":{"type":"contact", "version":"%s", "name":"%s", "firstname":"%s", "lastname":"%s", "title":"%s", "path":"%s"}}' \
+                "$path" "$format" "$type" "$version" "$name" "$firstname" "$lastname" "$title" "${path}.vcs"
+            exit
+            ;;
+        mailto)
+            addr="${data/mailto:}"
+            printf '{"path":"%s","type":"%s", "encoding":"%s", "data":{"type":"email", "str":"%s"}}' "$path" "$format" "$type" "$addr"
+            ;;
 
+        *)
+            printf '{"path":"%s","type":"%s", "encoding":"%s", "data":{"type":"text", "str":"%s"}}' "$path" "$format" "$type" "$data"
+            exit
+    esac
     
+
 }
 
+popup close
+sleep 0.1
 
-main "$@"
+if ! qr_data="$(scan_code)"; then
+    update_many screenshot_section=2 qr_error=true qr_error_msg="Selection aborted"
+    popup open
+    exit 1
+fi
+
+if ! result="$(decode_qr "$qr_data")"; then
+    popup open
+    update_many screenshot_section=2 qr_error=true qr_error_msg="No recognized code format found in the selection"
+    exit 2
+fi
+
+old_lines="$(get qr_data)"
+new_lines="$(echo "$old_lines"|jq --argjson new "$result" '. |= [$new] + .')"
+update_many screenshot_section=2 qr_error=false qr_error_msg='' qr_data="$new_lines"
+popup open
+

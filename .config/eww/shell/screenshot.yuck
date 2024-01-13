@@ -15,11 +15,13 @@
 (defvar screenshot_dest "disk")
 (defvar screenshot_selected_display "")
 
-;; (defvar colorp_zoom true)
-;; (defvar colorp_freeze false)
-;; (defvar colorp_color"")
-(defvar qr_data '{}')
+(defvar qr_data '[]')
 (defvar qr_error false)
+(defvar qr_error_msg '')
+
+(defvar qr_active_row '')
+
+(defvar qr_icons '{"bar":"󰁱","qr":"󰐲","misc":"󱔢"}')
 
 
 (defwidget screenshot_screen [] 
@@ -54,55 +56,90 @@
         )
     )
 )
+
+(defwidget screenshot_qr_row [qr_elem]
+    (box :class "row" :space-evenly false :orientation "v"
+        (box :class "padding_box" :space-evenly false
+            ;; (label :class "text-huge" :text {qr_icons[qr_elem.type]})
+            (eventbox :onclick "xdg-open ${qr_elem.path}"
+                (image :path {qr_elem.path} :image-width 48 :image-height 48)
+            )
+            (box :halign "end" :hexpand true :space-evenly false
+                (box :visible {qr_elem.data.type == "web"} :orientation "v"
+                    (link_button :url {qr_elem.data.str} :text {qr_elem.data.str})
+                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str})
+                ) 
+                (box :visible {qr_elem.data.type == "email"} :orientation "v"
+                    (link_button :url "mailto:${qr_elem.data.str}" :text "Mail to ${qr_elem.data.str}" :icon "󰺻")
+                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str})
+                ) 
+                (box :visible {qr_elem.data.type == "text"} :orientation "v"
+                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str})
+                ) 
+                (box :visible {qr_elem.data.type == "wifi"} :space-evenly false :spacing 16
+                    (wrapped_text :text "SSID: ${qr_elem.data.ssid}
+Security: ${qr_elem.data.security}
+Hidden: ${qr_elem.data.hidden ? "Yes" : "No"}
+Password: ${qr_elem.data.passwdRequired ? "Yes" : "No"}") 
+                    (box :orientation "v"
+                        (button :class "button" :timeout "128s" 
+                        :onclick "eww_settings.sh wifi; eww -c ~/.config/eww/settings update wifi_passwd='${qr_elem.data.passwd}' wifi_connect_ssid='${qr_elem.data.ssid}' wifi_password_reveal=true" 
+                        "󰤨    Connect")
+                        (clipboard_button :label "Copy Password" :content {qr_elem.data.passwd})
+                    )
+                ) 
+            )
+            (box :visible {qr_elem.data.type == "contact"} :space-evenly false :spacing 16
+                (label :class "title" :text "${qr_elem.data.name}")
+                (box :orientation "v"
+                    (button :class "button" :timeout "128s" 
+                    :onclick "${EWW_CMD} close screenshot_popup; ../common/bin/save.sh 'Save Contact as' '${qr_elem.data.path}' '${qr_elem.data.name}.vcs'" 
+                    "󰆓    Save")
+                    (clipboard_file_button :label "Copy Contact" :content {qr_elem.data.path})
+                )
+            ) 
+        )
+
+
+
+    )
+)
+
 (defwidget screenshot_qr [] 
     (box :orientation "v" :space-evenly false :visible "${screenshot_section == 2}":hexpand true :vexpand true
-        (label :class "heading" :text "Select a QR Code")
+        (label :class "heading" :text "Select a QR or Bar Code")
         (box :vexpand true :class "padding_box"
-            (box  :visible "${qr_data.type == "wifi"}"
+            (scroll :class "scroll-tiny"
                 (box :orientation "v" :space-evenly false
-                    (icon_large :name "scalable/devices/network-wireless.svg")
-                    (label :text "${qr_data.ssid}" :class "heading")
-                )
-                (box :orientation "v" :space-evenly false
-                    (clipboard_button :content "${qr_data.password}" :label "Copy Password")
-                    (clipboard_button :content "${qr_data.ssid}" :label "Copy SSID")
+                    (for qr_item in qr_data
+                        (screenshot_qr_row :qr_elem "${qr_item}")
+                    )
                 )
             )
         )
-        (box :space-evenly false :halign "center"
-            (button :class "button" :timeout "256s" :onclick "bin/qr_decode.sh" "󰐳    Scan QR Code")
-            (error :if "${qr_error}" :text "Failed to Process QR Code. Make sure that you select the whole QR Code")
+        (box :hexpand true :space-evenly false :halign "center"
+            (button :class "button" :timeout "16s" :onclick "bin/qr_decode.sh&" "󰐳    Scan")
+            (button :class "button-error" :timeout "16s" :onclick "${EWW_CMD} update qr_data='[]' qr_error=false qr_error_msg=''" "󰩹    Clear")
+            (error :if qr_error :text "${qr_error_msg}")
         )
     )
 )
-;; (defwidget screenshot_color [] 
-;;     (box :orientation "v" :space-evenly false :visible "${screenshot_section == 2}":hexpand true
-;;         (label :class "heading" :text "Select a Color")
-;;         (box :vexpand true :class "padding_box"
-;;             (label :text "${colorp_color ?: "test"}")
-;;         )
-;;         (box :space-evenly false :halign "center"
-;;             (button :class "button${colorp_zoom ? "-active" : ""}" :onclick "${EWW_CMD} update colorp_zoom=${!colorp_zoom}" "    Zoom")
-;;             (button :class "button${colorp_freeze ? "-active" : ""}" :onclick "${EWW_CMD} update colorp_freeze=${!colorp_freeze}" "    Freeze Displays")
-;;             (button :class "button" :timeout "256s" :onclick "bin/screenshot_menu.sh color ${colorp_freeze} ${colorp_zoom}" "󰴱    Select Color")
-;;         )
-;;     )
-;; )
-
 
 (defwidget screenshot []
     (box :space-evenly false :halign "center" :valign "center"
         (box :space-evenly false :orientation "v" :class "popup_box-sc"
+            (box :halign "end"
+                (close_button :window "screenshot_popup")
+            )
             (box :class "" :space-evenly false  :hexpand true :vexpand true
                (screenshot_screen) 
                (screenshot_selection) 
-               ;; (screenshot_qr) 
+               (screenshot_qr) 
             )
             (box :class "popup_footer"
                 (button :class "button${screenshot_section == 0 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=0&&bin/screenshot_menu.sh list_monitors" "󰍹    Screen")
                 (button :class "button${screenshot_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=1" "󰲎    Selection")
-                ;; (button :class "button${screenshot_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=2" "󰐳    Scan")
-                (button :class "button" :timeout "16s" :onclick "${EWW_CMD} close screenshot_popup" "Quit")
+                (button :class "button${screenshot_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=2" "󰐳    QR")
             )
         )
     )

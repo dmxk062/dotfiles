@@ -7,4 +7,5 @@ nwg-drawer -c 8 \
            -ovl \
            -term "kitty" \
            -is 64 \
+           -nofs \
            -nocats -r & disown 

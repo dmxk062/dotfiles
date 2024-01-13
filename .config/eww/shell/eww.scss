@@ -21,7 +21,7 @@
 }
 .popup_box-sc{
     min-width: 32rem;
-    min-height: 24rem;
+    min-height: 28rem;
 }
 .popup_box-no_shadow{
     box-shadow: unset;
@@ -130,7 +130,24 @@
     border-radius: $rounding-small;
 }
 
+.close-button{
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: $fg;
+    -gtk-icon-transform: scale(1.5);
+    background-position: center;
+    background-color: $bg3;
+    margin: .5rem;
+    border-radius: 50%;
+    label {font-weight: 800;}
+    min-height: 1.5rem;
+    min-width: 1.5rem;
+    padding: .1rem;
+    &:hover {
+        background-color: $red;
+        color: $inverted;
+    }
 
+}
 
 @import "popups/style.scss";
 @import "dock/style.scss";

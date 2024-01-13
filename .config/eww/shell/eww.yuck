@@ -1,5 +1,10 @@
 (defvar look_colorscheme "dark")
 
+
+(defwidget close_button [window]
+    (button :class "close-button" :timeout "128s" :onclick "sleep 0.1; ${EWW_CMD} close ${window}" "󰖭")
+)
+
 (include "../common/widgets.yuck")
 (include "../common/widgets/icons.yuck")
 (include "../common/widgets/row.yuck")
