@@ -1,3 +1,5 @@
+(defvar look_colorscheme "dark")
+
 (include "../common/widgets.yuck")
 (include "../common/widgets/icons.yuck")
 (include "../common/widgets/row.yuck")

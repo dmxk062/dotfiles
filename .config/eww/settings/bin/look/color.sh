@@ -48,6 +48,7 @@ fi
 killall hyprmon.sh
 sleep 0.1
 eww -c $XDG_CONFIG_HOME/eww/settings update look_colorscheme="$color"
+eww -c $XDG_CONFIG_HOME/eww/shell update look_colorscheme="$color"
 eww -c $XDG_CONFIG_HOME/eww/shell open desktop_area --screen 0
 $XDG_CONFIG_HOME/eww/settings/bin/audio_state.sh
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sinks & disown
