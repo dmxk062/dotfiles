@@ -22,7 +22,8 @@ $EWWDIR/shell/dock/bin/open_dock.sh & disown
 sleep 2
 
 
-touch /tmp/.eww_osk_overlay
+mkdir -p '/tmp/eww/cache/clip' '/tmp/eww/cache/qr' '/tmp/eww/cache/wifi' '/tmp/eww/state/displays'
+
 $EWWDIR/settings/bin/audio_state.sh
 $EWWDIR/settings/bin/sinks_sources.sh upd sinks & disown
 $EWWDIR/settings/bin/sinks_sources.sh upd sources & disown
