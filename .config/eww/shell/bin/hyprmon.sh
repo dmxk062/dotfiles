@@ -40,6 +40,7 @@ workspace_order='{
 "games":300,
 "srv":350,
 "external":370,
+"mirror":371,
 "special:1":400,
 "special:2":401,
 "special:3":402,

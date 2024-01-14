@@ -31,3 +31,4 @@ windowrulev2 = noblur,class:yuzu
 windowrulev2 = workspace name:games,class:yuzu
 windowrulev2 = idleinhibit always,class:yuzu
 
+

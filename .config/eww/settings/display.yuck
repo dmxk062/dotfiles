@@ -19,6 +19,8 @@
 
 (defvar monitor_err_vrr false)
 
+(defvar monitor_mirrored '{"source":"","target":""}')
+
 
 (defwidget display_section []
     (box :visible "${selected_section == 2}" :class "section_box"  :valign "fill" :hexpand true :vexpand true :orientation "h" :space-evenly false
@@ -40,6 +42,14 @@
                                 (wrapped_text :text "Transform the Monitor in Hyprland. 
 Current Transformation: ${transform_states[mon.transform]}
 Raw Value as seen by Hyprland: ${mon.transform}")
+                            )
+                            (list_box
+                                (button :timeout "128s"
+                                :class "button${monitor_mirrored.source == mon.name || monitor_mirrored.target == mon.name ? "-active" : ""}" 
+                                :onclick "bin/mirror_display.sh toggle ${mon.name} DP-3" 
+                                {monitor_mirrored.source == mon.name ? "Mirrored to ${monitor_mirrored.target}" : 
+                                (monitor_mirrored.target == mon.name ? "Mirroring ${monitor_mirrored.source}" : "󱇽    Mirror")}
+                                )
                             )
                             (list_box
                                 (input :class "input" :value {mon.scale} :onaccept "bin/monitor_settings.sh scale ${mon.name} {}")

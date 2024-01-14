@@ -9,4 +9,6 @@ list(){
 case $1 in
     upd)
         $eww_settings update monitors="$(list)";;
+
+        
 esac

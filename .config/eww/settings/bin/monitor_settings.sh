@@ -50,4 +50,5 @@ case $1 in
         cmdline="${2},${current_x}x${current_y}@${current_refresh},${current_a}x${current_b},${current_scale},transform, ${current_transform},vrr,${3}"
         hyprctl keyword monitor "$cmdline";;
 
+
 esac

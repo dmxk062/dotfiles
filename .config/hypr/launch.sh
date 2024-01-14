@@ -5,7 +5,7 @@
 $HOME/.config/background/wallpaper.sh set
 $HOME/.config/hypr/eww.sh & disown
 killall udiskmon 
-nwg-drawer -r & disown 
+$XDG_CONFIG_HOME/eww/shell/dock/bin/nwg_drawer.sh --initial& disown 
 $HOME/.config/mako/scripts/diskmon.sh & disown #script to notify about inserted usbs
 swayidle -w& disown #idle daemon for lockscreen & suspending
 killall playerctld 
