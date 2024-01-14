@@ -46,7 +46,7 @@ Raw Value as seen by Hyprland: ${mon.transform}")
                             (list_box
                                 (button :timeout "128s"
                                 :class "button${monitor_mirrored.source == mon.name || monitor_mirrored.target == mon.name ? "-active" : ""}" 
-                                :onclick "bin/mirror_display.sh toggle ${mon.name} DP-3" 
+                                :onclick "bin/mirror_display.sh interactive ${mon.name}" 
                                 {monitor_mirrored.source == mon.name ? "Mirrored to ${monitor_mirrored.target}" : 
                                 (monitor_mirrored.target == mon.name ? "Mirroring ${monitor_mirrored.source}" : "󱇽    Mirror")}
                                 )

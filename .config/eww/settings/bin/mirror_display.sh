@@ -12,7 +12,7 @@ background(){
     echo "${1} ${2} $pid" > "${FSPATH}/mirrored"
     wait $pid
     rm "${FSPATH}/mirrored"
-    update monitor_mirrored '{"source":"","target":""}'
+    update monitor_mirrored '{"source":"","target":"","active":false}'
 }
 
 
@@ -20,11 +20,12 @@ mkdir -p "$FSPATH"
 
 on(){
     background "$source" "$target" & 
+    oldwin="$(hyprctl -j activewindow|jq '.address' -r)"
     sleep 0.1
     hyprctl dispatch moveworkspacetomonitor name:mirror $target
     sleep 0.1
-    hyprctl dispatch focusmonitor mon:${source}
-    state="$(printf '{"source":"%s","target":"%s"}' "$source" "$target")"
+    hyprctl dispatch focuswindow address:$oldwin
+    state="$(printf '{"source":"%s","target":"%s","active":true}' "$source" "$target")"
     update monitor_mirrored "$state"
 }
 off(){
@@ -32,8 +33,8 @@ off(){
     kill $pid
 }
 
-source="$2"
-target="$3"
+source="$3"
+target="$2"
 case $1 in
     on)
         on
@@ -48,6 +49,29 @@ case $1 in
             on
         fi
         ;;
+    interactive)
+        if [[ -f "${FSPATH}/mirrored" ]]; then
+            off
+            exit
+        fi
+        eww -c $XDG_CONFIG_HOME/eww/settings close settings
+        monitors="$(hyprctl -j monitors|jq '.[].name' -r)"
+        args=""
+        while IFS= read -r monitor; do
+            if [[ "$monitor" != "$target" ]]; then
+                args="${args} --extra-button=${monitor}"
+            fi
+        done <<< "${monitors}"
+
+        source="$(zenity --question --icon=preferences-desktop-display-randr \
+        --switch --text="Select the monitor to mirror" --title="Monitor Selection" $args)"
+        if [[ "$target" == "" ]]; then
+            eww_settings.sh display
+            exit
+        fi
+        on
+        eww_settings.sh display
+
 esac
 
 
