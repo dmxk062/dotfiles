@@ -18,7 +18,7 @@ init
 
 while true; do
 
-    path="$GPUPATH"
+    path="$GPUPATH/device"
     temp="${path}/hwmon/hwmon*"
     mem_used=$(< $path/mem_info_vram_used)
     mem_total=$(< $path/mem_info_vram_total)

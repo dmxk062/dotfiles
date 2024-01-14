@@ -7,9 +7,11 @@ then
     if grep -q 'dark.scss' "$colorfile"
     then
         eww -c $XDG_CONFIG_HOME/eww/settings update look_colorscheme="dark"
+        eww -c $XDG_CONFIG_HOME/eww/shell update look_colorscheme="dark"
         makoctl mode -a "dark_theme"
     else
         eww -c $XDG_CONFIG_HOME/eww/settings update look_colorscheme="light"
+        eww -c $XDG_CONFIG_HOME/eww/shell update look_colorscheme="light"
     fi
     exit
 fi
