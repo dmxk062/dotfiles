@@ -104,7 +104,6 @@ function genqr(){
     SEC="$(nmcli device wifi show-password|grep "Security:"|cut -d ' ' -f 2)"
     PASSWD="$(nmcli device wifi show-password|grep "Password:"|cut -d ' ' -f 2)"
     timestamp="$(date +'%H_qr')"
-    mkdir -p "$QR_PATH"
     path="${QR_PATH}/$SSID.$timestamp.png"
     qrencode -s 6 -l H -o "$path" "WIFI:T:$SEC;S:$SSID;P:$PASSWD;;" --foreground=2E3440 --background=ECEFF4 
     echo "$path"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-LOCKFILE='/tmp/.eww_no_rotate'
+LOCKFILE='/tmp/eww/state/no_autorotate'
 eww="eww -c $XDG_CONFIG_HOME/eww/shell"
 # THIS IS HARDCODED FOR MY CURRENT LAPTOP
 

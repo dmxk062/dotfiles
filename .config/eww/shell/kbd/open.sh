@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-[ -f /tmp/.eww_osk_overlay ]&&winsuffix="_overlay"||winsuffix=""
+LOCKFILE="/tmp/eww/state/osk_tile"
+[ -f "$LOCKFILE" ]&&winsuffix=""||winsuffix="_overlay"
 echo "$winsuffix"
 if eww -c $XDG_CONFIG_HOME/eww/shell close kbd_window${winsuffix}; then
     eww -c $XDG_CONFIG_HOME/eww/shell update input_osk=false

@@ -30,7 +30,6 @@ choose_region() {
 }
 
 scan_code(){
-    mkdir -p "$CACHE_DIR"
     timestamp="$(date +'%Y_%m.%d_%H:%M:%S_qr')"
     path="${CACHE_DIR}/${timestamp}.png"
     region="$(choose_region)"

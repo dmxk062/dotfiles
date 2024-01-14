@@ -16,8 +16,6 @@ background(){
 }
 
 
-mkdir -p "$FSPATH"
-
 on(){
     background "$source" "$target" & 
     oldwin="$(hyprctl -j activewindow|jq '.address' -r)"

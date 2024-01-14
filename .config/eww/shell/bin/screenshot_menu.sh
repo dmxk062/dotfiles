@@ -1,6 +1,7 @@
 #!/bin/bash
 eww="eww -c $HOME/.config/eww/shell"
 
+CACHEDIR="/tmp/eww/cache/clip"
 notify(){
     notify-send "$1" -i "$2" -c "screenshot"
 }
@@ -32,9 +33,8 @@ close_if_eww(){
     fi
 }
 create_temp() {
-    mkdir -p /tmp/eww/cache/clip
     timestamp="$(date +'%Y_%m.%d_%H:%M:%S_sc')"
-    echo "/tmp/eww/cache/clip/${timestamp}.png"
+    echo "${CACHEDIR}/${timestamp}.png"
 }
 create_file() {
     dir="$(xdg-user-dir PICTURES)/Screenshots"

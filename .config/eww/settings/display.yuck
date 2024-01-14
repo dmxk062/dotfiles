@@ -100,7 +100,8 @@ Scaling: ${mon.scale}x")
                                  :height "${mon.transform % 2 == 1 ? "${round(mon.width / 10,0)}": "${round(mon.height / 10,0)}"}" 
                                  :class "display${mon.name == selected_monitor ? "-active" : ""}" 
                                 (label :text "${mon.name}
-at ${mon.x}x${mon.y}")
+at ${mon.x}x${mon.y}
+${monitor_mirrored.target == mon.name ? "Mirroring ${monitor_mirrored.source}" : ""}")
                             )
                         )
                     )       

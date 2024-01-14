@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
+CACHEDIR="/tmp/eww/cache/clip"
+
 eww -c $XDG_CONFIG_HOME/eww/shell close rc_popup
 sleep 0.5
 
 create_temp() {
-    mkdir -p /tmp/eww/cache/clip
     timestamp="$(date +'%Y_%m.%d_%H:%M:%S_sc')"
-    echo "/tmp/eww/cache/clip/${timestamp}.png"
+    echo "${CACHEDIR}/${timestamp}.png"
 }
 create_file() {
     dir="$(xdg-user-dir PICTURES)/Screenshots"

@@ -1,8 +1,9 @@
 #!/bin/bash
 
+LOCKFILE="/tmp/eww/state/no_popups"
 eww="eww -c $HOME/.config/eww/shell"
 
-[ -f /tmp/.eww_no_popups ]&&exit
+[ -f "$LOCKFILE" ]&&exit
 
 get_screen(){
     hyprctl monitors -j|jq '.[]|select(.focused)|.id'

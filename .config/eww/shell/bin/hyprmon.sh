@@ -93,12 +93,6 @@ function monitor_changes(){
                         -i "$SUBMAP_ICON" \
                         -a "eww_submap" -r $NOTIFID -p "$map")
                 fi
-                # if [[ $map != "" ]]
-                # then
-                #     $XDG_CONFIG_HOME/eww/shell/popups/bin/submap.sh on
-                # else
-                #     $XDG_CONFIG_HOME/eww/shell/popups/bin/submap.sh off
-                # fi
 
                 ;;
             "activewindowv2>>$urgent_win")

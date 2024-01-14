@@ -2,8 +2,7 @@
 
 eww="eww -c $HOME/.config/eww/shell"
 
-LOCKFILE="/tmp/.eww_ws_popup_shown"
-
+LOCKFILE="/tmp/eww/state/ws_popup_active"
 case $1 in
     next)
         hyprctl dispatch workspace m-1;;
@@ -11,8 +10,7 @@ case $1 in
         hyprctl dispatch workspace m+1;;
 esac
 
-[ -f /tmp/.eww_no_popups ]&&exit
-$eww update new_ws="$(hyprctl -j activeworkspace)"
+[ -f "/tmp/eww/state/no_popups" ]&&exit
 if ! [ -f "$LOCKFILE" ]
 then
     touch "$LOCKFILE"

@@ -1,13 +1,13 @@
 #!/bin/bash
-
+GPUPATH="/tmp/eww/state/gpu"
 function init(){
-    if [[ -e "/tmp/.gpudev" ]]
+    if [[ -e "$GPUPATH" ]]
     then
         return
     fi
     for card in /sys/class/drm/card[0-9]
     do
-        ln -s "$card" /tmp/.gpudev
+        ln -s "$card" "$GPUPATH"
     done
 }
 function nice(){
@@ -18,7 +18,7 @@ init
 
 while true; do
 
-    path="/tmp/.gpudev/device"
+    path="$GPUPATH"
     temp="${path}/hwmon/hwmon*"
     mem_used=$(< $path/mem_info_vram_used)
     mem_total=$(< $path/mem_info_vram_total)
