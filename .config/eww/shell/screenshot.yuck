@@ -70,15 +70,15 @@
             )
             (box :halign "end" :hexpand true :space-evenly false
                 (box :visible {qr_elem.data.type == "web"} :orientation "v"
-                    (link_button :url {qr_elem.data.str} :text {qr_elem.data.str} :length 48)
-                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str} :length 48)
+                    (link_button :url {qr_elem.data.str} :text {qr_elem.data.str} :length 40)
+                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str} :length 40)
                 ) 
                 (box :visible {qr_elem.data.type == "email"} :orientation "v"
                     (link_button :url "mailto:${qr_elem.data.str}" :text "Mail to ${qr_elem.data.str}" :icon "󰺻")
                     (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str})
                 ) 
                 (box :visible {qr_elem.data.type == "text"} :orientation "v"
-                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str} :length 48)
+                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str} :length 40)
                 ) 
                 (box :visible {qr_elem.data.type == "wifi"} :space-evenly false :spacing 16
                     (wrapped_text :text "SSID: ${qr_elem.data.ssid}
@@ -96,9 +96,7 @@ Password: ${qr_elem.data.passwdRequired ? "Yes" : "No"}")
             (box :visible {qr_elem.data.type == "contact"} :space-evenly false :spacing 16
                 (label :class "title" :text "${qr_elem.data.name}")
                 (box :orientation "v"
-                    (button :class "button" :timeout "128s" 
-                    :onclick "${EWW_CMD} close screenshot_popup; ../common/bin/save.sh 'Save Contact as' '${qr_elem.data.path}' '${qr_elem.data.name}.vcs'" 
-                    "󰆓    Save")
+                    (save_from_file :file {qr_elem.data.path} :title "Save Contact as" :text "Save" :name "${qr_elem.data.name}.vcs")
                     (clipboard_file_button :label "Copy Contact" :content {qr_elem.data.path})
                 )
             ) 

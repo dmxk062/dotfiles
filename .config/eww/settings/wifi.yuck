@@ -68,10 +68,7 @@
                         (box :class "padding_box" :vexpand true :space-evenly false :orientation "v"
                             (box :space-evenly false :orientation "v" :vexpand true
                             (image :path "${wifi_status.qrpath}" :image-width 180 :image-height 180))
-                            (button :class "button" :timeout "128s" 
-                                :onclick "${EWW_CMD} close settings; ../common/bin/save.sh 'Save QR-Code as' '${wifi_status.qrpath}' '${wifi_status.ssid}.png'"  "󰆓    Save")
-
-
+                            (save_from_file :file {wifi_status.qrpath} :name "${wifi_status.ssid}.png" :text "Save" :title "Save QR-Code as" :precmd "${EWW_CMD} close settings" :postcmd "eww_settings.sh")
                         )
                         (box :class "card_footer" :orientation "v"
                             (button :class "button" :onclick "${EWW_CMD} update wifi_show_qr=false" "Close")

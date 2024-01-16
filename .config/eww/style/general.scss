@@ -1,6 +1,5 @@
 @import "./color.scss";
 @import "./size.scss";
-@import "./menu.scss";
 
 @mixin shadow(){
     box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
@@ -110,7 +109,7 @@
 
 }
 
-.tick, .tick-on {
+.tick, .tick-on{
     transition: background-color 0.3s ease, color 0.3s ease;
     border-radius: 20%;
     margin: 0.4rem;

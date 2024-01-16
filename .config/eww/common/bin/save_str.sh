@@ -2,16 +2,15 @@
 
 cd || exit
 title="$1"
-origin="$2"
+data="$2"
 name="$3"
 
 savepath="$(zenity --file-selection \
     --title="$title" \
-    --save \
-    --filename="$name")"
+    --save --filename="$name")"
 
 if [[ "$savepath" == "" ]]; then
     exit
 else
-    cp "$origin" "$savepath"
+    echo "$data" > "$savepath" 
 fi

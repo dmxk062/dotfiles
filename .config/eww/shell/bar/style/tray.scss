@@ -1,14 +1,34 @@
 
 check {
-    border-radius: $rounding-small;
-    min-width: 1rem;
-    min-height: 1rem;
-    background-color: $bg2;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 40%;
     margin-right: .5rem;
-    &:checked{
-        background-color: $accent;
+    color: $bg1;
+    border: 2px solid $bg3;
+    min-height: 1rem;
+    min-width: 1rem;
+    &:hover{
+        background-color: $bg2;
     }
+    image {
+        margin: .1rem;
+    }
+    &:checked {
+        background-color: $accent;
+        color: $inverted;
+        background-image: -gtk-icontheme('dino-tick-symbolic');
+        background-repeat: no-repeat;
+        border: 2px solid $accent;
+        background-position: center;
+        &:hover{
+            background-color: fade($accent);
+            border: 2px solid fade($accent);
+        }
+    }
+
 }
+
+
 window {
     decoration {
         // box-shadow: 0 8px 6px -5px rgba(0,0,0,0.5);
@@ -28,7 +48,6 @@ menu {
     padding-top: 1rem;
     
     menu {
-        border-radius: $rounding-small;
         padding: .4rem;
         margin: 1rem;
     }
@@ -67,8 +86,6 @@ menubar {
         margin: .5rem;
         &:hover{
             background-color: $bg3;
-        }
-        image {
         }
 
     }

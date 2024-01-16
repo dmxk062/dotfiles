@@ -115,8 +115,8 @@ decode_qr(){
                 "$path" "$format" "$type" "$version" "$name" "$firstname" "$lastname" "$title" "${path}.vcs"
             exit
             ;;
-        mailto)
-            addr="${data/mailto:}"
+        mailto|MAILTO)
+            addr="${data:7}"
             printf '{"path":"%s","type":"%s", "encoding":"%s", "data":{"type":"email", "str":"%s"}}' "$path" "$format" "$type" "$addr"
             ;;
 

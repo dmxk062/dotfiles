@@ -14,6 +14,7 @@
 (include "storage.yuck")
 (include "../common/widgets.yuck")
 (include "../common/widgets/icons.yuck")
+(include "../common/widgets/save_button.yuck")
 (include "../common/widgets/row.yuck")
 (include "../common/variables.yuck")
 

@@ -49,10 +49,10 @@
             )
             (box :class "popup_footer" :orientation "v" :space-evenly false
                 (box :visible "${mpris_meta.avail && mpris_meta.pos != ""}"
-                    (box :class "padded_box_large" :orientation "v"
-                        (label :text "${formattime(round(mpris_meta.pos / 1000000,0),"%H:%M:%S", "UTC")} of ${formattime(round(mpris_meta.len / 1000000,0),"%H:%M:%S", "UTC")}" :class "text")
+                    (box :class "padded_box" :orientation "v"
                         (scale :value "${(mpris_meta.pos / mpris_meta.len)*100}" :class "slider"
                         :onchange "bin/mpris.sh jump {} ${mpris_meta.len / 1000000}")
+                        (label :text "${formattime(round(mpris_meta.pos / 1000000,0),"%H:%M:%S", "UTC")} of ${formattime(round(mpris_meta.len / 1000000,0),"%H:%M:%S", "UTC")}" :class "text")
                     )
                 )
                 (centerbox :space-evenly false
