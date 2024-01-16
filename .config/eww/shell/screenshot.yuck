@@ -96,7 +96,7 @@ Password: ${qr_elem.data.passwdRequired ? "Yes" : "No"}")
             (box :visible {qr_elem.data.type == "contact"} :space-evenly false :spacing 16
                 (label :class "title" :text "${qr_elem.data.name}")
                 (box :orientation "v"
-                    (save_from_file :file {qr_elem.data.path} :title "Save Contact as" :text "Save" :name "${qr_elem.data.name}.vcs")
+                    (save_from_file :file {qr_elem.data.path} :title "Save Contact as" :text "Save" :name "${qr_elem.data.name}.vcs" :precmd "${EWW_CMD} close screenshot_popup" :postcmd "./bin/screenshot_menu.sh toggle")
                     (clipboard_file_button :label "Copy Contact" :content {qr_elem.data.path})
                 )
             ) 
