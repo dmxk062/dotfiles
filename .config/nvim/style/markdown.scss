@@ -5,8 +5,8 @@
     --color-text-tertiary: #{$lfg2};
     --color-text-link: #{$dblue};
     --color-bg-primary: #{$lbg1};
-    --color-bg-secondary: #{$lbg2};
-    --color-bg-tertiary: #{$lbg3};
+    --color-bg-secondary: #{rgba($lbg2, 0.2)};
+    --color-bg-tertiary: #{rgba($lbg3, 0.2)};
     --color-border-primary: #{$lbg2};
     --color-border-secondary: #{$lbg3};
     --color-border-tertiary: #{$dbg3};
@@ -14,8 +14,9 @@
     --color-markdown-blockquote-border: #{$lbg2};
     --color-markdown-table-border: #{$lbg2};
     --color-markdown-table-tr-border: #{$lbg2};
-    --color-markdown-code-bg: #{$snow1};
+    --color-markdown-code-bg: #{rgba($lbg2, 0.2)};
     --color-faded: #{$lbg3};
+    --color-inverted: #{$lfg1};
 }
 [data-theme="dark"] {
     --color-text-primary: #{$dfg1};
@@ -33,6 +34,7 @@
     --color-markdown-table-tr-border: #{$dbg3};
     --color-markdown-code-bg: #{rgba($dbg3, 0.1)};
     --color-faded: #{$dbg3};
+    --color-inverted: #{$lfg1};
 }
 
 .markdown-body ol ol,
@@ -312,6 +314,7 @@
 
 /* from here all my custom stuff */
 
+// colors
 .r {
     color: $red;
 }
@@ -330,3 +333,16 @@
 .p {
     color: $pink;
 }
+
+.rr, .ry, .ro, .rg, .rb, .rp {
+    color: var(--color-inverted);
+    padding-left: .5rem;
+    padding-right: .5rem;
+}
+
+.rr {background-color: $red}
+.ro{background-color: $orange}
+.ry{background-color: $yellow}
+.rg{background-color: $green}
+.rb{background-color: $dblue}
+.rp{background-color: $pink}
