@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 function set(){
     if ! swww query
     then
@@ -15,13 +13,11 @@ function set(){
         "$HOME/.config/background/wall"
 }
 function set_as_wall(){
-    echo "new wall: $1"
     unlink "$HOME/.config/background/wall"
     ln -s "$1" "$HOME/.config/background/wall"
 }
 
 function set_as_lock(){
-    echo "new lock: $1"
     unlink "$HOME/.config/background/lock"
     ln -s "$1" "$HOME/.config/background/lock"
 }
