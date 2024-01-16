@@ -1,0 +1,33 @@
+{
+    "Red text": {
+        "prefix": "red",
+        "body": ["<span class=r>${1:text}</span>"],
+        "description": "Create red text"
+    },
+    "Yellow text": {
+        "prefix": "yellow",
+        "body": ["<span class=y>${1:text}</span>"],
+        "description": "Create yellow text"
+    },
+    "Orange text": {
+        "prefix": "orange",
+        "body": ["<span class=0>${1:text}</span>"],
+        "description": "Create orange text"
+    },
+    "Green text": {
+        "prefix": "green",
+        "body": ["<span class=g>${1:text}</span>"],
+        "description": "Create green text"
+    },
+    "Blue text": {
+        "prefix": "blue",
+        "body": ["<span class=b>${1:text}</span>"],
+        "description": "Create blue text"
+    },
+    "Pink text": {
+        "prefix": "pink",
+        "body": ["<span class=p>${1:text}</span>"],
+        "description": "Create pink text"
+    }
+
+}
