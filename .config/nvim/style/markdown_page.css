@@ -41,13 +41,8 @@ main {
   justify-content: space-between;
   padding: 8px;
   background-color: var(--background-color);
-  border-color: var(--border-color);
-  border-style: solid;
-  border-width: 1px 1px 0;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
   line-height: 24px;
-  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
+  font-family: "Torus Pro", "Torus", "Cantarell", "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
 
 #page-header svg {
   display: inline-block;

@@ -53,11 +53,11 @@
 
     cmp.setup.filetype('markdown', {
         sources = cmp.config.sources({
-            { name = 'buffer' },
-            { name = 'spell' },
-            { name = 'nvim_lsp' },
             { name = 'luasnip' },
-            { name = 'path' }
+            { name = 'path' },
+            { name = 'buffer' },
+            { name = 'nvim_lsp' },
+            { name = 'spell' } -- move spell to the bottom so it doesnt slow it down that much
         })
     })
     cmp.setup.filetype('zsh', {

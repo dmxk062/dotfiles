@@ -1,4 +1,20 @@
 {
+    "Insert code block": {
+        "prefix": "codeblock",
+        "body": ["```${1:language}", "$0", "```"],
+        "description": "Insert fenced code block"
+    },
+
+    "Superscript":{
+        "prefix":"sup",
+        "body": ["<sup>${1}</sup>"],
+        "description": "Create a superscript character"
+    },
+    "Subscript":{
+        "prefix":"sub",
+        "body": ["<sub>${1}</sub>"],
+        "description": "Create a superscript character"
+    },
     "Red text": {
         "prefix": "red",
         "body": ["<span class=r>${1:text}</span>"],
@@ -11,7 +27,7 @@
     },
     "Orange text": {
         "prefix": "orange",
-        "body": ["<span class=0>${1:text}</span>"],
+        "body": ["<span class=ro>${1:text}</span>"],
         "description": "Create orange text"
     },
     "Green text": {
@@ -28,6 +44,36 @@
         "prefix": "pink",
         "body": ["<span class=p>${1:text}</span>"],
         "description": "Create pink text"
+    },
+    "Red marker": {
+        "prefix": "rred",
+        "body": ["<span class=rr>${1:text}</span>"],
+        "description": "Create red reverse text"
+    },
+    "Yellow marker": {
+        "prefix": "ryellow",
+        "body": ["<span class=ry>${1:text}</span>"],
+        "description": "Create yellow reverse text"
+    },
+    "Orange marker": {
+        "prefix": "rorange",
+        "body": ["<span class=ro>${1:text}</span>"],
+        "description": "Create orange reverse text"
+    },
+    "Green marker": {
+        "prefix": "rgreen",
+        "body": ["<span class=rg>${1:text}</span>"],
+        "description": "Create green reverse text"
+    },
+    "Blue marker": {
+        "prefix": "rblue",
+        "body": ["<span class=rb>${1:text}</span>"],
+        "description": "Create blue reverse text"
+    },
+    "Pink marker": {
+        "prefix": "rpink",
+        "body": ["<span class=rp>${1:text}</span>"],
+        "description": "Create pink reverse text"
     }
 
 }
