@@ -1,5 +1,4 @@
 (defvar workspaces "[]")
-(defvar urgent_ws '')
 (include "bar/overview.yuck")
 
 (defwidget workspaces[]
@@ -9,7 +8,7 @@
             (overview_button)
             (revealer :reveal {!overview} :transition "slideleft" :duration "200ms" (box :space-evenly false :class "inner-leftbox" 
                 (box :space-evenly false (for ws in workspaces
-                    (button :class "ws-${ws.id == urgent_ws ? "urgent" : (ws.active ? "active" : (ws.special ? ( ws.id == window?.workspace?.id ? "special-active" : "special-inactive") : "inactive"))}"  
+                    (button :class "ws-${ws.active ? "active" : (ws.special ? ( ws.id == window?.workspace?.id ? "special-active" : "special-inactive") : "inactive")}"  
                     :onclick "${ws.special ? "hyprctl dispatch togglespecialworkspace ${replace(ws.name,"special:","")}" : "bin/hyprmon.sh switch ${ws.id} ${ws.name}"}"
                     :visible {ws.name != "OVERVIEW"}
                     :tooltip "Name: ${ws.name}

@@ -119,9 +119,13 @@
                     (for stream in streams
                         (box :class "card" :space-evenly false :orientation "v"
                             (box :class "padding_box" :space-evenly false
-                                (icon :name "scalable/apps/${stream.icon}.svg")
+                                ;; (image :icon {stream.icon} :icon-size "dialog" :image-width 64)
+                                (icon :name {stream.iconAbs ? 
+                                    "../${stream.icon}.svg" :
+                                    "scalable/apps/${stream.icon}.svg"})
                                 (box :orientation "v" :space-evenly false
                                     (label :class "card-label" :text "${stream.name}" :limit-width 24 :tooltip "${stream.name} in ${stream.app}")
+                                    (label :class "text" :text {stream.app} :limit-width 48 )
                                     (box :class "sliderbox" :space-evenly false :hexpand true
                                         (scale :class "audio-slider${stream.volume > 100 ? "-overamplified" : ""}" :value {stream.volume} :min 1 :max 100 :onchange "bin/audio/streamval.sh ${stream.id} {}&" :hexpand true)
                                     )

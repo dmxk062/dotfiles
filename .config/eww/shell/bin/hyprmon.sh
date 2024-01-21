@@ -76,10 +76,8 @@ function monitor_changes(){
         case "$line" in
             urgent*)
                 IFS=">" read -r _ _ addr <<< "$line"
-                urgent_win="$addr"
-                addr="0x${addr}"
-                update urgent_win="${addr}"
-                update urgent_ws="$(hyprctl clients -j|jq --arg addr "$addr" '.[]|select(.address == $addr)|.workspace.id')"
+                hyprctl dispatch focuswindow "address:0x${addr}"
+                echo "$addr"
                 ;;
             submap*)
                 IFS=">" read -r _ _ map <<< "$line"
@@ -95,10 +93,6 @@ function monitor_changes(){
                 fi
 
                 ;;
-            "activewindowv2>>$urgent_win")
-               urgent_win=''
-               eww -c $XDG_CONFIG_HOME/eww/shell update urgent_win='' urgent_ws=''
-               ;;
             'openlayer>>gtk-layer-shell') # this is for nwg-look
                 # old_layer_blur="$(hyprctl getoption decoration:blur:xray -j|jq '.set')"
                 hyprctl keyword decoration:blur:xray true

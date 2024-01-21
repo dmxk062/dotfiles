@@ -2,7 +2,6 @@
 (defvar launcher_open false)
 (defvar show_hidden_windows false)
 (defvar windows "[]")
-(defvar urgent_win '')
 
 
 (defwidget window []
@@ -35,7 +34,7 @@
                             (box :halign "start" :space-evenly false
                                 (button :class "list_button" :onclick "hyprctl dispatch closewindow address:${win.address}&&sleep 0.1&&bin/open_window_list.sh upd" :timeout "16s" "󰅖")
                             )
-                                (button :class "list_item${win.address == window.address ? "-active" : (win.address == urgent_win ? "-urgent" : '')}" 
+                                (button :class "list_item${win.address == window.address ? "-active" : ""}" 
                                 :onclick "${matches(win.workspace.name,"special:.*") ? 
                                 "hyprctl dispatch togglespecialworkspace ${replace(win.workspace.name,"special:","")}" : "hyprctl dispatch focuswindow address:${win.address}"}&&${EWW_CMD} close window_list" 
                                 :timeout "16s" 

@@ -1,6 +1,11 @@
 #!/bin/bash
 IFS=$'\n'
 ICON_THEME="/usr/share/icons/Tela/scalable"
+
+declare -A OVERRIDES=(
+    ["citra-qt"]="hicolor/scalable/apps/citra"
+)
+
 function list(){
 SINK_INPUTS="$(pactl --format=json list sink-inputs 2> /dev/null)"  #get rid of the stupid ascii warning
 printf "["
@@ -13,12 +18,16 @@ do
     volume=${stream[3]}
     volume=${volume%?}
     icon="${stream[5]}"
+    abs="false"
     if ! [[ -f "${ICON_THEME}/apps/${icon}.svg" ]]; then # so that all the org.smth.app names work
         if ls "${ICON_THEME}/apps/"*"${icon}.svg" > /dev/null; then
             icon="$(basename "${ICON_THEME}/apps/"*"${icon}.svg")"
             icon="${icon%.*}"
+        elif [[ -n "${OVERRIDES[$icon]}" ]]; then
+            icon="${OVERRIDES[$icon]}"
+            abs="true"
         else
-            icon="accessories-media-converter"
+            icon="multimedia-volume-control"
         fi
     fi
     if [[ "$name" == "(null)" ]]
@@ -27,7 +36,7 @@ do
     else
         name=$(printf '"%s"' "$(echo "$name"|sed 's/"/\\"/g')")
     fi
-    printf '{"id":%s,"name":%s,"app":"%s","volume":%s, "mute":%s, "icon":"%s"}' "${stream[1]}" "$name" "${stream[2]}" "$volume" "${stream[4]}" "${icon}"
+    printf '{"id":%s,"name":%s,"app":"%s","volume":%s, "mute":%s, "icon":"%s", "iconAbs":%s}' "${stream[1]}" "$name" "${stream[2]}" "$volume" "${stream[4]}" "${icon}" "${abs}"
     if ((i != length))
     then
         printf ","
