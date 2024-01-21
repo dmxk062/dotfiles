@@ -7,6 +7,7 @@ import os
 import time
 import threading
 import queue
+import math
 
 LOCKFILE="/tmp/eww/state/gaming/overlay"
 
@@ -42,6 +43,7 @@ RIGHT_VERTICAL=3
 
 #left for  more precise movements
 SPEED_DIVIDER=2000
+SCROLL_DIVIDER=15000
 MOUSE_DELAY=0.02
 
 BUTTON_DOWN = 0x40
@@ -148,8 +150,29 @@ def query_devices() -> list[Controller]:
             controllers.append(Controller(sysfs_path, devfs_path))
     return controllers
 
+
+def normalize_mouse(x: int, factor=2500) -> int:
+    if abs(x) < 18000:
+        return x // (factor * 3)
+    elif abs(x) < 25000:
+        return x // (factor * 2)
+    else:
+        return x // factor
+
 def move_mouse(x: int, y: int) -> None:
-   subprocess.Popen(["ydotool", "mousemove", "-x", str(x//SPEED_DIVIDER), "-y", str(y//SPEED_DIVIDER)], stdout=subprocess.DEVNULL) 
+    print(x,y)
+    xval = normalize_mouse(x)
+    yval = normalize_mouse(y)
+    subprocess.Popen(["ydotool", "mousemove", "-x", str(xval), "-y", str(yval)], stdout=subprocess.DEVNULL) 
+
+def move_wheel(x: int, y: int) -> None:
+    xval = math.pow(abs(x), 1/4)//3
+    yval = math.pow(abs(y), 1/4)//3
+    if y > 0:
+        yval = -yval
+    if x < 0:
+        xval = -xval
+    subprocess.Popen(["ydotool", "mousemove", "-w", "-x", str(xval), "-y", str(yval)], stdout=subprocess.DEVNULL) 
 
 def set_click(btn: int, state: int):
     if bool(state):
@@ -186,7 +209,7 @@ class ControllerMonitor:
             self.cursor_stop.clear()
             self.joystick_cursor_thread = threading.Thread(target=self.cursor_move, args=(self.cursor_queue,))
             self.joystick_cursor_thread.start()
-            self.controller.start_blinking()
+            self.controller.start_blinking(delay=1)
         else:
             self.cursor_stop.set()
             self.joystick_cursor_thread.join()
@@ -216,7 +239,7 @@ class ControllerMonitor:
             if self.overlay_active:
                 if type == EVENT_JS:
                     self.joysticks[id] = float(value)
-                    self.cursor_queue.put((self.joysticks[LEFT_HORIZONTAL],self.joysticks[LEFT_VERTICAL]))
+                    self.cursor_queue.put(((self.joysticks[LEFT_HORIZONTAL],self.joysticks[LEFT_VERTICAL]),(self.joysticks[RIGHT_HORIZONTAL],self.joysticks[RIGHT_VERTICAL])))
                 elif type == EVENT_BTN:
                     if id == A or id == ZL:
                         set_click(0x00, value)
@@ -230,12 +253,18 @@ class ControllerMonitor:
 
     
     def cursor_move(self, value_queue):
-        values = (0,0)
+        i = 0
+        values = ((0,0),(0,0))
         while not self.cursor_stop.is_set():
             while not value_queue.empty():
                 values = value_queue.get()
-            if values != (0,0):
-                move_mouse(values[0], values[1])
+            if values[0] != (0,0):
+                move_mouse(values[0][0], values[0][1])
+            # poll this way more rarely
+            if values[1] != (0,0) and i > 10:
+                move_wheel(values[1][0], values[1][1])
+                i = 0
+            i+=1
             time.sleep(0.01)
 
 
