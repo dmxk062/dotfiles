@@ -23,7 +23,7 @@
     --color-text-link: #{$dblue};
     --color-bg-primary: #{$dbg1};
     --color-bg-secondary: #{$dbg2};
-    --color-bg-tertiary: #{$dbg3};
+    --color-bg-tertiary: #{rgba($dbg3,0.2)};
     --color-border-primary: #{$dbg2};
     --color-border-secondary: #{$dbg3};
     --color-border-tertiary: #{$lbg3};
@@ -82,6 +82,7 @@
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
+  font-family: "Torus Pro", "Torus", "sans-serif";
   margin-top: 1em;
   margin-bottom: 16px;
   font-weight: bold;
@@ -120,7 +121,6 @@
   font-size: 2.25em;
   line-height: 1.2;
   border-bottom: 1px solid var(--color-border-secondary);
-  font-family: "Torus Pro", "Torus", "sans-serif"
 }
 .markdown-body h2 {
   padding-bottom: 0.3em;

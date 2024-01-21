@@ -1,6 +1,5 @@
 filetype on
 set noshowmode
-
 filetype plugin on
 filetype indent on
 syntax on

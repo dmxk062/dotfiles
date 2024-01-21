@@ -1,6 +1,7 @@
 call plug#begin()
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'ur4ltz/surround.nvim'
+Plug 'kylechui/nvim-surround'
 Plug 'ggandor/leap.nvim'
 Plug 'tpope/vim-repeat'
 Plug 'nvim-tree/nvim-web-devicons'

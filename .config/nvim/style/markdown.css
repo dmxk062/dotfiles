@@ -22,7 +22,7 @@
   --color-text-link: #5e81ac;
   --color-bg-primary: #2e3440;
   --color-bg-secondary: #434c5e;
-  --color-bg-tertiary: #4c566a;
+  --color-bg-tertiary: rgba(76, 86, 106, 0.2);
   --color-border-primary: #434c5e;
   --color-border-secondary: #4c566a;
   --color-border-tertiary: #bcc3d0;
@@ -79,6 +79,7 @@
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
+  font-family: "Torus Pro", "Torus", "sans-serif";
   margin-top: 1em;
   margin-bottom: 16px;
   font-weight: bold;
@@ -116,8 +117,7 @@
   padding-bottom: 0.3em;
   font-size: 2.25em;
   line-height: 1.2;
-  border-bottom: 1px solid var(--color-border-secondary);
-  font-family: "Torus Pro", "Torus", "sans-serif"; }
+  border-bottom: 1px solid var(--color-border-secondary); }
 
 .markdown-body h2 {
   padding-bottom: 0.3em;

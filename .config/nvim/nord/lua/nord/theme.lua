@@ -189,7 +189,7 @@ theme.loadEditor = function()
 
 	--Set transparent background
 	if vim.g.nord_disable_background then
-		editor.Normal = { fg = nord.nord4_gui, bg = nord.none } -- normal text and background color
+		editor.Normal = { fg = nord.nord6_gui, bg = nord.none } -- normal text and background color
 		editor.SignColumn = { fg = nord.nord4_gui, bg = nord.none }
 	else
 		editor.Normal = { fg = nord.nord4_gui, bg = nord.nord0_gui } -- normal text and background color
@@ -324,7 +324,7 @@ theme.loadTreeSitter = function()
 	treesitter["@constant.builtin"] = { fg = nord.nord7_gui}
 	treesitter["@constant.macro"] = { fg = nord.nord7_gui}
 	treesitter["@text.title"] = { fg = nord.nord10_gui, bg = nord.none}
-	treesitter["@text.strong"] = { fg = nord.nord10_gui, bg = nord.none, style = "bold"}
+	treesitter["@text.strong"] = { fg = nord.nord6_gui, bg = nord.none, style = "bold"}
 	-- Comments
 	treesitter.TSComment = { fg = nord.nord3_gui_bright, style = italic }
 	-- Conditionals
