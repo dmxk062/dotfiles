@@ -1,6 +1,7 @@
 (include "bar/clock.yuck")
 (include "bar/performance.yuck")
 (include "bar/session.yuck")
+(include "game/gamemode.yuck")
 ;; (include "bar/battery.yuck")
 
 
@@ -13,6 +14,7 @@
 (defwidget right [] 
     (box :space-evenly false :halign "end"
         (box :space-evenly false :class "rightbox"
+            (controller_button)
             (tray)
             (performance_button)
             (clock)
