@@ -69,19 +69,16 @@ def set_click(btn: int, state: int):
         btn = btn + BUTTON_UP
     subprocess.Popen(["ydotool", "click", str(hex(btn))], stdout=subprocess.DEVNULL)
 
-def cleanup_on_exit(signum, frame, cons: list[Controller]) -> None:
-    for con in cons:
-        con._restore_leds()
-    update_eww([("controller_mode", "false"), ("controller_name", "")])
-    set_window("gamemode_desktop_popup", "close")
-    os.remove(LOCKFILE)
-    os._exit(0)
+def set_press(btn: int, state: int) -> None:
+    flag = ":1" if bool(state) else ":0"
+    subprocess.Popen(["ydotool", "key", f"{btn}{flag}"], stdout=subprocess.DEVNULL)
+
 
 
 class ControllerMonitor:
 
     def __init__(self, dev: Controller, hypr_socket: hypr.HyprctlSocket):
-        self.saved_cursor = ()
+        self.saved_cursor = ("volantes_light_cursor", 24)
         self.mode_changes = {
             "desktop": self.desktop_mode,
             "game":    self.game_mode
@@ -139,7 +136,7 @@ class ControllerMonitor:
                 set_window("performance_popup", "open")
             elif value == 0:
                 set_window("performance_popup", "close")
-        if self.pressed[KEYS.HOME] and self.pressed[KEYS.ZR] and self.pressed[KEYS.ZL]:
+        if self.pressed[KEYS.HOME] and self.pressed[KEYS.R] and self.pressed[KEYS.L]:
             os.system(f"{CONFIGS}/eww/shell/bin/screenshot_menu.sh screen disk current noeww")
 
 
@@ -178,8 +175,8 @@ class ControllerMonitor:
                 self.set_mode(Modes.GAME)
             elif event == KEYS.PLUS and self.pressed[KEYS.HOME] and value == 1:
                 self.set_mode(Modes.GAME)
-            elif event == KEYS.MINUS and value == 1:
-                os.system("eww_settings.sh")
+            elif event == KEYS.ZR:
+                set_press(125, value)
             
 
 
@@ -228,6 +225,14 @@ class ControllerMonitor:
 
 
 
+def cleanup_on_exit(signum, frame, cons: list[Controller], listener: ControllerMonitor) -> None:
+    for con in cons:
+        con._restore_leds()
+    update_eww([("controller_mode", "false"), ("controller_name", "")])
+    listener.set_cursor(listener.saved_cursor[0], listener.saved_cursor[1])
+    set_window("gamemode_desktop_popup", "close")
+    os.remove(LOCKFILE)
+    os._exit(0)
    
 
 
@@ -239,10 +244,10 @@ if __name__ == "__main__":
     with open (LOCKFILE, "w") as file:
         file.write(str(os.getpid()))
     devices = query_devices()
-    interrupt_handler = lambda signum, frame: cleanup_on_exit(signum, frame, devices)
-    signal.signal(signal.SIGINT, interrupt_handler)
     device = devices[0]
     update_eww([("controller_name", device.name), ("controller_menu", "game"), ("controller_mode", "true")])
     ctl_socket = hypr.HyprctlSocket(hypr.HYPRCTL_SOCKET)
     listener = ControllerMonitor(device, ctl_socket)
+    interrupt_handler = lambda signum, frame: cleanup_on_exit(signum, frame, devices, listener)
+    signal.signal(signal.SIGINT, interrupt_handler)
     listener.start_listening()
