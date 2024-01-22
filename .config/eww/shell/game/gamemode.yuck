@@ -1,0 +1,13 @@
+(defvar controller_mode false)
+(defvar controller_menu 'game')
+
+(defvar controller_icons '{
+ "desktop":"󰆽",
+ "game":"󰊴",
+ "audio":"󰝝"
+}')
+
+(defwidget controller_button []
+    (button :class "sbutton${controller_mode ? "-active" : ""}" 
+    {controller_mode ? controller_icons[controller_menu] : "󰊵"})
+)

@@ -8,6 +8,7 @@ import time
 import threading
 import queue
 import math
+from enum import Enum
 
 LOCKFILE="/tmp/eww/state/gaming/overlay"
 
@@ -35,6 +36,9 @@ MINUS = 8
 PLUS  = 9
 HOME  = 10
 
+JS_LEFT = 11
+JS_RIGHT = 12
+
 LEFT_HORIZONTAL=0
 LEFT_VERTICAL=1
 
@@ -49,6 +53,12 @@ MOUSE_DELAY=0.02
 BUTTON_DOWN = 0x40
 BUTTON_UP   = 0x80
 
+class Modes(Enum):
+    GAME = 'game'
+    DESKTOP = 'desktop'
+    AUDIO = 'audio'
+
+CONFIGS=os.getenv("XDG_CONFIG_HOME")
 MOD=HOME
 
 def read_val(path: str) -> str:
@@ -57,6 +67,12 @@ def read_val(path: str) -> str:
 def write_val(path: str, content: str) -> str:
     with open (path, "w") as f:
         return f.write(content)
+
+
+def update_eww(vals: list[tuple[str, str]]) -> None:
+    vars = [f"{name}={value}" for name, value in vals]
+
+    subprocess.Popen(["eww","-c",f"{CONFIGS}/eww/shell", "update"] + vars)
 
 class Led:
     def __init__(self, path):
@@ -160,7 +176,6 @@ def normalize_mouse(x: int, factor=2500) -> int:
         return x // factor
 
 def move_mouse(x: int, y: int) -> None:
-    print(x,y)
     xval = normalize_mouse(x)
     yval = normalize_mouse(y)
     subprocess.Popen(["ydotool", "mousemove", "-x", str(xval), "-y", str(yval)], stdout=subprocess.DEVNULL) 
@@ -181,9 +196,10 @@ def set_click(btn: int, state: int):
         btn = btn + BUTTON_UP
     subprocess.Popen(["ydotool", "click", str(hex(btn))], stdout=subprocess.DEVNULL)
 
-def clean_leds_on_exit(signum, frame, cons: list[Controller]) -> None:
+def cleanup_on_exit(signum, frame, cons: list[Controller]) -> None:
     for con in cons:
         con._restore_leds()
+    update_eww([("controller_mode", "false")])
     os._exit(0)
 
 
@@ -194,7 +210,7 @@ class ControllerMonitor:
         self.joysticks = { LEFT_VERTICAL: 0, LEFT_HORIZONTAL: 0,
                    RIGHT_VERTICAL: 0, RIGHT_HORIZONTAL: 0}
 
-        self.overlay_active = False
+        self.mode = Modes.GAME
         self.pressed = { UP: False, DOWN: False, LEFT: False, RIGHT: False,
                         A: False, B: False, X: False, Y: False, 
                         MINUS: False, PLUS: False, HOME: False}
@@ -205,7 +221,7 @@ class ControllerMonitor:
 
 
     def toggle_overview(self):
-        if self.overlay_active:
+        if self.mode == Modes.DESKTOP:
             self.cursor_stop.clear()
             self.joystick_cursor_thread = threading.Thread(target=self.cursor_move, args=(self.cursor_queue,))
             self.joystick_cursor_thread.start()
@@ -232,11 +248,15 @@ class ControllerMonitor:
                 self.pressed[id] = bool(value)
             
             if self.pressed[PLUS] and self.pressed[MOD]:
-                self.overlay_active = not self.overlay_active
+                if self.mode != Modes.GAME:
+                    self.mode = Modes.GAME
+                else:
+                    self.mode = Modes.DESKTOP
                 self.toggle_overview()
+                update_eww([("controller_menu", self.mode.value)])
                 continue
         
-            if self.overlay_active:
+            if self.mode == Modes.DESKTOP:
                 if type == EVENT_JS:
                     self.joysticks[id] = float(value)
                     self.cursor_queue.put(((self.joysticks[LEFT_HORIZONTAL],self.joysticks[LEFT_VERTICAL]),(self.joysticks[RIGHT_HORIZONTAL],self.joysticks[RIGHT_VERTICAL])))
@@ -247,6 +267,8 @@ class ControllerMonitor:
                         set_click(0x01, value)
                     elif id == Y:
                         set_click(0x02, value)
+            elif self.mode == Modes.AUDIO:
+                pass
                         
 
 
@@ -276,8 +298,9 @@ class ControllerMonitor:
         
 
 if __name__ == "__main__":
+    update_eww([("controller_mode", "true")])
     devices = query_devices()
-    interrupt_handler = lambda signum, frame: clean_leds_on_exit(signum, frame, devices)
+    interrupt_handler = lambda signum, frame: cleanup_on_exit(signum, frame, devices)
     signal.signal(signal.SIGINT, interrupt_handler)
     device = devices[0]
     listener = ControllerMonitor(device)
