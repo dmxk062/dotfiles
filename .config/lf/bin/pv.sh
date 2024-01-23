@@ -125,6 +125,12 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
         printf "Length: %02d:%02d\n" $mins $seconds
         rm "$output_file"
         exit 1;;
+    application/vnd.flatpak.ref)
+        giveOpenInfo "Flatpak Reference File"
+        . "$file"
+        printf "App: %s\n" "$Name"
+        exit 1
+        ;;
 
 esac
 case $file in #archives

@@ -33,7 +33,7 @@ cmd wallpaper ${{
 }}
 #display PWD in window title
 cmd on-cd &{{
-   printf "\033]0; lf: $(pwd | sed "s|$HOME|~|")\007" > /dev/tty
+   printf "\033]0;lf: $(pwd | sed "s|$HOME|~|" )\007" > /dev/tty
 }}
 #run it once so the title is displayed immediately
 on-cd
@@ -328,7 +328,7 @@ map gV cd ~/places/gvfs
 map gU cd ~/places
 map gp cd ~/Pictures
 map gs cd ~/Pictures/Screenshots
-map gw cd ~/Workspace/
+map gw cd ~/ws
 #clears the set marks
 map u unselect
 map <esc> clear
@@ -344,9 +344,9 @@ map si :set reverse!
 map sT :set sortby time; set reverse!;top;set info 'time'
 #selections
 map <space>
-map <c-space> :toggle;up
-map <space> :toggle;down
+map <space> :push :select<space>
 map . :toggle
+map <gt> :toggle;down
 map i
 map i invert
 map A invert
