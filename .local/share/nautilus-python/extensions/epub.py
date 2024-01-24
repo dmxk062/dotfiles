@@ -9,6 +9,56 @@ from urllib.parse import unquote
 
 META_NS={'dc': 'http://purl.org/dc/elements/1.1/'}
 
+LANGUAGES={
+    'en': 'English / English',
+    'es': 'Spanish / Español',
+    'fr': 'French / Français',
+    'de': 'German / Deutsch',
+    'zh-Hans': 'Chinese (Simplified) / 中文（简体）',
+    'zh-Hant': 'Chinese (Traditional) / 中文（繁體）',
+    'ja': 'Japanese / 日本語',
+    'ko': 'Korean / 한국어',
+    'ru': 'Russian / Русский',
+    'ar': 'Arabic / العربية',
+    'pt': 'Portuguese / Português',
+    'it': 'Italian / Italiano',
+    'nl': 'Dutch / Nederlands',
+    'sv': 'Swedish / Svenska',
+    'no': 'Norwegian / Norsk',
+    'da': 'Danish / Dansk',
+    'fi': 'Finnish / Suomi',
+    'el': 'Greek / Ελληνικά',
+    'he': 'Hebrew / עברית',
+    'hi': 'Hindi / हिन्दी',
+    'id': 'Indonesian / Bahasa Indonesia',
+    'tr': 'Turkish / Türkçe',
+    'th': 'Thai / ไทย',
+    'vi': 'Vietnamese / Tiếng Việt',
+    'pl': 'Polish / Polski',
+    'cs': 'Czech / Čeština',
+    'hu': 'Hungarian / Magyar',
+    'ro': 'Romanian / Română',
+    'bg': 'Bulgarian / Български',
+    'ca': 'Catalan / Català',
+    'hr': 'Croatian / Hrvatski',
+    'sk': 'Slovak / Slovenčina',
+    'sl': 'Slovenian / Slovenščina',
+    'sr': 'Serbian / Српски',
+    'mk': 'Macedonian / Македонски',
+    'sq': 'Albanian / Shqip',
+    'et': 'Estonian / Eesti',
+    'lv': 'Latvian / Latviešu',
+    'lt': 'Lithuanian / Lietuvių',
+    'mt': 'Maltese / Malti',
+    'gd': 'Gaelic / Gàidhlig',
+    'cy': 'Welsh / Cymraeg',
+    'ga': 'Irish / Gaeilge',
+    'eu': 'Basque / Euskara',
+    'eo': 'Esperanto / Esperanto',
+    'la': 'Latin / Latina',
+}
+
+
 class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
     def get_models(self,
                    files: list[Nautilus.FileInfo]
@@ -29,6 +79,11 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
         metadata = self._get_meta_from_epub(filepath)
 
         section = Gio.ListStore.new(item_type=Nautilus.PropertiesItem)
+        if metadata["title"][0]:
+            title = metadata["title"][1]
+            title = f"{title}"
+        else:
+            title = "EPUB Metadata"
 
         for val in metadata.values():
             if val[0]:
@@ -41,7 +96,7 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
 
         return [
                 Nautilus.PropertiesModel(
-                    title = "Epub Metadata",
+                    title = title,
                     model = section
                     )
                 ]
@@ -50,8 +105,12 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
     def _sanitize_html(cls, str: str) -> str:
         if str is None:
             return None
+        headings = re.compile('<h[1-6][^>]*>(.*?)</h[1-6]>')
+        paragraphs = re.compile('<(/?)p[^>]*>')
+        str = re.sub(headings, '\n', str)
+        str = re.sub(paragraphs, '', str)
         tags = re.compile("<.*?>")
-        return re.sub(tags, ' ', str)
+        return re.sub(tags, '', str)
 
 
     @classmethod
@@ -100,6 +159,8 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
             creators = creator
         publisher = self._safely_get_prop(metadata, './/dc:publisher', "Publisher")
         language = self._safely_get_prop(metadata, './/dc:language', "Language")
+        if language[0]:
+            language = (True, LANGUAGES[language[1]], "Language")
         title = self._safely_get_prop(metadata, './/dc:title', "Title")
         date = self._safely_get_prop(metadata, './/dc:date', "Creation Date")
         if date[0]:
