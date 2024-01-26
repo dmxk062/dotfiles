@@ -78,7 +78,6 @@ def set_press(btn: int, state: int) -> None:
 class ControllerMonitor:
 
     def __init__(self, dev: Controller, hypr_socket: hypr.HyprctlSocket):
-        self.saved_cursor = ("volantes_light_cursor", 24)
         self.mode_changes = {
             "desktop": self.desktop_mode,
             "game":    self.game_mode
@@ -106,19 +105,7 @@ class ControllerMonitor:
 
 
 
-    def get_cursor(self) -> tuple[str, int]:
-        size = int(get_output(["gsettings", "get", "org.gnome.desktop.interface", "cursor-size"]))
-        name = get_output(["gsettings", "get", "org.gnome.desktop.interface", "cursor-theme"])
 
-        return (name, size)
-
-    def set_cursor(self, name: str, size: int):
-        for cmd in [["gsettings", "set", "org.gnome.desktop.interface", "cursor-size", str(size)],
-                    ["gsettings", "set", "org.gnome.desktop.interface", "cursor-theme", name],
-                    ["hyprctl", "setcursor", name, str(size)]
-
-                ]:
-            subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     def set_mode(self, mode: Modes) -> None:
         self.mode = mode
@@ -126,7 +113,8 @@ class ControllerMonitor:
 
     def game_mode(self, on: bool) -> None:
         if on:
-            set_window("gamemode_desktop_popup", "close")
+            pass
+            # set_window("gamemode_desktop_popup", "close")
 
     def handle_game(self, evtype: EVENTS, event: int, value: int) -> None:
         if event == KEYS.PLUS and self.pressed[KEYS.HOME] and value == 1:
@@ -136,22 +124,19 @@ class ControllerMonitor:
                 set_window("performance_popup", "open")
             elif value == 0:
                 set_window("performance_popup", "close")
-        if self.pressed[KEYS.HOME] and self.pressed[KEYS.R] and self.pressed[KEYS.L]:
+        if self.pressed[KEYS.HOME] and self.pressed[KEYS.ZR] and self.pressed[KEYS.ZL]:
             os.system(f"{CONFIGS}/eww/shell/bin/screenshot_menu.sh screen disk current noeww")
 
 
     def desktop_mode(self, on: bool) -> None:
         if on:
-            self.saved_cursor = self.get_cursor()
-            self.set_cursor("bigpicture", 48)
-            set_window("gamemode_desktop_popup", "open")
+            # set_window("gamemode_desktop_popup", "open")
             self.controller._save_leds()
             self.controller.set_all(True)
             self.cursor_stop.clear()
             self.joystick_cursor_thread = threading.Thread(target=self.cursor_move, args=(self.cursor_queue,))
             self.joystick_cursor_thread.start()
         else:
-            self.set_cursor(self.saved_cursor[0], self.saved_cursor[1])
             self.cursor_stop.set()
             self.joystick_cursor_thread.join()
             self.controller._restore_leds()
@@ -161,15 +146,17 @@ class ControllerMonitor:
             self.cursor_queue.put(((self.joysticks[JOYSTICK.LEFT_HORIZONTAL],self.joysticks[JOYSTICK.LEFT_VERTICAL])
                                    ,(self.joysticks[JOYSTICK.RIGHT_HORIZONTAL],self.joysticks[JOYSTICK.RIGHT_VERTICAL])))
         elif evtype == EVENTS.BTN:
-            if event == KEYS.A:
+            if event == KEYS.X:
                 set_click(0x00, value)
             elif event == KEYS.Y:
                 set_click(0x01, value)
+            elif event == KEYS.A:
+                set_press(28, value)
             elif event == KEYS.JS_LEFT:
                 set_click(0x02, value)
-            elif event == KEYS.LEFT and value == 1:
+            elif event == KEYS.L and value == 1:
                 self.socket.dispatch('workspace', args="m-1")
-            elif event == KEYS.RIGHT and value == 1:
+            elif event == KEYS.R and value == 1:
                 self.socket.dispatch('workspace', args="m+1")
             elif event == KEYS.B and value == 1:
                 self.set_mode(Modes.GAME)
@@ -177,6 +164,17 @@ class ControllerMonitor:
                 self.set_mode(Modes.GAME)
             elif event == KEYS.ZR:
                 set_press(125, value)
+            elif event == KEYS.LEFT:
+                set_press(105, value)
+            elif event == KEYS.RIGHT:
+                set_press(106, value)
+            elif event == KEYS.UP:
+                set_press(103, value)
+            elif event == KEYS.DOWN:
+                set_press(108, value)
+            elif event == KEYS.PLUS and value == 1:
+                os.system("nwg-drawer")
+
             
 
 
@@ -229,8 +227,7 @@ def cleanup_on_exit(signum, frame, cons: list[Controller], listener: ControllerM
     for con in cons:
         con._restore_leds()
     update_eww([("controller_mode", "false"), ("controller_name", "")])
-    listener.set_cursor(listener.saved_cursor[0], listener.saved_cursor[1])
-    set_window("gamemode_desktop_popup", "close")
+    # set_window("gamemode_desktop_popup", "close")
     os.remove(LOCKFILE)
     os._exit(0)
    

@@ -11,7 +11,7 @@
 (defwidget controller_button []
     (button :class "sbutton${controller_mode ? "-active" : ""}" 
     :timeout "16s"
-    :onclick "kill -s INT $(< /tmp/eww/state/gaming/joymode) || game/bin/joymode/joymode.py"
+    :onclick "kill -s INT $(< /tmp/eww/state/gaming/joymode) || game/bin/joymode/joymode.py&"
     {controller_mode ? "${controller_icons[controller_menu]}    ${controller_name}" : "󰊵"}
     )
 )
@@ -24,7 +24,7 @@
             (box
             (controler_action :name "left_js" :desc "Move Cursor")
             (controler_action :name "right_js" :desc "Scroll")
-            (controler_action :name "a" :desc "Leftclick")
+            (controler_action :name "x" :desc "Leftclick")
             (controler_action :name "y" :desc "Rightclick")
             (controler_action :name "b" :desc "Exit")
             )
