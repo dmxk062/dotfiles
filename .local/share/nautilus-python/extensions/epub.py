@@ -76,23 +76,19 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
 
 
         filepath = unquote(file.get_uri()[7:])
-        metadata = self._get_meta_from_epub(filepath)
+        metadata, title = self._get_meta_from_epub(filepath)
 
         section = Gio.ListStore.new(item_type=Nautilus.PropertiesItem)
-        if metadata["title"][0]:
-            title = metadata["title"][1]
-            title = f"{title}"
-        else:
+        if title is None:
             title = "EPUB Metadata"
 
-        for val in metadata.values():
-            if val[0]:
-                section.append(
-                        Nautilus.PropertiesItem(
-                            name= val[2],
-                            value= val[1]
-                            )
+        for val in metadata:
+            section.append(
+                    Nautilus.PropertiesItem(
+                        name= val[1],
+                        value= val[0]
                         )
+                    )
 
         return [
                 Nautilus.PropertiesModel(
@@ -106,23 +102,26 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
         if str is None:
             return None
         headings = re.compile('<h[1-6][^>]*>(.*?)</h[1-6]>')
-        paragraphs = re.compile('<(/?)p[^>]*>')
+        paragraphs = re.compile('</p>')
         str = re.sub(headings, '\n', str)
-        str = re.sub(paragraphs, '', str)
+        str = re.sub(paragraphs, '\n', str)
         tags = re.compile("<.*?>")
         return re.sub(tags, '', str)
 
 
     @classmethod
-    def _safely_get_prop(cls, meta, name: str, title) -> list:
+    def _safely_get_prop(cls, meta, name: str) -> list:
         match = meta.find(name, namespaces=META_NS)
         if match is None:
-            return (False, None, title)
+            return (False, None)
         else:
-            return (True, match.text, title)
+            return (True, match.text)
 
 
-    def _get_meta_from_epub(self, path: str) -> dict[str or list[str]]:
+    def _get_meta_from_epub(self, path: str) -> list[tuple]:
+        entries = []
+
+
         with zipfile.ZipFile(path, "r") as file:
             with file.open('META-INF/container.xml') as meta_xml:
                 metastr = meta_xml.read()
@@ -135,49 +134,50 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
                 content = metafile.read()
 
         metadata = ET.fromstring(content)
-        isbn = None
+
+        title = self._safely_get_prop(metadata, './/dc:title')
+        if title[0]:
+            entries.append((title[1], "Title"))
+            booktitle = title[1]
+        else: 
+            booktitle = None
+
+        description = self._safely_get_prop(metadata, './/dc:description')
+        if description[0]:
+            entries.append((self._sanitize_html(description[1]), "Description"))
+
         identifiers = metadata.findall('.//dc:identifier', namespaces=META_NS)
         for identifier in identifiers:
             scheme =  identifier.attrib.get("{http://www.idpf.org/2007/opf}scheme")
             if scheme and scheme == "ISBN":
-                isbn = (True, identifier.text, "ISBN")
-            else: 
-                isbn = (False, None, None)
+                entries.append((identifier.text, "ISBN"))
 
-        description = self._safely_get_prop(metadata, './/dc:description', "Description")
-        if description[0]:
-            desc = (True, self._sanitize_html(description[1]), description[2])
-        else:
-            desc = description
-        creator = self._safely_get_prop(metadata, './/dc:creator', None)
+        creator = self._safely_get_prop(metadata, './/dc:creator')
         if creator[0]:
             creator_arr = creator[1].strip().split(';')
             creator_str=', '.join(creator_arr)
             title = "Author" if len(creator_arr) == 1 else "Authors"
-            creators = (True, creator_str, title)
-        else: 
-            creators = creator
-        publisher = self._safely_get_prop(metadata, './/dc:publisher', "Publisher")
-        language = self._safely_get_prop(metadata, './/dc:language', "Language")
+            entries.append((creator_str, title))
+
+        publisher = self._safely_get_prop(metadata, './/dc:publisher')
+        if publisher[0]:
+            entries.append((publisher[1], "Publisher"))
+
+        language = self._safely_get_prop(metadata, './/dc:language')
         if language[0]:
-            language = (True, LANGUAGES[language[1]], "Language")
-        title = self._safely_get_prop(metadata, './/dc:title', "Title")
-        date = self._safely_get_prop(metadata, './/dc:date', "Creation Date")
+            entries.append((LANGUAGES[language[1]], "Language"))
+
+        date = self._safely_get_prop(metadata, './/dc:date')
         if date[0]:
-            date_time = (True, datetime.strftime(datetime.strptime(date[1], "%Y-%m-%dT%H:%M:%S%z"), "%Y/%m/%d"), "Creation Date")
-        else:
-            date_time = date
+            fdate = datetime.strftime(datetime.strptime(date[1], "%Y-%m-%dT%H:%M:%S%z"), "%Y/%m/%d")
+            entries.append((fdate, "Creation Date"))
+
         genres = [subject.text for subject in metadata.findall('.//dc:subject', namespaces=META_NS)]
-        genres = (True if len(genres) > 0 else False, ', '.join(genres), "Genres")
+        if len(genres) > 0:
+            title = "Genre" if len(genres) == 1 else "Genres"
+            genre_str = ', '.join(genres)
+            entries.append((genre_str, title))
+
+        return (entries, booktitle)
 
 
-        return {
-            'publisher': publisher,
-            'description': desc,
-            'language': language,
-            'creators': creators,
-            'title': title,
-            'date': date_time,
-            'genres': genres,
-            'isbn': isbn
-                }
