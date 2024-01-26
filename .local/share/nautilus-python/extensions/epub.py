@@ -76,11 +76,15 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
 
 
         filepath = unquote(file.get_uri()[7:])
-        metadata, title = self._get_meta_from_epub(filepath)
+        metadata, title, authors = self._get_meta_from_epub(filepath)
 
         section = Gio.ListStore.new(item_type=Nautilus.PropertiesItem)
         if title is None:
             title = "EPUB Metadata"
+        if authors is None:
+            title = title
+        else:
+            title = f"{title} by {authors}"
 
         for val in metadata:
             section.append(
@@ -155,9 +159,16 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
         creator = self._safely_get_prop(metadata, './/dc:creator')
         if creator[0]:
             creator_arr = creator[1].strip().split(';')
-            creator_str=', '.join(creator_arr)
+            if len(creator_arr) >= 3:
+                first, *middle, last = creator_arr
+                middle_txt = ', '.join(middle)
+                author_format = f"{first}, {middle_txt} and {last}"
+            elif len(creator_arr) == 2:
+                author_format = f"{creator_arr[0]} and {creator_arr[1]}"
+            else:
+                author_format = creator_arr[0]
             title = "Author" if len(creator_arr) == 1 else "Authors"
-            entries.append((creator_str, title))
+            entries.append((author_format, title))
 
         publisher = self._safely_get_prop(metadata, './/dc:publisher')
         if publisher[0]:
@@ -178,6 +189,6 @@ class EpubInformationPage(GObject.GObject, Nautilus.PropertiesModelProvider):
             genre_str = ', '.join(genres)
             entries.append((genre_str, title))
 
-        return (entries, booktitle)
+        return (entries, booktitle, author_format)
 
 
