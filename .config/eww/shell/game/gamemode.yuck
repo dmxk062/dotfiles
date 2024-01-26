@@ -5,7 +5,8 @@
 (defvar controller_icons '{
  "desktop":"󰆾",
  "game":"󰊴",
- "audio":"󰝝"
+ "audio":"󰝝",
+ "settings":"󰒓"
 }')
 
 (defwidget controller_button []

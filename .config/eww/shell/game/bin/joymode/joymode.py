@@ -10,7 +10,7 @@ import threading
 import queue
 import math
 
-from utils import get_output
+from utils import get_output, adjust_audio
 from eww import update_eww, set_window, CONFIGS
 import hypr
 from controller import Controller, Led, query_devices, KEYS, JOYSTICK, EVENTS
@@ -33,7 +33,7 @@ BUTTON_UP   = 0x80
 class Modes(Enum):
     GAME = 'game'
     DESKTOP = 'desktop'
-
+    SETTINGS = 'settings'
 
 
 
@@ -80,11 +80,13 @@ class ControllerMonitor:
     def __init__(self, dev: Controller, hypr_socket: hypr.HyprctlSocket):
         self.mode_changes = {
             "desktop": self.desktop_mode,
-            "game":    self.game_mode
+            "game":    self.game_mode,
+            "settings":self.settings_mode,
             }
         self.mode_handles = {
             "desktop": self.handle_desktop,
-            "game":    self.handle_game
+            "game":    self.handle_game,
+            "settings":self.handle_settings,
             }
         self.controller = dev
         self.socket = hypr_socket
@@ -113,7 +115,10 @@ class ControllerMonitor:
 
     def game_mode(self, on: bool) -> None:
         if on:
-            pass
+            self.controller._save_leds()
+            self.controller.set_leds([(0, True), (1, False), (2, False), (3, False)])
+        else:
+            self.controller._restore_leds()
             # set_window("gamemode_desktop_popup", "close")
 
     def handle_game(self, evtype: EVENTS, event: int, value: int) -> None:
@@ -132,7 +137,7 @@ class ControllerMonitor:
         if on:
             # set_window("gamemode_desktop_popup", "open")
             self.controller._save_leds()
-            self.controller.set_all(True)
+            self.controller.set_leds([(0, False), (1, True), (2, False), (3, False)])
             self.cursor_stop.clear()
             self.joystick_cursor_thread = threading.Thread(target=self.cursor_move, args=(self.cursor_queue,))
             self.joystick_cursor_thread.start()
@@ -150,6 +155,8 @@ class ControllerMonitor:
                 set_click(0x00, value)
             elif event == KEYS.Y:
                 set_click(0x01, value)
+            elif event == KEYS.JS_LEFT:
+                set_click(0x02, value)
             elif event == KEYS.A:
                 set_press(28, value)
             elif event == KEYS.JS_LEFT:
@@ -158,8 +165,6 @@ class ControllerMonitor:
                 self.socket.dispatch('workspace', args="m-1")
             elif event == KEYS.R and value == 1:
                 self.socket.dispatch('workspace', args="m+1")
-            elif event == KEYS.B and value == 1:
-                self.set_mode(Modes.GAME)
             elif event == KEYS.PLUS and self.pressed[KEYS.HOME] and value == 1:
                 self.set_mode(Modes.GAME)
             elif event == KEYS.ZR:
@@ -172,8 +177,31 @@ class ControllerMonitor:
                 set_press(103, value)
             elif event == KEYS.DOWN:
                 set_press(108, value)
-            elif event == KEYS.PLUS and value == 1:
+            elif (event == KEYS.MINUS and self.pressed[KEYS.PLUS]) or (event == KEYS.PLUS and self.pressed[KEYS.MINUS]):
+                self.set_mode(Modes.SETTINGS)
+            elif event == KEYS.PLUS and value == 0:
                 os.system("nwg-drawer")
+            elif event == KEYS.MINUS and value == 0:
+                os.system("~/.config/hypr/plugins/overview.sh")
+
+
+    def settings_mode(self, on: bool) -> None:
+        if on:
+            # set_window("gamemode_desktop_popup", "open")
+            self.controller._save_leds()
+            self.controller.set_leds([(0, False), (1, False), (2, True), (3, False)])
+        else:
+            self.controller._restore_leds()
+
+    def handle_settings(self, evtype: EVENTS, event: int, value: int) -> None:
+        if evtype == EVENTS.BTN:
+            if event == KEYS.B:
+                self.set_mode(Modes.DESKTOP)
+            elif event == KEYS.DOWN and value == 1:
+                adjust_audio(False, value="5")
+            elif event == KEYS.UP and value == 1:
+                adjust_audio(True, value="5")
+
 
             
 

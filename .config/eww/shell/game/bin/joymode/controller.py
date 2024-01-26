@@ -89,6 +89,12 @@ class Controller:
         for led in self.leds:
             led.on = value
 
+    def set_leds(self, values: list[tuple]) -> None:
+        for index, value in values:
+            led = self.leds[index]
+            if led is not None:
+                led.on = value
+
 
 
     def start_blinking(self, delay=0.5):

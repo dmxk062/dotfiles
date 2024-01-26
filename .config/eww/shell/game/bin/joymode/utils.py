@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 import subprocess
-import os
-
+from eww import CONFIGS
 
 def read_val(path: str) -> str:
     with open (path, "r") as f:
@@ -14,3 +13,8 @@ def write_val(path: str, content: str) -> str:
 def get_output(cmd: list[str]) -> str:
     proc = subprocess.run(cmd, stdout=subprocess.PIPE)
     return proc.stdout
+
+def adjust_audio(up: str, value="3", target="DEFAULT_SINK") -> None:
+    verb = "raise" if up else "lower"
+    subprocess.Popen([f"{CONFIGS}/eww/shell/popups/bin/open_popup.sh", "out", "audio", verb, value, target], stdout=subprocess.DEVNULL)
+
