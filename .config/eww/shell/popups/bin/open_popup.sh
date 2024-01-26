@@ -3,41 +3,51 @@
 LOCKFILE="/tmp/eww/state/no_popups"
 eww="eww -c $HOME/.config/eww/shell"
 
+update(){
+    eww -c $XDG_CONFIG_HOME/eww/settings update "$@"&
+    eww -c $XDG_CONFIG_HOME/eww/shell/ update "$@"&
+}
+
+if [[ "$2" == "audio" ]]; then
+        case $3 in
+            raise)
+                wpctl set-volume @${5}@ ${4}%+ -l 1&;;
+            lower)
+                wpctl set-volume @${5}@ ${4}%- -l 1&;;
+            mute)
+                wpctl set-mute @${4}@ toggle
+        esac
+    update audio_state="$(printf '{"sink":{"vol":%s,"mute":%s},"source":{"vol":%s,"mute":%s}}' "$(pamixer --get-volume)" "$(pamixer --get-mute)" "$(pamixer --get-volume --default-source)" "$(pamixer --get-mute --default-source)")"&
+else
+    $eww update brightness=$(light -G)
+fi
 [ -f "$LOCKFILE" ]&&exit
 
 get_screen(){
     hyprctl monitors -j|jq '.[]|select(.focused)|.id'
 }
 
+
+
+
+oldid=$(pgrep "open_popup" |head -n 1)
+
+if [[ $oldid == $BASHPID ]]; then
 case $1 in 
     in)
-        oldid=$(pgrep "open_popup" |head -n 1)
-        if [[ $oldid == $BASHPID ]]
-        then
-            $eww open in_popup --screen $(get_screen)
-            sleep 2
-            $eww close in_popup
-        fi
+        $eww open in_popup --screen $(get_screen)
+        sleep 2
+        $eww close in_popup
         ;;
     out)
-        oldid=$(pgrep "open_popup" |head -n 1)
-        if [[ $oldid == $BASHPID ]]
-        then
-            $eww open out_popup --screen $(get_screen)
-            sleep 2
-            $eww close out_popup
-        fi
+        $eww open out_popup --screen $(get_screen)
+        sleep 2
+        $eww close out_popup
         ;;
     light)
-        oldid=$(pgrep "open_popup" |head -n 1)
-        if [[ $oldid == $BASHPID ]]
-        then
-            $eww open bright_popup --screen $(get_screen)
-            sleep 2
-            $eww close bright_popup
-        fi
-        $eww update brightness=$(light -G)
+        $eww open bright_popup --screen $(get_screen)
+        sleep 2
+        $eww close bright_popup
         ;;
-
-        
 esac
+fi

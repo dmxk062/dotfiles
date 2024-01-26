@@ -22,7 +22,7 @@ $EWWDIR/shell/dock/bin/open_dock.sh & disown
 sleep 2
 
 
-mkdir -p '/tmp/eww/cache/clip' '/tmp/eww/cache/qr' '/tmp/eww/cache/wifi' '/tmp/eww/state/displays'
+mkdir -p '/tmp/eww/cache/clip' '/tmp/eww/cache/qr' '/tmp/eww/cache/wifi' '/tmp/eww/state/displays' '/tmp/eww/state/gaming'
 
 $EWWDIR/settings/bin/audio_state.sh
 $EWWDIR/settings/bin/sinks_sources.sh upd sinks & disown
