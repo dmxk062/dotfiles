@@ -14,8 +14,8 @@
 (defwidget right [] 
     (box :space-evenly false :halign "end"
         (box :space-evenly false :class "rightbox"
-            (controller_button)
             (tray)
+            (controller_button)
             (performance_button)
             (clock)
             ;; (battery)

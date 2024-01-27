@@ -18,7 +18,10 @@ Windows: ${ws.count}
 Display: ${ws.display}
 Id: ${ws.id}
 Fullscreen: ${ws.fullscreen}"
-    (label :text "${ws_icons[ws.name] ?: ws.name}${vertical ? "" : "    ${ws.title ?: "empty"}"}" :limit-width 14))
+    (box :space-evenly false
+        (label :text "${ws_icons[ws.name] ?: ws.name}${vertical ? "" : "    ${ws.title ?: "empty"}"}" :limit-width 14)
+    )
+    )
                 ))
             (button :class "ws-inactive" :timeout "16s"
             :onclick "hyprctl dispatch workspace empty"

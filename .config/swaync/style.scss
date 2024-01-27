@@ -1,0 +1,234 @@
+@import "../eww/style/color.scss";
+
+* {
+    font-family: "Torus Pro", "Torus", "Cantarell";
+    font-weight: 600;
+    font-size: 14px;
+}
+
+button {
+    min-height: 1rem;
+}
+
+$trans: background-color 0.3s ease, color 0.3s ease;
+$radius: 1rem;
+
+window {
+    decoration {
+        // box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+        background-clip: padding-box;
+        margin: 1rem;
+        border-radius: $radius;
+
+    }
+}
+.close-button{
+    all: unset;
+    background: $bg2;
+    color: $fg;
+    border-radius: 100%;
+    margin: 5px;
+    min-width: 24px;
+    min-height: 24px;
+    transition: $trans;
+
+    &:hover {
+        background-color: $red;
+        color: $inverted;
+    }
+}
+.notification-background{
+    all: unset;
+    padding: 1rem
+}
+
+.notification {
+    all: unset;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+    border-radius: $radius;
+    transition: $trans;
+    background-color: $bg0;
+    color: $fg;
+}
+
+.notification-default-action {
+    all: unset;
+    color: $fg;
+    border-radius: $radius;
+    padding: 8px;
+    &:hover{
+        background-color: $bg1;
+    }
+    &:not(:only-child) {
+        border-radius: $radius $radius 0 0;
+    }
+
+}
+
+.notification-content{
+    color: $fg;
+    background-color: transparent;
+    border-radius: $radius;
+    margin: 8px;
+
+    .image {
+        border-radius: 64px;
+        margin: .8rem;
+    }
+    .app-icon{
+        margin: .8rem;
+    }
+    .summary{
+        color: $fg;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: .2rem;
+    }
+    .time{
+        margin-right: 30px;
+        color: $fg2;
+    }
+    .body{
+        color: $fg;
+
+    }
+
+    progressbar {
+        
+    }
+}
+
+.notification-action {
+    all: unset;
+    transition: $trans;
+    margin: 0;
+    background-color: transparent;
+    padding: 1rem;
+    background-color: $bg;
+    border-radius: 0;
+    border-top: 1px solid $bg2;
+    border-right: 1px solid $bg2;
+    &:first-child {
+        border-bottom-left-radius: $radius;
+    }
+    &:last-child {
+        border-bottom-right-radius: $radius;
+        border-right: none;
+    }
+    &:hover{
+        background-color: $bg2;
+    }
+    color: $fg;
+
+}
+
+.control-center {
+    background-color: $bg;
+    margin: 1rem;
+    margin-right: 0;
+    border-radius: $radius 0 0 $radius;
+    color: $fg;
+        .notification {
+            &:focus{
+                all: unset;
+            }
+        }
+    .control-center-list {
+        all: unset;
+        background: transparent;
+    }
+}
+
+.notification-row{
+    background-color: unset;
+}
+// .notification-group {
+//     &.collapsed{
+//         .notification-row{
+//             background-color: unset;
+//         }
+//         &:hover{
+//             .notification-row:not(:only-child) {
+//                 background-color: unset;
+//             }
+//         }
+//     }
+// }
+
+.activatable {
+    &:focus{
+        background-color: rgba($accent, 0.2);
+    }
+}
+
+.widget-dnd{
+    color: $fg;
+    label {font-size: 1.5rem;}
+    margin: .5rem;
+    > switch {
+        border-radius: $radius;
+        background-color: $bg2;
+        border: 1px solid $bg3;
+        slider {
+            background-color: #fff;
+            border-radius: $radius;
+
+        }
+        &:checked {
+            background-color: $accent;
+        }
+    }
+}
+
+.widget-mpris{
+    .widget-mpris-player {
+        padding: .5rem;
+        padding: 1rem;
+        margin: 1rem 1.5rem;
+        background-color: $bg0;
+        border-radius: $radius;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+    }
+
+    button {
+        color: $fg;
+        &:hover {
+            background-color: $bg2;
+        }
+        &:disabled{
+            color: $fg3;
+        }
+    }
+
+    .widget-mpris-title{
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+    .widget-mpris-subtitle{
+        font-size: 1.1rem;
+    }
+}
+
+.widget-title {
+    color: $fg;
+    label{
+        font-size: 1.5rem; 
+        font-weight: bold;
+    }
+    > button {
+        all: unset;
+        color: $fg;
+        background-color: $bg2;
+        transition: $trans;
+        padding: 0.07rem 1.15rem 0.07rem 0.85rem;
+        border-radius: $radius;
+
+        &:hover {
+            background-color: fade($error);
+            color: $inverted;
+        }
+
+    }
+
+
+}

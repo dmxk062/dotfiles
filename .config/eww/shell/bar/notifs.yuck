@@ -1,91 +1,12 @@
-(defvar notifs '[]')
-(defvar notif-count 0)
-(defvar hide-notif-popups false)
-(defvar expanded_notif "")
+(deflisten notif :initial '{ "count": 0, "dnd": false, "visible": false, "inhibited": false }' "bin/swaync.sh listen")
 
 (defwidget notification_button []
     (box :space-evenly false
-        (button :onclick "bin/open_notif_popup.sh&" 
-                :class "notif_button${notif-count > 0 ? "-active" : ""}" 
-    "${hide-notif-popups ? "󰂛${notif-count > 0 ? "  ${notif-count}" : ""}" : "${notif-count > 0 ? "󱅫  ${notif-count}" : "󰂚"}"}")
-    )
-)
-
-(defwindow notifcenter 
-        :monitor 0
-        :geometry (geometry :x 0
-                            :y 0
-                            :width 0
-                            :height 0
-                            :anchor "top right"
-                    )
-        :stacking "overlay"
-        :namespace "eww_noblur"
-    (notifications)
-)
-
-(defwidget notifications []
-    (box :space-evenly false :halign "end" :valign "start"
-        (box :class "popup_box" :space-evenly false :orientation "v"
-        (box :class "padding_box"
-            (scroll :vscroll true :class "scroll-notif" :vexpand true
-                (box :orientation "v" :space-evenly false :hexpand true :class "padding_box"
-                    (for notif in notifs 
-                        (eventbox :onmiddleclick "makoctl dismiss -n ${notif.id}"
-                        (box :class "notif${notif.urgency == 2 ? "-urgent" : ""}${notif.id == expanded_notif ? "-expanded" : ""}" :orientation "h" :space-evenly false :hexpand true
-                            (box :space-evenly false :orientation "v"
-                                (box :orientation "v" :space-evenly false :valign "start" :vexpand true (button :class "notif-close-button" :onclick "makoctl dismiss -n ${notif.id}" "󰩹"))
-                                (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width "${icon_size[0]/2}" :image-height "${icon_size[1]/2}" :visible "${notif.icon != ""&&notif.id != expanded_notif}")
-                            )
-                            (box :orientation "v" :space-evenly false :hexpand true
-                                (box :space-evenly false :hexpand true
-                                    (box :hexpand true :space-evenly false :halign "start"
-                                        (label :markup "${notif.title}" :wrap true :justify "left" :class "title")
-                                    )
-                                    (button :class "notif-expander-button${notif.id == expanded_notif ? "-expanded" : ""}" :onclick "${EWW_CMD} update expanded_notif=${notif.id == expanded_notif ? "" : notif.id}" "${notif.id == expanded_notif ? "󰁢" : "󰁊"}")
-                                )
-                                (box :visible "${notif.id != expanded_notif}"
-                                    (label :text "${notif.text}" :limit-width 32 :class "notif-body")
-                                )
-                                (box :visible "${notif.id == expanded_notif}" :orientation "v" :space-evenly false
-                                    (label :markup "${notif.text}" :wrap true :class "notif-body")
-                                    (box  :space-evenly {notif.actions != '[]' && notif.icon != "" ? "true ": "false" }
-                                        (box :space-evenly false  :visible "${notif.actions != "[]"}" :hexpand true
-                                            (box :orientation "v" :halign "center" :space-evenly false (for action in "${notif?.["actions"]}" 
-                                                (box :halign "start" :space-evenly false
-                                                    (button :tooltip "Invoke `${action.action}` on the notification"
-                                                            :class "lbutton" 
-                                                            :timeout "16s" 
-                                                            :onclick "makoctl invoke -n ${notif.id} ${action.action}&disown"
-                                                            (label :text "${action.name}" :limit-width 16)
-                                                    )
-                                                )
-                                            ))
-                                            (separator)
-                                        )
-                                        (eventbox :visible "${notif.icon != ""}" :onclick "xdg-open ${notif.icon}"
-                                            (image :path "${notif.icon?:"${icon_theme}/scalable/apps/preferences-desktop-notification.svg"}" :image-width {notif.actions != "[]" ? 128 : 350} :image-height {notif.actions != "[]" ? 128 : 150})
-                                        )
-                                    )
-                                    (box :space-evenly false
-                                        (box :space-evenly false :halign "start" :hexpand true
-                                            (label :text "By: ${notif.name}" :class "text" :limit-width 32)
-                                        )
-                                        (label :class "urgency${notif.urgency == 255 ? 0 : notif.urgency}" :text "${notif.level?: "normal"}")
-                                    )
-                                )
-                            )
-                        ))
-                    )
-                )
-            )
-        )
-        (box :class "popup_footer"
-            (button :class "button${hide-notif-popups ? "" : "-active"}" :timeout "16s" :onclick "../settings/bin/notif.sh toggle-mode" "${hide-notif-popups ? "󱙍" : "󰍡"}    Popups")
-            (button :class "button-good" :timeout "16s" :onclick "makoctl restore&&../settings/bin/notif.sh upd" "󰦛    Restore")
-            (button :class "button-error" :timeout "16s" :onclick "makoctl dismiss -a" "    Dismiss All")
-        )
-            
+        (button :onclick "sleep 0.2; swaync-client -t" 
+                :timeout "128s"
+                :class "notif_button${notif.count > 0 ? "-alert" : (notif.visible ? "-active" : "")}" 
+                "${notif.count > 0 ? "󰵙" : (notif.dnd ? "󰂛" : "󰂚")}${notif.count > 0 ? "    ${notif.count}" : ""}"
         )
     )
 )
+

@@ -3,7 +3,21 @@ eww="eww -c $HOME/.config/eww/shell"
 
 CACHEDIR="/tmp/eww/cache/clip"
 notify(){
-    notify-send "$1" -i "$2" -c "screenshot"
+    format="$(printf '<img src="%s" alt="Screenshot">' "$2")"
+    response="$(notify-send "$1" -c "screenshot" "$format" \
+        --action="open"="Open" \
+        --action="edit"="Edit" \
+        --action="del"="Delete" 
+    )"
+
+    case $response in
+        open)
+            xdg-open "$2";;
+        del)
+            rm "$2";;
+        edit)
+            swappy -f "$2" -o "$2";;
+    esac
 }
 close() {
     $eww close screenshot_popup

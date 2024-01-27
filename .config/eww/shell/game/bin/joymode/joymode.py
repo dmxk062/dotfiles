@@ -169,6 +169,8 @@ class ControllerMonitor:
                 self.set_mode(Modes.GAME)
             elif event == KEYS.ZR:
                 set_press(125, value)
+            elif event == KEYS.ZL:
+                set_press(15, value)
             elif event == KEYS.LEFT:
                 set_press(105, value)
             elif event == KEYS.RIGHT:
@@ -253,7 +255,7 @@ class ControllerMonitor:
 
 def cleanup_on_exit(signum, frame, cons: list[Controller], listener: ControllerMonitor) -> None:
     for con in cons:
-        con._restore_leds()
+        con.set_leds([(0, True), (1, False), (2, False), (3, False)])
     update_eww([("controller_mode", "false"), ("controller_name", "")])
     # set_window("gamemode_desktop_popup", "close")
     os.remove(LOCKFILE)
@@ -268,8 +270,13 @@ def cleanup_on_exit(signum, frame, cons: list[Controller], listener: ControllerM
 if __name__ == "__main__":
     with open (LOCKFILE, "w") as file:
         file.write(str(os.getpid()))
-    devices = query_devices()
-    device = devices[0]
+    try:
+        devices = query_devices()
+        device = devices[0]
+    except:
+        subprocess.run(["notify-send", "No Controller Found", "Make sure it is connected and appears in the sysfs filesystem as a joystick", "--app-name=eww", "--icon=/usr/share/icons/Tela/scalable/devices/input-gaming.svg"])
+        os.remove(LOCKFILE)
+        os._exit(0)
     update_eww([("controller_name", device.name), ("controller_menu", "game"), ("controller_mode", "true")])
     ctl_socket = hypr.HyprctlSocket(hypr.HYPRCTL_SOCKET)
     listener = ControllerMonitor(device, ctl_socket)

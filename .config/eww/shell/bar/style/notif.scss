@@ -1,11 +1,18 @@
-.notif_button,.notif_button-active{
+.notif_button,.notif_button-active, .notif_button-alert{
     @extend .sbutton;
 }
-.notif_button-active{
+.notif_button-alert{
     background-color: $orange;
     color: $inverted;
     &:hover{
         background-color: fade($orange);
+    }
+}
+.notif_button-active{
+    background-color: $accent;
+    color: $inverted;
+    &:hover{
+        background-color: fade($accent);
     }
 }
 
@@ -17,7 +24,7 @@
     padding: .5rem;
 }
 .notif-expanded,.notif-urgent-expanded{
-    background-color: $bg2;
+    background-color: $bg1;
 }
 .notif-urgent,.notif-urgent-expanded{
     border-bottom: 2px solid $error;
@@ -71,7 +78,7 @@
     color: $fg;
 }
 .urgency1{
-    color: $yellow;
+    color: $fg;
 }
 .urgency2{
     color: $red;

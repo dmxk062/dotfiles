@@ -2,7 +2,7 @@
 
 EWWDIR="$XDG_CONFIG_HOME/eww"
 
-for proc in eww  mpris.sh ws.sh notif.sh hyprmon.sh
+for proc in eww  mpris.sh ws.sh hyprmon.sh
 do
     killall $proc
 done
@@ -17,7 +17,7 @@ do
     eww -c $EWWDIR/shell open $eww_window  & disown
 done
 
-~/.config/eww/settings/bin/notif.sh monitor & disown
+# ~/.config/eww/settings/bin/notif.sh monitor & disown
 $EWWDIR/shell/dock/bin/open_dock.sh & disown
 sleep 2
 
