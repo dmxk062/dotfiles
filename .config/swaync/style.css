@@ -53,7 +53,8 @@ window decoration {
   margin: 8px; }
   .notification-content .image {
     border-radius: 64px;
-    margin: .8rem; }
+    margin: .8rem;
+    color: #2e3440; }
   .notification-content .app-icon {
     margin: .8rem; }
   .notification-content .summary {
