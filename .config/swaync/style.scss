@@ -98,6 +98,54 @@ window {
     progressbar {
         
     }
+    .body-image {
+        margin-top: .3rem;
+        background-color: $bg;
+        border-radius: $radius;
+    }
+    #inline-reply-box{
+        background-color: $red;
+    }
+    .inline-reply {
+        all: unset;
+        margin-top: .5rem;
+        .inline-reply-entry{
+            all: unset;
+            border-radius: 12px;
+            min-height: 2.85rem;
+            background-color: $bg1;
+            color: $fg;
+            caret-color: $fg;
+            border: 2px solid $bg3;
+            padding:  .07rem 1.15rem .07rem .85rem;
+            &:focused{
+                border: 2px solid fade($accent);
+            }
+            selection{
+                color: $inverted;
+                background-color: $accent;
+            }
+            label {
+                color: $fg;
+            }
+        }
+        .inline-reply-button {
+            all: unset;
+            padding:  .07rem 1.15rem .07rem .85rem;
+            border-radius: 12px;
+            color: $inverted;
+            margin-left: 1rem;
+            background-color: $accent;
+            transition:  $trans;
+            &:hover{
+                background-color: fade($accent);
+            }
+            &:disabled{
+                background-color: initial;
+                color: $fg;
+            }
+        }
+    }
 }
 
 .notification-action {

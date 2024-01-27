@@ -67,6 +67,44 @@ window decoration {
     color: #d8dee9; }
   .notification-content .body {
     color: #eceff4; }
+  .notification-content .body-image {
+    margin-top: .3rem;
+    background-color: #2e3440;
+    border-radius: 1rem; }
+  .notification-content #inline-reply-box {
+    background-color: #bf616a; }
+  .notification-content .inline-reply {
+    all: unset;
+    margin-top: .5rem; }
+    .notification-content .inline-reply .inline-reply-entry {
+      all: unset;
+      border-radius: 12px;
+      min-height: 2.85rem;
+      background-color: #3b4252;
+      color: #eceff4;
+      caret-color: #eceff4;
+      border: 2px solid #4c566a;
+      padding: .07rem 1.15rem .07rem .85rem; }
+      .notification-content .inline-reply .inline-reply-entry:focused {
+        border: 2px solid #7b9da3; }
+      .notification-content .inline-reply .inline-reply-entry selection {
+        color: #2e3440;
+        background-color: #8fbcbb; }
+      .notification-content .inline-reply .inline-reply-entry label {
+        color: #eceff4; }
+    .notification-content .inline-reply .inline-reply-button {
+      all: unset;
+      padding: .07rem 1.15rem .07rem .85rem;
+      border-radius: 12px;
+      color: #2e3440;
+      margin-left: 1rem;
+      background-color: #8fbcbb;
+      transition: background-color 0.3s ease, color 0.3s ease; }
+      .notification-content .inline-reply .inline-reply-button:hover {
+        background-color: #7b9da3; }
+      .notification-content .inline-reply .inline-reply-button:disabled {
+        background-color: initial;
+        color: #eceff4; }
 
 .notification-action {
   all: unset;
