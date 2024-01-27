@@ -3,6 +3,7 @@
 (defwidget notification_button []
     (box :space-evenly false
         (button :onclick "sleep 0.2; swaync-client -t" 
+                :onmiddleclick "swaync-client -C"
                 :timeout "128s"
                 :class "notif_button${notif.count > 0 ? "-alert" : (notif.visible ? "-active" : "")}" 
                 "${notif.count > 0 ? "󰵙" : (notif.dnd ? "󰂛" : "󰂚")}${notif.count > 0 ? "    ${notif.count}" : ""}"

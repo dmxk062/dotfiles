@@ -21,7 +21,7 @@ on(){
     oldwin="$(hyprctl -j activewindow|jq '.address' -r)"
     sleep 0.1
     hyprctl dispatch moveworkspacetomonitor name:mirror $target
-    sleep 0.1
+    sleep 1
     hyprctl dispatch focuswindow address:$oldwin
     state="$(printf '{"source":"%s","target":"%s","active":true}' "$source" "$target")"
     update monitor_mirrored "$state"
