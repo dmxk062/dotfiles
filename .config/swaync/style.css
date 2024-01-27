@@ -8,65 +8,65 @@ button {
 
 window decoration {
   background-clip: padding-box;
-  margin: 1rem;
   border-radius: 1rem; }
 
 .close-button {
   all: unset;
-  background: #cad0dc;
-  color: #2e3440;
+  background: #434c5e;
+  color: #eceff4;
   border-radius: 100%;
   margin: 5px;
   min-width: 24px;
   min-height: 24px;
-  transition: background-color 0.3s ease, color 0.3s ease; }
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 1.2rem;
+  margin-top: 1.2rem; }
   .close-button:hover {
     background-color: #bf616a;
     color: #2e3440; }
 
 .notification-background {
-  all: unset;
-  padding: 1rem; }
+  all: unset; }
 
 .notification {
-  all: unset;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+  margin: .8rem;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px;
   border-radius: 1rem;
   transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: #eceff4;
-  color: #2e3440; }
+  background-color: #2e3440;
+  color: #eceff4; }
 
 .notification-default-action {
   all: unset;
-  color: #2e3440;
+  color: #eceff4;
   border-radius: 1rem;
   padding: 8px; }
   .notification-default-action:hover {
-    background-color: #d8dee9; }
+    background-color: #3b4252; }
   .notification-default-action:not(:only-child) {
     border-radius: 1rem 1rem 0 0; }
 
 .notification-content {
-  color: #2e3440;
+  color: #eceff4;
   background-color: transparent;
   border-radius: 1rem;
   margin: 8px; }
   .notification-content .image {
     border-radius: 64px;
     margin: .8rem;
-    color: #2e3440; }
+    color: #eceff4; }
   .notification-content .app-icon {
     margin: .8rem; }
   .notification-content .summary {
-    color: #2e3440;
+    color: #eceff4;
     font-weight: bold;
     font-size: 1.2rem;
     margin-bottom: .2rem; }
   .notification-content .time {
     margin-right: 30px;
-    color: #434c5e; }
+    color: #d8dee9; }
   .notification-content .body {
-    color: #2e3440; }
+    color: #eceff4; }
 
 .notification-action {
   all: unset;
@@ -74,25 +74,25 @@ window decoration {
   margin: 0;
   background-color: transparent;
   padding: 1rem;
-  background-color: #eceff4;
+  background-color: #2e3440;
   border-radius: 0;
-  border-top: 1px solid #cad0dc;
-  border-right: 1px solid #cad0dc;
-  color: #2e3440; }
+  border-top: 1px solid #434c5e;
+  border-right: 1px solid #434c5e;
+  color: #eceff4; }
   .notification-action:first-child {
     border-bottom-left-radius: 1rem; }
   .notification-action:last-child {
     border-bottom-right-radius: 1rem;
     border-right: none; }
   .notification-action:hover {
-    background-color: #cad0dc; }
+    background-color: #434c5e; }
 
 .control-center {
-  background-color: #eceff4;
+  background-color: #2e3440;
   margin: 1rem;
   margin-right: 0;
   border-radius: 1rem 0 0 1rem;
-  color: #2e3440; }
+  color: #eceff4; }
   .control-center .notification:focus {
     all: unset; }
   .control-center .control-center-list {
@@ -106,14 +106,14 @@ window decoration {
   background-color: rgba(143, 188, 187, 0.2); }
 
 .widget-dnd {
-  color: #2e3440;
+  color: #eceff4;
   margin: .5rem; }
   .widget-dnd label {
     font-size: 1.5rem; }
   .widget-dnd > switch {
     border-radius: 1rem;
-    background-color: #cad0dc;
-    border: 1px solid #bcc3d0; }
+    background-color: #434c5e;
+    border: 1px solid #4c566a; }
     .widget-dnd > switch slider {
       background-color: #fff;
       border-radius: 1rem; }
@@ -124,14 +124,14 @@ window decoration {
   padding: .5rem;
   padding: 1rem;
   margin: 1rem 1.5rem;
-  background-color: #eceff4;
+  background-color: #2e3440;
   border-radius: 1rem;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px; }
 
 .widget-mpris button {
-  color: #2e3440; }
+  color: #eceff4; }
   .widget-mpris button:hover {
-    background-color: #cad0dc; }
+    background-color: #434c5e; }
   .widget-mpris button:disabled {
     color: #929aaa; }
 
@@ -143,17 +143,20 @@ window decoration {
   font-size: 1.1rem; }
 
 .widget-title {
-  color: #2e3440; }
+  color: #eceff4; }
   .widget-title label {
     font-size: 1.5rem;
     font-weight: bold; }
   .widget-title > button {
     all: unset;
-    color: #2e3440;
-    background-color: #cad0dc;
+    color: #eceff4;
+    background-color: #434c5e;
     transition: background-color 0.3s ease, color 0.3s ease;
     padding: 0.07rem 1.15rem 0.07rem 0.85rem;
     border-radius: 1rem; }
     .widget-title > button:hover {
-      background-color: #be7e89;
+      background-color: #9d5e6a;
       color: #2e3440; }
+
+.floating-notifications {
+  background: transparent; }

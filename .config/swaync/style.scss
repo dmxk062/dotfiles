@@ -12,12 +12,12 @@ button {
 
 $trans: background-color 0.3s ease, color 0.3s ease;
 $radius: 1rem;
+$popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
 
 window {
     decoration {
         // box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
         background-clip: padding-box;
-        margin: 1rem;
         border-radius: $radius;
 
     }
@@ -31,6 +31,8 @@ window {
     min-width: 24px;
     min-height: 24px;
     transition: $trans;
+    margin-right: 1.2rem;
+    margin-top: 1.2rem;
 
     &:hover {
         background-color: $red;
@@ -39,12 +41,11 @@ window {
 }
 .notification-background{
     all: unset;
-    padding: 1rem
 }
 
 .notification {
-    all: unset;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+    margin: .8rem;
+    box-shadow: $popup_shadow;
     border-radius: $radius;
     transition: $trans;
     background-color: $bg0;
@@ -232,4 +233,11 @@ window {
     }
 
 
+}
+
+.floating-notifications {
+  background: transparent;
+
+  .notification {
+  }
 }
