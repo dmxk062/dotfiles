@@ -12,8 +12,8 @@
         "name":"Evening Forrest"
     },
     {
-        "path":"/home/dmx/.config/background/img/morning",
-        "name":"Bright Morning"
+        "path":"/home/dmx/.config/background/img/nord_city",
+        "name":"City"
     },
     {
         "path":"/home/dmx/.config/background/img/forrest_mountains",
@@ -40,8 +40,8 @@
         "name":"Fire"
     },
     {
-        "path":"/home/dmx/.config/background/img/pink_blue_gradient",
-        "name":"Red & Blue Sediment"
+        "path":"/home/dmx/.config/background/img/osx",
+        "name":"MacOS"
     },
     {
         "path":"/home/dmx/.config/background/img/blue_flower",
@@ -50,5 +50,10 @@
     {
         "path":"/home/dmx/.config/background/img/gay2",
         "name":"Rainbow"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/rocket",
+        "name":"Rocket Launch"
     }
+
 ]
