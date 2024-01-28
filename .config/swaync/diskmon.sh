@@ -34,7 +34,7 @@ stdbuf -oL -- udevadm monitor --udev -s block | while read -r -- _ _ event devpa
                 shortname="$(basename "$fullpath")"
                 devfs_name="/dev/${shortname}"
                 name="$( < "${fullpath}/device/model")"
-                notify_on_insert "$name" "$USB_SYMBOLIC" "${devfs_name}" 
+                notify_on_insert "$name" "$USB_SYMBOLIC" "${devfs_name}"& disown 
             fi
         elif [[ "$event" == "remove" ]]; then #notifies on disk removal, opposite of check above
             if ! [[ "$devpath" =~ .*[0-9]$ ]]; then

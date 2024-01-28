@@ -79,6 +79,7 @@ window {
     }
     .app-icon{
         margin: .8rem;
+        color: $fg;
     }
     .summary{
         color: $fg;
@@ -99,6 +100,7 @@ window {
         
     }
     .body-image {
+        color: $fg;
         margin-top: .3rem;
         background-color: $bg;
         border-radius: $radius;
@@ -173,7 +175,9 @@ window {
 }
 
 .control-center {
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
     background-color: $bg;
+    margin: unset;
     margin: 1rem;
     margin-right: 0;
     border-radius: $radius 0 0 $radius;
@@ -288,4 +292,9 @@ window {
 
   .notification {
   }
+}
+
+.blank-window{
+    all: unset;
+    background: transparent;
 }
