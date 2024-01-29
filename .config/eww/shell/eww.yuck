@@ -18,6 +18,8 @@
 
 (include "vars/submaps.yuck")
 
+(include "prompt/prompt.yuck")
+
 (include "widgets/lbutton.yuck")
 (include "bar/bar.yuck")
 (include "dock/dock.yuck")

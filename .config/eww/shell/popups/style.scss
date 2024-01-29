@@ -10,11 +10,11 @@
         background-color: $bg3;
     }
 }
-.slider-bright{
-    trough highlight{
-        background-color: $yellow;
-    }
-}
+// .slider-bright{
+//     trough highlight{
+//         background-color: $yellow;
+//     }
+// }
 .audio_popup_box{
     @extend .popup_box_padded;
     border-radius: $rounding-large;

@@ -1,0 +1,139 @@
+(defvar prompt_current '')
+(defvar prompt_error false)
+(defvar prompt_error_msg '')
+(defvar prompt_mode 'default')
+(defvar prompt_hist '{"pos":0, "len":0, "pos_f":"0"}')
+(defvar prompt_show_help false)
+
+(defvar prompt_result '{}')
+(defvar prompt_has_result false)
+
+(defvar prompt_is_loading false)
+
+(defvar prompt_help '{
+"commands":[
+"help",
+"clear",
+"ws",
+">"
+],
+"args":[
+"",
+"",
+"workspace",
+"command"
+],
+"effects":[
+"Show this help",
+"Clear the history",
+"Switch to a workspace",
+"Run a command"
+]
+}')
+
+(defvar prompt_modes '{
+"default":{
+    "icon":"debug-execute-from-cursor",
+    "title":"Shell Prompt"
+},
+"run":{
+    "icon":"system-run-symbolic",
+    "title":"Run Command"
+}
+}')
+
+(defwindow prompt_window
+        :monitor 0
+        :exclusive false
+        :focusable true
+        :geometry (geometry :x 0
+                            :y 0
+                            :width 0
+                            :height 0
+                            :anchor "center"
+                    )
+        :stacking "overlay"
+        :namespace "eww_noblur"
+    (prompt)
+)
+
+(defwidget prompt []
+    (box :space-evenly false :halign "center" :valign "center"
+        (box :space-evenly false :orientation "v" :class "popup_box"
+            (label :class "heading" :text {prompt_modes[prompt_mode].title})
+            (box :space-evenly false 
+                (overlay
+                (input :class "prompt${prompt_is_loading ? "-loading" : (prompt_error ? "-error" : (
+                prompt_mode == "run" ? "-run" : ""
+                ))}"
+                :onaccept "prompt/process.sh '${prompt_mode}' '{}'&"
+                :value {prompt_current}
+                :onchange "case '{}' in 
+'>'*)${EWW_CMD} update prompt_mode='run'
+;;
+*)${EWW_CMD} update prompt_mode='default'
+;;
+esac
+"
+                )
+                (box :hexpand true :halign "end"
+                    (label :text "${prompt_hist.pos_f} / ${prompt_hist.len}" :class "overlay-text" :style "padding-right: 1rem;")
+                )
+                (box :hexpand true :halign "start" :visible prompt_is_loading
+                    (label :class "spinner" :style "margin-left: 1.3rem;" :text "")
+                )
+            )
+            )
+            (revealer :reveal prompt_error :transition "slideup" :duration "100ms"
+                (scroll :hexpand true :height 60
+                    (box :hexpand true :vexpand true :valign "start"
+                    (wrapped_markup :text prompt_error_msg))
+                )
+            )
+            (revealer :reveal prompt_has_result :transition "slideup" :duration "100ms"
+                (scroll :hexpand true :height 120
+                (box :orientation "v" :halign "center" :space-evenly false
+                    (box :space-evenly false
+                    (themed_icon :name {prompt_result.icon})
+                    (label :class "heading" :text {prompt_result.title}))
+                    (box :hexpand true :vexpand true :valign "start"
+                    (wrapped_markup-title :text {prompt_result.body}))
+                ))
+            )
+            (revealer :reveal prompt_show_help :transition "slideup" :duration "100ms"
+                (box :space-evenly false :class "padding_box"
+                    (box :space-evenly false :hexpand true
+                        (box :space-evenly false :orientation "v"
+                            (box :halign "start"
+                            (label :class "title" :markup "Command"))
+                            (box :space-evenly false :orientation "v"
+                                (for comm in "${prompt_help.commands}"
+                                    (box :halign "start"
+                                    (label :text comm :class "text"))
+                                )
+                            )
+                        )
+                        (box :space-evenly false :orientation "v"
+                            (label :class "title" :text "Args")
+                            (box :space-evenly false :orientation "v"
+                                (for comm in "${prompt_help.args}"
+                                    (label :text comm :class "text")
+                                )
+                            )
+                        )
+                    )
+                    (box :space-evenly false :orientation "v"
+                        (box :halign "end"
+                        (label :class "title" :text "Effect"))
+                        (box :space-evenly false :orientation "v"
+                            (for comm in "${prompt_help.effects}"
+                                (box :halign "end"
+                                (label :text comm :class "text"))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

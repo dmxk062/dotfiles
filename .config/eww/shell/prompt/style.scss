@@ -1,0 +1,53 @@
+.prompt, .prompt-error, .prompt-run, .prompt-loading{
+    @extend .input;
+    min-width: 28rem;
+    font-family: "FiraCode Nerd Font", "monospace";
+    font-weight: 400;
+}
+
+.prompt-error{
+    &:focused {
+        border: 2px solid fade($error);
+    }
+}
+.prompt-run{
+    &:focused {
+        border: 2px solid $green;;
+    }
+}
+.prompt-loading{
+    &:focused {
+        color: transparent;
+        caret-color: transparent;
+    }
+}
+// @keyframes spin {
+//     0% {background-image: -gtk-icontheme('nm-stage01-connecting01');}  
+//     10% {background-image: -gtk-icontheme('nm-stage01-connecting02');}  
+//     19% {background-image: -gtk-icontheme('nm-stage01-connecting03');}  
+//     28% {background-image: -gtk-icontheme('nm-stage01-connecting04');}  
+//     37% {background-image: -gtk-icontheme('nm-stage01-connecting05');}  
+//     46% {background-image: -gtk-icontheme('nm-stage01-connecting06');}  
+//     55% {background-image: -gtk-icontheme('nm-stage01-connecting07');}  
+//     64% {background-image: -gtk-icontheme('nm-stage01-connecting08');}  
+//     73% {background-image: -gtk-icontheme('nm-stage01-connecting09');}  
+//     82% {background-image: -gtk-icontheme('nm-stage01-connecting10');}  
+//     90% {background-image: -gtk-icontheme('nm-stage01-connecting11');}  
+//     100% {background-image: -gtk-icontheme('nm-stage01-connecting12');}  
+// }
+@keyframes spin {
+  to { -gtk-icon-transform: rotate(1turn); }
+}
+.spinner{
+    color: $fg2;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 1rem;
+    min-width: 1rem;
+    -gtk-icon-style: symbolic;
+    // background-image: -gtk-icontheme('process-working-symbolic');
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
