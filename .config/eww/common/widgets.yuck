@@ -4,7 +4,8 @@
 (label :class "text-np" :wrap true :justify "left" :text "${text}"))
 (defwidget wrapped_markup [text]
 (label :class "text-np" :wrap true :justify "left" :markup "${text}"))
-
+(defwidget wrapped_markup-title [text]
+(label :class "title-np" :wrap true :justify "left" :markup "${text}"))
 
 (defwidget error [text if]
     (box :class "err-box" :visible "${if}" :hexpand true :vexpand true

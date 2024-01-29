@@ -1,4 +1,4 @@
-.prompt, .prompt-error, .prompt-run, .prompt-loading{
+.prompt, .prompt-error, .prompt-run, .prompt-loading, .prompt-launch, .prompt-default, .prompt-search_file, .prompt-search_dir, .prompt-math{
     @extend .input;
     min-width: 28rem;
     font-family: "FiraCode Nerd Font", "monospace";
@@ -12,7 +12,27 @@
 }
 .prompt-run{
     &:focused {
+        border: 2px solid $orange;;
+    }
+}
+.prompt-math{
+    &:focused {
+        border: 2px solid $pink;;
+    }
+}
+.prompt-launch{
+    &:focused {
+        border: 2px solid $magenta;;
+    }
+}
+.prompt-search_file{
+    &:focused {
         border: 2px solid $green;;
+    }
+}
+.prompt-search_dir{
+    &:focused {
+        border: 2px solid $dblue;;
     }
 }
 .prompt-loading{
@@ -50,4 +70,15 @@
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+}
+
+.math-row, .math-row-error{
+    background-color: $bg0;
+    border: 2px solid $bg2;
+    margin: .3rem;
+    border-radius: 12px;
+}
+.math-row-error{
+    border: 2px solid $red;
+
 }

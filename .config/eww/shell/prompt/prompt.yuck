@@ -6,7 +6,13 @@
 (defvar prompt_show_help false)
 
 (defvar prompt_result '{}')
+(defvar prompt_result_type 'regular')
 (defvar prompt_has_result false)
+
+(defvar prompt_search_result '{}')
+(defvar prompt_search_item '')
+
+(defvar prompt_math_results '[]')
 
 (defvar prompt_is_loading false)
 
@@ -14,30 +20,43 @@
 "commands":[
 "help",
 "clear",
+"updates",
 "ws",
-">"
+">",
+":"
 ],
 "args":[
 "",
 "",
+"",
 "workspace",
-"command"
+"command",
+"program"
 ],
 "effects":[
-"Show this help",
+"Show this page",
 "Clear the history",
+"Check for updates",
 "Switch to a workspace",
-"Run a command"
+"Run a command",
+"Launch a program"
 ]
 }')
 
 (defvar prompt_modes '{
 "default":{
-    "icon":"debug-execute-from-cursor",
     "title":"Shell Prompt"
 },
+"launch":{
+    "title":"Launch Program"
+},
+"search_dir":{
+    "title":"Search Directories"
+},
+"search_file":{
+    "title":"Search Files"
+},
 "run":{
-    "icon":"system-run-symbolic",
     "title":"Run Command"
 }
 }')
@@ -57,19 +76,35 @@
     (prompt)
 )
 
+(defwidget path_entry [path text type] 
+    (eventbox :class "path" :cursor "pointer" :onclick "prompt/open.sh; prompt/open_path.sh ${path}& disown" (box :space-evenly false
+    (label :text  {type == "dir" ? "" : "󰈔"} :style "margin-right: 1rem;")
+    (label :text {replace(text, "/home/dmx", "~")} 
+    :limit-width 40
+    :tooltip path
+    :truncate-left true)))
+)
+
+
 (defwidget prompt []
     (box :space-evenly false :halign "center" :valign "center"
         (box :space-evenly false :orientation "v" :class "popup_box"
-            (label :class "heading" :text {prompt_modes[prompt_mode].title})
+            ;; (label :class "heading" :text {prompt_modes[prompt_mode].title})
             (box :space-evenly false 
                 (overlay
-                (input :class "prompt${prompt_is_loading ? "-loading" : (prompt_error ? "-error" : (
-                prompt_mode == "run" ? "-run" : ""
-                ))}"
+                (input :class "prompt${prompt_is_loading ? "-loading" : (prompt_error ? "-error" : "-${prompt_mode}")}"
                 :onaccept "prompt/process.sh '${prompt_mode}' '{}'&"
                 :value {prompt_current}
                 :onchange "case '{}' in 
 '>'*)${EWW_CMD} update prompt_mode='run'
+;;
+'/'*)${EWW_CMD} update prompt_mode='search_file'
+;;
+'\\'*)${EWW_CMD} update prompt_mode='search_dir'
+;;
+'%'*)${EWW_CMD} update prompt_mode='math'
+;;
+':'*)${EWW_CMD} update prompt_mode='launch'
 ;;
 *)${EWW_CMD} update prompt_mode='default'
 ;;
@@ -90,8 +125,8 @@ esac
                     (wrapped_markup :text prompt_error_msg))
                 )
             )
-            (revealer :reveal prompt_has_result :transition "slideup" :duration "100ms"
-                (scroll :hexpand true :height 120
+            (revealer :reveal {prompt_has_result && prompt_result_type == "regular"} :transition "slideup" :duration "100ms"
+                (scroll :hexpand true :height 120 :visible {prompt_result_type == "regular"}
                 (box :orientation "v" :halign "center" :space-evenly false
                     (box :space-evenly false
                     (themed_icon :name {prompt_result.icon})
@@ -99,6 +134,35 @@ esac
                     (box :hexpand true :vexpand true :valign "start"
                     (wrapped_markup-title :text {prompt_result.body}))
                 ))
+            )
+            (revealer :reveal {prompt_has_result && prompt_result_type == "search"} :transition "slideup" :duration "100ms" 
+                (scroll :hexpand true :height 320
+                    (box :orientation "v" :space-evenly false :class "padding_box"
+                        (for match in prompt_search_result
+                            (box :space-evenly false :halign "start"
+                            (path_entry :path {match.path} :text "${match.path}" :type prompt_search_item)
+                            )
+                        )
+                    )
+                )
+            )
+            (revealer :reveal {prompt_has_result && prompt_result_type == "math"} :transition "slideup" :duration "100ms" 
+                (scroll :hexpand true :height 320
+                    (box :orientation "v" :space-evenly false :class "padding_box"
+                        (for result in prompt_math_results
+                            (box :class "math-row${result.error ? "-error" : ""}" :hexpand true :space-evenly false :orientation "v"
+                                (box :space-evenly false :hexpand true :halign "start"
+                                    (label :class "tiny" :text {result.input}))
+                                (box :class "padding_box" :vexpand true :hexpand true :halign "end" :space-evenly false
+                                    (box :visible {!result.error}
+                                    (clipboard_button :label "= ${result.result}" :content {result.result}))
+                                    (box :visible {result.error}
+                                    (wrapped_markup :text {result.output}))
+                                )
+                            )
+                        )
+                    )
+                )
             )
             (revealer :reveal prompt_show_help :transition "slideup" :duration "100ms"
                 (box :space-evenly false :class "padding_box"

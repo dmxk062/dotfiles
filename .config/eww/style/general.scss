@@ -140,6 +140,14 @@
         border: 2px solid fade($accent);
     }
 }
+
+.styled-icon{
+    color: $fg;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 1rem;
+    min-width: 1rem;
+}
 .menubutton{
     @extend .button;
 }
@@ -223,6 +231,14 @@
     color: $fg0;
     padding: 0.14rem 1.2rem 0.14rem 0.92rem; 
 }
+.overlay-text{
+    color: $fg2;
+}
+.tiny{
+    color: $fg3;
+    padding: 0.14rem .4rem 0.14rem 0.3rem; 
+    font-size: .9rem;
+}
 .text-np{
     color: $fg0;
 }
@@ -242,7 +258,7 @@
     font-size: 2rem;
     padding: 0.14rem 1.2rem 0.14rem 0.92rem; 
 }
-.title,.stitle,.title-row{
+.title,.stitle,.title-row, .title-np{
     color: $fg;
     font-size: 1.2rem;
     padding: 0.28rem 1.2rem 0.28rem 0.92rem; 
@@ -251,6 +267,9 @@
 }
 .title-row{
     padding: .28rem 0rem .28rem 0rem;
+}
+.title-np {
+    padding: unset;
 }
 .stitle{
     padding: 0.2rem 1.2rem 0.2rem 0.92rem;

@@ -17,3 +17,12 @@
     (image :path "${icon_theme}/${name}" :image-width "${icon_size[0]*4}" :image-height "${icon_size[1]*4}" :class "${class ?: ""}")
 )
 
+
+(defwidget themed_icon [name ?class ?width ?height]
+    (box :width {width?: 32} :height {height?: 32}
+        :style "background-image: -gtk-icontheme('${name}');"
+        :class "styled-icon"
+
+    )
+    
+)
