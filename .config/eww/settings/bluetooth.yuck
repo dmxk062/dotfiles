@@ -10,14 +10,14 @@
 
 
 (defvar bt_icons '{
-    "audio-headset":"scalable/devices/audio-headphones.svg",
-    "phone":"scalable/devices/phone.svg",
-    "audio-card":"scalable/devices/audio-speakers.svg",
-    "computer":"scalable/devices/computer.svg",
-    "input-gaming":"scalable/devices/input-gaming.svg",
-    "input-keyboard":"scalable/devices/input-keyboard.svg",
-    "input-mouse":"scalable/devices/input-mouse.svg",
-    "fallback":"scalable/devices/bluetooth.svg"
+    "audio-headset":"audio-headphones",
+    "phone":"phone",
+    "audio-card":"audio-speakers",
+    "computer":"computer",
+    "input-gaming":"input-gaming",
+    "input-keyboard":"input-keyboard",
+    "input-mouse":input-mouse",
+    "fallback":"bluetooth"
 }')
 
 (defwidget bluetooth_section []
@@ -31,7 +31,7 @@
                                 (box :class "padding_box" :space-evenly false :orientation "v"
                                     (label :text "${dev.name}" :class "card-label" :limit-width 12 :tooltip "${dev.name}")
                                     (box 
-                                        (icon :name "${bt_icons[dev.icon?:"fallback"]}")
+                                        (themed_icon :name {dev.icon?:"bluetooth"} :width 64 :height 64)
                                         (circular-progress :value {dev.battery} :thickness 6 :class "bat_circle-${dev.battery < 20 ? "critical" :
                                         (dev.battery < 40 ? "low" : (dev.battery < 80 ? "medium" : "high") )}" :tooltip "${dev.battery}%" :visible {dev.hasBattery}
                                             (label  :text "${bt_battery_icons[(dev.battery - dev.battery % 10) /10]}")
@@ -66,7 +66,7 @@
                         (box :space-evenly false :orientation "v" :class "card" :hexpand true
                             (box :class "padding_box" :space-evenly false :orientation "v"
                                 (label :text "${dev.name}" :limit-width 16 :class "card-label")
-                                (icon :name "${bt_icons[dev.icon?:"fallback"]}")
+                                (themed_icon :name {dev.icon?:"bluetooth"} :width 64 :height 64)
                             )
                             (box :space-evenly false
                                 (box :orientation "v" :class "card_footer"
@@ -103,7 +103,8 @@
         )
         (box :visible "${!bt_status.power}" :hexpand true :vexpand true :class "padding_box" :orientation "v" :space-evenly false :valign "center"
             (box :class "padding_box"
-                (icon_background :name "32/status/dialog-error.svg")
+                ;; (icon_background :name "32/status/dialog-error.svg")
+                (themed_icon :name "system-error" :height 256 :width 256)
             )
             (label :class "heading" :text "Bluetooth is either turned off or not available")
             (box :space-evenly false :halign "center"

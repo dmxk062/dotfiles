@@ -1,0 +1,45 @@
+(defvar dock_active_win '{}')
+
+
+(defwindow dock_window_popup 
+        :stacking "fg"
+        :namespace "eww_popup"
+        :geometry (geometry :x 0
+                            :y 0
+                            :width 0
+                            :height 0
+                    )
+        :stacking "overlay"
+    (dock_window_options)
+)
+
+(defwidget dock_window_options []
+    (box :space-evenly false :halign "center" :valign "center"
+        (box :orientation "v" :class "popup_box_padded"
+        (lbutton :onclick "hyprctl dispatch closewindow address:${dock_active_win.address}" :label "Close")
+        (lbutton :onclick "notify-send " :label "Show Information")
+        )
+    )
+)
+
+
+
+(defwidget app_button [app]
+    (button :class "app_button${app.address == window.address ? "-active" : ""}" 
+    :timeout "16s"
+    :onclick "hyprctl dispatch focuswindow address:${app.address}"
+    ;; :onrightclick "${EWW_CMD} update dock_active_win='${app}'; dock/bin/open_win_menu.sh"
+    :visible {app.mapped && app.size != '[0, 0]' && app.class != ""}
+    :tooltip {app.title}
+    (themed_icon :name {app.class} :width 48 :height 48)
+
+    )
+)
+
+(defwidget tasklist []
+    (box :space-evenly false
+        (for win in windows 
+            (app_button :app {win})
+        )
+    )
+)

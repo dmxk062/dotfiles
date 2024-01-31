@@ -78,30 +78,62 @@
                 (box :space-evenly false :orientation "v"
                     (box :class "category_box" :orientation "v" :space-evenly false
                         (box :class "padding_box"
-                            (icon_large :name "scalable/apps/${system.distro.icon}" :class "np")
+                            ;; (icon_large :name "scalable/apps/${system.distro.icon}" :class "np")
+                            (themed_icon :name {system.distro.icon} :width 128 :height 128)
                         )
-                        (box :space-evenly false :hexpand true
-                            (box :halign "start" :hexpand true 
-                                (label :class "text" :text "Distribution")
-                            )
-                            (link_button :url {system.distro.url} :text {system.distro.name})
+                        (centerbox
+                            :style "margin-bottom: 1rem;"
+                            (link_button :url {system.distro.homeUrl}    :text "Homepage")
+                            (link_button :url {system.distro.docUrl}     :text "Documentation")
+                            (link_button :url {system.distro.supportUrl} :text "Support")
+
                         )
                         (split_text :left "Version" :right "${system.distro.build}")
-                    )
-                    (box :class "category_box" :orientation "v" :space-evenly false
                         (split_text :left "Operating System" :right {system.os.name})
                         (split_text :left "Kernel" :right {system.os.kernel})
                         (split_text :left "Kernel Version" :right {system.os.version})
                     )
                     (box :class "category_box" :orientation "v" :space-evenly false
-                        (split_text :left "CPU Architecture" :right {system.platform.arch})
-                        (split_text :left "CPU Model" :right {system.platform.cpu})
-                        (split_text :left "Processors" :right {system.platform.count})
+                        (box :class "padding_box"
+                            (themed_icon :name {system.platform.chasis} :width 128 :height 128)
+                        )
+                        (split_text :left "Vendor" :right {system.platform.vendor})
                         (split_text :left "Memory" :right {system.platform.mem})
                     )
                     (box :class "category_box" :orientation "v" :space-evenly false
                         (box :class "padding_box"
-                            (icon_large :name "scalable/apps/${system.windowing.system}.svg" :class "np")
+                            (themed_icon :name "cpu" :width 128 :height 128)
+                        )
+                        (split_text :left "Vendor" :right {system.platform.cpu.vendor})
+                        (split_text :left "Architecture" :right {system.platform.cpu.arch})
+                        (split_text :left "Model" :right {system.platform.cpu.model})
+                        (split_text :left "Byte Order" :right "${system.platform.cpu.order}-Endian")
+                        (split_text :left "Sockets" :right {system.platform.cpu.sockets})
+                        (split_text :left "Cores / Threads" :right "${system.platform.cpu.sockets * system.platform.cpu.coresPerSocket} / ${
+                        system.platform.cpu.coresPerSocket * system.platform.cpu.threadsPerCore * system.platform.cpu.sockets}")
+                    )
+                    (box :class "category_box" :orientation "v" :space-evenly false
+                        (box :class "padding_box"
+                            (themed_icon :name "audio-card" :width 128 :height 128)
+                        )
+                        (split_text :left "GPU Model" :right {system.platform.gpu.name})
+                        (split_text :left "Connection" :right {system.platform.gpu.link})
+                        (split_text :left "Driver" :right {system.platform.gpu.driver})
+                        (split_text :left "Video Memory" :right "${system.platform.gpu.mem.used_nice} / ${system.platform.gpu.mem.total_nice}")
+                        (box :space-evenly false :halign "center" :style "margin-top: 1rem;"
+                            (scale :class "slider" :active false 
+                            :value {100*(system.platform.gpu.mem.used / system.platform.gpu.mem.total)})
+                        )
+                        (label :class "text" :text "Active Ports:" :style "margin-top: 1rem;")
+                        (box :orientation "v"
+                            (for port in {system.platform.gpu.ports}
+                                (label :class "text" :text {port})
+                            )
+                        )
+                    )
+                    (box :class "category_box" :orientation "v" :space-evenly false
+                        (box :class "padding_box"
+                            (themed_icon :name {system.windowing.system} :width 128 :height 128)
                         )
                         (box :space-evenly false :hexpand true
                             (box :halign "start" :hexpand true 
@@ -112,9 +144,13 @@
                         (split_text :left {system.windowing.system == "wayland" ? "Compositor" : "Window Manager"} :right {system.windowing.wm})
                     )
                     (box :class "category_box" :orientation "v" :space-evenly false
-                        (split_text :left "Hostname" :right {system.os.hostname})
-                        (split_text :left "Uptime" :right {formattime(EWW_TIME - system.platform.boottime, "%T", "UTC")})
-                        (split_text :left "Boottime" :right {formattime(system.platform.boottime, "%H:%M")})
+                        (box :class "padding_box"
+                            (themed_icon :name "cs-user" :width 128 :height 128)
+                        )
+                        (split_text :left "Hostname" :right {system.user.hostname})
+                        (split_text :left "User" :right {system.user.user})
+                        (split_text :left "Uptime" :right {formattime(EWW_TIME - system.user.boottime, "%T", "UTC")})
+                        (split_text :left "Boottime" :right {formattime(system.user.boottime, "%H:%M")})
                     )
                 )
             )

@@ -13,7 +13,7 @@
 (defwidget device_card [device type]
 (box :space-evenly false :class "card" :orientation "v"
     (box :class "padding_box" :space-evenly false
-        (icon :name {type == 'sink' ? sink_images[device.icon?:"audio-card"] : source_images[device.icon?:"microphone"]})
+        (themed_icon :name {type == 'sink' ? sink_images[device.icon?:"audio-card"] : source_images[device.icon?:"microphone"]} :width 64 :height 64)
         (box :orientation "v" :space-evenly false
             (label :class "card-label" :text "${device.name}" :limit-width 20)
             (box :class "sliderbox"
@@ -58,7 +58,7 @@
                 (box  :orientation "v" :space-evenly false :spacing 16
                     (box :orientation "v" :space-evenly false :halign "center" :class "card"
                         (box :orientation "v" :space-evenly false :class "padding_box"
-                            (icon :name {sink_images[active_sinks.icon?: "audio-card"]})
+                            (themed_icon :name {sink_images[active_sinks.icon?: "audio-card"]} :width 64 :height 64)
                             (label :class "title" :text "Out: ${active_sinks.name}" :limit-width 20 :class "title")
                             (scale :value "${audio_state.sink.vol}" :class "slider" :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%" :timeout "16s")
                         )
@@ -72,7 +72,7 @@
                 
                     (box :orientation "v" :space-evenly false :halign "center" :class "card"
                         (box :orientation "v" :space-evenly false :class "padding_box"
-                            (icon :name {source_images[active_sources.icon?: "microphone"]})
+                            (themed_icon :name {source_images[active_sources.icon?: "microphone"]} :width 64 :height 64)
                             (label :class "title" :text "In: ${active_sources.name}" :limit-width 20 :class "title")
                             (scale :value "${audio_state.source.vol}" :class "slider" :onchange "pactl set-source-volume @DEFAULT_SOURCE@ {}%" :timeout "16s")
                         )

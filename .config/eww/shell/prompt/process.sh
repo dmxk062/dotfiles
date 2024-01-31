@@ -23,7 +23,7 @@ command_thread(){
     exit_code=$?
     stderr="$(echo "$stderr"| sed -e 's/.*line [0-9]*://g' -e 's/^ *//')"
     if ((exit_code == 0)); then
-        notify-send "Command finished $exit_code" "$@" -a "eww" -i dialog-information
+        notify-send "Command finished" "$@" -a "eww" -i dialog-information
     else
         notify-send "Command failed: $exit_code" "$@
 $stderr" -a "eww" -i system-error
@@ -45,7 +45,7 @@ fi
 search_files(){
     cd "$2"||exit
     echo "["
-    l="$(fd "$1" -ad $MAX_DEPTH --type file --threads=16 -x echo '{{ "path":"{}", "name":"{/}", "parent":"{//}" }},'|head -n $MAX_COUNT)"
+    l="$(fd "$1" -aLd $MAX_DEPTH --type file --threads=16 -x echo '{{ "path":"{}", "name":"{/}", "parent":"{//}" }},'|head -n $MAX_COUNT)"
     echo "${l%?}"
     echo "]"
 
@@ -53,7 +53,7 @@ search_files(){
 search_dirs(){
     cd "$2"||exit
     echo "["
-    l="$(fd "$1" -ad $MAX_DEPTH --type directory --threads=16 -x echo '{{ "path":"{}", "name":"{/}" }},' |head -n $MAX_COUNT)"
+    l="$(fd "$1" -aLd $MAX_DEPTH --type directory --threads=16 -x echo '{{ "path":"{}", "name":"{/}" }},' |head -n $MAX_COUNT)"
     echo "${l%?}"
     echo "]"
 
@@ -130,10 +130,10 @@ case $MODE in
                 rm "$LOGFILE"
                 update prompt_mode='default' prompt_error='false' prompt_show_help='false' prompt_has_result='false' prompt_search_result='[]' prompt_math_results='[]'
                 ;;
-            help|h|:h)
+            help|h)
                 update prompt_mode='default' prompt_error='false' prompt_show_help='true' prompt_has_result='false'
                 ;;
-            exit|x|quit|q|:q)
+            exit|x|quit|q)
                 close
                 ;;
             ws*)
@@ -151,15 +151,20 @@ case $MODE in
             updates)
                 updates="$(checkupdates --nocolor)"
                 updateCount="$(wc -l <<< "$updates")"
-                kline="$(echo "$updates"|grep '^linux\s.*$')"
-                if [[ $kline != "" ]]; then
-                    read -r _ oldver newver <<< "$kline"
-                    newver=${newver:3}
-                    body="Update contains kernel update:\nfrom $oldver to $newver"
+                ((updateCount--)) # get rid of the last newline
+                if [[ "$updateCount" == 0 ]]; then
+                    return_val "Device is fully up to date" "check flatpak or yay for other updates" "update"
                 else
-                    body="Only userspace components will be updated"
+                    kline="$(echo "$updates"|grep '^linux\s.*$')"
+                    if [[ $kline != "" ]]; then
+                        read -r _ oldver newver <<< "$kline"
+                        newver=${newver:3}
+                        body="Update contains kernel update:\nfrom $oldver to $newver"
+                    else
+                        body="Only userspace components will be updated"
+                    fi
+                    return_val "${updateCount} Updates available" "$body" "update"
                 fi
-                return_val "${updateCount} Updates available" "$body" "update"
                 ;;
             *)
                 update prompt_mode='default' prompt_error='true' prompt_show_help='false' prompt_has_result='false'

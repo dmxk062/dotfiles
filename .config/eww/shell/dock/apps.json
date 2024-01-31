@@ -2,43 +2,43 @@
     {
         "description":"Mozilla Firefox Web Browsr",
         "exec":"gtk-launch firefox",
-        "image":"scalable/apps/firefox.svg",
+        "image":"firefox",
         "menu":"firefox"
     },
     {
         "description":"File Manager",
         "exec":"gtk-launch org.gnome.Nautilus",
-        "image":"scalable/apps/file-manager.svg",
+        "image":"file-manager",
         "menu":"files"
     },
     {
         "description":"E-Book Reader",
         "exec":"foliate",
-        "image":"scalable/apps/foliate.svg",
+        "image":"foliate",
         "menu":""
     },
     {
         "description":"Notes",
         "exec":"rnote",
-        "image":"scalable/apps/rnote.svg",
+        "image":"rnote",
         "menu":""
     },
     {
         "description":"LibreOffice Office Suite",
         "exec":"gtk-launch libreoffice-startcenter",
-        "image":"scalable/apps/libreoffice.svg",
+        "image":"libreoffice",
         "menu":"office"
     },
     {
         "description":"Steam Game Store",
         "exec":"gtk-launch steam",
-        "image":"scalable/apps/steam.svg",
+        "image":"steam",
         "menu":"steam"
     },
     {
         "description":"Prismlauncher Minecraft Launcher",
         "exec":"gtk-launch org.prismlauncher.PrismLauncher",
-        "image":"../hicolor/scalable/apps/org.prismlauncher.PrismLauncher.svg",
+        "image":"org.prismlauncher.PrismLauncher",
         "menu":"minecraft"
     }
 

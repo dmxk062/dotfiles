@@ -73,18 +73,18 @@
 "hdmi-output-3":"󰽟"
 }')
 (defvar sink_images '{
-"headset":"scalable/devices/audio-card.svg",
-"audio-headset":"scalable/devices/audio-headphones.svg",
-"audio-headset-bluetooth":"scalable/devices/audio-headphones.svg",
-"audio-card-analog-pci":"scalable/devices/audio-card.svg",
-"audio-headset-analog-usb":"scalable/devices/audio-headphones.svg",
-"speaker":"scalable/devices/audio-speakers.svg"
+"headset":"audio-card",
+"audio-headset":"audio-headphones",
+"audio-headset-bluetooth":"audio-headphones",
+"audio-card-analog-pci":"audio-card",
+"audio-headset-analog-usb":"audio-headphones",
+"speaker":"audio-speakers"
 }')
 (defvar source_images '{
-"headset":"scalable/devices/audio-headphones.svg",
-"audio-headset-analog-usb":"scalable/devices/audio-headphones.svg",
-"audio-headset":"scalable/devices/audio-headphones.svg",
-"audio-headset-bluetooth":"scalable/devices/audio-headphones.svg",
-"audio-card-analog-pci":"scalable/devices/audio-card.svg",
-"microphone":"scalable/devices/audio-input-microphone.svg"
+"headset":"audio-headphones",
+"audio-headset-analog-usb":"audio-headphones",
+"audio-headset":"audio-headphones",
+"audio-headset-bluetooth":"audio-headphones",
+"audio-card-analog-pci":"audio-card",
+"microphone":"audio-input-microphone"
 }')

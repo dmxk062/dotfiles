@@ -3,6 +3,7 @@
 (defvar input_osk false)
 
 (include "dock/menu.yuck")
+(include "dock/apps.yuck")
 
 (defwindow dock_edge :monitor 0
 :geometry (geometry :x "0%" :y "0%" :width "40%" :height "1px" :anchor "bottom center")
@@ -25,43 +26,29 @@
     (dock)
 )
 
-;; (defwidget app_button [app]
-;;     (button :class "image_button${app.address == window.address ? "-active" : ""}" 
-;;     :onclick "hyprctl dispatch focuswindow address:${app.address}"
-;;     :visible {app.mapped && app.size != '[0, 0]' && app.class != ""}
-;;     :tooltip {app.title}
-;;     (image :path "${icon_theme}/scalable/apps/${app.class}.svg"
-;;             :image-width 48
-;;             :image-height 48)
-;;     )
-;; )
-
 
 (defwidget dock []
     (box :space-evenly false :halign "center" :valign "center" :orientation "v"
     (label :class "invisible" dock_reveal)
 (revealer :reveal dock_reveal :transition "slideup" :duration "0.2s"
         (box :space-evenly false :class "dock"
-            ;; (box :space-evenly false
-            ;;     (for win in windows 
-            ;;         (app_button :app {win})
-            ;;     )
-            ;; )
+            ;; (tasklist)
             ;; (separator)
             (box
                 (for app in apps
-                    (icon_button :path "${app.image}" :exec "${app.exec}" :tooltip "${app.description}" :menu "${app.menu?: ""}")
+                    (icon_button :icon "${app.image}" :exec "${app.exec}" :tooltip "${app.description}" :menu "${app.menu?: ""}")
                 )
             )
             (separator)
             (box 
                 (button :class "image_button" :onclick "kbd/open.sh" 
-                    (image :path "${icon_theme}/scalable/devices/input-keyboard.svg" :image-width 48 :image-height 48)
+                    (themed_icon :name "input-keyboard")
                 )
-                (icon_button :exec "bin/screenshot_menu.sh toggle" :tooltip "Screenshots" :path "scalable/apps/accessories-screenshot.svg" :menu "screenshot")
-                (icon_button :exec "eww_settings.sh" :tooltip "EWW Settings" :path "scalable/apps/preferences-system.svg" :menu "settings")
+                (icon_button :exec "bin/screenshot_menu.sh toggle" :tooltip "Screenshots" :icon "accessories-screenshot" :menu "screenshot")
+                (icon_button :exec "eww_settings.sh" :tooltip "EWW Settings" :icon "preferences-system" :menu "settings")
                 (button :class "image_button" :onclick "sleep 0.1; nwg-drawer; dock/bin/open_dock.sh" :tooltip "Open App Grid" :timeout "16s"
-                    (image :path "../assets/images/app-grid-${look_colorscheme}.svg" :image-width 48 :image-height 48)
+                    ;; (image :path "../assets/images/app-grid-${look_colorscheme}.svg" :image-width 48 :image-height 48)
+                    (themed_icon :name "view-app-grid-symbolic")
                 )
                 
             )

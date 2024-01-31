@@ -215,7 +215,7 @@
     border: 2px solid $bg3;
     margin: 0.4rem;
     border-radius: $rounding-small;
-    &:focused{
+    &:focus{
         border: 2px solid fade($accent);
     }
     caret-color: $fg0;

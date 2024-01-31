@@ -18,10 +18,11 @@
 )
 
 
-(defwidget themed_icon [name ?class ?width ?height]
+(defwidget themed_icon [name ?class ?width ?height ?fallback]
     (box :width {width?: 32} :height {height?: 32}
-        :style "background-image: -gtk-icontheme('${name}');"
+        :style "background-image: image(-gtk-icontheme('${name}'), -gtk-icontheme('${fallback?: 'file-manager'}'), green); background-size: ${width?: 32}px ${height?:32}px"
         :class "styled-icon"
+        (children)
 
     )
     

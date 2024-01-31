@@ -115,6 +115,11 @@ function monitor_changes(){
                 eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=false
                 overview_id=""
                 ;;
+            openwindow*|closewindow*)
+                eww -c $XDG_CONFIG_HOME/eww/shell update windows="$(hyprctl -j clients|jq --argjson order "$workspace_order" 'map(. + {pos:$order[.workspace.name],})|sort_by(.pos)')"
+                ;&
+
+                
             *)
                 eww -c $XDG_CONFIG_HOME/eww/shell update window="$(hyprctl activewindow -j)" workspaces="$(list_workspaces)"
         esac

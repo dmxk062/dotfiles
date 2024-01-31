@@ -2,9 +2,9 @@
 (defvar open_icon_menu '')
 
 
-(defwidget icon_button [path exec tooltip menu]
+(defwidget icon_button [icon exec tooltip menu]
     (button :class "image_button" :onclick "${exec}&disown" :tooltip "${tooltip}" :onrightclick "dock/bin/open_icon_menu.sh ${menu}& disown" :timeout "16s"
-        (image :path "${icon_theme}/${path}" :image-width 48 :image-height 48)
+        (themed_icon :name icon :width 48 :height 48)
     )
 )
 

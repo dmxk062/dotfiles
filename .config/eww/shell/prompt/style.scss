@@ -6,37 +6,37 @@
 }
 
 .prompt-error{
-    &:focused {
+    &:focus {
         border: 2px solid fade($error);
     }
 }
 .prompt-run{
-    &:focused {
+    &:focus {
         border: 2px solid $orange;;
     }
 }
 .prompt-math{
-    &:focused {
+    &:focus {
         border: 2px solid $pink;;
     }
 }
 .prompt-launch{
-    &:focused {
+    &:focus {
         border: 2px solid $magenta;;
     }
 }
 .prompt-search_file{
-    &:focused {
+    &:focus {
         border: 2px solid $green;;
     }
 }
 .prompt-search_dir{
-    &:focused {
+    &:focus {
         border: 2px solid $dblue;;
     }
 }
 .prompt-loading{
-    &:focused {
+    &:focus {
         color: transparent;
         caret-color: transparent;
     }

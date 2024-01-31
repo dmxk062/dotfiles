@@ -12,7 +12,7 @@ then
     entry=default
     json=$(jq -Mc ".$entry" < "$json_path")
     $eww update icon_menu_entries="$json"
-    $eww close icon_popup
+    $eww close icon_popup dock_window_popup
     exit
 else
     entry="$1"
@@ -21,4 +21,3 @@ json=$(jq -Mc ".$entry" < "$json_path")
 $eww update icon_menu_entries="$json"
 
 $eww open --screen 0 --toggle --anchor "top left" icon_popup --pos=$(get_relative_cursor)
-echo $(get_relative_cursor)
