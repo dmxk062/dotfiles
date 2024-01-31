@@ -22,7 +22,7 @@
                         (overlay
                             (box :orientation "v" :space-evenly false :class "card"
                                 (box :class "padding_box" :space-evenly false :orientation "v"
-                                    (icon :name "${matches(disk.name,"loop.*") ? "scalable/devices/media-optical.svg" : disk.icon_g}")
+                                    (themed_icon :name "${matches(disk.name,"loop.*") ? "media-optical" : disk.icon_g}" :width 64 :height 64)
                                     (label :class "heading" :text "${disk.device.model?:disk.name}" :limit-width 16)
                                 )
                                 (box :orientation "v" :space-evenly false :class "card_footer"

@@ -2,12 +2,12 @@
 eww="eww -c $HOME/.config/eww/settings"
 #lsblk -J --output=LABEL,NAME,PATH,PARTUUID,UUID,TRAN,VENDOR,FSSIZE,FSUSE%,FSUSED,MODEL,VENDOR,MOUNTPOINTS,PARTTYPENAME,FSTYPE
 icons_g='{
-"sata":"scalable/devices/drive-harddisk-ieee1394.svg",
-"nvme":"scalable/devices/drive-harddisk-solidstate.svg",
-"usb":"scalable/devices/media-flash-memory-stick.svg",
-"default":"scalable/devices/drive-harddisk.svg",
-"mmc":"scalable/devices/media-flash.svg",
-"mem":"scalable/devices/media-memory.svg"
+"sata":"drive-harddisk-ieee1394",
+"nvme":"drive-harddisk-solidstate",
+"usb":"media-flash-memory-stick",
+"default":"drive-harddisk",
+"mmc":"media-flash",
+"mem":"media-memory"
 }'
 icons='{
 "sata":"󰋊",
