@@ -102,7 +102,7 @@
 ;;
 '\\'*)${EWW_CMD} update prompt_mode='search_dir'
 ;;
-'%'*)${EWW_CMD} update prompt_mode='math'
+'%'*|[0-9]*)${EWW_CMD} update prompt_mode='math'
 ;;
 ':'*)${EWW_CMD} update prompt_mode='launch'
 ;;

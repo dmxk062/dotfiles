@@ -41,8 +41,6 @@
 }
 
 .app_button-active{
-    background-color: rgba($accent, 0.8);
-    &:hover{
-        background-color: rgba(fade($accent), 0.8);
-    }
+    // background-color: rgba($accent, 0.8);
+    background-color: rgba($accent, 0.3);
 }

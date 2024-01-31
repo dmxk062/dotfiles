@@ -115,7 +115,7 @@ function monitor_changes(){
                 eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=false
                 overview_id=""
                 ;;
-            openwindow*|closewindow*)
+            openwindow*|closewindow*|movewindow*)
                 eww -c $XDG_CONFIG_HOME/eww/shell update windows="$(hyprctl -j clients|jq --argjson order "$workspace_order" 'map(. + {pos:$order[.workspace.name],})|sort_by(.pos)')"
                 ;&
 

@@ -18,7 +18,7 @@
 
 (include "vars/submaps.yuck")
 
-(include "prompt/prompt.yuck")
+;; (include "prompt/prompt.yuck")
 
 (include "widgets/lbutton.yuck")
 (include "bar/bar.yuck")

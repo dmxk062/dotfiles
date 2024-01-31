@@ -1,5 +1,21 @@
 (defvar dock_active_win '{}')
-
+(defvar window_overrides '
+{
+"gamescope":"applications-games",
+"hyprland-share-picker":"accessories-screenshot",
+"polkit-gnome-authentication-agent-1":"password",
+"zenity":"dialog-info",
+"valent":"ca.andyholmes.Valent",
+"Vial":"input-keyboard",
+"blueman-manager":"bluetooth",
+"vesktop":"discord",
+"Timeshift-gtk":"timeshift",
+"com.transmissionbt.transmission_37_364746":"transmission",
+"Tor Browser":"torbrowser",
+"Citra":"applications-games"
+}
+')
+(defvar dock_hover_win '')
 
 (defwindow dock_window_popup 
         :stacking "fg"
@@ -16,8 +32,12 @@
 (defwidget dock_window_options []
     (box :space-evenly false :halign "center" :valign "center"
         (box :orientation "v" :class "popup_box_padded"
-        (lbutton :onclick "hyprctl dispatch closewindow address:${dock_active_win.address}" :label "Close")
-        (lbutton :onclick "notify-send " :label "Show Information")
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch closewindow address:${dock_active_win.address}" :label "Close Window")
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup; dock/bin/force_kill.sh ${dock_active_win.pid}" :label "Kill Window")
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup; ${dock_active_win.class}||gtk-launch '${dock_active_win.class}'" :label "Launch new Window")
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup; sleep 0.2; desktop/mods/resize.sh ${dock_active_win.address}&" :label "Resize Window")
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch togglefloating address:${dock_active_win.address}" :label "Toggle Float")
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch pin address:${dock_active_win.address}; bin/open_window_list.sh upd" :label "Unpin" :visible {dock_active_win.pinned})
         )
     )
 )
@@ -25,13 +45,29 @@
 
 
 (defwidget app_button [app]
-    (button :class "app_button${app.address == window.address ? "-active" : ""}" 
+    (eventbox :onhover "${EWW_CMD} update dock_hover_win='${app.address}'" :onhoverlost "${EWW_CMD} update dock_hover_win=''"
+    (button 
+    :class "app_button${app.address == window.address ? "-active" : ""}" 
     :timeout "16s"
     :onclick "hyprctl dispatch focuswindow address:${app.address}"
-    ;; :onrightclick "${EWW_CMD} update dock_active_win='${app}'; dock/bin/open_win_menu.sh"
-    :visible {app.mapped && app.size != '[0, 0]' && app.class != ""}
-    :tooltip {app.title}
-    (themed_icon :name {app.class} :width 48 :height 48)
+    :onrightclick "${EWW_CMD} update dock_active_win='${app}'; sleep 0.2; dock/bin/open_win_menu.sh"
+    :visible {app.mapped && app.size != '[0, 0]' && app.class != "" && app.title != ""}
+    :tooltip "${app.title} in ${app.workspace.name}"
+        (overlay 
+        (themed_icon :name {window_overrides[app.class]?:app.class} :width 48 :height 48)
+            (box  :space-evenly false :halign "end" :valign "start" :visible {app.pinned || (dock_hover_win == app.address && app.floating)} 
+                (button 
+                :timeout "128s"
+                :onclick "hyprctl dispatch pin address:${app.address}; bin/open_window_list.sh upd"
+
+                (themed_icon :name {app.pinned ? "window-pin-symbolic" : "view-pin-symbolic"} :width 8 :height 8)
+                )
+            )
+            (box  :space-evenly false :halign "end" :valign "end" :visible {app.xwayland}
+                (themed_icon :name "xorg" :width 8 :height 8)
+            )
+        )
+    )
 
     )
 )

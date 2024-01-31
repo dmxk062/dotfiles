@@ -32,8 +32,8 @@
     (label :class "invisible" dock_reveal)
 (revealer :reveal dock_reveal :transition "slideup" :duration "0.2s"
         (box :space-evenly false :class "dock"
-            ;; (tasklist)
-            ;; (separator)
+            (tasklist)
+            (separator)
             (box
                 (for app in apps
                     (icon_button :icon "${app.image}" :exec "${app.exec}" :tooltip "${app.description}" :menu "${app.menu?: ""}")
@@ -41,16 +41,10 @@
             )
             (separator)
             (box 
-                (button :class "image_button" :onclick "kbd/open.sh" 
-                    (themed_icon :name "input-keyboard")
-                )
+                (icon_button :exec "kbd/open.sh" :tooltip "On Screen Keyboard" :icon "input-keyboard" :menu "")
                 (icon_button :exec "bin/screenshot_menu.sh toggle" :tooltip "Screenshots" :icon "accessories-screenshot" :menu "screenshot")
                 (icon_button :exec "eww_settings.sh" :tooltip "EWW Settings" :icon "preferences-system" :menu "settings")
-                (button :class "image_button" :onclick "sleep 0.1; nwg-drawer; dock/bin/open_dock.sh" :tooltip "Open App Grid" :timeout "16s"
-                    ;; (image :path "../assets/images/app-grid-${look_colorscheme}.svg" :image-width 48 :image-height 48)
-                    (themed_icon :name "view-app-grid-symbolic")
-                )
-                
+                (icon_button :exec "sleep 0.1; nwg-drawer; dock/bin/open_dock.sh" :tooltip "App Grid" :menu "" :icon "view-app-grid-symbolic")
             )
         )
     )
