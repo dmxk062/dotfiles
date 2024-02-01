@@ -9,6 +9,9 @@ import time
 import threading
 import queue
 import math
+import gi
+gi.require_version("Notify","0.7")
+from gi.repository import Notify
 
 from utils import get_output, adjust_audio
 from eww import update_eww, set_window, CONFIGS
@@ -104,6 +107,7 @@ class ControllerMonitor:
         self.joystick_cursor_thread = None
         self.cursor_stop = threading.Event()
         self.cursor_queue = queue.Queue()
+
 
 
 
@@ -216,7 +220,7 @@ class ControllerMonitor:
     def start_listening(self):
         self.jstest = subprocess.Popen(["jstest", "--event", self.controller.devfs], stdout=subprocess.PIPE)
 
-        while True:
+        while self.jstest.poll() is None:
             line = self.jstest.stdout.readline().decode()
             if not line.startswith("Event"):
                 continue
@@ -237,6 +241,23 @@ class ControllerMonitor:
                 self.oldmode = self.mode 
             else:
                 self.mode_handles[self.mode.value](type, id, value)
+
+        # notify the user
+        notif = Notify.Notification.new("Controller Disappeared",
+            f"The currently in use controller ({self.controller.devfs}) disappeared or jstest crashed for some other reason",
+            "input-gaming")
+        notif.show()
+
+        # we dont want to keep moving the mouse
+        self.cursor_stop.set()
+        self.joystick_cursor_thread.join()
+
+        # reset the indicator
+        update_eww([("controller_mode", "false"), ("controller_name", "")])
+
+        # cleanly exit
+        os.remove(LOCKFILE)
+        os._exit(0)
     
     def cursor_move(self, value_queue):
         i = 0
@@ -272,11 +293,15 @@ def cleanup_on_exit(signum, frame, cons: list[Controller], listener: ControllerM
 if __name__ == "__main__":
     with open (LOCKFILE, "w") as file:
         file.write(str(os.getpid()))
+    Notify.init("eww_joymode")
     try:
         devices = query_devices()
         device = devices[0]
     except:
-        subprocess.run(["notify-send", "No Controller Found", "Make sure it is connected and appears in the sysfs filesystem as a joystick", "--app-name=eww", "--icon=/usr/share/icons/Tela/scalable/devices/input-gaming.svg"])
+        notif = Notify.Notification.new("No Controller Found",
+            "Make sure it is connected and appears in the sysfs filesystem as a joystick",
+            "input-gaming")
+        notif.show()
         os.remove(LOCKFILE)
         os._exit(0)
     update_eww([("controller_name", device.name), ("controller_menu", "game"), ("controller_mode", "true")])
