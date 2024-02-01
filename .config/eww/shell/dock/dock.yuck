@@ -33,7 +33,6 @@
 (revealer :reveal dock_reveal :transition "slideup" :duration "0.2s"
         (box :space-evenly false :class "dock"
             (tasklist)
-            (separator)
             (box
                 (for app in apps
                     (icon_button :icon "${app.image}" :exec "${app.exec}" :tooltip "${app.description}" :menu "${app.menu?: ""}")

@@ -5,7 +5,7 @@
 "hyprland-share-picker":"accessories-screenshot",
 "polkit-gnome-authentication-agent-1":"password",
 "zenity":"dialog-info",
-"valent":"ca.andyholmes.Valent",
+"valent":"phone",
 "Vial":"input-keyboard",
 "blueman-manager":"bluetooth",
 "vesktop":"discord",
@@ -13,6 +13,13 @@
 "com.transmissionbt.transmission_37_364746":"transmission",
 "Tor Browser":"torbrowser",
 "Citra":"applications-games"
+}
+')
+(defvar steam_game_icons '
+{
+"Celeste":"steam_icon_504230",
+"No Man\'s Sky":"steam_icon_275850",
+"Sid Meier\'s Civilization VI (DX11)":"steam_icon_289070"
 }
 ')
 (defvar dock_hover_win '')
@@ -54,7 +61,11 @@
     :visible {app.mapped && app.size != '[0, 0]' && app.class != "" && app.title != ""}
     :tooltip "${app.title} in ${app.workspace.name}"
         (overlay 
-        (themed_icon :name {window_overrides[app.class]?:app.class} :width 48 :height 48)
+        (themed_icon :name {app.class == "gamescope" ? 
+        (steam_game_icons[app.title]?: "steam") : ;; for steam games in gamescope
+        (matches(app.class, "Minecraft*.") ? "minecraft" : ;; and the usual minecraft issue
+        window_overrides[app.class]?:app.class)} ;; all the rest
+        :width 48 :height 48)
             (box  :space-evenly false :halign "end" :valign "start" :visible {app.pinned || (dock_hover_win == app.address && app.floating)} 
                 (button 
                 :timeout "128s"
@@ -74,8 +85,11 @@
 
 (defwidget tasklist []
     (box :space-evenly false
+        (box :space-evenly false
         (for win in windows 
             (app_button :app {win})
-        )
+        ))
+        (box :space-evenly false :visible {windows != "[]"}
+        (separator))
     )
 )
