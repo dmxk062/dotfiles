@@ -1,4 +1,4 @@
-.image_button, .image_button-active, .app_button, .app_button-active{
+.image_button, .image_button-active, .app_button, .app_button-active, .app_button-scratch{
     padding: .1rem .2rem .1rem .2rem;
     margin: .2rem .4rem .2rem .4rem;
     border-radius: 1.2rem;
@@ -42,5 +42,9 @@
 
 .app_button-active{
     // background-color: rgba($accent, 0.8);
-    background-color: rgba($accent, 0.3);
+    background-color: rgba($accent, 0.5);
+}
+.app_button-scratch{
+    // background-color: rgba($accent, 0.8);
+    background-color: rgba($special, 0.5);
 }

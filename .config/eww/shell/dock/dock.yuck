@@ -7,7 +7,7 @@
 
 (defwindow dock_edge :monitor 0
 :geometry (geometry :x "0%" :y "0%" :width "40%" :height "1px" :anchor "bottom center")
-:stacking "fg"
+:stacking "overlay"
 :namespace "eww_active_edge"
 (activator))
 (defwidget activator []

@@ -2,7 +2,8 @@
 (defvar window_overrides '
 {
 "gamescope":"applications-games",
-"hyprland-share-picker":"accessories-screenshot",
+"at.yrlf.wl_mirror":"display",
+"hyprland-share-picke":"accessories-screenshot",
 "polkit-gnome-authentication-agent-1":"password",
 "zenity":"dialog-info",
 "valent":"phone",
@@ -19,7 +20,8 @@
 {
 "Celeste":"steam_icon_504230",
 "No Man\'s Sky":"steam_icon_275850",
-"Sid Meier\'s Civilization VI (DX11)":"steam_icon_289070"
+"Sid Meier\'s Civilization VI (DX11)":"steam_icon_289070",
+"Sid Meier\'s Civilization V (DX11)":"steam_icon_8930"
 }
 ')
 (defvar dock_hover_win '')
@@ -45,6 +47,11 @@
         (lbutton :onclick "${EWW_CMD} close dock_window_popup; sleep 0.2; desktop/mods/resize.sh ${dock_active_win.address}&" :label "Resize Window")
         (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch togglefloating address:${dock_active_win.address}" :label "Toggle Float")
         (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch pin address:${dock_active_win.address}; bin/open_window_list.sh upd" :label "Unpin" :visible {dock_active_win.pinned})
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup; dock/bin/move.sh '${dock_active_win.address}' current" :label "Move to current")
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup; ${dock_active_win.workspace.name == "special:4" ?
+        "dock/bin/move.sh '${dock_active_win.address}' current" :
+        "hyprctl dispatch movetoworkspacesilent special:4,address:${dock_active_win.address}"}"
+        :label {dock_active_win.workspace.name == "special:4" ? "Restore" : "Hide"})
         )
     )
 )
@@ -54,10 +61,14 @@
 (defwidget app_button [app]
     (eventbox :onhover "${EWW_CMD} update dock_hover_win='${app.address}'" :onhoverlost "${EWW_CMD} update dock_hover_win=''"
     (button 
-    :class "app_button${app.address == window.address ? "-active" : ""}" 
+    :class "app_button${app.address == window.address ? "-active" : ""
+    }" 
     :timeout "16s"
-    :onclick "hyprctl dispatch focuswindow address:${app.address}"
-    :onrightclick "${EWW_CMD} update dock_active_win='${app}'; sleep 0.2; dock/bin/open_win_menu.sh"
+    ;; :onclick {matches(app.workspace.name, "special:*.") ? 
+    ;; "hyprctl dispatch togglespecialworkspace ${replace(app.workspace.name, "special:", "")}" :
+    ;; "hyprctl dispatch focuswindow address:${app.address}"}
+    :onclick "dock/bin/focus.sh '${app.address}' '${app.workspace.name}'"
+    :onrightclick "${EWW_CMD} update dock_active_win='${replace(app, "'", "")}'; sleep 0.2; dock/bin/open_win_menu.sh"
     :visible {app.mapped && app.size != '[0, 0]' && app.class != "" && app.title != ""}
     :tooltip "${app.title} in ${app.workspace.name}"
         (overlay 
@@ -76,6 +87,9 @@
             )
             (box  :space-evenly false :halign "end" :valign "end" :visible {app.xwayland}
                 (themed_icon :name "xorg" :width 8 :height 8)
+            )
+            (box  :space-evenly false :halign "start" :valign "end" :visible {matches(app.workspace.name, "special:*.")}
+                 (themed_icon :name "org.gnome.Lollypop-tag-symbolic" :width 8 :height 8)
             )
         )
     )
