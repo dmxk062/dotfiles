@@ -46,7 +46,7 @@ case $1 in
         if ! systemctl hibernate; then
             notify-send "Failed to Hibernate" \
                 -a eww \
-                -i /usr/share/icons/Tela/32/devices/drive-harddisk-root.svg \
+                -i drive-harddisk-root \
                 "Make sure you have enough physical swap"
         fi
         ;;

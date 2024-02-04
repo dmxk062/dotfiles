@@ -26,7 +26,7 @@
 )
 
 (defwidget separator []
-    (box :class "separator")
+    (box :class "separator" )
 )
 
 (defwidget margin []

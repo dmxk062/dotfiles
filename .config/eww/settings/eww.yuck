@@ -38,14 +38,14 @@
 
 (defwidget section_selector []
     (box :orientation "h" :space-evenly false :hexpand true :class "header" :halign "start"
-        (button :class "button${selected_section == 0 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=0" "    Appearance")
-        (button :class "button${selected_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=1" "󰌌    Input")
-        (button :class "button${selected_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=2&&bin/display.sh upd" "󰍹    Display")
-        (button :class "button${selected_section == 3 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=3&&bin/sys/info.sh" "    System")
-        (button :class "button${selected_section == 4 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=4&&bin/sinks_sources.sh upd sinks&&bin/sinks_sources.sh upd sources" "󰓃    Audio")
-        (button :class "button${selected_section == 5 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=5&&bin/bt.sh upd" "󰂯    Bluetooth")
-        (button :class "button${selected_section == 6 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=6&&bin/wlan.sh upd" "    WIFI")
-        (button :class "button${selected_section == 7 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=7&&bin/disks.sh upd" "󰋊    Storage")
+        (button :timeout "16s" :class "button${selected_section == 0 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=0" "    Appearance")
+        (button :timeout "16s" :class "button${selected_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=1" "󰌌    Input")
+        (button :timeout "16s" :class "button${selected_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=2&&bin/display.sh upd" "󰍹    Display")
+        (button :timeout "16s" :class "button${selected_section == 3 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=3&&bin/sys/info.sh" "    System")
+        (button :timeout "16s" :class "button${selected_section == 4 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=4&&bin/sinks_sources.sh upd sinks&&bin/sinks_sources.sh upd sources" "󰓃    Audio")
+        (button :timeout "16s" :class "button${selected_section == 5 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=5&&bin/bt.sh upd" "󰂯    Bluetooth")
+        (button :timeout "16s" :class "button${selected_section == 6 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=6&&bin/wlan.sh upd" "    WIFI")
+        (button :timeout "16s" :class "button${selected_section == 7 ? "-active" : ""}" :onclick "${EWW_CMD} update selected_section=7&&bin/disks.sh upd" "󰋊    Storage")
     )
 )
 

@@ -1,10 +1,15 @@
 (defvar dock_active_win '{}')
+(deflisten dock_windows "dock/bin/windows.sh listen")
+
+
 (defvar window_overrides '
 {
 "gamescope":"applications-games",
-"at.yrlf.wl_mirror":"display",
+"at.yrlf.wl_mirror":"view-mirror-symbolic",
 "hyprland-share-picke":"accessories-screenshot",
 "polkit-gnome-authentication-agent-1":"password",
+"kvantummanager":"kvantum",
+"nm-connection-editor":"networkmanager",
 "zenity":"dialog-info",
 "valent":"phone",
 "Vial":"input-keyboard",
@@ -24,6 +29,7 @@
 "Sid Meier\'s Civilization V (DX11)":"steam_icon_8930"
 }
 ')
+
 (defvar dock_hover_win '')
 
 (defwindow dock_window_popup 
@@ -46,7 +52,6 @@
         (lbutton :onclick "${EWW_CMD} close dock_window_popup; ${dock_active_win.class}||gtk-launch '${dock_active_win.class}'" :label "Launch new Window")
         (lbutton :onclick "${EWW_CMD} close dock_window_popup; sleep 0.2; desktop/mods/resize.sh ${dock_active_win.address}&" :label "Resize Window")
         (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch togglefloating address:${dock_active_win.address}" :label "Toggle Float")
-        (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch pin address:${dock_active_win.address}; bin/open_window_list.sh upd" :label "Unpin" :visible {dock_active_win.pinned})
         (lbutton :onclick "${EWW_CMD} close dock_window_popup; dock/bin/move.sh '${dock_active_win.address}' current" :label "Move to current")
         (lbutton :onclick "${EWW_CMD} close dock_window_popup; ${dock_active_win.workspace.name == "special:4" ?
         "dock/bin/move.sh '${dock_active_win.address}' current" :
@@ -72,15 +77,16 @@
     :visible {app.mapped && app.size != '[0, 0]' && app.class != "" && app.title != ""}
     :tooltip "${app.title} in ${app.workspace.name}"
         (overlay 
-        (themed_icon :name {app.class == "gamescope" ? 
-        (steam_game_icons[app.title]?: "steam") : ;; for steam games in gamescope
+        (themed_icon :name {app.class == "kitty" ? (matches(app.title, "nv:*.") ?  "nvim" : "kitty") :
+        (app.class == "gamescope" ? 
+            (steam_game_icons[app.title]?: "steam") : ;; for steam games in gamescope
         (matches(app.class, "Minecraft*.") ? "minecraft" : ;; and the usual minecraft issue
-        window_overrides[app.class]?:app.class)} ;; all the rest
+        window_overrides[app.class]?:app.class))} ;; all the rest
         :width 48 :height 48)
             (box  :space-evenly false :halign "end" :valign "start" :visible {app.pinned || (dock_hover_win == app.address && app.floating)} 
                 (button 
                 :timeout "128s"
-                :onclick "hyprctl dispatch pin address:${app.address}; bin/open_window_list.sh upd"
+                :onclick "hyprctl dispatch pin address:${app.address}; dock/bin/windows.sh once"
 
                 (themed_icon :name {app.pinned ? "window-pin-symbolic" : "view-pin-symbolic"} :width 8 :height 8)
                 )
@@ -100,10 +106,11 @@
 (defwidget tasklist []
     (box :space-evenly false
         (box :space-evenly false
-        (for win in windows 
+        (for win in dock_windows 
             (app_button :app {win})
         ))
-        (box :space-evenly false :visible {windows != "[]"}
+
+        (box :space-evenly false :visible {dock_windows != "[]"}
         (separator))
     )
 )

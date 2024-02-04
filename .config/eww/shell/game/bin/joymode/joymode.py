@@ -253,7 +253,7 @@ class ControllerMonitor:
         self.joystick_cursor_thread.join()
 
         # reset the indicator
-        update_eww([("controller_mode", "false"), ("controller_name", "")])
+        update_eww([("controller_mode", "false"), ("controller_name", ""), ("controller_menu", "")])
 
         # cleanly exit
         os.remove(LOCKFILE)
@@ -291,6 +291,7 @@ def cleanup_on_exit(signum, frame, cons: list[Controller], listener: ControllerM
         
 
 if __name__ == "__main__":
+    update_eww([("controller_name", ""), ("controller_menu", "game"), ("controller_mode", "false")])
     with open (LOCKFILE, "w") as file:
         file.write(str(os.getpid()))
     Notify.init("eww_joymode")
