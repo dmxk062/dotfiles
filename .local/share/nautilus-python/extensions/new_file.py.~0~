@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+import os
+import gi
+import shutil
+import asyncio
+import subprocess
+gi.require_version("Gtk", "4.0")
+from gi.repository import Nautilus, GObject, Gtk, Gio
+from urllib.parse import unquote
+
+class NewFileItem:
+    def __init__(self, name, parent):
+        self.name = name
+        self.path = os.path.join(parent, name)
+        self.file = Nautilus.FileInfo(self.path)
+
+class NewFileMenu(GObject.GObject, Nautilus.MenuProvider):
+    def __init__(self):
+        super().__init__()
+        self.dir = None
+        self.templates = self.get_templates()
+
+    async def show_dialog_warning(self, title, message):
+        proc = ["zenity", f"--question", f"--text={message}", f"--title={title}", "--icon=dialog-error"]
+        subprocess.run(proc)
+    def create_file(self, event, path, name):
+        filepath = unquote(self.dir.get_uri()[7:])
+        newpath = os.path.join(filepath, name)
+        if os.path.exists(newpath):
+            self.show_dialog_warning(f"Replace {name}?", "This cannot be reversed")
+
+    def get_templates(self) -> Nautilus.Menu:
+        datahome = os.getenv("XDG_DATA_HOME")
+        path = os.path.join(datahome, "templates")
+        menu = Nautilus.Menu()
+        for file in os.listdir(path):
+            abspath = os.path.join(path, file)
+            if os.path.isfile(abspath):
+                item = Nautilus.MenuItem(name="NewFileMenu::file", label=file)
+                item.connect("activate", self.create_file, abspath, file)
+                menu.append_item(item)
+            elif os.path.isdir(abspath):
+                submenu_item = Nautilus.MenuItem(name="NewFileMenu::submenu", label=file)
+                submenu = Nautilus.Menu()
+                for nested_file in os.listdir(abspath):
+                    subpath = os.path.join(abspath, nested_file)
+                    submenu_subitem = Nautilus.MenuItem(name=f"NewFileMenu::{subpath}",label=nested_file)
+                    submenu_subitem.connect("activate", self.create_file, subpath, nested_file)
+                    submenu.append_item(submenu_subitem)
+                submenu_item.set_submenu(submenu)
+                menu.append_item(submenu_item)
+
+        return menu
+
+
+
+    def get_background_items(
+        self,
+        current_folder: Nautilus.FileInfo,
+    ) ->list[Nautilus.MenuItem]:
+        self.dir = current_folder
+        new_file_item = Nautilus.MenuItem(
+            name="NewFileMenu::add_file",
+            label="New File", 
+        )
+        new_file_item.set_submenu(self.templates)
+        return [
+            new_file_item,
+        ]
