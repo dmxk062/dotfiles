@@ -70,7 +70,7 @@ screen_clip() {
         exit
     fi
     wl-copy < "$file"& disown
-    notify "Copied Image to Clipboard" "$file"
+    notify "Copied Image to Clipboard" "$file"& disown
 }
 section_clip() {
     close_if_eww
@@ -82,7 +82,7 @@ section_clip() {
         exit
     fi
     wl-copy < "$file"& disown
-    notify "Copied Image to Clipboard" "$file"
+    notify "Copied Image to Clipboard" "$file"& disown
 }
 screen_file() {
     file="$(create_file)"
@@ -98,7 +98,7 @@ screen_file() {
     then
         exit
     fi
-    notify "Took Screenshot: $(basename $file)" "$file"
+    notify "Took Screenshot: $(basename "$file")" "$file"&disown
 }
 section_file() {
     file="$(create_file)"
@@ -109,7 +109,7 @@ section_file() {
         open_if_eww "$1"
         exit
     fi
-    notify "Took Screenshot: $(basename $file)" "$file"
+    notify "Took Screenshot: $(basename "$file")" "$file"& disown
 }
 case $1 in 
     toggle)

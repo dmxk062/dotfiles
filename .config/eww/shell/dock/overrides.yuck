@@ -1,0 +1,30 @@
+(defvar window_overrides '
+{
+"gamescope":"applications-games",
+"at.yrlf.wl_mirror":"view-mirror-symbolic",
+"com.belmoussaoui.Authenticator":"password-manager",
+"authenticator":"password-manager",
+"hyprland-share-picke":"accessories-screenshot",
+"polkit-gnome-authentication-agent-1":"password",
+"kvantummanager":"kvantum",
+"nm-connection-editor":"networkmanager",
+"zenity":"dialog-info",
+"valent":"org.kde.kdeconnect",
+"Vial":"input-keyboard",
+"blueman-manager":"bluetooth",
+"vesktop":"discord",
+"Timeshift-gtk":"timeshift",
+"com.transmissionbt.transmission_37_364746":"transmission",
+"Tor Browser":"torbrowser",
+"Citra":"applications-games"
+}
+')
+(defvar steam_game_icons '
+{
+"Celeste":"steam_icon_504230",
+"No Man\'s Sky":"steam_icon_275850",
+"Sid Meier\'s Civilization VI (DX11)":"steam_icon_289070",
+"Sid Meier\'s Civilization V (DX11)":"steam_icon_8930"
+}
+')
+

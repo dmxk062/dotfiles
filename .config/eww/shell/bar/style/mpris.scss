@@ -8,3 +8,12 @@
     }
 }
 
+.mpris-progress{
+    background-color: $blurred;
+    margin: 2rem;
+    margin-bottom: 0;
+    border-radius: 12px;
+    scale {
+        margin-bottom: unset;
+    }
+}

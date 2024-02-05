@@ -2,7 +2,7 @@
     padding: .1rem .2rem .1rem .2rem;
     margin: .2rem .4rem .2rem .4rem;
     border-radius: 1.2rem;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
     &:hover{
         background-color: $bg2;
     }
