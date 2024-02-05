@@ -32,7 +32,12 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 
 
 #my color theme
-export LS_COLORS="$(vivid generate ~/.config/vivid/themes/dmxnord.yaml)"
+case $KITTY_THEME in
+    dark)
+        export LS_COLORS="$(vivid generate ~/.config/vivid/themes/darknord.yaml)";;
+    light)
+        export LS_COLORS="$(vivid generate ~/.config/vivid/themes/lightnord.yaml)";;
+esac
 
 
 #completion opts

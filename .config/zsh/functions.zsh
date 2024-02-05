@@ -42,7 +42,7 @@ function command_not_found_handler() {
 
 
 function enable_git(){
-     eval "$(ssh-agent -s)" >/dev/null 2>&1
+     # eval "$(ssh-agent -s)" >/dev/null 2>&1
      ssh-add "$HOME/.local/share/keys/git"
 }
 
@@ -113,7 +113,48 @@ url(){
     fi
 }
 
-gtk_debug(){
-    export GTK_DEBUG=interactive
-    "$@" & disown
+    
+
+# open(){
+# # fancy openener
+#
+# local files_edit=()
+#
+# if [[ "$1" == "-g" ]] || [[ "$1" == "--gui" ]]; then
+#     local gui=true
+#     shift
+# fi
+#
+# local files=("$@")
+# if [[ "$files" == "" ]]; then
+#     print "zsh: open: exepected at least 1 argument"
+#     return 1
+# fi
+#
+# for file in "${files[@]}"; do
+#     local mimetype="$(file --dereference --brief --mime-type "$file")"
+#     case $mimetype in 
+#         text/*|application/json|inode/x-empty|application/x-subrip|application/javascript|application/x-elc)
+#         files_edit+=("$file")
+#             ;;
+#     esac
+# done
+#
+# if [[ "${#files_edit}" -gt 0 ]]; then
+#     if $gui; then
+#         for file in ${files_edit[@]}; do
+#             print -n "Opening ${file}: "
+#             xdg-open "$file" & disown
+#         done
+#     else
+#         $VISUAL -O ${files_edit[@]}
+#     fi
+# fi
+# }
+#
+# faster than the clear binary lmao
+c(){
+    print -n "[H[2J"
 }
+
+source $ZDOTDIR/dash_functions.sh
