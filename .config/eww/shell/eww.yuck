@@ -2,7 +2,7 @@
 
 
 (defwidget close_button [window]
-    (button :class "close-button" :timeout "128s" :onclick "sleep 0.1; ${EWW_CMD} close ${window}" "󰖭")
+    (button :class "close-button" :timeout "128s" :onclick "sleep 0.1; ${EWW_CMD} close ${window}" (themed_icon :name "window-close-symbolic" :width 8 :height 8))
 )
 
 (include "../common/widgets.yuck")

@@ -72,7 +72,7 @@
                 )
                 (box :halign "center" :space-evenly false :orientation "v"
                     (label :class "title" :text "${mpris.title?: "Nothing Playing"}" :wrap true :justify "center")
-                    (label :class "text" :text "${mpris_meta.artist?: "Artist not known"}${mpris_meta.album != "null" ? "- ${mpris_meta.album}" : ""}")
+                    (label :class "text" :text "${mpris_meta.artist?: "Artist not known"}${mpris_meta.album != "" ? "- ${mpris_meta.album}" : ""}")
                     (label :class "text" :text "${mpris.player?: "No Player"}")
                 )
                 

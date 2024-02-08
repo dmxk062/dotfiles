@@ -3,11 +3,11 @@
 
 case $1 in
     off)
-        hyprctl --batch "dispatch submap reset; keyword general:border_size 0; dispatch hycov:leaveoverview" 
+        hyprctl --batch "dispatch submap reset; dispatch hycov:leaveoverview" 
         ;;
     *)
         if hyprctl workspaces | grep -q "OVERVIEW"; then
-            hyprctl --batch "dispatch hycov:toggleoverview; dispatch submap reset; keyword general:border_size 0" 
+            hyprctl --batch "dispatch hycov:toggleoverview; dispatch submap reset" 
         else
             # we dont want special workspaces 
             if [[ "$(hyprctl clients -j|jq --argjson active "$(hyprctl monitors -j|jq '.[]|select(.focused)|.id')" '[.
@@ -16,7 +16,7 @@ case $1 in
                     and (.workspace.name | startswith("special:") | not ) 
                 )
                 ]|length')" -gt 0 ]]; then
-                hyprctl --batch "dispatch hycov:toggleoverview; dispatch submap overview; keyword general:border_size 2" 
+                hyprctl --batch "dispatch hycov:toggleoverview; dispatch submap overview" 
             fi
         fi;;
 esac

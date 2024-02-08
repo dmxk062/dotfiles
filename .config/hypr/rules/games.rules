@@ -12,7 +12,7 @@ windowrulev2 = fullscreen,title:Steam Big Picture Mode
 windowrulev2 = monitor DP-1,title:Steam Big Picture Mode
 windowrulev2 = noanim,title:Steam Big Picture Mode
 windowrulev2 = noblur,title:Steam Big Picture Mode
-windowrulev2 = workspace name:games,title:Steam Big Picture Mode
+# windowrulev2 = workspace name:games,title:Steam Big Picture Mode
 windowrulev2 = idleinhibit always,title:Steam Big Picture Mode
 
 # same with minecraft

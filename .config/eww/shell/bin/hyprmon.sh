@@ -114,6 +114,7 @@ function monitor_changes(){
             "renameworkspace>>$overview_id,"*)
                 eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=false
                 overview_id=""
+                $XDG_CONFIG_HOME/hypr/plugins/overview.sh off
                 ;;
             # openwindow*|closewindow*|movewindow*)
             #     eww -c $XDG_CONFIG_HOME/eww/shell update windows="$(hyprctl -j clients|jq --argjson order "$workspace_order" 'map(. + {pos:$order[.workspace.name],})|sort_by(.pos)')"
