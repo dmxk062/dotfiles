@@ -29,17 +29,9 @@ function metadata(){
     fi
     artist=$(playerctl metadata 'xesam:artist'|sed 's/"/\\"/g')
     album=$(playerctl metadata 'album'|sed 's/"/\\"/g')
-    length=$(playerctl metadata 'mpris:length')||length="null"
-    position=$(playerctl metadata --format '{{position}}')||position="null"
-    if [[ $length == "null" ]]||[[ $position == "null" ]]
-    then
-        prog=false
-    else
-        prog=true
-    fi
 
     loop=\"$(playerctl loop)\"||loop="null"
-    printf '{"img":%s,"artist":"%s","album":"%s","pos":%s,"len":%s, "loop":%s, "avail":%s}\n' "$img_path" "$artist" "$album" "$position" "$length" "$loop" "$prog"
+    printf '{"img":%s,"artist":"%s","album":"%s","loop":%s}\n' "$img_path" "$artist" "$album" "$loop" 
 
 }
 

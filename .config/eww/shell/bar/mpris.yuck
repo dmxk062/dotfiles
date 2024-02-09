@@ -35,7 +35,7 @@
     (box :space-evenly false :halign "center" :valign "center"
         (box :class "popup_box" :space-evenly false :orientation "v"
             (box :class "padded_box" :width 308 :height 180
-            (overlay 
+            ;; (overlay 
                 (box :space-evenly false :visible {mpris.title != "null"} :halign "center" :valign "center"
                     (image :path {mpris_meta.img?: ""}
                     :image-width 308 :image-height 180
@@ -44,13 +44,13 @@
                     (box :visible {mpris_meta.img == "null"}
                     (themed_icon :name {mpris.player} :width 308 :height 180 ))
                 )
-                (box :visible "${mpris_meta.avail && mpris_meta.pos != ""}" :valign "end" :class "mpris-progress"
-                    (box :orientation "v"
-                        (scale :value "${(mpris_meta.pos / mpris_meta.len)*100}" :class "slider" :tooltip "${formattime(round(mpris_meta.pos / 1000000,0),"%H:%M:%S", "UTC")} of ${formattime(round(mpris_meta.len / 1000000,0),"%H:%M:%S", "UTC")}"
-                        :onchange "bin/mpris.sh jump {} ${mpris_meta.len / 1000000}")
-                    )
-                )
-            )
+                ;; (box :visible "${mpris_meta.avail && mpris_meta.pos != ""}" :valign "end" :class "mpris-progress"
+                ;;     (box :orientation "v"
+                ;;         (scale :value "${(mpris_meta.pos / mpris_meta.len)*100}" :class "slider" :tooltip "${formattime(round(mpris_meta.pos / 1000000,0),"%H:%M:%S", "UTC")} of ${formattime(round(mpris_meta.len / 1000000,0),"%H:%M:%S", "UTC")}"
+                ;;         :onchange "bin/mpris.sh jump {} ${mpris_meta.len / 1000000}")
+                ;;     )
+                ;; )
+            ;; )
 
             )
             (box :class "popup_footer" :orientation "v" :space-evenly false

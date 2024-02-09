@@ -18,12 +18,6 @@
         "menu":""
     },
     {
-        "description":"Notes",
-        "exec":"rnote",
-        "image":"rnote",
-        "menu":""
-    },
-    {
         "description":"LibreOffice Office Suite",
         "exec":"gtk-launch libreoffice-startcenter",
         "image":"libreoffice",

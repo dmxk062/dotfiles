@@ -20,6 +20,7 @@
     (launch_option_list)
 )
 
+
 (defwidget launch_option_list []
     (box :space-evenly false :halign "center" :valign "center"
         (box :class "popup_box_padded" :orientation "v" :space-evenly false
