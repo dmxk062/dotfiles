@@ -27,6 +27,8 @@
 (defwidget performance_list []
     (box :space-evenly false :halign "start" :valign "start"
         (box :class "popup_box_padded" :orientation "v" :space-evenly false
+            ;; (box :halign "end" :space-evenly false
+            ;;     (close_button :window "performance_popup"))
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "Memory" :right "${mem.mem.nice.used} of ${mem.mem.nice.total}")
                 (scale :value {mem.mem.raw.perc} :class "slider" :active false)

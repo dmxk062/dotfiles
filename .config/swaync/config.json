@@ -58,5 +58,15 @@
             "image-size": 96,
             "image-radius": 12
         }
+    },
+    "scripts": {
+        "urgent-sound":{
+            "urgency": "Critical",
+            "exec": "sh -c 'paplay ~/.config/swaync/sounds/alert.ogg'"
+        },
+        "incoming-call":{
+            "body": "Incoming call",
+            "exec": "sh -c 'paplay ~/.config/swaync/sounds/phone-incoming.ogg'"
+        }
     }
 }

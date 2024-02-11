@@ -44,6 +44,7 @@ window {
 }
 
 .notification {
+    border: unset;
     margin: .8rem;
     box-shadow: $popup_shadow;
     border-radius: $radius;
@@ -71,13 +72,16 @@ window {
     background-color: transparent;
     border-radius: $radius;
     margin: 8px;
+    margin-left: 4px;
 
     .image {
-        border-radius: 64px;
-        margin: .8rem;
+        border-radius: $radius;
+        margin-right: .6rem;
         color: $fg;
     }
     .app-icon{
+        -gtk-icon-effect: none;
+        -gtk-icon-shadow: 0 1px 4px black;
         margin: .8rem;
         color: $fg;
     }
@@ -196,24 +200,34 @@ window {
 .notification-row{
     background-color: unset;
 }
-// .notification-group {
-//     &.collapsed{
-//         .notification-row{
-//             background-color: unset;
-//         }
-//         &:hover{
-//             .notification-row:not(:only-child) {
-//                 background-color: unset;
-//             }
-//         }
-//     }
-// }
+.notification-group {
+}
+.notification-group-headers {
+    margin: 0 1.2rem;
+    .notification-group-icon {
+        color: $fg;
+    }
+    .notification-group-header {
+        color: $fg;
+    }
+}
+.notification-group-buttons > button {
+    min-height: 1.5rem;
+}
+.notification-group-close-all-button {
+    &:hover {
+        background-color: $red;
+        color: $inverted;
+    }
+}
 
 .activatable {
     &:focus{
         background-color: rgba($accent, 0.2);
     }
 }
+
+
 
 .widget-dnd{
     color: $fg;
@@ -224,7 +238,7 @@ window {
         background-color: $bg2;
         border: 1px solid $bg3;
         slider {
-            background-color: #fff;
+            background-color: $bg;
             border-radius: $radius;
 
         }
@@ -239,7 +253,7 @@ window {
         padding: .5rem;
         padding: 1rem;
         margin: 1rem 1.5rem;
-        background-color: $bg0;
+        background-color: rgba($bg0, 0.7);
         border-radius: $radius;
         box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
     }
@@ -288,10 +302,29 @@ window {
 }
 
 .floating-notifications {
-  background: transparent;
+    background: transparent;
+    scrollbar {
+        all: unset;
+        // background-color: transparent;
+        // transition: background-color 75ms cubic-bezier(0, 0, 0.2, 1);
+        slider {
+            all: unset;
+            // background-color: $fg2;
+            // min-width: 0.4rem;
+            // min-height: 2px;
+            // border-radius: $radius;
+            // transition: inherit;
+            // background-clip: padding-box;
+            // &:hover {
+            //     background-color: fade($fg0);
+            // }
+            // margin: .6rem 0 .6rem 0;
+        }
 
-  .notification {
-  }
+    }
+
+    .notification {
+    }
 }
 
 .blank-window{

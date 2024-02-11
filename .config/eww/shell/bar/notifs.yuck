@@ -1,4 +1,4 @@
-(deflisten notif :initial '{ "count": 0, "dnd": false, "visible": false, "inhibited": false }' "bin/swaync.sh listen")
+(deflisten notif :initial '{ "count": 0, "dnd": false, "visible": false, "inhibited": false }' "swaync-client -s")
 
 (defwidget notification_button []
     (box :space-evenly false

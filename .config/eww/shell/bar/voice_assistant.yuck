@@ -1,0 +1,10 @@
+(defvar tts_running false)
+(defvar tts_active false)
+(defvar tts_state '{}')
+
+(defwidget voice_assistant_button []
+    (button :class "sbutton${tts_active ? "-active" : ""}" :timeout "128s"
+    :onclick {tts_active ? "bin/tts.sh stop" : "bin/tts.sh toggle&"}
+    {tts_running ? "󰗋" : "󰻔"})
+)
+

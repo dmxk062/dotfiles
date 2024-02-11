@@ -29,6 +29,7 @@ window decoration {
   all: unset; }
 
 .notification {
+  border: unset;
   margin: .8rem;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px;
   border-radius: 1rem;
@@ -50,12 +51,15 @@ window decoration {
   color: #2e3440;
   background-color: transparent;
   border-radius: 1rem;
-  margin: 8px; }
+  margin: 8px;
+  margin-left: 4px; }
   .notification-content .image {
-    border-radius: 64px;
-    margin: .8rem;
+    border-radius: 1rem;
+    margin-right: .6rem;
     color: #2e3440; }
   .notification-content .app-icon {
+    -gtk-icon-effect: none;
+    -gtk-icon-shadow: 0 1px 4px black;
     margin: .8rem;
     color: #2e3440; }
   .notification-content .summary {
@@ -144,6 +148,20 @@ window decoration {
 .notification-row {
   background-color: unset; }
 
+.notification-group-headers {
+  margin: 0 1.2rem; }
+  .notification-group-headers .notification-group-icon {
+    color: #2e3440; }
+  .notification-group-headers .notification-group-header {
+    color: #2e3440; }
+
+.notification-group-buttons > button {
+  min-height: 1.5rem; }
+
+.notification-group-close-all-button:hover {
+  background-color: #bf616a;
+  color: #2e3440; }
+
 .activatable:focus {
   background-color: rgba(143, 188, 187, 0.2); }
 
@@ -157,7 +175,7 @@ window decoration {
     background-color: #cad0dc;
     border: 1px solid #bcc3d0; }
     .widget-dnd > switch slider {
-      background-color: #fff;
+      background-color: #eceff4;
       border-radius: 1rem; }
     .widget-dnd > switch:checked {
       background-color: #8fbcbb; }
@@ -166,7 +184,7 @@ window decoration {
   padding: .5rem;
   padding: 1rem;
   margin: 1rem 1.5rem;
-  background-color: #eceff4;
+  background-color: rgba(236, 239, 244, 0.7);
   border-radius: 1rem;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px; }
 
@@ -202,6 +220,10 @@ window decoration {
 
 .floating-notifications {
   background: transparent; }
+  .floating-notifications scrollbar {
+    all: unset; }
+    .floating-notifications scrollbar slider {
+      all: unset; }
 
 .blank-window {
   all: unset;

@@ -57,7 +57,8 @@
         (app.class == "gamescope" ? 
             (steam_game_icons[app.title]?: "steam") : ;; for steam games in gamescope
         (matches(app.class, "Minecraft*.") ? "minecraft" : ;; and the usual minecraft issue
-        window_overrides[app.class]?:app.class))} ;; all the rest
+        (app.title == "About" ? "dialog-info" : ;; info icon for about dialogs
+        window_overrides[app.class]?:app.class)))} ;; all the rest
         :width 48 :height 48)
             (box  :space-evenly false :halign "end" :valign "start" :visible {app.pinned || (dock_hover_win == app.address && app.floating)} 
                 (button 
