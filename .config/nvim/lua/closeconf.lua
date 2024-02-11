@@ -64,6 +64,8 @@ vim.keymap.set({ "o", "x" }, "ic", "i}") -- [c]urly brackets
 vim.keymap.set({ "o", "x" }, "ac", "a}")
 vim.keymap.set({ "o", "x" }, "iB", "i]") -- rectangular [B]rackets
 vim.keymap.set({ "o", "x" }, "aB", "a]")
+vim.keymap.set({ "o", "x" }, "ir", "i]") -- [r]ectangular brackets
+vim.keymap.set({ "o", "x" }, "ar", "a]")
 vim.keymap.set({ "o", "x" }, "ib", "i)") -- [b]rackets
 vim.keymap.set({ "o", "x" }, "ab", "a)")
 vim.keymap.set({ "o", "x" }, "ia", "i>") -- [a]ngle brackets

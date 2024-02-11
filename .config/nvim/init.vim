@@ -41,7 +41,7 @@ inoremap <C-h> <LEFT>
 inoremap <C-j> <DOWN>
 inoremap <C-k> <UP>
 inoremap <C-l> <RIGHT>
-imap <C-s> <Esc>[s1z=`]a
+" imap <C-s> <Esc>[s1z=`]a
 noremap <leader>1 1gt
 noremap <leader>2 2gt
 noremap <leader>3 3gt
@@ -81,6 +81,9 @@ augroup RestoresursorShapeOnExit
     autocmd!
     autocmd VimLeave * set guicursor=a:hor20,a:blinkon1,
 augroup END
+
+
+    
 set guicursor=c-ci-cr:hor20,n-o-r-v-sm:block,i-ve:ver10,n-i-ve:blinkon1,
 set cursorline
 set cursorlineopt=number
