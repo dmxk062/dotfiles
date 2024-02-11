@@ -220,9 +220,9 @@ window decoration {
 
 .floating-notifications {
   background: transparent; }
-  .floating-notifications scrollbar {
+  .floating-notifications .overlay-indicator.left.vertical {
     all: unset; }
-    .floating-notifications scrollbar slider {
+    .floating-notifications .overlay-indicator.left.vertical slider {
       all: unset; }
 
 .blank-window {
