@@ -51,8 +51,7 @@ window decoration {
   color: #2e3440;
   background-color: transparent;
   border-radius: 1rem;
-  margin: 8px;
-  margin-left: 4px; }
+  margin: 8px; }
   .notification-content .image {
     border-radius: 1rem;
     margin-right: .6rem;
@@ -72,6 +71,9 @@ window decoration {
     color: #434c5e; }
   .notification-content .body {
     color: #2e3440; }
+  .notification-content progressbar {
+    margin-left: 1rem;
+    margin-right: 1rem; }
   .notification-content .body-image {
     color: #2e3440;
     margin-top: .3rem;
