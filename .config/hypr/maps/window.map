@@ -15,7 +15,7 @@ bind = , M, fullscreen, 1
 bind = , V, togglefloating
 bind = , P, pin
 bind = , Q, killactive
-bind = , Q, submap, reset
+bind = , delete, killactive
 
 # Growing, hacky, i know ------------- #
 
@@ -55,8 +55,16 @@ binde = , J, moveactive, 0 $resizeUnit
 binde = , K, moveactive, 0 -$resizeUnit 
 binde = , L, moveactive, $resizeUnit 0
 
+binde = , left, moveactive, -$resizeUnit 0
+binde = , down, moveactive, 0 $resizeUnit
+binde = , up, moveactive, 0 -$resizeUnit 
+binde = , right, moveactive, $resizeUnit 0
+
 bind = , Escape, submap, reset
 bind = $submapLeader, W, submap, reset
+
+bind = , T, exec, kitty
+bind = , E, exec, nautilus -w
 
 submap = reset
 # ------------------------------------ #
