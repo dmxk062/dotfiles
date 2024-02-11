@@ -56,17 +56,13 @@ window {
     @include shadow;
 }
 
-#status-line-wrapper {
-    min-height: 2rem;
-}
-
+// #status-line-wrapper {
+//     min-height: 2rem;
+// }
+//
 #status-label {
-    background-color: $bg0;
-    color: $fg;
-    @include shadow;
-    font-size: 1.5rem;
-    padding: 1rem;
-    border-radius: 16px;
+    color: transparent;
+    font-size: 0;
 
 }
 
@@ -76,7 +72,7 @@ flowboxchild > button {
     border-radius: 1.2rem;
     transition: background-color 0.3s ease, color 0.3s ease;
     &:hover{
-        background-color: rgba($bg2, 0.2);
+        background-color: rgba($bg2, 0.3);
     }
     &:focus{
         background-color: rgba($bg2, 0.2);

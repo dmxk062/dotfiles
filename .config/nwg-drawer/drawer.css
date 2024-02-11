@@ -8,41 +8,34 @@ window {
   background-color: rgba(46, 52, 64, 0.4); }
 
 .search {
-  background-color: #3b4252;
+  background-color: #d8dee9;
   padding: 1rem;
   border-radius: 16px;
-  color: #eceff4;
-  border: 2px solid #4c566a;
-  caret-color: #eceff4; }
+  color: #2e3440;
+  border: 2px solid #bcc3d0;
+  caret-color: #2e3440; }
   .search:focused {
-    border: 2px solid #7b9da3; }
+    border: 2px solid #9dbec1; }
   .search selection {
     color: #2e3440;
     background-color: #8fbcbb; }
 
 #category-button {
-  background-color: #3b4252;
-  color: #eceff4;
+  background-color: #d8dee9;
+  color: #2e3440;
   border-radius: 12px;
   margin: 1rem;
   padding: 0.07rem 1.15rem 0.07rem 0.85rem;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px; }
   #category-button:hover {
-    background-color: #434c5e; }
+    background-color: #cad0dc; }
   #category-button:focus {
     background-color: #8fbcbb;
     color: #2e3440; }
 
-#status-line-wrapper {
-  min-height: 2rem; }
-
 #status-label {
-  background-color: #2e3440;
-  color: #eceff4;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
-  font-size: 1.5rem;
-  padding: 1rem;
-  border-radius: 16px; }
+  color: transparent;
+  font-size: 0; }
 
 flowboxchild > button {
   padding: .5rem;
@@ -50,11 +43,11 @@ flowboxchild > button {
   border-radius: 1.2rem;
   transition: background-color 0.3s ease, color 0.3s ease; }
   flowboxchild > button:hover {
-    background-color: rgba(67, 76, 94, 0.2); }
+    background-color: rgba(202, 208, 220, 0.3); }
   flowboxchild > button:focus {
-    background-color: rgba(67, 76, 94, 0.2); }
+    background-color: rgba(202, 208, 220, 0.2); }
   flowboxchild > button:active {
-    background-color: rgba(76, 86, 106, 0.4); }
+    background-color: rgba(188, 195, 208, 0.4); }
 
 #files-box button {
   padding: .5rem;
@@ -62,10 +55,10 @@ flowboxchild > button {
   box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
   border-radius: 12px;
   transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: #2e3440; }
+  background-color: #eceff4; }
   #files-box button:hover {
-    background-color: #434c5e; }
+    background-color: #cad0dc; }
   #files-box button:focus {
-    background-color: #434c5e; }
+    background-color: #cad0dc; }
   #files-box button:active {
-    background-color: #4c566a; }
+    background-color: #bcc3d0; }
