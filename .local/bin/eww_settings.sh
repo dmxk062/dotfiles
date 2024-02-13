@@ -34,7 +34,7 @@ case $1 in
         $XDG_CONFIG_HOME/eww/settings/bin/wlan.sh upd
         ;;
     storage)
-        set_section 7
+        set_section 8
         $XDG_CONFIG_HOME/eww/settings/bin/disks.sh upd
         ;;
 esac
