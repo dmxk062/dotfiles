@@ -31,13 +31,13 @@
             ;;     (close_button :window "performance_popup"))
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "Memory" :right "${mem.mem.nice.used} of ${mem.mem.nice.total}")
-                (scale :value {mem.mem.raw.perc} :class "slider" :active false)
+                (scale :value {mem.mem.raw.perc} :class "slider${mem.mem.raw.perc > 90 ? "-red" : ""}" :active false)
 
                 (split_title :left "Swap" :right "${mem.swap.nice.used} of ${mem.swap.nice.total}")
-                (scale :value {mem.swap.raw.perc} :class "slider" :active false)
+                (scale :value {mem.swap.raw.perc} :class "slider${mem.swap.raw.perc > 90 ? "-red" : ""}" :active false)
 
                 (split_title :left "Video Memory" :right "${gpu.used_nice} of ${gpu.total_nice}")
-                (scale :value {gpu.perc} :class "slider" :active false)
+                (scale :value {gpu.perc} :class "slider${gpu.perc > 90 ? "-red" : ""}" :active false)
             )
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "Upload" :right {net.nice.up == 0 ? "None" : "${net.nice.up}/s"})
@@ -48,10 +48,10 @@
             )
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "CPU Usage" :right "${cpu.usage}% at ${cpu.temp}°C")
-                (scale :value {cpu.usage} :class "${cpu.temp > 60 ? "slider-red" : "slider"}" :min 0 :max 100 :active false)
+                (scale :value {cpu.usage} :class "slider${cpu.temp > 60 ? "-red" : ""}" :min 0 :max 100 :active false)
 
                 (split_title :left "GPU Usage" :right "${gpu.utilization}% at ${gpu.temp}°C")
-                (scale :value {gpu.utilization} :class "${gpu.temp > 60 ? "slider-red" : "slider"}" :min 0 :max 100 :active false)
+                (scale :value {gpu.utilization} :class "slider${gpu.temp > 60 ? "-red" : ""}" :min 0 :max 100 :active false)
             )
         )
 
