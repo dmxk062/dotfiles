@@ -34,24 +34,24 @@
                 (scale :value {mem.mem.raw.perc} :class "slider" :active false)
 
                 (split_title :left "Swap" :right "${mem.swap.nice.used} of ${mem.swap.nice.total}")
-                (scale :value {mem.swap.raw.perc} :class "slider-blue" :active false)
+                (scale :value {mem.swap.raw.perc} :class "slider" :active false)
 
                 (split_title :left "Video Memory" :right "${gpu.used_nice} of ${gpu.total_nice}")
-                (scale :value {gpu.perc} :class "slider-red" :active false)
+                (scale :value {gpu.perc} :class "slider" :active false)
             )
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "Upload" :right {net.nice.up == 0 ? "None" : "${net.nice.up}/s"})
                 (scale :value {net.raw.up} :class "slider" :min 0 :max {net.max.up} :active false)
 
                 (split_title :left "Download" :right {net.nice.down == 0 ? "None" : "${net.nice.down}/s"})
-                (scale :value {net.raw.down} :class "slider-blue" :min 0 :max {net.max.down} :active false)
+                (scale :value {net.raw.down} :class "slider" :min 0 :max {net.max.down} :active false)
             )
             (box :class "section_box" :orientation "v" :space-evenly false
                 (split_title :left "CPU Usage" :right "${cpu.usage}% at ${cpu.temp}°C")
-                (scale :value {cpu.usage} :class "${cpu.temp > 30 ? (cpu.temp > 50 ? (cpu.temp > 60 ? "slider-red" : "slider-orange") : "slider-yellow") : "slider-green"}" :min 0 :max 100 :active false)
+                (scale :value {cpu.usage} :class "${cpu.temp > 60 ? "slider-red" : "slider"}" :min 0 :max 100 :active false)
 
                 (split_title :left "GPU Usage" :right "${gpu.utilization}% at ${gpu.temp}°C")
-                (scale :value {gpu.utilization} :class "${gpu.temp > 30 ? (gpu.temp > 50 ? (gpu.temp > 60 ? "slider-red" : "slider-orange") : "slider-yellow") : "slider-green"}" :min 0 :max 100 :active false)
+                (scale :value {gpu.utilization} :class "${gpu.temp > 60 ? "slider-red" : "slider"}" :min 0 :max 100 :active false)
             )
         )
 

@@ -56,7 +56,7 @@
         (themed_icon :name {app.class == "kitty" ? (matches(app.title, "nv:*.") ?  "nvim" : "kitty") :
         (app.class == "gamescope" ? 
             (steam_game_icons[app.title]?: "steam") : ;; for steam games in gamescope
-        (matches(app.class, "Minecraft*.") ? "minecraft" : ;; and the usual minecraft issue
+        (matches(app.class, "Minecraft*.") ? "org.prismlauncher.PrismLauncher" : ;; and the usual minecraft issue
         (app.title == "About" ? "dialog-info" : ;; info icon for about dialogs
         window_overrides[app.class]?:app.class)))} ;; all the rest
         :width 48 :height 48)

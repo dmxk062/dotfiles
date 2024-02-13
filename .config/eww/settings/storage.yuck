@@ -14,7 +14,7 @@
 (defvar disk_eject_error false)
 
 (defwidget storage_section []
-    (box :visible "${selected_section == 7}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
+    (box :visible "${selected_section == 8}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
         (box :orientation "h" :space-evenly false :class "sidebar"
             (scroll :class "scroll-huge" :vexpand true
                 (box :orientation "v" :space-evenly false :spacing 8

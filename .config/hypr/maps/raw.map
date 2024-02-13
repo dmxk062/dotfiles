@@ -1,0 +1,13 @@
+# vim: ft=hyprland.conf
+
+# submap to just unmap everything
+
+bind = $submapLeader, V, submap, raw
+
+# ------------------------------------ #
+submap = raw
+bind = $submapLeader, V, submap, reset
+
+submap = reset
+# ------------------------------------ #
+

@@ -1,0 +1,64 @@
+(defvar net_public '{}')
+(defvar net_vpn '[]')
+(defvar net_active_vpn '{}')
+(defvar net_vpn_enabled false)
+(defvar net_ether '[]')
+
+
+(defvar net_section 0)
+(defvar net_loading false)
+
+(defwidget network_section []
+    (box :visible "${selected_section == 7}" :class "section_box" :hexpand true :orientation "h" :space-evenly false
+        (box :space-evenly false :class "sidebar"
+            (box :class "padding_box" :orientation "v" :space-evenly false
+                (box :class "card" :visible {net_vpn_enabled} :orientation "v" :space-evenly false
+                    (box :hexpand true :class "padding_box" :space-evenly false :orientation "v"
+                        (themed_icon :name "network-vpn" :height 64 :width 64)
+                        (label :class "text" :text "Connected to a VPN")
+                    )
+                    (box :class "card_footer" :vexpand true :orientation "v" :space-evenly false
+                        (split_text :left "IP Adress" :right {net_public.ip})
+                        (split_text :left "Location"  :right "${net_public.city}, ${net_public.country}")
+                        (split_text :left "Connection Name" :right {net_active_vpn.name})
+                        (button :class "button-error" :timeout "128s"
+                        :onclick "nmcli connection down '${net_active_vpn.name}'; bin/network/network.sh update vpn"
+                        "󰒄    Disconnect from VPN")
+
+                    )
+                )
+            )
+            (separator)
+            (box :class "padding_box" :orientation "v" :space-evenly false :valign "center"
+                (button :class "button" :onclick "${EWW_CMD} update net_section=0" :class "button${net_section == 0 ? "-active" : ""}" "󰈀    Ethernet")
+                (button :class "button" :onclick "${EWW_CMD} update net_section=1" :class "button${net_section == 1 ? "-active" : ""}" "󰖩    WiFi")
+                (button :class "button" :onclick "${EWW_CMD} update net_section=2" :class "button${net_section == 2 ? "-active" : ""}" "󰒄    VPN")
+                (button :class "button" :timeout "128s" :onclick "bin/network/network.sh update all" :class "button" "${net_loading ? "" : "󰑓"}    Refresh")
+            )
+        )
+        (box :visible {net_section == 0} :space-evenly false 
+            (scroll :class "scroll-huge-wider" :hexpand true
+                (box :orientation "v" :space-evenly false 
+                    (for dev in net_ether
+                        (box :space-evenly false :class "card" :orientation "v"
+                            (box :class "padding_box" :space-evenly false :hexpand true
+                                (box :space-evenly false :hexpand true
+                                    (themed_icon :name "network-wired" :width 64 :height 64)
+                                )
+                                (box :orientation "v" 
+                                    (clipboard_button :content {dev.dhcp.leased_ip} :label "IP: ${dev.dhcp.leased_ip}")
+                                )
+                            )
+                        (box :class "card_footer" :space-evenly false :orientation "v"
+                            (box :space-evenly false
+                            )
+                        )
+                    )
+
+                )
+            )
+        )
+    )
+)
+)
+

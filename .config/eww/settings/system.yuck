@@ -1,7 +1,7 @@
 (defvar service_idle true)
 (defvar service_clocks false)
 (defvar service_blueman false)
-(defvar service_nm false)
+(defvar service_nm true)
 (defvar hide-notif-popups false)
 
 (defvar dock true)

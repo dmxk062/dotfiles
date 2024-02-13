@@ -10,3 +10,4 @@ $HOME/.config/swaync/diskmon.sh & disown #script to notify about inserted usbs
 swayidle -w& disown #idle daemon for lockscreen & suspending
 killall playerctld 
 playerctld& disown #allows me to control mpris stuff with keybinds
+nm-applet& disown
