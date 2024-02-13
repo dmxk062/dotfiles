@@ -101,7 +101,7 @@
     },
     "Hyperlink":{
         "prefix":["hyperlink", "url"],
-        "body":["[${1:text}](https://www.${2:url}.${3|com,org,gov,net|})"]
+        "body":["[${1:text}](${2:https://www.google.com})"]
     }
 
 }
