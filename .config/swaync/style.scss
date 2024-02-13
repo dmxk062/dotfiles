@@ -239,7 +239,7 @@ window {
         background-color: $bg2;
         border: 1px solid $bg3;
         slider {
-            background-color: $bg;
+            background-color: $snow0;
             border-radius: $radius;
 
         }
@@ -257,6 +257,10 @@ window {
         background-color: rgba($bg0, 0.7);
         border-radius: $radius;
         box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+    }
+    .widget-mpris-album-art {
+        box-shadow: unset;
+        border: 2px $bg2;
     }
 
     button {
