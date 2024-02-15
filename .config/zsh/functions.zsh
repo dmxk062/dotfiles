@@ -158,3 +158,4 @@ c(){
 }
 
 source $ZDOTDIR/dash_functions.sh
+

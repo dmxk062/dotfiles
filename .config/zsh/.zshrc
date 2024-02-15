@@ -6,6 +6,7 @@ function zvm_config() {
   ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
   ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
   ZVM_MODE_INSERT=true
+  ZVM_VI_HIGHLIGHT_BACKGROUND=#4c566a
 }
 #sources the plugin
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
@@ -96,18 +97,18 @@ function preexec() {
 
 function precmd() {
     if [ $timer ]; then
-        now=$(($(date +%s%0N)/1000000))
-        elapsed=$(($now-$timer))
+        local now=$(($(date +%s%0N)/1000000))
+        local elapsed=$(($now-$timer))
         if [[ $elapsed -gt 60000 ]] 
         then
-            elapsed_f="$(($elapsed/60000.0))"
-            elapsed_u="$(printf "%.2f\n" "$elapsed_f")m"
+            local elapsed_f="$(($elapsed/60000.0))"
+            local elapsed_u="$(printf "%.2f\n" "$elapsed_f")m"
         elif [[ $elapsed -gt 500 ]]
         then
-            elapsed_f="$(($elapsed/1000.0))"
-            elapsed_u="$(printf "%.2f\n" "$elapsed_f")s"
+            local elapsed_f="$(($elapsed/1000.0))"
+            local elapsed_u="$(printf "%.2f\n" "$elapsed_f")s"
         else
-            elapsed_u="${elapsed}ms"
+            local elapsed_u="${elapsed}ms"
         fi
         RPS1="%F%(?.%F{green}.%F{red})%S%(?.. exit: %?)%s %F{yellow}%S󰥔 ${elapsed_u} %s%f"
         unset timer

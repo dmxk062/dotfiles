@@ -22,4 +22,3 @@
 -tab(){
     kitty @ launch --type=tab -- zsh -ic "$@"
 }
-
