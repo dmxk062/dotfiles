@@ -1,7 +1,10 @@
 # fancy command not found that opens files
 
 function command_not_found_handler() {
-    printf 'zsh: command not found: %s\n' "$1"
+    printf 'zsh: command not found: %s\n' "$1" > /dev/stderr
+    if [[ ! -t 0 ]]||[[ ! -t 1 ]]; then # early return if we are not in a tty
+        return 127
+    fi
     local file="$1"
     if [[ -f "./$file" ]]
     then
@@ -67,30 +70,11 @@ function mcd(){
 }
 
 
-# alert function to notify after a command.
-
-function alert(){
-    prog=$@
-    start=$(date "+%s")
-    eval $prog
-    exit=$?
-    time=$(( $(date +%s) - $start ))
-    if [ $exit = 0 ]
-    then
-        notify-send -i "/usr/share/icons/Tela/scalable/apps/terminal.svg" "Command finished" "$prog took $(date -d @$time "+%M:%S")"
-    else
-        notify-send -i "/usr/share/icons/Tela/scalable/apps/gksu-root-terminal.svg" "Command failed" "$prog failed after $(date -d @$time "+%M:%S") with error code $exit"
-    fi
-}
 
 function qi(){
     echo "Calculator"
     printf "\033]0;qalc\007"
     qalc
-}
-
-get_package(){
-    pkgfile "/usr/bin/$1"
 }
 
 ft(){
