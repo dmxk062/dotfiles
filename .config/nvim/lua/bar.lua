@@ -81,11 +81,11 @@ require('lualine').setup {
     options = {
         icons_enabled = true,
         theme = 'nord',
-        component_separators = { left = '', right = ''},
+        component_separators = { left = '', right = ''},
         section_separators = { left = '', right = ''},
         disabled_filetypes = {
             statusline = {},
-            winbar = {'NvimTree'},
+            -- winbar = {'NvimTree'},
 
         },
         ignore_focus = {},
@@ -203,29 +203,14 @@ require('lualine').setup {
         lualine_a = {
             {
                 'tabs',
+                separator = {
+                    left = '', right = ''
+                },
+
                 max_length = vim.o.columns-10,
-                colored = true,
-                mode = 3,
+                colored = false,
+                mode = 2,
                 use_mode_colors = true,
-            },
-        },
-        lualine_b = {
-            { 
-                'filename',
-                icons_enabled = true,
-                icon = {'', align='left'},
-                cond = min_window_width(150),
-                padding= { left = 2, right = 0 },
-                path = 3,
-                file_status = true,
-                newfile_status = true,
-                shortening_target = 30,
-                symbols = {
-                    modified = '[+]',
-                    readonly = '[]',
-                    unamed = '[No Name]',
-                    newfile = '[New]',
-                }
             },
         },
         lualine_y = {

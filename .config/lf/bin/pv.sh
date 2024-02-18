@@ -1,13 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 IFS='
 '
-file=$1
-w=$2
-COLUMNS=$w
-h=$3
+if [[ "$1" == "fzf" ]]; then
+    file="$2"
+    w=$FZF_PREVIEW_COLUMNS
+    h=$FZF_PREVIEW_ROWS
+    x=$FZF_PREVIEW_LEFT
+    y=$FZF_PREVIEW_TOP
+else
+    file=$1
+    w=$2
+    h=$3
+    x=$4
+    y=$5
+fi
 LINES=$h
-x=$4
-y=$5
+COLUMNS=$w
 giveOpenHint(){
     printf "\033[33m $1 \033[0m \n\n"
 }
@@ -44,7 +52,7 @@ mkdir -p $HOME/.cache/lf
 cachedir="$HOME/.cache/lf"
 # cleans up the name of the file
 filename=$(basename "$(echo "$file" | tr ' ' '_')")
-case "$(file --dereference --brief --mime-type -- "$1")" in
+case "$(file --dereference --brief --mime-type -- "$file")" in
     application/*pdf) #convert to png and then view using kitty
         if [ ! -f "$cachedir/$filename.png" ]; then
             pdftoppm -f 1 -l 1 "$file" >> "$cachedir/$filename.png"
@@ -53,12 +61,12 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
         exit 1
     ;;
     image/*|t) #just kitty
-        identify -format 'Format: %m\nSize: %wx%h\nColor Depth: %z Bits per Pixel\n' "$file"
         if [ $(stat -c %s "$file") -gt 31457280 ]
         then
             giveOpenInfo "Images larger than 30mb won't be displayed."
             exit 1
         fi
+        identify -format 'Format: %m\nSize: %wx%h\nColor Depth: %z Bits per Pixel\n' "$file"
         kitten icat --silent --stdin no --transfer-mode memory --place "${w}x$((h-4))@${x}x$((y+4))" "$file" < /dev/null > /dev/tty
         exit 1
     ;;

@@ -12,7 +12,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'NvChad/nvim-colorizer.lua'
 Plug 'junegunn/fzf'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+Plug 'akinsho/toggleterm.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lukas-reineke/headlines.nvim'
 Plug 'm4xshen/autoclose.nvim'
@@ -31,11 +31,13 @@ Plug 'tamago324/cmp-zsh'
 Plug 'kevinhwang91/nvim-ufo'
 Plug 'kevinhwang91/promise-async'
 Plug 'luukvbaal/statuscol.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'jose-elias-alvarez/typescript.nvim'
 Plug 'b0o/schemastore.nvim'
 Plug 'rafamadriz/friendly-snippets'
+Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 call plug#end()
 

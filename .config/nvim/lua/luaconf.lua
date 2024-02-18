@@ -5,6 +5,7 @@ require('completion')
 require('fold')
 
 require('telesc')
+-- require('tabline')
 
 require("toggleterm").setup{
     shade_terminals = false,
