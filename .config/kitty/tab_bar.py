@@ -6,6 +6,8 @@ from kitty.tab_bar import (DrawData, ExtraData, TabBarData, as_rgb,
                            draw_tab_with_powerline, draw_title)
 from kitty.utils import color_as_int
 
+import datetime
+
 opts = get_options()
 RED: int = as_rgb(color_as_int(opts.color1))
 BG: int = as_rgb(color_as_int(opts.tab_bar_background))
@@ -22,6 +24,7 @@ MAX_LEN = 16
 def _draw_bubble(screen: Screen, content: str, bg: int, fg: int, index, bold: bool, left=SEP_LEFT, right=SEP_RIGHT):
     if index != 1:
         screen.cursor.x += 1
+
 
 
     fg_i = screen.cursor.bg
@@ -55,10 +58,13 @@ def draw_tab(
     else:
         fmt = tab.title 
 
+
+
     if tab.is_active:
         fg = FG_ACTIVE
         bg = BG_ACTIVE
         bold = True
+        fmt = " " + fmt
     elif tab.needs_attention:
         fg = FG_ACTIVE
         bg = RED
@@ -68,8 +74,14 @@ def draw_tab(
         fg = FG_INACTIVE
         bg = BG_INACTIVE
         bold = False
+        fmt = str(index) + " " + fmt
 
     _draw_bubble(screen, fmt, bg, fg, index, bold )
 
-    return screen.cursor.x
 
+    if is_last:
+        screen.cursor.x = screen.columns - 10
+        current_time = datetime.datetime.now().strftime("%H:%M")
+        _draw_bubble(screen, f"󰥔 {current_time}", BG_INACTIVE, FG_INACTIVE, 2, False)
+
+    return screen.cursor.x
