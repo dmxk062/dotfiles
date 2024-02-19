@@ -23,15 +23,19 @@ TEXT_TYPES = (
 
 class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
     def open_term_for_dir(self, _: Nautilus.MenuItem, file: Nautilus.FileInfo) -> None:
-        filepath = unquote(file.get_uri()[7:])
+        filepath = self.expand_uri(file)
         os.system(f"kitty --detach --directory='{filepath}'")
 
     def edit_term(self, _: Nautilus.MenuItem, files: list[Nautilus.FileInfo]) -> None:
         args = ""
         for file in files:
-            filepath = unquote(file.get_uri()[7:])
+            filepath = self.expand_uri(file)
             args = f"{args} '{filepath}'"
         os.system(f"kitty --detach -- nvim -O {args}")
+
+    @classmethod
+    def expand_uri(cls, file: Nautilus.FileInfo):
+        return file.get_location().get_path()
 
 
     def get_file_items(
