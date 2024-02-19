@@ -9,6 +9,7 @@ windowrulev2=float, class:Timer
 windowrulev2=float, class:io.missioncenter.MissionCenter
 # windowrulev2=float, class:org.gnome.Nautilus
 windowrulev2=float, class:com.github.GradienceTeam.Gradience
+windowrulev2=float, class:xdg-desktop-portal-gtk
 windowrulev2=float, class:com.github.dmxk062.pyshell.commands
 windowrule=center, class:Timer
 windowrule=size 400 400,class:popup
