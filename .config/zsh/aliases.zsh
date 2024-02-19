@@ -12,13 +12,13 @@ alias x="exit"
 alias rm="rm -i"
 
 # all the ls i could ever need
-alias ls='ls --color=auto'
-alias ll='lsd -l'
-alias lla='lsd -lA'
-alias llo='lsd -l --permission=octal'
-alias llao='lsd -lA --permission=octal'
-alias la='lsd -A'
-alias lr='lsd --tree --depth 3 '
-alias l='lsd'
+alias ls='ls --color=auto --hyperlink=auto'
+alias ll='lsd -l --hyperlink=auto'
+alias lla='lsd -lA --hyperlink=auto'
+alias llo='lsd -l --permission=octal --hyperlink=auto'
+alias llao='lsd -lA --permission=octal --hyperlink=auto'
+alias la='lsd -A --hyperlink=auto'
+alias lr='lsd --tree --depth 3  --hyperlink=auto'
+alias l='lsd --hyperlink=auto'
 
 alias grep='grep --color=auto'

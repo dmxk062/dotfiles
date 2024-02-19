@@ -7,6 +7,7 @@ from kitty.tab_bar import (DrawData, ExtraData, TabBarData, as_rgb,
 from kitty.utils import color_as_int
 
 import datetime
+import re
 
 opts = get_options()
 RED: int = as_rgb(color_as_int(opts.color1))
@@ -74,7 +75,10 @@ def draw_tab(
         fg = FG_INACTIVE
         bg = BG_INACTIVE
         bold = False
-        fmt = str(index) + " " + fmt
+        if tab.has_activity_since_last_focus:
+            fmt = " " + fmt
+        else:
+            fmt = str(index) + " " + fmt
 
     _draw_bubble(screen, fmt, bg, fg, index, bold )
 
