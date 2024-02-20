@@ -5,6 +5,7 @@ function update(){
 }
 
 NOTIFID=1000
+LAST_URGENT=""
 SUBMAP_ICON="/usr/share/icons/Tela/scalable/apps/preferences-desktop-theme-windowdecorations.svg"
 
 workspace_order='{
@@ -90,7 +91,12 @@ function monitor_changes(){
             urgent*)
                 IFS=">" read -r _ _ addr <<< "$line"
                 # hyprctl dispatch focuswindow "address:0x${addr}"
-                notify_urgent "$addr"
+                if [[ "$addr" == "$LAST_URGENT" ]]; then
+                    continue
+                else
+                    LAST_URGENT="$addr"
+                    notify_urgent "$addr"&
+                fi
                 ;;
             submap*)
                 IFS=">" read -r _ _ map <<< "$line"
