@@ -1,6 +1,7 @@
 #!/bin/bash
 
 eww="eww -c $XDG_CONFIG_HOME/eww/shell"
+# $eww close "icon_popup"
 get_relative_cursor(){
     read -r x y <<< $(hyprctl cursorpos |sed 's/,//')
     read -r x_r y_r <<< "$(hyprctl monitors -j|jq '.[]|select(.focused)|.x, .y' --raw-output0|tr '\0' ' ')"

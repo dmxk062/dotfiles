@@ -26,7 +26,7 @@ Fullscreen: ${ws.fullscreen}"
             (button :class "ws-inactive" :timeout "16s"
             :onclick "hyprctl dispatch workspace empty"
             :tooltip "Open next empty Workspace"
-            "󰾍${!vertical ? "    New" : ""}")
+            "󱓺${!vertical ? "    New" : ""}")
             ))
         )
         )

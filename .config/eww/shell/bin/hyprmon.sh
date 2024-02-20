@@ -52,6 +52,19 @@ function get_active_workspace_id(){
     hyprctl activeworkspace -j|jq  '.id'
 }
 
+function notify_urgent(){
+    addr="0x$1"
+    IFS=$'\t' read -r title class <<< "$(hyprctl -j clients| jq -r --arg addr "$addr" '.[]|select(.address == $addr)|.title,.class'|tr '\n' '\t')"
+    response="$(notify-send -a "$class" -i "$class" \
+        "$class demands attention" \
+        --transient \
+        --action="focus"="Go to Window" \
+        "$title")"
+    if [[ "$response" == "focus" ]]; then
+        hyprctl dispatch focuswindow "address:${addr}"
+    fi
+}
+
 function list_workspaces(){
         active=$(get_active_workspace_id)
         hyprctl workspaces -j|jq --argjson order "$workspace_order" --argjson activeid "$active" 'map({
@@ -76,8 +89,8 @@ function monitor_changes(){
         case "$line" in
             urgent*)
                 IFS=">" read -r _ _ addr <<< "$line"
-                hyprctl dispatch focuswindow "address:0x${addr}"
-                echo "$addr"
+                # hyprctl dispatch focuswindow "address:0x${addr}"
+                notify_urgent "$addr"
                 ;;
             submap*)
                 IFS=">" read -r _ _ map <<< "$line"

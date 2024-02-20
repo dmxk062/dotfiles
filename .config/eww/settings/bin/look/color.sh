@@ -8,7 +8,6 @@ then
     then
         eww -c $XDG_CONFIG_HOME/eww/settings update look_colorscheme="dark"
         eww -c $XDG_CONFIG_HOME/eww/shell update look_colorscheme="dark"
-        makoctl mode -a "dark_theme"
     else
         eww -c $XDG_CONFIG_HOME/eww/settings update look_colorscheme="light"
         eww -c $XDG_CONFIG_HOME/eww/shell update look_colorscheme="light"
@@ -26,7 +25,6 @@ then
     ln -s $XDG_CONFIG_HOME/swaylock/config.light $XDG_CONFIG_HOME/swaylock/config
     unlink $XDG_CONFIG_HOME/gtk-4.0/gtk.css
     ln -s $XDG_CONFIG_HOME/gtkcss/4.0/gtk-light.css $XDG_CONFIG_HOME/gtk-4.0/gtk.css
-    makoctl mode -r "dark_theme"
     color="light"
 else
     sed -i 's/light.scss/dark.scss/' $XDG_CONFIG_HOME/eww/style/color.scss
@@ -37,7 +35,6 @@ else
     ln -s $XDG_CONFIG_HOME/swaylock/config.dark $XDG_CONFIG_HOME/swaylock/config
     unlink $XDG_CONFIG_HOME/gtk-4.0/gtk.css
     ln -s $XDG_CONFIG_HOME/gtkcss/4.0/gtk-dark.css $XDG_CONFIG_HOME/gtk-4.0/gtk.css
-    makoctl mode -a "dark_theme"
     color="dark"
 fi
 for EWW in settings shell

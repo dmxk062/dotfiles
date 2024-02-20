@@ -7,12 +7,12 @@ get_relative_cursor(){
     echo "$((x-x_r-90))x$((y-y_r-220))" # those values are based on window size, i found these to be decent
 }
 json_path="$XDG_CONFIG_HOME/eww/shell/dock/icon_menus.json"
+# $eww close dock_window_popup
 if [ -z $1 ]
 then
     entry=default
     json=$(jq -Mc ".$entry" < "$json_path")
     $eww update icon_menu_entries="$json"
-    $eww close icon_popup dock_window_popup
     exit
 else
     entry="$1"

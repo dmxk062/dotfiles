@@ -42,12 +42,13 @@ window {
 }
 menu {
     background-color: $bg0;
-    border-radius: $rounding-small;
+    border-radius: 18px;
     margin: 2rem;
     padding: .5rem;
     padding-top: 1rem;
     
     menu {
+        border-radius: 12px;
         padding: .4rem;
         margin: 1rem;
     }

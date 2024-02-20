@@ -175,7 +175,7 @@ Password: ${qr_elem.data.passwdRequired ? "Yes" : "No"}")
             )
             (box :class "popup_footer"
                 (button :class "button${screenshot_section == 0 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=0&&bin/screenshot_menu.sh list_monitors" "󰍹    Screen")
-                (button :class "button${screenshot_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=1" "󰲎    Selection")
+                (button :class "button${screenshot_section == 1 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=1" "󰆞    Selection")
                 (button :class "button${screenshot_section == 2 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=2" "󰐳    QR")
                 (button :class "button${screenshot_section == 3 ? "-active" : ""}" :onclick "${EWW_CMD} update screenshot_section=3" "    Color")
             )
