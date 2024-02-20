@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+cd || exit # so the pwd isnt fucked up
 colorfile="$XDG_CONFIG_HOME/eww/style/color.scss"
 
 if [[ $1 == 'get' ]]
