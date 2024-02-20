@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-ICONDIR="/usr/share/icons/Tela/scalable"
 LOCK_CMD="swaylock --grace=6 --fade-in=5"
 LOCK_PRE_SUSPEND_CMD="swaylock"
 SLEEP_CMD="systemctl suspend"
-ICON="${ICONDIR}/apps/preferences-desktop-screensaver.svg"
+# ICON="preferences-desktop-screensaver"
+ICON="system-lock-screen"
 PIDFILE=/tmp/.swayidle_timeout_pid
 
 
@@ -14,6 +14,7 @@ function notify_loop() {
                 -a "swayidle" \
                 --print-id \
                 -i "$ICON" \
+                --transient \
                 -t 3100 \
                 --hint=int:value:$((i*100 / 30 )) \
                 "Locking the session in 30 seconds")
@@ -29,6 +30,7 @@ function notify_loop() {
                     -a "swayidle" \
                     -r $id \
                     -i "$ICON" \
+                    --transient \
                     -t 3100 \
                     --hint=int:value:$((i*100 / 30 )) \
                     "$msg"
