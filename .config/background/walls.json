@@ -1,35 +1,43 @@
 [
     {
-        "path":"/home/dmx/.config/background/img/splash",
-        "name":"Color Explosion"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/lake-res",
-        "name":"Summer Lake"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/leaves",
-        "name":"Leaves"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/nord_city",
-        "name":"City"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/forrest_mountains",
-        "name":"Forrests & Mountains"
-    },
-    {
-        "path":"/home/dmx/.config/background/img/water",
-        "name":"Water Mirror"
-    },
-    {
         "path":"/home/dmx/.config/background/img/night_mountains",
         "name":"Night Sky & Mountains"
     },
     {
         "path":"/home/dmx/.config/background/img/purple_wave",
         "name":"Purple Wave"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/leaves",
+        "name":"Leaves"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/osx",
+        "name":"MacOS"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/sky",
+        "name":"Blue Sky"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/splash",
+        "name":"Color Explosion"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/evening",
+        "name":"Evening Forrest"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/wave-res",
+        "name":"Earth Wave"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/valley-res",
+        "name":"Autumn Valley"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/water",
+        "name":"Water Mirror"
     },
     {
         "path":"/home/dmx/.config/background/img/dunes",
@@ -40,10 +48,6 @@
         "name":"Fire"
     },
     {
-        "path":"/home/dmx/.config/background/img/osx",
-        "name":"MacOS"
-    },
-    {
         "path":"/home/dmx/.config/background/img/blue_flower",
         "name":"Blue Flower"
     },
@@ -52,8 +56,8 @@
         "name":"Rainbow"
     },
     {
-        "path":"/home/dmx/.config/background/img/cutefish-res",
-        "name":"Bubbles"
+        "path":"/home/dmx/.config/background/img/peaks-res",
+        "name":"Peaks"
     }
 
 ]
