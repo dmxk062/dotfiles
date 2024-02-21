@@ -156,10 +156,16 @@ procmem(){
     fi
 
     (for pid in "$@"; do
-        read -r _ value _ <<< $(grep "VmRSS" /proc/$pid/status)
-        ((total+=value))
-        print -n "$pid: "
-        numfmt --to=iec --from-unit=Ki "$value"
+        if [[ -r "/proc/$pid/status" ]]; then
+            read -r _ value _ <<< $(grep "VmRSS" /proc/$pid/status)
+            if [[ "$value" != "" ]]; then
+                ((total+=value))
+                print -n "$pid: "
+                numfmt --to=iec --from-unit=Ki "$value"
+            else
+                echo "$pid: -"
+            fi
+        fi
     done
     print -n "total: "
     numfmt --to=iec --from-unit=Ki "$total")|column -t
