@@ -97,7 +97,14 @@ url(){
     fi
 }
 
-    
+
+-root(){
+    if [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; then
+        pkexec "$@"
+    else
+        sudo "$@"
+    fi
+}
 
 # open(){
 # # fancy openener
@@ -136,9 +143,26 @@ url(){
 # fi
 # }
 #
-# faster than the clear binary lmao
+# faster than the clear binary, yes 
 c(){
     print -n "[H[2J"
+}
+
+# some process management stuff
+procmem(){
+    if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+        echo "Please specify a list of process ids, not process names" > /dev/stderr
+        return 127
+    fi
+
+    (for pid in "$@"; do
+        read -r _ value _ <<< $(grep "VmRSS" /proc/$pid/status)
+        ((total+=value))
+        print -n "$pid: "
+        numfmt --to=iec --from-unit=Ki "$value"
+    done
+    print -n "total: "
+    numfmt --to=iec --from-unit=Ki "$total")|column -t
 }
 
 source $ZDOTDIR/dash_functions.sh
