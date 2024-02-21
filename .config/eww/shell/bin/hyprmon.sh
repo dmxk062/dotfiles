@@ -56,14 +56,22 @@ function get_active_workspace_id(){
 function notify_urgent(){
     addr="0x$1"
     IFS=$'\t' read -r title class <<< "$(hyprctl -j clients| jq -r --arg addr "$addr" '.[]|select(.address == $addr)|.title,.class'|tr '\n' '\t')"
-    response="$(notify-send -a "$class" -i "$class" \
-        "$class demands attention" \
-        --transient \
-        --action="focus"="Go to Window" \
-        "$title")"
-    if [[ "$response" == "focus" ]]; then
-        hyprctl dispatch focuswindow "address:${addr}"
-    fi
+    case $class in 
+        firefox)
+            response="$(notify-send -a "$class" -i "$class" \
+                "$class demands attention" \
+                --transient \
+                --action="focus"="Go to Window" \
+                "$title")"
+            if [[ "$response" == "focus" ]]; then
+                hyprctl dispatch focuswindow "address:${addr}"
+            fi
+            ;;
+        *)
+            hyprctl dispatch focuswindow "address:${addr}"
+            return
+            ;;
+    esac
 }
 
 function list_workspaces(){
