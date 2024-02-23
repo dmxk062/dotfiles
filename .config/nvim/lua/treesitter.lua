@@ -50,6 +50,8 @@ require("headlines").setup({
             "Headline5",
             "Headline6",
         },
+        bullets = {""},
+        dash_string = "-",
         codeblock_highlight = "CodeBlock",
         dash_highlight = "Dash",
         quote_highlight = "Quote",

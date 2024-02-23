@@ -1,5 +1,10 @@
 local function getWords()
-    return tostring(vim.fn.wordcount().words)
+    local wc = vim.fn.wordcount()
+    if wc["visual_words"] then -- text is selected in visual mode
+        return wc["visual_words"] .. "w" .. "/" .. wc['visual_chars'] .. "c"
+    else 
+        return wc["words"] .. "w"
+    end
 end
 
 local utils = require("lualine.utils.utils")
@@ -159,9 +164,7 @@ require('lualine').setup {
                 }
             }
         },
-        lualine_d = {
-
-        },
+        lualine_d = {},
         lualine_x = {},
         lualine_y = {
             {
@@ -187,7 +190,6 @@ require('lualine').setup {
             },
             {
                 getWords,
-                icon= {'Words', align='right'}
             },
         }
     },
