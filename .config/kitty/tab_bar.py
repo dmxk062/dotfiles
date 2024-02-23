@@ -7,7 +7,6 @@ from kitty.tab_bar import (DrawData, ExtraData, TabBarData, as_rgb,
 from kitty.utils import color_as_int
 
 import datetime
-import re
 
 opts = get_options()
 RED: int = as_rgb(color_as_int(opts.color1))
@@ -29,7 +28,6 @@ def _draw_bubble(screen: Screen, content: str, bg: int, fg: int, index, bold: bo
 
 
     fg_i = screen.cursor.bg
-    bg_i = screen.cursor.bg 
     screen.cursor.fg = bg
     screen.cursor.bg = BG
     screen.cursor.bold = bold
