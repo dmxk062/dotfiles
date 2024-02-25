@@ -59,7 +59,7 @@ window decoration {
   .notification-content .app-icon {
     -gtk-icon-effect: none;
     -gtk-icon-shadow: 0 1px 4px black;
-    margin: .8rem;
+    margin: .4rem;
     color: #eceff4; }
   .notification-content .summary {
     color: #eceff4;
@@ -153,14 +153,23 @@ window decoration {
 .notification-group-headers {
   margin: 0 1.2rem; }
   .notification-group-headers .notification-group-icon {
-    color: #eceff4; }
+    color: #eceff4;
+    background-color: #2e3440; }
   .notification-group-headers .notification-group-header {
-    color: #eceff4; }
+    color: #eceff4;
+    background-color: #2e3440; }
 
 .notification-group-buttons > button {
-  min-height: 1.5rem; }
+  min-height: 1.5rem;
+  background-color: #434c5e;
+  color: #eceff4;
+  transition: background-color 0.3s ease, color 0.3s ease; }
+
+.notification-group-collapse-button:hover {
+  background-color: #4c566a; }
 
 .notification-group-close-all-button:hover {
+  background-color: unset;
   background-color: #bf616a;
   color: #2e3440; }
 

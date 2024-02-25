@@ -81,7 +81,7 @@ window {
     .app-icon{
         -gtk-icon-effect: none;
         -gtk-icon-shadow: 0 1px 4px black;
-        margin: .8rem;
+        margin: .4rem;
         color: $fg;
     }
     .summary{
@@ -207,16 +207,27 @@ window {
     margin: 0 1.2rem;
     .notification-group-icon {
         color: $fg;
+        background-color: $bg;
     }
     .notification-group-header {
         color: $fg;
+        background-color: $bg;
     }
 }
 .notification-group-buttons > button {
     min-height: 1.5rem;
+    background-color: $bg2;
+    color: $fg;
+    transition: $trans;
+}
+.notification-group-collapse-button {
+    &:hover {
+        background-color: $bg3;
+    }
 }
 .notification-group-close-all-button {
     &:hover {
+        background-color: unset;
         background-color: $red;
         color: $inverted;
     }
