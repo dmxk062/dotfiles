@@ -33,6 +33,7 @@
         "dock/bin/move.sh '${dock_active_win.address}' current" :
         "hyprctl dispatch movetoworkspacesilent special:4,address:${dock_active_win.address}"}"
         :label {dock_active_win.workspace.name == "special:4" ? "Restore" : "Hide"})
+        (lbutton :onclick "${EWW_CMD} close dock_window_popup" :label "Cancel")
         )
     )
 )
