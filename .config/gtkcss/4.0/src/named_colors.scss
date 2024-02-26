@@ -1,3 +1,5 @@
+@import "./palette_colors.scss";
+
 @define-color accent_color #{$accent};
 @define-color accent_bg_color #{$accent};
 
@@ -54,4 +56,3 @@ $no_shadows: headerbar, sidebar, secondary_sidebar, popover;
 @define-color card_shade_color #{$bg1};
 
 @define-color scrollbar_outline_color #{rgba($bg1, 0.7)};
-@import "./palette_colors.scss"
