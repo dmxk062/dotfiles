@@ -33,7 +33,7 @@ main {
 
 #page-ctn {
   margin: 0 auto;
-  max-width: 900px;
+  max-width: 70%;
   color: var(--foreground-color); }
 
 #page-header {
