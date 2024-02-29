@@ -15,6 +15,34 @@
     env XDG_CURRENT_DESKTOP=gnome "$@"    
 }
 
+# a better `watch`
+-mon(){
+    local interval="$1"
+    if [[ "$interval" =~ ^[0-9]+$ ]]; then
+        shift
+    else
+        interval=1
+    fi
+    local command="$*"
+    if ((interval == 1)); then
+        unit=second
+    else
+        unit=seconds
+    fi
+    local output old_output
+    while true; do
+        output="$(eval "$command")"
+        print -n "\e]0;$output\a"
+        print -n "[H[2J"
+        print -n "Every $interval $unit: \`$command\`\n\n$output"
+        if [[ "$output" != "$old_output" ]]; then
+            print -n "\a"
+        fi
+        old_output=$output
+        sleep "$interval"
+    done
+
+}
 
 if [[ $KITTY_SHELL_INTEGRATION_ENABLED == 1 ]]; then
 # special kitty dependant stuff
@@ -143,3 +171,16 @@ ${stderr}"
     
 }
 
+
+# dynamic sudo thingy
+-root(){
+    if [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; then
+        pkexec "$@"
+    else
+        sudo "$@"
+    fi
+}
+
+-s(){
+    sudo "$@"
+}

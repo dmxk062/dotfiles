@@ -143,6 +143,7 @@ url(){
 # fi
 # }
 #
+#
 # faster than the clear binary, yes 
 c(){
     print -n "[H[2J"
@@ -170,6 +171,24 @@ procmem(){
     print -n "total: "
     numfmt --to=iec --from-unit=Ki "$total")|column -t
 }
+
+# networking stuff
+
+req(){
+    curl -s "$@"
+}
+
+jreq(){
+    local url="$1"
+    shift
+    local jqopts="${(j:,:)@}"
+    curl -s "$url"|jq -r "${jqopts:-.}"
+}
+
+# some aliases depending on this:
+
+alias get_public_ip="jreq ipinfo.io .ip"
+
 
 source $ZDOTDIR/dash_functions.sh
 
