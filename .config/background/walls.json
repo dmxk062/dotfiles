@@ -16,6 +16,10 @@
         "name":"MacOS"
     },
     {
+        "path":"/home/dmx/.config/background/img/hyprland",
+        "name":"Hyprland"
+    },
+    {
         "path":"/home/dmx/.config/background/img/sky",
         "name":"Blue Sky"
     },
