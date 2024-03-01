@@ -78,7 +78,7 @@ function qi(){
 }
 
 ft(){
-    file --dereference --mime-type "$@"
+    file --brief --dereference --mime-type "$@"
 }
 
 url(){
@@ -191,4 +191,5 @@ alias get_public_ip="jreq ipinfo.io .ip"
 
 
 source $ZDOTDIR/dash_functions.sh
+source $ZDOTDIR/pacutils.zsh
 

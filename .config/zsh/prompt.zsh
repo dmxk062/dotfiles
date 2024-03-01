@@ -17,7 +17,7 @@ function precmd() {
         else
             local elapsed_u="${elapsed}ms"
         fi
-        RPROMPT="%F%(?.%F{green}.%F{red})%S%(?.󰄬.󰅖 %?)%s %F{#4c566a}%f%K{#4c566a}󰥔 ${elapsed_u}%k%F{#4c566a}%f"
+        RPROMPT="%F%(?.%F{green}.%F{red})%S%(?.󰄬.󰅖 %?)%s %F{#4c566a}%f%K{#4c566a}󱎫 ${elapsed_u}%k%F{#4c566a}%f"
         unset timer
     fi
     print -Pn "\e]0;zsh: %~\a"

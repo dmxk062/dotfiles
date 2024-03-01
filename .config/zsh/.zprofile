@@ -1,6 +1,3 @@
-#
-# ~/.zsh_profile
-#
 export VISUAL="nvim"
 export EDITOR="nvim"
 export PAGER="bat"

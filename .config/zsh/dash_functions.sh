@@ -84,22 +84,6 @@ alias -- "-t"="-tab"
 alias -- "-w"="-win"
 fi
 
--from_where(){
-    if [[ -f "$1" ]]; then
-        local progpath="$1"
-    else
-        local progpath="$(which "$1")"
-        if [[ "$progpath" == *"aliased"* ]]; then
-            progpath="/usr/bin/${1}"
-        fi
-        if ! [[ -f "$progpath" ]]; then
-            print "File does not exist: ${progpath}"
-            return 1
-        fi
-    fi
-    pacman -Qo "$progpath"
-    unset progpath
-}
 
 -abs(){
     realpath "$1"
