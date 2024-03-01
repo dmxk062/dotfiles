@@ -58,17 +58,14 @@ function notify_urgent(){
     IFS=$'\t' read -r title class <<< "$(hyprctl -j clients| jq -r --arg addr "$addr" '.[]|select(.address == $addr)|.title,.class'|tr '\n' '\t')"
     case $class in 
         firefox)
-            if  [[ "$addr" == "$LAST_URGENT" ]]; then
-                LAST_URGENT=""
-            else
             response="$(notify-send -a "$class" -i "$class" \
                 "$class demands attention" \
                 --transient \
                 --action="focus"="Go to Window" \
+                -h string:x-canonical-private-synchronous:sys-notify \
                 "$title")"
             if [[ "$response" == "focus" ]]; then
                 hyprctl dispatch focuswindow "address:${addr}"
-            fi
             fi
             ;;
         *)

@@ -165,7 +165,7 @@ class ControllerMonitor:
                 set_press(28, value)
             elif event == KEYS.B:
                 set_press(1, value)
-            elif event == KEYS.JS_LEFT:
+            elif event == KEYS.JS_RIGHT:
                 set_click(0x02, value)
             elif event == KEYS.L and value == 1:
                 self.socket.dispatch('workspace', args="m-1")

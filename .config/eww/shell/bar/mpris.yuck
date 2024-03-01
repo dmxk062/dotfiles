@@ -67,7 +67,9 @@
                         (button :class "button" :timeout "16s" :onclick "playerctl previous" "󰒭")
                     )
                     (box :space-evenly false :halign "end"
+                        ;; (button :class "button" :timeout "16s" :onclick "playerctld shift; bin/mpris.sh upd" "")
                         (button :class "button" :timeout "16s" :onclick "playerctl stop" "Stop")
+
                     )
                 )
                 (box :halign "center" :space-evenly false :orientation "v"

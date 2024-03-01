@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+pkexec env WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
+    XDG_SEAT="$XDG_SEAT" XDG_BACKEND="$XDG_BACKEND" \
+    XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" XDG_CONFIG_HOME="$XDG_CONFIG_HOME" \
+    timeshift-gtk

@@ -6,15 +6,20 @@ urldecode() {
     echo -e "${i//%/\\x}" 
 }
 
-function listen(){
-    playerctl -F metadata -f '{ "player":"{{playerName}}","active":"{{lc(status)}}","title":"{{markup_escape(title)}}" }'|while read -r line
-do
-    if [[ $line == "" ]]
+
+function get_meta(){
+    if [[ $1 == "" ]]
     then
         echo '{"player":null,"active":false,"title":null}'
     else
         echo "$line"|sed -e 's/&quot;/\\"/g' -e 's/playing/true/' -e 's/paused/false/' -e 's/stopped/false/' -e "s/&apos;/\\'/g" -e "s/\&amp;/\&/g"
     fi
+}
+
+function listen(){
+    playerctl -F metadata -f '{ "player":"{{playerName}}","active":"{{lc(status)}}","title":"{{markup_escape(title)}}" }'|while read -r line
+do
+    get_meta "$line"
 done
 }
 
@@ -60,6 +65,10 @@ function jump(){
     playerctl position "$(echo "$1*$2/100"|bc)"
     
 }
+upd(){
+    val="$(playerctl metadata -f '{ "player":"{{playerName}}","active":"{{lc(status)}}","title":"{{markup_escape(title)}}" }')"
+    eww -c $XDG_CONFIG_HOME/eww/shell update mpris="$(get_meta "$val")" #mpris_meta="$(metadata)"
+}
 case $1 in 
     listen)
         echo '{"player":null,"active":false,"title":null}'
@@ -73,4 +82,6 @@ case $1 in
         ;;
     jump)
         jump $2 $3;;
+    upd)
+        upd;;
 esac
