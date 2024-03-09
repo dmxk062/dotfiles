@@ -1,0 +1,12 @@
+@import './color.scss';
+@import './sizes.scss';
+
+* {
+    all: unset;
+    font-family: "Torus Pro", "Torus", "Cantarell";
+    font-weight: 600;
+    font-size: 14px;
+    // color: $fg0;
+}
+
+@import './buttons.scss';

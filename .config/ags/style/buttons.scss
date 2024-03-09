@@ -1,0 +1,40 @@
+.button {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: $bg2;
+    padding: .1rem 1.15rem .1rem .85rem;
+    margin: .4rem;
+    &:hover{
+        background-color: $bg3;
+    }
+}
+
+.small {
+    border-radius: $small;
+    min-height: $sheight;
+}
+
+.inactive{
+
+}
+.disabled{
+    background-color: $bg1;
+    &:hover{
+        background-color: $bg1;
+    }
+}
+
+@mixin colorButton($name, $color, $fg) {
+    .#{$name} {
+        background-color: $color;
+        color: $fg;
+        &:hover {
+            background-color: fade($color)
+        }
+    }
+}
+@include colorButton(active, $accent, $inverted);
+@include colorButton(special, $special, $inverted);
+@include colorButton(warn, $warn, $inverted);
+@include colorButton(error, $error, $inverted);
+@include colorButton(success, $green, $inverted);
+
