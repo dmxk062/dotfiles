@@ -22,3 +22,6 @@ alias lr='lsd --tree --depth 3  --hyperlink=auto'
 alias l='lsd --hyperlink=auto'
 
 alias grep='grep --color=auto'
+
+alias f="fd"
+alias g="rg"

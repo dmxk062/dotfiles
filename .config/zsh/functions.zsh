@@ -22,9 +22,13 @@ function md(){
         mkdir -p $dir
     done
 }
-function mcd(){
-    mkdir "$1"
+function mcd {
+    mkdir -p "$1"
     cd "$1"
+}
+
+function y {
+    wl-copy --type=text
 }
 
 
@@ -40,7 +44,7 @@ ft(){
 }
 
 url(){
-    file="${*//+/ }"
+    local file="${*//+/ }"
     file="${file//file:\/\//}"
     file="${file//\%/\\x}"
     file="$(echo -e "$file")"
@@ -56,13 +60,6 @@ url(){
 }
 
 
--root(){
-    if [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; then
-        pkexec "$@"
-    else
-        sudo "$@"
-    fi
-}
 
 # open(){
 # # fancy openener
@@ -148,15 +145,6 @@ jreq(){
 alias get_public_ip="jreq ipinfo.io .ip"
 
 # we love functional programming
-
-map(){
-    local expr="$1"
-    shift
-    for element in $@; do
-        print -- $(eval $expr $element)
-    done
-    unset element
-}
 
 source $ZDOTDIR/handler_functions.zsh
 source $ZDOTDIR/dash_functions.sh

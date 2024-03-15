@@ -1,0 +1,79 @@
+#!/usr/bin/env zsh
+
+# function patterns in zsh
+
+# only source this, never run
+
+if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
+    print "Extension modules are not meant to be run. Use \`source fun\` instead"
+    exit 1
+fi
+
+# do smth once for every item in an array.
+# $1 will expand; all args > 1 can still be used
+function map {
+    local expr="$1"; shift
+    local arg
+
+    for arg in $@; do
+        eval ${expr//\$1/$arg}
+    done
+}
+
+# *a*rithmetic map
+function amap {
+    local math="print -- \$[ $1 ]"; shift
+    local arg
+
+    for arg in $@; do
+        eval ${math//$1/$arg}
+    done
+}
+
+function fold {
+    local expr="$1"; shift
+    local arg
+    local results=()
+
+    for arg in $@; do
+        results+=($(eval ${expr//\$1/$arg}))
+    done
+    print $results
+}
+
+function afold {
+    local math="print -- \$[ $1 ]"; shift
+    local arg
+    local result=0
+    local _res
+
+    for arg in $@; do
+        _res=$(eval "${math//\$1/$arg}")
+        ((result+=_res))
+    done
+    print $result
+
+}
+
+function filter {
+    local expr="$1"; shift
+    local arg
+
+    for arg in $@; do
+        if eval ${expr//\$1/$arg}; then
+            print -- $arg
+        fi
+    done
+}
+
+# filter using a `test` or `[[` like syntax
+function tfilter {
+    local expr="[[ $1 ]]"; shift
+    local arg
+
+    for arg in $@; do
+        if eval ${expr//\$1/$arg}; then
+            print -- $arg
+        fi
+    done
+}

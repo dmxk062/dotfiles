@@ -90,7 +90,8 @@ fi
 }
 
 -uri(){
-    local fpath="$(realpath "$1")"
+    local fpath
+    fpath="$(realpath "$1")"
     if [[ "$fpath" == "/run/user/$UID/gvfs/sftp"* ]]; then
         local sftppath="${fpath/"\/run\/user\/$UID\/gvfs\/sftp:"/}"
         local host="${sftppath/host=/}"

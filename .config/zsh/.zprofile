@@ -10,7 +10,7 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
     --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 
 
-PATH=$PATH:/home/dmx/.config/scripts/:$HOME/.local/bin/:$HOME/.local/share/cargo/bin/
+PATH=$PATH:$HOME/.config/zsh/scripts/:$HOME/.local/bin/:$HOME/.local/share/cargo/bin/
 
 eval $(ssh-agent -s) > /dev/null 2>&1
 if [[ $(tty) == /dev/tty* ]]
