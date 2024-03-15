@@ -16,9 +16,15 @@ function map {
     local expr="$1"; shift
     local arg
 
-    for arg in $@; do
-        eval ${expr//\$1/$arg}
-    done
+    if (($# == 0)); then
+        while read -r arg; do
+            eval ${expr//\$1/$arg}
+        done
+    else
+        for arg in $@; do
+            eval ${expr//\$1/$arg}
+        done
+    fi
 }
 
 # *a*rithmetic map
@@ -26,9 +32,15 @@ function amap {
     local math="print -- \$[ $1 ]"; shift
     local arg
 
-    for arg in $@; do
-        eval ${math//$1/$arg}
-    done
+    if (($# == 0)); then
+        while read -r arg; do
+            eval ${math//\$1/$arg}
+        done
+    else
+        for arg in $@; do
+            eval ${math//\$1/$arg}
+        done
+    fi
 }
 
 function fold {
@@ -36,9 +48,15 @@ function fold {
     local arg
     local results=()
 
-    for arg in $@; do
-        results+=($(eval ${expr//\$1/$arg}))
-    done
+    if (($# == 0)); then
+        while read -r arg; do
+            results+=($(eval ${expr//\$1/$arg}))
+        done
+    else
+        for arg in $@; do
+            results+=($(eval ${expr//\$1/$arg}))
+        done
+    fi
     print -- $results
 }
 
@@ -49,10 +67,17 @@ function afold {
     local result=0
     local _res
 
-    for arg in $@; do
-        _res=$(eval "${math//\$1/$arg}")
-        ((result+=_res))
-    done
+    if (($# == 0)); then
+        while read -r arg; do
+            _res=$(eval "${math//\$1/$arg}")
+            ((result+=_res))
+        done
+    else
+        for arg in $@; do
+            _res=$(eval "${math//\$1/$arg}")
+            ((result+=_res))
+        done
+    fi
     print -- $result
 
 }
@@ -61,11 +86,19 @@ function filter {
     local expr="$1"; shift
     local arg
 
-    for arg in $@; do
-        if eval ${expr//\$1/$arg}; then
-            print -- $arg
-        fi
-    done
+    if (($# == 0)); then
+        while read -r arg; do
+            if eval ${expr//\$1/$arg}; then
+                print -- $arg
+            fi
+        done
+    else
+        for arg in $@; do
+            if eval ${expr//\$1/$arg}; then
+                print -- $arg
+            fi
+        done
+    fi
 }
 
 # filter using a `test` or `[[` like syntax
@@ -73,11 +106,19 @@ function tfilter {
     local expr="[[ $1 ]]"; shift
     local arg
 
-    for arg in $@; do
-        if eval ${expr//\$1/$arg}; then
-            print -- $arg
-        fi
-    done
+    if (($# == 0)); then
+        while read -r arg; do
+            if eval ${expr//\$1/$arg}; then
+                print -- $arg
+            fi
+        done
+    else
+        for arg in $@; do
+            if eval ${expr//\$1/$arg}; then
+                print -- $arg
+            fi
+        done
+    fi
 }
 
 elif [[ "$1" == "unload" ]]; then

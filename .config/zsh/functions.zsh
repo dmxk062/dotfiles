@@ -151,3 +151,5 @@ source $ZDOTDIR/dash_functions.sh
 source $ZDOTDIR/pacutils.zsh
 source $ZDOTDIR/modules.zsh
 
+# load all the modules i always want
++mod fun silent
