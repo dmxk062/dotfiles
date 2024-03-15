@@ -3,11 +3,12 @@
 # function patterns in zsh
 
 # only source this, never run
-
 if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
     print "Extension modules are not meant to be run. Use \`source fun\` instead"
     exit 1
 fi
+
+if [[ "$1" == "load" ]]; then
 
 # do smth once for every item in an array.
 # $1 will expand; all args > 1 can still be used
@@ -38,9 +39,10 @@ function fold {
     for arg in $@; do
         results+=($(eval ${expr//\$1/$arg}))
     done
-    print $results
+    print -- $results
 }
 
+# fold with math
 function afold {
     local math="print -- \$[ $1 ]"; shift
     local arg
@@ -51,7 +53,7 @@ function afold {
         _res=$(eval "${math//\$1/$arg}")
         ((result+=_res))
     done
-    print $result
+    print -- $result
 
 }
 
@@ -77,3 +79,9 @@ function tfilter {
         fi
     done
 }
+
+elif [[ "$1" == "unload" ]]; then
+
+unfunction filter tfilter afold fold amap map
+
+fi

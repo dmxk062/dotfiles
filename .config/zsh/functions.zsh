@@ -149,4 +149,5 @@ alias get_public_ip="jreq ipinfo.io .ip"
 source $ZDOTDIR/handler_functions.zsh
 source $ZDOTDIR/dash_functions.sh
 source $ZDOTDIR/pacutils.zsh
+source $ZDOTDIR/modules.zsh
 
