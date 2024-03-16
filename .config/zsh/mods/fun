@@ -28,12 +28,42 @@ function map {
     fi
 }
 
+# conditional map, basically tfilter|map
+function cmap {
+    local cmp="[[ $1 ]]" 
+    local expr="$2" 
+    shift 2
+    local arg
+
+    if (($# == 0)); then
+        while read -r arg; do
+            argv=(${=arg})
+            if eval $cmp; then
+                eval $expr
+            fi
+
+        done
+    else
+        for arg in $@; do
+            argv=(${=arg})
+            if eval $cmp; then
+                eval $expr
+            fi
+        done
+    fi
+}
+
 function pmap {
     local expr="print -- $1"; shift
-    local arg
     map "$expr" "$@"
 }
 
+function cpmap {
+    local cmp="$1"
+    local expr="print -- $2"
+    shift 2
+    cmap "$cmp" "$expr" "$@"
+}
 # *a*rithmetic map
 function amap {
     local math="print -- \$[ $1 ]"; shift
@@ -161,7 +191,7 @@ alias ret="print --"
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction filter tfilter afold fold amap map pmap cnt
+unfunction filter tfilter afold fold amap map cmap pmap cpmap cnt
 
 unalias fn '\\' ret
 
