@@ -1,12 +1,7 @@
-#!/usr/bin/env zsh
+#!/bin/false
 
 # simple math things i use farely often
 
-# only source this, never run
-if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
-    print "Extension modules are not meant to be run. Use \`+mod math\` instead"
-    exit 1
-fi
 
 if [[ "$1" == "load" ]]; then
 

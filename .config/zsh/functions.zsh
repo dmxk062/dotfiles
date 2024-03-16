@@ -51,3 +51,4 @@ source $ZDOTDIR/modules.zsh
 +mod math silent
 +mod pkg  silent
 +mod net  silent
++mod fs   silent

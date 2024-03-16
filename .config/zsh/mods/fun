@@ -1,12 +1,6 @@
-#!/usr/bin/env zsh
+#!/bin/false
 
 # function patterns in zsh
-
-# only source this, never run
-if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
-    print "Extension modules are not meant to be run. Use \`+mod fun\` instead"
-    exit 1
-fi
 
 if [[ "$1" == "load" ]]; then
 
@@ -151,7 +145,6 @@ function cnt {
     done
     print -- "$counter"
 }
-
 
 alias fn="function"
 

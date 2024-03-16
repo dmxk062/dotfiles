@@ -1,0 +1,27 @@
+#!/bin/false
+# vim: ft=zsh
+
+# make filesystem naviation easier
+
+if [[ "$1" == "load" ]]; then
+
+function find_containing {
+    local search_term="$1"
+    local search_path
+    if [[ -z "$2" ]]; then
+        search_path="$PWD"
+        shift 1
+    else
+        search_path="$2"
+        shift 2
+    fi
+    local flags="$@"
+
+    rg --color=never --files-with-matches $flags "$search_term" "$search_path"
+}
+
+elif [[ "$1" == "unload" ]]; then
+
+unfunction find_containing
+
+fi
