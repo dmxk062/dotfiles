@@ -23,6 +23,7 @@ function _math {
 }
 
 alias math="noglob _math"
+alias '#'="noglob _math"
 
 function sum {
     local accumulator=0
@@ -62,7 +63,7 @@ function ucov {
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction conv ucov _math sum
+unfunction conv ucov _math '#' sum
 
 unalias math
 

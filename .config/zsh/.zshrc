@@ -74,7 +74,7 @@ unsetopt beep
 
 DISABLE_AUTO_TITLE="true"
 # enables commenting with # in interactive shells
-setopt INTERACTIVE_COMMENTS
+# setopt INTERACTIVE_COMMENTS
 
 # add whatever directories you want to be hashed(accessible via ~shortcut) here
 
