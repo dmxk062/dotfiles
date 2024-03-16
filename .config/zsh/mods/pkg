@@ -1,27 +1,37 @@
-# utility functions for pacman
+#!/usr/bin/env zsh
 
-which_package(){
+# simple math things i use farely often
+
+# only source this, never run
+if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
+    print "Extension modules are not meant to be run. Use \`+mod pkg\` instead"
+    exit 1
+fi
+
+if [[ "$1" == "load" ]]; then
+
+which_pkg(){
+    local progpath
     if [[ -f "$1" ]]; then
-        local progpath="$1"
+        progpath="$1"
     else
-        local progpath="$(which "$1")"
+        progpath="$(which "$1")"
         if [[ "$progpath" == *"aliased"* ]]; then
             progpath="/usr/bin/${1}"
         fi
-        if ! [[ -f "$progpath" ]]; then
+        if ! [[ -e "$progpath" ]]; then
             print "File does not exist: ${progpath}"
             return 1
         fi
     fi
     pacman -Qo "$progpath"
-    unset progpath
 }
 
 # list all files belonging to a package
 # options:
 # -x: only executables
 # -m: only manpages
-list_package_files(){
+lspkg(){
     local searchtype
     if [[ "$1" == "-x" ]]; then
         searchtype="exe"
@@ -33,6 +43,7 @@ list_package_files(){
 
     local package="$1"
     local files=($(pacman -Qql "$package"))
+    local file
     for file in $files; do
         case $searchtype in
             exe)
@@ -50,12 +61,11 @@ list_package_files(){
                 ;;
         esac
     done
-    unset file
 }
 
 # flatpak wrapper for ease of use
 flat(){
-    local command="$1"
+    local command="${1:-upd}"
     local action
     local search(){
         local name desc id ver branch repo
@@ -87,3 +97,12 @@ flat(){
     esac
 
 }
+
+
+
+elif [[ "$1" == "unload" ]]; then
+
+
+unfunction which_pkg flat lspkg
+
+fi

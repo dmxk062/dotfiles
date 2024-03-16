@@ -4,7 +4,7 @@
 
 # only source this, never run
 if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
-    print "Extension modules are not meant to be run. Use \`source fun\` instead"
+    print "Extension modules are not meant to be run. Use \`+mod fun\` instead"
     exit 1
 fi
 
@@ -113,6 +113,7 @@ function tfilter {
             fi
         done
     else
+        IFS=
         for arg in $@; do
             if eval ${expr//\$1/$arg}; then
                 print -- $arg
@@ -123,6 +124,6 @@ function tfilter {
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction filter tfilter afold fold amap map
+unfunction filter tfilter afold fold amap map 
 
 fi

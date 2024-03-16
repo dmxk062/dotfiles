@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+# simple math things i use farely often
+
+# only source this, never run
+if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
+    print "Extension modules are not meant to be run. Use \`+mod math\` instead"
+    exit 1
+fi
+
+if [[ "$1" == "load" ]]; then
+
+function conv {
+    local from="$1"
+    local to="$2"
+    local res
+    # -t is for result only, -c0 disables color, -s "fractions 0" always makes it return a decimal,
+    # the - before $to disables mixed units
+    res="$(qalc -t -c0 -s "fractions 0" -s "precision 100" "$from to -$to")"
+    print "${res//$to/}"
+}
+
+elif [[ "$1" == "unload" ]]; then
+
+unfunction conv
+
+
+fi
