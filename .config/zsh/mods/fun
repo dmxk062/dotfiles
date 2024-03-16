@@ -159,8 +159,7 @@ function tfilter {
             fi
         done
     else
-        IFS=
-        for arg in $@; do
+        for arg in "$@"; do
             argv=(${=arg})
             if eval $expr; then
                 print -- $arg
@@ -183,6 +182,20 @@ function cnt {
     print -- "$counter"
 }
 
+# join a stream
+function sjoin {
+    local expr="$1"
+    shift
+    local buffer=""
+    local elem
+    while read -r elem; do
+        buffer+="$elem\n"
+    done
+    print -- ${buffer%??}
+    eval $expr "$@"
+
+}
+
 alias fn="function"
 
 alias '\\'="function"
@@ -191,7 +204,7 @@ alias ret="print --"
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction filter tfilter afold fold amap map cmap pmap cpmap cnt
+unfunction filter tfilter afold fold amap map cmap pmap cpmap cnt sjoin
 
 unalias fn '\\' ret
 
