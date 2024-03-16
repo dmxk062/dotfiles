@@ -138,6 +138,20 @@ function tfilter {
     fi
 }
 
+# count
+function cnt {
+    if (($# > 0)); then
+        print -- "$#"
+        return
+    fi
+
+    local counter=0
+    while read _; do
+        ((counter++))
+    done
+    print -- "$counter"
+}
+
 
 alias fn="function"
 
@@ -147,7 +161,7 @@ alias ret="print --"
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction filter tfilter afold fold amap map 
+unfunction filter tfilter afold fold amap map cnt
 
 unalias fn '\\' ret
 
