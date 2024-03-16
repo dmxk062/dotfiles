@@ -1,0 +1,61 @@
+#!/usr/bin/env zsh
+
+# simple math things i use farely often
+
+# only source this, never run
+if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
+    print "Extension modules are not meant to be run. Use \`+mod net\` instead"
+    exit 1
+fi
+
+if [[ "$1" == "load" ]]; then
+
+function req {
+    curl -s "$@"
+}
+
+
+function jreq {
+    local url="$1"
+    shift
+    local jqopts="${(j:,:)@}"
+    curl -s "$url"|jq -r "${jqopts:-.}"
+}
+
+function urlenc {
+    local fpath
+    fpath="${1:A}"
+    if [[ "$fpath" == "/run/user/$UID/gvfs/sftp"* ]]; then
+        local sftppath="${fpath/"\/run\/user\/$UID\/gvfs\/sftp:"/}"
+        local host="${sftppath/host=/}"
+        host="${host/"\/"*/}"
+        local remote_path="${sftppath#*/}"
+        print "sftp://${host}/${remote_path}"
+        return 0
+    fi
+    print -n "file://"
+    printf '%s' "$fpath"|jq -sRr @uri|sed 's/%2F/\//g'
+}
+
+
+function urldec {
+    local url="$1"
+    local file
+    if ! [[ "$url" == "file://"* ]]; then
+        return
+    fi
+    file="${url//file:\/\//}"
+    file="${file//\%/\\x}"
+    print -- "$file"
+}
+
+alias get_public_ip="jreq ipinfo.io .ip"
+
+
+elif [[ "$1" == "unload" ]]; then
+
+unfunction req jreq urlenc urldec
+
+unalias get_public_ip
+
+fi

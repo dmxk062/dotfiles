@@ -29,7 +29,7 @@ function _math {
 
 alias math="noglob _math"
 
-function add {
+function sum {
     local accumulator=0
     local value
 
@@ -61,14 +61,13 @@ function ucov {
     while read -r value; do
         in=$((units[$from] * value))
         out=$((in / units[$to]))
-        out="$(printf "%.${round}g" "$out")"
-        print -- $out
+        printf "%.${round}g\n" "$out"
     done
 }
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction conv ucov _math add
+unfunction conv ucov _math sum
 
 unalias math
 

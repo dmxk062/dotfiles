@@ -89,21 +89,6 @@ fi
     realpath "$1"
 }
 
--uri(){
-    local fpath
-    fpath="$(realpath "$1")"
-    if [[ "$fpath" == "/run/user/$UID/gvfs/sftp"* ]]; then
-        local sftppath="${fpath/"\/run\/user\/$UID\/gvfs\/sftp:"/}"
-        local host="${sftppath/host=/}"
-        host="${host/"\/"*/}"
-        local remote_path="${sftppath#*/}"
-        print "sftp://${host}/${remote_path}"
-        return 0
-    fi
-    print -n "file://"
-    printf '%s' "$fpath"|jq -sRr @uri|sed 's/%2F/\//g'
-}
-
 # tell me when smth finished running
 -alert(){
     local prog exitc start end time
