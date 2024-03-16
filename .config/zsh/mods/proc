@@ -1,0 +1,42 @@
+#!/usr/bin/env zsh
+
+# process stuff
+
+# only source this, never run
+if ! [[ $ZSH_EVAL_CONTEXT =~ :file$ ]]; then
+    print "Extension modules are not meant to be run. Use \`+mod proc\` instead"
+    exit 1
+fi
+
+if [[ "$1" == "load" ]]; then
+
+function procmem {
+    local pid
+
+    function get_mem_from_proc {
+        local value
+            if [[ -r "/proc/$1/status" ]]; then
+                read -r _ value _ <<< $(grep "VmRSS" "/proc/$1/status")
+                print -- ${value:-0}
+            else
+                print 
+            fi
+    }
+
+    if (($# == 0)); then
+        while read -r pid; do
+            get_mem_from_proc "$pid"
+        done
+    else
+        for pid in "$@"; do
+            get_mem_from_proc "$pid"
+        done
+    fi
+}
+
+
+elif [[ "$1" == "unload" ]]; then
+
+unfunction procmem
+
+fi

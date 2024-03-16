@@ -18,11 +18,13 @@ function map {
 
     if (($# == 0)); then
         while read -r arg; do
-            eval ${expr//\$1/$arg}
+            1=$arg
+            eval $expr
         done
     else
         for arg in $@; do
-            eval ${expr//\$1/$arg}
+            1=$arg
+            eval $expr
         done
     fi
 }
@@ -34,11 +36,13 @@ function amap {
 
     if (($# == 0)); then
         while read -r arg; do
-            eval ${math//\$1/$arg}
+            1=$arg
+            eval $math
         done
     else
         for arg in $@; do
-            eval ${math//\$1/$arg}
+            1=$arg
+            eval $math
         done
     fi
 }
@@ -50,11 +54,13 @@ function fold {
 
     if (($# == 0)); then
         while read -r arg; do
-            results+=($(eval ${expr//\$1/$arg}))
+            1=$arg
+            results+=($(eval $expr))
         done
     else
         for arg in $@; do
-            results+=($(eval ${expr//\$1/$arg}))
+            1=$arg
+            results+=($(eval $expr))
         done
     fi
     print -- $results
@@ -69,12 +75,14 @@ function afold {
 
     if (($# == 0)); then
         while read -r arg; do
-            _res=$(eval "${math//\$1/$arg}")
+            1=$arg
+            _res=$(eval "$math")
             ((result+=_res))
         done
     else
         for arg in $@; do
-            _res=$(eval "${math//\$1/$arg}")
+            1=$arg
+            _res=$(eval "$math")
             ((result+=_res))
         done
     fi
@@ -88,13 +96,15 @@ function filter {
 
     if (($# == 0)); then
         while read -r arg; do
-            if eval ${expr//\$1/$arg}; then
+            1=$arg
+            if eval $expr; then
                 print -- $arg
             fi
         done
     else
         for arg in $@; do
-            if eval ${expr//\$1/$arg}; then
+            1=$arg
+            if eval $expr; then
                 print -- $arg
             fi
         done
@@ -108,22 +118,33 @@ function tfilter {
 
     if (($# == 0)); then
         while read -r arg; do
-            if eval ${expr//\$1/$arg}; then
+            1=$arg
+            if eval $expr; then
                 print -- $arg
             fi
         done
     else
         IFS=
         for arg in $@; do
-            if eval ${expr//\$1/$arg}; then
+            1=$arg
+            if eval $expr; then
                 print -- $arg
             fi
         done
     fi
 }
 
+
+alias fn="function"
+
+alias '\\'="function"
+
+alias ret="print --"
+
 elif [[ "$1" == "unload" ]]; then
 
 unfunction filter tfilter afold fold amap map 
+
+unalias fn '\\' ret
 
 fi

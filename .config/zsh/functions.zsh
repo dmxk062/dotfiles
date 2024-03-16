@@ -104,31 +104,6 @@ c(){
     print -n "[H[2J"
 }
 
-# some process management stuff
-procmem(){
-    if ! [[ "$1" =~ ^[0-9]+$ ]]; then
-        echo "Please specify a list of process ids, not process names" > /dev/stderr
-        return 127
-    fi
-
-    (for pid in "$@"; do
-        if [[ -r "/proc/$pid/status" ]]; then
-            read -r _ value _ <<< $(grep "VmRSS" /proc/$pid/status)
-            if [[ "$value" != "" ]]; then
-                ((total+=value))
-                print -n "$pid: "
-                numfmt --to=iec --from-unit=Ki "$value"
-            else
-                echo "$pid: -"
-            fi
-        fi
-    done
-    print -n "total: "
-    numfmt --to=iec --from-unit=Ki "$total")|column -t
-}
-
-# networking stuff
-
 req(){
     curl -s "$@"
 }
@@ -151,4 +126,6 @@ source $ZDOTDIR/dash_functions.sh
 source $ZDOTDIR/modules.zsh
 
 # load all the modules i always want
-+mod fun silent
++mod fun  silent
++mod proc silent
++mod math silent

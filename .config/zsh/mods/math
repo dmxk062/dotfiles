@@ -20,9 +20,56 @@ function conv {
     print "${res//$to/}"
 }
 
+function _math {
+    local pi=3.1415926535897932384
+    local e=2.71828182845904523536
+    print -- "$[ $@ ]"
+
+}
+
+alias math="noglob _math"
+
+function add {
+    local accumulator=0
+    local value
+
+    if (($# == 0)); then
+        while read -r value; do
+            ((accumulator+=value))
+        done
+    else
+        for value in $@; do
+            ((accumulator+=value))
+        done
+    fi
+    print -- $accumulator
+}
+
+function ucov {
+    local from="${1:-K}"
+    local to="${2:-M}"
+    local round="${3:-16}"
+    local -A units=(
+        ["b"]=$((1/8.0))
+        ["B"]=1
+        ["K"]=1024.0
+        ["M"]=$((1024**2)).0
+        ["G"]=$((1024**3)).0
+        ["T"]=$((1024**4)).0
+    )
+    local value in out
+    while read -r value; do
+        in=$((units[$from] * value))
+        out=$((in / units[$to]))
+        out="$(printf "%.${round}g" "$out")"
+        print -- $out
+    done
+}
+
 elif [[ "$1" == "unload" ]]; then
 
-unfunction conv
+unfunction conv ucov _math add
 
+unalias math
 
 fi
