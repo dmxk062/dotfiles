@@ -1,27 +1,101 @@
 #!/bin/false
 # vim: ft=zsh
 
-# make filesystem naviation easier
+# make filesystem naviation/file handling easier
 
 if [[ "$1" == "load" ]]; then
+
+alias md="mkdir -p"
+
+function mcd {
+    if [[ -d "$1" ]] {
+        cd "$1"
+        return
+    }
+    mkdir -p "$1"
+    cd "$1"
+}
+
+alias ft="file --brief --mime-type"
+
 
 function find_containing {
     local search_term="$1"
     local search_path
-    if [[ -z "$2" ]]; then
+    if [[ -z "$2" ]] {
         search_path="$PWD"
         shift 1
-    else
+    } else {
         search_path="$2"
         shift 2
-    fi
+    }
     local flags="$@"
 
     rg --color=never --files-with-matches $flags "$search_term" "$search_path"
 }
 
+function tmp {
+    local tmpdir="$HOME/Tmp"
+    local mode
+    local files
+    local force=0
+    case "$1" in
+        rm|del)
+            mode=delete
+            shift
+            ;;
+        rmf)
+            mode=delete
+            force=1
+            shift
+            ;;
+        cp|copy)
+            mode=copy
+            shift
+            files=("${@:2}")
+            ;;
+        *)
+            mode=cd
+            ;;
+    esac
+    local target="${1}"
+
+    case $mode in 
+        cd)
+            if [[ -d "$tmpdir/$target" ]] {
+                cd "$tmpdir/$target"
+                return
+            } else {
+                mkdir -p "$tmpdir/$target"
+                cd "$tmpdir/$target"
+            }
+            ;;
+        delete)
+            if rmdir "$tmpdir/$target" &> /dev/null; then
+                return
+            elif [[ $force == 1 ]]; then
+                \rm -rf "$tmpdir/$target"
+                return
+            fi
+            print -P -- "%F{red}$target is not empty\nUse %B\`$0 rmf $target\`%f%b"
+            return 1
+            ;;
+        copy)
+            if ! [[ -d "$tmpdir/$target" ]] {
+                mkdir -p "$tmpdir/$target"
+            }
+            cp --target-directory="$tmpdir/$target" "${files[@]}"
+            return
+            ;;
+    esac
+
+}
+
+
 elif [[ "$1" == "unload" ]]; then
 
-unfunction find_containing
+unfunction find_containing mcd
+
+unalias md ft
 
 fi

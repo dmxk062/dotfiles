@@ -237,12 +237,10 @@ function cnt {
 function sjoin {
     local expr="$1"
     shift
-    local buffer=""
     local elem
     while read -r elem; do
         print -- "$elem"
     done
-    print -- ${buffer%??}
     eval $expr "$@"
 }
 

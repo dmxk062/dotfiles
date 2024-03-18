@@ -16,22 +16,6 @@ function ws(){
     print -P "%B󰌌%b working on %F{green}%{\x1b[3m%}$1%{\x1b[0m%}"
 }
 
-function md(){
-    for dir in $@
-    do
-        mkdir -p $dir
-    done
-}
-function mcd {
-    mkdir -p "$1"
-    cd "$1"
-}
-
-
-ft(){
-    file --brief --dereference --mime-type "$@"
-}
-
 
 c(){
     print -n "[H[2J"
