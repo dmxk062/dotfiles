@@ -1,4 +1,5 @@
 #!/bin/false
+# vim: ft=zsh
 
 #
 # Generally useful functions starting with a `-` to separate them from programs
@@ -6,17 +7,17 @@
 # be it using environment variables or just in another tab
 #
 
--gtk_debug(){
+function -gtk_debug {
     export GTK_DEBUG=interactive
     "$@" & disown
 }
 
--gnome(){
+function -gnome {
     env XDG_CURRENT_DESKTOP=gnome "$@"    
 }
 
 # a better `watch`
--mon(){
+function -mon {
     local interval="$1"
     if [[ "$interval" =~ ^[0-9]+$ ]]; then
         shift
@@ -24,11 +25,11 @@
         interval=1
     fi
     local command="$*"
-    if ((interval == 1)); then
+    if ((interval == 1)) {
         unit=second
-    else
+    } else {
         unit=seconds
-    fi
+    }
     local output old_output
     while true; do
         output="$(eval "$command")"
@@ -44,53 +45,50 @@
 
 }
 
-if [[ $KITTY_SHELL_INTEGRATION_ENABLED == 1 ]]; then
+if [[ $KITTY_SHELL_INTEGRATION_ENABLED == 1 ]] {
 # special kitty dependant stuff
--win(){
-    if [[ -z "$1" ]]; then
+function -win {
+    if [[ -z "$1" ]] {
         clone-in-kitty --type=window
-    else
-    kitty @ launch --type=window \
+    } else {
+        kitty @ launch --type=window \
         -- zsh -ic "cd $PWD;$*" > /dev/null
-    fi
+    }
 }
 
--tab(){
-    if [[ -z "$1" ]]; then
+function -tab {
+    if [[ -z "$1" ]] {
         clone-in-kitty --type=tab
-    else
-    kitty @ launch --type=tab \
+    } else { 
+        kitty @ launch --type=tab \
         -- zsh -ic "cd $PWD;$*" > /dev/null
-    fi
+    }
 }
--ol(){
-    if [[ -z "$1" ]]; then
+function -ol {
+    if [[ -z "$1" ]] {
         clone-in-kitty --type=overlay
-    else
-    kitty @ launch --type=overlay \
+    } else {
+        kitty @ launch --type=overlay \
         -- zsh -ic "cd $PWD;$*" > /dev/null
-    fi
+    }
 }
--wed(){
+function -wed {
     kitten edit --type=window "$1" >/dev/null 2>&1
 }
--ted(){
+function -ted {
     kitten edit --type=tab "$1" >/dev/null 2>&1
 }
--ed(){
+function -ed {
     kitten edit --type=overlay "$1" >/dev/null 2>&1
 }
 alias -- "-t"="-tab"
 alias -- "-w"="-win"
-fi
 
-
--abs(){
-    realpath "$1"
 }
 
+
 # tell me when smth finished running
--alert(){
+function -alert {
     local prog exitc start end time
     prog=$@
     start="$(date "+%s")"
@@ -98,24 +96,24 @@ fi
     exitc="$?"
     end="$(date "+%s")"
     time=$((end - start))
-    if (( exitc > 0)); then
+    if (( exitc > 0)) {
         notify-send -i "script-error" \
             -a zsh \
             "Program failed with code: ${exitc}" \
             "\`${prog}\` failed after $(date -d @$time "+%M:%S")"
 
-    else
+    } else {
         notify-send -i "terminal" \
             -a zsh \
             "Program finished" \
             "\`${prog}\` took $(date -d @$time "+%M:%S")"
 
-    fi
+    }
 
 }
 
 # run smth in the background
--bg(){
+function -bg {
     local stderr exitc prog start end time
     prog=$@
     (start="$(date +%s)"
@@ -123,34 +121,34 @@ fi
     exitc="$?"
     end="$(date +%s)"
     time=$((end - start))
-    if ((exitc > 0)); then
-        if [[ "$stderr" == "" ]]; then
+    if ((exitc > 0)) {
+        if [[ "$stderr" == "" ]] {
             stderr="Stderr was empty"
-        fi
+        }
         notify-send -i "script-error" \
             -a zsh "Program failed with code: ${exitc}" \
             "\`${prog}\` failed after $(date -d @$time "+%M:%S"):
 ${stderr}"
-    else
+    } else {
         notify-send -i "terminal" \
             -a zsh \
             "Program finished" \
             "\`${prog}\` took $(date -d @$time "+%M:%S")"
-    fi
+    }
     )& disown
     
 }
 
 
 # dynamic sudo thingy
--root(){
-    if [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; then
+function -root {
+    if [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]] {
         pkexec "$@"
-    else
+    } else {
         sudo "$@"
-    fi
+    }
 }
 
--s(){
+function -s {
     sudo "$@"
 }

@@ -270,6 +270,10 @@ alias '\\'="function"
 # mainly for use in functions
 alias ret="print --"
 
+# not just functions, also aliases and exes
+alias getdef="whence -f -x 4"
+
+
 elif [[ "$1" == "unload" ]]; then
 
 unfunction filter tfilter ffilter \
@@ -277,6 +281,6 @@ unfunction filter tfilter ffilter \
     amap map cmap pmap cpmap fmap \
     cnt sjoin sep
 
-unalias fn '\\' ret
+unalias fn '\\' ret getdef
 
 fi

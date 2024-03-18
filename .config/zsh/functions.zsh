@@ -1,25 +1,14 @@
-# fancy command not found that opens files
-
-
-
 function enable_git(){
      # eval "$(ssh-agent -s)" >/dev/null 2>&1
      ssh-add "$HOME/.local/share/keys/git"
 }
 
-# function to use a workspace in ~/ws
 
-function ws(){
-    [ -z $1 ]&& return
-    cd $HOME/ws/$1||return 1
-    enable_git
-    print -P "%B󰌌%b working on %F{green}%{\x1b[3m%}$1%{\x1b[0m%}"
-}
-
-
+# faster, way faster than proper `clear`
 c(){
     print -n "[H[2J"
 }
+
 
 
 
