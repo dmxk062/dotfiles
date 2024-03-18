@@ -16,7 +16,8 @@ function mcd {
     cd "$1"
 }
 
-alias ft="file --brief --mime-type"
+alias ft="file --mime-type -NF' '"
+alias bft="file --brief --mime-type -N"
 
 
 function find_containing {
@@ -91,11 +92,16 @@ function tmp {
 
 }
 
+# better realpath
+function rp {
+    print -l -- "${@:A}"
+}
+
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction find_containing mcd
+unfunction find_containing mcd tmp rp
 
-unalias md ft
+unalias md ft bft
 
 fi
