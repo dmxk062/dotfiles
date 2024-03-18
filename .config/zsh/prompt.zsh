@@ -30,3 +30,8 @@ PS2="%B%S%_%s%f%b "
 # sudo prompt
 export SUDO_PROMPT="
 [31;1m[30;41;1m sudo[0m[31;1m[0m " 
+
+# only the default, i have a couple more functions planed for this
+TIMEFMT="User   %U
+Kernel %S
+Time   %E"

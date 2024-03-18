@@ -1,4 +1,10 @@
 #configures vi mode plugin
+
+declare -A ZSH_COLORS_RGB=(
+    ["light-gray"]="#4c566a"
+)
+
+
 function zvm_config() {
   ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
   ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
@@ -6,7 +12,8 @@ function zvm_config() {
   ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
   ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
   ZVM_MODE_INSERT=true
-  ZVM_VI_HIGHLIGHT_BACKGROUND=#4c566a
+  ZVM_VI_HIGHLIGHT_BACKGROUND=$ZSH_COLORS_RGB[light-gray]
+  zvm_bindkey vicmd "/" history-incremental-search-backward
 }
 #sources the plugin
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
@@ -28,7 +35,7 @@ autoload -U down-line-or-beginning-search
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^ ' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#4c566a,bold"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=$ZSH_COLORS_RGB[light-gray],bold"
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
@@ -126,6 +133,3 @@ eval "$(zoxide init zsh)"
 export BAT_THEME="Nord"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT='-c'
-
-# changes to the directory specified if started from lf
-cd "$lfdir"

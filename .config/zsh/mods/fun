@@ -28,6 +28,22 @@ function map {
     fi
 }
 
+# first param is a function name
+function fmap {
+    local func="$1"; shift
+    if (($# == 0)); then
+        while read -r arg; do
+            eval "$func" $arg
+        done
+    else
+        for arg in $@; do
+            eval "$func" $arg
+        done
+    fi
+
+
+}
+
 # conditional map, basically tfilter|map
 function cmap {
     local cmp="[[ $1 ]]" 
@@ -53,6 +69,7 @@ function cmap {
     fi
 }
 
+# syntax sugar, for e.g ${*:A} for realpath
 function pmap {
     local expr="print -- $1"; shift
     map "$expr" "$@"
@@ -64,7 +81,8 @@ function cpmap {
     shift 2
     cmap "$cmp" "$expr" "$@"
 }
-# *a*rithmetic map
+#
+# arithmetic map, useful for e.g. unit conversion
 function amap {
     local math="print -- \$[ $1 ]"; shift
     local arg
@@ -82,26 +100,32 @@ function amap {
     fi
 }
 
+# slower than map with just `echo -n`, just here cause afold is nice
 function fold {
     local expr="$1"; shift
     local arg
-    local results=()
+    local results=""
 
     if (($# == 0)); then
         while read -r arg; do
             argv=(${=arg})
-            results+=($(eval $expr))
+            results+=$(eval $expr)
         done
     else
         for arg in $@; do
             argv=(${=arg})
-            results+=($(eval $expr))
+            results+=$(eval $expr)
         done
     fi
     print -- $results
 }
 
-# fold with math
+function pfold {
+    local expr="print -- $1"; shift
+    fold "$expr" "$@"
+}
+
+# accumulate the results of math expressions, kinda like amap|sum
 function afold {
     local math="print -- \$[ $1 ]"; shift
     local arg
@@ -125,6 +149,7 @@ function afold {
 
 }
 
+# only return values for with $expr returns 0
 function filter {
     local expr="$1"; shift
     local arg
@@ -146,7 +171,30 @@ function filter {
     fi
 }
 
-# filter using a `test` or `[[` like syntax
+# takes in a function e.g
+# fun isFile { [[ -f "$*" ]]}
+# ffilter isFile *
+function ffilter {
+    local func="$1"; shift
+    local arg
+
+    if (($# == 0)); then
+        while read -r arg; do
+            if eval "$func" $arg; then
+                print -- $arg
+            fi
+        done
+    else
+        for arg in $@; do
+            if eval "$func" $arg; then
+                print -- $arg
+            fi
+        done
+    fi
+}
+
+# syntax sugar to use expressions like test or [[ ]]
+# e.g. tfilter '-f "$*"' *
 function tfilter {
     local expr="[[ $1 ]]"; shift
     local arg
@@ -168,7 +216,7 @@ function tfilter {
     fi
 }
 
-# count
+# count, faster than just afold '1' or amap 1|sum
 function cnt {
     if (($# > 0)); then
         print -- "$#"
@@ -182,29 +230,54 @@ function cnt {
     print -- "$counter"
 }
 
-# join a stream
+# join the result of a process to stdout
+# e.g.
+# pgrep zsh|sjoin pgrep bash
+# to get all pids of both
 function sjoin {
     local expr="$1"
     shift
     local buffer=""
     local elem
     while read -r elem; do
-        buffer+="$elem\n"
+        print -- "$elem"
     done
     print -- ${buffer%??}
     eval $expr "$@"
-
 }
 
-alias fn="function"
+# split nicely, either expanded args or each line
+function sep {
+    local elem
+    local line
+    if (($# == 0)); then
+        while read -rA line; do
+            for elem in "${line[@]}"; do
+                print -- $elem
+            done
+        done
+    else
+        for elem in "$@"; do
+            print -- $elem
+        done
+    fi
+}
 
+
+# nicer to type
+alias fn="function"
+# lambda
 alias '\\'="function"
 
+# mainly for use in functions
 alias ret="print --"
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction filter tfilter afold fold amap map cmap pmap cpmap cnt sjoin
+unfunction filter tfilter ffilter \
+    afold fold pfold \
+    amap map cmap pmap cpmap fmap \
+    cnt sjoin sep
 
 unalias fn '\\' ret
 
