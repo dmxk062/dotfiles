@@ -1,4 +1,4 @@
-# vim:ft=hyprland.conf
+# vim:ft=hyprlang
 
 windowrule = float, title:^Extension:.*$
 windowrule = center, title:^Extension:.*$

@@ -1,4 +1,4 @@
-# vim: ft=hyprland.conf
+# vim: ft=hyprlang
 
 windowrulev2=float, class:popup
 windowrule=center, class:popup

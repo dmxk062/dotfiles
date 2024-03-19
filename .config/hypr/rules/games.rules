@@ -1,4 +1,4 @@
-# vim:ft=hyprland.conf
+# vim:ft=hyprlang
 # disable everything for games and move them to name:games
 # sets gamescope to always fullscreen, no animations, DP-1 and no round corners
 windowrulev2 = fullscreen,class:^(gamescope)$

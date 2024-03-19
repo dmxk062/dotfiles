@@ -1,4 +1,4 @@
-# vim: ft=hyprland.conf
+# vim: ft=hyprlang
 
 
 bind = $submapLeader, M, submap, media
