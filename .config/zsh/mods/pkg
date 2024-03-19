@@ -1,4 +1,5 @@
 #!/bin/false
+# vim: ft=zsh
 
 # simple math things i use farely often
 
@@ -20,6 +21,7 @@ which_pkg(){
     fi
     pacman -Qo "$progpath"
 }
+
 
 # list all files belonging to a package
 # options:

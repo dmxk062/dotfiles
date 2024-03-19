@@ -69,13 +69,14 @@ function cmap {
     fi
 }
 
+# variable map
 # syntax sugar, for e.g ${*:A} for realpath
-function pmap {
+function vmap {
     local expr="print -- $1"; shift
     map "$expr" "$@"
 }
 
-function cpmap {
+function cvmap {
     local cmp="$1"
     local expr="print -- $2"
     shift 2
@@ -120,7 +121,7 @@ function fold {
     print -- $results
 }
 
-function pfold {
+function vfold {
     local expr="print -- $1"; shift
     fold "$expr" "$@"
 }
@@ -325,19 +326,19 @@ alias ret="print --"
 
 function getdef {
     whence -f -x 4 "$@"|bat --plain --language zsh
-
 }
 
 
+compdef getdef=whence
 
 elif [[ "$1" == "unload" ]]; then
 
 unfunction filter tfilter ffilter \
-    afold fold pfold \
-    amap map cmap pmap cpmap fmap \
+    afold fold vfold \
+    amap map cmap vmap cvmap fmap \
     cnt sjoin sep \
     interlace blockjoin \
-    getdef
+    getdef 
 
 unalias fn '\\' ret 
 

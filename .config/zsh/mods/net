@@ -1,13 +1,11 @@
 #!/bin/false
+# vim: ft=zsh
 
 # simple math things i use farely often
 
 if [[ "$1" == "load" ]]; then
 
-function req {
-    curl -s "$@"
-}
-
+alias req="curl -s"
 
 function jreq {
     local url="$1"
@@ -50,6 +48,6 @@ elif [[ "$1" == "unload" ]]; then
 
 unfunction req jreq urlenc urldec
 
-unalias get_public_ip
+unalias req get_public_ip
 
 fi
