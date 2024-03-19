@@ -16,7 +16,7 @@ function mcd {
     cd "$1"
 }
 
-alias ft="file --mime-type -NF' '"
+alias ft="file --mime-type -F' '"
 alias bft="file --brief --mime-type -N"
 
 

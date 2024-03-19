@@ -21,7 +21,7 @@ function map {
             eval $expr
         done
     else
-        for arg in $@; do
+        for arg in "$@"; do
             argv=(${=arg})
             eval $expr
         done
@@ -36,7 +36,7 @@ function fmap {
             eval "$func" $arg
         done
     else
-        for arg in $@; do
+        for arg in "$@"; do
             eval "$func" $arg
         done
     fi
@@ -60,7 +60,7 @@ function cmap {
 
         done
     else
-        for arg in $@; do
+        for arg in "$@"; do
             argv=(${=arg})
             if eval $cmp; then
                 eval $expr
@@ -93,7 +93,7 @@ function amap {
             eval $math
         done
     else
-        for arg in $@; do
+        for arg in "$@"; do
             argv=(${=arg})
             eval $math
         done
@@ -109,12 +109,12 @@ function fold {
     if (($# == 0)); then
         while read -r arg; do
             argv=(${=arg})
-            results+=$(eval $expr)
+            results+="$(eval $expr)"
         done
     else
-        for arg in $@; do
+        for arg in "$@"; do
             argv=(${=arg})
-            results+=$(eval $expr)
+            results+="$(eval $expr)"
         done
     fi
     print -- $results
@@ -139,7 +139,7 @@ function afold {
             ((result+=_res))
         done
     else
-        for arg in $@; do
+        for arg in "$@"; do
             argv=(${=arg})
             _res=$(eval "$math")
             ((result+=_res))
@@ -162,7 +162,7 @@ function filter {
             fi
         done
     else
-        for arg in $@; do
+        for arg in "$@"; do
             argv=(${=arg})
             if eval $expr; then
                 print -- $arg
@@ -185,7 +185,7 @@ function ffilter {
             fi
         done
     else
-        for arg in $@; do
+        for arg in "$@"; do
             if eval "$func" $arg; then
                 print -- $arg
             fi
@@ -219,7 +219,7 @@ function tfilter {
 # count, faster than just afold '1' or amap 1|sum
 function cnt {
     if (($# > 0)); then
-        print -- "$#"
+        print -- $#
         return
     fi
 
@@ -261,6 +261,57 @@ function sep {
     fi
 }
 
+# join $1 lines together with $2
+# very useful with e.g. jq to get properties into a more shell-friendly form
+function interlace {
+    local numcols="${1:-2}"
+    local sep="${2:-" "}"
+    local line 
+    local counter=1
+    local -a buf=()
+    while read -r line; do
+        buf+=("$line")
+        if ((counter < numcols)) {
+            ((counter++))
+        } else {
+            counter=1
+            # hacky, but we sadly need eval here, otherwise sep wont expand
+            eval "print -- \${(j(${sep}))buf}"
+            buf=()
+        }
+    done
+}
+
+# separate all of stdin into $1 blocks and then join block1[1] and block2[1] ... blockn[1] to a single line separated by $2
+# not that fast
+# useful with e.g. sjoin
+function blockjoin {
+    local blocks="${1:-2}"
+    local sep="${2:-" "}"
+    local -a buf=()
+    local num_lines=1
+    local line blocklen 
+    local -a outline=()
+
+    while read -r line; do
+        buf+=("$line")
+        ((num_lines++))
+    done
+
+    blocklen=$((num_lines / blocks))
+
+    for ((i=1; i<=blocklen; i++)){
+        outline=()
+        for ((j=0; j<blocks; j++)){
+            local offset=$[ (j*blocklen) + i ]
+            # print line: $i, block: $j, offset:$offset
+            outline+=("${buf[$offset]}")
+        }
+        # same as above sadly
+        eval "print -- \${(j(${sep}))outline}"
+    }
+}
+
 
 # nicer to type
 alias fn="function"
@@ -271,7 +322,11 @@ alias '\\'="function"
 alias ret="print --"
 
 # not just functions, also aliases and exes
-alias getdef="whence -f -x 4"
+
+function getdef {
+    whence -f -x 4 "$@"|bat --plain --language zsh
+
+}
 
 
 
@@ -280,8 +335,10 @@ elif [[ "$1" == "unload" ]]; then
 unfunction filter tfilter ffilter \
     afold fold pfold \
     amap map cmap pmap cpmap fmap \
-    cnt sjoin sep
+    cnt sjoin sep \
+    interlace blockjoin \
+    getdef
 
-unalias fn '\\' ret getdef
+unalias fn '\\' ret 
 
 fi
