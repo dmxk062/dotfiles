@@ -4,16 +4,14 @@ windowrulev2=float, class:popup
 windowrule=center, class:popup
 
 
-windowrule=size 400 400,class:Timer
-windowrulev2=float, class:Timer
 windowrulev2=float, class:io.missioncenter.MissionCenter
 # windowrulev2=float, class:org.gnome.Nautilus
 windowrulev2=float, class:com.github.GradienceTeam.Gradience
+windowrulev2=float, class:org.gnome.Characters
 windowrulev2=float, class:xdg-desktop-portal-gtk
 windowrulev2=float, class:com.github.dmxk062.pyshell.commands
 windowrule=center, class:Timer
 windowrule=size 400 400,class:popup
-windowrule=size 800 600,class:web_preview
 windowrulev2=float, class:org.gnome.clocks
 windowrule=center, class:org.gnome.clocks
 windowrulev2=float, class:valent
@@ -30,7 +28,6 @@ windowrulev2=float,title:btop
 windowrule=size 800 600,title:btop
 windowrule=center,class:com.github.neithern.g4music
 windowrulev2=float,class:com.github.neithern.g4music
-windowrule=size 800 600,class:com.github.neithern.g4music
 windowrulev2=float,title:^(GPUTop)$
 windowrule=size 800 600,title:GPUTop
 windowrulev2=float,title:^(nvtop)$
