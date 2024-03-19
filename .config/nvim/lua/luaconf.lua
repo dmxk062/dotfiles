@@ -44,7 +44,10 @@ require("colorizer").setup {
       buftypes = {},
 }
 
-require('Comment').setup()
+local comment = require('Comment')
+local ft = require("Comment.ft")
+ft.hyprlang = {"#%s"}
+comment.setup()
 
 require('leap').add_default_mappings()
 
