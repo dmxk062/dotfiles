@@ -126,7 +126,7 @@ function monitor_changes(){
             'closelayer>>gtk-layer-shell')
                 hyprctl keyword decoration:blur:xray false
             ;;
-            activewindowv2*|closelayer*|openlayer*) # ignore stuff we dont really care about
+            activewindowv2*|closelayer*|openlayer*|moveworkspacev2*|movewindowv2*|createWorkspacev2*|destroyWorkspacev2*|workspacev2*) # ignore stuff we dont really care about
                 continue;;
 
             changefloatingmode*) # we dont care about workspaces here
