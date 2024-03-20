@@ -251,14 +251,10 @@ function sep {
     local line
     if (($# == 0)); then
         while read -rA line; do
-            for elem in "${line[@]}"; do
-                print -- $elem
-            done
+            print -l -- "${line[@]}"
         done
     else
-        for elem in "$@"; do
-            print -- $elem
-        done
+        print -l -- "${@}"
     fi
 }
 
@@ -321,14 +317,13 @@ alias '\\'="function"
 
 # mainly for use in functions
 alias ret="print --"
+alias yield="print -l --"
 
 # not just functions, also aliases and exes
 
 function getdef {
     whence -f -x 4 "$@"|bat --plain --language zsh
 }
-
-
 compdef getdef=whence
 
 elif [[ "$1" == "unload" ]]; then
@@ -340,6 +335,6 @@ unfunction filter tfilter ffilter \
     interlace blockjoin \
     getdef 
 
-unalias fn '\\' ret 
+unalias fn '\\' ret yield
 
 fi

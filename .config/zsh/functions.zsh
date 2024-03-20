@@ -26,3 +26,6 @@ source $ZDOTDIR/modules.zsh
 +mod net  silent
 +mod fs   silent
 
+# desktop stuff
++mod sound silent
+
