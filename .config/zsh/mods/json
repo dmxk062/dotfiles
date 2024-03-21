@@ -2,6 +2,8 @@
 # vim: ft=zsh
 
 
+# a lot of general json and other data structure functions
+
 if [[ "$1" == "load" ]]; then
 
 # two table handling functions
@@ -72,7 +74,7 @@ function json2hash {
 
     echo "$jsonObj"|jq -rMc 'to_entries| map("\(.key)\t\(.value)")| .[]' \
         |while IFS=$'\t' read -r key value; do
-        eval $arrayName'[$key]=$value'
+        eval $arrayName'[$key]="$value"'
     done
 }
 
@@ -91,13 +93,25 @@ function json2array {
     done
 }
 
+# nice way to deserialize too
+function list2hash {
+    local arrayName="${1}"
+    declare -gA "$arrayName"
+    local line value
+
+    while read -r key value; do
+        eval $arrayName'[$key]="$value"'
+    done
+}
+
 
 alias jsoniter="jq -Mc '.[]'"
 
 elif [[ "$1" == "unload" ]]; then
 
 unfunction table2json json2table \ 
-    json2hash json2array
+    json2hash json2array \
+    list2hash 
 
 unalias jsoniter
 
