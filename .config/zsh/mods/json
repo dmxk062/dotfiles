@@ -70,15 +70,36 @@ function json2hash {
         jsonObj+="$line"
     done
 
-    echo "$jsonObj"|jq -r 'to_entries| map("\(.key)\t\(.value)")| .[]'|while IFS=$'\t' read -r key value; do
+    echo "$jsonObj"|jq -rMc 'to_entries| map("\(.key)\t\(.value)")| .[]' \
+        |while IFS=$'\t' read -r key value; do
         eval $arrayName'[$key]=$value'
     done
 }
 
+function json2array {
+    local arrayName="${1}"
+    declare -ga "$arrayName"
+    local line jsonObj value
+
+    while read -r line; do
+        jsonObj+="$line"
+    done
+
+    echo "$jsonObj"|jq -rMc '.[]' \
+        |while read -r value; do
+        eval $arrayName'+="$value"'
+    done
+}
+
+
+alias jsoniter="jq -Mc '.[]'"
+
 elif [[ "$1" == "unload" ]]; then
 
 unfunction table2json json2table \ 
-    json2hash
+    json2hash json2array
+
+unalias jsoniter
 
 
 fi
