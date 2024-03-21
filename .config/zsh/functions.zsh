@@ -25,6 +25,7 @@ source $ZDOTDIR/modules.zsh
 +mod pkg  silent
 +mod net  silent
 +mod fs   silent
++mod json silent
 
 # desktop stuff
 +mod sound silent
