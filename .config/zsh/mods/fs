@@ -3,7 +3,7 @@
 
 # make filesystem naviation/file handling easier
 
-if [[ "$1" == "load" ]]; then
+if [[ "$1" == "load" ]] {
 
 alias md="mkdir -p"
 
@@ -98,10 +98,10 @@ function rp {
 }
 
 
-elif [[ "$1" == "unload" ]]; then
+} elif [[ "$1" == "unload" ]] {
 
 unfunction find_containing mcd tmp rp
 
 unalias md ft bft
 
-fi
+}

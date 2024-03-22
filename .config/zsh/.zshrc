@@ -62,8 +62,10 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower
 zstyle ':completion:*' menu select=-1
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle ':completion:*' verbose false
+
 autoload -Uz compinit
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+# only reload comps after reboot effectively
+compinit -d "$XDG_CACHE_HOME/zcompdump-$ZSH_VERSION"
 
 
 #history

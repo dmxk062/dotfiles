@@ -17,20 +17,32 @@ if [[ "$1" == "load" ]]; then
 # to get all the users as json, here we need to name the fields ourselves
 function table2json {
     local sep=" "
+    local separate=0
     if [[ "$1" == "sep="* ]] {
         IFS='=' read -r _ sep <<< "$1"
+        separate=1
         shift
     }
     local -a columns
 
     if (($# == 0)) {
-        IFS="$sep" read -rA columns
+        if ((separate == 1)){
+            IFS="$sep" read -rA columns
+        } else {
+            read -rA columns
+        }
 
     } else {
         columns=("$@")
     }
-    column -tJ -s"${sep}" --table-columns="${(j:,:)columns}" \
-        |jq -cM '.table' # get rid of the surrounding object
+    if ((separate == 1)){
+        column -tJ --table-columns="${(j:,:)columns}" -s "$sep" \
+            |jq -cM '.table'
+
+    } else {
+        column -tJ --table-columns="${(j:,:)columns}" \
+            |jq -cM '.table'
+    }
 }
 
 function json2table {
@@ -66,13 +78,9 @@ function json2table {
 function json2hash {
     local arrayName="${1}"
     declare -gA "$arrayName"
-    local line jsonObj key value
+    local jsonObj key value
 
-    while read -r line; do
-        jsonObj+="$line"
-    done
-
-    echo "$jsonObj"|jq -rMc 'to_entries| map("\(.key)\t\(.value)")| .[]' \
+    jq -rMc 'to_entries| map("\(.key)\t\(.value)")| .[]' \
         |while IFS=$'\t' read -r key value; do
         eval $arrayName'[$key]="$value"'
     done

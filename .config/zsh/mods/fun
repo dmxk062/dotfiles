@@ -3,7 +3,7 @@
 
 # function patterns in zsh
 
-if [[ "$1" == "load" ]]; then
+if [[ "$1" == "load" ]] {
 
 
 # all of these work pretty much the same:
@@ -326,7 +326,7 @@ function getdef {
 }
 compdef getdef=whence
 
-elif [[ "$1" == "unload" ]]; then
+} elif [[ "$1" == "unload" ]] {
 
 unfunction filter tfilter ffilter \
     afold fold vfold \
@@ -337,4 +337,4 @@ unfunction filter tfilter ffilter \
 
 unalias fn '\\' ret yield
 
-fi
+}
