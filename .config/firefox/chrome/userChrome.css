@@ -1,0 +1,28 @@
+#TabsToolbar {
+    visibility: collapse;
+}
+
+#nav-bar {
+    background-color: var(--frame-bg) !important;
+}
+:root {
+	--dark: #2E3440;
+	--dgrey: #3B4252;
+	--lgrey: #434C5E;
+	--grey: #4C566A;
+	
+	--dwhite: #D8DEE9;
+	--mwhite: #E5E9F0;
+	--white: #ECEFF4;
+	
+	--dcyan: #8FBCBB;
+	--lcyan: #88C0D0;
+	--lblue: #81A1C1;
+	--dblue: #5E81AC;
+	
+    --red: #BF616A;
+    --orange: #D08770;
+    --yellow: #EBCB8B;
+    --green: #A3BE8C;
+    --magenta: #B48EAD;
+}
