@@ -68,6 +68,19 @@
         (storage_section)
     )
 )
+;; (defwidget sections []
+;;     (stack :selected {selected_section} :hexpand true :vexpand true :transition "none"
+;;         (appearance_section)
+;;         (input_section)
+;;         (audio_section)
+;;         (system_section)
+;;         (bluetooth_section)
+;;         (wifi_section)
+;;         ;; (network_section)
+;;         (display_section)
+;;         (storage_section)
+;;     )
+;; )
 
 
 

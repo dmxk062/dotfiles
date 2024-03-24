@@ -65,10 +65,6 @@
                     (button :class "button${popups ? "-active" : ""}" :onclick "bin/sys/eww_shell.sh popups""󰍦    Popups")
                     (wrapped_text :text "On screen popups for volume and brightness changes")
                 )
-                (list_box
-                    (button :class "button${hide-notif-popups ? "" : "-active"}" :timeout "16s" :onclick "bin/notif.sh toggle-mode" "${hide-notif-popups ? "󱙍" : "󰍡"}    Notification Popups")
-                    (wrapped_text :text "Notification popups sent by mako, when disabled the notification center can still be used")
-                )
             )
         )
         )

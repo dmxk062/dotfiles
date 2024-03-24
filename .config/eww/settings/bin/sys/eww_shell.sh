@@ -41,7 +41,7 @@ bar(){
 }
 
 popups(){
-    lockfile="/tmp/eww/state/no_autorotate"
+    lockfile="/tmp/eww/state/no_popups"
     if [ -f $lockfile ]
     then
         rm $lockfile
