@@ -1,27 +1,21 @@
-alias updategrub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-alias bc="bc -l"
-alias svim="sudoedit"
-alias sv="sudoedit"
-alias nv="nvim"
-alias yay="yay --editmenu --devel"
-alias mpv="mpv --hwdec=auto"
-
-# idk why i cant stick to a single way
-alias q="exit"
-alias x="exit"
-alias rm="rm -i"
-
-# all the ls i could ever need
-alias ls='ls --color=auto --hyperlink=auto'
-alias ll='lsd -l --hyperlink=auto'
-alias lla='lsd -lA --hyperlink=auto'
-alias llo='lsd -l --permission=octal --hyperlink=auto'
-alias llao='lsd -lA --permission=octal --hyperlink=auto'
-alias la='lsd -A --hyperlink=auto'
-alias lr='lsd --tree --depth 3  --hyperlink=auto'
-alias l='lsd --hyperlink=auto'
-
-alias grep='grep --color=auto'
-
-alias f="fd"
-alias g="rg"
+alias updategrub="sudo grub-mkconfig -o /boot/grub/grub.cfg" \
+bc="bc -l" \
+svim="sudoedit" \
+sv="sudoedit" \
+nv="nvim" \
+yay="yay --editmenu --devel" \
+mpv="mpv --hwdec=auto" \
+q="exit" \
+x="exit" \
+rm="rm -i" \
+ls='ls --color=auto --hyperlink=auto' \
+ll='lsd -l --hyperlink=auto' \
+lla='lsd -lA --hyperlink=auto' \
+llo='lsd -l --permission=octal --hyperlink=auto' \
+llao='lsd -lA --permission=octal --hyperlink=auto' \
+la='lsd -A --hyperlink=auto' \
+lr='lsd --tree --depth 3  --hyperlink=auto' \
+l='lsd --hyperlink=auto' \
+grep='grep --color=auto' \
+f="fd" \
+g="rg" \

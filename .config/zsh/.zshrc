@@ -81,10 +81,6 @@ setopt autocd
 #no annoying beeps
 unsetopt beep
 
-DISABLE_AUTO_TITLE="true"
-# enables commenting with # in interactive shells
-# setopt INTERACTIVE_COMMENTS
-
 # add whatever directories you want to be hashed(accessible via ~shortcut) here
 
 local -A DIRSHORTCUTS=(
@@ -110,6 +106,7 @@ unset DIRSHORTCUTS
 
 #autopairing for quotes, brackets etc
 source $ZDOTDIR/autopair.zsh
+source $ZDOTDIR/variables.zsh
 source $ZDOTDIR/functions.zsh
 source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/prompt.zsh
@@ -118,7 +115,7 @@ autopair-init
 #syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-source ~/.config/zsh/highlight
+source "$ZDOTDIR/highlight"
 
 
 #fzf

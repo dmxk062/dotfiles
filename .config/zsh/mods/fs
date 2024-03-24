@@ -16,7 +16,7 @@ function mcd {
     cd "$1"
 }
 
-alias ft="file --mime-type -F' '"
+alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
 
 
@@ -97,10 +97,31 @@ function rp {
     print -l -- "${@:A}"
 }
 
+function readfile {
+    local arrayname="${1}"
+    local filename="${2}"
+
+    eval "IFS=$'\n' ${arrayname}=(\$(< "${filename}"))"
+}
+
+function readstream {
+    local arrayname="${1}"
+    local line  
+    local -a buffer
+
+    while read -r line; do
+        buffer+=("$line")
+    done
+
+    eval "${arrayname}=("\${buffer}")"
+
+}
+
 
 } elif [[ "$1" == "unload" ]] {
 
-unfunction find_containing mcd tmp rp
+unfunction find_containing mcd tmp rp \
+    readfile readstream
 
 unalias md ft bft
 
