@@ -6,3 +6,6 @@ alias ':tab'="IFS=$'\t'" \
 ':semic'="IFS=';'" \
 ':lf'="IFS=$'\n'" \
 ':eq'="IFS='='"
+
+# some great stream ease of use stuff
+alias -g ">null"="> /dev/null" ">err"="> /dev/stderr"
