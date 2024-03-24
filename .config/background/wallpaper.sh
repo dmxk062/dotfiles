@@ -3,7 +3,7 @@
 function set(){
     if ! swww query
     then
-        swww init
+        swww-daemon &
         sleep 1
     fi
     swww img -t grow \
