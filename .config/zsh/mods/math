@@ -42,6 +42,24 @@ function sum {
     print -- $accumulator
 }
 
+function avg {
+    local accumulator=0
+    local count=0.0 value
+
+    if (($# == 0)); then
+        while read -r value; do
+            ((accumulator+=value))
+            ((count++))
+        done
+    else
+        for value in $@; do
+            ((accumulator+=value))
+            ((count++))
+        done
+    fi
+    print -- $((accumulator / count))
+}
+
 function ucov {
     local from="${1:-K}"
     local to="${2:-M}"
@@ -64,8 +82,8 @@ function ucov {
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction conv ucov _math '#' sum
+unfunction conv ucov _math  sum avg
 
-unalias math
+unalias math '#'
 
 fi

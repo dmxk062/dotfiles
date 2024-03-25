@@ -42,8 +42,8 @@ zle -N down-line-or-beginning-search
 #history
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
-[[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
-[[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
+# [[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
+# [[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
 
 #my color theme
@@ -97,7 +97,7 @@ local -A DIRSHORTCUTS=(
 )
 
 for shortcut in ${(k)DIRSHORTCUTS}; do
-    hash -d ${shortcut}=${DIRSHORTCUTS[$shortcut]}
+    hash -d ${shortcut}="${DIRSHORTCUTS[$shortcut]}"
 done
 
 unset DIRSHORTCUTS

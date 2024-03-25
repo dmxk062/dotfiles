@@ -8,4 +8,5 @@ alias ':tab'="IFS=$'\t'" \
 ':eq'="IFS='='"
 
 # some great stream ease of use stuff
-alias -g ">null"="> /dev/null" ">err"="> /dev/stderr"
+alias -g "@null"="> /dev/null" "@err"="> /dev/stderr"
+
