@@ -159,16 +159,16 @@
             "exec":"XDG_CURRENT_DESKTOP=gnome prismlauncher --launch main"
         },
         {
+            "name":"Modded Instance",
+            "exec":"XDG_CURRENT_DESKTOP=gnome prismlauncher --launch main.modded.older"
+        },
+        {
             "name":"Open Instance Folder",
             "exec":"nautilus /mnt/Games/Minecraft/prismlauncher_instances/"
         },
         {
             "name":"Open Main Folder",
             "exec":"nautilus /mnt/Games/Minecraft/prismlauncher_instances/main/.minecraft/"
-        },
-        {
-            "name":"Edit Main",
-            "exec":"XDG_CURRENT_DESKTOP=gnome prismlauncher --show main"
         },
         {
             "name":"Server Console",

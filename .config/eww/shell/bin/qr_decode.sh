@@ -121,8 +121,17 @@ decode_qr(){
             ;;
 
         *)
-            printf '{"path":"%s","type":"%s", "encoding":"%s", "data":{"type":"text", "str":"%s"}}' "$path" "$format" "$type" "$data"
-            exit
+            case "$data" in 
+                file:*)
+                    printf '{"path":"%s","type":"%s","encoding":"%s", "data":{"type":"file", "str":"%s"}}' "$path" "$format" "$type" "$data"
+                    exit
+                    ;;
+                *)
+
+                    printf '{"path":"%s","type":"%s", "encoding":"%s", "data":{"type":"text", "str":"%s"}}' "$path" "$format" "$type" "$data"
+                    exit
+                    ;;
+            esac
     esac
     
 

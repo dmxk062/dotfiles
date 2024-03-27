@@ -80,6 +80,10 @@
                 (box :visible {qr_elem.data.type == "text"} :orientation "v"
                     (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str} :length 40)
                 ) 
+                (box :visible {qr_elem.data.type == "file"} :orientation "v"
+                    (clipboard_text :content {qr_elem.data.str} :label {qr_elem.data.str} :length 40)
+                    (button :class "button" :timeout "128s" :onclick "xdg-open '${qr_elem.data.str}'" "Open")
+                ) 
                 (box :visible {qr_elem.data.type == "wifi"} :space-evenly false :spacing 16
                     (wrapped_text :text "SSID: ${qr_elem.data.ssid}
 Security: ${qr_elem.data.security}
