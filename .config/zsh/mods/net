@@ -55,7 +55,17 @@ function urldec {
     print -- "$file"
 }
 
-alias get_public_ip="jreq ipinfo.io .ip"
+
+function local_ip {
+    local -a line
+    ip route | while read -rA line; do
+        if [[ "$line[1]" == "default" ]] {
+            print "$line[9]"
+        }
+    done
+}
+
+alias public_ip="jreq ipinfo.io .ip"
 
 # not necessarily a network thing
 # params: $1: text to encode
@@ -69,8 +79,9 @@ elif [[ "$1" == "unload" ]]; then
 
 unfunction fupload jreq urlenc urldec \
     ncsend ncrecv \
+    local_ip \
     qrgen
 
-unalias req get_public_ip
+unalias req public_ip
 
 fi
