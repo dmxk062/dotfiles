@@ -7,7 +7,7 @@
 
 if [[ "$1" == "load" ]]; then
 
-alias req="curl -s"
+alias req="noglob curl -s"
 
 function fupload {
     curl -F file=@"$1" "${2:-"https://0x0.st"}"
@@ -65,6 +65,7 @@ function local_ip {
     done
 }
 
+
 alias public_ip="jreq ipinfo.io .ip"
 
 # not necessarily a network thing
@@ -75,12 +76,14 @@ function qrgen {
 }
 
 
+
 elif [[ "$1" == "unload" ]]; then
 
-unfunction fupload jreq urlenc urldec \
+unfunction fupload jreq \
+    urlenc urldec \
     ncsend ncrecv \
     local_ip \
-    qrgen
+    qrgen 
 
 unalias req public_ip
 
