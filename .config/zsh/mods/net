@@ -1,11 +1,25 @@
 #!/bin/false
 # vim: ft=zsh
 
-# simple math things i use farely often
+
+
+# a bunch of network dependant stuff, such as different network services
 
 if [[ "$1" == "load" ]]; then
 
 alias req="curl -s"
+
+function fupload {
+    curl -F file=@"$1" "${2:-"https://0x0.st"}"
+}
+
+function ncsend {
+    nc -l -p "${1:-60246}"
+}
+
+function ncrecv {
+    nc "$1" "${2:-60246}"
+}
 
 function jreq {
     local url="$1"
@@ -43,10 +57,19 @@ function urldec {
 
 alias get_public_ip="jreq ipinfo.io .ip"
 
+# not necessarily a network thing
+# params: $1: text to encode
+#         $@:2 flags for qrencode
+function qrgen {
+    qrencode "$1" --margin=2 --output=- --size=2 --type=ANSIUTF8 "${@:2}" 
+}
+
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction req jreq urlenc urldec
+unfunction fupload jreq urlenc urldec \
+    ncsend ncrecv \
+    qrgen
 
 unalias req get_public_ip
 
