@@ -17,7 +17,8 @@ if [[ "$2" == "audio" ]]; then
             mute)
                 wpctl set-mute @${4}@ toggle
         esac
-    update audio_state="$(printf '{"sink":{"vol":%s,"mute":%s},"source":{"vol":%s,"mute":%s}}' "$(pamixer --get-volume)" "$(pamixer --get-mute)" "$(pamixer --get-volume --default-source)" "$(pamixer --get-mute --default-source)")"&
+        (sleep .1
+        update audio_state="$(printf '{"sink":{"vol":%s,"mute":%s},"source":{"vol":%s,"mute":%s}}' "$(pamixer --get-volume)" "$(pamixer --get-mute)" "$(pamixer --get-volume --default-source)" "$(pamixer --get-mute --default-source)")")&
 else
     $eww update brightness=$(light -G)
 fi
