@@ -76,7 +76,34 @@ function qrgen {
     qrencode "$1" --margin=2 --output=- --size=2 --type=ANSIUTF8 "${@:2}" 
 }
 
+function deepl_request {
+    local request="$1"
+    local auth_key="$( < "$XDG_DATA_HOME/keys/deepl" )"
+    if [[ "$auth_key" == "" ]] {
+        print -- "Please make sure your auth key is placed at $XDG_DATA_HOME/keys/deepl"
+        return 1
+    }
+    curl -s --request POST --header "Authorization: DeepL-Auth-Key $auth_key" \
+        --header "Content-Type: application/json" \
+        --data "$request" \
+        'https://api-free.deepl.com/v2/translate'
 
+}
+
+function translate {
+    local target="${1}"; shift
+    local buffer
+    if (($# == 0)) {
+        local line
+        while read -r line; do
+            buffer+="\n$line"
+        done
+    } else {
+        buffer="${(j: :)argv[@]}"
+    }
+    deepl_request "{\"text\":[\"$buffer\"],\"target_lang\":\"$target\"}"|jq -r '.translations.[].text'
+
+}
 
 elif [[ "$1" == "unload" ]]; then
 
@@ -84,7 +111,8 @@ unfunction fupload jreq \
     urlenc urldec \
     ncsend ncrecv \
     local_ip \
-    qrgen 
+    qrgen \
+    deepl_request
 
 unalias req public_ip
 
