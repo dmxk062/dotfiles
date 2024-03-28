@@ -21,6 +21,7 @@ function ncrecv {
     nc "$1" "${2:-60246}"
 }
 
+
 function jreq {
     local url="$1"
     shift

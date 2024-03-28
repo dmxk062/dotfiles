@@ -172,6 +172,7 @@ source $ZDOTDIR/modules.zsh
 +mod net  silent
 +mod fs   silent
 +mod json silent
++mod virt silent
 
 # desktop stuff
 +mod sound silent
