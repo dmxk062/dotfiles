@@ -51,11 +51,9 @@ comment.setup()
 
 require('leap').add_default_mappings()
 
-require'surround'.setup{}
-
 require("closeconf")
 
 require("treesitter")
 
 require("lsp")
-
+require("latex")

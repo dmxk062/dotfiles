@@ -28,7 +28,7 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'f3fora/cmp-spell'
 " Plug 'tamago324/cmp-zsh'
-Plug 'kevinhwang91/nvim-ufo'
+Plug 'kevinhwang91/nvim-ufo', {'branch': 'main'}
 Plug 'kevinhwang91/promise-async'
 Plug 'luukvbaal/statuscol.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -39,5 +39,8 @@ Plug 'b0o/schemastore.nvim'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+
+Plug 'lervag/vimtex'
+Plug 'micangl/cmp-vimtex'
 call plug#end()
 
