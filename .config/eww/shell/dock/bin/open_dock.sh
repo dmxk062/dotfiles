@@ -12,7 +12,7 @@ eww="eww -c $HOME/.config/eww/shell"
 #     $eww update apps="$(< $XDG_CONFIG_HOME/eww/shell/dock/apps.json)"
 # fi
 
-if [ $($eww get dock_reveal) == "true" ]; then
+if [[ $($eww get dock_reveal) == "true" ]]; then
     $eww update dock_reveal=false
     sleep 0.2
     $eww close dock_window
