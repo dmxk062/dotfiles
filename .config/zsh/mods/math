@@ -80,9 +80,16 @@ function ucov {
     done
 }
 
+# qalculate interactive
+function qi {
+    print -n -- "\e]0;qalc\a"
+    qalc
+
+}
+
 elif [[ "$1" == "unload" ]]; then
 
-unfunction conv ucov _math  sum avg
+unfunction conv ucov _math  sum avg qi
 
 unalias math '#'
 

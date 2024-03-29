@@ -3,6 +3,8 @@
 
 
 
+NC_PORT=60246
+
 # a bunch of network dependant stuff, such as different network services
 
 if [[ "$1" == "load" ]]; then
@@ -14,11 +16,11 @@ function fupload {
 }
 
 function ncsend {
-    nc -l -p "${1:-60246}"
+    nc -l  -p "${1:-$NC_PORT}"
 }
 
 function ncrecv {
-    nc "$1" "${2:-60246}"
+    nc -dq 0 "$1" "${2:-$NC_PORT}"
 }
 
 
@@ -67,7 +69,7 @@ function local_ip {
 }
 
 
-alias public_ip="jreq ipinfo.io .ip"
+alias public_ip="req ifconfig.es"
 
 # not necessarily a network thing
 # params: $1: text to encode
@@ -105,11 +107,35 @@ function translate {
 
 }
 
+function ncdir {
+    local mode="$1"
+    local arg="$2"
+    local port="${3:-$NC_PORT}"
+
+    case $mode in 
+        send)
+            local dir="$arg"
+            if ! [[ -d "$dir" ]] {
+                print -- "Not a directory: $dir"
+                return 1
+            }
+            tar czp "$dir"|nc -l -p "$port"
+            ;;
+        recv|*)
+            local host="$arg"
+            nc -dq 0 "$host" "$port"|tar zxv
+            ;;
+    esac
+
+
+}
+
+
 elif [[ "$1" == "unload" ]]; then
 
 unfunction fupload jreq \
     urlenc urldec \
-    ncsend ncrecv \
+    ncsend ncrecv ncdir \
     local_ip \
     qrgen \
     deepl_request
