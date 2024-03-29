@@ -36,7 +36,6 @@ window {
 
     &:hover {
         background-color: $red;
-        color: $inverted;
     }
 }
 .notification-background{
@@ -316,6 +315,18 @@ window {
 
 
 }
+
+.widget-volume {
+    background-color: $bg;
+    box-shadow: $popup_shadow; 
+    > box > button {
+        transition: $trans;
+        &:hover {
+            background-color: $bg1;
+        }
+    }
+}
+
 
 .floating-notifications {
     background: transparent;

@@ -31,7 +31,8 @@
     "widgets": [
         "dnd",
         "mpris",
-        "notifications"
+        "notifications",
+        "volume"
     ],
     "widget-config": {
         "title": {
@@ -57,6 +58,13 @@
         "mpris": {
             "image-size": 96,
             "image-radius": 12
+        },
+        "volume":{
+            "show-per-app": true,
+            "show-per-app-icon": true,
+            "show-per-app-label": true,
+            "expand-button-label": "󰞙",
+            "collapse-button-label": "󰞖"
         }
     },
     "scripts": {

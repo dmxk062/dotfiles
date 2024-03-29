@@ -12,8 +12,8 @@ window decoration {
 
 .close-button {
   all: unset;
-  background: #434c5e;
-  color: #eceff4;
+  background: #cad0dc;
+  color: #2e3440;
   border-radius: 100%;
   margin: 5px;
   min-width: 24px;
@@ -22,8 +22,7 @@ window decoration {
   margin-right: 1.2rem;
   margin-top: 1.2rem; }
   .close-button:hover {
-    background-color: #bf616a;
-    color: #2e3440; }
+    background-color: #bf616a; }
 
 .notification-background {
   all: unset; }
@@ -34,50 +33,50 @@ window decoration {
   box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px;
   border-radius: 1rem;
   transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: #2e3440;
-  color: #eceff4; }
+  background-color: #eceff4;
+  color: #2e3440; }
 
 .notification-default-action {
   all: unset;
-  color: #eceff4;
+  color: #2e3440;
   border-radius: 1rem;
   padding: 8px; }
   .notification-default-action:hover {
-    background-color: #3b4252; }
+    background-color: #d8dee9; }
   .notification-default-action:not(:only-child) {
     border-radius: 1rem 1rem 0 0; }
 
 .notification-content {
-  color: #eceff4;
+  color: #2e3440;
   background-color: transparent;
   border-radius: 1rem;
   margin: 8px; }
   .notification-content .image {
     border-radius: 1rem;
     margin-right: .6rem;
-    color: #eceff4; }
+    color: #2e3440; }
   .notification-content .app-icon {
     -gtk-icon-effect: none;
     -gtk-icon-shadow: 0 1px 4px black;
     margin: .4rem;
-    color: #eceff4; }
+    color: #2e3440; }
   .notification-content .summary {
-    color: #eceff4;
+    color: #2e3440;
     font-weight: bold;
     font-size: 1.2rem;
     margin-bottom: .2rem; }
   .notification-content .time {
     margin-right: 30px;
-    color: #d8dee9; }
+    color: #434c5e; }
   .notification-content .body {
-    color: #eceff4; }
+    color: #2e3440; }
   .notification-content progressbar {
     margin-left: 1rem;
     margin-right: 1rem; }
   .notification-content .body-image {
-    color: #eceff4;
+    color: #2e3440;
     margin-top: .3rem;
-    background-color: #2e3440;
+    background-color: #eceff4;
     border-radius: 1rem; }
   .notification-content #inline-reply-box {
     background-color: #bf616a; }
@@ -88,18 +87,18 @@ window decoration {
       all: unset;
       border-radius: 12px;
       min-height: 2.85rem;
-      background-color: #3b4252;
-      color: #eceff4;
-      caret-color: #eceff4;
-      border: 2px solid #4c566a;
+      background-color: #d8dee9;
+      color: #2e3440;
+      caret-color: #2e3440;
+      border: 2px solid #bcc3d0;
       padding: .07rem 1.15rem .07rem .85rem; }
       .notification-content .inline-reply .inline-reply-entry:focused {
-        border: 2px solid #7b9da3; }
+        border: 2px solid #9dbec1; }
       .notification-content .inline-reply .inline-reply-entry selection {
         color: #2e3440;
         background-color: #8fbcbb; }
       .notification-content .inline-reply .inline-reply-entry label {
-        color: #eceff4; }
+        color: #2e3440; }
     .notification-content .inline-reply .inline-reply-button {
       all: unset;
       padding: .07rem 1.15rem .07rem .85rem;
@@ -109,10 +108,10 @@ window decoration {
       background-color: #8fbcbb;
       transition: background-color 0.3s ease, color 0.3s ease; }
       .notification-content .inline-reply .inline-reply-button:hover {
-        background-color: #7b9da3; }
+        background-color: #9dbec1; }
       .notification-content .inline-reply .inline-reply-button:disabled {
         background-color: initial;
-        color: #eceff4; }
+        color: #2e3440; }
 
 .notification-action {
   all: unset;
@@ -120,27 +119,27 @@ window decoration {
   margin: 0;
   background-color: transparent;
   padding: 1rem;
-  background-color: #2e3440;
+  background-color: #eceff4;
   border-radius: 0;
-  border-top: 1px solid #434c5e;
-  border-right: 1px solid #434c5e;
-  color: #eceff4; }
+  border-top: 1px solid #cad0dc;
+  border-right: 1px solid #cad0dc;
+  color: #2e3440; }
   .notification-action:first-child {
     border-bottom-left-radius: 1rem; }
   .notification-action:last-child {
     border-bottom-right-radius: 1rem;
     border-right: none; }
   .notification-action:hover {
-    background-color: #434c5e; }
+    background-color: #cad0dc; }
 
 .control-center {
   box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
-  background-color: #2e3440;
+  background-color: #eceff4;
   margin: unset;
   margin: 1rem;
   margin-right: 0;
   border-radius: 1rem 0 0 1rem;
-  color: #eceff4; }
+  color: #2e3440; }
   .control-center .notification:focus {
     all: unset; }
   .control-center .control-center-list {
@@ -153,20 +152,20 @@ window decoration {
 .notification-group-headers {
   margin: 0 1.2rem; }
   .notification-group-headers .notification-group-icon {
-    color: #eceff4;
-    background-color: #2e3440; }
+    color: #2e3440;
+    background-color: #eceff4; }
   .notification-group-headers .notification-group-header {
-    color: #eceff4;
-    background-color: #2e3440; }
+    color: #2e3440;
+    background-color: #eceff4; }
 
 .notification-group-buttons > button {
   min-height: 1.5rem;
-  background-color: #434c5e;
-  color: #eceff4;
+  background-color: #cad0dc;
+  color: #2e3440;
   transition: background-color 0.3s ease, color 0.3s ease; }
 
 .notification-group-collapse-button:hover {
-  background-color: #4c566a; }
+  background-color: #bcc3d0; }
 
 .notification-group-close-all-button:hover {
   background-color: unset;
@@ -177,14 +176,14 @@ window decoration {
   background-color: rgba(143, 188, 187, 0.2); }
 
 .widget-dnd {
-  color: #eceff4;
+  color: #2e3440;
   margin: .5rem; }
   .widget-dnd label {
     font-size: 1.5rem; }
   .widget-dnd > switch {
     border-radius: 1rem;
-    background-color: #434c5e;
-    border: 1px solid #4c566a; }
+    background-color: #cad0dc;
+    border: 1px solid #bcc3d0; }
     .widget-dnd > switch slider {
       background-color: #eceff4;
       border-radius: 1rem; }
@@ -195,18 +194,18 @@ window decoration {
   padding: .5rem;
   padding: 1rem;
   margin: 1rem 1.5rem;
-  background-color: rgba(46, 52, 64, 0.7);
+  background-color: rgba(236, 239, 244, 0.7);
   border-radius: 1rem;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px; }
 
 .widget-mpris .widget-mpris-album-art {
   box-shadow: unset;
-  border: 2px #434c5e; }
+  border: 2px #cad0dc; }
 
 .widget-mpris button {
-  color: #eceff4; }
+  color: #2e3440; }
   .widget-mpris button:hover {
-    background-color: #434c5e; }
+    background-color: #cad0dc; }
   .widget-mpris button:disabled {
     color: #929aaa; }
 
@@ -218,20 +217,30 @@ window decoration {
   font-size: 1.1rem; }
 
 .widget-title {
-  color: #eceff4; }
+  color: #2e3440; }
   .widget-title label {
     font-size: 1.5rem;
     font-weight: bold; }
   .widget-title > button {
     all: unset;
-    color: #eceff4;
-    background-color: #434c5e;
+    color: #2e3440;
+    background-color: #cad0dc;
     transition: background-color 0.3s ease, color 0.3s ease;
     padding: 0.07rem 1.15rem 0.07rem 0.85rem;
     border-radius: 1rem; }
     .widget-title > button:hover {
-      background-color: #9d5e6a;
+      background-color: #be7e89;
       color: #2e3440; }
+
+.widget-volume {
+  background-color: #eceff4;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px; }
+  .widget-volume > box > button {
+    transition: background-color 0.3s ease, color 0.3s ease; }
+    .widget-volume > box > button:hover {
+      background-color: #d8dee9; }
+  .widget-volume .per-app-volume > box {
+    border-radius: 100%; }
 
 .floating-notifications {
   background: transparent; }
