@@ -1,7 +1,7 @@
 #use zshell 
 set shell zsh
 # my preview script, see there for explanation
-set previewer '~/.config/lf/bin/pv.sh'
+set previewer '~/.config/lf/bin/previewer.sh'
 # cleanup script for kitty's image display
 set cleaner '~/.config/lf/bin/cleaner.sh'
 set shellopts '-ey'
