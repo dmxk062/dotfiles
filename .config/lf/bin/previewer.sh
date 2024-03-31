@@ -23,9 +23,16 @@ function display_image {
     kitten icat --silent --stdin no --transfer-mode memory --place "${W}x${H}@${X}x${Y}" "$1" < /dev/null > /dev/tty
 }
 
+function info {
+    print -P "\e[90m%F{white}\e[100m${1}\e[40m\e[90m\e[0m"
+
+}
+
 function create_cache {
+    local pathn="${1:h4}"
+    local pathn="${pathn//\//.}"
     local basen="${1:t}"
-    print -- "$CACHEDIR/$basen${RANDOM}${2}"
+    print -- "$CACHEDIR/$pathn.$basen${2}"
 }
 
 
@@ -68,14 +75,36 @@ case "$MIMETYPE" in
     video/*)
         tmpfile="$(create_cache "${FILE}" ".png")"
         if ! [[ -f "$tmpfile" ]] {
-            ffmpegthumbnailer -s 0 -m -i "$FILE" -o "$tmpfile"
+            ffmpegthumbnailer -s 512 -m -i "$FILE" -o "$tmpfile"
         }
+        display_image "$tmpfile"
+        exit 1
+        ;;
+
+    audio/*)
+        local -a fields
+        IFS=$'\n' fields=($(mediainfo --output=JSON "$FILE" \
+            |jq -r '.media.track[0]|.Title // "-", .Album // "-", .Album_Performer // "-", .Genre // "-", .Format // "-", .Duration, .OverallBitRate'))
+        seconds="${fields[6]%.*}"
+        minutes=$[seconds / 60]
+        seconds=$[seconds % 60]
+        tmpfile="$(create_cache "$FILE" ".png")"
+        if ! [[ -f "$tmpfile" ]] {
+            ffmpegthumbnailer -s 512 -m -i "$FILE" -o "$tmpfile"
+        }
+        ((H-=7))
+        ((Y+=7))
+        local -a genres=("${(@s: /:)fields[4]}")
+        local genre_str="${(j:,:)genres}"
+        printf "Title: %s\nArtist: %s\nAlbum: %s\nGenre(s): %s\nFormat: %s\nBitrate: %skbps\nDuration: %02d:%02d"  \
+            "${fields[1]}" "${fields[3]}" "${fields[2]}" "${genre_str}" "${fields[5]}"  $[fields[7] / 1000] $minutes $seconds
         display_image "$tmpfile"
         exit 1
         ;;
 
 
     *x-iso9660-image)
+        print -P "\e[90m%F{white}\e[100m󰗮 Disk Image \e[40m\e[90m\e[0m"
         iso-info --no-header "$FILE" -f|tail -n+10|while read -r num file; do
             print -- "$file"
         done
@@ -106,6 +135,64 @@ case "$MIMETYPE" in
     inode/x-empty|application/x-empty)
         print -P "%SEmpty\e[0m"
         exit 1
+        ;;
+
+    application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/java-archive|application/x-gtar|application/zip)
+        info "󰛫 ${MIMETYPE//application\//} Archive"
+        bsdtar --list --file "$FILE"
+        exit 1
+        ;;
+    application/x-rar-compressed|application/x-rar)
+        info "󰛫 rar Archive"
+        local flag=0
+        unrar-free -t "$FILE"|tail -n+10|while read -r line; do
+            if ((flag == 0)){
+                print "$line"
+                flag=1
+            } else {
+                flag=0
+            }
+            done
+        exit 1
+        ;;  
+
+    application/vnd.flatpak.ref)
+        info "󰏖 Flatpak Package Definition"
+        ver=unknown
+        while IFS='=' read -r key value; do
+            case "$key" in
+                Name)
+                    appid=$value;;
+                Title)
+                    name=$value;;
+                Version)
+                    ver=$value;;
+                Description)
+                    desc=$value;;
+                Url)
+                    url=$value;;
+                Icon)
+                    icon_url=$value;;
+                RuntimeRepo)
+                    repo=$value;;
+            esac
+        done < "$FILE"
+        tmpfile="$(create_cache "$FILE" "svg")"
+        if ! [[ -f "$tmpfile" ]] {
+            curl "$icon_url" > "$tmpfile"
+        }
+        print "$name\nVersion: $ver\n$desc\nHomepage: $url\nRepo: $repo"
+        ((H-=8))
+        ((Y+=8))
+        display_image "$tmpfile"
+
+        exit 1
+        ;;
+
+    *)
+        info "󰈔 ${MIMETYPE}"
+        exit 1
+        ;;
 
 esac
 
