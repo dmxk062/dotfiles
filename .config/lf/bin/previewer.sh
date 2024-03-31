@@ -24,7 +24,7 @@ function display_image {
 }
 
 function info {
-    print -P "\e[90m%F{white}\e[100m${1}\e[40m\e[90m\e[0m"
+    print -P "\e[90m%F{white}\e[100m${1}\e[40m\e[90m\e[0m\n"
 
 }
 
@@ -104,7 +104,7 @@ case "$MIMETYPE" in
 
 
     *x-iso9660-image)
-        print -P "\e[90m%F{white}\e[100m󰗮 Disk Image \e[40m\e[90m\e[0m"
+        info "󰗮 Disk Image"
         iso-info --no-header "$FILE" -f|tail -n+10|while read -r num file; do
             print -- "$file"
         done
@@ -117,7 +117,15 @@ case "$MIMETYPE" in
         ;;
 
     text/* | */xml | application/javascript)
-        COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$((W-4)) -f --number "$FILE"
+        case $MIMETYPE in
+            text/*)
+                name="${MIMETYPE//text\//}";;
+            *)
+                name="${MIMETYPE}";;
+        esac
+        info "󰈔 $name"
+        COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$((W-4)) -f --number \
+            --line-range 1:$[LINES - 2] "$FILE"
         exit 1
         ;;
 
@@ -155,6 +163,34 @@ case "$MIMETYPE" in
             done
         exit 1
         ;;  
+    application/x-pie-executable|application/x-executable|application/x-sharedlib)
+        case "$MIMETYPE" in 
+            application/x-pie-executable|application/x-executable)
+                name="Executable"
+                ;;
+            application/x-sharedlib)
+                name="Library"
+                ;;
+        esac
+        info "󰣆 ELF $name"
+        readelf -h "$FILE"| while IFS="$IFS:" read -r field value; do
+            case $field in
+                Class)
+                    print "Type: $value";;
+                OS/ABI)
+                    print "ABI : $value";;
+                Machine)
+                    print "Arch: $value";;
+                Type)
+                    print "Type: $value";;
+            esac
+        done
+        local -a libs=($(objdump -p -- "$FILE"|grep NEEDED|while read -r _ lib; do print -- "$lib"; done))
+        print "\nLinked against:
+${(j:
+:)libs[@]}"
+        exit 1
+        ;;
 
     application/vnd.flatpak.ref)
         info "󰏖 Flatpak Package Definition"
@@ -181,7 +217,7 @@ case "$MIMETYPE" in
         if ! [[ -f "$tmpfile" ]] {
             curl "$icon_url" > "$tmpfile"
         }
-        print "$name\nVersion: $ver\n$desc\nHomepage: $url\nRepo: $repo"
+        print "$name\n$desc\nVersion: $ver\nHomepage: $url\nRepo: $repo"
         ((H-=8))
         ((Y+=8))
         display_image "$tmpfile"
