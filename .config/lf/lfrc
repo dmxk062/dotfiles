@@ -118,16 +118,11 @@ cmd mkodt %{{
 }}
 #trash smth using gio(moves to ~/.local/share/Trash/files and adds entry)
 cmd trash_trash %{{
-    set -f
-    gio trash $fx
+    ~/.config/lf/bin/trash.sh add $fx
 }}
 #restores file from gio trash, use in trash directory on file
 cmd trash_restore %{{
-    for file in $fx
-    do
-        fname=$(echo $file|awk -F'/' '{print $NF}') 
-        gio trash --restore trash:///$fname
-    done
+    ~/.config/lf/bin/trash.sh restore $fx
 }}
 #empty the entire trash
 cmd trash_clear %{{
@@ -355,12 +350,13 @@ map A invert
 map Ss $zsh -i
 #btm
 map Sm $btm -C ~/.config/bottom/config.toml
-#follow symlinks
-map <c-l> %{{
-    fpath="$(readlink $f)"
+cmd follow_link %{{
+    fpath="${f:A}"
     escpath=$(echo $fpath|sed 's/ /\\ /g')
     lf -remote "send $id select $escpath" 
 }}
+map <c-l> follow_link
+map gl follow_link
 #create stuff
 map m
 map md push :mkdir<space>
