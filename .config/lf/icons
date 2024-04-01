@@ -154,7 +154,8 @@ fi      󰈔       # FILE
 *.elm           
 *.swift         
 *.xcplayground  
-*.tex           ﭨ
+*.tex           
+*.bib           󰈘
 *.r             ﳒ
 *.sol           ﲹ
 *.~             󰑌

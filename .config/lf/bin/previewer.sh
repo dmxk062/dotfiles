@@ -112,7 +112,14 @@ case "$MIMETYPE" in
         ;;
 
     *opendocument*)
-        odt2txt --width="$W" "$FILE"
+        tmpfile="$(create_cache "$FILE" ".ppm")"
+        if ! [[ -f "$tmpfile" ]] {
+            libreoffice --convert-to pdf "$FILE" --outdir "$CACHEDIR"
+            outfile="$CACHEDIR/${FILE:t}"
+            outfile="${outfile:0:-3}pdf"
+            pdftoppm -f 1 -l 1 "$outfile" >> "$tmpfile"
+        }
+        display_image "$tmpfile"
         exit 1
         ;;
 
@@ -145,7 +152,7 @@ case "$MIMETYPE" in
         exit 1
         ;;
 
-    application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/java-archive|application/x-gtar|application/zip)
+    application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip)
         info "󰛫 ${MIMETYPE//application\//} Archive"
         bsdtar --list --file "$FILE"
         exit 1
