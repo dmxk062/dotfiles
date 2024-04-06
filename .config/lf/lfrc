@@ -282,7 +282,7 @@ map T tag-toggle ""
 #Options
 map Oh set hidden!
 map Op set previewer '~/.config/lf/bin/npv.sh'
-map OP set previewer '~/.config/lf/bin/pv.sh'
+map OP set previewer '~/.config/lf/bin/previewer.sh'
 #rename a file
 map R rename
 #completely delete a file

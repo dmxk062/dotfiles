@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 
+
 CACHEDIR="$XDG_CACHE_HOME/lf"
 if ! [[ -d "$CACHEDIR" ]] { mkdir -p "$CACHEDIR" }
 
@@ -227,6 +228,26 @@ ${(j:
         print "$name\n$desc\nVersion: $ver\nHomepage: $url\nRepo: $repo"
         ((H-=8))
         ((Y+=8))
+        display_image "$tmpfile"
+
+        exit 1
+        ;;
+
+    font/sfnt|application/vnd.ms-opentype)
+        local example_text="ABCDEFGHIJKLMNOPQRSTUVWXYZ
+abcdefghijklmnopqrstuvwxyz
+01234567890
+(){}[]!@#$%^&*-+_=/|\\\><,.:;\"\'
+The quick brown fox jumps over the lazy dog."
+        tmpfile="$(create_cache "${FILE}" ".png")"
+        if ! [[ -f "$tmpfile" ]] {
+            convert -background transparent -fill '#eceff4' -font "$FILE" \
+                -pointsize 24 label:"$example_text" \
+                "$tmpfile"
+        }
+        # fc-scan --format="%{fullname}\nStyle: %{style}\nScalable: %{scalable}\nVariable: %{variable}\nSymbols: %{symbol}\nHinting: %{fonthashint}\n\n" -- "$FILE"
+        # ((H-=8))
+        # ((Y+=8))
         display_image "$tmpfile"
 
         exit 1
