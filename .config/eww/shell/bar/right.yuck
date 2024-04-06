@@ -6,9 +6,7 @@
 
 
 (defwidget tray []
-    (box :class "traybox" 
-        (systray :pack_direction "ltr")
-    )
+    (systray :class "traybox")
 )
 
 (defwidget right [] 
