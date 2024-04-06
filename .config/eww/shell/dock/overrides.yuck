@@ -18,7 +18,7 @@
 "timeshift-gtk":"timeshift",
 "com.transmissionbt.transmission_37_364746":"transmission",
 "Tor Browser":"torbrowser",
-"Citra":"citra"
+"lemonade-qt":"lemonade"
 }
 ')
 (defvar steam_game_icons '

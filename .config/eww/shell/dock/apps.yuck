@@ -56,7 +56,8 @@
         (overlay 
         (themed_icon :name {app.class == "kitty" ? (matches(app.title, "nv:*.") ?  "nvim" : 
         (matches(app.title, "lf:*.") ? "file-manager" :
-        (app.title == "cava" ? "accessories-media-converter" : "kitty"))) :
+        (app.title == "qalc" ? "calculator" :
+        (app.title == "cava" ? "accessories-media-converter" : "kitty")))) :
         (app.class == "gamescope" ? 
             (steam_game_icons[app.title]?: "steam") : ;; for steam games in gamescope
         (matches(app.class, "Minecraft*.") ? "org.prismlauncher.PrismLauncher" : ;; and the usual minecraft issue
@@ -66,7 +67,7 @@
             (box  :space-evenly false :halign "end" :valign "start" :visible {app.pinned || (dock_hover_win == app.address && app.floating)} 
                 (button 
                 :timeout "128s"
-                :onclick "hyprctl dispatch pin address:${app.address}; dock/bin/windows.sh once"
+                :onclick "hyprctl dispatch pin address:${app.address}"
 
                 (themed_icon :name {app.pinned ? "window-pin-symbolic" : "view-pin-symbolic"} :width 8 :height 8)
                 )
