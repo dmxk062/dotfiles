@@ -236,9 +236,11 @@ ${(j:
     font/sfnt|application/vnd.ms-opentype)
         local example_text="ABCDEFGHIJKLMNOPQRSTUVWXYZ
 abcdefghijklmnopqrstuvwxyz
-01234567890
-(){}[]!@#$%^&*-+_=/|\\\><,.:;\"\'
-The quick brown fox jumps over the lazy dog."
+01234567890 $€£¥
+() {} [] <> \\\|/ +-*= ¿?¡! .,:; &%#@^
+The quick brown fox jumps over the lazy dog.
+Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.
+"
         tmpfile="$(create_cache "${FILE}" ".png")"
         if ! [[ -f "$tmpfile" ]] {
             convert -background transparent -fill '#eceff4' -font "$FILE" \
