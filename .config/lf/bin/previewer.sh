@@ -112,12 +112,12 @@ case "$MIMETYPE" in
         exit 1
         ;;
 
-    *opendocument*)
+    *opendocument*|application/vnd.openxmlformats-officedocument.*)
         tmpfile="$(create_cache "$FILE" ".png")"
         if ! [[ -f "$tmpfile" ]] {
             libreoffice --convert-to pdf "$FILE" --outdir "$CACHEDIR"
             outfile="$CACHEDIR/${FILE:t}"
-            outfile="${outfile:0:-3}pdf"
+            outfile="${outfile%.*}.pdf"
             pdftoppm -f 1 -l 1 -png "$outfile" >> "$tmpfile"
             rm "$outfile"
         }
