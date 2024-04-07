@@ -200,6 +200,32 @@ ${(j:
 :)libs[@]}"
         exit 1
         ;;
+    application/x-object)
+        info "󰈮 Object File"
+        local -a funcs
+        local -a undef
+        local -a vars
+        while read -r symbol type _; do
+            case $type in
+                T)
+                    funcs+="$symbol";;
+                U)
+                    undef+="$symbol";;
+                D)
+                    vars+="$symbol";;
+            esac
+        done <<< "$(nm -g --format=posix "$FILE")"
+        print -- "$#funcs Function(s):
+${(j:, :)funcs}
+
+$#vars Variable(s)
+${(j:, :)vars}
+
+$#undef Undefined Symbol(s):
+${(j:, :)undef}"|fmt -sw $((W-4))
+
+        exit 1
+        ;;
 
     application/vnd.flatpak.ref)
         info "󰏖 Flatpak Package Definition"
