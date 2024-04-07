@@ -33,7 +33,7 @@ function create_cache {
     local pathn="${1:h4}"
     local pathn="${pathn//\//.}"
     local basen="${1:t}"
-    print -- "$CACHEDIR/$pathn.$basen${2}"
+    print -- "$CACHEDIR/${pathn:1}.$basen${2}"
 }
 
 
@@ -52,9 +52,9 @@ MIMETYPE="$(file --dereference --brief --mime-type -- "$FILE")"
 
 case "$MIMETYPE" in
     application/pdf) 
-        tmpfile="$(create_cache "${FILE}" ".ppm")"
+        tmpfile="$(create_cache "${FILE}" ".png")"
         if ! [[ -f "$tmpfile" ]] {
-            pdftoppm -f 1 -l 1 "$FILE" >> "$tmpfile"
+            pdftoppm -f 1 -l 1 -png "$FILE" >> "$tmpfile"
         }
         display_image "$tmpfile"
         exit 1
@@ -113,18 +113,18 @@ case "$MIMETYPE" in
         ;;
 
     *opendocument*)
-        tmpfile="$(create_cache "$FILE" ".ppm")"
+        tmpfile="$(create_cache "$FILE" ".png")"
         if ! [[ -f "$tmpfile" ]] {
             libreoffice --convert-to pdf "$FILE" --outdir "$CACHEDIR"
             outfile="$CACHEDIR/${FILE:t}"
             outfile="${outfile:0:-3}pdf"
-            pdftoppm -f 1 -l 1 "$outfile" >> "$tmpfile"
+            pdftoppm -f 1 -l 1 -png "$outfile" >> "$tmpfile"
         }
         display_image "$tmpfile"
         exit 1
         ;;
 
-    text/* | */xml | application/javascript)
+    text/*|*/xml| application/javascript|application/pgp-signature)
         case $MIMETYPE in
             text/*)
                 name="${MIMETYPE//text\//}";;
