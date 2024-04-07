@@ -119,6 +119,7 @@ case "$MIMETYPE" in
             outfile="$CACHEDIR/${FILE:t}"
             outfile="${outfile:0:-3}pdf"
             pdftoppm -f 1 -l 1 -png "$outfile" >> "$tmpfile"
+            rm "$outfile"
         }
         display_image "$tmpfile"
         exit 1
