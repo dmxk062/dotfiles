@@ -16,12 +16,12 @@
         "name":"MacOS"
     },
     {
-        "path":"/home/dmx/.config/background/img/hyprland",
-        "name":"Hyprland"
+        "path":"/home/dmx/.config/background/img/orange_turquoise",
+        "name":"Orange & Turquoise Clouds"
     },
     {
-        "path":"/home/dmx/.config/background/img/lake-res",
-        "name":"Mountain Lake"
+        "path":"/home/dmx/.config/background/img/celeste",
+        "name":"Celeste"
     },
     {
         "path":"/home/dmx/.config/background/img/splash",
@@ -44,8 +44,8 @@
         "name":"Orange & Green"
     },
     {
-        "path":"/home/dmx/.config/background/img/dunes",
-        "name":"Dunes"
+        "path":"/home/dmx/.config/background/img/robot",
+        "name":"Trans²"
     },
     {
         "path":"/home/dmx/.config/background/img/fire",
@@ -60,8 +60,8 @@
         "name":"Rainbow"
     },
     {
-        "path":"/home/dmx/.config/background/img/peaks-res",
-        "name":"Peaks"
+        "path":"/home/dmx/.config/background/img/leaves-res",
+        "name":"Red Leaves"
     }
 
 ]
