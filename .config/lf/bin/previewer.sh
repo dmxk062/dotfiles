@@ -125,7 +125,7 @@ case "$MIMETYPE" in
         exit 1
         ;;
 
-    text/*|*/xml| application/javascript|application/pgp-signature)
+    text/*|*/xml| application/javascript|application/pgp-signature|application/x-setupscript|application/x-wine-extension-ini)
         case $MIMETYPE in
             text/*)
                 name="${MIMETYPE//text\//}";;
@@ -260,6 +260,5 @@ Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.
         info "󰈔 ${MIMETYPE}"
         exit 1
         ;;
-
 esac
 
