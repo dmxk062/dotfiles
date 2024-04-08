@@ -37,10 +37,10 @@ noremap WJ <c-w>J
 noremap WK <c-w>K
 noremap WH <c-w>H
 noremap WL <c-w>L
-inoremap <C-h> <LEFT>
-inoremap <C-j> <DOWN>
-inoremap <C-k> <UP>
-inoremap <C-l> <RIGHT>
+" inoremap <C-h> <LEFT>
+" inoremap <C-j> <DOWN>
+" inoremap <C-k> <UP>
+" inoremap <C-l> <RIGHT>
 " imap <C-s> <Esc>[s1z=`]a
 noremap <leader>1 1gt
 noremap <leader>2 2gt
@@ -53,10 +53,8 @@ noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <C-h> :tabprevious<CR>
 noremap <C-L> :tabnext<CR>
-noremap <leader>+ :tabnew<CR>
-noremap <leader>t :tabnew<CR>
-noremap <leader>[ :vsplit<CR>
-noremap <leader>] :vsp 
+noremap <leader>t :tabnew 
+noremap <leader>" :vsp 
 noremap <leader>' :sp 
 " dont clear registers on change
 vnoremap <a-y> "+y<ESC>
@@ -65,17 +63,16 @@ vnoremap <a-p> "+p<ESC>
 " noremap <leader>l :Lf  <CR> 
 noremap <leader>F :FZF<CR>
 noremap q :q<CR>
-cab mo :set mouse=a
-cab mf :set mouse=
-cab spde :setlocal spell spelllang=de_at
-cab speng :setlocal spell spelllang=en_us
-cab spoff :setlocal spell& spelllang&
-cab Q :q!
+cab mo set mouse=a
+cab mf set mouse=
+cab spde setlocal spell spelllang=de_at
+cab speng setlocal spell spelllang=en_us
+cab spoff setlocal spell& spelllang&
+cab Q q!
+cab R registers
 nnoremap <leader>T :ToggleTerm<CR>
 " nnoremap <leader>T :ToggleTerm direction=tab<CR>
-nnoremap <leader><C-T> :ToggleTermSendCurrentLine<CR>
 vnoremap <leader>T :ToggleTermSendVisualSelection<CR>
-nnoremap <S-F6> :TermExec cmd="python3 %"<CR>
 set wrap
 augroup RestoresursorShapeOnExit
     autocmd!
