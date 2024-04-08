@@ -93,6 +93,7 @@ local -A DIRSHORTCUTS=(
     ["docs"]="$HOME/Documents"
     ["school"]="$HOME/Documents/school"
     ["mnt"]="/mnt"
+    ["arc"]="$HOME/.avfs"
     ["media"]="/run/media/$USER"
 )
 

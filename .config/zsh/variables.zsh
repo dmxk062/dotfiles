@@ -7,8 +7,5 @@ alias ':tab'="IFS=$'\t'" \
 ':lf'="IFS=$'\n'" \
 ':eq'="IFS='='"
 
-# some great stream ease of use stuff
-alias -g "@null"="> /dev/null" "@err"="> /dev/stderr" "@out"="> /dev/stdout"
-
 FALSE=1
 TRUE=0

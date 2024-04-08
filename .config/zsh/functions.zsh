@@ -32,16 +32,12 @@ function -mon {
     } else {
         unit=seconds
     }
-    local output old_output
+    local output 
     while true; do
         output="$(eval "$command")"
         print -n "\e]0;$output\a"
         print -n "[H[2J"
         print -n "Every $interval $unit: \`$command\`\n\n$output"
-        if [[ "$output" != "$old_output" ]]; then
-            print -n "\a"
-        fi
-        old_output=$output
         sleep "$interval"
     done
 
