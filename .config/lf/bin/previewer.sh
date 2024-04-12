@@ -218,7 +218,7 @@ ${(j:
         print -- "$#funcs Function(s):
 ${(j:, :)funcs}
 
-$#vars Variable(s)
+$#vars Variable(s):
 ${(j:, :)vars}
 
 $#undef Undefined Symbol(s):
