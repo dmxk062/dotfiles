@@ -51,6 +51,7 @@
     ;; "hyprctl dispatch focuswindow address:${app.address}"}
     :onclick "dock/bin/focus.sh '${app.address}' '${app.workspace.name}'"
     :onrightclick "${EWW_CMD} update dock_active_win='${replace(app, "'", "")}'; sleep 0.1; dock/bin/open_win_menu.sh"
+    :onmiddleclick "hyprctl dispatch closewindow address:${app.address}"
     :visible {app.mapped && app.size != '[0, 0]' && app.class != "" && app.title != ""}
     :tooltip "${app.title} in ${app.workspace.name}"
         (overlay 

@@ -13,6 +13,7 @@
 "zenity":"dialog-info",
 "valent":"ca.andyholmes.valent",
 "Vial":"input-keyboard",
+"gnome-podcasts":"org.gnome.Podcasts",
 "blueman-manager":"bluetooth",
 "vesktop":"discord",
 "timeshift-gtk":"timeshift",
