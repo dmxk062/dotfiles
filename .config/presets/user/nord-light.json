@@ -41,7 +41,10 @@
         "secondary_sidebar_fg_color": "#2e3440",
         "secondary_sidebar_backdrop_color": "#eceff4",
         "thumbnail_bg_color": "#d8dee9",
-        "thumbnail_fg_color": "#2e3440"
+        "thumbnail_fg_color": "#2e3440",
+        "sidebar_shade_color": "rgba(0,0,0,0)",
+        "secondary_sidebar_shade_color": "rgba(0,0,0,0)",
+        "popover_shade_color": "rgba(0,0,0,0)"
     },
     "palette": {
         "blue_": {
