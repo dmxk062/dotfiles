@@ -2,9 +2,6 @@
 IFS=$'\n'
 ICON_THEME="/usr/share/icons/Tela/scalable"
 
-declare -A OVERRIDES=(
-    ["citra-qt"]="hicolor/scalable/apps/citra"
-)
 
 function list(){
 SINK_INPUTS="$(pactl --format=json list sink-inputs 2> /dev/null)"  #get rid of the stupid ascii warning
@@ -23,9 +20,6 @@ do
         if ls "${ICON_THEME}/apps/"*"${icon}.svg" > /dev/null; then
             icon="$(basename "${ICON_THEME}/apps/"*"${icon}.svg")"
             icon="${icon%.*}"
-        elif [[ -n "${OVERRIDES[$icon]}" ]]; then
-            icon="${OVERRIDES[$icon]}"
-            abs="true"
         else
             icon="multimedia-volume-control"
         fi
