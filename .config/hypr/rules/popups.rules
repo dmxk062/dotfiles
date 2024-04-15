@@ -50,4 +50,5 @@ windowrulev2=float,class:org.prismlauncher.PrismLauncher
 windowrulev2=center,class:org.prismlauncher.PrismLauncher
 windowrulev2=idleinhibit always,class:gamescope
 windowrulev2=float,class:yad
+windowrulev2=float,class:io.github.TheWisker.Cavasik
 

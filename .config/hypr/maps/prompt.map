@@ -9,7 +9,7 @@ submap = prompt
 #
 
 bind = , Escape, exec, ~/.config/eww/shell/prompt/open.sh
-bind = $mainMod, Slash, exec, ~/.config/eww/shell/prompt/open.sh
+bind = $mod, Slash, exec, ~/.config/eww/shell/prompt/open.sh
 
 binde = , Up, exec, ~/.config/eww/shell/prompt/history.sh up
 binde = , Down, exec, ~/.config/eww/shell/prompt/history.sh down
