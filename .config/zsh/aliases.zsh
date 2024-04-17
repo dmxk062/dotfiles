@@ -20,4 +20,5 @@ l='lsd --hyperlink=auto' \
 grep='grep --color=auto' \
 f="fd" \
 g="rg" \
-pac="pacman" 
+pac="pacman" \
+wd="print -P \"%~\""
