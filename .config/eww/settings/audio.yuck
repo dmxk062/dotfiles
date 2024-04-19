@@ -1,6 +1,6 @@
 (defvar sources "[]")
 (defvar sinks "[]")
-(defvar streams "[]")
+(defpoll streams :interval "4s" :run-while {selected_section == 4 && audio_section == 2} "bin/mixer.sh")
 (defvar active_sinks '{}')
 (defvar active_sources '{}')
 
