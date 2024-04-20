@@ -1,6 +1,6 @@
 export VISUAL="nvim"
 export EDITOR="nvim"
-export PAGER="bat"
+export PAGER="bat -p"
 export npm_config_prefix="$HOME/.local"
 export MOZ_ENABLE_WAYLAND=1      
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
