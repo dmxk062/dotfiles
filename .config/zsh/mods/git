@@ -1,0 +1,30 @@
+#!/bin/false
+# vim: ft=zsh
+
+if [[ "$1" == "load" ]] {
+
+function lschg {
+    local line mode file prefix
+    while read -r type line; do
+        if [[ $type == 1 ]] {
+            read -r mode _ _ _ _ _ _ file <<< "$line";
+            case $mode in 
+                \.M) prefix="%F{blue}_ ";;
+                M\.) prefix="%F{yellow}* ";;
+                A\.) prefix="%F{green}+ ";;
+                \.A) prefix="%F{blue}+ ";;
+                D\.) prefix="%F{red}- ";;
+                D\.) prefix="%F{magenta}- ";;
+            esac
+
+            print -P -- "$prefix$file%f"
+        }
+    done <<(git status --porcelain=v2)
+}
+
+} elif [[ "$1" == "unload" ]] {
+
+unfunction lschg
+
+}
+
