@@ -26,10 +26,10 @@ function precmd() {
 # PROMPT="%B%F{magenta}%S %n %s %B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 PROMPT="%B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 # Prompt for nested things:
-PS2="%B%S%_%s%f%b "
+PS2="%B%S󰅪 %_%s%f%b "
 # sudo prompt
-export SUDO_PROMPT="
-[31;1m[30;41;1m sudo[0m[31;1m[0m " 
+
+export SUDO_PROMPT="$(print -P "\n%B%F{red}%S sudo%s%f%b ")"
 
 # only the default, i have a couple more functions planed for this
 TIMEFMT="User   %U
