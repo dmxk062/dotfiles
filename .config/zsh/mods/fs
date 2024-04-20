@@ -16,6 +16,45 @@ function mcd {
     cd "$1"
 }
 
+function mkf {
+    local -a filenames=("$@")
+    local file no_ext
+    for  ((i=1; i<=$#filenames;i++)) {
+        file="${filenames[i]}"
+        if [[ -f "$file" || -d "$file" ]] {
+            print "File already exists: $file" > /dev/stderr
+            continue
+        }
+        case "$file" in
+            *\.c|*\.h)
+                no_ext="${file%%.*}"
+                if [[ "${filenames[i+1]}" =~ "$no_ext\.." ]] {
+                    echo "#include \"$no_ext.h\"" > "$no_ext.c"
+                    echo -n "" > "$no_ext.h"
+                    ((i++))
+                }
+                ;;
+            main.c)
+                echo "int main(int argc, char* argv[]) {\n    return 0;\n}" > "$file"
+                ;;
+            main.py)
+                echo "def main():\n    pass\n\nif __name__ == \"__main__\":\n    main()" > "$file"
+                ;;
+            *\.sh)
+                echo "#!/usr/bin/env bash" > "$file"
+                chmod +x "$file"
+                ;;
+            *\.py)
+                echo "#!/usr/bin/env python" > "$file"
+                chmod +x "$file"
+                ;;
+            *)
+                echo -n "" > "$file";;
+        esac
+    }
+            
+}
+
 alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
 
@@ -121,7 +160,7 @@ function readstream {
 
 } elif [[ "$1" == "unload" ]] {
 
-unfunction find_containing mcd tmp rp \
+unfunction find_containing mcd mkf tmp rp \
     readfile readstream
 
 unalias md ft bft
