@@ -1,0 +1,99 @@
+#!/usr/bin/env zsh
+
+REGISTRY="$HOME/.steam/registry.vdf"
+ENVVARS=("VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json")
+
+
+function reg2json {
+    local closed=0
+    local first=0
+    local initial=1
+    echo -n "{" 
+    while read -r key value; do
+        if [[ "$key" == '{' ]]; then 
+            continue
+        elif [[ "$key" == '}' ]]; then
+            closed=1
+            echo -n '}'
+        elif [[ "$value" == "" ]]; then
+            if ((closed)); then
+                closed=0
+                echo -n ","
+            elif ((first)); then
+                first=0
+            elif ((initial)); then
+                initial=0
+            else
+                echo -n ","
+            fi
+            print -nr -- "$key:{"
+            first=1
+        else 
+            if ((closed)); then
+                closed=0
+                echo -n ","
+            elif ((first)); then
+                first=0
+            else 
+                echo -n ","
+            fi
+
+            print -nr -- "$key:$value"
+        fi
+    done < "$REGISTRY"
+    echo "}"
+}
+
+
+json=0
+table=0
+pretty=1
+mode=list
+local -a args=()
+for arg in "$@"; do
+    case $arg in
+        --json|-j) json=1;;
+        --table|-t) table=1;;
+        --plain|-p) pretty=0;;
+        ls|list|-l) mode=list;;
+        run|-r|exec|-e) mode=exec;;
+        *) args+=("$arg");;
+    esac
+done
+
+case $mode in 
+    list)
+        if ((json)); then
+            reg2json
+        else
+            if ((table)); then
+                echo -e "Id\tUpdating\tRunning\tName"
+            elif ((pretty)); then
+                reg2json|jq -r '.Registry.HKCU.Software.Valve.Steam.apps | 
+                    . as $parent | to_entries[] | select (.value.name) |
+                    "\(.key)\t\(.value.Updating)\t\(.value.Running)\t\(.value.name)"'\
+                    | ( print -P "Status\tName\tId"
+                        while IFS=$'\t' read -r id updating running name; do
+                        prefix="%F{blue}  "
+                        if ((updating)); then
+                            prefix="%F{green}󰚰  "
+                        elif ((running)); then
+                            prefix="%F{magenta}󰊴  "
+                        fi
+
+                        print -P "$prefix\t$name\t$id"
+                    done) |column -t -s$'\t'
+                exit
+            fi
+                reg2json|jq -r '.Registry.HKCU.Software.Valve.Steam.apps | 
+                    . as $parent | to_entries[] | select (.value.name) |
+                    "\(.key)\t\(.value.Updating)\t\(.value.Running)\t\(.value.name)"'
+        fi
+        ;;
+
+    exec)
+        for arg in "${args[@]}"; do
+            env "$ENVVARS" steam steam://rungameid/$arg & disown
+        done
+        ;;
+esac
