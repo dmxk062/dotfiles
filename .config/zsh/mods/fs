@@ -18,7 +18,7 @@ function mcd {
 
 function mkf {
     local -a filenames=("$@")
-    local file no_ext
+    local i file no_ext
     for  ((i=1; i<=$#filenames;i++)) {
         file="${filenames[i]}"
         if [[ -f "$file" || -d "$file" ]] {
@@ -30,7 +30,7 @@ function mkf {
                 no_ext="${file%%.*}"
                 if [[ "${filenames[i+1]}" =~ "$no_ext\.." ]] {
                     echo "#include \"$no_ext.h\"" > "$no_ext.c"
-                    echo -n "" > "$no_ext.h"
+                    echo "#pragma once" > "$no_ext.h"
                     ((i++))
                 }
                 ;;
@@ -52,7 +52,6 @@ function mkf {
                 echo -n "" > "$file";;
         esac
     }
-            
 }
 
 alias ft="file --mime-type -F$'\t'"
