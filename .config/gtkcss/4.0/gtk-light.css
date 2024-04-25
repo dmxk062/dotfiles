@@ -84,7 +84,7 @@
 @define-color sidebar_backdrop_color #d8dee9;
 @define-color secondary_sidebar_backdrop_color #d8dee9;
 @define-color headerbar_border_color #eceff4;
-@define-color shade_color rgba(#d8dee9, 0.2);
+@define-color shade_color rgba(216, 222, 233, 0.2);
 @define-color card_shade_color #d8dee9;
 @define-color scrollbar_outline_color rgba(216, 222, 233, 0.7);
 tooltip {

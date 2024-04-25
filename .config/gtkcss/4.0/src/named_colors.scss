@@ -52,7 +52,7 @@ $no_shadows: headerbar, sidebar, secondary_sidebar, popover;
 @define-color secondary_sidebar_backdrop_color #{$bg1};
 
 @define-color headerbar_border_color #{$bg};
-@define-color shade_color rgba(#{$bg1}, 0.2);
+@define-color shade_color #{rgba($bg1, 0.2)};
 @define-color card_shade_color #{$bg1};
 
 @define-color scrollbar_outline_color #{rgba($bg1, 0.7)};
