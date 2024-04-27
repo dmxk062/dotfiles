@@ -21,7 +21,7 @@ theme.loadSyntax = function()
 		Type = { fg = nord.nord15_gui }, -- int, long, char, etc.
 		StorageClass = { fg = nord.nord9_gui }, -- static, register, volatile, etc.
 		Structure = { fg = nord.nord9_gui }, -- struct, union, enum, etc.
-		Constant = { fg = nord.nord4_gui }, -- any constant
+		Constant = { fg = nord.nord13_gui }, -- any constant
 		Character = { fg = nord.nord14_gui }, -- any character constant: 'c', '\n'
 		Number = { fg = nord.nord15_gui }, -- a number constant: 5
 		Boolean = { fg = nord.nord13_gui }, -- a boolean constant: TRUE, false
@@ -33,7 +33,7 @@ theme.loadSyntax = function()
 		PreProc = { fg = nord.nord9_gui }, -- generic Preprocessor
 		Include = { fg = nord.nord9_gui }, -- preprocessor #include
 		Define = { fg = nord.nord9_gui }, -- preprocessor #define
-		Macro = { fg = nord.nord9_gui }, -- same as Define
+		Macro = { fg = nord.nord8_gui }, -- same as Define
 		Typedef = { fg = nord.nord9_gui }, -- A typedef
 		PreCondit = { fg = nord.nord13_gui }, -- preprocessor #if, #else, #endif, etc.
 		Special = { fg = nord.nord4_gui }, -- any special symbol
@@ -243,7 +243,7 @@ theme.loadTreeSitter = function()
 		TSNumber = { fg = nord.nord15_gui }, -- For all number
 		TSAttribute = { fg = nord.nord15_gui }, -- (unstable) TODO: docs
 		TSError = { fg = nord.nord11_gui }, -- For syntax/parser errors.
-		TSException = { fg = nord.nord15_gui }, -- For exception related keywords.
+		TSException = { fg = nord.nord12_gui }, -- For exception related keywords.
 		TSFuncMacro = { fg = nord.nord7_gui }, -- For macro defined fuctions (calls and definitions): each `macro_rules` in Rust.
 		TSInclude = { fg = nord.nord9_gui }, -- For includes: `#include` in C, `use` or `extern crate` in Rust, or `require` in Lua.
 		TSLabel = { fg = nord.nord15_gui }, -- For labels: `label:` in C and `:label:` in Lua.
@@ -316,6 +316,7 @@ theme.loadTreeSitter = function()
 	treesitter.TSVariable = { fg = nord.nord6_gui }
 	treesitter.TSTitle = { fg = nord.nord10_gui, bg = nord.none, style = bold }
 	treesitter["@variable"] = { fg = nord.nord9_gui}
+	treesitter["@lsp.mod.readonly"] = {}
 	treesitter["@variable.builtin"] = { fg = nord.nord6_gui}
 	treesitter["@variable.global"] = { fg = nord.nord6_gui}
 	treesitter["@boolean"] = { fg = nord.nord7_gui}
@@ -328,7 +329,7 @@ theme.loadTreeSitter = function()
 	-- Conditionals
 	treesitter.TSConditional = { fg = nord.nord9_gui } -- For keywords related to conditionnals.
 	-- Function names
-	treesitter.TSFunction = { fg = nord.nord8_gui } -- For fuction (calls and definitions).
+	treesitter.TSFunction = { fg = nord.n, style = italicord8_gui } -- For fuction (calls and definitions).
 	treesitter.TSMethod = { fg = nord.nord7_gui } -- For method calls and definitions.
 	treesitter.TSFuncBuiltin = { fg = nord.nord8_gui }
 	-- Namespaces and property accessors
@@ -349,12 +350,13 @@ theme.loadTreeSitter = function()
 
 	treesitter["@comment"] = { fg = nord.nord3_gui_bright, style = italic }
 	treesitter["@conditional"] = { fg = nord.nord9_gui }
+	treesitter["@keyword.conditional"] = { fg = nord.nord9_gui }
 	treesitter["@function"] = { fg = nord.nord8_gui }
 	treesitter["@method"] = { fg = nord.nord8_gui }
 	treesitter["@function.builtin"] = { fg = nord.nord8_gui }
 	treesitter["@namespace"] = { fg = nord.nord4_gui }
 	treesitter["@field"] = { fg = nord.nord4_gui }
-	treesitter["@property"] = { fg = nord.nord10_gui }
+	treesitter["@property"] = { fg = nord.nord7_gui }
 	treesitter["@keyword"] = { fg = nord.nord9_gui }
 	treesitter["@keyword.function"] = { fg = nord.nord8_gui }
 	treesitter["@keyword.return"] = { fg = nord.nord8_gui }
@@ -403,6 +405,7 @@ theme.loadLSP = function()
 		LspDiagnosticsSignInformation = { fg = nord.nord10_gui }, -- used for "Information" diagnostic signs in sign column
 		LspDiagnosticsFloatingInformation = { fg = nord.nord10_gui, bg=nord.none }, -- used for "Information" diagnostic messages in the diagnostics float
 		LspDiagnosticsVirtualTextInformation = { fg = nord.nord10_gui }, -- Virtual text "Information"
+		LspStaticMethod = { fg = nord.nord15_gui }, -- Virtual text "Information"
 		LspDiagnosticsUnderlineInformation = { style = "undercurl", sp = nord.nord10_gui }, -- used to underline "Information" diagnostics.
 		LspDiagnosticsDefaultHint = { fg = nord.nord9_gui }, -- used for "Hint" diagnostic virtual text
 		LspDiagnosticsSignHint = { fg = nord.nord9_gui }, -- used for "Hint" diagnostic signs in sign column
