@@ -19,7 +19,7 @@ function mcd {
 function mkf {
     local -a filenames=("$@")
     local i file no_ext
-    for  ((i=1; i<=$#filenames;i++)) {
+    for  ((i=1; i<=$#filenames; i++)) {
         file="${filenames[i]}"
         if [[ -f "$file" || -d "$file" ]] {
             print "File already exists: $file" > /dev/stderr
@@ -134,6 +134,10 @@ function tmp {
 function rp {
     print -l -- "${@:A}"
 }
+# basename
+function bn {
+    print -l -- "${@:t}"
+}
 
 function readfile {
     local arrayname="${1}"
@@ -159,7 +163,7 @@ function readstream {
 
 } elif [[ "$1" == "unload" ]] {
 
-unfunction find_containing mcd mkf tmp rp \
+unfunction find_containing mcd mkf tmp rp bn \
     readfile readstream
 
 unalias md ft bft
