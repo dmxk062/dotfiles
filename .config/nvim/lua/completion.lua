@@ -1,3 +1,4 @@
+local lspkind = require('lspkind')
  local cmp = require'cmp'
  require("snip")
   cmp.setup({
@@ -10,6 +11,37 @@
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
     },
+      formatting = {
+        format = lspkind.cmp_format({mode = "symbol",
+        symbol_map = {
+          Text = "󰉿 txt",
+          Method = "󰆧 method",
+          Function = "󰊕 func",
+          Constructor = " constructor",
+          Field = "󰽐 field",
+          Variable = "󰀫 var",
+          Class = "󰠱 class",
+          Interface = " interface",
+          Module = " module",
+          Property = "󰜢 prop",
+          Unit = "󰑭 unit",
+          Value = "󰎠 val",
+          Enum = " enum",
+          Keyword = "󰌋 keywd",
+          Snippet = " snip",
+          Color = "󰏘 color",
+          File = "󰈙 file",
+          Reference = "󰈇 ref",
+          Folder = " dir",
+          EnumMember = " enum Member",
+          Constant = "󰏿 const",
+          Struct = "󰙅 struct",
+          Event = " event",
+          Operator = "󰆕 op",
+          TypeParameter = " param",
+        },
+    }),
+  },
     window = {
       completion = {
           -- cmp.config.window.bordered(),
@@ -44,7 +76,7 @@
   -- Set configuration for specific filetype.
   cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
-      { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+      { name = 'git' }, 
     }, {
       { name = 'buffer' },
     })
@@ -60,25 +92,7 @@
             { name = 'spell' } -- move spell to the bottom so it doesnt slow it down that much
         })
     })
-    cmp.setup.filetype('zsh', {
-        sources = cmp.config.sources({
-            { name = 'zsh' },
-            { name = 'buffer' },
-            { name = 'nvim_lsp' },
-            { name = 'path' }
-        })
-    })
-    -- cmp.setup.filetype('org', {
-    --     sources = cmp.config.sources({
-    --         {name = 'spell'},
-    --         {name = 'buffer'},
-    --         {name = 'nvim_lsp'},
-    --         {name = 'path'},
-    --         {name = 'orgmode'}
-    --     })
-    -- })
-   -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline({ '/', '?' }, {
+  cmp.setup.cmdline({ '/', '?'}, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
       { name = 'buffer' }
@@ -96,47 +110,12 @@
   })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   require('lspconfig')['bashls'].setup {
     capabilities = capabilities
   }
-  local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   require('lspconfig')['marksman'].setup {
     capabilities = capabilities
   }
-local cmp = require('cmp')
-local lspkind = require('lspkind')
-cmp.setup {
-  formatting = {
-    format = lspkind.cmp_format({mode = "symbol",
-    symbol_map = {
-      Text = "󰉿 txt",
-      Method = "󰆧 method",
-      Function = "󰊕 func",
-      Constructor = " constructor",
-      Field = "󰽐 field",
-      Variable = "󰀫 var",
-      Class = "󰠱 class",
-      Interface = " interface",
-      Module = " module",
-      Property = "󰜢 prop",
-      Unit = "󰑭 unit",
-      Value = "󰎠 val",
-      Enum = " enum",
-      Keyword = "󰌋 keywd",
-      Snippet = " snip",
-      Color = "󰏘 color",
-      File = "󰈙 file",
-      Reference = "󰈇 ref",
-      Folder = " dir",
-      EnumMember = " enum Member",
-      Constant = "󰏿 const",
-      Struct = "󰙅 struct",
-      Event = " event",
-      Operator = "󰆕 op",
-      TypeParameter = " param",
-    },
-}),
-  },
-}
+  require('lspconfig')['clangd'].setup {
+    capabilities = capabilities
+  }

@@ -7,7 +7,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 lspconfig.jsonls.setup{capabilities=capabilities}
 require'lspconfig'.html.setup {capabilities=capabilities}
-require'lspconfig'.clangd.setup{capabilities=capabilities, cmd={"clangd"}}
+require'lspconfig'.clangd.setup{capabilities=capabilities, cmd={"clangd", "--enable-config"}}
 -- lspconfig.pyright.setup{}
 lspconfig.jedi_language_server.setup{}
 lspconfig.ruff_lsp.setup{}

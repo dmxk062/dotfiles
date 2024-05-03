@@ -14,6 +14,7 @@ require("autoclose").setup({
     },
     options = {
         disable_when_touch = true,
+        -- mainly for quotes
         disabled_filetypes = {
             "text",
             "markdown"

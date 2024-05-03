@@ -60,7 +60,6 @@ noremap <leader>' :sp
 vnoremap <a-y> "+y<ESC>
 vnoremap <a-p> "+p<ESC>
 
-" noremap <leader>l :Lf  <CR> 
 noremap <leader>F :FZF<CR>
 noremap q :q<CR>
 cab mo set mouse=a
@@ -85,13 +84,4 @@ set guicursor=c-ci-cr:hor20,n-o-r-v-sm:block,i-ve:ver10,n-i-ve:blinkon1,
 set cursorline
 set cursorlineopt=number
 set title
-let &titlestring="nv: %F"
-" function LfIfStdinEmpty()
-"     if argc() == 0
-"         lua require ("lf").start()
-"     endif
-" endfunction
-
-" au VimEnter * call LfIfStdinEmpty()
-
 source ~/.config/nvim/vim/markdown.vim
