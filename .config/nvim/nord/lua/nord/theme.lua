@@ -99,7 +99,7 @@ theme.loadEditor = function()
 		Question = { fg = nord.nord14_gui },
 		QuickFixLine = { fg = nord.nord4_gui, bg = nord.none, style = "reverse" },
 		qfLineNr = { fg = nord.nord4_gui, bg = nord.none, style = "reverse" },
-		Search = { fg = nord.nord0_gui, bg = nord.nord12_gui },
+		Search = { bg = nord.nord3_gui },
 		Substitute = { fg = nord.nord0_gui, bg = nord.nord12_gui },
 		SpecialKey = { fg = nord.nord9_gui },
 		SpellBad = { fg = nord.nord11_gui, bg = nord.none, style = undercurl },
@@ -488,12 +488,15 @@ theme.loadPlugins = function()
 		GitSignsCurrentLineBlame = { fg = nord.nord3_gui_bright, style = bold },
 
 		-- Telescope
-		TelescopePromptBorder = { fg = nord.nord4_gui },
-		TelescopeResultsBorder = { fg = nord.nord4_gui },
-		TelescopePreviewBorder = { fg = nord.nord4_gui },
+		TelescopePromptBorder = { fg = nord.nord3_gui },
+        TelescopePromptTitle = { fg = nord.nord15_gui },
+		TelescopeResultsBorder = { fg = nord.nord3_gui },
+		TelescopePreviewBorder = { fg = nord.nord3_gui },
 		TelescopeSelectionCaret = { fg = nord.nord9_gui },
 		TelescopeSelection = { fg = nord.nord6_gui, bg = nord.nord2_gui },
-		TelescopeMatching = { link = 'Search' },
+        TelescopePromptPrefix = {fg = nord.nord15_gui },
+        TelescopeSelectionCaret = { bg = nord.nord3_gui},
+		TelescopeMatching = { fg = 'Search' },
 
 		-- NvimTree
 		NvimTreeRootFolder = { fg = nord.nord15_gui },

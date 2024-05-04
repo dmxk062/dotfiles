@@ -13,7 +13,7 @@ lspconfig.jedi_language_server.setup{}
 lspconfig.ruff_lsp.setup{}
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.keymap.set('n', '<c-i>', vim.diagnostic.open_float)
+vim.keymap.set('n', '<space>d', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
@@ -53,9 +53,6 @@ vim.lsp.handlers.signature_help, {
 }
 )
 
-vim.diagnostic.config{
-    float={border=_border}
-}
 vim.cmd [[
 highlight! DiagnosticLineNrError guibg=#2e3440 guifg=#bf616a gui=bold
 highlight! DiagnosticLineNrWarn guibg=#2e3440 guifg=#d08770 gui=bold

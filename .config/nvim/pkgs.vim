@@ -10,7 +10,6 @@ Plug 'glepnir/nerdicons.nvim'
 Plug 'numToStr/Comment.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'NvChad/nvim-colorizer.lua'
-Plug 'junegunn/fzf'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'akinsho/toggleterm.nvim'
@@ -33,15 +32,13 @@ Plug 'kevinhwang91/nvim-ufo', {'branch': 'main'}
 Plug 'kevinhwang91/promise-async'
 Plug 'luukvbaal/statuscol.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'jose-elias-alvarez/typescript.nvim'
 Plug 'b0o/schemastore.nvim'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
+Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
-
 Plug 'lervag/vimtex'
 Plug 'micangl/cmp-vimtex'
 call plug#end()
-

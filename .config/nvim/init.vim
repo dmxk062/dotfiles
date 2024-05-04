@@ -18,11 +18,6 @@ set shiftwidth=4
 source ~/.config/nvim/pkgs.vim
 lua require('luaconf')
 colorscheme nord
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:nord_italic = v:true
 let g:nord_borders = v:true
 
@@ -56,11 +51,9 @@ noremap <C-L> :tabnext<CR>
 noremap <leader>t :tabnew 
 noremap <leader>" :vsp 
 noremap <leader>' :sp 
-" dont clear registers on change
 vnoremap <a-y> "+y<ESC>
 vnoremap <a-p> "+p<ESC>
 
-noremap <leader>F :FZF<CR>
 noremap q :q<CR>
 cab mo set mouse=a
 cab mf set mouse=
@@ -70,8 +63,6 @@ cab spoff setlocal spell& spelllang&
 cab Q q!
 cab R registers
 nnoremap <leader>T :ToggleTerm<CR>
-" nnoremap <leader>T :ToggleTerm direction=tab<CR>
-vnoremap <leader>T :ToggleTermSendVisualSelection<CR>
 set wrap
 augroup RestoresursorShapeOnExit
     autocmd!
