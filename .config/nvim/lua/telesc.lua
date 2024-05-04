@@ -59,3 +59,11 @@ vim.keymap.set('i', '<C-R>', register_and_insert)
 
 -- vim.keymap.set('n', '<space>a', builtin.)
 require("telescope").load_extension("ui-select")
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    if vim.fn.argv(0) == "" then
+      builtin.find_files()
+    end
+  end,
+})
