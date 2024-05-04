@@ -52,6 +52,9 @@ vim.lsp.handlers.signature_help, {
     border = _border
 }
 )
+vim.diagnostic.config{
+    float={border=_border}
+}
 
 vim.cmd [[
 highlight! DiagnosticLineNrError guibg=#2e3440 guifg=#bf616a gui=bold
