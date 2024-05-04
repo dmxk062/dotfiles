@@ -19,6 +19,8 @@ function lschg {
             esac
 
             print -P -- "$prefix$file%f"
+        } elif [[ "$type" == '?' ]] {
+            print -P -- "\e[90m~ $line%f"
         }
     done <<(git status --porcelain=v2 "$dir")
 }
