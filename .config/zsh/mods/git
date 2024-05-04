@@ -23,9 +23,12 @@ function lschg {
     done <<(git status --porcelain=v2 "$dir")
 }
 
+alias lgit="lsd -l --config-file $HOME/.config/lsd/brief.yaml"
+
 } elif [[ "$1" == "unload" ]] {
 
 unfunction lschg
+unalias lgit
 
 }
 
