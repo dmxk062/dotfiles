@@ -70,7 +70,7 @@ augroup RestoresursorShapeOnExit
 augroup END
 
 
-    
+let &titlestring="nv: %F"    
 set guicursor=c-ci-cr:hor20,n-o-r-v-sm:block,i-ve:ver10,n-i-ve:blinkon1,
 set cursorline
 set cursorlineopt=number
