@@ -34,7 +34,12 @@ telescope.setup {
   },
   extensions = {
     ["ui-select"] = {
-        themes.get_cursor {},
+        themes.get_cursor {
+            layout_config = {
+                height = 4,
+                width = 60
+            }
+        },
     },
     fzf = {
       fuzzy = true,                    -- false will only do exact matching
@@ -60,6 +65,7 @@ vim.keymap.set('i', '<C-R>', register_and_insert)
 
 -- vim.keymap.set('n', '<space>a', builtin.)
 require("telescope").load_extension("ui-select")
+
 
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
