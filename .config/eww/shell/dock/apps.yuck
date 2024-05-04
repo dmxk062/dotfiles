@@ -55,8 +55,8 @@
     :visible {app.mapped && app.size != '[0, 0]' && app.class != "" && app.title != ""}
     :tooltip "${app.title} in ${app.workspace.name}"
         (overlay 
-        (themed_icon :name {app.class == "kitty" ? (matches(app.title, "nv:*.") ?  "nvim" : 
-        (matches(app.title, "lf:*.") ? "file-manager" :
+        (themed_icon :name {app.class == "kitty" ? (matches(app.title, "^nv:*.") ?  "nvim" : 
+        (matches(app.title, "^lf:*.") ? "file-manager" :
         (app.title == "qalc" ? "calculator" :
         (app.title == "cava" ? "accessories-media-converter" : "kitty")))) :
         (app.class == "gamescope" ? 
