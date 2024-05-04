@@ -15,7 +15,7 @@ function lschg {
                 A\.) prefix="%F{green}+ ";;
                 \.A) prefix="%F{blue}+ ";;
                 D\.) prefix="%F{red}- ";;
-                D\.) prefix="%F{magenta}- ";;
+                \.D) prefix="%F{magenta}- ";;
             esac
 
             print -P -- "$prefix$file%f"
