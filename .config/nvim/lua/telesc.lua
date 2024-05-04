@@ -3,6 +3,8 @@ local themes = require("telescope.themes")
 -- telescope.load_extension('fzf')
 telescope.setup {
     defaults = {
+        dynamic_preview_title = true,
+        results_title = false,
         selection_caret = "",
         prompt_prefix = " ",
         layout_strategy = 'vertical',
