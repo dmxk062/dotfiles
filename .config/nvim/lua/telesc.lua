@@ -5,12 +5,8 @@ telescope.setup {
     defaults = {
         dynamic_preview_title = true,
         results_title = false,
-        selection_caret = "",
+        selection_caret = "> ",
         prompt_prefix = " ",
-        layout_strategy = 'vertical',
-        layout_config = {
-            vertical = { width = 0.4 },
-        }
   },
   pickers = {
       lsp_definitions = {
@@ -22,6 +18,9 @@ telescope.setup {
       },
       find_files = {
           theme = "ivy",
+          layout_config = {
+              height = .3,
+          }
       },
       live_grep = {
           theme = "ivy",
@@ -65,7 +64,7 @@ require("telescope").load_extension("ui-select")
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
     if vim.fn.argv(0) == "" then
-      builtin.find_files()
+      builtin.find_files({theme = "ivy", layout_config = { height = .8}})
     end
   end,
 })
