@@ -66,7 +66,16 @@ telescope.setup {
           mappings = {
               n = {
                   ["dd"] = "delete_buffer",
-              }
+                  ["t"] = "select_tab_drop",
+                  ["s"] = "select_horizontal",
+                  ["v"] = "select_vertical",
+                  ["<enter>"] = "select_drop",
+                  ["<S-enter>"] = "select_default"
+              },
+              i = {
+                  ["<enter>"] = "select_drop",
+                  ["<S-enter>"] = "select_default"
+              },
           }
       },
       lsp_references = {
