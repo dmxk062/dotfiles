@@ -3,6 +3,20 @@ local themes = require("telescope.themes")
 -- telescope.load_extension('fzf')
 telescope.setup {
     defaults = {
+        mappings = {
+            n = {
+                ["t"] = "select_tab",
+                ["e"] = "file_edit",
+                ["s"] = "select_horizontal",
+                ["v"] = "select_vertical",
+                ["<enter>"] = "select_drop",
+                ["<S-enter>"] = "select_tab_drop",
+            },
+            i = {
+                ["<enter>"] = "select_drop",
+                ["<S-enter>"] = "select_tab_drop",
+            }
+        },
         dynamic_preview_title = true,
         results_title = false,
         selection_caret = "> ",
@@ -27,6 +41,24 @@ telescope.setup {
       },
       registers = {
           theme = "cursor",
+          mappings = {
+              n = {
+                  ["e"] = "edit_register"
+              }
+          }
+      },
+      buffers = {
+          theme = "dropdown",
+          previewer = false,
+          layout_config = {
+              height = .2,
+              width = .3,
+          },
+          mappings = {
+              n = {
+                  ["dd"] = "delete_buffer",
+              }
+          }
       },
       lsp_references = {
           theme = "ivy",
@@ -50,12 +82,14 @@ telescope.setup {
   }
 }
 local builtin = require('telescope.builtin')
+local _prefix = "<space>"
 vim.keymap.set('n', 'gr', builtin.lsp_references)
 vim.keymap.set('n', 'gd', builtin.lsp_definitions)
-vim.keymap.set('n', ' D', builtin.diagnostics)
-vim.keymap.set('n', ',F', builtin.find_files)
-vim.keymap.set('n', ',S', builtin.live_grep)
-vim.keymap.set('n', ',R', builtin.registers)
+vim.keymap.set('n', _prefix .. 'D', builtin.diagnostics)
+vim.keymap.set('n', _prefix .. 'F', builtin.find_files)
+vim.keymap.set('n', _prefix .. '/', builtin.live_grep)
+vim.keymap.set('n', _prefix .. 'r', builtin.registers)
+vim.keymap.set('n', _prefix .. '<space>', builtin.buffers)
 -- and for insert too
 function register_and_insert()
     builtin.registers()
@@ -64,7 +98,7 @@ end
 vim.keymap.set('i', '<C-R>', register_and_insert)
 
 -- vim.keymap.set('n', '<space>a', builtin.)
-require("telescope").load_extension("ui-select")
+telescope.load_extension("ui-select")
 
 
 vim.api.nvim_create_autocmd("VimEnter", {
