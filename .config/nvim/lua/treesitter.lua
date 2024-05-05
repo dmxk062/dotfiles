@@ -52,8 +52,10 @@ require'nvim-treesitter.configs'.setup {
               ["iA"] = "@assignment.inner",
               -- variable value
               ["vv"] = "@assignment.rhs",
-              ["iC"] = "@comment.inner",
-              ["aC"] = "@comment.outer",
+              ["iC"] = "@class.inner",
+              ["aC"] = "@class.outer",
+              ["i/"] = "@comment.inner",
+              ["a/"] = "@comment.outer",
           }
       }
 
