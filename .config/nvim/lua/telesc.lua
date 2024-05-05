@@ -1,6 +1,17 @@
 local telescope = require("telescope")
 local themes = require("telescope.themes")
 -- telescope.load_extension('fzf')
+local buffer_on_enter = { 
+    n = {
+        ["<enter>"] = "select_drop",
+        ["<S-enter>"] = "select_tab_drop"
+    },
+    i = {
+        ["<enter>"] = "select_drop",
+        ["<S-enter>"] = "select_tab_drop"
+    },
+    
+}
 telescope.setup {
     defaults = {
         mappings = {
@@ -9,13 +20,7 @@ telescope.setup {
                 ["e"] = "file_edit",
                 ["s"] = "select_horizontal",
                 ["v"] = "select_vertical",
-                ["<enter>"] = "select_drop",
-                ["<S-enter>"] = "select_tab_drop",
             },
-            i = {
-                ["<enter>"] = "select_drop",
-                ["<S-enter>"] = "select_tab_drop",
-            }
         },
         dynamic_preview_title = true,
         results_title = false,
@@ -26,18 +31,22 @@ telescope.setup {
       lsp_definitions = {
           jump_type="tab",
           theme = "ivy",
+          mappings = buffer_on_enter,
       },
       diagnostics = {
           theme = "ivy",
+          mappings = buffer_on_enter,
       },
       find_files = {
           theme = "ivy",
           layout_config = {
               height = .3,
-          }
+          },
+          mappings = buffer_on_enter,
       },
       live_grep = {
           theme = "ivy",
+          mappings = buffer_on_enter,
       },
       registers = {
           theme = "cursor",
@@ -62,6 +71,7 @@ telescope.setup {
       },
       lsp_references = {
           theme = "ivy",
+          mappings = buffer_on_enter,
       },
   },
   extensions = {
