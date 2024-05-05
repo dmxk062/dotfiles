@@ -78,7 +78,7 @@ telescope.setup {
     ["ui-select"] = {
         themes.get_cursor {
             layout_config = {
-                height = 4,
+                height = 6,
                 width = 60
             }
         },
