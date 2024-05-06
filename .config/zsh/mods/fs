@@ -28,11 +28,17 @@ function mkf {
         case "$file" in
             *\.c|*\.h)
                 no_ext="${file%%.*}"
-                if [[ "${filenames[i+1]}" =~ "$no_ext\.." ]] {
-                    echo "#include \"$no_ext.h\"" > "$no_ext.c"
-                    echo "#pragma once" > "$no_ext.h"
-                    ((i++))
+                local header source
+                if [[ "${filenames[i+1]}" == "$no_ext\.c" ]] {
+                    source="${filenames[i+1]}"
+                    header="$file"
+                } else {
+                    source="$file"
+                    header="${filenames[i+1]}"
                 }
+                ((i++))
+                echo "#include \"$header\"" > "$source"
+                echo "#pragma once" > "$header"
                 ;;
             main.c)
                 echo "int main(int argc, char* argv[]) {\n    return 0;\n}" > "$file"
@@ -159,11 +165,68 @@ function readstream {
 
 }
 
+# rm wrapper
+function rmi {
+    if (($# < 1)) {
+        return 0
+    }
+
+    local -a files
+    local -a dirs
+    local -a links
+
+    local file
+    for file in "${@}"; do
+        if [[ -L "$file" ]] {
+            links+=("$file")
+        } elif [[ -f "$file" ]] {
+            files+=("$file")
+        } elif [[ -d "$file" ]] {
+            dirs+=("$file")
+        } else {
+            print -P "%F{red}Not a file, dir or symlink: $file%f" > /dev/stderr
+            return 1
+        }
+    done
+
+    local -a fmt=()
+    if (($#files > 0)) {
+        fmt+=("%F{magenta}󰈔 $#files file(s)%f")
+    }
+    if (($#dirs > 0)) {
+        fmt+=("%F{cyan}󰉋 $#dirs dir(s)%f")
+    }
+    if (($#links > 0)) {
+        fmt+=("%F{blue}󰌷 $#links link(s)%f")
+    }
+    print -Pn -- "%B${(j:\n:)fmt[@]}%b" "\n%B%F{red}%S󰩹 rm%s%f%b N[o]/y[es]/f[orce]/t[rash] "
+    read -r -k 1 answer
+    echo
+    case "$answer" in 
+        [tT])
+            gio trash -- "${files[@]}" "${dirs[@]}" "${links[@]}"
+            if (($? == 0)) {
+                print -P "%F{green}󰩹 Successfully trashed $[$#files + $#dirs + $#links] element(s)%f"
+            }
+            ;;
+        [yY])
+            \rm -rI -- "${files[@]}" "${dirs[@]}" "${links[@]}"
+            ;;
+        [fF])
+            \rm -rf -- "${files[@]}" "${dirs[@]}" "${links[@]}"
+            ;;
+        *|[Nn]) return 1;;
+    esac
+    echo
+}
+
+
 
 
 } elif [[ "$1" == "unload" ]] {
 
 unfunction find_containing mcd mkf tmp rp bn \
+    rmi  \
     readfile readstream
 
 unalias md ft bft
