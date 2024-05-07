@@ -37,8 +37,8 @@ local function render(f)
 
         f.add{"", fg = hl.delim.fg, bg = hl.delim.bg}
         f.set_colors{fg = hl.body.fg, bg = hl.body.bg, gui = (info.current and "bold")}
-        f.add{(info.current and "" or info.index) .. " " .. info.filename}
-        f.add(info.modified and "+")
+        f.add{(info.current and "" or info.index) .. " " .. (info.filename or "No Name")}
+        f.add(info.modified and " +")
         if not (info.first and info.last) then
             f.close_tab_btn{" 󰅖"}
         end
