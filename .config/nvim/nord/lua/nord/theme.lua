@@ -493,7 +493,7 @@ theme.loadPlugins = function()
 		TelescopeResultsBorder = { fg = nord.nord3_gui },
 		TelescopePreviewBorder = { fg = nord.nord3_gui },
 		TelescopeSelectionCaret = { fg = nord.nord9_gui },
-		TelescopeSelection = { fg = nord.nord6_gui, bg = nord.nord2_gui },
+		TelescopeSelection = { bg = nord.nord2_gui },
         TelescopePromptPrefix = {fg = nord.nord15_gui },
         TelescopeSelectionCaret = { bg = nord.nord15_gui, fg = nord.nord15_gui},
 		TelescopeMatching = { link = 'Search' },
