@@ -13,6 +13,7 @@ set hlsearch
 set wildmenu
 set wildmode=list:longest
 set expandtab
+set showtabline=2
 set tabstop=4
 set shiftwidth=4
 source ~/.config/nvim/pkgs.vim

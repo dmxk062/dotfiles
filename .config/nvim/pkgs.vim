@@ -4,12 +4,12 @@ Plug 'ur4ltz/surround.nvim'
 Plug 'kylechui/nvim-surround'
 Plug 'ggandor/leap.nvim'
 Plug 'tpope/vim-repeat'
-Plug 'nvim-tree/nvim-web-devicons'
 Plug 'shaunsingh/nord.nvim'
 Plug 'glepnir/nerdicons.nvim'
 Plug 'numToStr/Comment.nvim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app && yarn install' }
 Plug 'NvChad/nvim-colorizer.lua'
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'akinsho/toggleterm.nvim'
@@ -24,7 +24,7 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-path'
 Plug 'onsails/lspkind.nvim'
-Plug 'L3MON4D3/LuaSnip'
+Plug 'L3MON4D3/LuaSnip', {'do': 'make install_jsregexp'}
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'f3fora/cmp-spell'
 " Plug 'tamago324/cmp-zsh'
@@ -41,4 +41,5 @@ Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'lervag/vimtex'
 Plug 'micangl/cmp-vimtex'
+Plug 'rafcamlet/tabline-framework.nvim'
 call plug#end()

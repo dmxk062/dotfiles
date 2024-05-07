@@ -1,47 +1,57 @@
 local colors = require("nord.named_colors")
 
 
-local active_hl = {
-    fill = {
-        bg = colors.black,
-    }, 
-    body = { 
-        fg = colors.black, 
-        bg = colors.teal,
-        style = "bold"
+
+hl_active = {
+    body = {
+        fg = colors.black,
+        bg = colors.teal
     },
-    sep = { 
-        bg = colors.teal, 
-        fg = colors.black
-    }
-}
-local inactive_hl = {
-    fill = {
-        bg = colors.black,
-    }, 
-    body = { 
-        fg = colors.white, 
+    add = {
+        fg = colors.white,
         bg = colors.light_gray,
     },
-    sep = { 
-        bg = colors.light_gray, 
-        fg = colors.white
+    delim = {
+        fg = colors.teal,
+        bg = colors.black
+    }
+}
+hl_inactive = {
+    body = {
+        fg = colors.white,
+        bg = colors.light_gray
+    },
+    add = {
+        fg = colors.white,
+        bg = colors.dark_gray,
+    },
+    delim = {
+        fg = colors.light_gray,
+        bg = colors.black
     }
 }
 
-require('tabby.tabline').set(function(line)
-    return {
-        line.tabs().foreach(function(tab)
-            local hl = tab.is_current() and active_hl or inactive_hl
-            return {
-                line.sep('', hl.sep, hl.fill),
-                tab.is_current() and '' or tab.number(),
-                tab.name(),
-                tab.close_btn('󰅖'),
-                line.sep(' ', hl.sep, hl.fill),
-                hl = hl.body,
-                margin = ' ',
-            }
-        end),
-    }
-end)
+local function render(f) 
+    f.make_tabs(function(info)
+        local hl = (info.current and hl_active or hl_inactive)
+
+        f.add{"", fg = hl.delim.fg, bg = hl.delim.bg}
+        f.set_colors{fg = hl.body.fg, bg = hl.body.bg, gui = (info.current and "bold")}
+        f.add{(info.current and "" or info.index) .. " " .. info.filename}
+        f.add(info.modified and "+")
+        if not (info.first and info.last) then
+            f.close_tab_btn{" 󰅖"}
+        end
+        f.add{"", fg = hl.delim.fg, bg = hl.delim.bg}  
+        f.set_colors{fg = colors.black, bg = colors.black}
+        f.add(" ")
+
+    end)
+
+end
+
+require("tabline_framework").setup {
+    hl_fill = {bg = colors.black, fg = colors.black},
+    hl = {bg = colors.black, fg = colors.black},
+    render = render,
+}
