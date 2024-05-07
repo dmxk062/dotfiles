@@ -1,4 +1,5 @@
-require('bar')
+require('statusbar')
+require('tabbar')
 
 require('completion')
 

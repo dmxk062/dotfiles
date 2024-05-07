@@ -54,6 +54,7 @@ noremap <leader>' :sp
 vnoremap <a-y> "+y<ESC>
 vnoremap <a-p> "+p<ESC>
 
+
 noremap q :q<CR>
 cab mo set mouse=a
 cab mf set mouse=
