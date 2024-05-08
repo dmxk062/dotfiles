@@ -17,7 +17,7 @@ cmp.setup({
             Field = "󰽐 field",
             Variable = "α var",
             Class = "󰠱 class",
-            Interface = " interface",
+            Interface = " type",
             Module = " module",
             Property = "󰜢 prop",
             Unit = "󰑭 unit",
@@ -55,45 +55,45 @@ mapping = cmp.mapping.preset.insert({
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
 }),
+sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    { name = 'buffer' },
+    { name = 'path' },
+})
+})
+
+cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
+        { name = 'git' }, 
+    }, {
         { name = 'buffer' },
-        { name = 'path' },
     })
 })
 
-  cmp.setup.filetype('gitcommit', {
-      sources = cmp.config.sources({
-          { name = 'git' }, 
-      }, {
-          { name = 'buffer' },
-      })
-  })
 
-
-  cmp.setup.filetype('markdown', {
-      sources = cmp.config.sources({
-          { name = 'luasnip' },
-          { name = 'path' },
-          { name = 'buffer' },
-          { name = 'nvim_lsp' },
-          { name = 'spell' } -- move spell to the bottom so it doesnt slow it down that much
-      })
-  })
+cmp.setup.filetype('markdown', {
+    sources = cmp.config.sources({
+        { name = 'luasnip' },
+        { name = 'path' },
+        { name = 'buffer' },
+        { name = 'nvim_lsp' },
+        { name = 'spell' } -- move spell to the bottom so it doesnt slow it down that much
+    })
+})
 cmp.setup.cmdline({ '/', '?'}, {
-      mapping = cmp.mapping.preset.cmdline(),
-      sources = {
-          { name = 'buffer' }
-      }
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = 'buffer' }
+    }
 })
 
 cmp.setup.cmdline(':', {
-      sources = cmp.config.sources({
-          { name = 'path' }
-      }, {
-          { name = 'cmdline' }
-      })
+    sources = cmp.config.sources({
+        { name = 'path' }
+    }, {
+        { name = 'cmdline' }
+    })
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
