@@ -103,14 +103,17 @@ api.setup({
             local ancestor = lspconfig.find_git_ancestor()
             api.open(ancestor)
         end,
-        ["v"] = actions.select_vsplit,
         ["cd"] = function()
             vim.api.nvim_input"<ESC>:Oil "
             actions.cd.callback()
         end,
-        ["s"] = actions.select_split,
-        ["t"] = actions.select_tab,
-        ["Y"] = actions.copy_entry_path,
+        ["es"] = actions.select_split,
+        ["et"] = actions.select_tab,
+        ["ev"] = actions.select_vsplit,
+        ["<S-CR>"] = actions.select_tab,
+        ["<C-CR>"] = actions.select_split,
+        ["<M-CR>"] = actions.select_vsplit,
+        ["e"] = actions.copy_entry_path,
 
 
     },
