@@ -107,6 +107,9 @@ api.setup({
         ["t"] = actions.select_tab,
         ["Y"] = actions.copy_entry_path,
 
+        ["<C-P>"] = function()
+        end,
+
     },
 })
 

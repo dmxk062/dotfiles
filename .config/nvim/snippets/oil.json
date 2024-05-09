@@ -1,0 +1,17 @@
+{
+    "New Directory": {
+        "prefix": "dir",
+        "body": ["${1:dir}/"],
+        "description": "Create a directory"
+    },
+    "New File": {
+        "prefix": "file",
+        "body": ["${1:file}"],
+        "description": "Create a file"
+    },
+    "New Link": {
+        "prefix": "link",
+        "body": ["${1:name} -> ${2:target}"],
+        "description": "Create a symbolic link"
+    }
+}
