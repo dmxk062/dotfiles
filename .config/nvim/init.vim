@@ -8,10 +8,8 @@ set termguicolors
 set incsearch
 set ignorecase
 set smartcase
-set showcmd
+" set showcmd
 set hlsearch
-set wildmenu
-set wildmode=list:longest
 set expandtab
 set showtabline=2
 set tabstop=4
@@ -63,12 +61,11 @@ cab spde setlocal spell spelllang=de_at
 cab speng setlocal spell spelllang=en_us
 cab spoff setlocal spell& spelllang&
 cab Q q!
-cab R registers
 set wrap
-augroup RestoresursorShapeOnExit
-    autocmd!
-    autocmd VimLeave * set guicursor=a:hor20,a:blinkon1,
-augroup END
+" augroup RestoresursorShapeOnExit
+"     autocmd!
+"     autocmd VimLeave * set guicursor=a:hor20,a:blinkon1,
+" augroup END
 
 
 let &titlestring="nv: %F"    
