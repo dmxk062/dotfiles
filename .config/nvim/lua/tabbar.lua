@@ -1,4 +1,5 @@
 local colors = require("nord.named_colors")
+vim.o.showtabline = 2
 
 
 

@@ -120,10 +120,10 @@ vim.keymap.set('i', '<C-R>', register_and_insert)
 telescope.load_extension("ui-select")
 
 
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    if vim.fn.argv(0) == "" then
-      builtin.find_files({theme = "ivy", layout_config = { height = .8}})
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   callback = function()
+--     if vim.fn.argv(0) == "" then
+--       builtin.find_files({theme = "ivy", layout_config = { height = .8}})
+--     end
+--   end,
+-- })

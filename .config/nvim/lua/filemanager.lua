@@ -134,3 +134,4 @@ vim.keymap.set("n", " fv", function()
     vim.api.nvim_command("vsplit")
     api.open() 
 end)
+

@@ -13,5 +13,10 @@
         "prefix": ["link", "ln"],
         "body": ["${1:name} -> ${2:target}"],
         "description": "Create a symbolic link"
+    },
+    "C Header/Source Pair": {
+        "prefix": ["cch"],
+        "body": ["${1:name}.c\n${1:name}.h"],
+        "description": "Create a C header and implementation file"
     }
 }
