@@ -56,21 +56,16 @@ vim.diagnostic.config{
     float={border=_border}
 }
 
-vim.cmd [[
-highlight! DiagnosticLineNrError guibg=#2e3440 guifg=#bf616a gui=bold
-highlight! DiagnosticLineNrWarn guibg=#2e3440 guifg=#d08770 gui=bold
-highlight! DiagnosticLineNrInfo guibg=#2e3440 guifg=#5e81ac gui=bold
-highlight! DiagnosticLineNrHint guibg=#2e3440 guifg=#81a1c1 gui=bold
+local signs = {
+    {name = "DiagnosticSignError", text = "󰅖"},
+    {name = "DiagnosticSignWarn", text = ""},
+    {name = "DiagnosticSignInfo", text = "󰋼"},
+    {name = "DiagnosticSignHint", text = "󰟶"}
+}
 
-sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
-sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
-sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
-sign define DiagnosticSignHint text=󱩖 texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
-" sign define DiagnosticSignError linehl= numhl=DiagnosticLineNrError
-" sign define DiagnosticSignWarn  linehl= numhl=DiagnosticLineNrWarn
-" sign define DiagnosticSignInfo  linehl= numhl=DiagnosticLineNrInfo
-" sign define DiagnosticSignHint  linehl= numhl=DiagnosticLineNrHint
-]]
+for _, sign in ipairs(signs) do
+    vim.fn.sign_define(sign.name, {texthl = sign.name, text = sign.text, numhl = sign.name})
+end
 vim.diagnostic.config({
     virtual_text = {
         prefix = '', -- Could be '●', '▎', 'x'

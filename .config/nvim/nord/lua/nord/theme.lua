@@ -106,7 +106,7 @@ theme.loadEditor = function()
 		SpellCap = { fg = nord.nord7_gui, bg = nord.none, style = undercurl },
 		SpellLocal = { fg = nord.nord8_gui, bg = nord.none, style = undercurl },
 		SpellRare = { fg = nord.nord9_gui, bg = nord.none, style = undercurl },
-		StatusLine = { fg = nord.nord4_gui, bg = nord.nord2_gui },
+		StatusLine = { fg = nord.nord0_gui, bg = nord.nord0_gui },
 		StatusLineNC = { fg = nord.nord4_gui, bg = nord.nord1_gui },
 		StatusLineTerm = { fg = nord.nord4_gui, bg = nord.nord2_gui },
 		StatusLineTermNC = { fg = nord.nord4_gui, bg = nord.nord1_gui },
@@ -437,6 +437,11 @@ theme.loadLSP = function()
 		DiagnosticUnderlineHint = { link = "LspDiagnosticsUnderlineHint" },
 		DiagnosticFloatingHint = { link = "LspDiagnosticsFloatingHint" },
 		DiagnosticSignHint = { link = "LspDiagnosticsSignHint" },
+
+        DiagnosticsSignError = {fg = nord.nord11_gui, style = "bold"},
+        DiagnosticsSignWarn = {fg = nord.nord12_gui, style = "bold"},
+        DiagnosticsSignInfo = {fg = nord.nord10_gui, style = "bold"},
+        DiagnosticsSignHint = {fg = nord.nord9_gui, style = "bold"},
 	}
 
 	return lsp

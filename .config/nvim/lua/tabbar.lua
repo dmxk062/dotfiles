@@ -46,23 +46,23 @@ local function get_buf_info(filename, bufname, bufid)
     if filename then
         name = filename
     else
-        if buftype then
-            if buftype == "TelescopePrompt" then
-                name = "Telescope"
-                show_modified = false
-            elseif buftype == "oil" then
-                name = bufname:sub(#"oil://" + 1)
-                :gsub("/tmp/workspaces_" .. user, "~tmp")
-                :gsub("/home/" .. user .. "/ws", "~ws")
-                :gsub("/home/" .. user .. "/.config", "~cfg")
-                :gsub("/home/" .. user, "~")
-                if #name > 1 then
-                    name = name:sub(1, -2) -- remove final '/' if its not /
-                end
-                
+        if buftype == "TelescopePrompt" then
+            name = "Telescope"
+            show_modified = false
+        elseif buftype == "oil" then
+            name = bufname:sub(#"oil://" + 1)
+            :gsub("/tmp/workspaces_" .. user, "~tmp")
+            :gsub("/home/" .. user .. "/ws", "~ws")
+            :gsub("/home/" .. user .. "/.config", "~cfg")
+            :gsub("/home/" .. user, "~")
+            if #name > 1 then
+                name = name:sub(1, -2) -- remove final '/' if its not /
             end
+            
         elseif bufname == "" then
             name = "[No Name]"
+        else 
+            name = bufname
         end
     end
 
