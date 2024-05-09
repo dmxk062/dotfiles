@@ -44,4 +44,5 @@ require("treesitter")
 
 require("lsp")
 require("latex")
+require("markdown")
 require("filemanager")

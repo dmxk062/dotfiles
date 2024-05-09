@@ -1,5 +1,4 @@
 vim.cmd("source" .. vim.fn.stdpath("config") .. "/pkgs.vim")
-vim.cmd("source" .. vim.fn.stdpath("config") .. "/vim/markdown.vim")
 vim.g.nord_italic = true
 vim.g.nord_borders = true
 vim.cmd("colorscheme nord")
