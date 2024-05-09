@@ -77,11 +77,12 @@ api.setup({
             actions.open_cmdline.callback()
             vim.api.nvim_input("! ")
         end,
-        ["Sw"] = function()
+        -- override the regular one
+        [" sw"] = function()
             local pwd = api.get_current_dir()
             utils.kitty_new_dir(pwd, "window")
         end,
-        ["St"] = function()
+        [" st"] = function()
             local pwd = api.get_current_dir()
             utils.kitty_new_dir(pwd, "tab")
         end,
@@ -90,6 +91,9 @@ api.setup({
         end,
         ["gh"] = function()
             api.open(vim.fn.expand("~"))
+        end,
+        ["gw"] = function()
+            api.open(vim.fn.expand("~/ws"))
         end,
         ["g/"] = function()
             api.open("/")

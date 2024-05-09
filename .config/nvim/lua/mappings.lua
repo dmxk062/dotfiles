@@ -27,6 +27,7 @@ utils.map("n", tab_winleader .. "v", ":vsp ")
 utils.map("n", tab_winleader .. "s", ":sp ")
 
 
+
 -- faster to exit
 utils.map("n", "q", ":q<CR>")
 utils.abbrev("c", "Q", "q!")
@@ -40,4 +41,11 @@ utils.abbrev("c", "spde", "setlocal spell spellang=de_at")
 utils.abbrev("c", "spoff", "setlocal spell& spellang&")
 
 -- open a kitty terminal window
-utils.map("n", " T", function() utils.kitty_new_dir(vim.fn.expand("%:p:h"), "window") end)
+--
+utils.map("n", " sw", function()
+    utils.kitty_new_dir(vim.fn.expand("%:p:h"), "window") 
+end)
+-- tab
+utils.map("n", " st", function()
+    utils.kitty_new_dir(vim.fn.expand("%:p:h"), "tab") 
+end)

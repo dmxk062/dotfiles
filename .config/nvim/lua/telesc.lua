@@ -1,4 +1,5 @@
 local telescope = require("telescope")
+local utils = require("utils")
 local themes = require("telescope.themes")
 -- telescope.load_extension('fzf')
 local buffer_on_enter = { 
@@ -102,19 +103,19 @@ telescope.setup {
 }
 local builtin = require('telescope.builtin')
 local _prefix = "<space>"
-vim.keymap.set('n', 'gr', builtin.lsp_references)
-vim.keymap.set('n', 'gd', builtin.lsp_definitions)
-vim.keymap.set('n', _prefix .. 'D', builtin.diagnostics)
-vim.keymap.set('n', _prefix .. 'F', builtin.find_files)
-vim.keymap.set('n', _prefix .. '/', builtin.live_grep)
-vim.keymap.set('n', _prefix .. 'r', builtin.registers)
-vim.keymap.set('n', _prefix .. '<space>', builtin.buffers)
+utils.map('n', 'gr', builtin.lsp_references)
+utils.map('n', 'gd', builtin.lsp_definitions)
+utils.map('n', _prefix .. 'D', builtin.diagnostics)
+utils.map('n', _prefix .. 'F', builtin.find_files)
+utils.map('n', _prefix .. '/', builtin.live_grep)
+utils.map('n', _prefix .. 'r', builtin.registers)
+utils.map('n', _prefix .. '<space>', builtin.buffers)
 -- and for insert too
 function register_and_insert()
     builtin.registers()
     vim.cmd('startinsert')
 end
-vim.keymap.set('i', '<C-R>', register_and_insert)
+utils.map('i', '<C-R>', register_and_insert)
 
 -- vim.keymap.set('n', '<space>a', builtin.)
 telescope.load_extension("ui-select")
