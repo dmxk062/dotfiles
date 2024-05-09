@@ -1,6 +1,5 @@
 call plug#begin()
 Plug 'nvim-lualine/lualine.nvim'
-Plug 'ur4ltz/surround.nvim'
 Plug 'kylechui/nvim-surround'
 Plug 'ggandor/leap.nvim'
 Plug 'tpope/vim-repeat'
@@ -16,16 +15,19 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'lukas-reineke/headlines.nvim'
 Plug 'm4xshen/autoclose.nvim'
 Plug 'neovim/nvim-lspconfig'
+
+Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-path'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'micangl/cmp-vimtex'
+Plug 'f3fora/cmp-spell'
+
 Plug 'onsails/lspkind.nvim'
 Plug 'L3MON4D3/LuaSnip', {'do': 'make install_jsregexp'}
-Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'f3fora/cmp-spell'
 " Plug 'tamago324/cmp-zsh'
 Plug 'kevinhwang91/nvim-ufo', {'branch': 'main'}
 Plug 'kevinhwang91/promise-async'
@@ -39,7 +41,6 @@ Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'lervag/vimtex'
-Plug 'micangl/cmp-vimtex'
 Plug 'rafcamlet/tabline-framework.nvim'
 Plug 'stevearc/oil.nvim'
 call plug#end()

@@ -1,13 +1,16 @@
 local utils = require("utils")
+
+
+-- lualine and tabline_framework
 require('statusbar')
 require('tabbar')
 
+-- nvim-cmp
 require('completion')
 
+-- folds
 require('fold')
 
-require('telesc')
--- require('tabline')
 
 
 require("colorizer").setup { 
@@ -36,13 +39,24 @@ local ft = require("Comment.ft")
 ft.hyprlang = {"#%s"}
 comment.setup()
 
-require('leap').add_default_mappings()
+-- brackets etc
+require("surround")
 
-require("closeconf")
-
+-- basic treesitter
 require("treesitter")
 
+-- lspconfig
 require("lsp")
+
+-- leap.nvim
+require("jump")
+
+-- telescope
+require('telesc')
+
+-- utils for those two
 require("latex")
 require("markdown")
+
+-- oil.nvim
 require("filemanager")

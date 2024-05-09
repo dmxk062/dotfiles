@@ -1,6 +1,8 @@
-local lspkind = require('lspkind')
-local cmp = require'cmp'
 require("snip")
+
+local lspkind = require("lspkind")
+local cmp = require("cmp")
+
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -58,8 +60,8 @@ mapping = cmp.mapping.preset.insert({
 sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
-    { name = 'buffer' },
     { name = 'path' },
+    { name = 'buffer' },
 })
 })
 
@@ -89,6 +91,7 @@ cmp.setup.filetype('oil', {
         { name = 'nvim_lsp' },
     })
 })
+
 cmp.setup.cmdline({ '/', '?'}, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {

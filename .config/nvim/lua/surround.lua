@@ -24,21 +24,20 @@ require("autoclose").setup({
 })
 
 require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
+})
 
 -- this saves me from typing the special chars when i want to use them in motions
-utils.map({ "o", "x" }, "iq", 'i"') -- [q]uote
-utils.map({ "o", "x" }, "aq", 'a"')
-utils.map({ "o", "x" }, "iQ", "i'") -- single [Q]uote
-utils.map({ "o", "x" }, "aQ", "a'")
-utils.map({ "o", "x" }, "ic", "i}") -- [c]urly brackets
-utils.map({ "o", "x" }, "ac", "a}")
-utils.map({ "o", "x" }, "iB", "i]") -- rectangular [B]rackets
-utils.map({ "o", "x" }, "aB", "a]")
-utils.map({ "o", "x" }, "ir", "i]") -- [r]ectangular brackets
-utils.map({ "o", "x" }, "ar", "a]")
-utils.map({ "o", "x" }, "ib", "i)") -- [b]rackets
-utils.map({ "o", "x" }, "ab", "a)")
-utils.map({ "o", "x" }, "ia", "i>") -- [a]ngle brackets
-utils.map({ "o", "x" }, "aa", "a>")
+-- utils.map({ "o", "x" }, "iq", 'i"') -- [q]uote
+-- utils.map({ "o", "x" }, "aq", 'a"')
+-- utils.map({ "o", "x" }, "iQ", "i'") -- single [Q]uote
+-- utils.map({ "o", "x" }, "aQ", "a'")
+-- utils.map({ "o", "x" }, "ic", "i}") -- [c]urly brackets
+-- utils.map({ "o", "x" }, "ac", "a}")
+-- utils.map({ "o", "x" }, "iB", "i]") -- rectangular [B]rackets
+-- utils.map({ "o", "x" }, "aB", "a]")
+-- utils.map({ "o", "x" }, "ir", "i]") -- [r]ectangular brackets
+-- utils.map({ "o", "x" }, "ar", "a]")
+-- utils.map({ "o", "x" }, "ib", "i)") -- [b]rackets
+-- utils.map({ "o", "x" }, "ab", "a)")
+-- utils.map({ "o", "x" }, "ia", "i>") -- [a]ngle brackets
+-- utils.map({ "o", "x" }, "aa", "a>")
