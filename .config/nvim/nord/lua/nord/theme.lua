@@ -448,8 +448,23 @@ theme.loadPlugins = function()
 	local plugins = {
 
         -- oil
-        OilLink = {fg = nord.nord10_gui},
+        OilLink = {fg = nord.nord10_gui, style = "bold"},
+        OilDir = {fg = nord.nord7_gui, style = "bold"},
         OilLinkTarget = {fg = nord.nord10_gui, style = "italic"},
+        OilSocket = {fg = nord.nord15_gui},
+
+        OilRead   = {fg = nord.nord13_gui},
+        OilWrite  = {fg = nord.nord12_gui},
+        OilExec   = {fg = nord.nord14_gui},
+        OilSetuid = {fg = nord.nord11_gui, style = "bold"},
+        OilSticky = {fg = nord.nord10_gui, style = "bold"},
+        OilNoPerm = {fg = nord.nord3_gui},
+
+        OilDelete = {fg = nord.nord11_gui, style = "bold"},
+        OilCreate = {fg = nord.nord14_gui},
+        OilMove   = {fg = nord.nord12_gui},
+        OilCopy   = {fg = nord.nord13_gui},
+        OilChange = {fg = nord.nord15_gui},
 
 		-- LspTrouble
 		LspTroubleText = { fg = nord.nord4_gui },

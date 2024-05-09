@@ -33,26 +33,40 @@ hl_inactive = {
 
 local new_tab_width = 12
 
-local USER = os.getenv("USER")
+local user = os.getenv("USER")
 
 local function starts_with(str, prefix) 
     return str:sub(1, #prefix) == prefix
 end
 
-local function get_buf_name(filename, bufname, bufid) 
+local function get_buf_info(filename, bufname, bufid) 
+    local buftype = vim.api.nvim_buf_get_option(bufid, 'filetype')
     local name = ""
+    local show_modified = true
     if filename then
         name = filename
-    elseif not bufname or bufname == "" then
-        name = "[No Name]"
-    elseif starts_with(bufname, "oil://") then
-        local ret = bufname:sub(#"oil://" + 1)
-        ret = ret:gsub("/home/" .. USER .. "/ws", "~ws") 
-        name = ret:gsub("/home/" .. USER, "~"):sub(1, -2)
+    else
+        if buftype then
+            if buftype == "TelescopePrompt" then
+                name = "Telescope"
+                show_modified = false
+            elseif buftype == "oil" then
+                name = bufname:sub(#"oil://" + 1)
+                :gsub("/tmp/workspaces_" .. user, "~tmp")
+                :gsub("/home/" .. user .. "/ws", "~ws")
+                :gsub("/home/" .. user .. "/.config", "~cfg")
+                :gsub("/home/" .. user, "~")
+                if #name > 1 then
+                    name = name:sub(1, -2) -- remove final '/' if its not /
+                end
+                
+            end
+        elseif bufname == "" then
+            name = "[No Name]"
+        end
     end
 
-    return name
-
+    return {name, show_modified}
 end
 
 local function draw_tab(f, info) 
@@ -63,9 +77,11 @@ local function draw_tab(f, info)
     if info.current then
         f.set_gui("bold")
     end
-    local bufname = get_buf_name(info.filename, info.buf_name, info.buf)
-    f.add{(info.current and "" or info.index) .. " " ..  bufname}
-    f.add(info.modified and " [+]")
+    local bufinfo = get_buf_info(info.filename, info.buf_name, info.buf)
+    f.add{(info.current and "" or info.index) .. " " ..  bufinfo[1]}
+    if bufinfo[2] then
+        f.add(info.modified and " [+]")
+    end
     if not (info.first and info.last) then
         f.close_tab_btn{" 󰅖"}
     end
