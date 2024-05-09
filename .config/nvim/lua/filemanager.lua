@@ -77,6 +77,12 @@ api.setup({
             actions.open_cmdline.callback()
             vim.api.nvim_input("! ")
         end,
+        -- open in other program
+        ["eo"] = function()
+            local entry = api.get_cursor_entry()
+
+            vim.fn.jobstart("xdg-open \"" .. api.get_current_dir() .. "/" .. entry.name .. "\"")
+        end,
         -- override the regular one
         [" sw"] = function()
             local pwd = api.get_current_dir()
