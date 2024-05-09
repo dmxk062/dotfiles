@@ -54,6 +54,7 @@ api.setup({
     },
     use_default_keymaps = false,
     cleanup_delay_ms = 5000,
+    extra_scp_args = {"-O"},
      
     view_options = {
         is_hidden_file = function(name, bufnr) 
