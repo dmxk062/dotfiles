@@ -1,3 +1,4 @@
+local utils = require("utils")
 require("autoclose").setup({
     keys = {
         ["("] = { escape = false, close = true, pair = "()"},
@@ -27,17 +28,17 @@ require("nvim-surround").setup({
         })
 
 -- this saves me from typing the special chars when i want to use them in motions
-vim.keymap.set({ "o", "x" }, "iq", 'i"') -- [q]uote
-vim.keymap.set({ "o", "x" }, "aq", 'a"')
-vim.keymap.set({ "o", "x" }, "iQ", "i'") -- single [Q]uote
-vim.keymap.set({ "o", "x" }, "aQ", "a'")
-vim.keymap.set({ "o", "x" }, "ic", "i}") -- [c]urly brackets
-vim.keymap.set({ "o", "x" }, "ac", "a}")
-vim.keymap.set({ "o", "x" }, "iB", "i]") -- rectangular [B]rackets
-vim.keymap.set({ "o", "x" }, "aB", "a]")
-vim.keymap.set({ "o", "x" }, "ir", "i]") -- [r]ectangular brackets
-vim.keymap.set({ "o", "x" }, "ar", "a]")
-vim.keymap.set({ "o", "x" }, "ib", "i)") -- [b]rackets
-vim.keymap.set({ "o", "x" }, "ab", "a)")
-vim.keymap.set({ "o", "x" }, "ia", "i>") -- [a]ngle brackets
-vim.keymap.set({ "o", "x" }, "aa", "a>")
+utils.map({ "o", "x" }, "iq", 'i"') -- [q]uote
+utils.map({ "o", "x" }, "aq", 'a"')
+utils.map({ "o", "x" }, "iQ", "i'") -- single [Q]uote
+utils.map({ "o", "x" }, "aQ", "a'")
+utils.map({ "o", "x" }, "ic", "i}") -- [c]urly brackets
+utils.map({ "o", "x" }, "ac", "a}")
+utils.map({ "o", "x" }, "iB", "i]") -- rectangular [B]rackets
+utils.map({ "o", "x" }, "aB", "a]")
+utils.map({ "o", "x" }, "ir", "i]") -- [r]ectangular brackets
+utils.map({ "o", "x" }, "ar", "a]")
+utils.map({ "o", "x" }, "ib", "i)") -- [b]rackets
+utils.map({ "o", "x" }, "ab", "a)")
+utils.map({ "o", "x" }, "ia", "i>") -- [a]ngle brackets
+utils.map({ "o", "x" }, "aa", "a>")
