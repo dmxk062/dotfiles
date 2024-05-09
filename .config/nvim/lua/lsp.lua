@@ -1,16 +1,16 @@
 local lspconfig = require('lspconfig')
 -- lspconfig.marksman.setup{}
-lspconfig.bashls.setup{}
-lspconfig.tsserver.setup{}
-lspconfig.asm_lsp.setup{}
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-lspconfig.jsonls.setup{capabilities=capabilities}
-require'lspconfig'.html.setup {capabilities=capabilities}
-require'lspconfig'.clangd.setup{capabilities=capabilities, cmd={"clangd", "--enable-config"}}
+
+lspconfig.bashls.setup{capabilities=capabilities}
+lspconfig.tsserver.setup{capabilities=capabilities}
+lspconfig.asm_lsp.setup{capabilities=capabilities}
+lspconfig.html.setup {capabilities=capabilities}
+lspconfig.clangd.setup{capabilities=capabilities, cmd={"clangd", "--enable-config"}}
 -- lspconfig.pyright.setup{}
-lspconfig.jedi_language_server.setup{}
-lspconfig.ruff_lsp.setup{}
+lspconfig.jedi_language_server.setup{capabilities=capabilities}
+lspconfig.ruff_lsp.setup{capabilities=capabilities}
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<space>d', vim.diagnostic.open_float)
@@ -76,5 +76,13 @@ vim.diagnostic.config({
         prefix = '', -- Could be '●', '▎', 'x'
     }
 })
--- vim.o.updatetime = 10
--- vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+lspconfig.jsonls.setup{
+    capabilities = capabilities,
+    settings = {
+        json = {
+            schemas = require("schemastore").json.schemas(),
+            validate = {enable = true},
+        },
+    },
+}
