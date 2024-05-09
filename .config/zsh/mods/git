@@ -5,6 +5,7 @@ if [[ "$1" == "load" ]] {
 
 function lschg {
     local dir="${1:-.}"
+    local hide="${2}"
     local line mode file prefix
     while read -r type line; do
         if [[ $type == 1 ]] {
@@ -19,7 +20,7 @@ function lschg {
             esac
 
             print -P -- "$prefix$file%f"
-        } elif [[ "$type" == '?' ]] {
+        } elif [[ "$type" == '?' && "$hide" == "-a" ]] {
             print -P -- "\e[90m~ $line%f"
         }
     done <<(git status --porcelain=v2 "$dir")
