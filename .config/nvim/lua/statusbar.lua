@@ -92,7 +92,7 @@ local mode = {
     color = function()
         return modecolors[vim.fn.mode(1)]
     end,
-    separator = lbubble,
+    separator = bubble,
 }
 
 local position = {
