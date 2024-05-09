@@ -197,7 +197,7 @@ require('lualine').setup {
         },
         lualine_y = {
             {
-                separator = {left = ""},
+                separator = lbubble,
                 'filetype',
                 colored = false,
             },
@@ -205,8 +205,8 @@ require('lualine').setup {
                 'fileformat',
                 symbols = {
                     unix = '',
-                    dos = 'endl=\\r\\n',
-                    mac = 'endl=\\r',
+                    dos = '\\r\\n',
+                    mac = '\\r',
                 }
             }, 
         },
