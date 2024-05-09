@@ -52,7 +52,7 @@ require('ufo').setup({
             border=rounded, 
             winblend = 0
         },
-    mappings = {
+        mappings = {
             scrollU = '<C-k>',
             scrollD = '<C-j>',
             jumpTop = '[',

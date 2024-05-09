@@ -47,6 +47,11 @@ api.setup({
         max_height = 40,
 
     },
+    preview = {
+        max_width = 0.4,
+        min_width = 0.6,
+
+    },
     use_default_keymaps = false,
     cleanup_delay_ms = 5000,
      
@@ -107,11 +112,22 @@ api.setup({
         ["t"] = actions.select_tab,
         ["Y"] = actions.copy_entry_path,
 
-        ["<C-P>"] = function()
-        end,
 
     },
 })
 
 vim.keymap.set("n", " fF", api.open_float)
 vim.keymap.set("n", " ff", api.open)
+
+vim.keymap.set("n", " ft", function() 
+    vim.api.nvim_command("tabnew")
+    api.open() 
+end)
+vim.keymap.set("n", " fs", function() 
+    vim.api.nvim_command("split")
+    api.open() 
+end)
+vim.keymap.set("n", " fv", function() 
+    vim.api.nvim_command("vsplit")
+    api.open() 
+end)

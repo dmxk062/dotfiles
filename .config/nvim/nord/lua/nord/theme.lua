@@ -471,6 +471,8 @@ theme.loadPlugins = function()
         OilCopy   = {fg = nord.nord13_gui},
         OilChange = {fg = nord.nord15_gui},
 
+
+
 		-- LspTrouble
 		LspTroubleText = { fg = nord.nord4_gui },
 		LspTroubleCount = { fg = nord.nord9_gui, bg = nord.nord10_gui },
@@ -501,15 +503,15 @@ theme.loadPlugins = function()
 		GitGutterDelete = { fg = nord.nord11_gui }, -- diff mode: Deleted line |diff.txt|
 
 		-- GitSigns
-		GitSignsAdd = { fg = nord.nord14_gui }, -- diff mode: Added line |diff.txt|
-		GitSignsAddNr = { fg = nord.nord14_gui }, -- diff mode: Added line |diff.txt|
-		GitSignsAddLn = { fg = nord.nord14_gui }, -- diff mode: Added line |diff.txt|
-		GitSignsChange = { fg = nord.nord13_gui }, -- diff mode: Changed line |diff.txt|
-		GitSignsChangeNr = { fg = nord.nord13_gui }, -- diff mode: Changed line |diff.txt|
-		GitSignsChangeLn = { fg = nord.nord13_gui }, -- diff mode: Changed line |diff.txt|
-		GitSignsDelete = { fg = nord.nord11_gui }, -- diff mode: Deleted line |diff.txt|
-		GitSignsDeleteNr = { fg = nord.nord11_gui }, -- diff mode: Deleted line |diff.txt|
-		GitSignsDeleteLn = { fg = nord.nord11_gui }, -- diff mode: Deleted line |diff.txt|
+		GitSignsAdd = { fg = nord.nord3_gui }, -- diff mode: Added line |diff.txt|
+		GitSignsAddNr = { fg = nord.nord3_gui }, -- diff mode: Added line |diff.txt|
+		GitSignsAddLn = { fg = nord.nord3_gui }, -- diff mode: Added line |diff.txt|
+		GitSignsChange = { fg = nord.nord3_gui }, -- diff mode: Changed line |diff.txt|
+		GitSignsChangeNr = { fg = nord.nord3_gui }, -- diff mode: Changed line |diff.txt|
+		GitSignsChangeLn = { fg = nord.nord3_gui }, -- diff mode: Changed line |diff.txt|
+		GitSignsDelete = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
+		GitSignsDeleteNr = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
+		GitSignsDeleteLn = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
 		GitSignsCurrentLineBlame = { fg = nord.nord3_gui_bright, style = bold },
 
 		-- Telescope

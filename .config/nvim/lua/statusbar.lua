@@ -126,20 +126,17 @@ end
 
 require('lualine').setup {
     options = {
-        icons_enabled = true,
+        -- icons_enabled = true,
         theme = nord,
-        component_separators = { left = '', right = ''},
-        section_separators = { left = '', right = ''},
-        disabled_filetypes = {
-            statusline = {},
-        },
         ignore_focus = {},
         always_divide_middle = true,
         globalstatus = true,
         refresh = {
             statusline = 1000,
             winbar = 1000,
-        }
+        },
+        component_separators = { left = '', right = ''},
+        section_separators = { left = '', right = ''},
     },
     sections = {
         lualine_a = {
@@ -178,7 +175,7 @@ require('lualine').setup {
                     info  = {fg = colors.blue},
                     hint  = {fg = colors.cyan},
                 },
-                symbols = {error = ' ', warn = ' ', info = ' ', hint = '󰌵 '},
+                symbols = {error = '󰅖 ', warn = ' ', info = ' ', hint = '󰟶 '},
                 colored = true,         
                 update_in_insert = false,
                 always_visible = false,  
@@ -237,6 +234,7 @@ require('lualine').setup {
         lualine_z = {}
     },
     tabline = {},
+    -- extensions = {"oil"},
     winbar = {},
     inactive_winbar = {}
 }
