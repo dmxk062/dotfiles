@@ -33,13 +33,38 @@ hl_inactive = {
 
 local new_tab_width = 12
 
+local USER = os.getenv("USER")
+
+local function starts_with(str, prefix) 
+    return str:sub(1, #prefix) == prefix
+end
+
+local function get_buf_name(filename, bufname, bufid) 
+    local name = ""
+    if filename then
+        name = filename
+    elseif not bufname or bufname == "" then
+        name = "[No Name]"
+    elseif starts_with(bufname, "oil://") then
+        local ret = bufname:sub(#"oil://" + 1)
+        ret = ret:gsub("/home/" .. USER .. "/ws", "~ws") 
+        name = ret:gsub("/home/" .. USER, "~"):sub(1, -2)
+    end
+
+    return name
+
+end
 
 local function draw_tab(f, info) 
     local hl = (info.current and hl_active or hl_inactive)
 
     f.add{"", fg = hl.delim.fg, bg = hl.delim.bg}
     f.set_colors{fg = hl.body.fg, bg = hl.body.bg}
-    f.add{(info.current and "" or info.index) .. " " ..  (info.filename or "[No Name]")}
+    if info.current then
+        f.set_gui("bold")
+    end
+    local bufname = get_buf_name(info.filename, info.buf_name, info.buf)
+    f.add{(info.current and "" or info.index) .. " " ..  bufname}
     f.add(info.modified and " [+]")
     if not (info.first and info.last) then
         f.close_tab_btn{" 󰅖"}
@@ -67,6 +92,16 @@ local function render_num(f, active, num)
     end)
 end
 
+local function new_tab_button(f) 
+    f.add{"", fg = hl_inactive.delim.fg, bg = hl_inactive.delim.bg}
+    f.set_colors{fg = hl_inactive.body.fg, bg = hl_inactive.body.bg}
+    f.add_btn({"󰝜 New Tab"}, function(data)
+        vim.api.nvim_command("tabnew")
+    end)
+    f.add{"", fg = hl_inactive.delim.fg, bg = hl_inactive.delim.bg}  
+    f.set_colors{fg = colors.black, bg = colors.black}
+end
+
 local function render(f) 
     local width = vim.fn.winwidth(0)
     local num_tabs = 0
@@ -77,7 +112,8 @@ local function render(f)
             active_index = info.index
         end
     end)
-    local target_tabs = math.floor((width - new_tab_width) / 12)
+    -- local target_tabs = math.floor((width - new_tab_width) / 16)
+    local target_tabs = math.floor(width  / 16)
     if target_tabs % 2 == 0 then
         target_tabs = target_tabs - 1
     end
@@ -88,14 +124,8 @@ local function render(f)
             draw_tab(f, info)
         end)
     end
-    f.add_spacer()
-    f.add{"", fg = hl_inactive.delim.fg, bg = hl_inactive.delim.bg}
-    f.set_colors{fg = hl_inactive.body.fg, bg = hl_inactive.body.bg}
-    f.add_btn({"󰝜 New Tab"}, function(data)
-        vim.api.nvim_command("tabnew")
-    end)
-    f.add{"", fg = hl_inactive.delim.fg, bg = hl_inactive.delim.bg}  
-    f.set_colors{fg = colors.black, bg = colors.black}
+    -- f.add_spacer()
+    -- new_tab_button(f)
 end
 
 

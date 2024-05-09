@@ -150,7 +150,7 @@ require('lualine').setup {
                 'filename',
                 icons_enabled = true,
                 padding = {left = 2, right = 2 },
-                icon = {'', align='left'},
+                icon = {'󰈔', align='left'},
                 separator = rbubble,
                 path = 4,
                 file_status = true,

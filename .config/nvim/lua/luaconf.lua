@@ -58,4 +58,5 @@ require("treesitter")
 
 require("lsp")
 require("latex")
+require("filemanager")
 
