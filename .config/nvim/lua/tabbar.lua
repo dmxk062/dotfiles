@@ -50,11 +50,15 @@ local function get_buf_info(filename, bufname, bufid)
             name = "Telescope"
             show_modified = false
         elseif buftype == "oil" then
-            name = bufname:sub(#"oil://" + 1)
-            :gsub("/tmp/workspaces_" .. user, "~tmp")
-            :gsub("/home/" .. user .. "/ws", "~ws")
-            :gsub("/home/" .. user .. "/.config", "~cfg")
-            :gsub("/home/" .. user, "~")
+            if starts_with(bufname, "oil-ssh://") then
+                name = bufname:sub(#"oil-ssh://" + 1)
+            else
+                name = bufname:sub(#"oil://" + 1)
+                :gsub("/tmp/workspaces_" .. user, "~tmp")
+                :gsub("/home/" .. user .. "/ws", "~ws")
+                :gsub("/home/" .. user .. "/.config", "~cfg")
+                :gsub("/home/" .. user, "~")
+            end
             if #name > 1 then
                 name = name:sub(1, -2) -- remove final '/' if its not /
             end
