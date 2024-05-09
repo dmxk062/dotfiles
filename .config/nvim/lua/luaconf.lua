@@ -1,3 +1,4 @@
+local utils = require("utils")
 require('statusbar')
 require('tabbar')
 
@@ -60,3 +61,5 @@ require("lsp")
 require("latex")
 require("filemanager")
 
+
+vim.keymap.set('n', " T", function() utils.kitty_new_dir(vim.fn.expand("%:p:h"), "window") end)
