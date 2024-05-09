@@ -20,6 +20,7 @@ api.setup({
 
     },
     use_default_keymaps = false,
+    cleanup_delay_ms = 5000,
 
     keymaps = {
         ["<CR>"] = actions.select,
@@ -57,3 +58,5 @@ api.setup({
 
     },
 })
+
+vim.keymap.set("n", " f", api.open_float)

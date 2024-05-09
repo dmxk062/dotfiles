@@ -9,21 +9,6 @@ require('fold')
 require('telesc')
 -- require('tabline')
 
-require("toggleterm").setup{
-    shade_terminals = false,
-    highlights = {
-        Normal = {
-          guibg = "none",
-          guicursor ="hor20"
-        },
-        NormalFloat = {
-          guibg = "none",
-        },
-        FloatBorder = {
-          guibg = "none",
-        },
-      },
-}
 
 require("colorizer").setup { 
       filetypes = { "*" },

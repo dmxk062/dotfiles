@@ -64,7 +64,6 @@ cab speng setlocal spell spelllang=en_us
 cab spoff setlocal spell& spelllang&
 cab Q q!
 cab R registers
-nnoremap <leader>T :ToggleTerm<CR>
 set wrap
 augroup RestoresursorShapeOnExit
     autocmd!

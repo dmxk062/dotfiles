@@ -12,7 +12,6 @@ Plug 'NvChad/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'akinsho/toggleterm.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lukas-reineke/headlines.nvim'
 Plug 'm4xshen/autoclose.nvim'
@@ -42,4 +41,5 @@ Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'lervag/vimtex'
 Plug 'micangl/cmp-vimtex'
 Plug 'rafcamlet/tabline-framework.nvim'
+Plug 'stevearc/oil.nvim'
 call plug#end()

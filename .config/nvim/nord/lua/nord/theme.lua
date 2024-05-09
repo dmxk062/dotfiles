@@ -184,6 +184,7 @@ theme.loadEditor = function()
 		LeapMatch = { style = "underline,nocombine", fg = nord.nord13_gui },
 		LeapLabelPrimary = { style = "nocombine", fg = nord.nord0_gui, bg = nord.nord13_gui },
 		LeapLabelSecondary = { style = "nocombine", fg = nord.nord0_gui, bg = nord.nord15_gui },
+
 	}
 
 	-- Options:
@@ -445,6 +446,10 @@ theme.loadPlugins = function()
 	-- Plugins highlight groups
 
 	local plugins = {
+
+        -- oil
+        OilLink = {fg = nord.nord10_gui},
+        OilLinkTarget = {fg = nord.nord10_gui, style = "italic"},
 
 		-- LspTrouble
 		LspTroubleText = { fg = nord.nord4_gui },
