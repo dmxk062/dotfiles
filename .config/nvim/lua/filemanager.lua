@@ -48,13 +48,16 @@ api.setup({
 
     },
     preview = {
-        max_width = 0.4,
-        min_width = 0.6,
+        max_width = 0.6,
+        min_width = 0.4,
+        max_height = 0.8,
+        min_height = 0.6,
 
     },
-    use_default_keymaps = false,
+    use_default_keymaps = true,
     cleanup_delay_ms = 5000,
-    extra_scp_args = {"-O"},
+    extra_scp_args = {"-O"}, -- use scp instead of ssftp
+    experimental_watch_for_changes = true,
      
     view_options = {
         is_hidden_file = function(name, bufnr) 
@@ -93,6 +96,7 @@ api.setup({
             local pwd = api.get_current_dir()
             utils.kitty_new_dir(pwd, "tab")
         end,
+        ["<C-space>"] = actions.refresh,
         ["g~"] = function()
             api.open(vim.fn.expand("~"))
         end,

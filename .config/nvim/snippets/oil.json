@@ -18,5 +18,15 @@
         "prefix": ["cch"],
         "body": ["${1:name}.c\n${1:name}.h"],
         "description": "Create a C header and implementation file"
+    },
+    "Permissions: 0755" : {
+        "prefix": ["755", "pdir"],
+        "body": ["rwxr-xr-x"],
+        "description":"Allow only the owner to write, but everyone to read"
+    },
+    "Permissions: 0644" : {
+        "prefix" : ["644", "pfile"],
+        "body": ["rw-r--r--"],
+        "description":"Standard file bitmask"
     }
 }
