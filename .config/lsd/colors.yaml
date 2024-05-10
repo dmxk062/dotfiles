@@ -21,8 +21,8 @@ permission:
     - 203
     - 139
   no-access: 
-    - 191
-    - 97
+    - 76
+    - 86
     - 106
   octal: 
     - 94
