@@ -13,6 +13,12 @@ local perms_hlgroups = {
     ['s'] = "OilSetuid",
 }
 
+
+local function open_chmod()
+    actions.open_cmdline.callback()
+    vim.api.nvim_input("!chmod ")
+end
+
 api.setup({
     default_file_explorer = true,
 
@@ -73,10 +79,6 @@ api.setup({
     keymaps = {
         ["<CR>"] = actions.select,
         ["<C-H>"] = actions.toggle_hidden,
-        ["<C-->"] = function()
-            actions.open_cmdline.callback()
-            vim.api.nvim_input("!chmod ")
-        end,
         ["!"] = function()
             actions.open_cmdline.callback()
             vim.api.nvim_input("! ")
@@ -84,7 +86,6 @@ api.setup({
         -- open in other program
         ["eo"] = function()
             local entry = api.get_cursor_entry()
-
             vim.fn.jobstart("xdg-open \"" .. api.get_current_dir() .. "/" .. entry.name .. "\"")
         end,
         -- override the regular one
@@ -122,6 +123,7 @@ api.setup({
             vim.api.nvim_input"<ESC>:Oil "
             actions.cd.callback()
         end,
+        ["ep"] = open_chmod,
         ["es"] = actions.select_split,
         ["et"] = actions.select_tab,
         ["ev"] = actions.select_vsplit,
