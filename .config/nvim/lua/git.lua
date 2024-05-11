@@ -20,6 +20,8 @@ gitsigns.setup {
         delay = 200,
     },
 
+    current_line_blame_formatter = "<author>, <author_time:%Y/%m/%d> - <summary>",
+
     on_attach = function()
         local utils = require("utils")
         local prefix = "<space>g"
