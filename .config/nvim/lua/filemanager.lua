@@ -95,7 +95,10 @@ api.setup({
 vim.api.nvim_create_autocmd("User", {
     pattern  = "OilEnter",
     callback = function(bufnr)
-        actions.cd.callback()
+        -- change directory if not ssh
+        if api.get_current_dir() then
+            actions.cd.callback()
+        end
     end
 })
 
@@ -194,13 +197,18 @@ utils.map("n", prefix .. "v", function()
 end)
 
 
+local function oil_cmp_get_pwd()
+    -- return the local pwd if ssh
+    return api.get_current_dir() or vim.fn.getcwd()
+end
+
 local cmp = require("cmp")
 cmp.setup.filetype("oil", {
         sources = cmp.config.sources({
         { 
             name = 'path',
             option = {
-                get_cwd = api.get_current_dir
+                get_cwd = oil_cmp_get_pwd
             }
         },
         { name = 'luasnip' },
