@@ -60,3 +60,6 @@ require("markdown")
 
 -- oil.nvim
 require("filemanager")
+
+-- gitsigns
+require("git")
