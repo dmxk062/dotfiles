@@ -121,7 +121,9 @@ vim.api.nvim_create_autocmd("FileType", {
             local dir   = api.get_current_dir()
             if not dir then
                 -- ssh, we hope that the application uses gio or whatever and can use sftp:// uris
-                -- if that doesnt work, try `xdg-mime default <application>.desktop x-scheme-handler/sftp` where application is an app that can talk sftp
+                -- if that doesnt work, try 
+                -- `xdg-mime default <application>.desktop x-scheme-handler/sftp` 
+                -- where application is an app that can talk sftp
                 -- org.gnome.Nautilus works for instance
                 -- TODO: write some hacky handler myself that uses gio to then open that
                 local bufname = vim.api.nvim_buf_get_name(0) 
@@ -192,3 +194,17 @@ utils.map("n", prefix .. "v", function()
 end)
 
 
+local cmp = require("cmp")
+cmp.setup.filetype("oil", {
+        sources = cmp.config.sources({
+        { 
+            name = 'path',
+            option = {
+                get_cwd = api.get_current_dir
+            }
+        },
+        { name = 'luasnip' },
+        { name = 'buffer' },
+        { name = 'nvim_lsp' },
+    })
+})

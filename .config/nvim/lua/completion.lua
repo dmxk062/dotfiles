@@ -83,15 +83,6 @@ cmp.setup.filetype('markdown', {
         { name = 'spell' } -- move spell to the bottom so it doesnt slow it down that much
     })
 })
-cmp.setup.filetype('oil', {
-    sources = cmp.config.sources({
-        { name = 'path' },
-        { name = 'luasnip' },
-        { name = 'buffer' },
-        { name = 'nvim_lsp' },
-    })
-})
-
 cmp.setup.cmdline({ '/', '?'}, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
@@ -101,9 +92,8 @@ cmp.setup.cmdline({ '/', '?'}, {
 
 cmp.setup.cmdline(':', {
     sources = cmp.config.sources({
-        { name = 'path' }
-    }, {
-        { name = 'cmdline' }
+        { name = 'path' },
+        { name = 'cmdline' },
     })
 })
 
