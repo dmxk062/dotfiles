@@ -94,15 +94,18 @@ menu {
 
 .traybox {
      > * {
+        &:hover{
+            > image {
+                background-color: $bg3;
+            }
+        }
         > image {
+            transition: background-color 0.3s ease, color 0.3s ease;
             padding: 0.07rem 1.15rem 0.07rem 0.85rem;
             border-radius: $rounding-small;
             background-color: $bg2;
             color: $fg;
             margin: .5rem;
-            &:hover{
-                background-color: $bg3;
-            }
         }
     }
 }
