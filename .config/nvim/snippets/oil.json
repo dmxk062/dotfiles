@@ -11,7 +11,7 @@
     },
     "New Link": {
         "prefix": ["link", "ln"],
-        "body": ["${1:name} -> ${2:target}"],
+        "body": ["${1:name} -> ./${2:target}"],
         "description": "Create a symbolic link"
     },
     "C Header/Source Pair": {
