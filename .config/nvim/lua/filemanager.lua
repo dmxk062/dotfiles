@@ -91,14 +91,21 @@ api.setup({
     },
 })
 
+-- automatically cd the whole nvim
+vim.api.nvim_create_autocmd("User", {
+    pattern  = "OilEnter",
+    callback = function(bufnr)
+        actions.cd.callback()
+    end
+})
+
 -- TODO: use this for mappings instead
-vim.api.nvim_create_autocmd('FileType', {
+vim.api.nvim_create_autocmd("FileType", {
     pattern = "oil",
 
     callback = function()
         local function goto_dir(path)
             api.open(vim.fn.expand(path))
-            actions.cd.callback()
         end
 
         local function open_cd()
@@ -107,7 +114,6 @@ vim.api.nvim_create_autocmd('FileType', {
 
         local function goto_git_ancestor()
             api.open(lspconfig.find_git_ancestor(api.get_current_dir()))
-            actions.cd.callback()
         end
 
         function open_external()
@@ -165,10 +171,6 @@ vim.api.nvim_create_autocmd('FileType', {
         for _, map in ipairs(normal_mappings) do 
             utils.lmap(0, "n", map[1], map[2])
         end
-
-
-
-
     end,
 })
 
