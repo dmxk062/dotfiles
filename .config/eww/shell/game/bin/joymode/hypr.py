@@ -6,7 +6,8 @@ import json
 import re
 
 HYPRLAND_INSTANCE_SIGNATURE=os.getenv("HYPRLAND_INSTANCE_SIGNATURE")
-HYPRCTL_SOCKET=os.path.join("/tmp/hypr",HYPRLAND_INSTANCE_SIGNATURE,".socket.sock")
+RUNTIME_DIR=os.getenv("XDG_RUNTIME_DIR")
+HYPRCTL_SOCKET=os.path.join(RUNTIME_DIR, "hypr",HYPRLAND_INSTANCE_SIGNATURE,".socket.sock")
 
 
 class HyprctlSocket:

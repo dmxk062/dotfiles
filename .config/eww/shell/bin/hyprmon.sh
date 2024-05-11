@@ -94,7 +94,7 @@ function list_workspaces(){
 function monitor_changes(){
     update window="$(hyprctl activewindow -j)"
     update workspaces="$(list_workspaces)"
-    socat -u "UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |while read -r line;
+    socat -u "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |while read -r line;
     do
         case "$line" in
             urgent*)

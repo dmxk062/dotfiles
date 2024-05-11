@@ -9,7 +9,7 @@ update(){
 }
 if [[ "$1" == "listen" ]]; then
 update
-socat -u "/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |while read -r line; do
+socat -u "$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |while read -r line; do
 case $line in
     submap*|urgent*|openlayer*|closelayer*|activewindowv2*|focusedmon*)
         continue
