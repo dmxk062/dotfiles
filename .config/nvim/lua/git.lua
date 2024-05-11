@@ -19,4 +19,14 @@ gitsigns.setup {
         virt_text_pos = 'eol',
         delay = 400,
     },
+
+    on_attach = function(bufnr)
+        local utils = require("utils")
+        local git_prefix = "<space>g"
+        -- utils.map("n", git_prefix .. "t", gitsigns.toggle_signs)
+        utils.lmap(bufnr, "n", git_prefix .. "t", gitsigns.toggle_signs)
+
+    end,
+
 }
+
