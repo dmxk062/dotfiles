@@ -6,7 +6,7 @@ vim.cmd("colorscheme nord")
 vim.o.number = true
 vim.o.incsearch = true
 vim.o.ignorecase = true
-vim.o.noshowmode = true
+vim.o.showmode = false
 vim.o.smartcase = true
 vim.o.expandtab = true
 vim.o.tabstop = 4
