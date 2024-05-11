@@ -40,12 +40,17 @@ utils.abbrev("c", "spen", "setlocal spell spellang=en_us")
 utils.abbrev("c", "spde", "setlocal spell spellang=de_at")
 utils.abbrev("c", "spoff", "setlocal spell& spellang&")
 
--- open a kitty terminal window
---
+-- open a shell in a kitty window of some kind
+-- works even for remote oil buffers via ssh
 utils.map("n", " sw", function()
-    utils.kitty_new_dir(vim.fn.expand("%:p:h"), "window") 
+    utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") 
 end)
--- tab
+utils.map("n", " sW", function()
+    utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") 
+end)
 utils.map("n", " st", function()
-    utils.kitty_new_dir(vim.fn.expand("%:p:h"), "tab") 
+    utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") 
+end)
+utils.map("n", " so", function()
+    utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") 
 end)

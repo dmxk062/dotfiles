@@ -1,5 +1,21 @@
 local M = {}
 
+
+-- tries to open a shell in the correct directory that the current file is in
+function M.kitty_shell_in(uri, type)
+    -- we're connected via ssh
+    local cmd
+    if uri:sub(1, #"oil-ssh://") == "oil-ssh://" then
+        local addr = uri:match("//(.-)/")
+        local remote_path = uri:match("//.-(/.*)"):sub(2, -1)
+
+        cmd = string.format([[ -- ssh -t '%s' -- cd '%s'\; exec '${SHELL:=/bin/sh}']], addr, remote_path)
+    else
+        cmd = " --cwd '" .. uri .. "' -- zsh -i"
+    end
+    vim.fn.jobstart("kitty @ launch --type=" .. type .. cmd)
+end
+
 function M.kitty_new_dir(path, type)
     vim.fn.jobstart(string.format("kitty @ launch --type=%s --cwd \"%s\" -- zsh -i", type, path))
 end

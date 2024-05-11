@@ -114,9 +114,10 @@ vim.api.nvim_create_autocmd('FileType', {
             local entry = api.get_cursor_entry()
             local dir   = api.get_current_dir()
             if not dir then
-                -- ssh, like below, but this time we hope that the application uses gio or whatever
+                -- ssh, we hope that the application uses gio or whatever and can use sftp:// uris
                 -- if that doesnt work, try `xdg-mime default <application>.desktop x-scheme-handler/sftp` where application is an app that can talk sftp
                 -- org.gnome.Nautilus works for instance
+                -- TODO: write some hacky handler myself that uses gio to then open that
                 local bufname = vim.api.nvim_buf_get_name(0) 
                 local addr = bufname:match("//(.-)/")
                 local remote_path = bufname:match("//.-(/.*)"):sub(2, -1)
@@ -124,23 +125,6 @@ vim.api.nvim_create_autocmd('FileType', {
                 vim.fn.jobstart("xdg-open '" .. uri .. "'")
             else
                 vim.fn.jobstart("xdg-open '" .. dir .. "/" .. entry.name .. "'")
-            end
-        end
-
-
-        local function open_shell_in(type)
-            local dir = api.get_current_dir()
-            if not dir then 
-                -- we're probably connected via ssh
-                -- determine hostname and host path, then ssh and open a shell that way
-                local bufname = vim.api.nvim_buf_get_name(0) 
-                local addr = bufname:match("//(.-)/")
-                local remote_path = bufname:match("//.-(/.*)"):sub(2, -1)
-
-                local cmd = string.format([[ssh -t '%s' -- cd '%s'\;exec '${SHELL:-/bin/sh}']], addr, remote_path)
-                utils.kitty_new_cmd(cmd, type)
-            else
-                utils.kitty_new_dir(dir, type)
             end
         end
 
@@ -176,18 +160,7 @@ vim.api.nvim_create_autocmd('FileType', {
             { "gH", actions.toggle_hidden.callback},
 
 
-            -- open a shell
-            { " sw", function() open_shell_in("window") end},
-            { " so", function() open_shell_in("overlay") end},
-            { " sW", function() open_shell_in("os-window") end},
-            { " st", function() open_shell_in("tab") end},
-
-
             {"cd", open_cd},
-
-
-
-
         }
         for _, map in ipairs(normal_mappings) do 
             utils.lmap(0, "n", map[1], map[2])
