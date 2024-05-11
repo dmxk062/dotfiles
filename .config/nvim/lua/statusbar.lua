@@ -192,7 +192,17 @@ require('lualine').setup {
                     added    = {fg = colors.green},
                     modified = {fg = colors.yellow},
                     removed  = {fg = colors.red}
-                }
+                },
+                source = function()
+                    if vim.b.gitsigns_status_dict then
+                        local signs = vim.b.gitsigns_status_dict
+                        return {
+                            added    = signs.added,
+                            removed  = signs.removed,
+                            modified = signs.changed,
+                        }
+                    end
+                end,
             }
         },
         lualine_y = {
