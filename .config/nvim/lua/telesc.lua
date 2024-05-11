@@ -1,6 +1,7 @@
 local telescope = require("telescope")
 local utils = require("utils")
 local themes = require("telescope.themes")
+
 -- telescope.load_extension('fzf')
 local buffer_on_enter = { 
     n = {
@@ -27,79 +28,104 @@ telescope.setup {
         results_title = false,
         selection_caret = "> ",
         prompt_prefix = " ",
-  },
-  pickers = {
-      lsp_definitions = {
-          jump_type="tab",
-          theme = "ivy",
-          mappings = buffer_on_enter,
-      },
-      diagnostics = {
-          theme = "ivy",
-          mappings = buffer_on_enter,
-      },
-      find_files = {
-          theme = "ivy",
-          layout_config = {
-              height = .3,
-          },
-          mappings = buffer_on_enter,
-      },
-      live_grep = {
-          theme = "ivy",
-          mappings = buffer_on_enter,
-      },
-      registers = {
-          theme = "cursor",
-          mappings = {
-              n = {
-                  ["e"] = "edit_register"
-              }
-          }
-      },
-      buffers = {
-          theme = "dropdown",
-          previewer = false,
-          layout_config = {
-              height = .2,
-              width = .3,
-          },
-          mappings = {
-              n = {
-                  ["dd"] = "delete_buffer",
-                  ["t"] = "select_tab_drop",
-                  ["s"] = "select_horizontal",
-                  ["v"] = "select_vertical",
-                  ["<enter>"] = "select_drop",
-                  ["<S-enter>"] = "select_default"
-              },
-              i = {
-                  ["<enter>"] = "select_drop",
-                  ["<S-enter>"] = "select_default"
-              },
-          }
-      },
-      lsp_references = {
-          theme = "ivy",
-          mappings = buffer_on_enter,
-      },
-  },
-  extensions = {
-    ["ui-select"] = {
-        themes.get_cursor {
+    },
+    pickers = {
+        lsp_definitions = {
+            jump_type="tab",
+            theme = "ivy",
+            mappings = buffer_on_enter,
+        },
+        diagnostics = {
+            theme = "ivy",
+            mappings = buffer_on_enter,
+        },
+        find_files = {
+            theme = "ivy",
             layout_config = {
-                height = 6,
-                width = 60
+                height = .3,
+            },
+            mappings = buffer_on_enter,
+        },
+        live_grep = {
+            theme = "ivy",
+            mappings = buffer_on_enter,
+        },
+        registers = {
+            theme = "cursor",
+            mappings = {
+                n = {
+                    ["e"] = "edit_register"
+                }
             }
         },
+        buffers = {
+            theme = "dropdown",
+            previewer = false,
+            layout_config = {
+                height = .2,
+                width = .3,
+            },
+            mappings = {
+                n = {
+                    ["dd"] = "delete_buffer",
+                    ["t"] = "select_tab_drop",
+                    ["s"] = "select_horizontal",
+                    ["v"] = "select_vertical",
+                    ["<enter>"] = "select_drop",
+                    ["<S-enter>"] = "select_default"
+                },
+                i = {
+                    ["<enter>"] = "select_drop",
+                    ["<S-enter>"] = "select_default"
+                },
+            }
+        },
+        lsp_references = {
+            theme = "ivy",
+            mappings = buffer_on_enter,
+        },
     },
-    fzf = {
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-    },
-  }
+    extensions = {
+        ["ui-select"] = {
+            themes.get_cursor {
+                layout_config = {
+                    height = 6,
+                    width = 60
+                }
+            },
+        },
+        -- zoxide = {
+        --     prompt_title = "Zoxide",
+        --     theme = "ivy",
+        --     mappings = {
+        --         default = {
+        --             action = function(selection)
+        --                 oil.open(selection.path)
+        --             end
+        --         },
+        --         n = {
+        --             ["t"] = function(selection)
+        --                 vim.cmd.tabnew()
+        --                 oil.open(selection.path)
+        --             end,
+        --             ["v"] = function(selection)
+        --                 vim.cmd.vsplit()
+        --                 oil.open(selection.path)
+        --             end,
+        --             ["s"] = function(selection)
+        --                 vim.cmd.split()
+        --                 oil.open(selection.path)
+        --             end,
+        --         },
+        --     },
+        -- },
+        -- fzf = {
+        --     fuzzy = true,                    -- false will only do exact matching
+        --     override_generic_sorter = true,  -- override the generic sorter
+        --     override_file_sorter = true,     -- override the file sorter
+        --     case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+        -- },
+    }
 }
 local builtin = require('telescope.builtin')
 local _prefix = "<space>"
@@ -119,6 +145,7 @@ utils.map('i', '<C-R>', register_and_insert)
 
 -- vim.keymap.set('n', '<space>a', builtin.)
 telescope.load_extension("ui-select")
+-- telescope.load_extension("zoxide")
 
 
 -- vim.api.nvim_create_autocmd("VimEnter", {
