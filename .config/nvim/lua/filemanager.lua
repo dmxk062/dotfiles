@@ -22,10 +22,10 @@ end
 api.setup({
     default_file_explorer = true,
 
-    win_options = {
-        cursorlineopt="line,number",
-    },
 
+    win_options = {
+        cursorlineopt = "line,number"
+    },
     columns = {
         { 
             "icon",
@@ -136,6 +136,13 @@ api.setup({
     },
 })
 
+-- TODO: use this for mappings instead
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = "oil",
+    callback = function()
+    end,
+})
+
 vim.keymap.set("n", " fF", api.open_float)
 vim.keymap.set("n", " ff", api.open)
 
@@ -151,4 +158,5 @@ vim.keymap.set("n", " fv", function()
     vim.api.nvim_command("vsplit")
     api.open() 
 end)
+
 
