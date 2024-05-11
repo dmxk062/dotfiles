@@ -19,7 +19,7 @@ Display: ${ws.display}
 Id: ${ws.id}
 Fullscreen: ${ws.fullscreen}"
     (box :space-evenly false
-        (label :text "${ws_icons[ws.name] ?: ws.name}${vertical ? "" : "    ${ws.title ?: "empty"}"}" :limit-width 14)
+        (label :text "${ws_icons[ws.name] ?: ws.name}${vertical ? "" : "    ${ws.title ?: "empty"}"}" :limit-width 10)
     )
     )
                 ))
