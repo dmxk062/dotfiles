@@ -77,60 +77,15 @@ api.setup({
     },
 
     keymaps = {
-        ["<CR>"] = actions.select,
-        ["<C-H>"] = actions.toggle_hidden,
         ["!"] = function()
             actions.open_cmdline.callback()
             vim.api.nvim_input("! ")
         end,
-        -- open in other program
-        ["eo"] = function()
-            local entry = api.get_cursor_entry()
-            vim.fn.jobstart("xdg-open \"" .. api.get_current_dir() .. "/" .. entry.name .. "\"")
-        end,
-        -- override the regular one
-        [" sw"] = function()
-            local pwd = api.get_current_dir()
-            utils.kitty_new_dir(pwd, "window")
-        end,
-        [" st"] = function()
-            local pwd = api.get_current_dir()
-            utils.kitty_new_dir(pwd, "tab")
-        end,
         ["<C-space>"] = actions.refresh,
-        ["g~"] = function()
-            api.open(vim.fn.expand("~"))
-        end,
-        ["gh"] = function()
-            api.open(vim.fn.expand("~"))
-        end,
-        ["gw"] = function()
-            api.open(vim.fn.expand("~/ws"))
-        end,
-        ["g/"] = function()
-            api.open("/")
-        end,
-        ["gr"] = function()
-            api.open("/")
-        end,
-        ["g.."] = actions.parent,
-        ["gp"] = actions.parent,
-        ["gP"] = function()
-            local ancestor = lspconfig.find_git_ancestor()
-            api.open(ancestor)
-        end,
-        ["cd"] = function()
-            vim.api.nvim_input"<ESC>:Oil "
-            actions.cd.callback()
-        end,
-        ["ep"] = open_chmod,
-        ["es"] = actions.select_split,
-        ["et"] = actions.select_tab,
-        ["ev"] = actions.select_vsplit,
+        ["<CR>"] = actions.select,
         ["<S-CR>"] = actions.select_tab,
         ["<C-CR>"] = actions.select_split,
         ["<M-CR>"] = actions.select_vsplit,
-        ["e"] = actions.copy_entry_path,
 
 
     },
@@ -139,22 +94,124 @@ api.setup({
 -- TODO: use this for mappings instead
 vim.api.nvim_create_autocmd('FileType', {
     pattern = "oil",
+
     callback = function()
+        local function goto_dir(path)
+            api.open(vim.fn.expand(path))
+            actions.cd.callback()
+        end
+
+        local function open_cd()
+            vim.api.nvim_input("<ESC>:Oil ")
+        end
+
+        local function goto_git_ancestor()
+            api.open(lspconfig.find_git_ancestor(api.get_current_dir()))
+            actions.cd.callback()
+        end
+
+        function open_external()
+            local entry = api.get_cursor_entry()
+            local dir   = api.get_current_dir()
+            if not dir then
+                -- ssh, like below, but this time we hope that the application uses gio or whatever
+                -- if that doesnt work, try `xdg-mime default <application>.desktop x-scheme-handler/sftp` where application is an app that can talk sftp
+                -- org.gnome.Nautilus works for instance
+                local bufname = vim.api.nvim_buf_get_name(0) 
+                local addr = bufname:match("//(.-)/")
+                local remote_path = bufname:match("//.-(/.*)"):sub(2, -1)
+                local uri = "sftp://" .. addr .. remote_path .. api.get_cursor_entry().name
+                vim.fn.jobstart("xdg-open '" .. uri .. "'")
+            else
+                vim.fn.jobstart("xdg-open '" .. dir .. "/" .. entry.name .. "'")
+            end
+        end
+
+
+        local function open_shell_in(type)
+            local dir = api.get_current_dir()
+            if not dir then 
+                -- we're probably connected via ssh
+                -- determine hostname and host path, then ssh and open a shell that way
+                local bufname = vim.api.nvim_buf_get_name(0) 
+                local addr = bufname:match("//(.-)/")
+                local remote_path = bufname:match("//.-(/.*)"):sub(2, -1)
+
+                local cmd = string.format([[ssh -t '%s' -- cd '%s'\;exec '${SHELL:-/bin/sh}']], addr, remote_path)
+                utils.kitty_new_cmd(cmd, type)
+            else
+                utils.kitty_new_dir(dir, type)
+            end
+        end
+
+
+        local normal_mappings = {
+            -- edit in <thing>
+            { "es", actions.select_split.callback},
+            { "et", actions.select_tab.callback},
+            { "ev", actions.select_vsplit.callback},
+
+            { "eo", open_external},
+
+            -- edit permissions
+            { "ep", open_chmod},
+
+            -- goto places
+            { "gh", function() goto_dir("~") end},
+            { "g~", function() goto_dir("~") end},
+
+            { "gr", function() api.open("/") end},
+            { "g/", function() api.open("/") end},
+
+            { "gp",  actions.parent.callback},
+            { "g..", actions.parent.callback},
+
+            -- only applies to my machines
+            { "gw", function() goto_dir("~/ws") end},
+            { "gt", function() goto_dir("~/Tmp") end},
+
+            { "gP", goto_git_ancestor},
+
+            -- toggle hidden 
+            { "gH", actions.toggle_hidden.callback},
+
+
+            -- open a shell
+            { " sw", function() open_shell_in("window") end},
+            { " so", function() open_shell_in("overlay") end},
+            { " sW", function() open_shell_in("os-window") end},
+            { " st", function() open_shell_in("tab") end},
+
+
+            {"cd", open_cd},
+
+
+
+
+        }
+        for _, map in ipairs(normal_mappings) do 
+            utils.lmap(0, "n", map[1], map[2])
+        end
+
+
+
+
     end,
 })
 
-vim.keymap.set("n", " fF", api.open_float)
-vim.keymap.set("n", " ff", api.open)
+local prefix = "<space>f"
+utils.map("n", prefix .. "F", api.open_float)
+utils.map("n", prefix .. "f", api.open)
 
-vim.keymap.set("n", " ft", function() 
+utils.map("n", prefix .. "t", function() 
     vim.api.nvim_command("tabnew")
     api.open() 
 end)
-vim.keymap.set("n", " fs", function() 
+utils.map("n", prefix .. "s", function() 
     vim.api.nvim_command("split")
     api.open() 
 end)
-vim.keymap.set("n", " fv", function() 
+utils.map("n", prefix .. "v", function() 
     vim.api.nvim_command("vsplit")
     api.open() 
 end)
