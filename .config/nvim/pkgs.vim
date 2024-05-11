@@ -39,8 +39,9 @@ Plug 'b0o/schemastore.nvim'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
-Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'lervag/vimtex'
 Plug 'rafcamlet/tabline-framework.nvim'
 Plug 'stevearc/oil.nvim'
+
+Plug 'lewis6991/gitsigns.nvim'
 call plug#end()
