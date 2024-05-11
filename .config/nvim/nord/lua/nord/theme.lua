@@ -200,17 +200,22 @@ theme.loadEditor = function()
 
 	-- Remove window split borders
 
-	if vim.g.nord_uniform_diff_background then
-		editor.DiffAdd = { fg = nord.nord14_gui, bg = nord.nord1_gui } -- diff mode: Added line
-		editor.DiffChange = { fg = nord.nord13_gui, bg = nord.nord1_gui } -- diff mode: Changed line
-		editor.DiffDelete = { fg = nord.nord11_gui, bg = nord.nord1_gui } -- diff mode: Deleted line
-		editor.DiffText = { fg = nord.nord15_gui, bg = nord.nord1_gui } -- diff mode: Changed text within a changed line
-	else
-		editor.DiffAdd = { fg = nord.nord14_gui, bg = nord.none, style = "reverse" } -- diff mode: Added line
-		editor.DiffChange = { fg = nord.nord13_gui, bg = nord.none, style = "reverse" } -- diff mode: Changed line
-		editor.DiffDelete = { fg = nord.nord11_gui, bg = nord.none, style = "reverse" } -- diff mode: Deleted line
-		editor.DiffText = { fg = nord.nord15_gui, bg = nord.none, style = "reverse" } -- diff mode: Changed text within a changed line
-	end
+	-- if vim.g.nord_uniform_diff_background then
+	-- 	editor.DiffAdd = { fg = nord.nord14_gui, bg = nord.nord1_gui } -- diff mode: Added line
+	-- 	editor.DiffChange = { fg = nord.nord13_gui, bg = nord.nord1_gui } -- diff mode: Changed line
+	-- 	editor.DiffDelete = { fg = nord.nord11_gui, bg = nord.nord1_gui } -- diff mode: Deleted line
+	-- 	editor.DiffText = { fg = nord.nord15_gui, bg = nord.nord1_gui } -- diff mode: Changed text within a changed line
+	-- else
+	-- 	editor.DiffAdd = { fg = nord.nord14_gui, bg = nord.none, style = "reverse" } -- diff mode: Added line
+	-- 	editor.DiffChange = { fg = nord.nord13_gui, bg = nord.none, style = "reverse" } -- diff mode: Changed line
+	-- 	editor.DiffDelete = { fg = nord.nord11_gui, bg = nord.none, style = "reverse" } -- diff mode: Deleted line
+	-- 	editor.DiffText = { fg = nord.nord15_gui, bg = nord.none, style = "reverse" } -- diff mode: Changed text within a changed line
+	-- end
+    --
+    editor.DiffAdd      = { fg = nord.nord14_gui}
+    editor.DiffChange   = { fg = nord.nord13_gui}
+    editor.DiffDelete   = { fg = nord.nord11_gui}
+    editor.DiffText     = { fg = nord.nord15_gui}
 
 	return editor
 end
@@ -512,7 +517,9 @@ theme.loadPlugins = function()
 		GitSignsDelete = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
 		GitSignsDeleteNr = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
 		GitSignsDeleteLn = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
-		GitSignsCurrentLineBlame = { fg = nord.nord3_gui_bright, style = bold },
+		GitSignsCurrentLineBlame = { fg = nord.nord3_gui_bright},
+
+        -- GitSignsAdd
 
 		-- Telescope
 		TelescopePromptBorder = { fg = nord.nord3_gui },
