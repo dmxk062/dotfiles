@@ -1,7 +1,7 @@
 [
     {
-        "path":"/home/dmx/.config/background/img/night_mountains",
-        "name":"Night Sky & Mountains"
+        "path":"/home/dmx/.config/background/img/forrest_tower",
+        "name":"Forrest Tower"
     },
     {
         "path":"/home/dmx/.config/background/img/purple_wave",
@@ -10,6 +10,10 @@
     {
         "path":"/home/dmx/.config/background/img/leaves",
         "name":"Leaves"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/waves",
+        "name":"Stormy Sea"
     },
     {
         "path":"/home/dmx/.config/background/img/osx",
