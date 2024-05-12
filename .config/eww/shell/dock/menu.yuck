@@ -26,10 +26,10 @@
         (box :class "popup_box_padded" :orientation "v" :space-evenly false
             (box :orientation "v"
                 (for entry in icon_menu_entries
-                    (lbutton :onclick "${entry.exec}& disown; ${EWW_CMD} close icon_popup" :label "${entry.name}")
+                    (llbutton :onclick "${entry.exec}& disown; ${EWW_CMD} close icon_popup" :label "${entry.name}")
                 )
             )
-            (lbutton :onclick "dock/bin/open_icon_menu.sh default" :label "Cancel")
+            (llbutton :onclick "dock/bin/open_icon_menu.sh default" :label "Cancel")
         )
     )
 )

@@ -23,13 +23,13 @@
 (defwidget dock_window_options []
     (box :space-evenly false :halign "center" :valign "center"
         (box :orientation "v" :class "popup_box_padded"
-        (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch closewindow address:${dock_active_win.address}" :label "Close Window")
-        (lbutton :onclick "${EWW_CMD} close dock_window_popup; dock/bin/force_kill.sh ${dock_active_win.pid}" :label "Kill Window")
-        (lbutton :onclick "${EWW_CMD} close dock_window_popup; ${dock_active_win.class}||gtk-launch '${dock_active_win.class}'" :label "Launch new Window")
-        (lbutton :onclick "${EWW_CMD} close dock_window_popup; sleep 0.2; desktop/mods/resize.sh ${dock_active_win.address}&" :label "Resize Window")
-        (lbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch togglefloating address:${dock_active_win.address}" :label "Toggle Float")
-        (lbutton :onclick "${EWW_CMD} close dock_window_popup; dock/bin/move.sh '${dock_active_win.address}' current" :label "Move to current")
-        (lbutton :onclick "${EWW_CMD} close dock_window_popup; ${dock_active_win.workspace.name == "special:4" ?
+        (llbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch closewindow address:${dock_active_win.address}" :label "Close Window")
+        (llbutton :onclick "${EWW_CMD} close dock_window_popup; dock/bin/force_kill.sh ${dock_active_win.pid}" :label "Kill Window")
+        (llbutton :onclick "${EWW_CMD} close dock_window_popup; ${dock_active_win.class}||gtk-launch '${dock_active_win.class}'" :label "Launch new Window")
+        (llbutton :onclick "${EWW_CMD} close dock_window_popup; sleep 0.2; desktop/mods/resize.sh ${dock_active_win.address}&" :label "Resize Window")
+        (llbutton :onclick "${EWW_CMD} close dock_window_popup; hyprctl dispatch togglefloating address:${dock_active_win.address}" :label "Toggle Float")
+        (llbutton :onclick "${EWW_CMD} close dock_window_popup; dock/bin/move.sh '${dock_active_win.address}' current" :label "Move to current")
+        (llbutton :onclick "${EWW_CMD} close dock_window_popup; ${dock_active_win.workspace.name == "special:4" ?
         "dock/bin/move.sh '${dock_active_win.address}' current" :
         "hyprctl dispatch movetoworkspacesilent special:4,address:${dock_active_win.address}"}"
         :label {dock_active_win.workspace.name == "special:4" ? "Restore" : "Hide"})
