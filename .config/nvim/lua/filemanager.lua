@@ -139,8 +139,8 @@ vim.api.nvim_create_autocmd("FileType", {
             end
         end
 
-        local function open_dir_shell(type)
-            utils.kitty_shell_in(api.get_current_dir() or vim.api.nvim_buf_get_name(0), type)
+        local function open_dir_shell(type, where)
+            utils.kitty_shell_in(api.get_current_dir() or vim.api.nvim_buf_get_name(0), type, where)
         end
 
 
@@ -179,6 +179,8 @@ vim.api.nvim_create_autocmd("FileType", {
             {"cd", open_cd},
 
             {" sw", function() open_dir_shell("window") end},
+            {" sv", function() open_dir_shell("window", "vsplit") end},
+            {" ss", function() open_dir_shell("window", "hsplit") end},
             {" sW", function() open_dir_shell("os-window") end},
             {" so", function() open_dir_shell("overlay") end},
             {" st", function() open_dir_shell("tab") end},
