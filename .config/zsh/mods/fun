@@ -33,11 +33,11 @@ function fmap {
     local func="$1"; shift
     if (($# == 0)); then
         while read -r arg; do
-            eval "$func" $arg
+            "$func" "${=arg}"
         done
     else
         for arg in "$@"; do
-            eval "$func" $arg
+            "$func" "${=arg}"
         done
     fi
 
@@ -181,14 +181,14 @@ function ffilter {
 
     if (($# == 0)); then
         while read -r arg; do
-            if eval "$func" $arg; then
-                print -- $arg
+            if "$func" "${=arg}"; then
+                print -- "$arg"
             fi
         done
     else
         for arg in "$@"; do
-            if eval "$func" $arg; then
-                print -- $arg
+            if "$func" "${=arg}"; then
+                print -- "$arg"
             fi
         done
     fi
@@ -235,6 +235,7 @@ function cnt {
 # e.g.
 # pgrep zsh|sjoin pgrep bash
 # to get all pids of both
+# basically the same as (pgrep zsh; pgrep bash)
 function sjoin {
     local expr="$1"
     shift
