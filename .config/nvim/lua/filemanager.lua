@@ -119,7 +119,7 @@ vim.api.nvim_create_autocmd("FileType", {
             api.open(lspconfig.find_git_ancestor(api.get_current_dir()))
         end
 
-        function open_external()
+        local function open_external()
             local entry = api.get_cursor_entry()
             local dir   = api.get_current_dir()
             if not dir then
@@ -138,6 +138,11 @@ vim.api.nvim_create_autocmd("FileType", {
                 vim.fn.jobstart("xdg-open '" .. dir .. "/" .. entry.name .. "'")
             end
         end
+
+        local function open_dir_shell(type)
+            utils.kitty_shell_in(api.get_current_dir() or vim.api.nvim_buf_get_name(0), type)
+        end
+
 
 
         local normal_mappings = {
@@ -172,6 +177,11 @@ vim.api.nvim_create_autocmd("FileType", {
 
 
             {"cd", open_cd},
+
+            {" sw", function() open_dir_shell("window") end},
+            {" sW", function() open_dir_shell("os-window") end},
+            {" so", function() open_dir_shell("overlay") end},
+            {" st", function() open_dir_shell("tab") end},
         }
         for _, map in ipairs(normal_mappings) do 
             utils.lmap(0, "n", map[1], map[2])
