@@ -82,6 +82,7 @@ local modecolors = {
     ["!"] = {bg = colors.teal, fg = colors.black},
     t = { bg = colors.teal, fg = colors.black},
     nt = { bg = colors.teal, fg = colors.black},
+    s = { bg = colors.teal, fg = colors.black, gui = "italic"},
 }
 local mode = {
     "mode",

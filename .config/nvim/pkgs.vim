@@ -4,7 +4,7 @@ Plug 'kylechui/nvim-surround'
 Plug 'ggandor/leap.nvim'
 Plug 'tpope/vim-repeat'
 Plug 'shaunsingh/nord.nvim'
-Plug 'glepnir/nerdicons.nvim'
+" Plug 'glepnir/nerdicons.nvim'
 Plug 'numToStr/Comment.nvim'
 Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app && yarn install' }
 Plug 'NvChad/nvim-colorizer.lua'
