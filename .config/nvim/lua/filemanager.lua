@@ -120,6 +120,14 @@ vim.api.nvim_create_autocmd("FileType", {
             api.open(lspconfig.find_git_ancestor(api.get_current_dir()))
         end
 
+        local function toggle_git_shown()
+            if vim.wo.signcolumn == "no" then
+                vim.wo.signcolumn = "auto"
+            else 
+                vim.wo.signcolumn = "no"
+            end
+        end
+
         local function open_external()
             local entry = api.get_cursor_entry()
             local dir   = api.get_current_dir()
@@ -174,6 +182,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
             -- toggle hidden 
             { "gH", actions.toggle_hidden.callback},
+            { "gs", toggle_git_shown},
 
 
             {"cd", open_cd},
