@@ -46,6 +46,10 @@ class ValentDevice:
 
         self.iface = dbus.Interface(obj, ACTIONS)
 
+    @classmethod
+    def new_for_id(cls, bus: dbus.Bus, id: str):
+        return cls(bus.get_object(BUS_NAME, BUS_ROOT + "/Device/" + id))
+
     def call_action(self, name: str, params: list, data: dict):
         self.iface.Activate(name, params, data, dbus_interface=ACTIONS)
 
@@ -67,13 +71,22 @@ def list_children(bus: dbus.Bus, bus_name: str, root: str) -> list[str]:
 
     return nodes
 
+    
+
 
 
 def list_devices(): 
     bus = dbus.SessionBus()
     for dev in list_children(bus, BUS_NAME, BUS_ROOT + "/Device"):
-        val = ValentDevice(bus.get_object(BUS_NAME, BUS_ROOT + "/Device/" + dev))
+        val = ValentDevice.new_for_id(bus, dev)
         print(f"{val.name} {val.id}")
+
+def open_sms(device=None):
+    bus = dbus.SessionBus()
+    for dev in list_children(bus, BUS_NAME, BUS_ROOT + "/Device"):
+        val = ValentDevice.new_for_id(bus, dev)
+        if (not device or device == dev):
+            val.call_action("sms.messaging", [], {})
 
 def main():
     parser = argparse.ArgumentParser()
@@ -84,6 +97,8 @@ def main():
     match args.action:
         case "ls":
             list_devices()
+        case "sms":
+            open_sms(args.device)
 
 
 if __name__ == "__main__":
