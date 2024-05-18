@@ -6,13 +6,16 @@ Plug 'tpope/vim-repeat'
 Plug 'shaunsingh/nord.nvim'
 " Plug 'glepnir/nerdicons.nvim'
 Plug 'numToStr/Comment.nvim'
+
 Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app && yarn install' }
+" Plug 'MeanderingProgrammer/markdown.nvim'
+Plug 'lukas-reineke/headlines.nvim'
+
 Plug 'NvChad/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'lukas-reineke/headlines.nvim'
 Plug 'm4xshen/autoclose.nvim'
 Plug 'neovim/nvim-lspconfig'
 
@@ -41,7 +44,9 @@ Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'lervag/vimtex'
 Plug 'rafcamlet/tabline-framework.nvim'
+
 Plug 'stevearc/oil.nvim'
+Plug 'refractalize/oil-git-status.nvim'
 
 Plug 'lewis6991/gitsigns.nvim'
 call plug#end()

@@ -477,6 +477,34 @@ theme.loadPlugins = function()
         OilChange = {fg = nord.nord15_gui},
 
 
+        OilGitStatusIndexIgnored = {fg = nord.nord3_gui},
+        OilGitStatusWorkingTreeIgnored = {link = "OilGitStatusIndexIgnored"},
+
+        OilGitStatusIndexUntracked = {link = "OilGitStatusIndexIgnored"},
+        OilGitStatusWorkingTreeUntracked = {link = "OilGitStatusIndexIgnored"},
+
+        OilGitStatusIndexAdded = {fg = nord.nord14_gui},
+        OilGitStatusWorkingTreeAdded = {link = "OilGitStatusIndexAdded"},
+
+        OilGitStatusIndexCopied = {fg = nord.nord13_gui},
+        OilGitStatusWorkingTreeCopied = {link = "OilGitStatusIndexCopied"},
+
+        OilGitStatusIndexDeleted = {fg = nord.nord11_gui},
+        OilGitStatusWorkingTreeDeleted = {link = "OilGitStatusIndexDeleted"},
+
+        OilGitStatusIndexModified = {fg = nord.nord15_gui},
+        OilGitStatusWorkingTreeModified = {link = "OilGitStatusIndexModified"},
+
+        OilGitStatusIndexRenamed = {fg = nord.nord9_gui},
+        OilGitStatusWorkingTreeRenamed = {link = "OilGitStatusIndexRenamed"},
+
+        OilGitStatusIndexTypeChanged = {fg = nord.nord12_gui},
+        OilGitStatusWorkingTreeTypeChanged = {link = "OilGitStatusIndexTypeChanged"},
+
+        OilGitStatusIndexUnmerged = {fg = nord.nord4_gui},
+        OilGitStatusWorkingTreeUnmerged = {link = "OilGitStatusIndexUnmerged"},
+
+
 
 		-- LspTrouble
 		LspTroubleText = { fg = nord.nord4_gui },

@@ -24,7 +24,8 @@ api.setup({
 
 
     win_options = {
-        cursorlineopt = "line,number"
+        cursorlineopt = "line,number",
+        signcolumn    = "auto"
     },
     columns = {
         { 
@@ -144,7 +145,6 @@ vim.api.nvim_create_autocmd("FileType", {
         end
 
 
-
         local normal_mappings = {
             -- edit in <thing>
             { "es", actions.select_split.callback},
@@ -228,3 +228,5 @@ cmp.setup.filetype("oil", {
         { name = 'nvim_lsp' },
     })
 })
+
+require("oil-git-status").setup({})
