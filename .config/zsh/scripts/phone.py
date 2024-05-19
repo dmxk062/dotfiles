@@ -83,16 +83,22 @@ def list_children(bus: dbus.Bus, bus_name: str, root: str) -> list[str]:
     return nodes
 
 
-def iter_devices(bus: dbus.Bus, callback: callable(ValentDevice)):
+def iter_devices(bus: dbus.Bus, callback: callable(ValentDevice), filter: callable(ValentDevice)):
     for dev in list_children(bus, BUS_NAME, BUS_ROOT + "/Device"):
         val = ValentDevice.new_for_id(bus, dev)
-        callback(val)
+        if filter(val):
+            callback(val)
 
 
+def dev_matches(dev: ValentDevice, name: str, id: str):
+    if not name and not id:
+        return True
+    if dev.id == id or dev.name.lower().startswith(name.lower()):
+        return True
+    else:
+        return False
 
-def open_sms(device: ValentDevice, id=None):
-    if ((not id or id == device.id) and device.state & DeviceState.PAIRED):
-        device.call_action('sms.messaging', [], {})
+
 
 def print_devices(bus: dbus.Bus):
     devs = []
@@ -126,10 +132,6 @@ def print_devices(bus: dbus.Bus):
 
         print(f"{c}{"" if paired else "󰤮"} {dev.name:<{max_name_len}}  {C.Style.NORMAL}{batcolor}{baticon}{percentage:>3}% {C.Fore.RESET}{dev.id}")
 
-def send_msg(device: ValentDevice, message, id=None):
-    if ((not id or id == device.id) and device.state & DeviceState.PAIRED):
-        device.call_action("ping.message", [message], {})
-
 
 def dev_to_json(dev: ValentDevice):
     battery_data = dev.get_battery()
@@ -156,49 +158,57 @@ def dev_to_json(dev: ValentDevice):
         "battery": batteries
     }
 
-def list_json(bus: dbus.Bus, id=None):
+def list_json(bus: dbus.Bus, id=None, name=None):
     devs = [ValentDevice.new_for_id(bus, d) for d in list_children(bus, BUS_NAME, BUS_ROOT + "/Device")]
-    if len(devs) == 0:
-        if id:
-            return "null\n"
-        else:
-            return "[]\n"
 
-    if not id:
+    if len(devs) == 0:
+        if id or name:
+            return "null"
+        else:
+            return "[]"
+
+    if not id and not name:
         buffer = []
         for dev in devs:
             buffer.append(dev_to_json(dev))
         return json.dumps(buffer)
     else:
         for dev in devs:
-            if dev.id == id:
+            if dev_matches(dev, name, id):
                 return json.dumps(dev_to_json(dev))
+        return "null"
 
 
     
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", metavar="action", choices=["ls", "sms", "msg", "json"])
-    parser.add_argument("-d" ,"--device", metavar="dev", help="Select the device to use")
+    parser.add_argument("action", metavar="action", choices=["ls", "sms", "msg", "json", "send"])
+    parser.add_argument("-d" ,"--device", metavar="dev", help="Specify id")
+    parser.add_argument("-n" ,"--name", metavar="dev", help="Filter by name")
     parser.add_argument("arguments" , metavar="arguments", nargs="*", help="Data for the action")
     args = parser.parse_args()
 
-    if args.action == "msg" and not args.arguments:
-        parser.error("Specify message to send")
+    if args.action in ("msg", "send") and not args.arguments:
+        parser.error("Specify text to send")
 
 
     C.init()
     bus = dbus.SessionBus()
+
+    filter = lambda d: dev_matches(d, args.name, args.device)
+
     match args.action:
         case "ls":
             print_devices(bus)
         case "sms":
-            iter_devices(bus, lambda d: open_sms(d, id=args.device))
+            iter_devices(bus, lambda d: d.call_action("sms.messaging", [], {}), filter)
         case "msg":
-            iter_devices(bus, lambda d: send_msg(d, " ".join(args.arguments), id=args.device))
+            iter_devices(bus, lambda d: d.call_action("ping.message", [" ".join(args.arguments)], {}), filter)
+        case "send":
+            iter_devices(bus, lambda d: d.call_action("share.text", [" ".join(args.arguments)], {}), filter)
         case "json":
-            sys.stdout.write(list_json(bus, id=args.device))
+            sys.stdout.write(list_json(bus, id=args.device, name=args.name))
 
 
 
