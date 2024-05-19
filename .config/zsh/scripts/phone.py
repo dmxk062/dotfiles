@@ -101,8 +101,8 @@ def dev_matches(dev: ValentDevice, name: str, id: str):
 
 
 def print_devices(bus: dbus.Bus):
-    devs = []
-    iter_devices(bus, lambda d: devs.append(d))
+    devs = [ValentDevice.new_for_id(bus, d) for d in list_children(bus, BUS_NAME, BUS_ROOT + "/Device")]
+
 
     max_name_len = 0
     for dev in devs:
@@ -183,14 +183,16 @@ def list_json(bus: dbus.Bus, id=None, name=None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", metavar="action", choices=["ls", "sms", "msg", "json", "send"])
+    parser.add_argument("action", metavar="action", choices=[
+        "ls", "sms", "msg", "json", "send", "url", "file"
+    ])
     parser.add_argument("-d" ,"--device", metavar="dev", help="Specify id")
     parser.add_argument("-n" ,"--name", metavar="dev", help="Filter by name")
     parser.add_argument("arguments" , metavar="arguments", nargs="*", help="Data for the action")
     args = parser.parse_args()
 
-    if args.action in ("msg", "send") and not args.arguments:
-        parser.error("Specify text to send")
+    if args.action in ("msg", "send", "url", "file") and not args.arguments:
+        parser.error("Specify text/uri to send")
 
 
     C.init()
@@ -207,6 +209,16 @@ def main():
             iter_devices(bus, lambda d: d.call_action("ping.message", [" ".join(args.arguments)], {}), filter)
         case "send":
             iter_devices(bus, lambda d: d.call_action("share.text", [" ".join(args.arguments)], {}), filter)
+        case "url":
+            iter_devices(bus, lambda d: d.call_action("share.open", [args.arguments[0]], {}), filter)
+        case "file":
+            import urllib.parse
+            import os
+            files = ["file://" + urllib.parse.quote(os.path.realpath(p), safe="/") for p in args.arguments if os.path.exists(p)]
+            if files:
+                iter_devices(bus, lambda d: d.call_action("share.uris", [files], {}), filter)
+            else:
+                exit(1)
         case "json":
             sys.stdout.write(list_json(bus, id=args.device, name=args.name))
 
