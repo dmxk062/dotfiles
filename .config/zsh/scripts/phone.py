@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from enum import IntFlag
 import argparse
 import colorama as C
+import time
 
 BUS_NAME = "ca.andyholmes.Valent"
 BUS_ROOT = "/ca/andyholmes/Valent"
@@ -62,6 +63,17 @@ class ValentDevice:
 
     def get_battery(self):
         return self.desc_action('battery.state')[2]
+
+    def notify(self, title: str, body: str, app: str): 
+        timestamp = str(int(time.time()))
+        notif = dbus.Dictionary({
+            "id": timestamp,
+            "title": app,
+            "body": body,
+            "application": title,
+            }, signature="sv")
+
+        self.call_action("notification.send", [notif], {})
 
 
 
@@ -184,7 +196,7 @@ def list_json(bus: dbus.Bus, id=None, name=None):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("action", metavar="action", choices=[
-        "ls", "sms", "msg", "json", "send", "url", "file"
+        "ls", "sms", "msg", "notify", "json", "send", "url", "file"
     ])
     parser.add_argument("-d" ,"--device", metavar="dev", help="Specify id")
     parser.add_argument("-n" ,"--name", metavar="dev", help="Filter by name")
@@ -192,8 +204,10 @@ def main():
     args = parser.parse_args()
 
     if args.action in ("msg", "send", "url", "file") and not args.arguments:
-        parser.error("Specify text/uri to send")
+        parser.error("Specify text/uri(s) to send")
 
+    if args.action == "notify" and len(args.arguments) < 3:
+        parser.error("Notify requires: title body app")
 
     C.init()
     bus = dbus.SessionBus()
@@ -207,6 +221,8 @@ def main():
             iter_devices(bus, lambda d: d.call_action("sms.messaging", [], {}), filter)
         case "msg":
             iter_devices(bus, lambda d: d.call_action("ping.message", [" ".join(args.arguments)], {}), filter)
+        case "notify":
+            iter_devices(bus, lambda d: d.notify(args.arguments[0], args.arguments[1], args.arguments[2]), filter)
         case "send":
             iter_devices(bus, lambda d: d.call_action("share.text", [" ".join(args.arguments)], {}), filter)
         case "url":
