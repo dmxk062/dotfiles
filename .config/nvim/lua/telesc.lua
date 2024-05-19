@@ -12,8 +12,18 @@ local buffer_on_enter = {
         ["<enter>"] = "select_drop",
         ["<S-enter>"] = "select_tab_drop"
     },
-    
 }
+
+local function default_config(extra)
+    local default = {
+        theme = "ivy",
+        layout_config = {
+            height = .3,
+        },
+        mappings = buffer_on_enter,
+    }
+    return vim.tbl_extend("force", default, extra or {})
+end
 telescope.setup {
     defaults = {
         mappings = {
@@ -30,26 +40,13 @@ telescope.setup {
         prompt_prefix = " ",
     },
     pickers = {
-        lsp_definitions = {
-            jump_type="tab",
-            theme = "ivy",
-            mappings = buffer_on_enter,
-        },
-        diagnostics = {
-            theme = "ivy",
-            mappings = buffer_on_enter,
-        },
-        find_files = {
-            theme = "ivy",
-            layout_config = {
-                height = .3,
-            },
-            mappings = buffer_on_enter,
-        },
-        live_grep = {
-            theme = "ivy",
-            mappings = buffer_on_enter,
-        },
+        lsp_definitions = default_config{jump_type = "tab"},
+        diagnostics = default_config(),
+        find_files = default_config(),
+        git_files = default_config{prompt_title = "Files in Git"},
+        live_grep = default_config(),
+        grep_string = default_config(),
+        oldfiles = default_config{prompt_title = "History"},
         registers = {
             theme = "cursor",
             mappings = {
@@ -80,10 +77,8 @@ telescope.setup {
                 },
             }
         },
-        lsp_references = {
-            theme = "ivy",
-            mappings = buffer_on_enter,
-        },
+        lsp_references = default_config(),
+        treesitter = default_config{prompt_title = "Symbols"},
     },
     extensions = {
         ["ui-select"] = {
@@ -94,64 +89,38 @@ telescope.setup {
                 }
             },
         },
-        -- zoxide = {
-        --     prompt_title = "Zoxide",
-        --     theme = "ivy",
-        --     mappings = {
-        --         default = {
-        --             action = function(selection)
-        --                 oil.open(selection.path)
-        --             end
-        --         },
-        --         n = {
-        --             ["t"] = function(selection)
-        --                 vim.cmd.tabnew()
-        --                 oil.open(selection.path)
-        --             end,
-        --             ["v"] = function(selection)
-        --                 vim.cmd.vsplit()
-        --                 oil.open(selection.path)
-        --             end,
-        --             ["s"] = function(selection)
-        --                 vim.cmd.split()
-        --                 oil.open(selection.path)
-        --             end,
-        --         },
-        --     },
-        -- },
-        -- fzf = {
-        --     fuzzy = true,                    -- false will only do exact matching
-        --     override_generic_sorter = true,  -- override the generic sorter
-        --     override_file_sorter = true,     -- override the file sorter
-        --     case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-        -- },
     }
 }
 local builtin = require('telescope.builtin')
 local _prefix = "<space>"
+
 utils.map('n', 'gr', builtin.lsp_references)
 utils.map('n', 'gd', builtin.lsp_definitions)
-utils.map('n', _prefix .. 'D', builtin.diagnostics)
-utils.map('n', _prefix .. 'F', builtin.find_files)
-utils.map('n', _prefix .. '/', builtin.live_grep)
-utils.map('n', _prefix .. 'r', builtin.registers)
-utils.map('n', _prefix .. '<space>', builtin.buffers)
--- and for insert too
+utils.map('n', 'gi', builtin.lsp_implementations)
+
+for _, map in ipairs({
+    {"D", builtin.diagnostics},
+    {"T", builtin.treesitter},
+    {"F", builtin.find_files},
+    {"gF", builtin.git_files},
+    {"h", builtin.oldfiles},
+    {"/", builtin.live_grep},
+    {"r", builtin.registers},
+    {"<space>", builtin.buffers},
+    {"#", builtin.grep_string}
+}) do 
+    utils.map("n", _prefix .. map[1], map[2])
+end
+
 function register_and_insert()
-    builtin.registers()
-    vim.cmd('startinsert')
+    builtin.registers{
+        mappings = {
+            n = {
+                ["e"] = edit_register,
+            }
+        }
+    }
 end
 utils.map('i', '<C-R>', register_and_insert)
 
--- vim.keymap.set('n', '<space>a', builtin.)
 telescope.load_extension("ui-select")
--- telescope.load_extension("zoxide")
-
-
--- vim.api.nvim_create_autocmd("VimEnter", {
---   callback = function()
---     if vim.fn.argv(0) == "" then
---       builtin.find_files({theme = "ivy", layout_config = { height = .8}})
---     end
---   end,
--- })
