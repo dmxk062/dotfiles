@@ -24,7 +24,10 @@ class DeviceState(IntFlag):
     PAIR_INCOMING = 1 << 2
     PAIR_OUTGOING = 1 << 3
 
-BATTERY_ICONS = [ "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹", "󰂎" ]
+BATTERY_ICONS = [ 
+    ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹", "󰂎" ],
+    ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
+]
 
 def introspect_object(obj) -> str:
     iface = dbus.Interface(obj, INTROSPECT)
@@ -131,7 +134,11 @@ def print_devices(bus: dbus.Bus):
         battery = dev.get_battery()
         percentage = int(battery[0]["percentage"])
         if battery[0]["is-present"]:
-            baticon = BATTERY_ICONS[(percentage // 10) - 1]
+            if battery[0]["charging"]:
+                baticon = BATTERY_ICONS[1][(percentage // 10) - 1]
+            else:
+                baticon = BATTERY_ICONS[0][(percentage // 10) - 1]
+
             if percentage > 70:
                 batcolor = C.Fore.GREEN
             elif percentage > 30:
@@ -139,7 +146,7 @@ def print_devices(bus: dbus.Bus):
             else:
                 batcolor = C.Fore.RED
         else:
-            baticon = BATTERY_ICONS[-1]
+            baticon = BATTERY_ICONS[0][-1]
             batcolor = C.Fore.RED
 
         print(f"{c}{"" if paired else "󰤮"} {dev.name:<{max_name_len}}  {C.Style.NORMAL}{batcolor}{baticon}{percentage:>3}% {C.Fore.RESET}{dev.id}")
