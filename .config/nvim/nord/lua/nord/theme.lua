@@ -99,7 +99,7 @@ theme.loadEditor = function()
 		QuickFixLine = { fg = nord.nord4_gui, bg = nord.none, style = "reverse" },
 		qfLineNr = { fg = nord.nord4_gui, bg = nord.none, style = "reverse" },
 		Search = { bg = nord.nord3_gui },
-        CurSearch = { fg = nord.nord15_gui, style= "reverse,bold"},
+        CurSearch = { fg = nord.nord13_gui, style= "reverse,bold"},
 		IncSearch = { fg = nord.nord0_gui, bg = nord.nord15_gui },
 		Substitute = { fg = nord.nord0_gui, bg = nord.nord12_gui },
 		SpecialKey = { fg = nord.nord9_gui },
