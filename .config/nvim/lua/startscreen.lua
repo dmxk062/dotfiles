@@ -168,14 +168,20 @@ local shortcuts = {
             button("󰉋 View and Edit Files", hl_prefix .. "Files", "f", oil.open, max_width),
             button("󰱼 Search Files",
                 hl_prefix .. "Search",
-                "/", 
+                ",/", 
                 function() require("telescope.builtin").find_files{layout_config = {height = .6}} end,
                 max_width
             ),
 
+            button("󱎸 Grep Files",
+                hl_prefix .. "Grep",
+                ",g", 
+                function() require("telescope.builtin").live_grep{layout_config = {height = .6}} end,
+                max_width
+            ),
             button("󰋚 Search History",
                 hl_prefix .. "History",
-                "?", 
+                ",h", 
                 function() require("telescope.builtin").oldfiles{layout_config = {height = .6}} end,
                 max_width
             ),
@@ -183,15 +189,14 @@ local shortcuts = {
     end)()
 }
 
-local function history() 
-    return {
-        type = "group",
-        val = generate_old_file_list(
-            math.min(vim.api.nvim_win_get_height(0) - const_pad.v, const_max.v),
-            math.min(vim.api.nvim_win_get_width(0) - const_pad.h, const_max.h)
-        ),
-    }
-end
+local history = {
+    type = "group",
+    val = generate_old_file_list(
+        -- math.min(vim.api.nvim_win_get_height(0) + 46),
+        100,
+        math.min(vim.api.nvim_win_get_width(0) - const_pad.h, const_max.h)
+    ),
+}
 
 
 
@@ -202,7 +207,7 @@ require("alpha").setup{
         {type = "padding", val = 2},
         shortcuts,
         {type = "padding", val = 1},
-        history(),
+        history,
     },
     opts = {
         margin = 4,
