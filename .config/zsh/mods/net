@@ -24,12 +24,14 @@ function ncrecv {
 }
 
 
-function jreq {
+function _jreq {
     local url="$1"
     shift
     local jqopts="${(j:,:)@}"
     curl -s "$url"|jq -r "${jqopts:-.}"
 }
+
+alias jreq="noglob _jreq"
 
 function urlenc {
     local fpath
