@@ -40,7 +40,7 @@ local function nice_names(path, user, max_length)
     :gsub("/home/" .. user .. "/.config", "~cfg")
     :gsub("/home/" .. user, "~")
 
-    if full:sub(-1, -1) == "/" then
+    if full:sub(-1, -1) == "/" and #full > 1 then
         full = full:sub(0, -2)
     end
 
