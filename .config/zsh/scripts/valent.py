@@ -4,7 +4,7 @@ import dbus
 import json
 import sys
 import xml.etree.ElementTree as ET
-from enum import IntFlag
+from enum import IntFlag, Enum
 import argparse
 import colorama as C
 import time
@@ -23,6 +23,10 @@ class DeviceState(IntFlag):
     PAIRED    = 1 << 1
     PAIR_INCOMING = 1 << 2
     PAIR_OUTGOING = 1 << 3
+
+class DeviceType(Enum):
+    COMPUTER = "computer"
+    PHONE = "phone"
 
 BATTERY_ICONS = [ 
     ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹", "󰂎" ],
@@ -43,16 +47,22 @@ class ValentDevice:
     name: str
     id:   str
     state: int
+    type: DeviceType
 
     iface: dbus.Interface
+    props: dbus.Interface
 
     def __init__(self, obj: dbus.proxies.ProxyObject):
         self.obj = obj
-        self.name = getprop(obj, BUS_NAME + ".Device", "Name")
-        self.id   = getprop(obj, BUS_NAME + ".Device", "Id")
-        self.state= getprop(obj, BUS_NAME + ".Device", "State")
 
+        self.props = dbus.Interface(obj, dbus_interface=dbus.PROPERTIES_IFACE)
         self.iface = dbus.Interface(obj, ACTIONS)
+
+        self.name = self.props.Get(BUS_NAME + ".Device", "Name")
+        self.id = self.props.Get(BUS_NAME + ".Device", "Id")
+        self.state = int(self.props.Get(BUS_NAME + ".Device", "State"))
+
+        self.type =  DeviceType.COMPUTER if self.props.Get(BUS_NAME + ".Device", "IconName").startswith("computer") else DeviceType.PHONE
 
     @classmethod
     def new_for_id(cls, bus: dbus.Bus, id: str):
@@ -149,10 +159,14 @@ def print_devices(bus: dbus.Bus):
             baticon = BATTERY_ICONS[0][-1]
             batcolor = C.Fore.RED
 
-        print(f"{c}{"" if paired else "󰤮"} {dev.name:<{max_name_len}}  {C.Style.NORMAL}{batcolor}{baticon}{percentage:>3}% {C.Fore.RESET}{dev.id}")
+        if dev.type == DeviceType.COMPUTER:
+            icon = "󰌢" if paired else "󰛧"
+        else:
+            icon = "" if paired else "󰞃"
+        print(f"{c}{icon} {dev.name:<{max_name_len}}  {C.Style.NORMAL}{batcolor}{baticon}{percentage:>3}% {C.Fore.RESET}{dev.id}")
 
 
-def dev_to_json(dev: ValentDevice):
+def dev_to_json(dev: ValentDevice) -> str:
     battery_data = dev.get_battery()
     batteries = []
     for bat in battery_data:
@@ -169,6 +183,7 @@ def dev_to_json(dev: ValentDevice):
     return {
         "name": dev.name,
         "id":   dev.id,
+        "type": dev.type.value,
         "state": {
             "int": dev.state,
             "paired":       bool(dev.state & DeviceState.PAIRED),
@@ -237,6 +252,7 @@ def main():
         case "file":
             import urllib.parse
             import os
+
             files = ["file://" + urllib.parse.quote(os.path.realpath(p), safe="/") for p in args.arguments if os.path.exists(p)]
             if files:
                 iter_devices(bus, lambda d: d.call_action("share.uris", [files], {}), filter)
