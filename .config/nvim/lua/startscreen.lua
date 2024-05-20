@@ -98,12 +98,16 @@ local function generate_old_file_list(maxfiles, max_width)
             break
         end
         if vim.startswith(f, "oil://") then
-                local name = f:sub(#"oil://" + 1)
-                table.insert(oldfiles, {name=nice_names(name, user, max_width), path=name, ico="󰉋 ", hl="Files", dir=true})
+            local name = f:sub(#"oil://" + 1)
+            table.insert(oldfiles, {name=nice_names(name, user, max_width), path=name, ico="󰉋 ", hl="Files", dir=true})
         elseif not vim.startswith(f, "oil-ssh://") then
-                ico, hl = get_icon(f)
-                table.insert(oldfiles, {name=nice_names(f, user, max_width), path=f, ico=ico, hl=hl, dir=false})
+            if vim.fn.filereadable(f) == 0 then
+                goto continue
+            end
+            ico, hl = get_icon(f)
+            table.insert(oldfiles, {name=nice_names(f, user, max_width), path=f, ico=ico, hl=hl, dir=false})
         end
+        ::continue::
     end
 
     local buttons = {}
