@@ -22,7 +22,7 @@ local function default_config(extra)
         },
         mappings = buffer_on_enter,
     }
-    return vim.tbl_extend("force", default, extra or {})
+    return vim.tbl_deep_extend("force", default, extra or {})
 end
 telescope.setup {
     defaults = {

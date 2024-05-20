@@ -76,6 +76,7 @@ theme.loadEditor = function()
 		NormalFloat = { fg = nord.nord6_gui, bg=nord.nord0_gui }, -- normal text and background color
 		VertSplit = { fg = nord.nord2_gui },
 		FloatBorder = { fg = nord.nord3_gui, bg = nord.none }, -- normal text and background color
+		WinSeparator = {link = "VertSplit"}, 
 		ColorColumn = { fg = nord.none, bg = nord.nord1_gui }, -- used for the columns set with 'colorcolumn'
 		Conceal = { fg = nord.nord1_gui }, -- placeholder characters substituted for concealed text (see 'conceallevel')
 		Cursor = { fg = nord.nord4_gui, bg = nord.none, style = "reverse" }, -- the character under the cursor

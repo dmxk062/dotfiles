@@ -46,20 +46,44 @@ require('nvim-treesitter.configs').setup {
           keymaps = {
               ["af"] = "@function.outer",
               ["if"] = "@function.inner",
-              ["aP"] = "@call.inner",
-              ["iP"] = "@parameter.inner",
-              ["aA"] = "@assignment.outer",
-              ["iA"] = "@assignment.inner",
-              -- variable value
+              -- read: all arguments
+              ["aA"] = "@call.inner",
+              -- read: inside/around argument
+              ["ia"] = "@parameter.inner",
+              ["aa"] = "@parameter.outer",
+
+              -- read: variable value
               ["vv"] = "@assignment.rhs",
-              ["iC"] = "@class.inner",
-              ["aC"] = "@class.outer",
-              ["i/"] = "@comment.inner",
-              ["a/"] = "@comment.outer",
+              ["ic"] = "@comment.inner",
+              ["ac"] = "@comment.outer",
               -- loops
-              ["il"] = "@loop.inner",
-              ["al"] = "@loop.outer",
+              ["iL"] = "@loop.inner",
+              ["aL"] = "@loop.outer",
           }
+      },
+      move = {
+          enable = true,
+          goto_next_start = {
+              ["]a"] = "@parameter.inner",
+              ["]f"] = "@function.outer",
+              ["]m"] = "@function.outer",
+          },
+          goto_previous_start = {
+              ["[a"] = "@parameter.inner",
+              ["[f"] = "@function.outer",
+              ["[m"] = "@function.outer",
+          },
+
+          goto_next_end = {
+              ["]F"] = "@function.outer",
+              ["]M"] = "@function.outer",
+
+          },
+          goto_previous_end = {
+              ["[F"] = "@function.outer",
+              ["[M"] = "@function.outer",
+
+          },
       }
 
   }
