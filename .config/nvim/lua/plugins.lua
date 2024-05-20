@@ -63,3 +63,18 @@ require("filemanager")
 
 -- gitsigns
 require("git")
+
+-- startup
+require("startscreen")
+
+-- idk, i wish that was buffer local tbh
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    callback = function() 
+        local buftype = vim.api.nvim_buf_get_option(0, "filetype")
+        if buftype == "TelescopePrompt" or buftype == "alpha" or buftype == "Oil" then
+            vim.wo.cursorlineopt = "line,number"
+        else
+            vim.wo.cursorlineopt = "number"
+        end
+    end
+})

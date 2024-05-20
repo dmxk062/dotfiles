@@ -506,6 +506,24 @@ theme.loadPlugins = function()
         OilGitStatusIndexUnmerged = {fg = nord.nord4_gui},
         OilGitStatusWorkingTreeUnmerged = {link = "OilGitStatusIndexUnmerged"},
 
+        -- startup
+        StartScreenShortcutGeneric = {fg = nord.nord15_gui},
+        StartScreenShortcutFiles = {fg = nord.nord7_gui},
+        StartScreenShortcutSearch = {fg = nord.nord15_gui},
+        StartScreenShortcutDir = {fg = nord.nord7_gui},
+        StartScreenShortcutHistory = {fg = nord.nord10_gui},
+        StartScreenShortcutQuit = {fg = nord.nord11_gui},
+
+        StartScreenHistory = {fg = nord.nord10_gui},
+        StartScreenTitle1 = {fg = nord.nord11_gui},
+        StartScreenTitle2 = {fg = nord.nord12_gui},
+        StartScreenTitle3 = {fg = nord.nord13_gui},
+        StartScreenTitle4 = {fg = nord.nord14_gui},
+        StartScreenTitle5 = {fg = nord.nord7_gui},
+        StartScreenTitle6 = {fg = nord.nord9_gui},
+        StartScreenTitle7 = {fg = nord.nord10_gui},
+        StartScreenTitle8 = {fg = nord.nord15_gui},
+
 
 
 		-- LspTrouble

@@ -50,6 +50,9 @@ local function get_buf_info(filename, bufname, bufid)
         if buftype == "TelescopePrompt" then
             name = "Telescope"
             show_modified = false
+        elseif buftype == "alpha" then
+            show_modified = false
+            name = "Startpage"
         elseif buftype == "oil" then
             if starts_with(bufname, "oil-ssh://") then
                 name = bufname:sub(#"oil-ssh://" + 1)

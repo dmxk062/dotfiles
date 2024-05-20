@@ -47,6 +47,8 @@ Plug 'rafcamlet/tabline-framework.nvim'
 
 Plug 'stevearc/oil.nvim'
 Plug 'refractalize/oil-git-status.nvim'
-
 Plug 'lewis6991/gitsigns.nvim'
+
+Plug 'startup-nvim/startup.nvim'
+Plug 'goolord/alpha-nvim'
 call plug#end()
