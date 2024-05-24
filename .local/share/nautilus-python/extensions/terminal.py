@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 import os
+import subprocess
 from gi.repository import Nautilus, GObject
 from typing import List
-from urllib.parse import unquote
+from urllib.parse import urlparse, unquote
 
 TEXT_TYPES = (
     'text/plain',
@@ -21,21 +22,40 @@ TEXT_TYPES = (
     'application/ecmascript',
 )
 
+def launch_term(command: list[str], pwd: str) -> None:
+    subprocess.run(["kitty", "--detach", f"--directory={pwd}", "--"] + command)
+
+def open_uri_in_term(file: Nautilus.FileInfo, cmd=[]) -> None:
+    if cmd != []:
+        launch_term(cmd, "~")
+    else:
+        uri = urlparse(file.get_location().get_uri())
+        path = unquote(uri.path)
+
+        match uri.scheme:
+            case "file":
+                launch_term(cmd, path)
+            case "sftp":
+                pass
+            case _:
+                pass
+
+
 class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
     def open_term_for_dir(self, _: Nautilus.MenuItem, file: Nautilus.FileInfo) -> None:
-        filepath = self.expand_uri(file)
-        os.system(f"kitty --detach --directory='{filepath}'")
+        open_uri_in_term(file)
 
     def edit_term(self, _: Nautilus.MenuItem, files: list[Nautilus.FileInfo]) -> None:
-        args = ""
-        for file in files:
-            filepath = self.expand_uri(file)
-            args = f"{args} '{filepath}'"
-        os.system(f"kitty --detach -- nvim -O {args}")
+        files = [
+                unquote(
+                    urlparse(
+                        f.get_location().get_uri()
+                    ).path)
+        for f in files]
 
-    @classmethod
-    def expand_uri(cls, file: Nautilus.FileInfo):
-        return file.get_location().get_path()
+        cmd = ["nvim"] + files
+        open_uri_in_term('', cmd)
+
 
 
     def get_file_items(
@@ -52,10 +72,7 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
             open_folder_item.connect("activate", self.open_term_for_dir, files[0])
             return [open_folder_item]
         else:
-            textfiles = []
-            for file in files:
-                if file.get_mime_type() in TEXT_TYPES:
-                    textfiles.append(file)
+            textfiles = [f for f in files if f.get_mime_type() in TEXT_TYPES]
             if len(textfiles) > 0:
                 edit_term_item = Nautilus.MenuItem(
                     name="Terminal::terminal_edit_submenu",
