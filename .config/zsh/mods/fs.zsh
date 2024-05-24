@@ -64,7 +64,8 @@ alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
 
 
-function find_containing {
+# ripgrep files
+function rgf {
     local search_term="$1"
     local search_path
     if [[ -z "$2" ]] {
@@ -229,7 +230,7 @@ function rmi {
 
 } elif [[ "$1" == "unload" ]] {
 
-unfunction find_containing mcd mkf tmp rp bn \
+unfunction rgf mcd mkf tmp rp bn \
     rmi  \
     readfile readstream
 

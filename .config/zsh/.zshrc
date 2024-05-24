@@ -18,15 +18,6 @@ function zvm_config() {
 #sources the plugin
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
-# kitty
-if [[ -n "$KITTY_INSTALLATION_DIR" ]]&&[[ "$TERM" == "xterm-kitty" ]]; then
-    export KITTY_SHELL_INTEGRATION="no-cursor no-title"
-    autoload -Uz -- "$KITTY_INSTALLATION_DIR/shell-integration/zsh/kitty-integration"
-    KITTY_SHELL_INTEGRATION_ENABLED=1
-    kitty-integration
-    unfunction kitty-integration
-fi
-
 #completion
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search

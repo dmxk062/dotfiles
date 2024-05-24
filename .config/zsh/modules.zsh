@@ -5,7 +5,7 @@ ZSH_MODULES=($(for file in "$ZSH_MODULE_DIR/"*; do
 done))
 
 function +mod {
-    local module="$1"
+    local module="$1.zsh"
     local out="/dev/stderr"
 
     if [[ "$2" == "silent" ]]; then
@@ -32,7 +32,7 @@ function +mod {
 }
 
 function -mod {
-    local module="$1"
+    local module="$1.zsh"
     local out="/dev/stderr"
 
     if [[ "$2" == "silent" ]]; then

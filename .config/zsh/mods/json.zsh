@@ -161,7 +161,7 @@ elif [[ "$1" == "unload" ]]; then
 unfunction table2json json2table \ 
     json2hash json2array \
     list2hash \
-    table2hashes iindex
+    iindex
 
 unalias jsoniter
 

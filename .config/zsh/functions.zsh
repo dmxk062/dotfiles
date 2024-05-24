@@ -21,66 +21,25 @@ function -gnome {
 # a better `watch`
 function -mon {
     local interval="$1"
-    if [[ "$interval" =~ ^[0-9]+$ ]]; then
+    if [[ "$interval" =~ ^[+-]?[0-9]*\.?[0-9]+$ ]]; then
         shift
     else
         interval=1
     fi
-    local command="$*"
+    local -a command=("${@}") unit 
     if ((interval == 1)) {
         unit=second
     } else {
         unit=seconds
     }
-    local output 
+    local output
     while true; do
-        output="$(eval "$command")"
-        print -n "\e]0;$output\a"
+        IFS=$'\n' output=($(eval -- "${command[@]}"))
+        print -n "\e]0;$output[1]\a"
         print -n "[H[2J"
-        print -n "Every $interval $unit: \`$command\`\n\n$output"
+        print -n "Every $interval $unit: \`${command[@]}\`\n\n${output}"
         sleep "$interval"
     done
-
-}
-
-if [[ $KITTY_SHELL_INTEGRATION_ENABLED == 1 ]] {
-# special kitty dependant stuff
-function -win {
-    if [[ -z "$1" ]] {
-        clone-in-kitty --type=window
-    } else {
-        kitty @ launch --type=window \
-        -- zsh -ic "cd $PWD;$*" > /dev/null
-    }
-}
-
-function -tab {
-    if [[ -z "$1" ]] {
-        clone-in-kitty --type=tab
-    } else { 
-        kitty @ launch --type=tab \
-        -- zsh -ic "cd $PWD;$*" > /dev/null
-    }
-}
-function -ol {
-    if [[ -z "$1" ]] {
-        clone-in-kitty --type=overlay
-    } else {
-        kitty @ launch --type=overlay \
-        -- zsh -ic "cd $PWD;$*" > /dev/null
-    }
-}
-function -wed {
-    kitten edit --type=window "$1" >/dev/null 2>&1
-}
-function -ted {
-    kitten edit --type=tab "$1" >/dev/null 2>&1
-}
-function -ed {
-    kitten edit --type=overlay "$1" >/dev/null 2>&1
-}
-alias -- "-t"="-tab"
-alias -- "-w"="-win"
 
 }
 
@@ -170,6 +129,10 @@ source $ZDOTDIR/modules.zsh
 +mod json silent
 +mod virt silent
 +mod git  silent
+
+if [[ "$TERM" == "xterm-kitty" ]] {
+    +mod kitty silent
+}
 
 # desktop stuff
 +mod sound silent

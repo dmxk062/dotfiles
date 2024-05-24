@@ -135,13 +135,13 @@ function ncdir {
 
 elif [[ "$1" == "unload" ]]; then
 
-unfunction fupload jreq \
+unfunction fupload _jreq \
     urlenc urldec \
     ncsend ncrecv ncdir \
     local_ip \
     qrgen \
     deepl_request
 
-unalias req public_ip
+unalias req jreq public_ip
 
 fi
