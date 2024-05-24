@@ -13,6 +13,11 @@ local const_max = {
     h=64
 }
 local function button(text, hl, bind, callback, width, texthl)
+    local function command()
+        callback()
+        vim.wo.cursorline = true
+        vim.wo.cursorlineopt = "number"
+    end
     local opts = {
         position = "center",
         shortcut = bind,
@@ -22,13 +27,13 @@ local function button(text, hl, bind, callback, width, texthl)
         hl_shortcut =  hl,
         hl = texthl or hl,
 
-        keymap = {"n", bind, callback}
+        keymap = {"n", bind, command}
     }
 
     return {
         type = "button",
         val = " " .. text,
-        on_press = callback,
+        on_press = command,
         opts = opts
     }
 end
@@ -83,7 +88,7 @@ local function get_key_for_i(i)
     if i < 11 then
         return tostring(i - 1)
     else 
-        return ',' .. i - 1
+        return ',' .. i - 11
     end
 end
 

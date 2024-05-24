@@ -138,7 +138,8 @@ require('lualine').setup {
         },
         disabled_filetypes = {
             statusline = {
-                "alpha", "TelescopePrompt"
+                -- "alpha",
+                -- "TelescopePrompt"
             },
         },
         component_separators = { left = '', right = ''},
