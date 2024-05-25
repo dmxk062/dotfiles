@@ -1,27 +1,30 @@
-function preexec() {
-  timer=$(($(date +%s%0N)/1000000))
+# we *need* EPOCHREALTIME for the prompt to be accurate
+zmodload zsh/datetime
+
+function __cmd_start_timestamp {
+  _CMD_TIMER=$EPOCHREALTIME
 }
 
-function precmd() {
-    if [ $timer ]; then
-        local now=$(($(date +%s%0N)/1000000))
-        local elapsed=$(($now-$timer))
-        if [[ $elapsed -gt 60000 ]] 
-        then
-            local elapsed_f="$(($elapsed/60000.0))"
-            local elapsed_u="$(printf "%.2f\n" "$elapsed_f")m"
-        elif [[ $elapsed -gt 500 ]]
-        then
-            local elapsed_f="$(($elapsed/1000.0))"
-            local elapsed_u="$(printf "%.2f\n" "$elapsed_f")s"
-        else
-            local elapsed_u="${elapsed}ms"
-        fi
-        RPROMPT="%F%(?.%F{green}.%F{red})%S%(?.󰄬.󰅖 %?)%s %F{#4c566a}%f%K{#4c566a}󱎫 ${elapsed_u}%k%F{#4c566a}%f"
-        unset timer
+add-zsh-hook preexec __cmd_start_timestamp
+
+function __cmd_end_timestamp {
+    if [[ $_CMD_TIMER ]]; then
+        local elapsed_ms=$[ ($EPOCHREALTIME-$_CMD_TIMER) * 1000 ] elapsed
+        if (( elapsed_ms > 60000 )) {
+            printf -v elapsed "%.3fm" $[ $elapsed_ms/60000.0 ]
+        } elif (( elapsed_ms > 100 )) {
+            printf -v elapsed "%.2fs" $[ $elapsed_ms/1000.0 ]
+        } elif (( elapsed_ms > 0.1 )) {
+            printf -v elapsed "%.2fms" $elapsed_ms
+        } else {
+            printf -v elapsed "%.2fns" $[ $elapsed_ms ]
+        }
+        RPROMPT="%F%(?.%F{green}.%F{red})%S%(?.󰄬.󰅖 %?)%s %F{#4c566a}%f%K{#4c566a}󱎫 ${elapsed}%k%F{#4c566a}%f"
     fi
+    # set the title
     print -Pn "\e]0;zsh: %~\a"
 }
+add-zsh-hook precmd __cmd_end_timestamp
 
 # PROMPT="%B%F{magenta}%S %n %s %B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 PROMPT="%B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
