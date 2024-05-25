@@ -2,9 +2,11 @@
 
 active_pid="$(hyprctl -j activewindow|jq '.pid')"
 
-client="$(pactl --format=json list sink-inputs \
-    | jq --arg pid "$active_pid" '.[]|select(.properties."application.process.id" == $pid).index')"
+clients=($(pactl --format=json list sink-inputs \
+    | jq --arg pid "$active_pid" '.[]|select(.properties."application.process.id" == $pid).index'))
 
-if [[ "$client" != "" ]] {
-    pactl set-sink-input-mute "$client" toggle
+if [[ "$clients" != "" ]] {
+    for client in "${clients[@]}"; do
+        pactl set-sink-input-mute "$client" toggle
+    done
 }
