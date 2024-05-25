@@ -10,8 +10,8 @@ bind = , Space, exec, playerctl play-pause
 binde = , L,exec, playerctl position +5
 binde = , H,exec, playerctl position -5
 
-binde = Shift, L,exec, playerctl next
-binde = Shift, H,exec, playerctl previous
+binde = SHIFT, L,exec, playerctl next
+binde = SHIFT, H,exec, playerctl previous
 
 
 binde = , K, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio raise 3 DEFAULT_SINK
@@ -32,8 +32,22 @@ binde = SHIFT, J, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio l
 bind = , M, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio mute DEFAULT_SINK
 bind = , I, exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio mute DEFAULT_SOURCE
 
+# mute the active window, uses the pid
+bind = SHIFT, M, exec, ~/.config/zsh/scripts/mute_active_window
+
 bind = , S, exec, ~/.local/bin/eww_settings.sh audio
 bind = , S, submap, reset
+
+# copy
+bindl= ,      XF86AudioMute, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio mute DEFAULT_SINK
+bindl= SHIFT, XF86AudioMute, exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio mute DEFAULT_SOURCE
+bindl= , XF86AudioMicMute, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio mute DEFAULT_SINK
+bindle = ,XF86AudioRaiseVolume,exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio raise 3 DEFAULT_SINK
+bindle = ,XF86AudioLowerVolume,exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio lower 3 DEFAULT_SINK
+bindle = SHIFT,XF86AudioRaiseVolume,exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio raise 3 DEFAULT_SOURCE
+bindle = SHIFT,XF86AudioLowerVolume,exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio lower 3 DEFAULT_SOURCE
+
+
 
 
 bind = , Escape, submap, reset
