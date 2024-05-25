@@ -7,19 +7,20 @@
                 )
     :stacking "overlay"
     :namespace "eww_noblur"
-    (output)
+    (popup_output)
 )
 
 
-(defwidget output []
+(defwidget popup_output []
     (box :space-evenly false :halign "center" :valign "center"
         (box :space-evenly false :class "audio_popup_box"
             (label :text "${audio_state.sink.mute ? "󰝟" : (audio_state.sink.vol > 70 ? "󰕾" : ( audio_state.sink.vol > 33 ? "󰖀" : "󰕿"))}" :class "charicon${audio_state.sink.mute ? "-off" : ""}")
             (box :orientation "v"
-                (label :text "Out: ${active_sinks.name}" :limit-width 20 :class "heading")
+                (label :text "Out: ${active_sinks.name}" :limit-width 20 :class "audio_popup_title")
                     (scale :value "${audio_state.sink.vol}" :class "slider-vol${audio_state.sink.mute ? "-off" : ""}")
             )
-            (label :text "${audio_state.sink.vol}%" :class "charicon")
+            (box :hexpand true :halign "end"
+            (label :text "${audio_state.sink.vol}%" :class "percentage"))
         )
     )   
 )
@@ -33,18 +34,19 @@
                 )
     :stacking "overlay"
     :namespace "eww_noblur"
-    (inputscale)
+    (popup_input)
 )
 
-(defwidget inputscale []
+(defwidget popup_input []
     (box :space-evenly false :halign "center" :valign "center"
-        (box :space-evenly false :class "audio_popup_box"
+        (box :space-evenly false :class "audio_popup_box" :hexpand true
             (label :text "${audio_state.source.mute ? "󰝟" : (audio_state.source.vol > 70 ? "󰕾" : ( audio_state.source.vol > 33 ? "󰖀" : "󰕿"))}" :class "charicon${audio_state.source.mute ? "-off" : ""}")
             (box :orientation "v"
-                (label :text "In: ${active_sources.name}" :limit-width 20 :class "heading")
+                (label :text "In: ${active_sources.name}" :limit-width 20 :class "audio_popup_title")
                 (scale :value "${audio_state.source.vol}" :class "slider-vol${audio_state.source.mute ? "-off" : ""}")
             )
-            (label :text "${audio_state.source.vol}%" :class "charicon")
+            (box :hexpand true :halign "end"
+            (label :text "${audio_state.source.vol}%" :class "percentage"))
         )
     )
 )

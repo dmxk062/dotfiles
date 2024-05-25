@@ -20,7 +20,14 @@
     border-radius: $rounding-large;
     background-color: $bg0;
     margin-bottom: 6rem;
-    min-width: 38rem;
+    padding: .8rem;
+    min-width: 39rem;
+
+    .percentage {
+        font-size: 3rem;
+        margin: 1rem;
+        margin-right: .4rem;
+    }
 }
 
 .ws_popup_box{
@@ -29,3 +36,10 @@
     margin-bottom: 12rem;
     padding: unset;
 }
+
+.audio_popup_title {
+    color: $fg0;
+    font-size: 1.6rem;
+    min-height: 2rem;
+}
+
