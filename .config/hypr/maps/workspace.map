@@ -20,16 +20,16 @@ bind = , 8, workspace, 8
 bind = , 9, workspace, 9
 bind = , 0, workspace, 10
 
-bind = Shift, 1, movetoworkspace, 1
-bind = Shift, 2, movetoworkspace, 2
-bind = Shift, 3, movetoworkspace, 3
-bind = Shift, 4, movetoworkspace, 4
-bind = Shift, 5, movetoworkspace, 5
-bind = Shift, 6, movetoworkspace, 6
-bind = Shift, 7, movetoworkspace, 7
-bind = Shift, 8, movetoworkspace, 8
-bind = Shift, 9, movetoworkspace, 9
-bind = Shift, 0, movetoworkspace, 10
+bind = SHIFT, 1, movetoworkspace, 1
+bind = SHIFT, 2, movetoworkspace, 2
+bind = SHIFT, 3, movetoworkspace, 3
+bind = SHIFT, 4, movetoworkspace, 4
+bind = SHIFT, 5, movetoworkspace, 5
+bind = SHIFT, 6, movetoworkspace, 6
+bind = SHIFT, 7, movetoworkspace, 7
+bind = SHIFT, 8, movetoworkspace, 8
+bind = SHIFT, 9, movetoworkspace, 9
+bind = SHIFT, 0, movetoworkspace, 10
 
 # Named Workspaces ------------------- #
 
@@ -37,20 +37,15 @@ bind = , Space, workspace, name:main
 bind = , G,     workspace, name:games
 bind = , V,     workspace, name:srv
 
-bind = Shift, Space, movetoworkspace, name:main
-bind = Shift, G,     movetoworkspace, name:games
-bind = Shift, V,     movetoworkspace, name:srv
+bind = SHIFT, Space, movetoworkspace, name:main
+bind = SHIFT, G,     movetoworkspace, name:games
+bind = SHIFT, V,     movetoworkspace, name:srv
 
 # Special Workspaces ----------------- #
 
-bind = Control, 1, togglespecialworkspace, 1
-bind = Control, 2, togglespecialworkspace, 2
-bind = Control, 3, togglespecialworkspace, 3
-
-# Relative Movement ------------------ #
-
-bind = , Left,  exec, ~/.config/eww/shell/popups/bin/ws_popup.sh next
-bind = , Right, exec, ~/.config/eww/shell/popups/bin/ws_popup.sh prev
+bind = ALT, 1, togglespecialworkspace, 1
+bind = ALT, 2, togglespecialworkspace, 2
+bind = ALT, 3, togglespecialworkspace, 3
 
 bind = , Up,   workspace, +1
 bind = , Down, workspace, -1

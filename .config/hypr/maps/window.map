@@ -3,7 +3,7 @@
 
 bind = $submapLeader, W, submap, window
 
-$resizeUnit = 32
+$resizeUnit = 64
 
 # ------------------------------------ #
 submap = window
@@ -14,57 +14,53 @@ bind = , F, fullscreen, 0
 bind = , M, fullscreen, 1
 bind = , V, togglefloating
 bind = , P, pin
-bind = , Q, killactive
+bind = , D, killactive
 bind = , delete, killactive
 
-# Growing, hacky, i know ------------- #
+# Moving, resizing, etc
 
-# bind = , right, resizeactive,  $resizeUnit 0 
-# bind = , left,  resizeactive, $resizeUnit 0
-# bind = , left,  moveactive, -$resizeUnit 0
-# bind = , up,    resizeactive, 0 $resizeUnit
-# bind = , up,    moveactive,    0 -$resizeUnit
-# bind = , down,  resizeactive,   0 $resizeUnit
+bind = , H, movefocus, l
+bind = , J, movefocus, d
+bind = , K, movefocus, u
+bind = , L, movefocus, r
 
-# Shrinking -------------------------- #
+bind = SHIFT, H, movewindow, l
+bind = SHIFT, J, movewindow, d
+bind = SHIFT, K, movewindow, u
+bind = SHIFT, L, movewindow, r
 
-# bind = Shift, right, resizeactive,  -$resizeUnit 0 
-# bind = Shift, right,  moveactive,  $resizeUnit 0
-# bind = Shift, left,  resizeactive, -$resizeUnit 0
-# bind = Shift, up,    resizeactive, 0 -$resizeUnit
-# bind = Shift, down,  resizeactive,   0 -$resizeUnit
-# bind = Shift, down,    moveactive,    0 $resizeUnit
+binde = ALT, H, moveactive, -$resizeUnit 0
+binde = ALT, J, moveactive, 0 $resizeUnit
+binde = ALT, K, moveactive, 0 -$resizeUnit
+binde = ALT, L, moveactive, $resizeUnit 0
 
-bind = Alt, L, resizeactive,  -$resizeUnit 0 
-bind = Alt, L,  moveactive,  $resizeUnit 0
-bind = Alt, H,  resizeactive, -$resizeUnit 0
-bind = Alt, K,    resizeactive, 0 -$resizeUnit
-bind = Alt, J,  resizeactive,   0 -$resizeUnit
-bind = Alt, J,    moveactive,    0 $resizeUnit
+bind = CONTROL, H, swapwindow, l
+bind = CONTROL, J, swapwindow, d
+bind = CONTROL, K, swapwindow, u
+bind = CONTROL, L, swapwindow, r
 
-bind = Shift, L, resizeactive,  $resizeUnit 0 
-bind = Shift, H,  resizeactive, $resizeUnit 0
-bind = Shift, H,  moveactive, -$resizeUnit 0
-bind = Shift, K,    resizeactive, 0 $resizeUnit
-bind = Shift, K,    moveactive,    0 -$resizeUnit
-bind = Shift, J,  resizeactive,   0 $resizeUnit
-# Moving ----------------------------- #
+binde = SUPER, H, resizeactive, -$resizeUnit 0
+binde = SUPER, J, resizeactive, 0 $resizeUnit
+binde = SUPER, K, resizeactive, 0 -$resizeUnit
+binde = SUPER, L, resizeactive, $resizeUnit 0
 
-binde = , H, moveactive, -$resizeUnit 0
-binde = , J, moveactive, 0 $resizeUnit
-binde = , K, moveactive, 0 -$resizeUnit 
-binde = , L, moveactive, $resizeUnit 0
+bind = , 1, movetoworkspace, 1
+bind = , 2, movetoworkspace, 2
+bind = , 3, movetoworkspace, 3
+bind = , 4, movetoworkspace, 4
+bind = , 5, movetoworkspace, 5
+bind = , 6, movetoworkspace, 6
+bind = , 7, movetoworkspace, 7
+bind = , 8, movetoworkspace, 8
+bind = , 9, movetoworkspace, 9
+bind = , 0, movetoworkspace, 10
+bind = , code:49, movetoworkspace, name:main
 
-binde = , left, moveactive, -$resizeUnit 0
-binde = , down, moveactive, 0 $resizeUnit
-binde = , up, moveactive, 0 -$resizeUnit 
-binde = , right, moveactive, $resizeUnit 0
+binde = , N, cyclenext
 
 bind = , Escape, submap, reset
+bind = , Q, submap, reset
 bind = $submapLeader, W, submap, reset
-
-bind = , T, exec, kitty
-bind = , E, exec, nautilus -w
 
 submap = reset
 # ------------------------------------ #
