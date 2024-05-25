@@ -325,6 +325,7 @@ alias yield="print -l --"
 function getdef {
     whence -f -x 4 "$@"|bat --plain --language zsh
 }
+compdef getdef=whence
 
 
 function keys {
@@ -333,7 +334,7 @@ function keys {
 }
 
 
-compdef getdef=whence
+
 
 } elif [[ "$1" == "unload" ]] {
 

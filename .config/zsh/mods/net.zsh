@@ -11,6 +11,8 @@ if [[ "$1" == "load" ]]; then
 
 alias req="noglob curl -s"
 
+zmodload zsh/net/socket
+
 function fupload {
     curl -F file=@"$1" "${2:-"https://0x0.st"}"
 }
@@ -128,9 +130,8 @@ function ncdir {
             nc -dq 0 "$host" "$port"|tar zxv
             ;;
     esac
-
-
 }
+
 
 
 elif [[ "$1" == "unload" ]]; then
@@ -140,8 +141,10 @@ unfunction fupload _jreq \
     ncsend ncrecv ncdir \
     local_ip \
     qrgen \
-    deepl_request
+    deepl_request translate 
 
 unalias req jreq public_ip
+
+zmodload -u zsh/net/socket
 
 fi

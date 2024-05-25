@@ -6,6 +6,8 @@
 
 if [[ "$1" == "load" ]]; then
 
+zmodload zsh/mathfunc
+
 function conv {
     local from="$1"
     local to="$2"
@@ -84,7 +86,6 @@ function ucov {
 function qi {
     print -n -- "\e]0;qalc\a"
     qalc
-
 }
 
 elif [[ "$1" == "unload" ]]; then
@@ -92,5 +93,7 @@ elif [[ "$1" == "unload" ]]; then
 unfunction conv ucov _math  sum avg qi
 
 unalias math '#'
+
+zmodload -u zsh/mathfunc
 
 fi
