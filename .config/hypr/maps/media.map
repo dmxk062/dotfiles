@@ -6,7 +6,7 @@ bind = $submapLeader, M, submap, media
 # ------------------------------------ #
 submap = media
 
-bind = , Space,exec, playerctl play-pause
+bind = , Space, exec, playerctl play-pause
 binde = , L,exec, playerctl position +5
 binde = , H,exec, playerctl position -5
 
@@ -14,11 +14,23 @@ binde = Shift, L,exec, playerctl next
 binde = Shift, H,exec, playerctl previous
 
 
-binde = , K, exec, wpctl set-volume @DEFAULT_SINK@ 3%+ -l 1& ~/.config/eww/settings/bin/audio_state.sh& .config/eww/shell/popups/bin/open_popup.sh out    
-binde = , J, exec, wpctl set-volume @DEFAULT_SINK@ 3%- -l 1& ~/.config/eww/settings/bin/audio_state.sh& .config/eww/shell/popups/bin/open_popup.sh out    
+binde = , K, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio raise 3 DEFAULT_SINK
+binde = , J, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio lower 3 DEFAULT_SINK
 
-bind = , M, exec, pactl set-sink-mute @DEFAULT_SINK@ toggle& ~/.config/eww/settings/bin/audio_state.sh& .config/eww/shell/popups/bin/open_popup.sh out    
-bind = , I, exec, pactl set-source-mute @DEFAULT_SOURCE@ toggle& ~/.config/eww/settings/bin/audio_state.sh& .config/eww/shell/popups/bin/open_popup.sh in
+bind = , N, exec, ~/.config/zsh/scripts/pacycle sink next; ~/.config/eww/settings/bin/sinks_sources.sh upd_active sinks; ~/.config/eww/shell/popups/bin/open_popup.sh out
+bind = SHIFT, N, exec, ~/.config/zsh/scripts/pacycle sink prev; ~/.config/eww/settings/bin/sinks_sources.sh upd_active sinks; ~/.config/eww/shell/popups/bin/open_popup.sh out
+
+bind = ALT, N, exec, ~/.config/zsh/scripts/pacycle source next; ~/.config/eww/settings/bin/sinks_sources.sh upd_active sources; ~/.config/eww/shell/popups/bin/open_popup.sh in
+bind = ALT SHIFT, N, exec, ~/.config/zsh/scripts/pacycle source prev; ~/.config/eww/settings/bin/sinks_sources.sh upd_active sources; ~/.config/eww/shell/popups/bin/open_popup.sh in
+
+binde = ALT, K, exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio raise 3 DEFAULT_SOURCE
+binde = ALT, J, exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio lower 3 DEFAULT_SOURCE
+
+binde = SHIFT, K, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio raise 10 DEFAULT_SINK
+binde = SHIFT, J, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio lower 10 DEFAULT_SINK
+
+bind = , M, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio mute DEFAULT_SINK
+bind = , I, exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio mute DEFAULT_SOURCE
 
 bind = , S, exec, ~/.local/bin/eww_settings.sh audio
 bind = , S, submap, reset
