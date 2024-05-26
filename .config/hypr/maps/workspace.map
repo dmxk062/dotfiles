@@ -9,6 +9,20 @@ submap = workspace
 
 # Numbered Workspaces ---------------- #
 
+bind = , J, workspace, -1
+bind = , K, workspace, +1
+
+bind = , H, workspace, m-1
+bind = , L, workspace, m+1
+
+bind = SHIFT, J, movetoworkspace, -1
+bind = SHIFT, K, movetoworkspace, +1
+
+bind = SHIFT, H, movetoworkspace, m-1
+bind = SHIFT, L, movetoworkspace, m+1
+
+
+bind = , code:49, workspace, name:main
 bind = , 1, workspace, 1
 bind = , 2, workspace, 2
 bind = , 3, workspace, 3
@@ -20,6 +34,7 @@ bind = , 8, workspace, 8
 bind = , 9, workspace, 9
 bind = , 0, workspace, 10
 
+bind = SHIFT, code:49, movetoworkspace, name:main
 bind = SHIFT, 1, movetoworkspace, 1
 bind = SHIFT, 2, movetoworkspace, 2
 bind = SHIFT, 3, movetoworkspace, 3
@@ -47,12 +62,12 @@ bind = ALT, 1, togglespecialworkspace, 1
 bind = ALT, 2, togglespecialworkspace, 2
 bind = ALT, 3, togglespecialworkspace, 3
 
-bind = , Up,   workspace, +1
-bind = , Down, workspace, -1
+bind = SHIFT ALT, 1, movetoworkspace, special 1
+bind = SHIFT ALT, 2, movetoworkspace, special 2
+bind = SHIFT ALT, 3, movetoworkspace, special 3
 
-bind = , Next,   workspace, m+1
-bind = , Prior,  workspace, m-1
-bind = , Home,   workspace, name:main
+bind = , slash, exec, killal rofi||~/.config/rofi/applets/window/run.sh
+bind = , slash, submap, reset
 
 bind = , Escape, submap, reset
 bind = $submapLeader, Space, submap, reset
