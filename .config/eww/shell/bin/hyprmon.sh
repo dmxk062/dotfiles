@@ -106,17 +106,17 @@ function monitor_changes(){
             submap*)
                 IFS=">" read -r _ _ map <<< "$line"
                 update hypr_submap="$map"
-                if [[ "$map" == "" ]]; then
-                    NOTIFID=$(notify-send "Exited Submap" \
-                        -i "$SUBMAP_ICON" \
-                        --transient \
-                        -a "eww_submap" -r $NOTIFID -p "" -t 500)
-                else
-                    NOTIFID=$(notify-send "Entered Submap" \
-                        -i "$SUBMAP_ICON" \
-                        --transient \
-                        -a "eww_submap" -r $NOTIFID -p "$map")
-                fi
+                # if [[ "$map" == "" ]]; then
+                    # NOTIFID=$(notify-send "Exited Submap" \
+                    #     -i "$SUBMAP_ICON" \
+                    #     --transient \
+                    #     -a "eww_submap" -r $NOTIFID -p "" -t 500)
+                # else
+                    # NOTIFID=$(notify-send "Entered Submap" \
+                    #     -i "$SUBMAP_ICON" \
+                    #     --transient \
+                    #     -a "eww_submap" -r $NOTIFID -p "$map")
+                # fi
 
                 ;;
             'openlayer>>gtk-layer-shell') # this is for nwg-look
