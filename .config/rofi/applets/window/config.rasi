@@ -2,5 +2,5 @@
 configuration {
     window-thumbnail: true;
     show-icons:     true;
-    window-format: "{c:16}{t}";
+    window-format: "{t}";
 }

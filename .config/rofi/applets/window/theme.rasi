@@ -9,8 +9,8 @@ window {
     children: [mainbox];
     border-radius: 18px;
     border: 2px;
-    width: 64em;
-    height: 12em;
+    width: 32em;
+    height: 32em;
 }
 
 mainbox {
@@ -56,8 +56,6 @@ listview {
     dynamic: true;
     expand: true;
     cycle: true;
-    columns: 16;
-    lines: 1;
 }
 
 element{
@@ -67,7 +65,7 @@ element{
     color: @fg0;
     text-color: @fg0;
     children: [element-icon, element-text];
-    orientation: vertical;
+    orientation: horizontal;
     highlight: bold underline;
 }
 element selected.normal,element selected.active{
@@ -87,7 +85,7 @@ element-text, element-icon {
     text-color:       inherit;
 }
 element-icon {
-    size: 3em;
+    size: 2em;
 }
 inputbar {
     color: @fg0;
@@ -100,6 +98,6 @@ entry {
     background-color:            @bg0;
     text-color:                  inherit;
     cursor:                      text;
-    placeholder:                 "search windows";
+    placeholder:                 "Search Windows...";
     placeholder-color:           @bg3;
 } 
