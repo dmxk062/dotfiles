@@ -1,0 +1,13 @@
+# ft=conf
+width=16%
+height=32%
+allow_images=true
+hide_scroll=true
+prompt=Search...
+layer=overlay
+insensitive=true
+image_size=32
+
+key_expand=Shift-Return
+key_up=Alt-k
+key_down=Alt-j

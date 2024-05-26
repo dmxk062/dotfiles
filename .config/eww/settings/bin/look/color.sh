@@ -54,6 +54,7 @@ $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sinks & disown
 $XDG_CONFIG_HOME/eww/settings/bin/sinks_sources.sh upd sources & disown
 sassc $XDG_CONFIG_HOME/nwg-drawer/drawer.scss > $XDG_CONFIG_HOME/nwg-drawer/drawer.css
 sassc $XDG_CONFIG_HOME/swaync/style.scss > $XDG_CONFIG_HOME/swaync/style.css
+sassc $XDG_CONFIG_HOME/wofi/style.scss > $XDG_CONFIG_HOME/wofi/style.css
 killall nwg-drawer
 sleep 0.2
 swaync-client -rs

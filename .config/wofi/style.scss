@@ -1,0 +1,86 @@
+@import "../eww/style/color.scss";
+
+* {
+    all: unset;
+    font-family: "Torus Pro", "Torus", "Cantarell";
+    font-weight: 500;
+    font-size: 14px;
+}
+
+#outer-box {
+    padding: .5rem;
+    background-color: $bg;
+    border-radius: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+    background-clip: padding-box;
+    margin: 1rem;
+}
+
+#input {
+    background-color: $bg1;
+    border: 2px solid $bg3;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+    color: $fg;
+    padding: .5rem;
+    caret-color: $fg;
+
+    &:focus {
+        border: 2px solid $accent;
+    }
+    selection {
+        color: $inverted;
+        background-color: $accent;
+    }
+
+    label {
+        color: $fg;
+    }
+
+    image {
+        margin-right: 1rem;
+    }
+    margin-bottom: 2rem;
+}
+
+#inner-box {
+    padding: .2rem;
+    #entry {
+        expander, > .entry {
+            border-radius: 1rem;
+            padding: .5rem;
+            background-color: $bg;
+            border-radius: .8rem;
+            #text { color: $fg; }
+            #img {
+                margin-right: .6rem;
+            }
+        }
+        expander {
+            arrow {
+                color: $fg;
+                background-image: -gtk-icontheme("go-next-symbolic");
+                margin-right: .2rem;
+                &:checked {
+                    background-image: -gtk-icontheme("go-down-symbolic");
+                }
+            }
+            .entry {
+                all: unset;
+                padding: .2rem;
+            }
+        }
+
+
+       &:selected {
+          expander, > .entry {
+              background-color: $accent;
+              #text { color: $inverted; }
+              arrow { color: $inverted; }
+          }
+       }
+
+
+    }
+}
+
