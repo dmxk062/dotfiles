@@ -38,7 +38,7 @@ utils.abbrev("c", "mf", "set mouse=")
 
 utils.abbrev("c", "spen", "setlocal spell spelllang=en_us")
 utils.abbrev("c", "spde", "setlocal spell spelllang=de_at")
-utils.abbrev("c", "spoff", "setlocal spell& spellang&")
+utils.abbrev("c", "spoff", "setlocal spell& spelllang&")
 
 -- open a shell in a kitty window of some kind
 -- works even for remote oil buffers via ssh

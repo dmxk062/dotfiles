@@ -17,3 +17,11 @@ cmp.setup.filetype('tex', {
     })
 })
 
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*.tex",
+    callback = function()
+        vim.cmd("VimtexCompile")
+        vim.wo.spell = true
+        vim.bo.spelllang = "en_us"
+    end
+})
