@@ -225,6 +225,16 @@ require("alpha").setup{
             vim.wo.cursorlineopt = "line"
             vim.wo.number = false
             vim.wo.signcolumn = "no"
+
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "AlphaClosed",
+                callback = function()
+                    vim.wo.cursorline = true
+                    vim.wo.cursorlineopt = "number"
+                    vim.wo.number = true
+                    vim.wo.signcolumn = "yes"
+                end 
+                })
         end
     }
 }
