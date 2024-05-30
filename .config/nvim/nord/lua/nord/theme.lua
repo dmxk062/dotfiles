@@ -115,7 +115,7 @@ theme.loadEditor = function()
 		TabLineFill = { fg = nord.nord4_gui, bg = nord.none },
 		TablineSel = { fg = nord.nord1_gui, bg = nord.nord9_gui },
 		Tabline = { fg = nord.nord4_gui, bg = nord.nord1_gui },
-		Title = { fg = nord.nord14_gui, bg = nord.none, style = bold },
+		Title = { fg = nord.nord7_gui, bg = nord.none, style = bold },
 		Visual = { fg = nord.none, bg = nord.nord2_gui },
 		VisualNOS = { fg = nord.none, bg = nord.nord2_gui },
 		WarningMsg = { fg = nord.nord15_gui },

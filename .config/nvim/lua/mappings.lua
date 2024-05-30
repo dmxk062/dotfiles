@@ -36,8 +36,8 @@ utils.abbrev("c", "Q", "q!")
 utils.abbrev("c", "mo", "set mouse=a")
 utils.abbrev("c", "mf", "set mouse=")
 
-utils.abbrev("c", "spen", "setlocal spell spellang=en_us")
-utils.abbrev("c", "spde", "setlocal spell spellang=de_at")
+utils.abbrev("c", "spen", "setlocal spell spelllang=en_us")
+utils.abbrev("c", "spde", "setlocal spell spelllang=de_at")
 utils.abbrev("c", "spoff", "setlocal spell& spellang&")
 
 -- open a shell in a kitty window of some kind
