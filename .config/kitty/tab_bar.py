@@ -2,8 +2,7 @@
 
 
 from kitty.fast_data_types import Screen, get_options
-from kitty.tab_bar import (DrawData, ExtraData, TabBarData, as_rgb,
-                           draw_tab_with_powerline, draw_title)
+from kitty.tab_bar import (DrawData, ExtraData, TabBarData, as_rgb)
 from kitty.utils import color_as_int
 
 import datetime
