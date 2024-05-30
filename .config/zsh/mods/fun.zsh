@@ -173,7 +173,7 @@ function filter {
 }
 
 # takes in a function e.g
-# fun isFile { [[ -f "$*" ]]}
+# fn isFile { [[ -f "$*" ]]}
 # ffilter isFile *
 function ffilter {
     local func="$1"; shift
@@ -330,7 +330,7 @@ compdef getdef=whence
 
 function keys {
     local arrayname="${1}"
-    eval "print -l -- \${(k)$arrayname}"
+    print -l -- ${(k)${(P)arrayname}}
 }
 
 
