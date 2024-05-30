@@ -45,6 +45,7 @@ function mkf {
                 ;;
             main.py)
                 echo "def main():\n    pass\n\nif __name__ == \"__main__\":\n    main()" > "$file"
+                chmod +x "$file"
                 ;;
             *\.sh)
                 echo "#!/usr/bin/env bash" > "$file"
