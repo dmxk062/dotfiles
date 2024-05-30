@@ -1,7 +1,10 @@
 call plug#begin()
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kylechui/nvim-surround'
+
 Plug 'ggandor/leap.nvim'
+Plug 'ggandor/leap-spooky.nvim'
+
 Plug 'tpope/vim-repeat'
 Plug 'shaunsingh/nord.nvim'
 " Plug 'glepnir/nerdicons.nvim'
