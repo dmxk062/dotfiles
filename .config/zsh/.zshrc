@@ -1,5 +1,6 @@
 #configures vi mode plugin
 
+fpath+="$ZDOTDIR/comp"
 declare -A ZSH_COLORS_RGB=(
     ["light-gray"]="#4c566a"
 )

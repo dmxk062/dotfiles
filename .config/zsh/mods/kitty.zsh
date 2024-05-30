@@ -18,6 +18,8 @@ if [[ "$KITTY_SHELL_INTEGRATION_ENABLED" != 1 ]] {
     return 1
 }
 
+autoload -Uz _ktty
+
 function ktty {
     local type="${1}"
     local cmd="${@:2}"
@@ -28,6 +30,9 @@ function ktty {
         kitty @ launch --cwd="$PWD" --no-response --type="$type" -- zsh -ic -- "${cmd[@]}"
     }
 }
+
+compdef _ktty ktty
+
 
 alias -- "-w"="ktty window" \
     "-W"="ktty os-window" \
