@@ -3,6 +3,7 @@
 fpath+="$ZDOTDIR/comp"
 declare -A ZSH_COLORS_RGB=(
     ["light-gray"]="#4c566a"
+    ["orange"]="#d08770"
 )
 
 
@@ -34,8 +35,6 @@ zle -N down-line-or-beginning-search
 #history
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
-# [[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
-# [[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
 
 #my color theme
@@ -48,12 +47,13 @@ esac
 
 
 #completion opts
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' completer _complete _expand _approximate
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=-1
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle ':completion:*' verbose false
+zstyle ':completion:*' list-prompt "%B%F{cyan}%S %l%s%f%b"
 
 autoload -Uz compinit
 # only reload comps after reboot effectively
