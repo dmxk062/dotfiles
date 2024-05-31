@@ -65,7 +65,7 @@ telescope.setup {
             theme = "dropdown",
             previewer = false,
             layout_config = {
-                height = .2,
+                height = .3,
                 width = .3,
             },
             mappings = {
@@ -79,7 +79,9 @@ telescope.setup {
                 },
                 i = {
                     ["<enter>"] = "select_drop",
-                    ["<S-enter>"] = "select_default"
+                    ["<S-enter>"] = "select_default",
+                    ["<M-j>"] = "move_selection_next",
+                    ["<M-k>"] = "move_selection_previous",
                 },
             }
         },
