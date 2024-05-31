@@ -41,7 +41,7 @@ if ! [[ -r "$FILE" ]] {
     read -r owner group perms <<< $(stat -c "%U %G %A" "$FILE")
     print -P "%B%F{red}Permission Denied%b%F{white}
 
-Owner: %F{magenta}$owner%F{white}
+Owner: %F{yellow}$owner%F{white}
 Group: %F{cyan}$group%F{white}
 Perms: %F{yellow}$perms%F{white}"
     exit 0
