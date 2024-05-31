@@ -6,8 +6,6 @@ Plug 'ggandor/leap.nvim'
 Plug 'ggandor/leap-spooky.nvim'
 
 Plug 'tpope/vim-repeat'
-Plug 'shaunsingh/nord.nvim'
-" Plug 'glepnir/nerdicons.nvim'
 Plug 'numToStr/Comment.nvim'
 
 Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app && yarn install' }

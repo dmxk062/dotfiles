@@ -1,4 +1,5 @@
 vim.cmd("source" .. vim.fn.stdpath("config") .. "/pkgs.vim")
+vim.o.runtimepath = vim.o.runtimepath .. "," .. vim.fn.stdpath("config") .. "/lua/nord"
 vim.g.nord_italic = true
 vim.g.nord_borders = true
 vim.cmd("colorscheme nord")
