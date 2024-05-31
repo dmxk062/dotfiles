@@ -2,3 +2,6 @@ include "%L" # locale specific config
 
 # load all my separate configs
 include "%H/.config/XCompose/greek"
+include "%H/.config/XCompose/german"
+include "%H/.config/XCompose/symbols"
+include "%H/.config/XCompose/old_english"

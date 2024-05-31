@@ -1,0 +1,7 @@
+# vim: ft=xcompose
+
+# currencies
+<Multi_key> <dollar> <e> : "€"
+<Multi_key> <dollar> <y> : "¥"
+<Multi_key> <dollar> <l> : "£"
+<Multi_key> <dollar> <r> : "₽"

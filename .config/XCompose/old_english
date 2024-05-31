@@ -1,0 +1,19 @@
+# vim: ft=xcompose
+
+# idk why there is no other way to type long ǣsċ
+<Multi_key> <minus> <a> <e> : "ǣ"
+<Multi_key> <minus> <A> <e> : "Ǣ"
+<Multi_key> <minus> <A> <E> : "Ǣ"
+<Multi_key> <minus> <a> <E> : "Ǣ"
+
+# ƿynn, going of the shape
+<Multi_key> <p> <w> : "ƿ"
+<Multi_key> <P> <w> : "Ƿ"
+<Multi_key> <P> <W> : "Ƿ"
+<Multi_key> <p> <W> : "Ƿ"
+
+# ȝogh, technically not old english
+<Multi_key> <g> <h> : "ȝ"
+<Multi_key> <G> <h> : "Ȝ"
+<Multi_key> <G> <H> : "Ȝ"
+<Multi_key> <g> <H> : "Ȝ"

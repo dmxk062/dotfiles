@@ -1,0 +1,18 @@
+# vim: ft=xcompose
+
+# some tweaks/additions to the regular german
+# why tf is it only " usually?, also for the non german ones
+<Multi_key> <colon> <a> : "ä"
+<Multi_key> <colon> <e> : "ë"
+<Multi_key> <colon> <i> : "ï"
+<Multi_key> <colon> <o> : "ö"
+<Multi_key> <colon> <u> : "ü"
+<Multi_key> <colon> <y> : "ÿ"
+
+<Multi_key> <colon> <A> : "Ä"
+<Multi_key> <colon> <E> : "Ë"
+<Multi_key> <colon> <I> : "Ï"
+<Multi_key> <colon> <O> : "Ö"
+<Multi_key> <colon> <U> : "Ü"
+<Multi_key> <colon> <Y> : "Ÿ"
+
