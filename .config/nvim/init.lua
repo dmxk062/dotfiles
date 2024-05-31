@@ -17,6 +17,10 @@ vim.o.termguicolors = true
 vim.o.wildmenu = false
 vim.o.wrap = true
 
+-- idk why that isnt the default
+vim.o.splitright = true
+vim.o.splitbelow = true
+
 
 vim.o.guicursor = "c-ci-cr:hor20,n-o-r-v-sm:block,i-ve:ver10,n-i-ve:blinkon1,"
 vim.o.cursorline = true
