@@ -22,7 +22,7 @@ gitsigns.setup {
 
     current_line_blame_formatter = "<author>, <author_time:%Y/%m/%d> - <summary>",
 
-    on_attach = function()
+    on_attach = function(bufnr)
         local utils = require("utils")
         local prefix = "<space>g"
 

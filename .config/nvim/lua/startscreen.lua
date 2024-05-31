@@ -76,7 +76,7 @@ local function get_extension(fn)
     return ext
 end
 
-function get_icon(file)
+local function get_icon(file)
     local ext = get_extension(file)
     local ico, hl = icons.get_icon(file, ext, { default = true})
     local new_hl = {}
