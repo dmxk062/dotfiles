@@ -76,7 +76,8 @@ theme.loadEditor = function()
 		NormalFloat = { fg = nord.nord6_gui, bg=nord.nord0_gui }, -- normal text and background color
 		VertSplit = { fg = nord.nord2_gui },
 		FloatBorder = { fg = nord.nord3_gui, bg = nord.none }, -- normal text and background color
-		WinSeparator = {link = "VertSplit"}, 
+        LspInfoBorder = {link = "FloatBorder"},
+		WinSeparator = {link = "VertSplit"},
 		ColorColumn = { fg = nord.none, bg = nord.nord1_gui }, -- used for the columns set with 'colorcolumn'
 		Conceal = { fg = nord.nord1_gui }, -- placeholder characters substituted for concealed text (see 'conceallevel')
 		Cursor = { fg = nord.nord4_gui, bg = nord.none, style = "reverse" }, -- the character under the cursor
@@ -164,23 +165,6 @@ theme.loadEditor = function()
 		BufferVisibleSign = { bg = nord.nord2_gui },
 		BufferVisibleIndex = { bg = nord.nord2_gui },
 		BufferVisibleTarget = { bg = nord.nord2_gui, fg = nord.nord11_gui },
-
-		-- nvim-notify
-		NotifyDEBUGBorder = { fg = nord.nord3_gui },
-		NotifyDEBUGIcon = { fg = nord.nord3_gui },
-		NotifyDEBUGTitle = { fg = nord.nord3_gui },
-		NotifyERRORBorder = { fg = nord.nord11_gui },
-		NotifyERRORIcon = { fg = nord.nord11_gui },
-		NotifyERRORTitle = { fg = nord.nord11_gui },
-		NotifyINFOBorder = { fg = nord.nord14_gui },
-		NotifyINFOIcon = { fg = nord.nord14_gui },
-		NotifyINFOTitle = { fg = nord.nord14_gui },
-		NotifyTRACEBorder = { fg = nord.nord15_gui },
-		NotifyTRACEIcon = { fg = nord.nord15_gui },
-		NotifyTRACETitle = { fg = nord.nord15_gui },
-		NotifyWARNBorder = { fg = nord.nord13_gui },
-		NotifyWARNIcon = { fg = nord.nord13_gui },
-		NotifyWARNTitle = { fg = nord.nord13_gui },
 
 		-- leap.nvim
 		LeapMatch = { style = "underline,nocombine", fg = nord.nord13_gui },
@@ -575,7 +559,6 @@ theme.loadPlugins = function()
         TelescopePromptTitle = { fg = nord.nord15_gui },
 		TelescopeResultsBorder = { fg = nord.nord3_gui },
 		TelescopePreviewBorder = { fg = nord.nord3_gui },
-		TelescopeSelectionCaret = { fg = nord.nord9_gui },
 		TelescopeSelection = { bg = nord.nord2_gui },
         TelescopePromptPrefix = {fg = nord.nord15_gui },
         TelescopeSelectionCaret = { bg = nord.nord15_gui, fg = nord.nord15_gui},

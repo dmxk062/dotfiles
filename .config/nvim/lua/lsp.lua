@@ -1,5 +1,6 @@
 local utils = require("utils")
 local lspconfig = require('lspconfig')
+require("lspconfig.ui.windows").default_options.border = "rounded"
 -- lspconfig.marksman.setup{}
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -33,7 +34,6 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
         border = "rounded"
     }
 )
-
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
     vim.lsp.handlers.signature_help, {
         border = "rounded"
