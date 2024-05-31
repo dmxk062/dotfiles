@@ -104,11 +104,18 @@ lspconfig.clangd.setup {
 lspconfig.bashls.setup {
     capabilities = capabilities
 }
-lspconfig.tsserver.setup {
-    capabilities = capabilities
-}
+-- lspconfig.tsserver.setup {
+--     capabilities = capabilities
+-- }
 lspconfig.asm_lsp.setup {
-    capabilities = capabilities
+    capabilities = capabilities,
+    root_dir = function(path)
+        if vim.uv.fs_stat(".asm-lsp.toml") then
+            return "."
+        else
+            return require("lspconfig.util").find_git_ancestor(path)
+        end
+    end
 }
 lspconfig.html.setup {
     capabilities = capabilities
