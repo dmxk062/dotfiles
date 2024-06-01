@@ -115,9 +115,9 @@ lspconfig.clangd.setup {
 lspconfig.bashls.setup {
     capabilities = capabilities
 }
--- lspconfig.tsserver.setup {
---     capabilities = capabilities
--- }
+lspconfig.tsserver.setup {
+    capabilities = capabilities
+}
 lspconfig.asm_lsp.setup {
     capabilities = capabilities,
     root_dir = function(path)
