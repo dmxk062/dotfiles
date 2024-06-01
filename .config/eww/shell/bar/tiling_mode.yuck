@@ -1,13 +1,35 @@
 (defvar tiling_layout "dwindle")
+(defvar tiling_settings false)
+(defvar tiling_master_factor 40) ;; 60%
 
 (defwidget tiling_layout_button []
     (revealer :reveal {!overview} :transition "slideright" :duration "100ms" 
-        (button :class "submap_${tiling_layout == "master" ? "overview" : "media"}" 
-        :tooltip {tiling_layout == "master" ? "Master & Stack Layout
-    Arrange windows in a two column layout" : "Dwindle Layout
-    Arrange windows to best fit the screen"}
-        :onclick "bin/tiling_layout.sh&"
-        {tiling_layout == "master" ? "󰯌" : "󰕮"}
+        (box :space-evenly false
+            (button :class "tiling_${tiling_layout}" 
+                :tooltip {tiling_layout == "master" ? "Master & Stack Layout
+Arrange windows in a two column layout" : "Dwindle Layout
+Arrange windows to best fit the screen"}
+            :onclick "bin/tiling_layout.sh& ${EWW_CMD} update tiling_settings=false"
+            :onrightclick "${EWW_CMD} update tiling_settings=${!tiling_settings}"
+            {tiling_layout == "master" ? "󰯌" : "󰕮"}
+            )
+
+            (overlay
+                (revealer :reveal {tiling_layout == "master" && tiling_settings} :transition "slideright" :duration "200ms" (box :class "sbutton" :space-evenly false
+                    (label :class "text-np" :text "Ratio")
+                    (scale :class "slider-tiling-ratio" :value {tiling_master_factor * 100} :min 0 :max 100
+                        :timeout "16s"
+                        :onchange 
+"if (( (${tiling_master_factor} - {}) > 5 || ($tiling_master_factor - {}) < 5 )) then
+    ${EWW_CMD} update tiling_master_factor={}& 
+    hyprctl keyword master:mfact '${tiling_master_factor / 100.0}'
+    hyprctl --batch 'keyword general:layout dwindle;keyword general:layout master' 
+fi")
+                ))
+                ;; (revealer :reveal {tiling_layout == "dwindle" && tiling_settings} :transition "slideright" :duration "200ms" (box :class "sbutton" :space-evenly false
+                ;; ))
+
+            )
         )
     )
 )
