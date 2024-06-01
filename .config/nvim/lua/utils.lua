@@ -5,17 +5,17 @@ local M = {}
 function M.kitty_shell_in(uri, type, position)
     position = position or "split"
     local cmd
-    if uri:sub(1, #"oil-ssh://") == "oil-ssh://" then -- we're connected via ssh
-        local addr = uri:match("//(.-)/") -- host
+    if uri:sub(1, #"oil-ssh://") == "oil-ssh://" then         -- we're connected via ssh
+        local addr = uri:match("//(.-)/")                     -- host
         local remote_path = uri:match("//.-(/.*)"):sub(2, -1) -- the path at the host
 
-        -- assumes a POSIX-ish shell to be present
+        -- assumes a POSIX-ish shell to be present, realistically we just need it to be able to cd and exec
         -- ssh -t makes sure we get a vtty even though it looks like we're "just" running a command
-        cmd = string.format([[ -- ssh -t '%s' -- cd '%s'\; exec '${SHELL:=/bin/sh}']], addr, remote_path)
+        cmd = string.format([[ -- ssh -t '%s' -- cd '%s'\; exec '${SHELL:-/bin/sh}']], addr, remote_path)
     else
-        cmd = " --cwd '" .. uri .. "' -- zsh -i"
+        cmd = string.format([[ --cwd '%s']], uri)
     end
-    vim.fn.jobstart("kitty @ launch --type=" .. type .. " --location=" ..position .. cmd)
+    vim.fn.jobstart("kitty @ launch --type=" .. type .. " --location=" .. position .. cmd)
 end
 
 -- function M.kitty_new_dir(path, type)
@@ -26,7 +26,7 @@ end
 --     vim.fn.jobstart("kitty @ launch --type=" .. type .. " -- " .. cmd)
 -- end
 
-function M.map(mode, keys, action, opts) 
+function M.map(mode, keys, action, opts)
     vim.keymap.set(mode, keys, action, opts or {})
 end
 
@@ -40,7 +40,5 @@ end
 function M.abbrev(mode, keys, string)
     vim.api.nvim_command(mode .. "abbrev" .. " " .. keys .. " " .. string)
 end
-
-
 
 return M

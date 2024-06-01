@@ -1,4 +1,5 @@
 local utils = require("utils")
+
 require("lspconfig.ui.windows").default_options.border = "rounded"
 local lspconfig = require('lspconfig')
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -69,9 +70,8 @@ lspconfig.lua_ls.setup {
     capabilities = capabilities,
     on_init = function(client)
         local path = client.workspace_folders[1].name
-        local cfg = vim.fn.stdpath("config")
-        -- we're editing some other lua project
-        if not vim.startswith(path, cfg[0] or cfg) then
+        -- we're editing some other lua project, not the nvim config
+        if not vim.startswith(path, vim.fn.stdpath("config")) then
             return
         end
         client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
@@ -80,9 +80,11 @@ lspconfig.lua_ls.setup {
             },
             workspace = {
                 checkThirdParty = false,
-                -- library = vim.api.nvim_get_runtime_file("", true), -- slow
+                -- library = vim.api.nvim_get_runtime_file("", true), -- slow, has **everything**
                 library = {
-                    vim.env.VIMRUNTIME
+                    -- dont get everything, only the stuff i truly care about
+                    vim.env.VIMRUNTIME,
+                    vim.fn.stdpath("config") .. "/lua"
                 }
             }
         })
@@ -97,7 +99,8 @@ lspconfig.clangd.setup {
         "clangd", "--enable-config"
     },
     on_init = function()
-        utils.map("n", "<space>sw", "<cmd>ClangdSwitchSourceHeader<CR>")
+        -- cycle between definition and implementation files
+        utils.map("n", "<space>H", "<cmd>ClangdSwitchSourceHeader<CR>")
     end
 }
 lspconfig.bashls.setup {

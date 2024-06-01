@@ -1,4 +1,3 @@
-local leap = require("leap")
 local spooky = require("leap-spooky")
 local utils = require("utils")
 

@@ -49,7 +49,7 @@ require('ufo').setup({
     fold_virt_text_handler = handler,
     preview = {
         win_config = {
-            border=rounded, 
+            border="rounded",
             winblend = 0
         },
         mappings = {
@@ -80,5 +80,4 @@ require("statuscol").setup({
   },
 })
 require("ibl").setup {
-    -- for example, context is off by default, use this to turn it on
 }

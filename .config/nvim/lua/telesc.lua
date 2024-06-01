@@ -62,6 +62,7 @@ telescope.setup {
             }
         },
         buffers = {
+            sort_lastused = true, -- so i can just <space><space><cr> to cycle
             theme = "dropdown",
             previewer = false,
             layout_config = {
@@ -120,7 +121,7 @@ for _, map in ipairs({
     utils.map("n", _prefix .. map[1], map[2])
 end
 
-function register_and_insert()
+local function register_and_insert()
     builtin.registers {
         mappings = {
             n = {
