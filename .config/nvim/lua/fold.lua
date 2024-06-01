@@ -1,10 +1,13 @@
-vim.o.foldcolumn = '1'-- '0' is not bad
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+local ufo = require("ufo")
+vim.o.foldcolumn = '1' -- '0' is not bad
+vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
+
 -- vim.o.fillchars = [[eob:~,fold:—,foldopen:-,foldsep:│,foldclose:+]]
-vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-vim.keymap.set('n', 'zC', require('ufo').closeAllFolds)
+vim.keymap.set('n', 'zO', ufo.openAllFolds)
+vim.keymap.set('n', 'zC', ufo.closeAllFolds)
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
@@ -31,7 +34,7 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
             table.insert(newVirtText, chunk)
         else
             chunkText = truncate(chunkText, targetWidth - curWidth)
-            table.insert(newVirtText, {chunkText, hlGroup})
+            table.insert(newVirtText, { chunkText, hlGroup })
             chunkWidth = vim.fn.strdisplaywidth(chunkText)
             -- str width returned from truncate() may less than 2nd argument, need padding
             if curWidth + chunkWidth < targetWidth then
@@ -41,15 +44,15 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
         end
         curWidth = curWidth + chunkWidth
     end
-    table.insert(newVirtText, {suffix, 'Comment'})
+    table.insert(newVirtText, { suffix, 'Comment' })
     return newVirtText
 end
-require('ufo').setup({
+ufo.setup({
     open_fold_hl_timeout = 150,
     fold_virt_text_handler = handler,
     preview = {
         win_config = {
-            border="rounded",
+            border = "rounded",
             winblend = 0
         },
         mappings = {
@@ -61,23 +64,22 @@ require('ufo').setup({
     },
 })
 vim.keymap.set('n', 'K', function()
-    local winid = require('ufo').peekFoldedLinesUnderCursor()
+    local winid = ufo.peekFoldedLinesUnderCursor()
     if not winid then
-        -- choose one of coc.nvim and nvim lsp
         vim.lsp.buf.hover()
     end
 end)
 local builtin = require("statuscol.builtin")
 require("statuscol").setup({
     segments = {
-    { text = { "%s" }, click = "v:lua.ScSa" },
-    { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
-    {
-      text = { builtin.lnumfunc, " " },
-      condition = { true, builtin.not_empty },
-      click = "v:lua.ScLa",
-    }
-  },
+        { text = { "%s" },                  click = "v:lua.ScSa" },
+        { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
+        {
+            text = { builtin.lnumfunc, " " },
+            condition = { true, builtin.not_empty },
+            click = "v:lua.ScLa",
+        }
+    },
 })
 require("ibl").setup {
 }
