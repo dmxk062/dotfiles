@@ -1,11 +1,13 @@
 (defvar tiling_layout "dwindle")
 
 (defwidget tiling_layout_button []
-    (button :class "submap_${tiling_layout == "master" ? "overview" : "media"}" 
-    :tooltip {tiling_layout == "master" ? "Master & Stack Layout
-Arrange windows in a two column layout" : "Dwindle Layout
-Arrange windows to best fit the screen"}
-    :onclick "bin/tiling_layout.sh&"
-    {tiling_layout == "master" ? "󰯌" : "󰕮"}
+    (revealer :reveal {!overview} :transition "slideright" :duration "100ms" 
+        (button :class "submap_${tiling_layout == "master" ? "overview" : "media"}" 
+        :tooltip {tiling_layout == "master" ? "Master & Stack Layout
+    Arrange windows in a two column layout" : "Dwindle Layout
+    Arrange windows to best fit the screen"}
+        :onclick "bin/tiling_layout.sh&"
+        {tiling_layout == "master" ? "󰯌" : "󰕮"}
+        )
     )
 )
