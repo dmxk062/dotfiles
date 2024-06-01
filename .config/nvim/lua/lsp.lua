@@ -13,13 +13,21 @@ utils.map('n', '<space>q', vim.diagnostic.setloclist)
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
     callback = function(ev)
+        -- require("inc_rename").setup {
+            -- input_buffer_type = "dressing",
+            -- hl_group = "IncrementalRename",
+            -- hl_group = "Subsitute",
+        -- }
         -- vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
         local opts = { buffer = ev.buf }
         utils.map('n', 'gi', vim.lsp.buf.implementation, opts)
         utils.map('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         utils.map({ 'n', 'v' }, '<space>a', vim.lsp.buf.code_action, opts)
-        utils.map('n', '<space>rn', vim.lsp.buf.rename, opts)
+        -- utils.map('n', '<space>rn', function ()
+        --     return ":IncRename " .. vim.fn.expand("<cword>")
+        -- end, {expr = true})
+        utils.map("n", "<space>rn", vim.lsp.buf.rename, opts)
         utils.map('n', '<space>fmt', function()
             vim.lsp.buf.format { async = true }
         end, opts)
@@ -55,6 +63,7 @@ vim.diagnostic.config({
         prefix = '!',
     }
 })
+
 
 -- individual lsps
 lspconfig.jsonls.setup {

@@ -114,7 +114,7 @@ for _, map in ipairs({
     { "gF",      builtin.git_files },
     { "h",       builtin.oldfiles },
     { "/",       builtin.live_grep },
-    { "r",       builtin.registers },
+    { "R",       builtin.registers },
     { "<space>", builtin.buffers },
     { "#",       builtin.grep_string }
 }) do
