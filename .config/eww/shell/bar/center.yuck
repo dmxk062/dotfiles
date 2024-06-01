@@ -2,7 +2,7 @@
 (include "bar/mpris.yuck")
 (include "bar/submap.yuck")
 ;; (include "bar/voice_assistant.yuck")
-;; (include "bar/tiling_mode.yuck")
+(include "bar/tiling_mode.yuck")
 
 
 
@@ -10,7 +10,7 @@
 (defwidget center []
     (box :space-evenly false  :halign "center"
         (box :space-evenly false :class "centerbox"
-            ;; (tiling_layout_button)
+            (tiling_layout_button)
             (submap)
             ;; (voice_assistant_button)
             (window)

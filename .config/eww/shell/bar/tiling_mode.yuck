@@ -1,4 +1,4 @@
-(defvar tiling_layout "master")
+(defvar tiling_layout "dwindle")
 
 (defwidget tiling_layout_button []
     (button :class "submap_${tiling_layout == "master" ? "overview" : "media"}" 
