@@ -1,7 +1,6 @@
 local utils = require("utils")
-local lspconfig = require('lspconfig')
 require("lspconfig.ui.windows").default_options.border = "rounded"
--- lspconfig.marksman.setup{}
+local lspconfig = require('lspconfig')
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -128,4 +127,7 @@ lspconfig.jedi_language_server.setup {
 -- }
 lspconfig.ruff_lsp.setup {
     capabilities = capabilities
+}
+lspconfig.marksman.setup{
+    capabilities=capabilities
 }

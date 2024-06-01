@@ -3,6 +3,7 @@ local theme = {}
 
 local italic = vim.g.nord_italic == false and nord.none or "italic"
 local italic_undercurl = vim.g.nord_italic == false and "undercurl" or "italic,undercurl"
+local undercurl = "undercurl"
 local bold = vim.g.nord_bold == false and nord.none or "bold"
 local reverse_bold = vim.g.nord_bold == false and "reverse" or "reverse,bold"
 local bold_underline = vim.g.nord_bold == false and "underline" or "bold,underline"
@@ -42,11 +43,11 @@ theme.loadSyntax = function()
 		Delimiter = { fg = nord.nord6_gui }, -- character that needs attention like , or .
 		SpecialComment = { fg = nord.nord8_gui, style=italic}, -- special things inside a comment
 		Debug = { fg = nord.nord11_gui }, -- debugging statements
-		Underlined = { fg = nord.nord14_gui, bg = nord.none, style = "underline" }, -- text that stands out, HTML links
+		Underlined = { fg = nord.nord10_gui, bg = nord.none, style = "underline" }, -- text that stands out, HTML links
 		Ignore = { fg = nord.nord1_gui }, -- left blank, hidden
 		Todo = { fg = nord.nord13_gui, bg = nord.none, style = bold_italic }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 		Conceal = { fg = nord.none, bg = nord.nord0_gui },
-		htmlLink = { fg = nord.nord14_gui, style = "underline" },
+		htmlLink = { fg = nord.nord10_gui, style = "italic,underline" },
 		markdownH1Delimiter = { fg = nord.nord8_gui },
 		markdownH2Delimiter = { fg = nord.nord11_gui },
 		markdownH3Delimiter = { fg = nord.nord14_gui },
