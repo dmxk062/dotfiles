@@ -29,7 +29,7 @@ vim.o.cursorlineopt = "number"
 vim.o.title = true
 vim.o.wrap = true
 
-vim.api.nvim_create_autocmd({"BufEnter", "BufReadPost", "BufNewFile"},{
+vim.api.nvim_create_autocmd({"BufEnter", "BufReadPost", "BufNewFile", "VimEnter"},{
 callback = function(args)
     local function format_path(name, user)
         local expanded = name:gsub("/tmp/workspaces_" .. user, "~tmp")
@@ -69,11 +69,11 @@ callback = function(args)
 end
 })
 
-vim.api.nvim_create_autocmd("VimEnter", {
-    callback = function ()
-        vim.o.titlestring = "nv: NeoVIM"
-    end
-})
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--     callback = function ()
+--         vim.o.titlestring = "nv: NeoVIM"
+--     end
+-- })
 
 
 
