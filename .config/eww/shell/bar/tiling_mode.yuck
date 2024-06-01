@@ -1,6 +1,7 @@
 (defvar tiling_layout "dwindle")
 (defvar tiling_settings false)
 (defvar tiling_master_factor 40) ;; 60%
+(defvar tiling_master_orientation "left") ;; 60%
 
 (defwidget tiling_layout_button []
     (revealer :reveal {!overview} :transition "slideright" :duration "100ms" 
@@ -25,6 +26,10 @@ Arrange windows to best fit the screen"}
     hyprctl keyword master:mfact '${tiling_master_factor / 100.0}'
     hyprctl --batch 'keyword general:layout dwindle;keyword general:layout master' 
 fi")
+                    (button :class "winctrl" :timeout "16ms"
+                        :tooltip "Change direction"
+                        :onclick "bin/tiling_layout.sh orientation"
+                    "󰑧")
                 ))
                 ;; (revealer :reveal {tiling_layout == "dwindle" && tiling_settings} :transition "slideright" :duration "200ms" (box :class "sbutton" :space-evenly false
                 ;; ))
