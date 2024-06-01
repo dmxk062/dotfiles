@@ -34,3 +34,13 @@
     background-color: $bg3;
 }
 
+
+.winctrl {
+    color: $fg0;
+    margin: .2rem;
+    padding: .1rem .55rem .1rem .5rem;
+    border-radius: 12px;
+    &:hover {
+        background-color: $bg3;
+    }
+}
