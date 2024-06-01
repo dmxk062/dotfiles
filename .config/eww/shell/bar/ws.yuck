@@ -1,33 +1,34 @@
 (defvar workspaces "[]")
 (include "bar/overview.yuck")
 
-(defwidget workspaces[]
 
-    (box :space-evenly false
-        (box :space-evenly false :halign "start" :class "leftbox"
-            (overview_button)
-            (revealer :reveal {!overview} :transition "slideleft" :duration "200ms" (box :space-evenly false :class "inner-leftbox" 
-                (box :space-evenly false (for ws in workspaces
-                    (button :class "ws-${ws.active ? "active" : (ws.special ? ( ws.id == window?.workspace?.id ? "special-active" : "special-inactive") : "inactive")}"  
-                    :onclick "${ws.special ? "hyprctl dispatch togglespecialworkspace ${replace(ws.name,"special:","")}" : "bin/hyprmon.sh switch ${ws.id} ${ws.name}"}"
-                    :visible {ws.name != "OVERVIEW"}
-                    :tooltip "Name: ${ws.name}
+(defwidget workspace_list [short only_icon]
+(revealer :reveal {!overview} :transition "slideleft" :duration "200ms" (box :space-evenly false :class "inner-leftbox" 
+    (box :space-evenly false (for ws in workspaces
+        (button :class "ws-${ws.active ? "active" : (ws.special ? ( ws.id == window?.workspace?.id ? "special-active" : "special-inactive") : "inactive")}"  
+        :onclick "${ws.special ? "hyprctl dispatch togglespecialworkspace ${replace(ws.name,"special:","")}" : "bin/hyprmon.sh switch ${ws.id} ${ws.name}"}"
+        :visible {ws.name != "OVERVIEW"}
+        :tooltip "Name: ${ws.name}
 Active: ${ws.title ?: "No Window"}
 Type: ${ws.special ? "Special" : (ws.name == ws.id ? "Numeric" : "Named")} 
 Windows: ${ws.count}
 Display: ${ws.display}
 Id: ${ws.id}
 Fullscreen: ${ws.fullscreen}"
-    (box :space-evenly false
-        (label :text "${ws_icons[ws.name] ?: ws.name}${vertical ? "" : "    ${ws.title ?: "empty"}"}" :limit-width 10)
-    )
-    )
-                ))
-            (button :class "ws-inactive" :timeout "16s"
-            :onclick "hyprctl dispatch workspace empty"
-            :tooltip "Open next empty Workspace"
-            "󱓺${!vertical ? "    New" : ""}")
-            ))
+            (box :space-evenly false
+                (label :text "${ws_icons[ws.name] ?: ws.name}${(vertical || only_icon) ? "" : "    ${ws.title ?: ( short ? "-" : "empty")}"}" :limit-width {short ? 6 : 12})
+            )
         )
-        )
-)
+    ))
+)))
+
+(defwidget workspaces[]
+(box :space-evenly false :halign "start" :class "leftbox"
+    (overview_button)
+    (workspace_list :short {arraylength(workspaces) > 7} :only_icon {arraylength(workspaces) > 9})
+    (button :class "ws-inactive" :timeout "16s"
+        :onclick "hyprctl dispatch workspace empty"
+        :tooltip "Open next empty Workspace"
+        "󱓺${!vertical ? "    New" : ""}"
+    )
+))
