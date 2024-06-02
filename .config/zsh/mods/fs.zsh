@@ -227,7 +227,7 @@ function rmi {
 }
 
 function lr {
-    command lsd --tree --depth 3 --hyperlink=auto "$@" | less -rF
+    command lsd --tree --depth 3 --hyperlink=auto "$@" | less -rFi
 }
 
 # like pwd but takes into account all the shell magic
