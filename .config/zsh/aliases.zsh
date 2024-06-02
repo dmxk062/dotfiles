@@ -15,7 +15,6 @@ llo='lsd -l --permission=octal --hyperlink=auto' \
 llao='lsd -lA --permission=octal --hyperlink=auto' \
 la='lsd -A --hyperlink=auto' \
 lar='lsd -A --tree --depth 3  --hyperlink=auto' \
-lr='lsd --tree --depth 3  --hyperlink=auto' \
 l='lsd --hyperlink=auto' \
 grep='grep --color=auto' \
 fdd="fd -t d" \

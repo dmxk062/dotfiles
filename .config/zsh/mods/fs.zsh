@@ -226,6 +226,10 @@ function rmi {
     echo
 }
 
+function lr {
+    command lsd --tree --depth 3 --hyperlink=auto "$@" | less -rF
+}
+
 # like pwd but takes into account all the shell magic
 alias pwf='print -P -- %~'
 
@@ -235,7 +239,7 @@ alias pwf='print -P -- %~'
 
 unfunction rgf mcd mkf tmp rp bn \
     rmi  \
-    readfile readstream
+    readfile readstream lr
 
 unalias md ft bft pwf
 
