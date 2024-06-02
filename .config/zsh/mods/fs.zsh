@@ -226,6 +226,8 @@ function rmi {
     echo
 }
 
+# like pwd but takes into account all the shell magic
+alias pwf='print -P -- %~'
 
 
 
@@ -235,6 +237,6 @@ unfunction rgf mcd mkf tmp rp bn \
     rmi  \
     readfile readstream
 
-unalias md ft bft
+unalias md ft bft pwf
 
 }

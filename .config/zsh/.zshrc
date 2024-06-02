@@ -7,15 +7,15 @@ declare -A ZSH_COLORS_RGB=(
 )
 
 
-function zvm_config() {
-  ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
-  ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
-  ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
-  ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
-  ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
-  ZVM_MODE_INSERT=true
-  ZVM_VI_HIGHLIGHT_BACKGROUND=$ZSH_COLORS_RGB[light-gray]
-  zvm_bindkey vicmd "/" history-incremental-search-backward
+function zvm_config {
+    ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+    ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
+    ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
+    ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
+    ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
+    ZVM_MODE_INSERT=true
+    ZVM_VI_HIGHLIGHT_BACKGROUND=$ZSH_COLORS_RGB[light-gray]
+    zvm_bindkey vicmd "/" history-incremental-search-backward
 }
 #sources the plugin
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
@@ -48,12 +48,16 @@ esac
 
 #completion opts
 zstyle ':completion:*' completer _complete _expand _approximate
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} "ma=;1"
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=-1
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' verbose false
+zstyle ':completion:*' select-prompt"%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' list-prompt "%B%F{cyan}%S %l%s%f%b"
+zstyle ':completion:*' verbose true
+
+zstyle ':completion:*:manuals'    separate-sections true
+zstyle ':completion:*:manuals.*'  insert-sections   true
+
 
 autoload -Uz compinit
 # only reload comps after reboot effectively

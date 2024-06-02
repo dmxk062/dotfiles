@@ -18,7 +18,7 @@ lar='lsd -A --tree --depth 3  --hyperlink=auto' \
 lr='lsd --tree --depth 3  --hyperlink=auto' \
 l='lsd --hyperlink=auto' \
 grep='grep --color=auto' \
-f="fd" \
-g="rg" \
+fdd="fd -t d" \
+fdf="fd -t f" \
 pac="pacman" \
 wd="print -P \"%~\""

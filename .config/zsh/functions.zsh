@@ -9,14 +9,8 @@ c(){
     print -n "[H[2J"
 }
 
-function -gtk_debug {
-    export GTK_DEBUG=interactive
-    "$@" & disown
-}
-
-function -gnome {
-    env XDG_CURRENT_DESKTOP=gnome "$@"    
-}
+alias -- "-gtk_debug"="env GTK_DEBUG=interactive" \
+   "-gnome"="env XDG_CURRENT_DESKTOP=gnome"
 
 # a better `watch`
 function -mon {
