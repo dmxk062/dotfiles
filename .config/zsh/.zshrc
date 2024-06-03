@@ -53,7 +53,7 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower
 zstyle ':completion:*' menu select=-1
 zstyle ':completion:*' select-prompt"%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' list-prompt "%B%F{cyan}%S %l%s%f%b"
-zstyle ':completion:*' verbose true
+zstyle ':completion:*' verbose false
 
 zstyle ':completion:*:manuals'    separate-sections true
 zstyle ':completion:*:manuals.*'  insert-sections   true
