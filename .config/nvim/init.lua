@@ -55,6 +55,8 @@ callback = function(args)
         else
             path = format_path(bufname:sub(#"oil:///"), user)
         end
+    elseif filetype == "help" then
+        path = "Help"
     elseif filetype == "vim-plug" then
         path = "Plugins"
     elseif filetype == "alpha" then

@@ -34,5 +34,8 @@ gitsigns.setup {
 
         utils.lmap(bufnr, "n", prefix .. "w", gitsigns.toggle_word_diff)
         utils.lmap(bufnr, "n", prefix .. "r", gitsigns.toggle_deleted)
+
+        utils.lmap(bufnr, "n", "]g", function() gitsigns.nav_hunk("next") end)
+        utils.lmap(bufnr, "n", "[g", function() gitsigns.nav_hunk("prev") end)
     end,
 }

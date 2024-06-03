@@ -1,51 +1,51 @@
-local colors = require("nord.named_colors")
+local colors = require("nord.colors")
 
 local nord = {}
 nord.normal = {
-	a = { fg = colors.black, bg = colors.black },
-	b = { fg = colors.white, bg = colors.light_gray },
-	c = { fg = colors.white, bg = colors.black },
-	y = { fg = colors.white, bg = colors.light_gray },
-    z = { fg = colors.black, bg = colors.teal },
+    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
+    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    c = { fg = colors.nord6_gui, bg = colors.nord0_gui },
+    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    z = { fg = colors.nord0_gui, bg = colors.nord7_gui },
 }
 
 nord.insert = {
-	a = { fg = colors.black, bg = colors.black },
-	b = { fg = colors.white, bg = colors.light_gray },
-	y = { fg = colors.white, bg = colors.light_gray },
-    z = { fg = colors.white, bg = colors.light_gray },
+    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
+    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    z = { fg = colors.nord6_gui, bg = colors.nord3_gui },
 }
 
 nord.visual = {
-	a = { fg = colors.black, bg = colors.black },
-	b = { fg = colors.white, bg = colors.light_gray },
-	y = { fg = colors.white, bg = colors.light_gray },
-    z = { fg = colors.black, bg = colors.blue },
+    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
+    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    z = { fg = colors.nord0_gui, bg = colors.nord10_gui },
 }
 
 nord.replace = {
-	a = { fg = colors.black, bg = colors.black },
-	b = { fg = colors.white, bg = colors.light_gray },
-	y = { fg = colors.white, bg = colors.light_gray },
-    z = { fg = colors.black, bg = colors.red },
+    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
+    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    z = { fg = colors.nord0_gui, bg = colors.nord11_gui },
 }
 
 nord.command = {
-	a = { fg = colors.black, bg = colors.black },
-	b = { fg = colors.white, bg = colors.light_gray },
-	y = { fg = colors.white, bg = colors.light_gray },
-    z = { fg = colors.black, bg = colors.purple },
+    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
+    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    z = { fg = colors.nord0_gui, bg = colors.nord15_gui },
 }
 
 nord.inactive = {
-	a = { fg = colors.black, bg = colors.black },
-	b = { fg = colors.white, bg = colors.light_gray },
-	y = { fg = colors.white, bg = colors.light_gray },
-    z = { fg = colors.black, bg = colors.black },
+    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
+    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    z = { fg = colors.nord0_gui, bg = colors.nord0_gui },
 }
-local bubble = {left = "", right = ""}
-local lbubble = {left = ""}
-local rbubble = {right = ""}
+local bubble = { left = "", right = "" }
+local lbubble = { left = "" }
+local rbubble = { right = "" }
 
 
 
@@ -53,7 +53,7 @@ local spacing = {
     function()
         return " "
     end,
-    color = { bg = colors.black, fg = colors.black }
+    color = { bg = colors.nord0_gui, fg = colors.nord0_gui }
 }
 
 local branch = {
@@ -67,22 +67,22 @@ local branch = {
     end,
     icon = "",
     separator = lbubble,
-    color = { bg = colors.dark_gray, fg = colors.white},
+    color = { bg = colors.nord1_gui, fg = colors.nord6_gui },
 }
 
 local modecolors = {
-    n = { bg = colors.teal, fg = colors.black},
-    i = { bg = colors.light_gray, fg = colors.white, gui = "italic"},
-    c = { bg = colors.purple, fg = colors.black},
-    v = { bg = colors.blue, fg = colors.black},
-    V = { bg = colors.blue, fg = colors.black},
-    [""] = { bg = colors.glacier, fg = colors.black},
-    R = { bg = colors.red, fg = colors.black, gui = "bold"},
-    no = { bg = colors.teal, fg = colors.black, gui = "italic"},
-    ["!"] = {bg = colors.teal, fg = colors.black},
-    t = { bg = colors.teal, fg = colors.black},
-    nt = { bg = colors.teal, fg = colors.black},
-    s = { bg = colors.teal, fg = colors.black, gui = "italic"},
+    n = { bg = colors.nord7_gui, fg = colors.nord0_gui },
+    i = { bg = colors.nord3_gui, fg = colors.nord6_gui, gui = "italic" },
+    c = { bg = colors.nord15_gui, fg = colors.nord0_gui },
+    v = { bg = colors.nord10_gui, fg = colors.nord0_gui },
+    V = { bg = colors.nord10_gui, fg = colors.nord0_gui },
+    [""] = { bg = colors.nord9_gui, fg = colors.nord0_gui },
+    R = { bg = colors.nord11_gui, fg = colors.nord0_gui, gui = "bold" },
+    no = { bg = colors.nord7_gui, fg = colors.nord0_gui, gui = "italic" },
+    ["!"] = { bg = colors.nord7_gui, fg = colors.nord0_gui },
+    t = { bg = colors.nord7_gui, fg = colors.nord0_gui },
+    nt = { bg = colors.nord7_gui, fg = colors.nord0_gui },
+    s = { bg = colors.nord7_gui, fg = colors.nord0_gui, gui = "italic" },
 }
 local mode = {
     "mode",
@@ -107,7 +107,7 @@ local function getWords()
     local wc = vim.fn.wordcount()
     if wc["visual_words"] then -- text is selected in visual mode
         return wc["visual_words"] .. "w" .. "/" .. wc['visual_chars'] .. "c"
-    else 
+    else
         return wc["words"] .. "w"
     end
 end
@@ -117,7 +117,7 @@ local function search_progress()
         return ''
     end
 
-    local ok, res = pcall(vim.fn.searchcount, {maxcount = 999, timeout = 500})
+    local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 500 })
     if not ok or next(res) == nil then
         return ''
     end
@@ -142,8 +142,8 @@ require('lualine').setup {
                 -- "TelescopePrompt"
             },
         },
-        component_separators = { left = '', right = ''},
-        section_separators = { left = '', right = ''},
+        component_separators = { left = '', right = '' },
+        section_separators = { left = '', right = '' },
     },
     sections = {
         lualine_a = {
@@ -153,8 +153,8 @@ require('lualine').setup {
             {
                 'filename',
                 icons_enabled = true,
-                padding = {left = 2, right = 2 },
-                icon = {'󰈔', align='left'},
+                padding = { left = 2, right = 2 },
+                icon = { '󰈔', align = 'left' },
                 separator = rbubble,
                 path = 4,
                 file_status = true,
@@ -171,21 +171,21 @@ require('lualine').setup {
         lualine_c = {
             {
                 'diagnostics',
-                separator = {right = ""},
-                color = {fg = colors.white, bg = colors.dark_gray},
+                separator = { right = "" },
+                color = { fg = colors.nord6_gui, bg = colors.nord1_gui },
                 sources = { 'nvim_lsp', 'coc' },
                 sections = { 'error', 'warn', 'info', 'hint' },
 
                 diagnostics_color = {
-                    error = {fg = colors.red},
-                    warn  = {fg = colors.orange},
-                    info  = {fg = colors.blue},
-                    hint  = {fg = colors.cyan},
+                    error = { fg = colors.nord11_gui },
+                    warn  = { fg = colors.nord12_gui },
+                    info  = { fg = colors.nord10_gui },
+                    hint  = { fg = colors.nord7_gui },
                 },
-                symbols = {error = '󰅖 ', warn = ' ', info = ' ', hint = '󰟶 '},
-                colored = true,         
+                symbols = { error = '󰅖 ', warn = ' ', info = ' ', hint = '󰟶 ' },
+                colored = true,
                 update_in_insert = false,
-                always_visible = false,  
+                always_visible = false,
             },
         },
         lualine_d = {},
@@ -193,12 +193,12 @@ require('lualine').setup {
             branch,
             {
                 'diff',
-                color = {bg = colors.dark_gray},
+                color = { bg = colors.nord1_gui},
                 colored = true,
                 diff_color = {
-                    added    = {fg = colors.green},
-                    modified = {fg = colors.yellow},
-                    removed  = {fg = colors.red}
+                    added    = { fg = colors.nord14_gui },
+                    modified = { fg = colors.nord13_gui },
+                    removed  = { fg = colors.nord11_gui }
                 },
                 source = function()
                     if vim.b.gitsigns_status_dict then
@@ -225,7 +225,7 @@ require('lualine').setup {
                     dos = '\\r\\n',
                     mac = '\\r',
                 }
-            }, 
+            },
         },
         lualine_z = {
             {
@@ -235,7 +235,7 @@ require('lualine').setup {
             {
                 search_progress,
                 icon = "󰈞",
-            }, 
+            },
             {
                 getWords,
                 separator = rbubble,
