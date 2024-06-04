@@ -8,7 +8,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 utils.map('n', '<space>d', vim.diagnostic.open_float)
 utils.map('n', '[d', vim.diagnostic.goto_prev)
 utils.map('n', ']d', vim.diagnostic.goto_next)
-utils.map('n', '<space>q', vim.diagnostic.setloclist)
+-- utils.map('n', '<space>q', vim.diagnostic.setloclist)
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         local opts = { buffer = ev.buf }
         utils.map('n', 'gi', vim.lsp.buf.implementation, opts)
-        utils.map('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+        -- utils.map('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         utils.map({ 'n', 'v' }, '<space>a', vim.lsp.buf.code_action, opts)
         -- utils.map('n', '<space>rn', function ()
         --     return ":IncRename " .. vim.fn.expand("<cword>")
@@ -113,10 +113,10 @@ lspconfig.clangd.setup {
     end
 }
 lspconfig.bashls.setup {
-    capabilities = capabilities
+    capabilities = capabilities,
 }
 lspconfig.tsserver.setup {
-    capabilities = capabilities
+    capabilities = capabilities,
 }
 lspconfig.asm_lsp.setup {
     capabilities = capabilities,
