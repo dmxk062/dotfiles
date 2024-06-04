@@ -15,13 +15,23 @@ vim.o.shiftwidth = 4
 vim.o.hlsearch = true
 vim.o.termguicolors = true
 vim.o.wildmenu = false
+
+-- wrap at whitespace and, indent wrapped lines and show an indicator
 vim.o.wrap = true
+vim.o.linebreak = true
+vim.o.breakindent = true
+vim.o.breakindentopt = "sbr"
+vim.o.showbreak = ""
 
 -- idk why that isnt the default
 vim.o.splitright = true
 vim.o.splitbelow = true
 
 
+-- command mode: underline:
+-- normal, visual etc: block
+-- insert: bar, blink
+-- normal: blink
 vim.o.guicursor = "c-ci-cr:hor20,n-o-r-v-sm:block,i-ve:ver10,n-i-ve:blinkon1,"
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
@@ -29,6 +39,7 @@ vim.o.cursorlineopt = "number"
 vim.o.title = true
 vim.o.wrap = true
 
+-- change the title in a more intelligent way
 vim.api.nvim_create_autocmd({"BufEnter", "BufReadPost", "BufNewFile", "VimEnter"},{
 callback = function(args)
     local function format_path(name, user)
@@ -71,15 +82,6 @@ callback = function(args)
 end
 })
 
--- vim.api.nvim_create_autocmd("VimEnter", {
---     callback = function ()
---         vim.o.titlestring = "nv: NeoVIM"
---     end
--- })
-
-
-
-
-
+-- load all the "real" config in lua/
 require("mappings")
 require("plugins")
