@@ -45,10 +45,12 @@ cmp.setup({
         completion = {
             border = 'rounded',
             winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
+            scrollbar = false,
         },
         documentation = {
             border = 'rounded',
             winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:None',
+            scrollbar = false,
         }
     },
     mapping = cmp.mapping.preset.insert({
