@@ -86,28 +86,27 @@ function deepl_request {
     local request="$1"
     local auth_key="$( < "$XDG_DATA_HOME/keys/deepl" )"
     if [[ "$auth_key" == "" ]] {
-        print -- "Please make sure your auth key is placed at $XDG_DATA_HOME/keys/deepl"
+        print -P -- "%F{red}Please make sure your auth key is placed at $XDG_DATA_HOME/keys/deepl%f" > /dev/stderr
         return 1
     }
     curl -s --request POST --header "Authorization: DeepL-Auth-Key $auth_key" \
         --header "Content-Type: application/json" \
         --data "$request" \
         'https://api-free.deepl.com/v2/translate'
-
 }
 
 function translate {
     local target="${1}"; shift
-    local buffer
+    local -a buffer
     if (($# == 0)) {
         local line
         while read -r line; do
-            buffer+="\n$line"
+            buffer+=("$line")
         done
     } else {
-        buffer="${(j: :)argv[@]}"
+        buffer="${argv[@]}"
     }
-    deepl_request "{\"text\":[\"$buffer\"],\"target_lang\":\"$target\"}"|jq -r '.translations.[].text'
+    deepl_request "{\"text\":[\"${(j:\n:)buffer[@]}\"],\"target_lang\":\"$target\"}"|jq -r '.translations.[].text'
 
 }
 
@@ -131,6 +130,9 @@ function ncdir {
             ;;
     esac
 }
+autoload -Uz _translate
+compdef _translate translate
+
 
 
 

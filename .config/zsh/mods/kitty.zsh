@@ -10,7 +10,7 @@ if [[ ! -n "$KITTY_SHELL_INTEGRATION_ENABLED" && -n "$KITTY_INSTALLATION_DIR" &&
     autoload -Uz -- "$KITTY_INSTALLATION_DIR/shell-integration/zsh/kitty-integration"
     KITTY_SHELL_INTEGRATION_ENABLED=1
     kitty-integration
-
+    
     unfunction kitty-integration
 }
 

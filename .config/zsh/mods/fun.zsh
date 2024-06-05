@@ -312,9 +312,7 @@ function blockjoin {
 
 
 # nicer to type
-alias fn="function"
-# lambda
-alias '\\'="function"
+alias fn="function" '\\'="function" 'λ'="function"
 
 # mainly for use in functions
 alias ret="print --"
@@ -346,6 +344,6 @@ unfunction filter tfilter ffilter \
     keys \
     getdef 
 
-unalias fn '\\' ret yield
+unalias fn '\\' 'λ' ret yield
 
 }
