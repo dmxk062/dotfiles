@@ -40,46 +40,46 @@ vim.o.title = true
 vim.o.wrap = true
 
 -- change the title in a more intelligent way
-vim.api.nvim_create_autocmd({"BufEnter", "BufReadPost", "BufNewFile", "VimEnter"},{
-callback = function(args)
-    local function format_path(name, user)
-        local expanded = name:gsub("/tmp/workspaces_" .. user, "~tmp")
-            :gsub("/home/" .. user .. "/ws", "~ws")
-            :gsub("/home/" .. user .. "/.config", "~cfg")
-            :gsub("/home/" .. user, "~")
-        return expanded
-    end
-
-    local path = ""
-    local buf = vim.api.nvim_get_current_buf()
-    local bufname  = vim.api.nvim_buf_get_name(buf)
-    local filetype = vim.bo[buf]["filetype"]
-
-    local user = vim.env.USER
-
-    if filetype == "TelescopePrompt" then
-        path = ""
-    elseif filetype == "oil" then
-        if vim.startswith(bufname, "oil-ssh://") then
-            local remote_path = bufname:match("//.-(/.*)"):sub(2, -1) -- the path at the host
-            path = "ssh:" .. remote_path
-        else
-            path = format_path(bufname:sub(#"oil:///"), user)
+vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
+    callback = function(args)
+        local function format_path(name, user)
+            local expanded = name:gsub("/tmp/workspaces_" .. user, "~tmp")
+                :gsub("/home/" .. user .. "/ws", "~ws")
+                :gsub("/home/" .. user .. "/.config", "~cfg")
+                :gsub("/home/" .. user, "~")
+            return expanded
         end
-    elseif filetype == "help" then
-        path = "Help"
-    elseif filetype == "vim-plug" then
-        path = "Plugins"
-    elseif filetype == "alpha" then
-        path = "NeoVIM"
-    elseif bufname == "" then
-        path = "[No Name]"
-    else
-        path = format_path(bufname, user)
-    end
 
-    vim.o.titlestring = "nv: " .. path
-end
+        local path     = ""
+        local buf      = vim.api.nvim_get_current_buf()
+        local bufname  = vim.api.nvim_buf_get_name(buf)
+        local filetype = vim.bo[buf]["filetype"]
+
+        local user     = vim.env.USER
+
+        if filetype == "TelescopePrompt" then
+            path = ""
+        elseif filetype == "oil" then
+            if vim.startswith(bufname, "oil-ssh://") then
+                local remote_path = bufname:match("//.-(/.*)"):sub(2, -1) -- the path at the host
+                path = "ssh:" .. remote_path
+            else
+                path = format_path(bufname:sub(#"oil:///"), user)
+            end
+        elseif filetype == "help" then
+            path = "Help"
+        elseif filetype == "vim-plug" then
+            path = "Plugins"
+        elseif filetype == "alpha" then
+            path = "NeoVIM"
+        elseif bufname == "" then
+            path = "[No Name]"
+        else
+            path = format_path(bufname, user)
+        end
+
+        vim.o.titlestring = "nv: " .. path
+    end
 })
 
 -- load all the "real" config in lua/
@@ -95,5 +95,20 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
-require("lazy").setup("plugins")
+require("lazy").setup("plugins", {
+    change_detection = {
+        enabled = false,
+    },
+    performance = {
+        cache = {
+            enabled = false,
+        },
+        reset_packpath = false,
+        rtp = {
+            disabled_plugins = {
+                "nvim-lspconfig"
+            }
+        }
+    }
+})
 require("mappings")

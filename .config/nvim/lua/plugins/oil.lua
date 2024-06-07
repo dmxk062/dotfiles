@@ -6,7 +6,6 @@ return {
     },
     config = function()
         local actions = require("oil.actions")
-        local lspconfig = require("lspconfig.util")
         local api = require("oil")
         local utils = require("utils")
 
@@ -124,7 +123,7 @@ return {
         end
 
         local function goto_git_ancestor()
-            api.open(lspconfig.find_git_ancestor(api.get_current_dir()))
+            api.open(require("lspconfig.util").find_git_ancestor(api.get_current_dir()))
         end
 
         local function toggle_git_shown()

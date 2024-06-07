@@ -3,6 +3,7 @@ return {
     dependencies = {
         "b0o/schemastore.nvim",
     },
+    event = {"BufReadPost"},
     config = function()
         local lspconfig = require('lspconfig')
         local utils = require("utils")
@@ -10,6 +11,10 @@ return {
         require("lspconfig.ui.windows").default_options.border = "rounded"
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities.textDocument.completion.completionItem.snippetSupport = true
+        capabilities.textDocument.foldingRange = {
+            dynamicRegistration = false,
+            lineFoldingOnly = true
+        }
 
         utils.map('n', '<space>d', vim.diagnostic.open_float)
         utils.map('n', '[d', vim.diagnostic.goto_prev)
