@@ -1,5 +1,10 @@
 return {
     "goolord/alpha-nvim",
+    event = "VimEnter",
+    enabled = function ()
+        return vim.fn.argc() < 1
+    end,
+    init = false,
     config = function()
         local icons = require("nvim-web-devicons")
 
@@ -209,10 +214,6 @@ return {
                 math.min(vim.api.nvim_win_get_width(0) - const_pad.h, const_max.h)
             ),
         }
-
-
-
-
         require("alpha").setup {
             layout = {
                 header,
@@ -241,5 +242,6 @@ return {
                 end
             }
         }
+        vim.cmd("Alpha")
     end
 }

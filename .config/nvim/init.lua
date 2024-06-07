@@ -109,6 +109,11 @@ require("lazy").setup("plugins", {
                 "nvim-lspconfig"
             }
         }
+    },
+    ui = {
+        border = "rounded",
+        backdrop = 100,
+        pills = false,
     }
 })
 require("mappings")
