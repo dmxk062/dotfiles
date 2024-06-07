@@ -62,7 +62,7 @@ zstyle ':completion:*:manuals.*'  insert-sections   true
 autoload -Uz compinit
 # only reload comps after reboot effectively
 compinit -d "$XDG_CACHE_HOME/zcompdump-$ZSH_VERSION"
-
+compdef _files '-redirect-' # for some reason wasnt default
 
 #history
 HISTFILE=~/.local/share/zsh/histfile
