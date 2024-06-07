@@ -1,8 +1,8 @@
-vim.cmd("source" .. vim.fn.stdpath("config") .. "/pkgs.vim")
 vim.o.runtimepath = vim.o.runtimepath .. "," .. vim.fn.stdpath("config") .. "/lua/nord"
+vim.cmd("colorscheme nord")
+
 vim.g.nord_italic = true
 vim.g.nord_borders = true
-vim.cmd("colorscheme nord")
 
 vim.o.number = true
 vim.o.incsearch = true
@@ -83,5 +83,17 @@ end
 })
 
 -- load all the "real" config in lua/
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
+require("lazy").setup("plugins")
 require("mappings")
-require("plugins")
