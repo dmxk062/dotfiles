@@ -91,22 +91,6 @@ ${stderr}"
 }
 
 
-# dynamic sudo thingy
-function -root {
-    if [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]] {
-        pkexec "$@"
-    } else {
-        sudo "$@"
-    }
-}
-
-function -s {
-    sudo "$@"
-}
-
-
-
-
 
 source $ZDOTDIR/handlers.zsh
 
@@ -130,4 +114,3 @@ if [[ "$TERM" == "xterm-kitty" ]] {
 
 # desktop stuff
 +mod sound silent
-
