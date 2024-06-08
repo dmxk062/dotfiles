@@ -2,17 +2,10 @@ local utils = require("utils")
 
 
 -- move between windows more efficiently, i rarely use W anyways
+-- also allows me to use <C-w> in kittty
 utils.map("n", "W", "<C-w>")
--- utils.map("n", "Wj", "<C-w>j")
--- utils.map("n", "Wk", "<C-w>k")
--- utils.map("n", "Wh", "<C-w>h")
--- utils.map("n", "Wl", "<C-w>l")
 
--- utils.map("n", "WJ", "<C-w>J")
--- utils.map("n", "WK", "<C-w>K")
--- utils.map("n", "WH", "<C-w>H")
--- utils.map("n", "WL", "<C-w>L")
-
+-- for some reason smth else remaps those 
 utils.map("i", "<M-k>", "<esc>k")
 utils.map("i", "<M-j>", "<esc>j")
 
