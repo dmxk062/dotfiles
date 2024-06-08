@@ -4,7 +4,7 @@
 (defvar tiling_master_orientation "left") ;; 60%
 
 (defwidget tiling_layout_button []
-    (revealer :reveal {!overview} :transition "slideright" :duration "100ms" 
+    (box :visible {!overview}
         (box :space-evenly false
             (button :class "tiling_${tiling_layout}" 
                 :tooltip {tiling_layout == "master" ? "Master & Stack Layout
