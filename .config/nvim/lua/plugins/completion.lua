@@ -115,11 +115,11 @@ M.config = function()
             { name = "spell" }     -- move spell to the bottom so it doesnt slow it down that much
         })
     })
-    cmp.setup.cmdline({ "/", "?" }, {
+    cmp.setup.cmdline({"/", "?"}, {
         mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-            { name = "buffer" }
-        }
+        sources = cmp.config.sources ({
+            { name = "buffer" },
+        })
     })
 
     cmp.setup.cmdline({ ":" }, {
