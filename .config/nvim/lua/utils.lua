@@ -2,19 +2,23 @@ local M = {}
 
 
 -- tries to open a shell in the correct directory that the current file is in
-function M.kitty_shell_in(uri, type, position)
-    position = position or "split"
-    local cmd = {"kitty", "@", "launch", "--type=" .. type, "--location=" .. position}
-    if uri:sub(1, #"oil-ssh://") == "oil-ssh://" then         -- we're connected via ssh
-        local addr = uri:match("//(.-)/")                     -- host
-        local remote_path = uri:match("//.-(/.*)"):sub(2, -1) -- the path at the host
+function M.kitty_shell_in(uri, type, opts)
+    opts = opts or {}
+    local location = opts.location or "split"
+
+    local cmd = { "kitty", "@", "launch", "--type=" .. type, "--location=" .. location }
+
+    if uri:sub(1, #"oil-ssh://") == "oil-ssh://" then -- we're connected via ssh
+        local addr = uri:match("//(.-)/")
+        local remote_path = uri:match("//.-(/.*)"):sub(2, -1)
+
         -- assumes a POSIX-ish shell to be present, realistically we just need it to be able to cd and exec
         -- ssh -t makes sure we get a vtty even though it looks like we're "just" running a command
-        vim.list_extend(cmd, {"--", "ssh", "-t", addr, "--", "cd", remote_path, ";", "exec", "${SHELL:-/bin/sh}"})
+        vim.list_extend(cmd, { "--", "ssh", "-t", addr, "--", "cd", remote_path, ";", "exec", "${SHELL:-/bin/sh}" })
     else
-        vim.list_extend(cmd, {"--cwd", uri})
+        vim.list_extend(cmd, { "--cwd", uri })
     end
-    vim.system(cmd, {detach = true})
+    vim.system(cmd, { detach = true })
 end
 
 -- function M.kitty_new_dir(path, type)
