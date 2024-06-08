@@ -495,10 +495,11 @@ theme.loadPlugins = function()
         -- startup
         StartScreenShortcutGeneric = {fg = nord.nord15_gui},
         StartScreenShortcutFiles = {fg = nord.nord7_gui},
-        StartScreenShortcutSearch = {fg = nord.nord15_gui},
+        StartScreenShortcutSearch = {fg = nord.nord12_gui},
         StartScreenShortcutGrep = {fg = nord.nord13_gui},
         StartScreenShortcutDir = {fg = nord.nord7_gui},
         StartScreenShortcutHistory = {fg = nord.nord10_gui},
+        StartScreenShortcutLazy = {fg = nord.nord14_gui},
         StartScreenShortcutQuit = {fg = nord.nord11_gui},
 
         StartScreenHistory = {fg = nord.nord10_gui},
