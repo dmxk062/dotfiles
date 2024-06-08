@@ -2,7 +2,7 @@ local utils = require("utils")
 
 
 -- move between windows more efficiently, i rarely use W anyways
--- also allows me to use <C-w> in kittty
+-- also allows me to use <C-w> in kitty
 utils.map("n", "W", "<C-w>")
 
 -- for some reason smth else remaps those 
@@ -39,21 +39,22 @@ utils.abbrev("c", "spoff", "setlocal spell& spelllang&")
 
 -- open a shell in a kitty window of some kind
 -- works even for remote oil buffers via ssh
-utils.map("n", " sw", function()
+local shellleader = "<space>s"
+utils.map("n", shellleader .. "w", function()
     utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window")
 end)
-utils.map("n", " sv", function()
+utils.map("n", shellleader .. "v", function()
     utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", "vsplit")
 end)
-utils.map("n", " ss", function()
+utils.map("n", shellleader .. "s", function()
     utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", "hsplit")
 end)
-utils.map("n", " sW", function()
+utils.map("n", shellleader .. "W", function()
     utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window")
 end)
-utils.map("n", " st", function()
+utils.map("n", shellleader .. "t", function()
     utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab")
 end)
-utils.map("n", " so", function()
+utils.map("n", shellleader .. "o", function()
     utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay")
 end)
