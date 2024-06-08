@@ -112,6 +112,13 @@ require("lazy").setup("plugins", {
             event      = "󰍢",
             lazy       = "󰒲",
             start      = "󰐥",
+            runtime    = "",
+            list = {
+                "󱦰",
+                "󱞩",
+                "󱞩",
+                "󱞩",
+            },
         }
     }
 })
