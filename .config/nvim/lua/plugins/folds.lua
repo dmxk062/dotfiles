@@ -6,14 +6,15 @@ return {
         "lukas-reineke/indent-blankline.nvim",
     },
     config = function()
+        local utils = require("utils")
         local ufo = require("ufo")
         vim.o.foldcolumn = "1"
         vim.o.foldlevel = 99
         vim.o.foldlevelstart = 99
         vim.o.foldenable = true
 
-        vim.keymap.set("n", "zO", ufo.openAllFolds)
-        vim.keymap.set("n", "zC", ufo.closeAllFolds)
+        utils.map("n", "zO", ufo.openAllFolds)
+        utils.map("n", "zC", ufo.closeAllFolds)
 
         local handler = function(virtText, lnum, endLnum, width, truncate)
             local newVirtText = {}
@@ -58,7 +59,7 @@ return {
                 }
             },
         })
-        vim.keymap.set("n", "<S-k>", function()
+        utils.map("n", "<S-k>", function()
             local winid = ufo.peekFoldedLinesUnderCursor()
             if not winid then
                 vim.lsp.buf.hover()
