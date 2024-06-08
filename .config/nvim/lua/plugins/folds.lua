@@ -7,24 +7,23 @@ return {
     },
     config = function()
         local ufo = require("ufo")
-        vim.o.foldcolumn = '1' -- '0' is not bad
-        vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+        vim.o.foldcolumn = "1"
+        vim.o.foldlevel = 99
         vim.o.foldlevelstart = 99
         vim.o.foldenable = true
 
-        -- vim.o.fillchars = [[eob:~,fold:—,foldopen:-,foldsep:│,foldclose:+]]
-        vim.keymap.set('n', 'zO', ufo.openAllFolds)
-        vim.keymap.set('n', 'zC', ufo.closeAllFolds)
+        vim.keymap.set("n", "zO", ufo.openAllFolds)
+        vim.keymap.set("n", "zC", ufo.closeAllFolds)
 
         local handler = function(virtText, lnum, endLnum, width, truncate)
             local newVirtText = {}
-            local suffix = ('  %d lines...'):format(endLnum - lnum)
+            local suffix = ("  %d lines..."):format(endLnum - lnum)
             local sufWidth = vim.fn.strdisplaywidth(suffix)
             local targetWidth = width - sufWidth
             local curWidth = 0
             for _, chunk in ipairs(virtText) do
                 local chunkText = chunk[1]
-                local hlGroup = 'Comment'
+                local hlGroup = "Comment"
                 local chunkWidth = vim.fn.strdisplaywidth(chunkText)
                 if targetWidth > curWidth + chunkWidth then
                     table.insert(newVirtText, chunk)
@@ -34,13 +33,13 @@ return {
                     chunkWidth = vim.fn.strdisplaywidth(chunkText)
                     -- str width returned from truncate() may less than 2nd argument, need padding
                     if curWidth + chunkWidth < targetWidth then
-                        suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+                        suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
                     end
                     break
                 end
                 curWidth = curWidth + chunkWidth
             end
-            table.insert(newVirtText, { suffix, 'Comment' })
+            table.insert(newVirtText, { suffix, "Comment" })
             return newVirtText
         end
         ufo.setup({
@@ -52,14 +51,14 @@ return {
                     winblend = 0
                 },
                 mappings = {
-                    scrollU = '<C-k>',
-                    scrollD = '<C-j>',
-                    jumpTop = '[',
-                    jumpBot = ']'
+                    scrollU = "<C-k>",
+                    scrollD = "<C-j>",
+                    jumpTop = "[",
+                    jumpBot = "]"
                 }
             },
         })
-        vim.keymap.set('n', 'K', function()
+        vim.keymap.set("n", "<S-k>", function()
             local winid = ufo.peekFoldedLinesUnderCursor()
             if not winid then
                 vim.lsp.buf.hover()
@@ -77,7 +76,6 @@ return {
                 }
             },
         })
-        require("ibl").setup {
-        }
+        require("ibl").setup{}
     end
 }

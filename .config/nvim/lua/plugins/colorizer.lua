@@ -1,3 +1,4 @@
+-- only load it for these filetypes
 local fts = { "css", "scss", "sass", "html" }
 return {
     "NvChad/nvim-colorizer.lua",

@@ -108,12 +108,12 @@ return {
                 },
             }
         }
-        local builtin = require('telescope.builtin')
+        local builtin = require("telescope.builtin")
         local _prefix = "<space>"
 
-        utils.map('n', 'gr', builtin.lsp_references)
-        utils.map('n', 'gd', builtin.lsp_definitions)
-        utils.map('n', 'gi', builtin.lsp_implementations)
+        utils.map("n", "gr", builtin.lsp_references)
+        utils.map("n", "gd", builtin.lsp_definitions)
+        utils.map("n", "gi", builtin.lsp_implementations)
 
         for _, map in ipairs({
             { "D",       builtin.diagnostics },
@@ -139,7 +139,7 @@ return {
             }
         end
 
-        utils.map('i', '<C-R>', register_and_insert)
+        utils.map("i", "<C-R>", register_and_insert)
 
         telescope.load_extension("ui-select")
     end

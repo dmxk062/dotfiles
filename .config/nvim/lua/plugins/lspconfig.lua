@@ -5,7 +5,7 @@ return {
     },
     event = {"BufReadPost"},
     config = function()
-        local lspconfig = require('lspconfig')
+        local lspconfig = require("lspconfig")
         local utils = require("utils")
 
         require("lspconfig.ui.windows").default_options.border = "rounded"
@@ -16,30 +16,30 @@ return {
             lineFoldingOnly = true
         }
 
-        utils.map('n', '<space>d', vim.diagnostic.open_float)
-        utils.map('n', '[d', vim.diagnostic.goto_prev)
-        utils.map('n', ']d', vim.diagnostic.goto_next)
-        -- utils.map('n', '<space>q', vim.diagnostic.setloclist)
+        utils.map("n", "<space>d", vim.diagnostic.open_float)
+        utils.map("n", "[d", vim.diagnostic.goto_prev)
+        utils.map("n", "]d", vim.diagnostic.goto_next)
+        -- utils.map("n", "<space>q", vim.diagnostic.setloclist)
 
-        vim.api.nvim_create_autocmd('LspAttach', {
-            group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
                 -- require("inc_rename").setup {
                 -- input_buffer_type = "dressing",
                 -- hl_group = "IncrementalRename",
                 -- hl_group = "Subsitute",
                 -- }
-                -- vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+                -- vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
                 local opts = { buffer = ev.buf }
-                utils.map('n', 'gi', vim.lsp.buf.implementation, opts)
-                -- utils.map('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-                utils.map({ 'n', 'v' }, '<space>a', vim.lsp.buf.code_action, opts)
-                -- utils.map('n', '<space>rn', function ()
+                utils.map("n", "gi", vim.lsp.buf.implementation, opts)
+                -- utils.map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+                utils.map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action, opts)
+                -- utils.map("n", "<space>rn", function ()
                 --     return ":IncRename " .. vim.fn.expand("<cword>")
                 -- end, {expr = true})
                 utils.map("n", "<space>rn", vim.lsp.buf.rename, opts)
-                utils.map('n', '<space>fmt', function()
+                utils.map("n", "<space>fmt", function()
                     vim.lsp.buf.format { async = true }
                 end, opts)
             end,
@@ -71,7 +71,7 @@ return {
         end
         vim.diagnostic.config({
             virtual_text = {
-                prefix = '!',
+                prefix = "!",
             }
         })
 
@@ -94,9 +94,9 @@ return {
                 if not vim.startswith(path, vim.fn.stdpath("config")) then
                     return
                 end
-                client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
                     runtime = {
-                        version = 'LuaJIT'
+                        version = "LuaJIT"
                     },
                     workspace = {
                         checkThirdParty = false,

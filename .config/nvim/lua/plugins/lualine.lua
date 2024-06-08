@@ -110,7 +110,7 @@ return {
         local function getWords()
             local wc = vim.fn.wordcount()
             if wc["visual_words"] then -- text is selected in visual mode
-                return wc["visual_words"] .. "w" .. "/" .. wc['visual_chars'] .. "c"
+                return wc["visual_words"] .. "w" .. "/" .. wc["visual_chars"] .. "c"
             else
                 return wc["words"] .. "w"
             end
@@ -118,18 +118,18 @@ return {
 
         local function search_progress()
             if vim.v.hlsearch == 0 then
-                return ''
+                return ""
             end
 
             local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 500 })
             if not ok or next(res) == nil then
-                return ''
+                return ""
             end
             local found = math.min(res.total, res.maxcount)
-            return string.format('%d/%d', res.current, found)
+            return string.format("%d/%d", res.current, found)
         end
 
-        require('lualine').setup {
+        require("lualine").setup {
             options = {
                 -- icons_enabled = true,
                 theme = nord,
@@ -146,8 +146,8 @@ return {
                         -- "TelescopePrompt"
                     },
                 },
-                component_separators = { left = '', right = '' },
-                section_separators = { left = '', right = '' },
+                component_separators = { left = "", right = "" },
+                section_separators = { left = "", right = "" },
             },
             sections = {
                 lualine_a = {
@@ -155,30 +155,30 @@ return {
                 },
                 lualine_b = {
                     {
-                        'filename',
+                        "filename",
                         icons_enabled = true,
                         padding = { left = 2, right = 2 },
-                        icon = { '󰈔', align = 'left' },
+                        icon = { "󰈔", align = "left" },
                         separator = rbubble,
                         path = 4,
                         file_status = true,
                         newfile_status = true,
                         shortening_target = 40,
                         symbols = {
-                            modified = '[+]',
-                            readonly = '[ ro]',
-                            unamed = '[No Name]',
-                            newfile = '[New]',
+                            modified = "[+]",
+                            readonly = "[ ro]",
+                            unamed = "[No Name]",
+                            newfile = "[New]",
                         }
                     }
                 },
                 lualine_c = {
                     {
-                        'diagnostics',
+                        "diagnostics",
                         separator = { right = "" },
                         color = { fg = colors.nord6_gui, bg = colors.nord1_gui },
-                        sources = { 'nvim_lsp', 'coc' },
-                        sections = { 'error', 'warn', 'info', 'hint' },
+                        sources = { "nvim_lsp", "coc" },
+                        sections = { "error", "warn", "info", "hint" },
 
                         diagnostics_color = {
                             error = { fg = colors.nord11_gui },
@@ -186,7 +186,7 @@ return {
                             info  = { fg = colors.nord10_gui },
                             hint  = { fg = colors.nord7_gui },
                         },
-                        symbols = { error = '󰅖 ', warn = ' ', info = ' ', hint = '󰟶 ' },
+                        symbols = { error = "󰅖 ", warn = " ", info = " ", hint = "󰟶 " },
                         colored = true,
                         update_in_insert = false,
                         always_visible = false,
@@ -196,7 +196,7 @@ return {
                 lualine_x = {
                     branch,
                     {
-                        'diff',
+                        "diff",
                         color = { bg = colors.nord1_gui },
                         colored = true,
                         diff_color = {
@@ -219,21 +219,21 @@ return {
                 lualine_y = {
                     {
                         separator = lbubble,
-                        'filetype',
+                        "filetype",
                         colored = false,
                     },
                     {
-                        'fileformat',
+                        "fileformat",
                         symbols = {
-                            unix = '',
-                            dos = '\\r\\n',
-                            mac = '\\r',
+                            unix = "",
+                            dos = "\\r\\n",
+                            mac = "\\r",
                         }
                     },
                 },
                 lualine_z = {
                     {
-                        'location',
+                        "location",
                         separator = lbubble,
                     },
                     {

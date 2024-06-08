@@ -11,12 +11,12 @@ return {
 
 
         local perms_hlgroups = {
-            ['-'] = "OilNoPerm",
-            ['r'] = "OilRead",
-            ['w'] = "OilWrite",
-            ['x'] = "OilExec",
-            ['t'] = "OilSticky",
-            ['s'] = "OilSetuid",
+            ["-"] = "OilNoPerm",
+            ["r"] = "OilRead",
+            ["w"] = "OilWrite",
+            ["x"] = "OilExec",
+            ["t"] = "OilSticky",
+            ["s"] = "OilSetuid",
         }
 
 
@@ -78,7 +78,7 @@ return {
 
             view_options = {
                 is_hidden_file = function(name, bufnr)
-                    return vim.startswith(name, '.') and not (name:sub(2, 2) == ".")
+                    return vim.startswith(name, ".") and not (name:sub(2, 2) == ".")
                 end,
 
                 is_always_hidden = function(name, bufnr)
