@@ -2,12 +2,11 @@
 local fts = { "css", "scss", "sass", "html" }
 return {
     "NvChad/nvim-colorizer.lua",
-    event = "BufEnter",
     ft = fts,
     cmd = { "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers", "ColorizerToggle" },
     config = function()
         require("colorizer").setup {
-            filetypes = fts,
+            filetypes = {"*"},
             user_default_options = {
                 RGB = true,
                 RRGGBB = true,
