@@ -104,6 +104,15 @@ require("lazy").setup("plugins", {
         border = "rounded",
         backdrop = 100,
         pills = false,
+        icons = {
+            loaded     = "󰗠",
+            not_loaded = "󰍷",
+            ft         = "󰈔",
+            cmd        = "",
+            event      = "󰍢",
+            lazy       = "󰒲",
+            start      = "󰐥",
+        }
     }
 })
 require("mappings")
