@@ -1,7 +1,7 @@
 return {
     "goolord/alpha-nvim",
     event = "VimEnter",
-    enabled = function ()
+    cond = function ()
         return vim.fn.argc() < 1
     end,
     init = false,
