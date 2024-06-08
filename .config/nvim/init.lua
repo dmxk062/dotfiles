@@ -98,17 +98,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins", {
     change_detection = {
         enabled = false,
-    },
-    performance = {
-        cache = {
-            enabled = false,
-        },
-        reset_packpath = false,
-        rtp = {
-            disabled_plugins = {
-                "nvim-lspconfig"
-            }
-        }
+        notify  = false,
     },
     ui = {
         border = "rounded",

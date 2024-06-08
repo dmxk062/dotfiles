@@ -1,5 +1,6 @@
 return {
     "hrsh7th/nvim-cmp",
+    event = 'InsertEnter',
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
@@ -124,6 +125,24 @@ return {
             sources = cmp.config.sources({
                 { name = "path" },
                 { name = "cmdline" },
+            })
+        })
+        local function oil_cmp_get_pwd()
+            -- return the local pwd if ssh
+            return require("oil").get_current_dir() or vim.fn.getcwd()
+        end
+
+        cmp.setup.filetype("oil", {
+            sources = cmp.config.sources({
+                {
+                    name = 'path',
+                    option = {
+                        get_cwd = oil_cmp_get_pwd
+                    }
+                },
+                { name = 'luasnip' },
+                { name = 'buffer' },
+                { name = 'nvim_lsp' },
             })
         })
     end

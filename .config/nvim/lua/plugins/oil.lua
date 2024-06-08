@@ -234,21 +234,6 @@ return {
             return api.get_current_dir() or vim.fn.getcwd()
         end
 
-        local cmp = require("cmp")
-        cmp.setup.filetype("oil", {
-            sources = cmp.config.sources({
-                {
-                    name = 'path',
-                    option = {
-                        get_cwd = oil_cmp_get_pwd
-                    }
-                },
-                { name = 'luasnip' },
-                { name = 'buffer' },
-                { name = 'nvim_lsp' },
-            })
-        })
-
         require("oil-git-status").setup({})
     end
 }
