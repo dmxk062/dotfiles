@@ -60,4 +60,4 @@ utils.map("n", shellleader .. "o", function()
 end)
 
 -- evaluate lua and insert result, expr=true needed for repeat
-vim.keymap.set("n", "<space>el", utils.insert_eval_lua, {expr = true})
+utils.map("n", "<space>el", utils.insert_eval_lua, {expr = true})

@@ -60,8 +60,12 @@ function M.insert_eval_lua(is_repeat)
         return "g@l"
     end
     -- insert the evaluated expression into the buffer vim.v.count times
-    for _ = 0, vim.v.count do
+    if vim.v.count == 0 then
         put_result(vim.b[buf].last_lua_eval_expr())
+    else
+        for _ = 1, vim.v.count1 do
+            put_result(vim.b[buf].last_lua_eval_expr())
+        end
     end
 end
 
