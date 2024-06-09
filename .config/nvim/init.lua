@@ -1,6 +1,5 @@
 vim.o.runtimepath = vim.o.runtimepath .. "," .. vim.fn.stdpath("config") .. "/lua/nord"
 vim.cmd("colorscheme nord")
-
 vim.g.nord_italic = true
 vim.g.nord_borders = true
 
@@ -82,9 +81,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter
     end
 })
 
--- load all the "real" config in lua/
+-- load all the "real" config in ./lua/ and the packages in ./lua/plugins/
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -101,6 +100,7 @@ require("lazy").setup("plugins", {
         notify  = false,
     },
     ui = {
+        title = "Plugins - Lazy",
         border = "rounded",
         backdrop = 100,
         pills = false,
@@ -123,3 +123,5 @@ require("lazy").setup("plugins", {
     }
 })
 require("mappings")
+-- for some reason lazy deactivates that
+vim.o.modeline = true
