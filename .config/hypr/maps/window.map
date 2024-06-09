@@ -44,8 +44,12 @@ binde = SUPER, J, resizeactive, 0 $resizeUnit
 binde = SUPER, K, resizeactive, 0 -$resizeUnit
 binde = SUPER, L, resizeactive, $resizeUnit 0
 
+# reuse these for master and dwindle
 bind = , bracketleft, layoutmsg, addmaster
 bind = , bracketright, layoutmsg, removemaster
+
+bind = , bracketleft, layoutmsg, togglesplit
+bind = , bracketright, layoutmsg, swapsplit
 
 bind = , 1, movetoworkspace, 1
 bind = , 2, movetoworkspace, 2
