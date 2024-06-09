@@ -58,3 +58,6 @@ end)
 utils.map("n", shellleader .. "o", function()
     utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay")
 end)
+
+-- evaluate lua and insert result
+utils.map("n", "<space>el", utils.insert_eval_lua)

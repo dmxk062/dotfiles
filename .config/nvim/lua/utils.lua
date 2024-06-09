@@ -36,4 +36,15 @@ function M.abbrev(mode, keys, string)
     vim.keymap.set(mode .. "a", keys, string)
 end
 
+-- evaluate a lua expression and insert the result
+-- useful for math
+function M.insert_eval_lua()
+    vim.ui.input({prompt = "Evaluate Lua"}, function (input)
+        local res = load("return " .. (input or ""))()
+        if (res) then
+            vim.api.nvim_put(vim.split(tostring(res), "\n"), "c", false, false)
+        end
+    end)
+end
+
 return M
