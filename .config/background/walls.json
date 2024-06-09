@@ -12,8 +12,8 @@
         "name":"Leaves"
     },
     {
-        "path":"/home/dmx/.config/background/img/waves",
-        "name":"Stormy Sea"
+        "path":"/home/dmx/.config/background/img/forrest_mountains",
+        "name":"Forrest Mountains"
     },
     {
         "path":"/home/dmx/.config/background/img/osx",
@@ -24,12 +24,12 @@
         "name":"Orange & Turquoise Clouds"
     },
     {
-        "path":"/home/dmx/.config/background/img/shell",
-        "name":"Colorful Shell"
+        "path":"/home/dmx/.config/background/img/ocean",
+        "name":"Ocean Wave"
     },
     {
-        "path":"/home/dmx/.config/background/img/splash",
-        "name":"Color Explosion"
+        "path":"/home/dmx/.config/background/img/cutefish",
+        "name":"Cutefish"
     },
     {
         "path":"/home/dmx/.config/background/img/evening",
@@ -64,8 +64,8 @@
         "name":"Rainbow"
     },
     {
-        "path":"/home/dmx/.config/background/img/leaves-res",
-        "name":"Red Leaves"
+        "path":"/home/dmx/.config/background/img/blur",
+        "name":"Blur"
     }
 
 ]
