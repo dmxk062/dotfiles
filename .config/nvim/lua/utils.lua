@@ -47,13 +47,13 @@ end
 
 -- evaluate a lua expression and insert the result
 -- useful for math
-function M.insert_eval_lua(motion)
+function M.insert_eval_lua(is_repeat)
     local buf = vim.api.nvim_get_current_buf()
 
     -- called from the direct mapping, not dot completion
-    if not motion then
+    if not is_repeat then
         -- reset the last expression
-        vim.b[buf].last_expr = nil
+        vim.b[buf].last_lua_eval_expr = nil
         -- tell nvim to call our callback on g@
         vim.go.operatorfunc = "v:lua.require'utils'.insert_eval_lua_callback"
         -- needs to me mapped with {expr = true}, calls the callback
@@ -61,7 +61,7 @@ function M.insert_eval_lua(motion)
     end
     -- insert the evaluated expression into the buffer vim.v.count times
     for _ = 0, vim.v.count do
-        put_result(vim.b[buf].last_expr())
+        put_result(vim.b[buf].last_lua_eval_expr())
     end
 end
 
@@ -69,9 +69,9 @@ function M.insert_eval_lua_callback()
     local buf = vim.api.nvim_get_current_buf()
 
     -- not dot repeat
-    if not vim.b[buf].last_expr then
+    if not vim.b[buf].last_lua_eval_expr then
         vim.ui.input({prompt = "Evaluate Lua"}, function(input)
-            vim.b[buf].last_expr = load("return " .. (input or ""))
+            vim.b[buf].last_lua_eval_expr = load("return " .. (input or ""))
 
             -- set the last used command to "g@l" so repeat works
             vim.go.operatorfunc = "v:lua.require'utils'.NOOP"
