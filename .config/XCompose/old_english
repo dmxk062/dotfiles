@@ -1,10 +1,10 @@
 # vim: ft=xcompose
 
 # idk why there is no other way to type long ǣsċ
-<Multi_key> <minus> <a> <e> : "ǣ"
-<Multi_key> <minus> <A> <e> : "Ǣ"
-<Multi_key> <minus> <A> <E> : "Ǣ"
-<Multi_key> <minus> <a> <E> : "Ǣ"
+<Multi_key> <a> <minus> <e> : "ǣ"
+<Multi_key> <A> <minus> <e> : "Ǣ"
+<Multi_key> <A> <minus> <E> : "Ǣ"
+<Multi_key> <a> <minus> <E> : "Ǣ"
 
 # ƿynn, going of the shape
 <Multi_key> <p> <w> : "ƿ"
@@ -17,3 +17,10 @@
 <Multi_key> <G> <h> : "Ȝ"
 <Multi_key> <G> <H> : "Ȝ"
 <Multi_key> <g> <H> : "Ȝ"
+
+# fix weird macrons for y
+<Multi_key> <minus> <y> : "ȳ"
+<Multi_key> <minus> <Y> : "Ȳ"
+# and add them for ø cause why not
+<Multi_key> <minus> <slash> <o> : "ø̄"
+<Multi_key> <minus> <slash> <O> : "Ø̄"
