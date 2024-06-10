@@ -1,4 +1,5 @@
 local utils = require("utils")
+local textobj = require("textobjs")
 
 
 -- move between windows more efficiently, i rarely use W anyways
@@ -61,3 +62,14 @@ end)
 
 -- evaluate lua and insert result, expr=true needed for repeat
 utils.map("n", "<space>el", utils.insert_eval_lua, {expr = true})
+
+
+-- my own custom textobjects
+
+-- useful characters for csv, paths and long chains of method calls
+for _, char in ipairs({",", "/", "."}) do
+    textobj.create_delim_obj(char, char)
+end
+
+-- target a lsp diagnostic
+utils.map({"x", "o"}, "iD", textobj.diagnostic)
