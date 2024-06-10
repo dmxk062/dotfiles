@@ -18,6 +18,8 @@ return {
                     "iL", "aL",           -- loops
                     "iC", "aC",           -- classes, structs
                     "ii", "ai",           -- conditionals
+                    "i,", "a,", "i.", "a.", "i/", "a/", -- custom things
+                    "in", "an",           -- numbers
                 },
             }
         end
