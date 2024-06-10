@@ -1,7 +1,11 @@
 local M = {}
 
 
--- tries to open a shell in the correct directory that the current file is in
+
+--- tries to open a shell in the correct directory that the current file is in
+---@param uri string
+---@param type? "window"|"os-window"|"tab"|"overlay"
+---@param opts {location: "split"|"hsplit"|"vsplit"} | nil
 function M.kitty_shell_in(uri, type, opts)
     opts = opts or {}
     local location = opts.location or "split"
@@ -21,17 +25,29 @@ function M.kitty_shell_in(uri, type, opts)
     vim.system(cmd, { detach = true })
 end
 
+---@alias nvim_mode "n"|"i"|"c"|"v"|"s"|"o"|"t"|{}
+
+---@param mode nvim_mode
+---@param keys string
+---@param action string|function
+---@param opts vim.keymap.set.Opts|nil
 function M.map(mode, keys, action, opts)
     vim.keymap.set(mode, keys, action, opts or {})
 end
 
--- map locally for only one buffer
+---@param mode nvim_mode
+---@param keys string
+---@param action string|function
+---@param opts vim.keymap.set.Opts|nil
 function M.lmap(bufnr, mode, keys, action, opts)
     opts = opts or {}
     opts.buffer = bufnr
     vim.keymap.set(mode, keys, action, opts)
 end
 
+---@param mode nvim_mode
+---@param keys string
+---@param string string
 function M.abbrev(mode, keys, string)
     vim.keymap.set(mode .. "a", keys, string)
 end
@@ -74,7 +90,7 @@ function M.insert_eval_lua_callback()
 
     -- not dot repeat
     if not vim.b[buf].last_lua_eval_expr then
-        vim.ui.input({prompt = "Evaluate Lua"}, function(input)
+        vim.ui.input({ prompt = "Evaluate Lua", completion = "lua" }, function(input)
             vim.b[buf].last_lua_eval_expr = load("return " .. (input or ""))
 
             -- set the last used command to "g@l" so repeat works
@@ -92,6 +108,5 @@ function M.insert_eval_lua_callback()
         M.insert_eval_lua(true)
     end
 end
-
 
 return M
