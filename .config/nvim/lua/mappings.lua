@@ -72,4 +72,13 @@ for _, char in ipairs({",", "/", "."}) do
 end
 
 -- target a lsp diagnostic
-utils.map({"x", "o"}, "iD", textobj.diagnostic)
+utils.map({"x", "o"}, "id", textobj.diagnostic)
+-- numbers
+-- without periods and minus
+utils.map({"x", "o"}, "in", function()
+    textobj.pattern("%d+")
+end)
+-- with periods and minus
+utils.map({"x", "o"}, "an", function()
+    textobj.pattern("%-?%d*%.?%d+")
+end)
