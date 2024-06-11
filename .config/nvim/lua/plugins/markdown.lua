@@ -1,4 +1,4 @@
-return {
+local M = {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
@@ -8,8 +8,10 @@ return {
         vim.g.mkdp_page_title = "Preview ${name}"
         vim.g.mkdp_theme = ""
         vim.g.mkdp_markdown_css = (vim.fn.stdpath("config") .. "/style/markdown.css")
-    end,
-    dependencies = {
+    end
+}
+M.dependencies = {
+    {
         "lukas-reineke/headlines.nvim",
         opts = {
             markdown = {
@@ -28,5 +30,7 @@ return {
                 quote_highlight = "Quote",
             },
         }
-    }
+    },
 }
+
+return M
