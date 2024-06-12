@@ -44,16 +44,26 @@ local function set_visual_selection(startpos, endpos)
     vim.api.nvim_win_set_cursor(0, endpos)
 end
 
-function M.diagnostic()
+---@param _type "error"|"warn"|"info"|"hint"|nil
+---@param pos position|nil
+function M.diagnostic(_type, pos)
+    local types = {
+        error = 1,
+        warn = 2,
+        info = 3,
+        hint = 4,
+    }
+    local type = types[_type]
     -- position is off by one
     -- see https://github.com/chrisgrieser/nvim-various-textobjs/blob/main/lua/various-textobjs/charwise-textobjs.lua
+    local opts = { wrap = false, cursor_position = pos or vim.api.nvim_win_get_cursor(0)}
     cmd("l")
-    local previous_diag = vim.diagnostic.get_prev { wrap = false }
+    local previous_diag = vim.diagnostic.get_prev(opts)
     cmd("h")
 
-    local next_diag = vim.diagnostic.get_next { wrap = false }
+    local next_diag = vim.diagnostic.get_next(opts)
     local on_prev = false
-    local cursor_row, cursor_column = unpack(vim.api.nvim_win_get_cursor(0))
+    local cursor_row, cursor_column = unpack(opts.cursor_position)
 
     if previous_diag then
         local current_after_previous_start = (cursor_row == previous_diag.lnum + 1 and cursor_column >= previous_diag.col)
@@ -67,6 +77,12 @@ function M.diagnostic()
 
     local target = on_prev and previous_diag or next_diag
     if target then
+        if type ~= nil then
+            local diagtype = target.severity
+            if diagtype ~= type then
+                return M.diagnostic(_type, {target.end_lnum + 2, target.end_col + 2})
+            end
+        end
         set_visual_selection({ target.lnum + 1, target.col }, { target.end_lnum + 1, target.end_col - 1 })
     end
 end

@@ -72,7 +72,11 @@ for _, char in ipairs({",", "/", "."}) do
 end
 
 -- target a lsp diagnostic
-utils.map({"x", "o"}, "id", textobj.diagnostic)
+utils.map({"x", "o"}, "idd", textobj.diagnostic)
+utils.map({"x", "o"}, "ide", function() textobj.diagnostic("error") end)
+utils.map({"x", "o"}, "idw", function() textobj.diagnostic("warn") end)
+utils.map({"x", "o"}, "idi", function() textobj.diagnostic("info") end)
+utils.map({"x", "o"}, "idh", function() textobj.diagnostic("hint") end)
 -- numbers
 -- without periods and minus
 utils.map({"x", "o"}, "in", function()
