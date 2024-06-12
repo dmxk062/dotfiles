@@ -19,7 +19,8 @@ return {
                     "iC", "aC",           -- classes, structs
                     "ii", "ai",           -- conditionals
                     "i,", "a,", "i.", "a.", "i/", "a/", -- custom things
-                    "in", "an",           -- numbers
+                    "in", "an",           -- numbers 
+                    "idd", "ide", "idw", "idi", "idh",  -- lsp diagnostics
                 },
             }
         end
