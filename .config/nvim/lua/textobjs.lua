@@ -54,9 +54,10 @@ function M.diagnostic(_type, pos)
         hint = 4,
     }
     local type = types[_type]
+    local opts = { wrap = false, cursor_position = pos or vim.api.nvim_win_get_cursor(0)}
+
     -- position is off by one
     -- see https://github.com/chrisgrieser/nvim-various-textobjs/blob/main/lua/various-textobjs/charwise-textobjs.lua
-    local opts = { wrap = false, cursor_position = pos or vim.api.nvim_win_get_cursor(0)}
     cmd("l")
     local previous_diag = vim.diagnostic.get_prev(opts)
     cmd("h")
@@ -80,6 +81,7 @@ function M.diagnostic(_type, pos)
         if type ~= nil then
             local diagtype = target.severity
             if diagtype ~= type then
+                -- didnt find what we were looking for, goto next
                 return M.diagnostic(_type, {target.end_lnum + 2, target.end_col + 2})
             end
         end
