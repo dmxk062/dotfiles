@@ -156,6 +156,9 @@ M.config = function()
     lspconfig.marksman.setup {
         capabilities = capabilities
     }
+    lspconfig.taplo.setup {
+        capabilities = capabilities
+    }
 end
 
 return M
