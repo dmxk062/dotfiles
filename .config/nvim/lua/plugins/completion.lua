@@ -6,6 +6,7 @@ M = {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
+        "hrsh7th/cmp-omni",
         "saadparwaiz1/cmp_luasnip",
         "onsails/lspkind.nvim",
         "f3fora/cmp-spell",
@@ -89,12 +90,12 @@ M.config = function()
             ["<M-j>"] = cmp.mapping.select_next_item(),
             ["<M-k>"] = cmp.mapping.select_prev_item(),
         }),
-        sources = cmp.config.sources({
+        sources = {
             { name = "nvim_lsp" },
             { name = "luasnip" },
             { name = "path" },
             { name = "buffer" },
-        })
+        }
     })
 
     cmp.setup.filetype("gitcommit", {
@@ -132,6 +133,11 @@ M.config = function()
                     ignore_cmds = {}
                 }
             },
+        })
+    })
+    cmp.setup.filetype("DressingInput", {
+        sources = cmp.config.sources({
+            { name = "omni" },
         })
     })
     cmp.setup.filetype("oil", {
