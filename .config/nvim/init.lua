@@ -38,6 +38,8 @@ vim.o.cursorlineopt = "number"
 vim.o.title = true
 vim.o.wrap = true
 
+vim.g.c_syntax_for_h = true -- i use C more than C++
+
 -- change the title in a more intelligent way
 vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
     callback = function(args)
