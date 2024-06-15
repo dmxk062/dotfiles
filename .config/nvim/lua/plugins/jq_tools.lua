@@ -1,5 +1,5 @@
 return {
-    dir = vim.fn.stdpath("config") .. "/lua/modules/jq_live",
+    "dmxk062/jq_tools.nvim",
     ft = {"json", "jsonc"},
     cmd = {"Jq", "JqQuery"},
     opts = {
