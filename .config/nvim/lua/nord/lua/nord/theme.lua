@@ -215,7 +215,7 @@ theme.loadTerminal = function()
 	vim.g.terminal_color_3 = nord.nord13_gui
 	vim.g.terminal_color_4 = nord.nord9_gui
 	vim.g.terminal_color_5 = nord.nord15_gui
-	vim.g.terminal_color_6 = nord.nord8_gui
+	vim.g.terminal_color_6 = nord.nord7_gui
 	vim.g.terminal_color_7 = nord.nord5_gui
 	vim.g.terminal_color_8 = nord.nord3_gui
 	vim.g.terminal_color_9 = nord.nord11_gui
@@ -223,7 +223,7 @@ theme.loadTerminal = function()
 	vim.g.terminal_color_11 = nord.nord13_gui
 	vim.g.terminal_color_12 = nord.nord9_gui
 	vim.g.terminal_color_13 = nord.nord15_gui
-	vim.g.terminal_color_14 = nord.nord7_gui
+	vim.g.terminal_color_14 = nord.nord8_gui
 	vim.g.terminal_color_15 = nord.nord6_gui
 end
 
@@ -512,7 +512,10 @@ theme.loadPlugins = function()
         StartScreenTitle7 = {fg = nord.nord10_gui},
         StartScreenTitle8 = {fg = nord.nord15_gui},
 
-
+        -- noice
+        NoiceCmdLineIcon = {fg = nord.nord3_gui},
+        NoiceCmdLineIconLua = {fg = nord.nord10_gui},
+        NoiceCmdLineIconSearch = {fg = nord.nord15_gui},
 
 		-- LspTrouble
 		LspTroubleText = { fg = nord.nord4_gui },
@@ -547,10 +550,10 @@ theme.loadPlugins = function()
 		GitSignsAdd = { fg = nord.nord3_gui }, -- diff mode: Added line |diff.txt|
 		GitSignsAddNr = { fg = nord.nord3_gui }, -- diff mode: Added line |diff.txt|
 		GitSignsAddLn = { fg = nord.nord3_gui }, -- diff mode: Added line |diff.txt|
-		GitSignsChange = { fg = nord.nord3_gui }, -- diff mode: Changed line |diff.txt|
+		GitSignsChange = { fg = nord.nord15_gui }, -- diff mode: Changed line |diff.txt|
 		GitSignsChangeNr = { fg = nord.nord3_gui }, -- diff mode: Changed line |diff.txt|
 		GitSignsChangeLn = { fg = nord.nord3_gui }, -- diff mode: Changed line |diff.txt|
-		GitSignsDelete = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
+		GitSignsDelete = { fg = nord.nord11_gui }, -- diff mode: Deleted line |diff.txt|
 		GitSignsDeleteNr = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
 		GitSignsDeleteLn = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
 		GitSignsCurrentLineBlame = { fg = nord.nord3_gui_bright},

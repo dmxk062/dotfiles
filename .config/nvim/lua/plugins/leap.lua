@@ -20,6 +20,7 @@ return {
                     "ii", "ai",           -- conditionals
                     "i,", "a,", "i.", "a.", "i/", "a/", -- custom things
                     "in", "an",           -- numbers 
+                    "igh",                -- gitsigns hunk
                     "idd", "ide", "idw", "idi", "idh",  -- lsp diagnostics
                 },
             }
