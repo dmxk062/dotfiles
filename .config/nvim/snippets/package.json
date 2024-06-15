@@ -16,6 +16,12 @@
             },
             {
                 "language": [
+                    "jq"
+                ],
+                "path": "./jq.json"
+            },
+            {
+                "language": [
                     "all"
                 ],
                 "path": "./global.json"
