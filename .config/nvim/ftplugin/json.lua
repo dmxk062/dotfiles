@@ -4,7 +4,6 @@
 local function jq_filter(lines, expr)
     local result = {}
 
-
     local cmd = vim.list_extend(
         {"jq", "--indent", tostring(vim.o.tabstop),
         "--argjson", "FILE", string.format([["%s"]], vim.fn.expand("%")),
@@ -17,13 +16,13 @@ local function jq_filter(lines, expr)
 
     if res.code > 0 then
         vim.notify(res.stderr, vim.log.levels.ERROR)
-        return result
+        return nil
     end
 
     result = vim.split(res.stdout, "\n")
 
     if #result == 0 then
-        return lines
+        return nil
     else
         return result
     end
@@ -44,7 +43,9 @@ local function jq_filter_buffer_or_lines(opts)
     local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
     local filtered = jq_filter(lines, opts.fargs or {})
 
-    vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, filtered)
+    if filtered then
+        vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, filtered)
+    end
 
 end
 
@@ -53,7 +54,6 @@ vim.api.nvim_buf_create_user_command(0, "Jq", jq_filter_buffer_or_lines,{
     nargs = "*",
     range = 2,
     complete = function (ArgLead, CmdLine, CursorPos)
-        return {"-r", "-c"}
+        return {"-r", "-c", "length"}
     end
 })
-
