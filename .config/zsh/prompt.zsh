@@ -7,8 +7,20 @@ function preexec {
     _promptvars[timer]=$EPOCHREALTIME
 }
 
-
+# change the color of the prompt based on mode
 PROMPT="%B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+function zvm_after_select_vi_mode {
+    local -A mode_colors=(
+        ["$ZVM_MODE_NORMAL"]="cyan"
+        ["$ZVM_MODE_INSERT"]="cyan"
+        ["$ZVM_MODE_VISUAL"]="blue"
+        ["$ZVM_MODE_VISUAL_LINE"]="blue"
+        ["$ZVM_MODE_REPLACE"]="red"
+    )
+    PROMPT="%B%F{$mode_colors[$ZVM_MODE]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+}
+
+
 function precmd {
     # dont print a new time on every single <cr>, just if a command ran
     if (( _promptvars[timer] > 0)); then

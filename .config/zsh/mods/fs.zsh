@@ -7,7 +7,7 @@ if [[ "$1" == "load" ]] {
 
 alias md="mkdir -p"
 
-function mcd {
+function mkcd {
     if [[ -d "$1" ]] {
         cd "$1"
         return
@@ -227,7 +227,7 @@ function rmi {
 }
 
 function lr {
-    command lsd --tree --depth 3 --hyperlink=auto "$@" | less -rFi
+    command lsd --tree --depth 3 --hyperlink=always "$@" | less -rFi
 }
 
 # like pwd but takes into account all the shell magic
@@ -237,7 +237,7 @@ alias pwf='print -P -- %~'
 
 } elif [[ "$1" == "unload" ]] {
 
-unfunction rgf mcd mkf tmp rp bn \
+unfunction rgf mkcd mkf tmp rp bn \
     rmi  \
     readfile readstream lr
 

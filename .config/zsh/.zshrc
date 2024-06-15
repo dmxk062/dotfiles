@@ -91,6 +91,7 @@ local -A DIRSHORTCUTS=(
     ["mnt"]="/mnt"
     ["arc"]="$HOME/.avfs"
     ["media"]="/run/media/$USER"
+    ["games"]="$HOME/Games"
 )
 
 for shortcut in ${(k)DIRSHORTCUTS}; do
