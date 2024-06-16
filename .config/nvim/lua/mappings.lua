@@ -11,18 +11,18 @@ utils.map("i", "<M-k>", "<esc>k")
 utils.map("i", "<M-j>", "<esc>j")
 
 
-local tab_winleader = ","
+local winleader = ","
 -- tabs 1 - 9
 for i = 1, 9 do
-    utils.map("n", tab_winleader .. i, i .. "gt", { silent = true })
+    utils.map("n", "<space>" .. i, i .. "gt", { silent = true })
 end
 
-utils.map("n", tab_winleader .. "h", function() vim.api.nvim_command("tabprevious") end)
-utils.map("n", tab_winleader .. "l", function() vim.api.nvim_command("tabnext") end)
-utils.map("n", tab_winleader .. "t", ":tabnew ")
+utils.map("n", winleader .. "h", function() vim.api.nvim_command("tabprevious") end)
+utils.map("n", winleader .. "l", function() vim.api.nvim_command("tabnext") end)
+utils.map("n", winleader .. "t", ":tabnew ")
 
-utils.map("n", tab_winleader .. "v", ":vsp ")
-utils.map("n", tab_winleader .. "s", ":sp ")
+utils.map("n", winleader .. "v", ":vsp ")
+utils.map("n", winleader .. "s", ":sp ")
 
 
 
@@ -71,12 +71,6 @@ for _, char in ipairs({",", "/", "."}) do
     textobj.create_delim_obj(char, char)
 end
 
--- target a lsp diagnostic
-utils.map({"x", "o"}, "idd", textobj.diagnostic)
-utils.map({"x", "o"}, "ide", function() textobj.diagnostic("error") end)
-utils.map({"x", "o"}, "idw", function() textobj.diagnostic("warn") end)
-utils.map({"x", "o"}, "idi", function() textobj.diagnostic("info") end)
-utils.map({"x", "o"}, "idh", function() textobj.diagnostic("hint") end)
 -- numbers
 -- without periods and minus
 utils.map({"x", "o"}, "in", function()

@@ -18,32 +18,27 @@ M.config = function()
         lineFoldingOnly = true
     }
 
-    utils.map("n", "<space>d", vim.diagnostic.open_float)
-    utils.map("n", "[d", vim.diagnostic.goto_prev)
-    utils.map("n", "]d", vim.diagnostic.goto_next)
-    -- utils.map("n", "<space>q", vim.diagnostic.setloclist)
-
     vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-        callback = function(ev)
-            -- require("inc_rename").setup {
-            -- input_buffer_type = "dressing",
-            -- hl_group = "IncrementalRename",
-            -- hl_group = "Subsitute",
-            -- }
-            -- vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+        callback = function(opts)
 
-            local opts = { buffer = ev.buf }
-            utils.map("n", "gi", vim.lsp.buf.implementation, opts)
-            -- utils.map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-            utils.map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action, opts)
-            -- utils.map("n", "<space>rn", function ()
-            --     return ":IncRename " .. vim.fn.expand("<cword>")
-            -- end, {expr = true})
-            utils.map("n", "<space>rn", vim.lsp.buf.rename, opts)
-            utils.map("n", "<space>fmt", function()
-                vim.lsp.buf.format { async = true }
-            end, opts)
+            local textobjs = require("textobjs")
+            -- target a lsp diagnostic as a textobject
+            utils.lmap(opts.buf, {"x", "o"}, "idd", textobjs.diagnostic)
+            utils.lmap(opts.buf, {"x", "o"}, "ide", function() textobjs.diagnostic("error") end)
+            utils.lmap(opts.buf, {"x", "o"}, "idw", function() textobjs.diagnostic("warn") end)
+            utils.lmap(opts.buf, {"x", "o"}, "idi", function() textobjs.diagnostic("info") end)
+            utils.lmap(opts.buf, {"x", "o"}, "idh", function() textobjs.diagnostic("hint") end)
+
+
+            utils.lmap(opts.buf, "n", "<space>d", vim.diagnostic.open_float)
+            utils.lmap(opts.buf, "n", "[d", vim.diagnostic.goto_prev)
+            utils.lmap(opts.buf, "n", "]d", vim.diagnostic.goto_next)
+
+            utils.lmap(opts.buf, "n", "gi", vim.lsp.buf.implementation)
+            utils.lmap(opts.buf, { "n", "v" }, "<space>a", vim.lsp.buf.code_action)
+            utils.lmap(opts.buf, "n", "<space>rn", vim.lsp.buf.rename)
+            utils.lmap(opts.buf, "n", "<space>fmt", function() vim.lsp.buf.format { async = true } end)
         end,
     })
 
