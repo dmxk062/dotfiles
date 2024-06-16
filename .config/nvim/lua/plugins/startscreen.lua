@@ -113,10 +113,13 @@ M.config = function()
             end
             if vim.startswith(f, "oil://") then
                 local name = f:sub(#"oil://" + 1)
+                if not vim.uv.fs_stat(name) then
+                    goto continue
+                end
                 table.insert(oldfiles,
                     { name = nice_names(name, user, max_width), path = name, ico = "󰉋 ", hl = "Files", dir = true })
             elseif not vim.startswith(f, "oil-ssh://") then
-                if vim.fn.filereadable(f) == 0 then
+                if not vim.uv.fs_stat(f) then
                     goto continue
                 end
                 local ico, hl = get_icon(f)
