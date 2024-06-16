@@ -9,6 +9,11 @@ return {
             out_dir = "build",
         }
 
+
+        local cmp_vimtex = require("cmp_vimtex")
+        cmp_vimtex.setup({
+        })
+
         local cmp = require("cmp")
         cmp.setup.filetype("tex", {
             sources = cmp.config.sources({
@@ -21,12 +26,17 @@ return {
             })
         })
 
+        vim.keymap.set("i", "<C-/>", function()
+            require("cmp_vimtex.search").search_menu()
+        end)
+
+
         vim.api.nvim_create_autocmd("BufEnter", {
             pattern = "*.tex",
-            callback = function()
+            callback = function(opts)
                 vim.cmd("VimtexCompile")
-                vim.wo.spell = true
-                vim.bo.spelllang = "en_us"
+                -- vim.wo.spell = true
+                -- vim.bo.spelllang = "en_us"
             end
         })
     end,

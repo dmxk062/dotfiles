@@ -34,12 +34,18 @@ M.config = function()
     cmp.setup({
         snippet = {
             expand = function(args)
-                require("luasnip").lsp_expand(args.body)     -- For `luasnip` users.
+                require("luasnip").lsp_expand(args.body)
             end,
         },
         formatting = {
             format = lspkind.cmp_format({
                 mode = "symbol",
+                before = function (entry, vim_item)
+					if entry.source.name == "vimtex" then
+						vim_item.kind = "Latex"
+					end
+                    return vim_item
+                end,
                 symbol_map = {
                     Text = "󰉿 txt",
                     Method = "󰆧 method",
@@ -66,6 +72,7 @@ M.config = function()
                     Event = " event",
                     Operator = "󰆕 op",
                     TypeParameter = " param",
+					Latex = " tex",
                 },
             }),
         },
