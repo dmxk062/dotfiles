@@ -54,7 +54,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter
         local path     = ""
         local buf      = vim.api.nvim_get_current_buf()
         local bufname  = vim.api.nvim_buf_get_name(buf)
-        local filetype = vim.bo[buf]["filetype"]
+        local filetype = vim.bo[buf]["ft"]
 
         local user     = vim.env.USER
 
@@ -69,12 +69,12 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter
             end
         elseif filetype == "help" then
             path = "Help"
-        elseif filetype == "vim-plug" then
+        elseif filetype == "lazy" then
             path = "Plugins"
         elseif filetype == "alpha" then
             path = "NeoVIM"
         elseif bufname == "" then
-            path = "[No Name]"
+            return
         else
             path = format_path(bufname, user)
         end
@@ -82,6 +82,8 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter
         vim.o.titlestring = "nv: " .. path
     end
 })
+
+vim.o.titlestring = "nv: NeoVIM" -- set initial
 
 -- load all the "real" config in ./lua/ and the packages in ./lua/plugins/
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -129,6 +131,7 @@ require("lazy").setup("plugins", {
         }
     }
 })
+
 require("mappings")
 -- for some reason lazy deactivates that
 vim.o.modeline = true
