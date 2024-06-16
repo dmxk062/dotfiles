@@ -62,10 +62,10 @@ M.config = function()
         { name = "DiagnosticSignInfo", text = "󰋼" },
         { name = "DiagnosticSignHint", text = "󰟶" }
     }
-
     for _, sign in ipairs(signs) do
         vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
     end
+
     vim.diagnostic.config({
         virtual_text = {
             prefix = "!",
@@ -115,9 +115,9 @@ M.config = function()
         cmd = {
             "clangd", "--enable-config"
         },
-        on_init = function()
+        on_init = function(client)
             -- cycle between definition and implementation files
-            utils.map("n", "<space>H", "<cmd>ClangdSwitchSourceHeader<CR>")
+            utils.lmap(vim.api.nvim_get_current_buf(), "n", "<space>H", "<cmd>ClangdSwitchSourceHeader<CR>")
         end
     }
     lspconfig.bashls.setup {
