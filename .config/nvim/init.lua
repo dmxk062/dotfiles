@@ -97,6 +97,11 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins", {
+    dev = {
+        path = "~/ws/nvim_plugins",
+        patterns = {"dmxk062"},
+        fallback = true,
+    },
     change_detection = {
         enabled = false,
         notify  = false,
