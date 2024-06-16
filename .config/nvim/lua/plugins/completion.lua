@@ -32,6 +32,9 @@ M.config = function()
     local cmp = require("cmp")
 
     cmp.setup({
+        performance = {
+            max_view_entries = 24,
+        },
         snippet = {
             expand = function(args)
                 require("luasnip").lsp_expand(args.body)
