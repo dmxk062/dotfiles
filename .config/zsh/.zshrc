@@ -7,6 +7,7 @@ declare -A ZSH_COLORS_RGB=(
 )
 
 
+
 function zvm_config {
     ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
     ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
@@ -108,6 +109,7 @@ source $ZDOTDIR/variables.zsh
 source $ZDOTDIR/functions.zsh
 source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/prompt.zsh
+source $ZDOTDIR/fzf.zsh
 autopair-init
 
 #syntax highlighting
@@ -115,11 +117,6 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 source "$ZDOTDIR/highlight"
 
-
-#fzf
-export FZF_DEFAULT_OPTS="
---color=fg:#eceff4,fg+:#8fbcbb,bg:#2e3440,bg+:#2e3440,preview-fg:#eceff4,preview-bg:#2e3440,hl:#bf616a,hl+:#bf616a
---color=info:#ebcb8b,border:#4c566a,prompt:#eceff4,pointer:#8fbcbb,marker:#8fbcbb,spinner:#8fbcbb,header:#eceff4"
 
 
 #zoxide
