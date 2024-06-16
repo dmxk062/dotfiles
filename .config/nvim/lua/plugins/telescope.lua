@@ -141,6 +141,6 @@ return {
 
         utils.map("i", "<C-R>", register_and_insert)
 
-        telescope.load_extension("ui-select")
+        -- telescope.load_extension("ui-select")
     end
 }
