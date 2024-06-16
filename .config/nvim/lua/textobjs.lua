@@ -44,6 +44,10 @@ local function set_visual_selection(startpos, endpos)
     vim.api.nvim_win_set_cursor(0, endpos)
 end
 
+local function cancel_selection()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "n", false)
+end
+
 ---@param _type "error"|"warn"|"info"|"hint"|nil
 ---@param pos position|nil
 function M.diagnostic(_type, pos)
@@ -86,7 +90,11 @@ function M.diagnostic(_type, pos)
             end
         end
         set_visual_selection({ target.lnum + 1, target.col }, { target.end_lnum + 1, target.end_col - 1 })
+        return
     end
+
+    cancel_selection()
+    return false
 end
 
 ---@param linenum integer
@@ -135,7 +143,8 @@ end
 function M.pattern(pattern)
     local startpos, endpos = find_pattern(pattern)
     if not (startpos and endpos) then
-        return
+        cancel_selection()
+        return false
     end
 
     set_visual_selection(startpos, endpos)
