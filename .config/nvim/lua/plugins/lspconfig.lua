@@ -1,17 +1,49 @@
+local function setup_mason()
+    require("mason").setup {
+        ui = {
+            border = "rounded",
+            width = 0.8,
+            height = 0.8,
+
+            icons = {
+                package_installed   = "󱝍",
+                package_pending     = "󱝏",
+                package_uninstalled = "󱝋",
+            }
+        }
+    }
+
+    require("mason-lspconfig").setup {
+        ensure_installed = {
+        }
+    }
+end
+
 local M = {
     "neovim/nvim-lspconfig",
     dependencies = {
         "b0o/schemastore.nvim",
+        {
+            "williamboman/mason.nvim",
+            cmd = { "Mason", "MasonUpdate", "MasonInstall", "MasonUninstall", "MasonLog", "MasonUninstallAll" },
+            config = setup_mason,
+            dependencies = {
+                "williamboman/mason-lspconfig.nvim",
+            },
+        }
     },
-    event = {"BufReadPost"}
+    event = { "BufReadPost" }
 }
 
+
 M.config = function()
+    setup_mason()
     local lspconfig = require("lspconfig")
     local utils = require("utils")
 
     require("lspconfig.ui.windows").default_options.border = "rounded"
     local capabilities = vim.lsp.protocol.make_client_capabilities()
+
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
@@ -21,14 +53,13 @@ M.config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(opts)
-
             local textobjs = require("textobjs")
             -- target a lsp diagnostic as a textobject
-            utils.lmap(opts.buf, {"x", "o"}, "idd", textobjs.diagnostic)
-            utils.lmap(opts.buf, {"x", "o"}, "ide", function() textobjs.diagnostic("error") end)
-            utils.lmap(opts.buf, {"x", "o"}, "idw", function() textobjs.diagnostic("warn") end)
-            utils.lmap(opts.buf, {"x", "o"}, "idi", function() textobjs.diagnostic("info") end)
-            utils.lmap(opts.buf, {"x", "o"}, "idh", function() textobjs.diagnostic("hint") end)
+            utils.lmap(opts.buf, { "x", "o" }, "idd", textobjs.diagnostic)
+            utils.lmap(opts.buf, { "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
+            utils.lmap(opts.buf, { "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
+            utils.lmap(opts.buf, { "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
+            utils.lmap(opts.buf, { "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
 
 
             utils.lmap(opts.buf, "n", "<space>d", vim.diagnostic.open_float)
@@ -71,7 +102,6 @@ M.config = function()
             prefix = "!",
         }
     })
-
 
     -- individual lsps
     lspconfig.jsonls.setup {
@@ -120,12 +150,6 @@ M.config = function()
             utils.lmap(vim.api.nvim_get_current_buf(), "n", "<space>H", "<cmd>ClangdSwitchSourceHeader<CR>")
         end
     }
-    lspconfig.bashls.setup {
-        capabilities = capabilities,
-    }
-    lspconfig.tsserver.setup {
-        capabilities = capabilities,
-    }
     lspconfig.asm_lsp.setup {
         capabilities = capabilities,
         root_dir = function(path)
@@ -136,24 +160,13 @@ M.config = function()
             end
         end
     }
-    lspconfig.html.setup {
-        capabilities = capabilities
-    }
-    lspconfig.jedi_language_server.setup {
-        capabilities = capabilities
-    }
-    -- lspconfig.pyright.setup{
-    --     capabilities = capabilities
-    -- }
-    lspconfig.ruff_lsp.setup {
-        capabilities = capabilities
-    }
-    lspconfig.marksman.setup {
-        capabilities = capabilities
-    }
-    lspconfig.taplo.setup {
-        capabilities = capabilities
-    }
+
+    -- dont need anything special from those *yet*
+    for _, lsp in pairs({"bashls", "tsserver", "html", "jedi_language_server", "ruff_lsp", "marksman", "taplo"}) do
+        lspconfig[lsp].setup {
+            capabilities = capabilities
+        }
+    end
 end
 
 return M

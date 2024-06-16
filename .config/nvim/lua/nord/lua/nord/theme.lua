@@ -512,6 +512,22 @@ theme.loadPlugins = function()
         StartScreenTitle7 = {fg = nord.nord10_gui},
         StartScreenTitle8 = {fg = nord.nord15_gui},
 
+        -- mason
+        MasonHeader = {fg = nord.nord0_gui, bg = nord.nord7_gui},
+        MasonHeaderSecondary = {fg = nord.nord0_gui, bg = nord.nord7_gui},
+
+        MasonHighlight = {fg = nord.nord15_gui},
+        MasonHighlightBlock = {fg = nord.nord0_gui, bg = nord.nord7_gui},
+        MasonHighlightBlockBold = {link = "MasonHighlightBlock"},
+
+        MasonHighlightSecondary = {link = "MasonHighlight"},
+        MasonHighlightSecondaryBlock = {link = "MasonHighlightBlock"},
+        MasonHighlightSecondaryBlockBold = {link = "MasonHighlightBlockBold"},
+
+        MasonMuted = {fg = nord.nord3_gui},
+        MasonMutedBlock = {bg = nord.nord3_gui},
+        MasonMutedBlockBold = {link = "MasonMutedBlock"},
+
         -- noice
         NoiceCmdLineIcon = {fg = nord.nord3_gui},
         NoiceCmdLineIconLua = {fg = nord.nord10_gui},
