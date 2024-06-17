@@ -14,11 +14,11 @@ utils.map("i", "<M-j>", "<esc>j")
 local winleader = ","
 -- tabs 1 - 9
 for i = 1, 9 do
-    utils.map("n", "<space>" .. i, i .. "gt", { silent = true })
+    utils.map("n", winleader .. i, i .. "gt", { silent = true })
 end
 
-utils.map("n", winleader .. "h", function() vim.api.nvim_command("tabprevious") end)
-utils.map("n", winleader .. "l", function() vim.api.nvim_command("tabnext") end)
+utils.map("n", winleader .. "h", "<cmd>tabprevious<cr>")
+utils.map("n", winleader .. "l", "<cmd>tabnext<cr>")
 utils.map("n", winleader .. "t", ":tabnew ")
 
 utils.map("n", winleader .. "v", ":vsp ")
