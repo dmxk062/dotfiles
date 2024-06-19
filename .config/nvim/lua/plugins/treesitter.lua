@@ -21,10 +21,10 @@ textobjects.select = {
         -- read: inside/around argument
         ["ia"] = "@parameter.inner",
         ["aa"] = "@parameter.outer",
-
-        -- read: variable value
+        -- variables
+        -- value
         ["vv"] = "@assignment.rhs",
-        -- read: variable name
+        -- name
         ["vn"] = "@assignment.lhs",
         -- comment
         ["ic"] = "@comment.inner",
@@ -38,6 +38,9 @@ textobjects.select = {
         -- read: inner if
         ["ii"] = "@conditional.inner",
         ["ai"] = "@conditional.outer",
+        -- return value
+        ["ir"] = "@return.inner",
+        ["ar"] = "@return.outer",
     }
 }
 textobjects.move = {
@@ -47,12 +50,14 @@ textobjects.move = {
         ["]f"] = "@function.outer",
         ["]m"] = "@function.outer",
         ["]c"] = "@comment.outer",
+        ["]r"] = "@return.inner",
     },
     goto_previous_start = {
         ["[a"] = "@parameter.inner",
         ["[f"] = "@function.outer",
         ["[m"] = "@function.outer",
         ["[c"] = "@comment.outer",
+        ["[r"] = "@return.inner",
     },
 
     goto_next_end = {

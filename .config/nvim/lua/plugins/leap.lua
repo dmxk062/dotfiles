@@ -9,6 +9,8 @@ return {
         "ggandor/leap-spooky.nvim",
         config = function()
             require("leap-spooky").setup {
+                -- so i can use `r` for return statements
+                prefix = true,
                 -- same ones as in treesitter
                 extra_text_objects = {
                     "if", "af",           -- functions
@@ -18,6 +20,7 @@ return {
                     "iL", "aL",           -- loops
                     "iC", "aC",           -- classes, structs
                     "ii", "ai",           -- conditionals
+                    "ir", "ar",           -- return statements
                     "i,", "a,", "i.", "a.", "i/", "a/", -- custom things
                     "in", "an",           -- numbers 
                     "igh",                -- gitsigns hunk
