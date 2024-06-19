@@ -34,11 +34,10 @@
 (box :orientation "v" :visible {window.title == "null" || rc_start_desktop} :space-evenly false 
     (box :space-evenly false :orientation "v" :visible {rc_desktop_area == 0}
         (button :class "lbutton" :onclick "sleep 0.1&&desktop/mods/term.sh" :timeout "128s" "New Terminal")
-        (button :class "lbutton" :onclick "sleep 0.2&&desktop/mods/fm-nautilus.sh" :timeout "128s" "File Manager")
+        (button :class "lbutton" :onclick "sleep 0.1&&desktop/mods/term.sh nvim ." :timeout "128s" "Edit Files")
         (revealer :reveal rc_show_more :transition "slideup" :duration "0.2s" (box :orientation "v" :space-evenly false
             (button :class "lbutton" :onclick "sleep 0.1&&desktop/mods/edit.sh" :timeout "128s" "Edit File")
             (llbutton :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :label "Open Settings")
-            (llbutton :onclick "bin/screenshot_menu.sh toggle& ${EWW_CMD} close rc_popup" :label "Screenshot")
             ;; (llbutton :onclick "../settings/bin/look/color.sh noeww" :label "Switch Color")
         ))
         ;; (llbutton :onclick "bin/open_window_list.sh upd& ${EWW_CMD} update rc_desktop_area=1" :label "Windows")
@@ -55,7 +54,6 @@
         (llbutton :onclick "hyprctl dispatch fullscreen 0& ${EWW_CMD} close rc_popup" :visible {!window.floating} :label "${window.fullscreen ? "Unfullscreen" : "Fullscreen"}")
         (llbutton :onclick "hyprctl dispatch pin& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "${window.pinned ? "Unpin" : "Pin"}")
         (llbutton :onclick "sleep 0.2&&desktop/mods/resize.sh ${window.address}& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "Resize")
-        (llbutton :onclick "${EWW_CMD} update rc_win_area=2" :label "Screenshot")
         (llbutton :onclick "${EWW_CMD} update rc_win_area=1" :label "Move to")
         (llbutton :onclick "${EWW_CMD} close rc_popup" :label "Cancel")
     )
@@ -72,11 +70,6 @@
         (separator)
         ;; (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=0" "Back")
         (llbutton :onclick "${EWW_CMD} close rc_popup" :label "Cancel")
-    )
-    (box :orientation "v" :space-evenly false :visible {rc_win_area == 2}
-        (llbutton :onclick "desktop/mods/sc.sh clip" :label "Copy to Clipboard")
-        (llbutton :onclick "desktop/mods/sc.sh disk" :label "Save to Disk")
-        (llbutton :onclick "${EWW_CMD} update rc_win_area=0" :label "Back")
     )
 
 )
