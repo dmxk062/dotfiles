@@ -586,26 +586,6 @@ theme.loadPlugins = function()
         TelescopeSelectionCaret = { bg = nord.nord15_gui, fg = nord.nord15_gui},
 		TelescopeMatching = { link = 'Search' },
 
-		-- NvimTree
-		NvimTreeRootFolder = { fg = nord.nord15_gui },
-		NvimTreeSymlink = { fg = nord.nord5_gui },
-		NvimTreeFolderName = { fg = nord.nord4_gui },
-		NvimTreeFolderIcon = { fg = nord.nord9_gui },
-		NvimTreeEmptyFolderName = { fg = nord.nord4_gui },
-		NvimTreeOpenedFolderName = { fg = nord.nord5_gui },
-		NvimTreeExecFile = { fg = nord.nord4_gui },
-		NvimTreeOpenedFile = { fg = nord.nord6_gui },
-		NvimTreeSpecialFile = { fg = nord.nord4_gui, style = bold},
-		NvimTreeImageFile = { fg = nord.nord4_gui },
-		NvimTreeMarkdownFile = { fg = nord.nord4_gui },
-		NvimTreeIndentMarker = { fg = nord.nord9_gui },
-		NvimTreeGitDirty = { fg = nord.nord13_gui }, -- diff mode: Changed line |diff.txt|
-		NvimTreeGitStaged = { fg = nord.nord13_gui }, -- diff mode: Changed line |diff.txt|
-		NvimTreeGitMerge = { fg = nord.nord13_gui }, -- diff mode: Changed line |diff.txt|
-		NvimTreeGitRenamed = { fg = nord.nord13_gui }, -- diff mode: Changed line |diff.txt|
-		NvimTreeGitNew = { fg = nord.nord14_gui }, -- diff mode: Added line |diff.txt|
-		NvimTreeGitDeleted = { fg = nord.nord11_gui },	-- diff mode: Deleted line |diff.txt|
-		NvimTreeGitIgnored = { fg = nord.nord3_gui_bright },
 		LspDiagnosticsError = { fg = nord.nord12_gui },
 		LspDiagnosticsWarning = { fg = nord.nord15_gui },
 		LspDiagnosticsInformation = { fg = nord.nord10_gui },
@@ -709,6 +689,23 @@ theme.loadPlugins = function()
 
 		-- Cmp
 		CmpItemKind = { fg = nord.nord13_gui },
+		CmpItemKindText = { fg = nord.nord3_gui },
+        CmpItemKindMethod = {fg = nord.nord15_gui},
+        CmpItemKindFunction = {fg = nord.nord7_gui},
+        CmpItemKindConstructor = { fg = nord.nord15_gui},
+        CmpItemKindField = { fg = nord.nord5_gui},
+        CmpItemKindVariable = {fg = nord.nord5_gui},
+        CmpItemKindInterface = {fg = nord.nord15_gui},
+        CmpItemKindStruct = {link = "CmpItemKindInterface"},
+        CmpItemKindClass = {link = "CmpItemKindInterface"},
+        CmpItemKindModule = {fg = nord.nord14_gui},
+        CmpItemKindFile = {fg = nord.nord13_gui},
+        CmpItemKindFolder = {fg = nord.nord9_gui},
+        CmpItemKindSnippet = {fg = nord.nord13_gui},
+        CmpItemKindConstant = {fg = nord.nord5_gui, style = bold_italic},
+        CmpItemKindEnumMember = {fg = nord.nord13_gui},
+        CmpItemKindKeyword = {fg = nord.nord5_gui},
+
 		CmpItemAbbrMatch = { fg = nord.nord15_gui, style = bold },
 		CmpItemAbbrMatchFuzzy = { fg = nord.nord15_gui, style = bold },
 		CmpItemAbbr = { fg = nord.nord6_gui },
@@ -768,185 +765,6 @@ theme.loadPlugins = function()
 		DapUIBreakpointsInfo = { fg = nord.nord8_gui },
 		DapUIBreakpointsCurrentLine = { fg = nord.nord8_gui },
 		DapUIBreakpointsLine = { fg = nord.nord8_gui },
-
-		-- Hop
-		HopNextKey = { fg = nord.nord4_gui, style = bold },
-		HopNextKey1 = { fg = nord.nord8_gui, style = bold },
-		HopNextKey2 = { fg = nord.nord4_gui },
-		HopUnmatched = { fg = nord.nord3_gui },
-
-		-- Fern
-		FernBranchText = { fg = nord.nord3_gui_bright },
-
-		-- nvim-ts-rainbow
-		rainbowcol1 = { fg = nord.nord15_gui },
-		rainbowcol2 = { fg = nord.nord13_gui },
-		rainbowcol3 = { fg = nord.nord11_gui },
-		rainbowcol4 = { fg = nord.nord7_gui },
-		rainbowcol5 = { fg = nord.nord8_gui },
-		rainbowcol6 = { fg = nord.nord15_gui },
-		rainbowcol7 = { fg = nord.nord13_gui },
-
-		-- lightspeed
-		LightspeedLabel = { fg = nord.nord8_gui, style = bold },
-		LightspeedLabelOverlapped = { fg = nord.nord8_gui, style = "bold,underline" },
-		LightspeedLabelDistant = { fg = nord.nord15_gui, style = bold },
-		LightspeedLabelDistantOverlapped = { fg = nord.nord15_gui, style = "bold,underline" },
-		LightspeedShortcut = { fg = nord.nord10_gui, style = bold },
-		LightspeedShortcutOverlapped = { fg = nord.nord10_gui, style = "bold,underline" },
-		LightspeedMaskedChar = { fg = nord.nord4_gui, bg = nord.nord2_gui, style = bold },
-		LightspeedGreyWash = { fg = nord.nord3_gui_bright },
-		LightspeedUnlabeledMatch = { fg = nord.nord4_gui, bg = nord.nord1_gui },
-		LightspeedOneCharMatch = { fg = nord.nord8_gui, style = "bold,reverse" },
-		LightspeedUniqueChar = { style = "bold,underline" },
-
-		-- copilot
-		CopilotLabel = { fg = nord.nord3_gui, bg = nord.none },
-
-		-- Statusline
-		StatusLineDull = { fg = nord.nord3_gui, bg = nord.nord1_gui },
-		StatusLineAccent = { fg = nord.nord0_gui, bg = nord.nord13_gui },
-
-		-- mini.nvim
-		MiniCompletionActiveParameter = { style = "underline" },
-
-		MiniCursorword = { bg = nord.nord3_gui },
-		MiniCursorwordCurrent = { bg = nord.nord3_gui },
-
-		MiniIndentscopeSymbol = { fg = nord.nord10_gui },
-		MiniIndentscopePrefix = { style = "nocombine" }, -- Make it invisible
-
-		MiniJump = { fg = nord.nord0_gui, bg = nord.nord4_gui },
-
-		MiniJump2dSpot = { fg = nord.nord12_gui, style = "bold,nocombine" },
-
-		MiniStarterCurrent = { style = "nocombine" },
-		MiniStarterFooter = { fg = nord.nord14_gui, style = italic },
-		MiniStarterHeader = { fg = nord.nord9_gui },
-		MiniStarterInactive = { link = "Comment" },
-		MiniStarterItem = { link = "Normal" },
-		MiniStarterItemBullet = { fg = nord.nord4_gui },
-		MiniStarterItemPrefix = { fg = nord.nord15_gui },
-		MiniStarterSection = { fg = nord.nord4_gui },
-		MiniStarterQuery = { fg = nord.nord10_gui },
-
-		MiniStatuslineDevinfo = { fg = nord.nord4_gui, bg = nord.nord2_gui },
-		MiniStatuslineFileinfo = { fg = nord.nord4_gui, bg = nord.nord2_gui },
-		MiniStatuslineFilename = { fg = nord.nord4_gui, bg = nord.nord1_gui },
-		MiniStatuslineInactive = { fg = nord.nord4_gui, bg = nord.nord0_gui, style = bold },
-		MiniStatuslineModeCommand = { fg = nord.nord0_gui, bg = nord.nord15_gui, style = bold },
-		MiniStatuslineModeInsert = { fg = nord.nord1_gui, bg = nord.nord4_gui, style = bold },
-		MiniStatuslineModeNormal = { fg = nord.nord1_gui, bg = nord.nord9_gui, style = bold },
-		MiniStatuslineModeOther = { fg = nord.nord0_gui, bg = nord.nord13_gui, style = bold },
-		MiniStatuslineModeReplace = { fg = nord.nord0_gui, bg = nord.nord11_gui, style = bold },
-		MiniStatuslineModeVisual = { fg = nord.nord0_gui, bg = nord.nord7_gui, style = bold },
-
-		MiniSurround = { link = "IncSearch" },
-
-		MiniTablineCurrent = { bg = nord.nord1_gui },
-		MiniTablineFill = { link = "TabLineFill" },
-		MiniTablineHidden = { bg = nord.nord0_gui, fg = nord.nord3_gui },
-		MiniTablineModifiedCurrent = { bg = nord.nord1_gui, fg = nord.nord15_gui },
-		MiniTablineModifiedHidden = { bg = nord.nord0_gui, fg = nord.nord15_gui },
-		MiniTablineModifiedVisible = { bg = nord.nord2_gui, fg = nord.nord15_gui },
-		MiniTablineTabpagesection = { fg = nord.nord10_gui, bg = nord.nord6_gui, style = reverse_bold },
-		MiniTablineVisible = { bg = nord.nord2_gui },
-
-		MiniTestEmphasis = { style = bold },
-		MiniTestFail = { fg = nord.nord11_gui, style = bold },
-		MiniTestPass = { fg = nord.nord14_gui, style = bold },
-
-		MiniTrailspace = { bg = nord.nord11_gui },
-
-		-- Aerail
-		AerialLine = { bg = nord.nord2_gui },
-		AerialLineNC = { bg = nord.nord2_gui },
-
-		AerialArrayIcon = { fg = nord.nord13_gui },
-		AerialBooleanIcon = { fg = nord.nord9_gui, style = bold },
-		AerialClassIcon = { fg = nord.nord9_gui },
-		AerialConstantIcon = { fg = nord.nord13_gui },
-		AerialConstructorIcon = { fg = nord.nord9_gui },
-		AerialEnumIcon = { fg = nord.nord9_gui },
-		AerialEnumMemberIcon = { fg = nord.nord4_gui },
-		AerialEventIcon = { fg = nord.nord9_gui },
-		AerialFieldIcon = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic } or { fg = nord.nord4_gui },
-		AerialFileIcon = { fg = nord.nord14_gui },
-		AerialFunctionIcon = vim.g.nord_italic and { fg = nord.nord8_gui, style = italic } or { fg = nord.nord8_gui },
-		AerialInterfaceIcon = { fg = nord.nord9_gui },
-		AerialKeyIcon = { fg = nord.nord9_gui },
-		AerialMethodIcon = vim.g.nord_italic and { fg = nord.nord7_gui, style = italic } or { fg = nord.nord7_gui },
-		AerialModuleIcon = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic } or { fg = nord.nord4_gui },
-		AerialNamespaceIcon = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic }
-			or { fg = nord.nord4_gui },
-		AerialNullIcon = { fg = nord.nord9_gui },
-		AerialNumberIcon = { fg = nord.nord15_gui },
-		AerialObjectIcon = { fg = nord.nord9_gui },
-		AerialOperatorIcon = { fg = nord.nord9_gui },
-		AerialPackageIcon = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic } or { fg = nord.nord4_gui },
-		AerialPropertyIcon = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic }
-			or { fg = nord.nord10_gui },
-		AerialStringIcon = vim.g.nord_italic and { fg = nord.nord14_gui, style = italic } or { fg = nord.nord14_gui },
-		AerialStructIcon = { fg = nord.nord9_gui },
-		AerialTypeParameterIcon = { fg = nord.nord10_gui },
-		AerialVariableIcon = { fg = nord.nord4_gui, style = bold },
-
-		AerialArray = { fg = nord.nord13_gui },
-		AerialBoolean = { fg = nord.nord9_gui, style = bold },
-		AerialClass = { fg = nord.nord9_gui },
-		AerialConstant = { fg = nord.nord13_gui },
-		AerialConstructor = { fg = nord.nord9_gui },
-		AerialEnum = { fg = nord.nord9_gui },
-		AerialEnumMember = { fg = nord.nord4_gui },
-		AerialEvent = { fg = nord.nord9_gui },
-		AerialField = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic } or { fg = nord.nord4_gui },
-		AerialFile = { fg = nord.nord14_gui },
-		AerialFunction = vim.g.nord_italic and { fg = nord.nord8_gui, style = italic } or { fg = nord.nord8_gui },
-		AerialInterface = { fg = nord.nord9_gui },
-		AerialKey = { fg = nord.nord9_gui },
-		AerialMethod = vim.g.nord_italic and { fg = nord.nord7_gui, style = italic } or { fg = nord.nord7_gui },
-		AerialModule = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic } or { fg = nord.nord4_gui },
-		AerialNamespace = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic } or { fg = nord.nord4_gui },
-		AerialNull = { fg = nord.nord9_gui },
-		AerialNumber = { fg = nord.nord15_gui },
-		AerialObject = { fg = nord.nord9_gui },
-		AerialOperator = { fg = nord.nord9_gui },
-		AerialPackage = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic } or { fg = nord.nord4_gui },
-		AerialProperty = vim.g.nord_italic and { fg = nord.nord4_gui, style = italic } or { fg = nord.nord10_gui },
-		AerialString = vim.g.nord_italic and { fg = nord.nord14_gui, style = italic } or { fg = nord.nord14_gui },
-		AerialStruct = { fg = nord.nord9_gui },
-		AerialTypeParameter = { fg = nord.nord10_gui },
-		AerialVariable = { fg = nord.nord4_gui, style = bold },
-
-		-- nvim-navic
-		NavicIconsArray = { fg = nord.nord13_gui },
-		NavicIconsBoolean = { fg = nord.nord9_gui, style = bold },
-		NavicIconsClass = { fg = nord.nord9_gui },
-		NavicIconsConstant = { fg = nord.nord13_gui },
-		NavicIconsConstructor = { fg = nord.nord9_gui },
-		NavicIconsEnum = { fg = nord.nord9_gui },
-		NavicIconsEnumMember = { fg = nord.nord4_gui },
-		NavicIconsEvent = { fg = nord.nord9_gui },
-		NavicIconsField = { fg = nord.nord4_gui, style = italic },
-		NavicIconsFile = { fg = nord.nord14_gui },
-		NavicIconsFunction = { fg = nord.nord8_gui, style = italic },
-		NavicIconsInterface = { fg = nord.nord9_gui },
-		NavicIconsKey = { fg = nord.nord9_gui },
-		NavicIconsMethod = { fg = nord.nord7_gui, style = italic },
-		NavicIconsModule = { fg = nord.nord4_gui, style = italic },
-		NavicIconsNamespace = { fg = nord.nord4_gui, style = italic },
-		NavicIconsNull = { fg = nord.nord9_gui },
-		NavicIconsNumber = { fg = nord.nord15_gui },
-		NavicIconsObject = { fg = nord.nord9_gui },
-		NavicIconsOperator = { fg = nord.nord9_gui },
-		NavicIconsPackage = { fg = nord.nord4_gui, style = italic },
-		NavicIconsProperty = { fg = nord.nord4_gui, style = italic },
-		NavicIconsString = { fg = nord.nord14_gui, style = italic },
-		NavicIconsStruct = { fg = nord.nord9_gui },
-		NavicIconsTypeParameter = { fg = nord.nord10_gui },
-		NavicIconsVariable = { fg = nord.nord4_gui, style = bold },
-		NavicText = { fg = nord.nord4_gui },
-		NavicSeparator = { fg = nord.nord4_gui },
 	}
 	-- Options:
 
