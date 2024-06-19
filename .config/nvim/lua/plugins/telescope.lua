@@ -3,7 +3,6 @@ return {
     dependencies = {
         "nvim-lua/plenary.nvim",
         "gbrlsnchs/telescope-lsp-handlers.nvim",
-        "nvim-telescope/telescope-ui-select.nvim",
     },
     config = function()
         local telescope = require("telescope")
@@ -141,6 +140,5 @@ return {
 
         utils.map("i", "<C-R>", register_and_insert)
 
-        -- telescope.load_extension("ui-select")
     end
 }
