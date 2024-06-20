@@ -323,7 +323,6 @@ theme.loadTreeSitter = function()
 	-- Conditionals
 	treesitter.TSConditional = { fg = nord.nord9_gui } -- For keywords related to conditionnals.
 	-- Function names
-	treesitter.TSFunction = { fg = nord.n, style = italicord8_gui } -- For fuction (calls and definitions).
 	treesitter.TSMethod = { fg = nord.nord7_gui } -- For method calls and definitions.
 	treesitter.TSFuncBuiltin = { fg = nord.nord8_gui }
 	-- Namespaces and property accessors
@@ -353,7 +352,7 @@ theme.loadTreeSitter = function()
 	treesitter["@property"] = { fg = nord.nord10_gui }
 	treesitter["@keyword"] = { fg = nord.nord9_gui }
 	treesitter["@keyword.function"] = { fg = nord.nord8_gui }
-	treesitter["@keyword.return"] = { fg = nord.nord8_gui }
+	treesitter["@keyword.return"] = { fg = nord.nord9_gui }
 	treesitter["@keyword.operator"] = { fg = nord.nord8_gui }
 	treesitter["@repeat"] = { fg = nord.nord9_gui }
 	treesitter["@string"] = { fg = nord.nord14_gui }
