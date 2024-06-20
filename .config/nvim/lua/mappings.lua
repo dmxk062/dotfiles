@@ -27,7 +27,7 @@ utils.map("n", winleader .. "s", ":sp ")
 
 
 -- faster to exit
-utils.map("n", "q", ":q<CR>")
+utils.map("n", "q", "<cmd>q<CR>")
 utils.abbrev("c", "Q", "q!")
 
 -- shortcuts for some stuff i toggle often
