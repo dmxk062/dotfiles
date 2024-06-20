@@ -15,6 +15,8 @@ vim.o.hlsearch = true
 vim.o.termguicolors = true
 vim.o.wildmenu = false
 
+vim.o.undofile = true
+
 -- wrap at whitespace and, indent wrapped lines and show an indicator
 vim.o.wrap = true
 vim.o.linebreak = true
