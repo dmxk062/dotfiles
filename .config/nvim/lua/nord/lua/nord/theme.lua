@@ -542,7 +542,7 @@ theme.loadPlugins = function()
 		diffAdded = { fg = nord.nord14_gui },
 		diffRemoved = { fg = nord.nord11_gui },
 		diffChanged = { fg = nord.nord15_gui },
-		diffOldFile = { fg = nord.yelow },
+		diffOldFile = { fg = nord.nord13_gui },
 		diffNewFile = { fg = nord.nord12_gui },
 		diffFile = { fg = nord.nord7_gui },
 		diffLine = { fg = nord.nord3_gui },
@@ -573,6 +573,9 @@ theme.loadPlugins = function()
 		GitSignsDeleteNr = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
 		GitSignsDeleteLn = { fg = nord.nord3_gui }, -- diff mode: Deleted line |diff.txt|
 		GitSignsCurrentLineBlame = { fg = nord.nord3_gui_bright},
+        GitSignsAddInline = {fg = nord.nord14_gui, style = italic},
+        GitSignsDeleteInline = {fg = nord.nord11_gui, style = italic},
+        GitSignsChangeInline = {fg = nord.nord15_gui, style = italic},
 
         -- GitSignsAdd
 
