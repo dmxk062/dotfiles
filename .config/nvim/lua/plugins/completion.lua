@@ -28,7 +28,6 @@ M = {
     }
 }
 M.config = function()
-    local lspkind = require("lspkind")
     local cmp = require("cmp")
 
     cmp.setup({
@@ -41,9 +40,10 @@ M.config = function()
             end,
         },
         formatting = {
-            format = lspkind.cmp_format({
+            format = require("lspkind").cmp_format({
                 mode = "symbol",
                 before = function (entry, vim_item)
+                    -- add a specific kind for vimtex
 					if entry.source.name == "vimtex" then
 						vim_item.kind = "Latex"
 					end
