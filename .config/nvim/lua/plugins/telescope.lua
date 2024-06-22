@@ -2,7 +2,7 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
         "nvim-lua/plenary.nvim",
-        "gbrlsnchs/telescope-lsp-handlers.nvim",
+        -- "gbrlsnchs/telescope-lsp-handlers.nvim",
     },
     config = function()
         local telescope = require("telescope")
@@ -97,14 +97,6 @@ return {
                 treesitter = default_config { prompt_title = "Symbols" },
             },
             extensions = {
-                ["ui-select"] = {
-                    themes.get_cursor {
-                        layout_config = {
-                            height = 6,
-                            width = 60
-                        }
-                    },
-                },
             }
         }
         local builtin = require("telescope.builtin")
@@ -139,6 +131,5 @@ return {
         end
 
         utils.map("i", "<C-R>", register_and_insert)
-
     end
 }
