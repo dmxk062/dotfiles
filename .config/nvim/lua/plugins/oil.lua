@@ -26,6 +26,7 @@ M.config = function()
         vim.api.nvim_input("!chmod ")
     end
 
+
     local oil_columns = {
         icon = {
             "icon",
@@ -156,14 +157,23 @@ M.config = function()
             local addr = bufname:match("//(.-)/")
             local remote_path = bufname:match("//.-(/.*)"):sub(2, -1)
             local uri = "sftp://" .. addr .. remote_path .. api.get_cursor_entry().name
-            vim.fn.jobstart("xdg-open '" .. uri .. "'")
+            vim.ui.open(uri)
         else
-            vim.fn.jobstart("xdg-open '" .. dir .. "/" .. entry.name .. "'")
+            vim.ui.open(dir .. "/" .. entry.name)
         end
     end
 
     local function open_dir_shell(type, where)
         utils.kitty_shell_in(api.get_current_dir() or vim.api.nvim_buf_get_name(0), type, where)
+    end
+
+    local function open_cd_prompt()
+        vim.ui.input({prompt = "Cd:", completion = "dir",}, function (path)
+            path = vim.fn.expand(path)
+            if path and path ~= "" and vim.uv.fs_stat(path) then
+                api.open(path)
+            end
+        end)
     end
 
 
@@ -176,6 +186,7 @@ M.config = function()
                 -- edit in <thing>
 
                 { "eo",        open_external },
+                { "gx",        open_external },
 
                 -- edit permissions
                 { "ep",        open_chmod },
@@ -199,6 +210,7 @@ M.config = function()
                 { "gh",        actions.toggle_hidden.callback },
                 { "gH",        actions.toggle_hidden.callback },
                 { "gs",        toggle_git_shown },
+                { "g<space>",  open_cd_prompt },
 
 
                 { "cd",        open_cd },
@@ -211,7 +223,7 @@ M.config = function()
                 { "<space>st", function() open_dir_shell("tab") end },
             }
             for _, map in ipairs(normal_mappings) do
-                utils.lmap(0, "n", map[1], map[2])
+                utils.lmap(0, "n", map[1], map[2], {remap = false})
             end
         end,
     })
