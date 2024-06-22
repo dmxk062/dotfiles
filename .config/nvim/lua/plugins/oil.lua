@@ -52,6 +52,9 @@ M.config = function()
             cursorlineopt = "line,number",
             signcolumn    = "auto"
         },
+        buf_options = {
+            buflisted = true
+        },
         columns = {
             oil_columns.icon,
             oil_columns.permissions
@@ -98,6 +101,10 @@ M.config = function()
             ["<S-CR>"] = actions.select_tab,
             ["<C-CR>"] = actions.select_split,
             ["<M-CR>"] = actions.select_vsplit,
+
+            ["es"] = actions.select_split,
+            ["et"] = actions.select_tab,
+            ["ev"] = actions.select_vsplit,
 
 
         },
@@ -167,9 +174,6 @@ M.config = function()
         callback = function()
             local normal_mappings = {
                 -- edit in <thing>
-                { "es",        actions.select_split.callback },
-                { "et",        actions.select_tab.callback },
-                { "ev",        actions.select_vsplit.callback },
 
                 { "eo",        open_external },
 
