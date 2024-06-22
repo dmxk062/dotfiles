@@ -167,14 +167,6 @@ M.config = function()
         utils.kitty_shell_in(api.get_current_dir() or vim.api.nvim_buf_get_name(0), type, where)
     end
 
-    local function open_cd_prompt()
-        vim.ui.input({prompt = "Cd:", completion = "dir",}, function (path)
-            path = vim.fn.expand(path)
-            if path and path ~= "" and vim.uv.fs_stat(path) then
-                api.open(path)
-            end
-        end)
-    end
 
 
     -- TODO: use this for mappings instead
@@ -210,7 +202,7 @@ M.config = function()
                 { "gh",        actions.toggle_hidden.callback },
                 { "gH",        actions.toggle_hidden.callback },
                 { "gs",        toggle_git_shown },
-                { "g<space>",  open_cd_prompt },
+                { "g<space>",  open_cd },
 
 
                 { "cd",        open_cd },
