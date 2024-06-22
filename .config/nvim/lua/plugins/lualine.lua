@@ -207,7 +207,6 @@ local lualine_layout = {
         },
         {
             getWords,
-            separator = rbubble,
         },
         {
             function()
@@ -216,7 +215,8 @@ local lualine_layout = {
                 end
                 local now = os.time()
                 return vim.fn.strftime("%M:%S", now - vim.b[0].creation_time)
-            end
+            end,
+            separator = rbubble,
         }
     }
 }
