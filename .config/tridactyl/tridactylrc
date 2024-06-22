@@ -1,0 +1,33 @@
+set searchurls.google https://www.google.com/search?client=firefox-b-d&q=%s
+set searchurls.g https://www.google.com/search?client=firefox-b-d&q=%s
+set searchurls.scholar https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%s&btnG=
+set searchurls.gs https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%s&btnG=
+set searchurls.y https://www.youtube.com/results?search_query=%s
+set searchurls.youtube https://www.youtube.com/results?search_query=%s
+set modeindicator false
+set editorcmd kitty -- nvim %f +%l 
+colorscheme nord
+bind J tabnext
+bind K tabprev
+bind m tabmove +1
+bind M tabmove -1
+bind I focusinput -I
+unbind <C-c>
+unbind <C-[>
+unbind <F1>
+bind --mode=input <C-c> composite unfocus | mode normal
+bind --mode=ex <C-c> ex.hide_and_clear
+unbind --mode=visual <C-c>
+bind --mode=hint <C-c> hint.reset
+bind --mode=normal * tabduplicate
+unbind H
+unbind L
+bind H back
+bind L forward
+bind n findnext 1
+bind N findnext -1
+unbind <C-f>
+bind / fillcmdline find
+unbind d
+bind dd tabclose
+bind --mode=input <C-i> editor
