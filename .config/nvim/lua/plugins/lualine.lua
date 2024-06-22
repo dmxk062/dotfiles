@@ -57,7 +57,7 @@ local branch = {
     "branch",
     fmt = function(str)
         if str == "" then
-            return "None"
+            return ""
         else
             return str .. ":"
         end
