@@ -211,7 +211,7 @@ local lualine_layout = {
         {
             function()
                 if not vim.b[0].creation_time then
-                    return ""
+                    vim.b[0].creation_time = os.time()
                 end
                 local now = os.time()
                 return vim.fn.strftime("%M:%S", now - vim.b[0].creation_time)
