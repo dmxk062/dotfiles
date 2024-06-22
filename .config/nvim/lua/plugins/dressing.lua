@@ -11,7 +11,7 @@ return {
             backend = { "builtin", "telescope" },
             builtin = {
                 max_height = {12, 0},
-                min_height = {2,  0},
+                min_height = {4,  0},
                 relative = "cursor",
                 override = function (opts)
                     opts.row = opts.row + 1

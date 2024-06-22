@@ -692,6 +692,7 @@ theme.loadPlugins = function()
 		-- Cmp
 		CmpItemKind = { fg = nord.nord13_gui },
 		CmpItemKindText = { fg = nord.nord3_gui },
+		CmpItemKindLatex = { fg = nord.nord14_gui },
         CmpItemKindMethod = {fg = nord.nord15_gui},
         CmpItemKindFunction = {fg = nord.nord7_gui},
         CmpItemKindConstructor = { fg = nord.nord15_gui},
