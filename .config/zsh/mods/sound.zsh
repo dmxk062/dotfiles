@@ -41,13 +41,9 @@ function tmute {
     done
 }
 
-function lspulse {
-    local type="${1:-sinks}"
-    pactl --format=json list "${type}"|jq -r '.[] | "\(.index)\t\(.state)\t\(.name)\t\(.description)"'
-}
 
 } elif [[ "$1" == "unload" ]] {
 
-    unfunction pagrep tmute lspulse
+    unfunction pagrep tmute
 
 }
