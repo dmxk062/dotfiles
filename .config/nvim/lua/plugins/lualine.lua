@@ -236,7 +236,6 @@ M.config = function()
             globalstatus = true,
             refresh = {
                 statusline = 1000,
-                winbar = 1000,
             },
             disabled_filetypes = {
                 statusline = {
@@ -248,18 +247,6 @@ M.config = function()
             section_separators = { left = "", right = "" },
         },
         sections = lualine_layout,
-        inactive_sections = {
-            lualine_a = {},
-            lualine_b = {},
-            lualine_c = {},
-            lualine_x = {},
-            lualine_y = {},
-            lualine_z = {}
-        },
-        tabline = {},
-        -- extensions = {"oil"},
-        winbar = {},
-        inactive_winbar = {}
     }
 end
 
