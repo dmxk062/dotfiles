@@ -1,6 +1,8 @@
 local M = {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+        "nvim-tree/nvim-web-devicons",
+    },
 }
 
 local colors = require("nord.colors")
@@ -25,7 +27,7 @@ nord.visual = {
     a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
     b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
     y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    z = { fg = colors.nord0_gui, bg = colors.nord10_gui },
+    z = { fg = colors.nord0_gui, bg = colors.nord9_gui },
 }
 
 nord.replace = {
@@ -48,31 +50,19 @@ nord.inactive = {
     y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
     z = { fg = colors.nord0_gui, bg = colors.nord0_gui },
 }
+
 local bubble = { left = "", right = "" }
 local lbubble = { left = "" }
 local rbubble = { right = "" }
 
 
-local branch = {
-    "branch",
-    fmt = function(str)
-        if str == "" then
-            return ""
-        else
-            return str .. ":"
-        end
-    end,
-    icon = "",
-    separator = lbubble,
-    color = { bg = colors.nord1_gui, fg = colors.nord6_gui },
-}
 
 local modecolors = {
     n = { bg = colors.nord7_gui, fg = colors.nord0_gui },
     i = { bg = colors.nord3_gui, fg = colors.nord6_gui, gui = "italic" },
     c = { bg = colors.nord15_gui, fg = colors.nord0_gui },
-    v = { bg = colors.nord10_gui, fg = colors.nord0_gui },
-    V = { bg = colors.nord10_gui, fg = colors.nord0_gui },
+    v = { bg = colors.nord9_gui, fg = colors.nord0_gui },
+    V = { bg = colors.nord9_gui, fg = colors.nord0_gui },
     [""] = { bg = colors.nord9_gui, fg = colors.nord0_gui },
     R = { bg = colors.nord11_gui, fg = colors.nord0_gui, gui = "bold" },
     no = { bg = colors.nord7_gui, fg = colors.nord0_gui, gui = "italic" },
@@ -81,11 +71,16 @@ local modecolors = {
     nt = { bg = colors.nord7_gui, fg = colors.nord0_gui },
     s = { bg = colors.nord7_gui, fg = colors.nord0_gui, gui = "italic" },
 }
+
+local modenames = {
+    ["V-LINE"] = "V",
+    ["V-BLOCK"] = "^V"
+}
+
 local mode = {
     "mode",
-    icons_enabled = true,
     fmt = function(str)
-        return string.lower(str)
+        return modenames[str] or str:lower():sub(1, 1)
     end,
     color = function()
         return modecolors[vim.fn.mode(1)]
@@ -93,27 +88,52 @@ local mode = {
     separator = bubble,
 }
 
-local function getWords()
-    local wc = vim.fn.wordcount()
-    if wc["visual_words"] then -- text is selected in visual mode
-        return wc["visual_words"] .. "w" .. "/" .. wc["visual_chars"] .. "c"
-    else
-        return wc["words"] .. "w"
-    end
-end
 
-local function search_progress()
-    if vim.v.hlsearch == 0 then
-        return ""
-    end
+local lsp_infos_show_all = false
+local lsp_infos = {
+    function()
+        local icons = require("nvim-web-devicons")
 
-    local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 500 })
-    if not ok or next(res) == nil then
-        return ""
-    end
-    local found = math.min(res.total, res.maxcount)
-    return string.format("%d/%d", res.current, found)
-end
+        local buf = vim.api.nvim_get_current_buf()
+        local clients = vim.lsp.get_clients { bufnr = buf }
+        if #clients == 0 then
+            return ""
+        end
+
+        local active_clients = {}
+        for _, client in ipairs(clients) do
+            local lang = client.get_language_id(buf, vim.bo[buf].ft)
+            local icon = icons.get_icon_by_filetype(lang or "")
+
+            table.insert(active_clients, (icon and icon .. " " or "") .. client.name)
+        end
+        if lsp_infos_show_all then
+            return table.concat(active_clients, ", ")
+        else
+            local ret = active_clients[1]
+            if #active_clients > 1 then
+                ret = ret .. " [+" .. #active_clients - 1 .. "]"
+            end
+            return ret or ""
+        end
+    end,
+
+    ---@param num_clicks integer
+    ---@param btn "l"|"r"|"m"
+    ---@param mods "s"|"c"|"a"|"m"
+    on_click = function(num_clicks, btn, mods)
+        if btn == "r" then
+            vim.api.nvim_command("LspInfo")
+        elseif btn == "l" then
+            lsp_infos_show_all = not lsp_infos_show_all
+            require("lualine").refresh()
+        end
+    end,
+    color = { fg = colors.nord6_gui, bg = colors.nord1_gui },
+
+}
+
+
 local lualine_layout = {
     lualine_a = {
         mode,
@@ -123,7 +143,6 @@ local lualine_layout = {
             "filename",
             icons_enabled = true,
             padding = { left = 2, right = 2 },
-            icon = { "󰈔", align = "left" },
             separator = rbubble,
             path = 4,
             file_status = true,
@@ -131,18 +150,18 @@ local lualine_layout = {
             shortening_target = 40,
             symbols = {
                 modified = "[+]",
-                readonly = "[ ro]",
-                unamed = "[No Name]",
-                newfile = "[New]",
+                readonly = "[ro]",
+                unnamed = "[-]",
+                newfile = "[~]",
             }
         }
     },
     lualine_c = {
+        lsp_infos,
         {
             "diagnostics",
-            separator = { right = "" },
             color = { fg = colors.nord6_gui, bg = colors.nord1_gui },
-            sources = { "nvim_lsp", "coc" },
+            sources = { "nvim_lsp" },
             sections = { "error", "warn", "info", "hint" },
 
             diagnostics_color = {
@@ -155,18 +174,18 @@ local lualine_layout = {
             colored = true,
             update_in_insert = false,
             always_visible = false,
+            draw_empty = true, -- always draw the bubble
+            separator = rbubble,
         },
     },
-    lualine_d = {},
     lualine_x = {
-        branch,
         {
             "diff",
             color = { bg = colors.nord1_gui },
             colored = true,
             diff_color = {
                 added    = { fg = colors.nord14_gui },
-                modified = { fg = colors.nord13_gui },
+                modified = { fg = colors.nord15_gui },
                 removed  = { fg = colors.nord11_gui }
             },
             source = function()
@@ -179,13 +198,22 @@ local lualine_layout = {
                     }
                 end
             end,
+            draw_empty = true,
+            separator = lbubble,
         }
     },
     lualine_y = {
         {
-            separator = lbubble,
             "filetype",
+            fmt = function(str)
+                if str == "" then
+                    return "[noft]"
+                else
+                    return str
+                end
+            end,
             colored = false,
+            separator = lbubble,
         },
         {
             "fileformat",
@@ -198,35 +226,38 @@ local lualine_layout = {
     },
     lualine_z = {
         {
-            "location",
+            "progress",
             separator = lbubble,
         },
         {
-            search_progress,
-            icon = "󰈞",
-        },
-        {
-            getWords,
+            function()
+                if vim.v.hlsearch == 0 then
+                    return ""
+                end
+
+                local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 500 })
+                if not ok or next(res) == nil then
+                    return ""
+                end
+                local found = math.min(res.total, res.maxcount)
+                return string.format("%d/%d", res.current, found)
+            end,
         },
         {
             function()
-                if not vim.b[0].creation_time then
-                    vim.b[0].creation_time = os.time()
+                local wc = vim.fn.wordcount()
+                if wc.visual_words then -- text is selected in visual mode
+                    return wc.visual_words .. "w" .. "/" .. wc.visual_chars .. "c"
+                else
+                    return wc.words .. "w"
                 end
-                local now = os.time()
-                return vim.fn.strftime("%M:%S", now - vim.b[0].creation_time)
             end,
             separator = rbubble,
-        }
+        },
     }
 }
 
 M.config = function()
-    vim.api.nvim_create_autocmd({"BufNew", "VimEnter"}, {
-        callback = function(opts)
-            vim.b[opts.buf].creation_time = os.time()
-        end
-    })
     require("lualine").setup {
         options = {
             -- icons_enabled = true,

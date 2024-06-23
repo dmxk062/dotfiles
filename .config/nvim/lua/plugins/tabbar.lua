@@ -61,10 +61,12 @@ M.config = function()
                 show_modified = false
             elseif buftype == "alpha" then
                 show_modified = false
-                name = "Startpage"
+                name = "NeoVIM"
             elseif buftype == "oil" then
                 if starts_with(bufname, "oil-ssh://") then
-                    name = bufname:sub(#"oil-ssh://" + 1)
+                    local addr = bufname:match("//(.-)/")
+                    local path = bufname:match("//.-(/.*)"):sub(2, -1)
+                    name = addr .. ":" .. path
                 else
                     name = bufname:sub(#"oil://" + 1)
                         :gsub("/tmp/workspaces_" .. user, "~tmp")
