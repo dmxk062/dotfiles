@@ -33,7 +33,7 @@ function precmd {
         } else  {
             printf -v elapsed "%.2fms" $elapsed_ms
         }
-        RPROMPT="%F%(?.%F{green}.%F{red})%S%(?.󰄬.󰅖 %?)%s %F{8}%f%K{8}󱎫 ${elapsed}%k%F{8}%f"
+        RPROMPT="%F{8}%K{8}%f󱎫 ${elapsed} %(?.%F{green}.%F{red})%k%S%(?.󰄬 %?.󰅖 %?) %s"
     fi
     # set the title
     print -Pn "\e]0;zsh: %~\a"
