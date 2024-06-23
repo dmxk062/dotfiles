@@ -13,8 +13,8 @@ function zvm_after_select_vi_mode {
     local -A mode_colors=(
         ["$ZVM_MODE_NORMAL"]="cyan"
         ["$ZVM_MODE_INSERT"]="cyan"
-        ["$ZVM_MODE_VISUAL"]="blue"
-        ["$ZVM_MODE_VISUAL_LINE"]="blue"
+        ["$ZVM_MODE_VISUAL"]="12"
+        ["$ZVM_MODE_VISUAL_LINE"]="12"
         ["$ZVM_MODE_REPLACE"]="red"
     )
     PROMPT="%B%F{$mode_colors[$ZVM_MODE]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
@@ -33,7 +33,7 @@ function precmd {
         } else  {
             printf -v elapsed "%.2fms" $elapsed_ms
         }
-        RPROMPT="%F%(?.%F{green}.%F{red})%S%(?.󰄬.󰅖 %?)%s %F{$ZSH_COLORS_RGB[light-gray]}%f%K{$ZSH_COLORS_RGB[light-gray]}󱎫 ${elapsed}%k%F{#4c566a$ZSH_COLORS_RGB[light-gray]}%f"
+        RPROMPT="%F%(?.%F{green}.%F{red})%S%(?.󰄬.󰅖 %?)%s %F{8}%f%K{8}󱎫 ${elapsed}%k%F{8}%f"
     fi
     # set the title
     print -Pn "\e]0;zsh: %~\a"

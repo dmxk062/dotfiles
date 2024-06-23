@@ -15,7 +15,7 @@ function zvm_config {
     ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
     ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
     ZVM_MODE_INSERT=true
-    ZVM_VI_HIGHLIGHT_BACKGROUND=$ZSH_COLORS_RGB[light-gray]
+    ZVM_VI_HIGHLIGHT_BACKGROUND=8
     zvm_bindkey vicmd "/" history-incremental-search-backward
 }
 #sources the plugin
@@ -29,7 +29,7 @@ autoload -U down-line-or-beginning-search
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^ ' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=$ZSH_COLORS_RGB[light-gray],bold"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
