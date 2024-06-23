@@ -28,6 +28,10 @@ vim.o.showbreak = ""
 vim.o.splitright = true
 vim.o.splitbelow = true
 
+-- disable all the search related messages
+vim.opt.shortmess:append("S")
+vim.opt.shortmess:append("s")
+
 
 -- command mode: underline:
 -- normal, visual etc: block
