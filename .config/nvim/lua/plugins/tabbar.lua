@@ -15,6 +15,10 @@ local hl_active = {
     delim = {
         fg = colors.nord7_gui,
         bg = colors.nord0_gui
+    },
+    mod = {
+        fg = colors.nord6_gui,
+        bg = colors.nord3_gui,
     }
 }
 local hl_inactive = {
@@ -29,12 +33,16 @@ local hl_inactive = {
     delim = {
         fg = colors.nord3_gui,
         bg = colors.nord0_gui
+    },
+    mod = {
+        fg = colors.nord6_gui,
+        bg = colors.nord1_gui,
     }
 }
 
 local delims = {
-    left  =  "",
-    right =  "",
+    left  = "",
+    right = "",
 }
 
 M.config = function()
@@ -75,7 +83,7 @@ M.config = function()
                         :gsub("/home/" .. user, "~")
                 end
                 if #name > 1 then
-                    name = name:sub(1, -2)     -- remove final '/' if its not /
+                    name = name:sub(1, -2) -- remove final '/' if its not /
                 end
             elseif bufname == "" then
                 name = "[-]"
@@ -90,20 +98,24 @@ M.config = function()
     local function draw_tab(f, info)
         local hl = (info.current and hl_active or hl_inactive)
 
-        f.add {delims.left, fg = hl.delim.fg, bg = hl.delim.bg }
+        f.add { delims.left, fg = hl.delim.fg, bg = hl.delim.bg }
         f.set_colors { fg = hl.body.fg, bg = hl.body.bg }
         if info.current then
             f.set_gui("bold")
         end
         local title, show_modified = get_buf_info(info.filename, info.buf_name, info.buf)
         f.add { (info.current and "" or info.index) .. " " .. title }
-        if show_modified then
-            f.add(info.modified and " [+]")
-        end
         if not (info.first and info.last) then
             f.close_tab_btn { " 󰅖" }
         end
-        f.add {delims.right, fg = hl.delim.fg, bg = hl.delim.bg }
+        if show_modified and info.modified then
+            f.set_gui("none")
+            f.add { delims.right, fg = hl.delim.fg, bg = hl.mod.bg }
+            f.add { " ~", fg = hl.mod.fg, bg = hl.mod.bg }
+            f.add { delims.right, fg = hl.mod.bg, bg = colors.nord0_gui }
+        else
+            f.add { delims.right, fg = hl.delim.fg, bg = hl.delim.bg }
+        end
         f.set_colors { fg = colors.nord0_gui, bg = colors.nord0_gui }
         f.add(" ")
     end
