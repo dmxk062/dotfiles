@@ -38,3 +38,5 @@ local -a zo_extra=(
 
 export FZF_DEFAULT_OPTS="$colors"
 export _ZO_FZF_OPTS="$colors ${(j: :)zo_extra}"
+
+unset colors name zo_extra fzf_colors
