@@ -132,6 +132,8 @@ media:
 
   fonts:
     foreground: aurora15
+  3d:
+    foreground: aurora15
 
 office:
   foreground: snow6
