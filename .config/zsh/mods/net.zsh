@@ -96,17 +96,20 @@ function deepl_request {
 }
 
 function translate {
-    local target="${1}"; shift
+    local target="${1:-EN}"
     local -a buffer
-    if (($# == 0)) {
-        local line
-        while read -r line; do
-            buffer+=("$line")
-        done
+    local line
+    while read -r line; do
+        buffer+=("$line")
+    done
+    local request_body
+    if [[ -n "$2" ]] {
+        request_body="{\"text\":[\"${(j:\n:)buffer[@]}\"],\"target_lang\":\"$target\", \"source_lang\": \"$2\"}"
     } else {
-        buffer="${argv[@]}"
+        request_body="{\"text\":[\"${(j:\n:)buffer[@]}\"],\"target_lang\":\"$target\"}"
     }
-    deepl_request "{\"text\":[\"${(j:\n:)buffer[@]}\"],\"target_lang\":\"$target\"}"|jq -r '.translations.[].text'
+    deepl_request "$request_body"|jq '.translations.[0].text' -r
+
 
 }
 
