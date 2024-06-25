@@ -13,9 +13,6 @@ case $1 in
         if hyprctl workspaces | grep -q "OVERVIEW"; then
             hyprctl --batch "dispatch hycov:toggleoverview; dispatch submap reset" 
         else
-            for addr in $(hyprctl clients -j|jq -r '.[]|select(.fullscreen).address'); do
-                hyprctl --batch "dispatch focuswindow address:$addr; dispatch fullscreen; dispatch focuscurrentorlast"
-            done
             # we dont want special workspaces 
             if [[ "$(hyprctl clients -j|jq --argjson active "$(hyprctl monitors -j|jq '.[]|select(.focused)|.id')" '[.
                 []|select(.monitor == $active 
