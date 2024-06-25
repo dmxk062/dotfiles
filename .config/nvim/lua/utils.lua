@@ -49,7 +49,11 @@ end
 ---@param keys string
 ---@param string string
 function M.abbrev(mode, keys, string)
-    vim.keymap.set(mode .. "a", keys, string)
+    if type(mode) == "table" then
+        vim.keymap.set(vim.tbl_map(function(s) return s .. "a" end, mode), keys, string)
+    else
+        vim.keymap.set(mode .. "a", keys, string)
+    end
 end
 
 local function put_result(res)
