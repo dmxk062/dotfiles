@@ -133,8 +133,8 @@ M.config = function()
         }),
         sources = {
             { name = "nvim_lsp" },
-            { name = "luasnip" },
             { name = "path" },
+            { name = "luasnip" },
             { name = "buffer" },
         }
     })
@@ -167,19 +167,21 @@ M.config = function()
     cmp.setup.cmdline({ ":" }, {
         mapping = cmp.mapping.preset.cmdline({}),
         sources = cmp.config.sources({
-            { name = "path" },
-            {
-                name = "cmdline",
-                option = {
-                    ignore_cmds = {}
-                }
+                { name = "path" }
             },
-        })
+            {
+                {
+                    name = "cmdline",
+                    option = {
+                        ignore_cmds = {}
+                    }
+                }
+            }
+        )
     })
     cmp.setup.filetype("DressingInput", {
         mapping = cmp.mapping.preset.cmdline({}),
         sources = cmp.config.sources({
-            { name = "path" },
             { name = "omni" },
         })
     })
