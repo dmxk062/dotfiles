@@ -107,10 +107,10 @@ theme.loadEditor = function()
 		Substitute = { fg = nord.nord3_gui, bg = nord.nord13_gui },
 		IncrementalRename = { fg = nord.nord7_gui, bg = nord.nord3_gui },
 		SpecialKey = { fg = nord.nord9_gui },
-		SpellBad = { fg = nord.nord12_gui, bg = nord.none, style = undercurl },
-		SpellCap = { fg = nord.nord7_gui, bg = nord.none, style = undercurl },
-		SpellLocal = { fg = nord.nord8_gui, bg = nord.none, style = undercurl },
-		SpellRare = { fg = nord.nord15_gui, bg = nord.none, style = undercurl },
+		SpellBad = { sp = nord.nord12_gui, style = undercurl },
+		SpellCap = { sp = nord.nord7_gui, style = undercurl },
+		SpellLocal = { sp = nord.nord8_gui, style = undercurl },
+		SpellRare = { sp = nord.nord15_gui, style = undercurl },
 		StatusLine = { fg = nord.nord0_gui, bg = nord.nord0_gui },
 		StatusLineNC = { fg = nord.nord4_gui, bg = nord.nord1_gui },
 		StatusLineTerm = { fg = nord.nord4_gui, bg = nord.nord2_gui },
@@ -490,6 +490,9 @@ theme.loadPlugins = function()
 
         OilGitStatusIndexUnmerged = {fg = nord.nord4_gui},
         OilGitStatusWorkingTreeUnmerged = {link = "OilGitStatusIndexUnmerged"},
+
+        -- mini.notify
+        MiniNotifyBorder = {fg = nord.nord3_gui, blend = 100},
 
         -- startup
         StartScreenShortcutGeneric = {fg = nord.nord15_gui},
