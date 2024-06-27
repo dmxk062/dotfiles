@@ -4,6 +4,7 @@ vim.g.nord_italic = true
 vim.g.nord_borders = true
 
 vim.o.relativenumber = true
+vim.o.number = true
 vim.o.incsearch = true
 vim.o.ignorecase = true
 vim.o.showmode = false
