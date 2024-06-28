@@ -43,14 +43,15 @@
 <Multi_key> <asterisk> <l> : "ᛚ" # lagu
 <Multi_key> <asterisk> <m> : "ᛗ" # mon
 <Multi_key> <asterisk> <n> : "ᚾ" # nȳd
+<Multi_key> <asterisk> <N> : "ᛝ" # ing
 <Multi_key> <asterisk> <o> : "ᚩ" # ōs
 <Multi_key> <asterisk> <O> : "ᛟ" # ēðel
 <Multi_key> <asterisk> <p> : "ᛈ" # peorð
-<Multi_key> <asterisk> <q> : "ᛝ" # ing, yes this is shit
 <Multi_key> <asterisk> <r> : "ᚱ" # rād
 <Multi_key> <asterisk> <s> : "ᚴ" # sigel
 <Multi_key> <asterisk> <t> : "ᛏ" # tīw
 <Multi_key> <asterisk> <T> : "ᚦ" # þorn
 <Multi_key> <asterisk> <u> : "ᚢ" # ūr
-<Multi_key> <asterisk> <w> : "ᚹ" # wynn, technically accessible via pw too
+<Multi_key> <asterisk> <w> : "ᚹ" # wynn
+<Multi_key> <asterisk> <x> : "ᛉ" # ilx
 <Multi_key> <asterisk> <y> : "ᚣ" # ȳr
