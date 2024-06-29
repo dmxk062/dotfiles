@@ -160,8 +160,12 @@ M.config = function()
         end
     }
 
+    -- for some reason it likes to crash with the capabilities
+    lspconfig.marksman.setup {
+
+    }
     -- dont need anything special from those *yet*
-    for _, lsp in pairs({"bashls", "tsserver", "html", "jedi_language_server", "ruff_lsp", "marksman", "taplo"}) do
+    for _, lsp in pairs({"bashls", "tsserver", "html", "jedi_language_server", "ruff_lsp", "taplo"}) do
         lspconfig[lsp].setup {
             capabilities = capabilities
         }
