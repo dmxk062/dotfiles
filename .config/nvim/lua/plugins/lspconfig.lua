@@ -69,6 +69,23 @@ M.config = function()
             utils.lmap(opts.buf, "n", "gr", require("telescope.builtin").lsp_references)
             utils.lmap(opts.buf, "n", "gd", require("telescope.builtin").lsp_definitions)
             utils.lmap(opts.buf, "n", "gi", require("telescope.builtin").lsp_implementations)
+
+            vim.api.nvim_buf_create_user_command(opts.buf, "InlayHint", function(args)
+                if args.fargs[1] then
+                    if args.fargs[1] == "on" then
+                        vim.lsp.inlay_hint.enable(true)
+                    elseif args.fargs[1] == "off" then
+                        vim.lsp.inlay_hint.enable(false)
+                    end
+                else
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+                end
+            end, {
+                nargs = "?",
+                complete = function()
+                    return { "on", "off" }
+                end
+            })
         end,
     })
 
@@ -165,7 +182,7 @@ M.config = function()
 
     }
     -- dont need anything special from those *yet*
-    for _, lsp in pairs({"bashls", "tsserver", "html", "jedi_language_server", "ruff_lsp", "taplo"}) do
+    for _, lsp in pairs({ "bashls", "tsserver", "html", "jedi_language_server", "ruff_lsp", "taplo" }) do
         lspconfig[lsp].setup {
             capabilities = capabilities
         }
