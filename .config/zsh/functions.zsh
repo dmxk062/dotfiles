@@ -5,7 +5,7 @@ function enable_git(){
 
 
 # faster, way faster than proper `clear`
-c(){
+function c {
     print -n "[H[2J"
 }
 
@@ -32,7 +32,7 @@ function -mon {
         print -n "\e]0;$output[1]\a"
         print -n "[H[2J"
         print -n "Every $interval $unit: \`${command[@]}\`\n\n${output}"
-        sleep "$interval"
+        read -t "$interval" _
     done
 
 }
