@@ -26,6 +26,8 @@ utils.map("n", winleader .. "s", ":sp ")
 
 
 
+-- use <space>@ for macros instead, i dont use them that often
+utils.map("n", "<space>@", "q", {})
 -- faster to exit
 utils.map("n", "q", "<cmd>q<CR>")
 utils.abbrev("c", "Q", "q!")

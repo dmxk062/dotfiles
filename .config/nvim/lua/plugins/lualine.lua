@@ -179,6 +179,17 @@ local lualine_layout = {
             draw_empty = true, -- always draw the bubble
             separator = rbubble,
         },
+        {
+            function()
+                local reg = vim.fn.reg_recording()
+                if reg == "" then
+                    return ""
+                end
+                return [[macro -> "]] .. reg
+            end,
+            icon = { "󰌌", color = { fg = col.magenta, bold = true } }
+
+        }
     },
     lualine_x = {
         {
@@ -281,6 +292,15 @@ M.config = function()
         },
         sections = lualine_layout,
     }
+
+    -- refresh statusline on macro recording
+    vim.api.nvim_create_autocmd("RecordingEnter", { callback = require("lualine").refresh })
+    vim.api.nvim_create_autocmd("RecordingLeave", {
+        callback = function()
+            local timer = vim.uv.new_timer()
+            timer:start(50, 0, vim.schedule_wrap(require("lualine").refresh))
+        end
+    })
 end
 
 

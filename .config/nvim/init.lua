@@ -29,8 +29,9 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 
 -- disable all the search related messages
-vim.opt.shortmess:append("S")
-vim.opt.shortmess:append("s")
+vim.opt.shortmess:append("S") -- hide search count
+vim.opt.shortmess:append("s") -- hide search hit x
+vim.opt.shortmess:append("q") -- hide macro
 
 
 -- command mode: underline:
