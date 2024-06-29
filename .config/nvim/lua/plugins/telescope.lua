@@ -98,9 +98,6 @@ return {
         local builtin = require("telescope.builtin")
         local _prefix = "<space>"
 
-        utils.map("n", "gr", builtin.lsp_references)
-        utils.map("n", "gd", builtin.lsp_definitions)
-        utils.map("n", "gi", builtin.lsp_implementations)
 
         for _, map in ipairs({
             { "D",       builtin.diagnostics },
