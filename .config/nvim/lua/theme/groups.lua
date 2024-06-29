@@ -52,6 +52,7 @@ local editor = {
     Question          = { fg = col.bright_gray },
     Warnings          = { fg = col.yellow },
     ErrorMsg          = { fg = col.orange },
+    MoreMSg           = { fg = col.bright_gray },
 
     EndOfBuffer       = { fg = pal.bg1 },
 
