@@ -31,8 +31,8 @@ utils.map("n", "q", "<cmd>q<CR>")
 utils.abbrev("c", "Q", "q!")
 
 -- shortcuts for some stuff i toggle often
-utils.abbrev("c", "mo", "set mouse=a")
-utils.abbrev("c", "mf", "set mouse=")
+-- utils.abbrev("c", "mo", "set mouse=a")
+-- utils.abbrev("c", "mf", "set mouse=")
 
 utils.abbrev("c", "spen", "setlocal spell spelllang=en_us")
 utils.abbrev("c", "spde", "setlocal spell spelllang=de_at")
