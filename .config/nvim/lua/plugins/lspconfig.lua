@@ -144,9 +144,9 @@ M.config = function()
         cmd = {
             "clangd", "--enable-config"
         },
-        on_init = function(client)
+        on_attach = function()
             -- cycle between definition and implementation files
-            utils.lmap(vim.api.nvim_get_current_buf(), "n", "<space>H", "<cmd>ClangdSwitchSourceHeader<CR>")
+            utils.lmap(vim.api.nvim_get_current_buf(), "n", " gh", "<cmd>ClangdSwitchSourceHeader<CR>")
         end
     }
     lspconfig.asm_lsp.setup {
