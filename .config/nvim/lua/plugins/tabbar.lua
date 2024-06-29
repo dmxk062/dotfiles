@@ -2,41 +2,43 @@ local M = {
     "rafcamlet/tabline-framework.nvim",
 }
 
-local colors = require("nord.colors")
+local theme = require("theme.colors")
+local pal = theme.palettes.dark
+local col = theme.colors
 local hl_active = {
     body = {
-        fg = colors.nord0_gui,
-        bg = colors.nord7_gui
+        fg = pal.bg0,
+        bg = col.teal
     },
     add = {
-        fg = colors.nord6_gui,
-        bg = colors.nord3_gui,
+        fg = pal.fg0,
+        bg = pal.bg3,
     },
     delim = {
-        fg = colors.nord7_gui,
-        bg = colors.nord0_gui
+        fg = col.teal,
+        bg = pal.bg0
     },
     mod = {
-        fg = colors.nord6_gui,
-        bg = colors.nord3_gui,
+        fg = pal.fg0,
+        bg = pal.bg3,
     }
 }
 local hl_inactive = {
     body = {
-        fg = colors.nord6_gui,
-        bg = colors.nord3_gui
+        fg = pal.fg0,
+        bg = pal.bg3
     },
     add = {
-        fg = colors.nord6_gui,
-        bg = colors.nord1_gui,
+        fg = pal.fg0,
+        bg = pal.bg1,
     },
     delim = {
-        fg = colors.nord3_gui,
-        bg = colors.nord0_gui
+        fg = pal.bg3,
+        bg = pal.bg0
     },
     mod = {
-        fg = colors.nord6_gui,
-        bg = colors.nord1_gui,
+        fg = pal.fg0,
+        bg = pal.bg1,
     }
 }
 
@@ -112,11 +114,11 @@ M.config = function()
             f.set_gui("none")
             f.add { delims.right, fg = hl.delim.fg, bg = hl.mod.bg }
             f.add { " ~", fg = hl.mod.fg, bg = hl.mod.bg }
-            f.add { delims.right, fg = hl.mod.bg, bg = colors.nord0_gui }
+            f.add { delims.right, fg = hl.mod.bg, bg = pal.bg0 }
         else
             f.add { delims.right, fg = hl.delim.fg, bg = hl.delim.bg }
         end
-        f.set_colors { fg = colors.nord0_gui, bg = colors.nord0_gui }
+        f.set_colors { fg = pal.bg0, bg = pal.bg0 }
         f.add(" ")
     end
 
@@ -132,7 +134,7 @@ M.config = function()
                 draw_tab(f, info)
             else
                 if i == (endi + 1) or i == (start - 1) then
-                    f.add { " .. ", fg = colors.light_gray, bg = colors.nord0_gui }
+                    f.add { " .. ", fg = colors.light_gray, bg = pal.bg0 }
                 end
             end
             i = i + 1
@@ -165,8 +167,8 @@ M.config = function()
 
 
     require("tabline_framework").setup {
-        hl_fill = { bg = colors.nord0_gui, fg = colors.nord0_gui },
-        hl = { bg = colors.nord0_gui, fg = colors.nord0_gui },
+        hl_fill = { bg = pal.bg0, fg = pal.bg0 },
+        hl = { bg = pal.bg0, fg = pal.bg0 },
         render = render,
     }
 end

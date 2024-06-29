@@ -5,50 +5,52 @@ local M = {
     },
 }
 
-local colors = require("nord.colors")
+local theme = require("theme.colors")
+local pal = theme.palettes.dark
+local col = theme.colors
 
 local nord = {}
 nord.normal = {
-    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
-    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    c = { fg = colors.nord6_gui, bg = colors.nord0_gui },
-    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    z = { fg = colors.nord0_gui, bg = colors.nord7_gui },
+    a = { fg = pal.bg0, bg = pal.bg0 },
+    b = { fg = pal.fg0, bg = pal.bg3 },
+    c = { fg = pal.fg0, bg = pal.bg0 },
+    y = { fg = pal.fg0, bg = pal.bg3 },
+    z = { fg = pal.bg0, bg = col.teal },
 }
 
 nord.insert = {
-    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
-    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    z = { fg = colors.nord6_gui, bg = colors.nord3_gui },
+    a = { fg = pal.bg0, bg = pal.bg0 },
+    b = { fg = pal.fg0, bg = pal.bg3 },
+    y = { fg = pal.fg0, bg = pal.bg3 },
+    z = { fg = pal.fg0, bg = pal.bg3 },
 }
 
 nord.visual = {
-    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
-    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    z = { fg = colors.nord0_gui, bg = colors.nord9_gui },
+    a = { fg = pal.bg0, bg = pal.bg0 },
+    b = { fg = pal.fg0, bg = pal.bg3 },
+    y = { fg = pal.fg0, bg = pal.bg3 },
+    z = { fg = pal.bg0, bg = col.light_blue },
 }
 
 nord.replace = {
-    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
-    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    z = { fg = colors.nord0_gui, bg = colors.nord11_gui },
+    a = { fg = pal.bg0, bg = pal.bg0 },
+    b = { fg = pal.fg0, bg = pal.bg3 },
+    y = { fg = pal.fg0, bg = pal.bg3 },
+    z = { fg = pal.bg0, bg = col.red },
 }
 
 nord.command = {
-    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
-    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    z = { fg = colors.nord0_gui, bg = colors.nord15_gui },
+    a = { fg = pal.bg0, bg = pal.bg0 },
+    b = { fg = pal.fg0, bg = pal.bg3 },
+    y = { fg = pal.fg0, bg = pal.bg3 },
+    z = { fg = pal.bg0, bg = col.magenta },
 }
 
 nord.inactive = {
-    a = { fg = colors.nord0_gui, bg = colors.nord0_gui },
-    b = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    y = { fg = colors.nord6_gui, bg = colors.nord3_gui },
-    z = { fg = colors.nord0_gui, bg = colors.nord0_gui },
+    a = { fg = pal.bg0, bg = pal.bg0 },
+    b = { fg = pal.fg0, bg = pal.bg3 },
+    y = { fg = pal.fg0, bg = pal.bg3 },
+    z = { fg = pal.bg0, bg = pal.bg0 },
 }
 
 local bubble = { left = "", right = "" }
@@ -58,18 +60,18 @@ local rbubble = { right = "" }
 
 
 local modecolors = {
-    n = { bg = colors.nord7_gui, fg = colors.nord0_gui },
-    i = { bg = colors.nord3_gui, fg = colors.nord6_gui, gui = "italic" },
-    c = { bg = colors.nord15_gui, fg = colors.nord0_gui },
-    v = { bg = colors.nord9_gui, fg = colors.nord0_gui },
-    V = { bg = colors.nord9_gui, fg = colors.nord0_gui },
-    [""] = { bg = colors.nord9_gui, fg = colors.nord0_gui },
-    R = { bg = colors.nord11_gui, fg = colors.nord0_gui, gui = "bold" },
-    no = { bg = colors.nord7_gui, fg = colors.nord0_gui, gui = "italic" },
-    ["!"] = { bg = colors.nord7_gui, fg = colors.nord0_gui },
-    t = { bg = colors.nord7_gui, fg = colors.nord0_gui },
-    nt = { bg = colors.nord7_gui, fg = colors.nord0_gui },
-    s = { bg = colors.nord7_gui, fg = colors.nord0_gui, gui = "italic" },
+    n = { bg = col.teal, fg = pal.bg0 },
+    i = { bg = pal.bg3, fg = pal.fg0, gui = "italic" },
+    c = { bg = col.magenta, fg = pal.bg0 },
+    v = { bg = col.light_blue, fg = pal.bg0 },
+    V = { bg = col.light_blue, fg = pal.bg0 },
+    [""] = { bg = col.light_blue, fg = pal.bg0 },
+    R = { bg = col.red, fg = pal.bg0, gui = "bold" },
+    no = { bg = col.teal, fg = pal.bg0, gui = "italic" },
+    ["!"] = { bg = col.teal, fg = pal.bg0 },
+    t = { bg = col.teal, fg = pal.bg0 },
+    nt = { bg = col.teal, fg = pal.bg0 },
+    s = { bg = col.teal, fg = pal.bg0, gui = "italic" },
 }
 
 local modenames = {
@@ -129,7 +131,7 @@ local lsp_infos = {
             require("lualine").refresh()
         end
     end,
-    color = { fg = colors.nord6_gui, bg = colors.nord1_gui },
+    color = { fg = pal.fg0, bg = pal.bg1 },
 
 }
 
@@ -160,15 +162,15 @@ local lualine_layout = {
         lsp_infos,
         {
             "diagnostics",
-            color = { fg = colors.nord6_gui, bg = colors.nord1_gui },
+            color = { fg = pal.fg0, bg = pal.bg1 },
             sources = { "nvim_lsp" },
             sections = { "error", "warn", "info", "hint" },
 
             diagnostics_color = {
-                error = { fg = colors.nord11_gui },
-                warn  = { fg = colors.nord12_gui },
-                info  = { fg = colors.nord10_gui },
-                hint  = { fg = colors.nord7_gui },
+                error = { fg = col.red },
+                warn  = { fg = col.orange },
+                info  = { fg = col.blue },
+                hint  = { fg = col.teal },
             },
             symbols = { error = "󰅖 ", warn = " ", info = " ", hint = "󰟶 " },
             colored = true,
@@ -181,12 +183,12 @@ local lualine_layout = {
     lualine_x = {
         {
             "diff",
-            color = { bg = colors.nord1_gui },
+            color = { bg = pal.bg1 },
             colored = true,
             diff_color = {
-                added    = { fg = colors.nord14_gui },
-                modified = { fg = colors.nord15_gui },
-                removed  = { fg = colors.nord11_gui }
+                added    = { fg = col.green },
+                modified = { fg = col.magenta },
+                removed  = { fg = col.red }
             },
             source = function()
                 if vim.b.gitsigns_status_dict then
