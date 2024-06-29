@@ -5,6 +5,7 @@ local M = {
         "refractalize/oil-git-status.nvim"
     },
 }
+
 M.config = function()
     local actions = require("oil.actions")
     local api = require("oil")
@@ -95,7 +96,7 @@ M.config = function()
         keymaps = {
             ["!"] = function()
                 actions.open_cmdline.callback()
-                vim.api.nvim_input("! ")
+                vim.api.nvim_input("!")
             end,
             ["<C-space>"] = actions.refresh,
             ["<CR>"] = actions.select,

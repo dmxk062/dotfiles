@@ -134,7 +134,7 @@ M.config = function()
                 draw_tab(f, info)
             else
                 if i == (endi + 1) or i == (start - 1) then
-                    f.add { " .. ", fg = colors.light_gray, bg = pal.bg0 }
+                    f.add { " .. ", fg = col.light_gray, bg = pal.bg0 }
                 end
             end
             i = i + 1
