@@ -1,5 +1,3 @@
-vim.o.runtimepath = vim.o.runtimepath .. "," .. vim.fn.stdpath("config") .. "/lua/nord"
-vim.cmd("colorscheme nord")
 require("theme.theme").load()
 vim.g.nord_italic = true
 vim.g.nord_borders = true
