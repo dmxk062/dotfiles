@@ -183,9 +183,15 @@ local lualine_layout = {
             function()
                 local reg = vim.fn.reg_recording()
                 if reg == "" then
-                    return ""
+                    -- show last register
+                    local last = vim.fn.reg_recorded()
+                    if last == "" then
+                        return ""
+                    end
+
+                    return [["]] .. last
                 end
-                return [[macro -> "]] .. reg
+                return [[recording -> "]] .. reg
             end,
             icon = { "󰌌", color = { fg = col.magenta, bold = true } }
 
