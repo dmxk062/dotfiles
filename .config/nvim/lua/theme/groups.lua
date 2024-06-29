@@ -1,6 +1,6 @@
-local nord = require("theme.colors")
-local col = nord.colors
-local pal = nord.palettes.dark
+local theme = require("theme.colors")
+local col = theme.colors
+local pal = theme.palettes.dark
 
 
 
@@ -9,7 +9,6 @@ local function with_prefix(prefix, table)
     for k, v in pairs(table) do
         res[prefix .. k] = v
     end
-
     return res
 end
 
@@ -114,7 +113,9 @@ local syntax = {
     Identifier          = { fg = col.light_blue },
     Keyword             = { fg = pal.fg0 },
     Repeat              = { fg = col.yellow },
-
+    Quote               = { fg = pal.bg2 },
+    CodeBlock           = { bg = pal.bg1 },
+    Dash                = { fg = col.blue, bold = true },
 }
 
 local oil = with_prefix("Oil", {
@@ -183,53 +184,92 @@ local cmp = with_prefix("CmpItem", {
 })
 
 local treesitter = with_prefix("@", {
-    number                    = { fg = col.magenta },
-    float                     = { fg = col.magenta },
-    constant                  = { fg = col.yellow },
-    macro                     = { fg = col.teal },
-    comment                   = { fg = col.bright_gray, italic = true },
-    string                    = { fg = col.green },
-    character                 = { fg = col.green },
-    constructor               = { fg = col.light_blue },
-    ["string.regex"]          = { fg = col.orange },
-    ["string.escape"]         = { fg = col.yellow },
-    operator                  = { fg = col.light_blue },
-    variable                  = { fg = col.light_blue },
-    ["variable.builtin"]      = { fg = pal.fg0 },
-    type                      = { fg = col.magenta },
+    number               = { fg = col.magenta },
+    float                = { fg = col.magenta },
+    constant             = { fg = col.yellow },
+    macro                = { fg = col.teal },
+    character            = { fg = col.green },
+    conditional          = { fg = col.light_blue },
+    boolean              = { fg = col.teal },
+    property             = { fg = col.blue },
+    constructor          = { fg = col.light_blue },
+    operator             = { fg = col.light_blue },
+    symbol               = { fg = col.magenta },
+
+    ["comment"]          = { fg = col.bright_gray, italic = true },
+    ["comment.todo"]     = { fg = col.yellow, italic = true },
+    ["comment.error"]    = { fg = col.red, italic = true },
+    ["comment.warning"]  = { fg = col.orange, italic = true },
+    ["comment.note"]     = { fg = col.light_blue, italic = true },
+
+    ["string"]           = { fg = col.green },
+    ["string.regex"]     = { fg = col.orange },
+    ["string.escape"]    = { fg = col.yellow },
+
+    ["variable"]         = { fg = col.light_blue },
+    ["variable.builtin"] = { fg = pal.fg0 },
+
+
+    ["type"]                  = { fg = col.magenta },
     ["type.builtin"]          = { fg = col.light_blue },
-    symbol                    = { fg = col.magenta },
+
     ["function"]              = { fg = col.light_cyan },
     ["function.builtin"]      = { fg = col.light_cyan },
 
     ["punctuation.bracket"]   = { fg = col.light_cyan },
     ["punctuation.special"]   = { fg = col.light_cyan },
-    ["punctuation.delimiter"] = { fg = pal.bg3 },
+    ["punctuation.delimiter"] = { fg = col.light_gray },
 
-    conditional               = { fg = col.light_blue },
-    boolean                   = { fg = col.teal },
-    property                  = { fg = col.blue },
+
+    ["attribute"]             = { fg = col.magenta },
+    ["attribute.builtin"]     = { fg = col.magenta },
 
     ["keyword"]               = { fg = col.light_blue },
     ["keyword.return"]        = { fg = col.light_blue },
     ["keyword.function"]      = { fg = col.light_cyan },
     ["keyword.operator"]      = { fg = col.light_cyan },
 
-    text                      = { fg = pal.fg0 },
+    ["text"]                  = { fg = pal.fg2 },
     ["text.reference"]        = { fg = col.magenta },
     ["text.emphasis"]         = { fg = pal.fg0, italic = true },
     ["text.underline"]        = { fg = pal.fg0, underline = true },
-    ["text.literal"]          = { fg = pal.fg0 },
-    ["text.uri"]              = { fg = col.blue },
+    ["text.literal"]          = { fg = pal.fg2 },
+    ["text.uri"]              = { fg = col.blue, italic = true },
     ["text.strike"]           = { fg = pal.fg0, strikethrough = true },
     ["text.title"]            = { fg = col.blue },
     ["text.strong"]           = { fg = pal.fg0, bold = true },
 
-    ["lsp.type.macro"]        = { link = "@macro" }
+    ["lsp.type.macro"]        = { link = "@macro" },
+
+    ["diff.plus"]             = { link = "DiffAdd" },
+    ["diff.minus"]            = { link = "DiffDelete" },
+    ["diff.delta"]            = { link = "DiffChange" },
+
+    ["tag"]                   = { link = "@keyword" },
+    ["tag.attribute"]         = { fg = pal.fg0 },
+    ["tag.builtin"]           = { fg = col.light_blue },
+    ["tag.delimiter"]         = { fg = col.bright_gray },
+
+    ["markup.heading"]        = { link = "Title" },
+    ["markup.heading.1"]      = { link = "Headline1" },
+    ["markup.heading.2"]      = { link = "Headline2" },
+    ["markup.heading.3"]      = { link = "Headline3" },
+    ["markup.heading.4"]      = { link = "Headline4" },
+    ["markup.heading.5"]      = { link = "Headline5" },
+    ["markup.heading.6"]      = { link = "Headline6" },
+    ["markup.math"]           = { italic = true },
+    ["markup.link"]           = { fg = col.blue, underline = true, italic = true },
+    ["markup.link.label"]     = { fg = col.fg2, italic = true },
+    ["markup.quote"]          = { fg = col.bright_gray, italic = true },
+    ["markup.list"]           = { fg = col.light_gray, bold = true },
+    ["markup.list.checked"]   = { fg = col.green, bold = true },
+    ["markup.list.unchecked"] = { fg = col.light_gray },
 
 })
 
 local lsp = with_prefix("Lsp", {
+
+    InfoBorder                        = { fg = pal.bg3 },
     DiagnosticsDefaultError           = { fg = col.red },
     DiagnosticsSignError              = { fg = col.red },
     DiagnosticsFloatingError          = { fg = col.red },
@@ -303,7 +343,6 @@ local startscreen = with_prefix("StartScreen", {
 })
 
 local mason = with_prefix("mason", {
-
     Header                      = { fg = pal.bg0, bg = col.teal },
     HeaderSecondary             = { fg = pal.bg0, bg = col.teal },
     Highlight                   = { fg = col.magenta },
@@ -373,10 +412,6 @@ local extra = {
     LeapMatch                  = { nocombine = true, underline = true, fg = col.yellow },
     LeapLabelPrimary           = { nocombine = true, fg = pal.inverted, bg = col.yellow },
     LeapLabelSecondary         = { nocombine = true, fg = pal.inverted, bg = col.magenta },
-
-    Quote                      = { fg = pal.bg2 },
-    CodeBlock                  = { bg = pal.bg1 },
-    Dash                       = { fg = col.blue, bold = true },
 }
 
 
