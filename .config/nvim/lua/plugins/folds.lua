@@ -77,6 +77,10 @@ return {
                 }
             },
         })
-        require("ibl").setup{}
+        require("ibl").setup {
+            scope = {
+                show_end = false
+            }
+        }
     end
 }
