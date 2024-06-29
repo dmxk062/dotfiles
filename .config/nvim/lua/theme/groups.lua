@@ -2,6 +2,8 @@ local theme = require("theme.colors")
 local col = theme.colors
 local pal = theme.palettes.dark
 
+local utils = require("theme.utils")
+
 
 
 local function with_prefix(prefix, table)
@@ -24,6 +26,8 @@ local editor = {
     Substitute   = { bg = col.yellow, fg = pal.inverted },
 
     LineNr       = { fg = col.bright_gray },
+    LineNrAbove  = { fg = utils.blend(col.teal, pal.bg3, 0.4) },
+    LineNrBelow  = { fg = utils.blend(col.magenta, pal.bg3, 0.4) },
     CursorLineNr = { fg = pal.fg0 },
     Cursor       = { reverse = true },
     CursorLine   = { bg = pal.bg1 },
@@ -38,10 +42,12 @@ local editor = {
     Tabline      = { link = "StatusLine" },
     Folded       = { fg = col.bright_gray },
     FoldColumn   = { fg = pal.bg3, bold = true },
+    SignColumn   = { fg = col.bright_gray },
 
 
     Visual            = { bg = pal.bg2 },
-    NonText           = { fg = pal.bg1 },
+    NonText           = { fg = col.bright_gray },
+    SpecialKey        = { link = "NonText" },
     MatchParen        = { fg = col.magenta, bg = pal.bg2, bold = true },
 
     DiffAdd           = { fg = col.green },
@@ -61,6 +67,9 @@ local editor = {
     DiagnosticWarning = { fg = col.orange },
 
     Title             = { fg = col.teal, bold = true },
+
+    QuickFixLine      = { fg = col.teal },
+
 
 
 }
@@ -242,8 +251,6 @@ local treesitter = with_prefix("@", {
     ["text.title"]            = { fg = col.blue },
     ["text.strong"]           = { fg = pal.fg0, bold = true },
 
-    ["lsp.type.macro"]        = { link = "@macro" },
-
     ["diff.plus"]             = { link = "DiffAdd" },
     ["diff.minus"]            = { link = "DiffDelete" },
     ["diff.delta"]            = { link = "DiffChange" },
@@ -267,6 +274,9 @@ local treesitter = with_prefix("@", {
     ["markup.list"]           = { fg = col.light_gray, bold = true },
     ["markup.list.checked"]   = { fg = col.green, bold = true },
     ["markup.list.unchecked"] = { fg = col.light_gray },
+
+    ["lsp.type.macro"]        = { link = "@macro" },
+    ["lsp.mod.deprecated"]    = { fg = col.bright_gray, italic = true, strikethrough = true },
 
 })
 
@@ -361,16 +371,16 @@ local mason = with_prefix("mason", {
 })
 
 local gitsigns = with_prefix("GitSigns", {
-    Add              = { fg = pal.bg3 },     -- diff mode: Added line |diff.txt|
-    AddNr            = { fg = pal.bg3 },     -- diff mode: Added line |diff.txt|
-    AddLn            = { fg = pal.bg3 },     -- diff mode: Added line |diff.txt|
-    Change           = { fg = col.magenta }, -- diff mode: Changed line |diff.txt|
-    ChangeNr         = { fg = pal.bg3 },     -- diff mode: Changed line |diff.txt|
-    ChangeLn         = { fg = pal.bg3 },     -- diff mode: Changed line |diff.txt|
-    Delete           = { fg = col.red },     -- diff mode: Deleted line |diff.txt|
-    DeleteNr         = { fg = pal.bg3 },     -- diff mode: Deleted line |diff.txt|
-    DeleteLn         = { fg = pal.bg3 },     -- diff mode: Deleted line |diff.txt|
-    CurrentLineBlame = { fg = pal.bg3_bright },
+    Add              = { fg = pal.bg3 },
+    AddNr            = { fg = pal.bg3 },
+    AddLn            = { fg = pal.bg3 },
+    Change           = { fg = col.magenta },
+    ChangeNr         = { fg = pal.bg3 },
+    ChangeLn         = { fg = pal.bg3 },
+    Delete           = { fg = col.red },
+    DeleteNr         = { fg = pal.bg3 },
+    DeleteLn         = { fg = pal.bg3 },
+    CurrentLineBlame = { fg = col.light_gray },
     AddInline        = { fg = col.green, italic = true },
     DeleteInline     = { fg = col.red, italic = true },
     ChangeInline     = { fg = col.magenta, italic = true },
@@ -397,21 +407,12 @@ local extra = {
     diffLine                   = { fg = pal.bg3 },
     diffIndexLine              = { fg = col.light_blue },
 
-    IndentBlanklineChar        = { fg = pal.bg3 },
-    IndentBlanklineContextChar = { fg = col.light_cyan },
-    IndentBlanklineIndent1     = { fg = col.red, bg = "#4b3d48", bold = true },
-    IndentBlanklineIndent2     = { fg = col.orange, bg = "#4e454a", bold = true },
-    IndentBlanklineIndent3     = { fg = col.yellow, bg = "#54524f", bold = true },
-    IndentBlanklineIndent4     = { fg = col.green, bg = "#454d4f", bold = true },
-    IndentBlanklineIndent5     = { fg = col.teal, bg = "#46565f", bold = true },
-    IndentBlanklineIndent6     = { fg = pal.fg0, bg = "#5e636d", bold = true },
-
-    Headline1                  = { fg = col.red, bg = "#4b3d48", bold = true },
-    Headline2                  = { fg = col.orange, bg = "#4e454a", bold = true },
-    Headline3                  = { fg = col.yellow, bg = "#54524f", bold = true },
-    Headline4                  = { fg = col.green, bg = "#454d4f", bold = true },
-    Headline5                  = { fg = col.teal, bg = "#46565f", bold = true },
-    Headline6                  = { fg = pal.fg0, bg = "#5e636d", bold = true },
+    Headline1                  = { fg = col.red,    bg = utils.blend(col.red, pal.bg0, 0.3), bold = true },
+    Headline2                  = { fg = col.orange, bg = utils.blend(col.orange, pal.bg0, 0.3), bold = true },
+    Headline3                  = { fg = col.yellow, bg = utils.blend(col.yellow, pal.bg0, 0.3), bold = true },
+    Headline4                  = { fg = col.green,  bg = utils.blend(col.green, pal.bg0, 0.3), bold = true },
+    Headline5                  = { fg = col.teal,   bg = utils.blend(col.teal, pal.bg0, 0.3), bold = true },
+    Headline6                  = { fg = pal.fg0,    bg = utils.blend(col.white, pal.bg0, 0.3), bold = true },
 
     LeapMatch                  = { nocombine = true, underline = true, fg = col.yellow },
     LeapLabelPrimary           = { nocombine = true, fg = pal.inverted, bg = col.yellow },
