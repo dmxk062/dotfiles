@@ -2,14 +2,11 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
         "nvim-lua/plenary.nvim",
-        -- "gbrlsnchs/telescope-lsp-handlers.nvim",
     },
     config = function()
         local telescope = require("telescope")
         local utils = require("utils")
-        local themes = require("telescope.themes")
 
-        -- telescope.load_extension('fzf')
         local buffer_on_enter = {
             n = {
                 ["<enter>"] = "select_drop",
@@ -53,9 +50,8 @@ return {
                 prompt_prefix = " ",
             },
             pickers = {
-                lsp_definitions = default_config { jump_type = "tab" },
+                lsp_definitions = default_config { jump_type = "tab drop" },
                 diagnostics = default_config(),
-                find_files = default_config(),
                 git_files = default_config { prompt_title = "Files in Git" },
                 live_grep = default_config(),
                 grep_string = default_config(),
@@ -94,7 +90,7 @@ return {
                     }
                 },
                 lsp_references = default_config(),
-                treesitter = default_config { prompt_title = "Symbols" },
+                lsp_workspace_symbols = default_config(),
             },
             extensions = {
             }
@@ -108,14 +104,12 @@ return {
 
         for _, map in ipairs({
             { "D",       builtin.diagnostics },
-            { "T",       builtin.treesitter },
-            { "F",       builtin.find_files },
+            { "S",       builtin.lsp_workspace_symbols },
             { "gF",      builtin.git_files },
             { "h",       builtin.oldfiles },
-            { "G",       builtin.live_grep },
+            { "/",       builtin.live_grep },
             { "R",       builtin.registers },
             { "<space>", builtin.buffers },
-            { "#",       builtin.grep_string }
         }) do
             utils.map("n", _prefix .. map[1], map[2])
         end

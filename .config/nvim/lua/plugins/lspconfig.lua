@@ -61,15 +61,14 @@ M.config = function()
             utils.lmap(opts.buf, { "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
             utils.lmap(opts.buf, { "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
 
-
-            utils.lmap(opts.buf, "n", "<space>d", vim.diagnostic.open_float)
-            utils.lmap(opts.buf, "n", "[d", vim.diagnostic.goto_prev)
-            utils.lmap(opts.buf, "n", "]d", vim.diagnostic.goto_next)
-
             utils.lmap(opts.buf, "n", "gi", vim.lsp.buf.implementation)
             utils.lmap(opts.buf, { "n", "v" }, "<space>a", vim.lsp.buf.code_action)
             utils.lmap(opts.buf, "n", "<space>rn", vim.lsp.buf.rename)
             utils.lmap(opts.buf, "n", "<space>fmt", function() vim.lsp.buf.format { async = true } end)
+
+            utils.lmap(opts.buf, "n", "gr", require("telescope.builtin").lsp_references)
+            utils.lmap(opts.buf, "n", "gd", require("telescope.builtin").lsp_definitions)
+            utils.lmap(opts.buf, "n", "gi", require("telescope.builtin").lsp_implementations)
         end,
     })
 
