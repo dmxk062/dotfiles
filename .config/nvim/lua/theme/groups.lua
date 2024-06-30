@@ -4,8 +4,6 @@ local pal = theme.palettes.dark
 
 local utils = require("theme.utils")
 
-
-
 local function with_prefix(prefix, table)
     local res = {}
     for k, v in pairs(table) do
@@ -26,8 +24,8 @@ local editor = {
     Substitute   = { bg = col.yellow, fg = pal.inverted },
 
     LineNr       = { fg = col.bright_gray },
-    LineNrAbove  = { fg = utils.blend(col.blue, pal.bg3, 0.5) },
-    LineNrBelow  = { fg = utils.blend(col.red, pal.bg3, 0.5) },
+    LineNrAbove  = { fg = utils.blend(col.teal, pal.bg3, 0.5) },
+    LineNrBelow  = { fg = utils.blend(col.blue, pal.bg3, 0.5) },
     CursorLineNr = { fg = pal.fg0 },
     Cursor       = { reverse = true },
     CursorLine   = { bg = pal.bg1 },
@@ -40,9 +38,9 @@ local editor = {
 
     StatusLine   = { bg = pal.bg0 },
     Tabline      = { link = "StatusLine" },
-    Folded       = { fg = col.bright_gray },
-    FoldColumn   = { fg = pal.bg3, bold = true },
-    SignColumn   = { fg = col.bright_gray },
+    Folded       = { fg = pal.bg3 },
+    FoldColumn   = { fg = pal.bg3 },
+    SignColumn   = { fg = pal.bg3 },
 
 
     Visual            = { bg = pal.bg2 },
@@ -59,6 +57,7 @@ local editor = {
     Warnings          = { fg = col.yellow },
     ErrorMsg          = { fg = col.orange },
     MoreMSg           = { fg = col.bright_gray },
+    ModeMSg           = { fg = col.bright_gray },
 
     EndOfBuffer       = { fg = pal.bg1 },
 
@@ -86,7 +85,7 @@ local syntax = {
     Constant            = { fg = col.yellow },
     Boolean             = { fg = col.yellow },
     Label               = { fg = col.magenta },
-    Operator            = { fg = col.light_blue },
+    Operator            = { link = "@operator" },
     Exception           = { fg = col.light_blue },
     Comment             = { fg = col.bright_gray, italic = true },
     PreProc             = { fg = col.light_blue },
@@ -203,7 +202,7 @@ local treesitter = with_prefix("@", {
     boolean                        = { fg = col.teal },
     property                       = { fg = col.blue },
     constructor                    = { fg = col.light_blue },
-    operator                       = { fg = col.light_blue },
+    operator                       = { fg = col.teal },
     symbol                         = { fg = col.magenta },
 
     ["comment"]                    = { fg = col.bright_gray, italic = true },
@@ -417,6 +416,9 @@ local extra = {
     LeapMatch                  = { nocombine = true, underline = true, fg = col.yellow },
     LeapLabelPrimary           = { nocombine = true, fg = pal.inverted, bg = col.yellow },
     LeapLabelSecondary         = { nocombine = true, fg = pal.inverted, bg = col.magenta },
+
+    IndentBlanklineChar        = { fg = pal.bg1 },
+    IndentBlanklineCharActive  = { fg = pal.bg3 },
 }
 
 

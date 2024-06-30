@@ -3,7 +3,6 @@ return {
     dependencies = {
         "kevinhwang91/promise-async",
         "luukvbaal/statuscol.nvim",
-        "lukas-reineke/indent-blankline.nvim",
     },
     config = function()
         local utils = require("utils")
@@ -43,9 +42,12 @@ return {
             table.insert(newVirtText, { suffix, "Comment" })
             return newVirtText
         end
-        ufo.setup({
-            open_fold_hl_timeout = 150,
+        ufo.setup {
+            open_fold_hl_timeout = 0,
             fold_virt_text_handler = handler,
+            close_fold_kinds_for_ft = {
+                default = {"imports", "comment"},
+            },
             preview = {
                 win_config = {
                     border = "rounded",
@@ -58,7 +60,7 @@ return {
                     jumpBot = "]"
                 }
             },
-        })
+        }
         utils.map("n", "<S-k>", function()
             local winid = ufo.peekFoldedLinesUnderCursor()
             if not winid then
@@ -77,10 +79,5 @@ return {
                 }
             },
         })
-        require("ibl").setup {
-            scope = {
-                show_end = false
-            }
-        }
     end
 }
