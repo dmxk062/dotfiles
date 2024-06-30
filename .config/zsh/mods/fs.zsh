@@ -231,16 +231,18 @@ function lr {
 }
 
 # like pwd but takes into account all the shell magic
-alias pwf='print -P -- %~'
+function pwf {
+    print -P -- "%~"
+}
 
 
 
 } elif [[ "$1" == "unload" ]] {
 
 unfunction rgf mkcd mkf tmp rp bn \
-    rmi  \
+    rmi  pwf\
     readfile readstream lr
 
-unalias md ft bft pwf
+unalias md ft bft
 
 }
