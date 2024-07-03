@@ -80,7 +80,7 @@ M.config = function()
         use_default_keymaps = true,
         cleanup_delay_ms = 5000,
         extra_scp_args = { "-O" },     -- use scp instead of sftp
-        experimental_watch_for_changes = true,
+        watch_for_changes = true,
 
         view_options = {
             is_hidden_file = function(name, bufnr)
