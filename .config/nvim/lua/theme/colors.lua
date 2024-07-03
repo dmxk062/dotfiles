@@ -16,7 +16,6 @@ local named_colors = {
     yellow = "#EBCB8B",
     green = "#A3BE8C",
     magenta = "#B48EAD",
-    none = "NONE",
 }
 
 local dark_palette = {

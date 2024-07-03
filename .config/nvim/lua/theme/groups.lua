@@ -195,7 +195,6 @@ local cmp = with_prefix("CmpItem", {
 local treesitter = with_prefix("@", {
     number                         = { fg = col.magenta },
     float                          = { fg = col.magenta },
-    constant                       = { fg = col.yellow },
     macro                          = { fg = col.teal },
     character                      = { fg = col.green },
     conditional                    = { fg = col.light_blue },
@@ -220,16 +219,18 @@ local treesitter = with_prefix("@", {
     ["variable.builtin"]           = { fg = pal.fg0, italic = true },
     ["variable.parameter.builtin"] = { fg = col.light_blue, italic = true },
 
+    ["constant"]                   = { fg = col.yellow },
+    ["constant.builtin"]           = { link = "@constant" },
 
-    ["type"]                  = { fg = col.magenta },
-    ["type.builtin"]          = { fg = col.light_blue },
+    ["type"]                       = { fg = col.magenta },
+    ["type.builtin"]               = { fg = col.light_blue },
 
-    ["function"]              = { fg = col.light_cyan },
-    ["function.builtin"]      = { fg = col.light_cyan },
+    ["function"]                   = { fg = col.light_cyan },
+    ["function.builtin"]           = { fg = col.light_cyan },
 
-    ["punctuation.bracket"]   = { fg = col.light_cyan },
-    ["punctuation.special"]   = { fg = col.light_cyan },
-    ["punctuation.delimiter"] = { fg = col.light_gray },
+    ["punctuation.bracket"]        = { fg = col.light_cyan },
+    ["punctuation.special"]        = { fg = col.light_cyan },
+    ["punctuation.delimiter"]      = { fg = col.light_gray },
 
 
     ["attribute"]             = { fg = col.magenta },
@@ -315,6 +316,7 @@ local diag = with_prefix("Diagnostic", {
     Warn             = { link = "LspDiagnosticsDefaultWarning" },
     Info             = { link = "LspDiagnosticsDefaultInformation" },
     Hint             = { link = "LspDiagnosticsDefaultHint" },
+    Deprecated       = { link = "@lsp.mod.deprecated" },
     VirtualTextWarn  = { link = "LspDiagnosticsVirtualTextWarning" },
     UnderlineWarn    = { link = "LspDiagnosticsUnderlineWarning" },
     FloatingWarn     = { link = "LspDiagnosticsFloatingWarning" },
@@ -397,28 +399,28 @@ local telescope = with_prefix("Telescope", {
 })
 
 local extra = {
-    diffAdded                  = { fg = col.green },
-    diffRemoved                = { fg = col.red },
-    diffChanged                = { fg = col.magenta },
-    diffOldFile                = { fg = col.yellow },
-    diffNewFile                = { fg = col.orange },
-    diffFile                   = { fg = col.teal },
-    diffLine                   = { fg = pal.bg3 },
-    diffIndexLine              = { fg = col.light_blue },
+    diffAdded                 = { fg = col.green },
+    diffRemoved               = { fg = col.red },
+    diffChanged               = { fg = col.magenta },
+    diffOldFile               = { fg = col.yellow },
+    diffNewFile               = { fg = col.orange },
+    diffFile                  = { fg = col.teal },
+    diffLine                  = { fg = pal.bg3 },
+    diffIndexLine             = { fg = col.light_blue },
 
-    Headline1                  = { fg = col.red,    bg = utils.blend(col.red, pal.bg0, 0.3), bold = true },
-    Headline2                  = { fg = col.orange, bg = utils.blend(col.orange, pal.bg0, 0.3), bold = true },
-    Headline3                  = { fg = col.yellow, bg = utils.blend(col.yellow, pal.bg0, 0.3), bold = true },
-    Headline4                  = { fg = col.green,  bg = utils.blend(col.green, pal.bg0, 0.3), bold = true },
-    Headline5                  = { fg = col.teal,   bg = utils.blend(col.teal, pal.bg0, 0.3), bold = true },
-    Headline6                  = { fg = pal.fg0,    bg = utils.blend(col.white, pal.bg0, 0.3), bold = true },
+    Headline1                 = { fg = col.red, bg = utils.blend(col.red, pal.bg0, 0.3), bold = true },
+    Headline2                 = { fg = col.orange, bg = utils.blend(col.orange, pal.bg0, 0.3), bold = true },
+    Headline3                 = { fg = col.yellow, bg = utils.blend(col.yellow, pal.bg0, 0.3), bold = true },
+    Headline4                 = { fg = col.green, bg = utils.blend(col.green, pal.bg0, 0.3), bold = true },
+    Headline5                 = { fg = col.teal, bg = utils.blend(col.teal, pal.bg0, 0.3), bold = true },
+    Headline6                 = { fg = pal.fg0, bg = utils.blend(col.white, pal.bg0, 0.3), bold = true },
 
-    LeapMatch                  = { nocombine = true, underline = true, fg = col.yellow },
-    LeapLabelPrimary           = { nocombine = true, fg = pal.inverted, bg = col.yellow },
-    LeapLabelSecondary         = { nocombine = true, fg = pal.inverted, bg = col.magenta },
+    LeapMatch                 = { nocombine = true, underline = true, fg = col.yellow },
+    LeapLabelPrimary          = { nocombine = true, fg = pal.inverted, bg = col.yellow },
+    LeapLabelSecondary        = { nocombine = true, fg = pal.inverted, bg = col.magenta },
 
-    IndentBlanklineChar        = { fg = pal.bg1 },
-    IndentBlanklineCharActive  = { fg = pal.bg3 },
+    IndentBlanklineChar       = { fg = pal.bg1 },
+    IndentBlanklineCharActive = { fg = pal.bg3 },
 }
 
 
