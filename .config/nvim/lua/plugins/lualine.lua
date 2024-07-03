@@ -68,6 +68,7 @@ local modecolors = {
     [""] = { bg = col.light_blue, fg = pal.bg0 },
     R = { bg = col.red, fg = pal.bg0, gui = "bold" },
     no = { bg = col.teal, fg = pal.bg0, gui = "italic" },
+    noV = { bg = col.teal, fg = pal.bg0, gui = "italic" },
     ["!"] = { bg = col.teal, fg = pal.bg0 },
     t = { bg = col.teal, fg = pal.bg0 },
     nt = { bg = col.teal, fg = pal.bg0 },
@@ -85,7 +86,7 @@ local mode = {
         return modenames[str] or str:lower():sub(1, 1)
     end,
     color = function()
-        return modecolors[vim.fn.mode(1)]
+        return modecolors[vim.fn.mode(1)] or modecolors.n
     end,
     separator = bubble,
 }
