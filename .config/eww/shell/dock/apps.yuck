@@ -52,18 +52,19 @@
     :onclick "dock/bin/focus.sh '${app.address}' '${app.workspace.name}'"
     :onrightclick "${EWW_CMD} update dock_active_win='${replace(app, "'", "")}'; sleep 0.1; dock/bin/open_win_menu.sh"
     :onmiddleclick "hyprctl dispatch closewindow address:${app.address}"
-    :visible {app.mapped && app.size != '[0, 0]' && app.class != "" && app.title != ""}
+    :visible {app.mapped && app.size != '[0, 0]' && (app.class != "" || matches(app.title, "^Minecraft.*")) && app.title != ""}
     :tooltip "${app.title} in ${app.workspace.name}"
         (overlay 
         (themed_icon :name {app.class == "kitty" ? (matches(app.title, "^nv:*.") ?  "nvim" : 
         (matches(app.title, "^lf:*.") ? "file-manager" :
         (app.title == "qalc" ? "calculator" :
         (app.title == "cava" ? "accessories-media-converter" : "kitty")))) :
+        (matches(app.title, "^Minecraft*.") ? "org.prismlauncher.PrismLauncher" :
         (app.class == "gamescope" ? 
             (steam_game_icons[app.title]?: "steam") : ;; for steam games in gamescope
         (matches(app.class, "Minecraft*.") ? "org.prismlauncher.PrismLauncher" : ;; and the usual minecraft issue
         (app.title == "About" ? "dialog-info" : ;; info icon for about dialogs
-        window_overrides[app.class]?:app.class)))} ;; all the rest
+        window_overrides[app.class]?:app.class))))} ;; all the rest
         :width 48 :height 48)
             (box  :space-evenly false :halign "end" :valign "start" :visible {app.pinned || (dock_hover_win == app.address && app.floating)} 
                 (button 
@@ -73,6 +74,10 @@
                 (themed_icon :name {app.pinned ? "window-pin-symbolic" : "view-pin-symbolic"} :width 8 :height 8)
                 )
             )
+            ;; (box :space-evenly false :halign "start" :valign "start" 
+            ;;     (label :class "dockicon-label" :text {ws_icons[app.workspace.name]})
+            ;;     ;; (themed_icon :name "window-close-symbolic" :width 8 :height 8)
+            ;; )
             (box  :space-evenly false :halign "end" :valign "end" :visible {app.xwayland}
                 (themed_icon :name "xorg" :width 8 :height 8)
             )
