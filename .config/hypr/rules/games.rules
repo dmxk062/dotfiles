@@ -16,12 +16,13 @@ windowrulev2 = noblur,title:Steam Big Picture Mode
 windowrulev2 = idleinhibit always,title:Steam Big Picture Mode
 
 # same with minecraft
-windowrulev2 = fullscreen,class:Minecraft,title:Minecraft
-windowrulev2 = monitor DP-1,class:Minecraft,title:Minecraft
-windowrulev2 = noanim,class:Minecraft,title:Minecraft
-windowrulev2 = noblur,class:Minecraft,title:Minecraft
-windowrulev2 = workspace name:games,class:Minecraft,title:Minecraft
-windowrulev2 = idleinhibit always,class:Minecraft,title:Minecraft
+windowrulev2 = fullscreen,title:Minecraft
+windowrulev2 = monitor DP-1,title:Minecraft
+windowrulev2 = noanim,title:Minecraft
+windowrulev2 = noblur,title:Minecraft
+windowrulev2 = workspace name:games,title:Minecraft
+windowrulev2 = idleinhibit always,title:Minecraft
+windowrulev2 = stayfocused,title:Minecraft
 
 # and yuzu
 windowrulev2 = fullscreen,class:yuzu

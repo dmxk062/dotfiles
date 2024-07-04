@@ -4,7 +4,6 @@ windowrulev2=float, class:popup
 windowrule=center, class:popup
 
 
-windowrulev2=float, class:io.missioncenter.MissionCenter
 # windowrulev2=float, class:org.gnome.Nautilus
 windowrulev2=float, class:com.github.GradienceTeam.Gradience
 windowrulev2=float, class:org.gnome.Characters
