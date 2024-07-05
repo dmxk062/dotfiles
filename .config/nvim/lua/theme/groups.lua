@@ -2,7 +2,7 @@ local theme = require("theme.colors")
 local col = theme.colors
 local pal = theme.palettes.dark
 
-local utils = require("theme.utils")
+local utils = require("theme.blend")
 
 local function with_prefix(prefix, table)
     local res = {}
@@ -220,7 +220,7 @@ local treesitter = with_prefix("@", {
     ["variable.parameter.builtin"] = { fg = col.light_blue, italic = true },
 
     ["constant"]                   = { fg = col.yellow },
-    ["constant.builtin"]           = { link = "@constant" },
+    ["constant.builtin"]           = { fg = pal.fg2 },
 
     ["type"]                       = { fg = col.magenta },
     ["type.builtin"]               = { fg = col.light_blue },
