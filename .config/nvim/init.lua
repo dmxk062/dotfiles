@@ -28,12 +28,22 @@ vim.opt.shortmess:append("S") -- hide search count
 vim.opt.shortmess:append("s") -- hide search hit x
 vim.opt.shortmess:append("q") -- hide macro
 
+vim.opt.fillchars = {
+    -- its visible from the gaps anyways
+    diff = " ",
+    lastline = "",
+}
 
 -- command mode: underline
 -- normal, visual etc: block
 -- insert: bar, blink
 -- normal: blink
-vim.o.guicursor = "c-ci-cr:hor20,n-o-r-v-sm:block,i-ve:ver10,n-i-ve:blinkon1,"
+vim.opt.guicursor = {
+    "c-ci-cr:hor20",
+    "n-o-r-v-sm:block",
+    "i-ve:ver10",
+    "n-i-ve:blinkon1"
+}
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 
@@ -144,8 +154,4 @@ require("lazy").setup("plugins", {
 require("mappings")
 
 -- for some reason lazy deactivates that
--- make sure that directives like:
--- vim: ft=c 
--- work
 vim.o.modeline = true
-vim.o.modelines = 8
