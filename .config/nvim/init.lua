@@ -1,6 +1,4 @@
 require("theme.theme").load()
-vim.g.nord_italic = true
-vim.g.nord_borders = true
 
 vim.o.relativenumber = true
 vim.o.number = true
@@ -15,24 +13,23 @@ vim.o.hlsearch = true
 vim.o.termguicolors = true
 vim.o.wildmenu = false
 
--- wrap at whitespace and, indent wrapped lines and show an indicator
+-- wrap at whitespace, indent wrapped lines and show an indicator
 vim.o.wrap = true
 vim.o.linebreak = true
 vim.o.breakindent = true
 vim.o.breakindentopt = "sbr"
 vim.o.showbreak = ""
 
--- idk why that isnt the default
+-- idk why that isnt the default, much more intuitive imo
 vim.o.splitright = true
 vim.o.splitbelow = true
 
--- disable all the search related messages
 vim.opt.shortmess:append("S") -- hide search count
 vim.opt.shortmess:append("s") -- hide search hit x
 vim.opt.shortmess:append("q") -- hide macro
 
 
--- command mode: underline:
+-- command mode: underline
 -- normal, visual etc: block
 -- insert: bar, blink
 -- normal: blink
@@ -40,14 +37,16 @@ vim.o.guicursor = "c-ci-cr:hor20,n-o-r-v-sm:block,i-ve:ver10,n-i-ve:blinkon1,"
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 
+-- enable terminal title
 vim.o.title = true
-vim.o.wrap = true
 
-vim.g.c_syntax_for_h = true -- i use C more than C++
+-- i use C more than C++
+vim.g.c_syntax_for_h = true
 
 -- change the title in a more intelligent way
 vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
     callback = function(args)
+        -- expand stuff similarly to my shell directory aliases
         local function format_path(name, user)
             local expanded = name:gsub("/tmp/workspaces_" .. user, "~tmp")
                 :gsub("/home/" .. user .. "/ws", "~ws")
@@ -63,9 +62,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter
 
         local user     = vim.env.USER
 
-        if filetype == "TelescopePrompt" then
-            path = ""
-        elseif filetype == "oil" then
+        if filetype == "oil" then
             if vim.startswith(bufname, "oil-ssh://") then
                 local remote_path = bufname:match("//.-(/.*)"):sub(2, -1) -- the path at the host
                 path = "ssh:" .. remote_path
@@ -90,7 +87,8 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter
 
 vim.o.titlestring = "nv: NeoVIM" -- set initial
 
--- load all the "real" config in ./lua/ and the packages in ./lua/plugins/
+-- use lazy for the remaining config
+-- all the package definitions in ./lua/plugins/ will be loaded
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
@@ -102,17 +100,22 @@ if not vim.uv.fs_stat(lazypath) then
         lazypath,
     })
 end
+
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins", {
+    -- so i can work on my own local plugins
     dev = {
         path = "~/ws/nvim_plugins",
-        patterns = {"dmxk062"},
+        patterns = { "dmxk062" },
         fallback = true,
     },
+
+    -- just plain annoying with a simpler config
     change_detection = {
         enabled = false,
         notify  = false,
     },
+
     ui = {
         title = "Plugins - Lazy",
         border = "rounded",
@@ -127,7 +130,7 @@ require("lazy").setup("plugins", {
             lazy       = "󰒲",
             start      = "󰐥",
             runtime    = "",
-            list = {
+            list       = {
                 "󱦰",
                 "󱞩",
                 "󱞩",
@@ -137,6 +140,12 @@ require("lazy").setup("plugins", {
     }
 })
 
+-- set all the other mappings
 require("mappings")
+
 -- for some reason lazy deactivates that
+-- make sure that directives like:
+-- vim: ft=c 
+-- work
 vim.o.modeline = true
+vim.o.modelines = 8
