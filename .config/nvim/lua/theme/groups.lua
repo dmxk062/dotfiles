@@ -49,9 +49,10 @@ local editor = {
     MatchParen        = { fg = col.magenta, bg = pal.bg2, bold = true },
 
     DiffAdd           = { fg = col.green },
-    DiffChange        = { fg = col.yellow },
+    -- the actual changes are highlighted anyways
+    DiffChange        = { },
     DiffDelete        = { fg = col.red },
-    DiffText          = { fg = col.magenta },
+    DiffText          = { fg = col.yellow, italic = true },
 
     Question          = { fg = col.bright_gray },
     Warnings          = { fg = col.yellow },
@@ -415,9 +416,9 @@ local extra = {
     Headline5                 = { fg = col.teal, bg = utils.blend(col.teal, pal.bg0, 0.3), bold = true },
     Headline6                 = { fg = pal.fg0, bg = utils.blend(col.white, pal.bg0, 0.3), bold = true },
 
-    LeapMatch                 = { nocombine = true, underline = true, fg = col.yellow },
-    LeapLabelPrimary          = { nocombine = true, fg = pal.inverted, bg = col.yellow },
-    LeapLabelSecondary        = { nocombine = true, fg = pal.inverted, bg = col.magenta },
+    LeapMatch                 = { underline = true, fg = col.yellow },
+    LeapLabel                 = { fg = pal.inverted, bg = col.yellow, nocombine = true },
+    -- LeapLabelPrimary          = { fg = pal.inverted, bg = col.magenta, nocombine = true },
 
     IndentBlanklineChar       = { fg = pal.bg1 },
     IndentBlanklineCharActive = { fg = pal.bg3 },
