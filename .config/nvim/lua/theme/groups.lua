@@ -52,7 +52,7 @@ local editor = {
     -- the actual changes are highlighted anyways
     DiffChange        = { },
     DiffDelete        = { fg = col.red },
-    DiffText          = { fg = col.yellow, italic = true },
+    DiffText          = { fg = col.magenta, italic = true },
 
     Question          = { fg = col.bright_gray },
     Warnings          = { fg = col.yellow },
@@ -385,7 +385,7 @@ local gitsigns = with_prefix("GitSigns", {
     CurrentLineBlame = { fg = col.light_gray },
     AddInline        = { fg = col.green, italic = true },
     DeleteInline     = { fg = col.red, italic = true },
-    ChangeInline     = { fg = col.magenta, italic = true },
+    ChangeInline     = { italic = true, bold = true },
 })
 
 local telescope = with_prefix("Telescope", {
