@@ -13,15 +13,13 @@ return {
                 ["}"] = { escape = true, close = false, pair = "{}" },
 
                 ['"'] = { escape = true, close = true, pair = '""' },
-                ["'"] = { escape = true, close = true, pair = "''" },
+                ["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = { "text", "markdown" } },
                 ["`"] = { escape = true, close = true, pair = "``" },
+                ["$"] = { escape = true, close = true, pair = "$$", enabled_filetypes = { "latex" } },
             },
             options = {
                 disable_when_touch = true,
-                -- mainly for quotes
                 disabled_filetypes = {
-                    "text",
-                    "markdown"
                 },
             },
         })
