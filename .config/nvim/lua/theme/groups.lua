@@ -50,7 +50,7 @@ local editor = {
 
     DiffAdd           = { fg = col.green },
     -- the actual changes are highlighted anyways
-    DiffChange        = { },
+    DiffChange        = {},
     DiffDelete        = { fg = col.red },
     DiffText          = { fg = col.magenta, italic = true },
 
@@ -69,8 +69,16 @@ local editor = {
     Title             = { fg = col.teal, bold = true },
 
     QuickFixLine      = { fg = col.teal },
+    Directory         = { fg = col.teal },
 
-
+    Pmenu             = { bg = pal.bg1, fg = pal.fg0 },
+    PmenuSel          = { bg = col.teal, fg = pal.inverted },
+    PmenuKind         = { fg = col.magenta },
+    PmenuKindSel      = { fg = pal.inverted },
+    PmenuExtra        = { fg = pal.bg3 },
+    PmenuExtraSel     = { fg = pal.bg3 },
+    PmenuSbar         = { fg = pal.fg2 },
+    PmenuThumb        = { fg = pal.fg0 },
 
 }
 
@@ -89,6 +97,7 @@ local syntax = {
     Operator            = { link = "@operator" },
     Exception           = { fg = col.light_blue },
     Comment             = { fg = col.bright_gray, italic = true },
+    SpecialComment      = { fg = col.light_cyan, italic = true },
     PreProc             = { fg = col.light_blue },
     Include             = { fg = col.light_blue },
     Define              = { fg = col.light_blue },
@@ -99,7 +108,6 @@ local syntax = {
     SpecialChar         = { fg = col.yellow },
     Tag                 = { fg = col.fg2 },
     Delimiter           = { fg = pal.fg0 },
-    SpecialComment      = { fg = col.light_cyan, italic = true },
     Debug               = { fg = col.red },
     Underlined          = { fg = col.blue, underline = true },
     Ignore              = { fg = pal.bg1 },
@@ -400,14 +408,18 @@ local telescope = with_prefix("Telescope", {
 })
 
 local extra = {
-    diffAdded                 = { fg = col.green },
-    diffRemoved               = { fg = col.red },
-    diffChanged               = { fg = col.magenta },
-    diffOldFile               = { fg = col.yellow },
-    diffNewFile               = { fg = col.orange },
-    diffFile                  = { fg = col.teal },
-    diffLine                  = { fg = pal.bg3 },
-    diffIndexLine             = { fg = col.light_blue },
+    -- diffAdded                 = { fg = col.green },
+    -- diffRemoved               = { fg = col.red },
+    -- diffChanged               = { fg = col.magenta },
+    -- diffOldFile               = { fg = col.yellow },
+    -- diffNewFile               = { fg = col.orange },
+    -- diffFile                  = { fg = col.teal },
+    -- diffLine                  = { fg = pal.bg3 },
+    -- diffIndexLine             = { fg = col.light_blue },
+
+    Added                     = { link = "diffAdded" },
+    Changed                   = { link = "diffChanged" },
+    Removed                   = { link = "diffRemoved" },
 
     Headline1                 = { fg = col.red, bg = utils.blend(col.red, pal.bg0, 0.3), bold = true },
     Headline2                 = { fg = col.orange, bg = utils.blend(col.orange, pal.bg0, 0.3), bold = true },
