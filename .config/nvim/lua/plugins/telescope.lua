@@ -73,8 +73,8 @@ M.config = function()
                 theme = "dropdown",
                 previewer = false,
                 layout_config = {
-                    height = .3,
-                    width = .3,
+                    height = .5,
+                    width = .5,
                 },
                 mappings = {
                     n = {

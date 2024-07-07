@@ -401,10 +401,10 @@ local telescope = with_prefix("Telescope", {
     PromptTitle    = { fg = col.magenta },
     ResultsBorder  = { fg = pal.bg3 },
     PreviewBorder  = { fg = pal.bg3 },
-    Selection      = { bg = pal.bg2 },
+    Selection      = { bg = pal.bg1 },
     PromptPrefix   = { fg = col.magenta },
     SelectionCaret = { bg = col.magenta, fg = col.magenta },
-    Matching       = { link = 'Search' },
+    Matching       = { fg = col.yellow },
 })
 
 local extra = {
