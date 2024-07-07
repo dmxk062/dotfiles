@@ -1,28 +1,26 @@
 -- see https://github.com/chrisgrieser/nvim-various-textobjs
 -- nowhere near as complex, but i just want some framework for making my own
 
-local M = {}
 
 ---@param name string
----@param delim string
-function M.create_delim_obj(name, delim)
-    vim.keymap.set({ "x", "o" },
-        "i" .. name,
-        "<cmd>normal! T" .. delim .. "vt" .. delim .. "<CR>",
-        { silent = true, noremap = true }
-    )
-    vim.keymap.set({ "x", "o" },
-        "a" .. name,
-        "<cmd>normal! F" .. delim .. "vf" .. delim .. "<CR>",
-        { silent = true, noremap = true }
-    )
+---@param left string
+---@param right string
+local function create_delim_obj(name, left, right)
+    if not right then
+        right = left
+    end
+
+    vim.keymap.set("o", "i" .. name, "<cmd>normal! T" .. left .. "vt" .. right .. "<CR>",
+        { silent = true, noremap = true })
+    vim.keymap.set("o", "a" .. name, "<cmd>normal! F" .. left .. "vf" .. right .. "<CR>",
+        { silent = true, noremap = true })
+    vim.keymap.set("x", "i" .. name, "<cmd>normal! T" .. left .. "ot" .. right .. "<CR>",
+        { silent = true, noremap = true })
+    vim.keymap.set("x", "a" .. name, "<cmd>normal! F" .. left .. "of" .. right .. "<CR>",
+        { silent = true, noremap = true })
 end
 
 -- more complex objects
-
-local function is_visual()
-    return vim.fn.mode():find("v") ~= nil
-end
 
 ---@param cmdstr string
 local function cmd(cmdstr)
@@ -33,13 +31,28 @@ end
 
 ---@param startpos position
 ---@param endpos position
-local function set_visual_selection(startpos, endpos)
+local function set_visual_selection(startpos, endpos, linewise)
     cmd("m`") -- set mark
     vim.api.nvim_win_set_cursor(0, startpos)
-    if is_visual() then
-        cmd("o")
+
+    local mode = vim.fn.mode(0)
+    if mode:find("v") ~= nil then
+        if linewise then
+            if mode == "V" then
+                cmd("o")
+            else
+                cmd("V")
+                cmd("o")
+            end
+        else
+            cmd("o")
+        end
     else
-        cmd("v")
+        if linewise then
+            cmd("V")
+        else
+            cmd("v")
+        end
     end
     vim.api.nvim_win_set_cursor(0, endpos)
 end
@@ -50,7 +63,7 @@ end
 
 ---@param _type "error"|"warn"|"info"|"hint"|nil
 ---@param pos position|nil
-function M.diagnostic(_type, pos)
+local function diagnostic(_type, pos)
     local types = {
         error = 1,
         warn = 2,
@@ -58,7 +71,7 @@ function M.diagnostic(_type, pos)
         hint = 4,
     }
     local type = types[_type]
-    local opts = { wrap = false, cursor_position = pos or vim.api.nvim_win_get_cursor(0)}
+    local opts = { wrap = false, cursor_position = pos or vim.api.nvim_win_get_cursor(0) }
 
     -- position is off by one
     -- see https://github.com/chrisgrieser/nvim-various-textobjs/blob/main/lua/various-textobjs/charwise-textobjs.lua
@@ -86,7 +99,7 @@ function M.diagnostic(_type, pos)
             local diagtype = target.severity
             if diagtype ~= type then
                 -- didnt find what we were looking for, goto next
-                return M.diagnostic(_type, {target.end_lnum + 2, target.end_col + 2})
+                return M.diagnostic(_type, { target.end_lnum + 2, target.end_col + 2 })
             end
         end
         set_visual_selection({ target.lnum + 1, target.col }, { target.end_lnum + 1, target.end_col - 1 })
@@ -140,7 +153,7 @@ end
 
 ---select a pattern, regex
 ---@param pattern string
-function M.pattern(pattern)
+local function pattern(pattern)
     local startpos, endpos = find_pattern(pattern)
     if not (startpos and endpos) then
         cancel_selection()
@@ -150,4 +163,70 @@ function M.pattern(pattern)
     set_visual_selection(startpos, endpos)
 end
 
-return M
+local function line_is_empty(linenr)
+    local line = vim.api.nvim_buf_get_lines(0, linenr - 1, linenr, false)[1]
+    return (not line or line == "")
+end
+
+---@param around boolean
+local function indent(around)
+    local startline = vim.api.nvim_win_get_cursor(0)[1]
+    if line_is_empty(startline) then
+        startline = startline + 1
+    end
+
+    local target_indent = vim.fn.indent(startline)
+    local linecount = vim.api.nvim_buf_line_count(0)
+
+    local endline = startline
+    local start_included, end_included
+    while true do
+        local level = vim.fn.indent(endline)
+        if endline == linecount then
+            if level >= target_indent then end_included = true end
+            break
+        end
+
+        if level < target_indent then
+            if not (line_is_empty(endline) and vim.fn.indent(endline + 1) >= target_indent) then
+                break
+            end
+        end
+
+        endline = endline + 1
+    end
+
+    while true do
+        local level = vim.fn.indent(startline)
+        if startline == 1 then
+            if level >= target_indent then start_included = true end
+            break
+        end
+
+        if level < target_indent then
+            if not (line_is_empty(startline) and vim.fn.indent(startline - 1) >= target_indent) then
+                break
+            end
+        end
+
+        startline = startline - 1
+    end
+
+    if not around then
+        if not(startline == 1 and start_included) then
+            startline = startline + 1
+        end
+        if not(endline == linecount and end_included) then
+            endline = endline - 1
+        end
+    end
+
+    set_visual_selection({ startline, 0 }, { endline, 0 }, true)
+end
+
+return {
+    create_delim_obj = create_delim_obj,
+    indent = indent,
+    pattern = pattern,
+    diagnostic = diagnostic,
+}

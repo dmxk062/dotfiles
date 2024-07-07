@@ -70,3 +70,7 @@ utils.map({"x", "o"}, "an", function() textobj.pattern("%-?%d*%.?%d+") end)
 utils.map("n", "<space>d", vim.diagnostic.open_float)
 utils.map({"n", "x", "o"}, "[d", vim.diagnostic.goto_prev)
 utils.map({"n", "x", "o"}, "]d", vim.diagnostic.goto_next)
+
+-- indents
+utils.map({"x", "o"}, "ii", function() textobj.indent(false) end)
+utils.map({"x", "o"}, "ai", function() textobj.indent(true) end)
