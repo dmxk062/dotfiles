@@ -18,6 +18,8 @@ local editor = {
     FloatBorder  = { fg = pal.bg3 },
     WinSeparator = { fg = pal.bg2 },
 
+    ColorColumn  = { bg = pal.bg1, blend = 90 },
+
     Search       = { bg = pal.bg1 },
     CurSearch    = { bg = pal.bg3 },
     IncSearch    = { bg = pal.bg3 },
