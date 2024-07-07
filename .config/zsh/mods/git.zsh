@@ -26,15 +26,17 @@ function lschg {
         } elif [[ "$type" == '?' && "$hide" == "-a" ]] {
             print -P -- "\e[90m~ $line%f"
         }
-    done <<(git status --porcelain=v2 "$dir")
+    done < <(git status --porcelain=v2 "$dir")
 }
 
-alias lgit="lsd -l --config-file $HOME/.config/lsd/brief.yaml"
+alias lgit="lsd -l --config-file $HOME/.config/lsd/brief.yaml" \
+    sparse_clone="git clone --filter=blob:none --sparse"
+
 
 } elif [[ "$1" == "unload" ]] {
 
 unfunction lschg
-unalias lgit
+unalias lgit sparse_clone
 
 }
 
