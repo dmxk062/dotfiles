@@ -11,7 +11,7 @@ utils.map("i", "<M-k>", "<esc>k")
 utils.map("i", "<M-j>", "<esc>j")
 
 
-local tableader = ","
+local tableader = "\\"
 
 -- tabs 1 - 9
 for i = 1, 9 do
