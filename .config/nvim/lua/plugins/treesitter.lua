@@ -35,9 +35,12 @@ textobjects.select = {
         -- classes/structs
         ["iC"] = "@class.inner",
         ["aC"] = "@class.outer",
+
+        ---@deprecated, gonna be more useful for indents
         -- read: inner if
-        ["ii"] = "@conditional.inner",
-        ["ai"] = "@conditional.outer",
+        -- ["ii"] = "@conditional.inner",
+        -- ["ai"] = "@conditional.outer",
+
         -- return value
         ["ir"] = "@return.inner",
         ["ar"] = "@return.outer",
