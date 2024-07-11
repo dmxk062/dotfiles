@@ -4,7 +4,7 @@
 
 ---@param name string
 ---@param left string
----@param right string
+---@param right string?
 local function create_delim_obj(name, left, right)
     if not right then
         right = left

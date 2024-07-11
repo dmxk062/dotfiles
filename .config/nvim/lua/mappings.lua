@@ -26,7 +26,6 @@ utils.map("n", tableader .. "v", ":vsp ")
 utils.map("n", tableader .. "s", ":sp ")
 
 
-
 -- use <space>@ for macros instead, i dont use them that often
 utils.map("n", "<space>@", "q", {})
 
@@ -51,6 +50,10 @@ utils.map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand
 
 -- evaluate lua and insert result, expr=true needed for repeat
 utils.map("n", "<space>el", utils.insert_eval_lua, {expr = true})
+
+
+-- exit terminal mode with a single chord instead of 2
+utils.map("t", "<C-Esc>", "<C-\\><C-n>")
 
 
 -- my own custom textobjects
