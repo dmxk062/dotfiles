@@ -1,7 +1,9 @@
-return {
+local M = {
     "kylechui/nvim-surround",
-    event = "VeryLazy",
-    config = function()
-        require("nvim-surround").setup({})
-    end
+    event = "VeryLazy"
 }
+
+M.opts = {
+}
+
+return M
