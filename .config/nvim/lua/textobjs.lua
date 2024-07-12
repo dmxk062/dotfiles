@@ -2,25 +2,11 @@
 -- nowhere near as complex, but i just want some framework for making my own
 
 
----@param name string
----@param left string
----@param right string?
-local function create_delim_obj(name, left, right)
-    if not right then
-        right = left
-    end
 
-    vim.keymap.set("o", "i" .. name, "<cmd>normal! T" .. left .. "vt" .. right .. "<CR>",
-        { silent = true, noremap = true })
-    vim.keymap.set("o", "a" .. name, "<cmd>normal! F" .. left .. "vf" .. right .. "<CR>",
-        { silent = true, noremap = true })
-    vim.keymap.set("x", "i" .. name, "<cmd>normal! T" .. left .. "ot" .. right .. "<CR>",
-        { silent = true, noremap = true })
-    vim.keymap.set("x", "a" .. name, "<cmd>normal! F" .. left .. "of" .. right .. "<CR>",
-        { silent = true, noremap = true })
+---@param linenum integer
+local function getline(linenum)
+    return vim.api.nvim_buf_get_lines(0, linenum - 1, linenum, true)[1]
 end
-
--- more complex objects
 
 ---@param cmdstr string
 local function cmd(cmdstr)
@@ -81,13 +67,13 @@ local function diagnostic(_type, pos)
 
     local next_diag = vim.diagnostic.get_next(opts)
     local on_prev = false
-    local cursor_row, cursor_column = unpack(opts.cursor_position)
+    local cursor_row, cursor_col = unpack(opts.cursor_position)
 
     if previous_diag then
-        local current_after_previous_start = (cursor_row == previous_diag.lnum + 1 and cursor_column >= previous_diag.col)
+        local current_after_previous_start = (cursor_row == previous_diag.lnum + 1 and cursor_col >= previous_diag.col)
             or (cursor_row > previous_diag.lnum + 1)
 
-        local current_before_previous_end = (cursor_row == previous_diag.end_lnum + 1 and cursor_column <= previous_diag.end_col - 1)
+        local current_before_previous_end = (cursor_row == previous_diag.end_lnum + 1 and cursor_col <= previous_diag.end_col - 1)
             or (cursor_row < previous_diag.end_lnum)
 
         on_prev = current_after_previous_start and current_before_previous_end
@@ -110,10 +96,6 @@ local function diagnostic(_type, pos)
     return false
 end
 
----@param linenum integer
-local function getline(linenum)
-    return vim.api.nvim_buf_get_lines(0, linenum - 1, linenum, true)[1]
-end
 
 ---@param pattern string
 ---@return position? startpos
@@ -213,10 +195,10 @@ local function indent(around)
     end
 
     if not around then
-        if not(startline == 1 and start_included) then
+        if not (startline == 1 and start_included) then
             startline = startline + 1
         end
-        if not(endline == linecount and end_included) then
+        if not (endline == linecount and end_included) then
             endline = endline - 1
         end
     end
@@ -225,7 +207,6 @@ local function indent(around)
 end
 
 return {
-    create_delim_obj = create_delim_obj,
     indent = indent,
     pattern = pattern,
     diagnostic = diagnostic,

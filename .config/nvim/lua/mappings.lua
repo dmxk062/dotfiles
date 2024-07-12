@@ -59,14 +59,6 @@ utils.map("t", "<C-Esc>", "<C-\\><C-n>")
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
--- useful characters for csv, paths and long chains of method calls
--- all of these objects work *similarly* to the built in i/a objects
--- TODO: make them identical:
---  - [ ] seek forward
-for _, char in ipairs({",", "/", "."}) do
-    textobjs.create_delim_obj(char, char)
-end
-
 -- numbers
 -- without periods and minus
 utils.map({"x", "o"}, "in", function() textobjs.pattern("%d+") end)
