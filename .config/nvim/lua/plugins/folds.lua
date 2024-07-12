@@ -46,7 +46,7 @@ return {
             open_fold_hl_timeout = 0,
             fold_virt_text_handler = handler,
             close_fold_kinds_for_ft = {
-                default = {"imports", "comment"},
+                default = {"imports"},
             },
             preview = {
                 win_config = {
@@ -68,7 +68,7 @@ return {
             end
         end)
         local builtin = require("statuscol.builtin")
-        require("statuscol").setup({
+        require("statuscol").setup {
             segments = {
                 { text = { "%s" },                  click = "v:lua.ScSa" },
                 { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
@@ -78,6 +78,6 @@ return {
                     click = "v:lua.ScLa",
                 }
             },
-        })
+        } 
     end
 }
