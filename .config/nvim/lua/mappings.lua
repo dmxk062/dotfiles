@@ -1,15 +1,12 @@
 local utils = require("utils")
-local textobj = require("textobjs")
-
 
 -- move between windows more efficiently, i rarely use W anyways
--- also allows me to use <C-w> in kitty
+-- also allows me to use <C-w> in kitty for the same purpose
 utils.map("n", "W", "<C-w>")
 
 -- for some reason smth else remaps those 
 utils.map("i", "<M-k>", "<esc>k")
 utils.map("i", "<M-j>", "<esc>j")
-
 
 local tableader = "\\"
 
@@ -20,11 +17,14 @@ end
 
 utils.map("n", tableader .. "h", "<cmd>tabprevious<cr>")
 utils.map("n", tableader .. "l", "<cmd>tabnext<cr>")
-utils.map("n", tableader .. "t", ":tabnew ")
 
+utils.map("n", tableader .. "t", ":tabnew ")
 utils.map("n", tableader .. "v", ":vsp ")
 utils.map("n", tableader .. "s", ":sp ")
 
+-- stop {} from polluting the jumplist
+utils.map({"x", "o", "n"}, "{", "<cmd>keepj normal!{<cr>", {remap = false})
+utils.map({"x", "o", "n"}, "}", "<cmd>keepj normal!}<cr>", {remap = false})
 
 -- use <space>@ for macros instead, i dont use them that often
 utils.map("n", "<space>@", "q", {})
@@ -49,31 +49,38 @@ utils.map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand
 utils.map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
 
 -- evaluate lua and insert result, expr=true needed for repeat
+-- pretty useful to quickly insert e.g. a random nummer or math
 utils.map("n", "<space>el", utils.insert_eval_lua, {expr = true})
-
 
 -- exit terminal mode with a single chord instead of 2
 utils.map("t", "<C-Esc>", "<C-\\><C-n>")
 
 
 -- my own custom textobjects
+local textobjs = require("textobjs")
 
 -- useful characters for csv, paths and long chains of method calls
+-- all of these objects work *similarly* to the built in i/a objects
+-- TODO: make them identical:
+--  - [ ] seek forward
 for _, char in ipairs({",", "/", "."}) do
-    textobj.create_delim_obj(char, char)
+    textobjs.create_delim_obj(char, char)
 end
 
 -- numbers
 -- without periods and minus
-utils.map({"x", "o"}, "in", function() textobj.pattern("%d+") end)
+utils.map({"x", "o"}, "in", function() textobjs.pattern("%d+") end)
 -- with periods and minus
-utils.map({"x", "o"}, "an", function() textobj.pattern("%-?%d*%.?%d+") end)
+utils.map({"x", "o"}, "an", function() textobjs.pattern("%-?%d*%.?%d+") end)
 
--- move between diagnostics, shortcuts for textobjects are in ./plugins/lspconfig.lua
+-- move between diagnostics, shortcuts for textobjects are in ./plugins/lspconfig.lua, since those just work with lsp
+-- these work with all diagnostics
 utils.map("n", "<space>d", vim.diagnostic.open_float)
 utils.map({"n", "x", "o"}, "[d", vim.diagnostic.goto_prev)
 utils.map({"n", "x", "o"}, "]d", vim.diagnostic.goto_next)
 
--- indents
-utils.map({"x", "o"}, "ii", function() textobj.indent(false) end)
-utils.map({"x", "o"}, "ai", function() textobj.indent(true) end)
+-- indents, very useful for e.g. python
+-- skips lines with spaces and tries to generally be as simple to use as possible
+-- a includes one line above and below
+utils.map({"x", "o"}, "ii", function() textobjs.indent(false) end)
+utils.map({"x", "o"}, "ai", function() textobjs.indent(true) end)
