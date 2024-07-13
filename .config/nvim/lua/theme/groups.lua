@@ -283,8 +283,8 @@ local treesitter = with_prefix("@", {
     ["markup.link.label"]     = { fg = col.fg2, italic = true },
     ["markup.quote"]          = { fg = col.bright_gray, italic = true },
     ["markup.list"]           = { fg = col.light_gray, bold = true },
-    ["markup.list.checked"]   = { fg = col.green, bold = true },
-    ["markup.list.unchecked"] = { fg = col.light_gray },
+    ["markup.list.checked"]   = { fg = col.light_gray },
+    ["markup.list.unchecked"] = { fg = col.yellow, bold = true },
 
     ["lsp.type.macro"]        = { link = "@macro" },
     ["lsp.mod.deprecated"]    = { fg = col.bright_gray, italic = true, strikethrough = true },
