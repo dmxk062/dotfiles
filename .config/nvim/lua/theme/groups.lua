@@ -222,6 +222,7 @@ local treesitter = with_prefix("@", {
     ["comment.note"]               = { fg = col.light_blue, italic = true },
 
     ["string"]                     = { fg = col.green },
+    ["string.documentation"]       = { link = "@comment" },
     ["string.special.path"]        = { fg = col.teal },
     ["string.regex"]               = { fg = col.orange },
     ["string.escape"]              = { fg = col.yellow },
@@ -244,8 +245,8 @@ local treesitter = with_prefix("@", {
     ["punctuation.delimiter"]      = { fg = col.light_gray },
 
 
-    ["attribute"]             = { fg = col.magenta },
-    ["attribute.builtin"]     = { fg = col.magenta },
+    ["attribute"]             = { fg = col.yellow },
+    ["attribute.builtin"]     = { fg = col.yellow },
 
     ["keyword"]               = { fg = col.light_blue },
     ["keyword.return"]        = { fg = col.light_blue },
