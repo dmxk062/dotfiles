@@ -76,3 +76,6 @@ utils.map({"n", "x", "o"}, "]d", vim.diagnostic.goto_next)
 -- a includes one line above and below
 utils.map({"x", "o"}, "ii", function() textobjs.indent(false) end)
 utils.map({"x", "o"}, "ai", function() textobjs.indent(true) end)
+
+utils.map({"x", "o"}, "iS", function() textobjs.leap_selection(false) end)
+utils.map({"x", "o"}, "aS", function() textobjs.leap_selection(true) end)
