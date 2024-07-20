@@ -6,11 +6,6 @@ local ai_textobjects = {
     "i", "n"                                -- my own indent and numbers
 }
 
-local direct_textobjects = {
-    "idw", "ide", "idi", "idh", "idd", -- diagnostics
-    "aA", "vv", "vn"                   -- additional TS
-}
-
 
 local M = {
     "ggandor/leap.nvim",
@@ -40,11 +35,6 @@ local M = {
             end)
         end
 
-        for _, obj in pairs(direct_textobjects) do
-            utils.map({ "x", "o" }, obj:sub(1, 1) .. "r" .. obj:sub(2), function()
-                require("leap.remote").action { input = obj }
-            end)
-        end
     end,
 }
 
