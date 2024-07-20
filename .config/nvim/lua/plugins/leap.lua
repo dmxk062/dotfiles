@@ -1,27 +1,16 @@
-local spooky = {
-    "ggandor/leap-spooky.nvim",
-    config = function()
-        require("leap-spooky").setup {
-            -- so i can use `r` for return statements
-            prefix = true,
-            -- same ones as in treesitter
-            extra_text_objects = {
-                "if", "af",                             -- functions
-                "aA", "ia", "aa",                       -- function args
-                "vv", "vn",                             -- assignment
-                "ic", "ac",                             -- comments
-                "iL", "aL",                             -- loops
-                "iC", "aC",                             -- classes, structs
-                "ii", "ai",                             -- conditionals
-                "ir", "ar",                             -- return statements
-                "i,", "a,", "i.", "a.", "i/", "a/",     -- custom things
-                "in", "an",                             -- numbers
-                "igh",                                  -- gitsigns hunk
-                "idd", "ide", "idw", "idi", "idh",      -- lsp diagnostics
-            },
-        }
-    end
+local ai_textobjects = {
+    "w", "W", "p", "s", "b", "B",           -- words
+    "[", "]", "(", ")", "{", "}", "<", ">", -- punctuation
+    "`", "'", '"',                          -- quotes
+    "a", "f", "c", "L", "C", "R",           -- treesitter
+    "i", "n"                                -- my own indent and numbers
 }
+
+local direct_textobjects = {
+    "idw", "ide", "idi", "idh", "idd", -- diagnostics
+    "aA", "vv", "vn"                   -- additional TS
+}
+
 
 local M = {
     "ggandor/leap.nvim",
@@ -29,8 +18,34 @@ local M = {
         local utils = require("utils")
         utils.map("n", "S", "<Plug>(leap-from-window)")
         utils.map("n", "s", "<Plug>(leap)")
+
+        -- much more flexible than leap-spooky, no more need for mapping every object, this allows motions
+        -- format is different: <op>r<leap><motion/textobject>
+        -- e.g. crle<cr>i"<esc>
+        -- repeat the operator for line: crle<cr>c<esc>
+        utils.map({ "x", "o" }, "r", function() require("leap.remote").action() end)
+
+        -- use from normal mode: e.g. gR<leap>dd
+        utils.map("n", "gR", function() require("leap.remote").action() end)
+
+        -- but i can't fully live without my textobjects:
+        -- those work like the old leap-spooky ones:
+        -- <op>{a,i}r{obj}<leap>
+        for _, obj in pairs(ai_textobjects) do
+            utils.map({ "x", "o" }, "a" .. "r" .. obj, function()
+                require("leap.remote").action { input = "a" .. obj }
+            end)
+            utils.map({ "x", "o" }, "i" .. "r" .. obj, function()
+                require("leap.remote").action { input = "i" .. obj }
+            end)
+        end
+
+        for _, obj in pairs(direct_textobjects) do
+            utils.map({ "x", "o" }, obj:sub(1, 1) .. "r" .. obj:sub(2), function()
+                require("leap.remote").action { input = obj }
+            end)
+        end
     end,
-    dependencies = {spooky}
 }
 
 return M

@@ -51,26 +51,26 @@ textobjects.move = {
     goto_next_start = {
         ["]a"] = "@parameter.inner",
         ["]f"] = "@function.outer",
-        ["]m"] = "@function.outer",
+        ["]m"] = "@method.outer",
         ["]c"] = "@comment.outer",
         ["]r"] = "@return.inner",
     },
     goto_previous_start = {
         ["[a"] = "@parameter.inner",
         ["[f"] = "@function.outer",
-        ["[m"] = "@function.outer",
+        ["[m"] = "@method.outer",
         ["[c"] = "@comment.outer",
         ["[r"] = "@return.inner",
     },
 
     goto_next_end = {
         ["]F"] = "@function.outer",
-        ["]M"] = "@function.outer",
+        ["]M"] = "@method.outer",
 
     },
     goto_previous_end = {
         ["[F"] = "@function.outer",
-        ["[M"] = "@function.outer",
+        ["[M"] = "@method.outer",
 
     },
 }
