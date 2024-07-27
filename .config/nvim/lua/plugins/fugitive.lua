@@ -1,5 +1,8 @@
 local M = {
-    "tpope/vim-fugitive"
+    "tpope/vim-fugitive",
+    dependencies = {
+        "tpope/vim-rhubarb",
+    }
 }
 
 M.config = function ()
