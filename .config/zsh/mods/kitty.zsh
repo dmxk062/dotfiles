@@ -18,7 +18,6 @@ if [[ "$KITTY_SHELL_INTEGRATION_ENABLED" != 1 ]] {
     return 1
 }
 
-autoload -Uz _ktty
 
 function ktty {
     local type="${1}"
@@ -31,22 +30,23 @@ function ktty {
     }
 }
 
+autoload -Uz _ktty
 compdef _ktty ktty
 
 
-alias -- "-w"="ktty window" \
-    "-W"="ktty os-window" \
-    "-t"="ktty tab" \
-    "-o"="ktty overlay" \
-    "-we"="ktty window $EDITOR" \
-    "-We"="ktty os-window $EDITOR" \
-    "-te"="ktty tab $EDITOR" \
-    "-oe"="ktty overlay $EDITOR"
+alias -- "@w"="ktty window" \
+    "@W"="ktty os-window" \
+    "@t"="ktty tab" \
+    "@o"="ktty overlay" \
+    "@we"="ktty window $EDITOR" \
+    "@We"="ktty os-window $EDITOR" \
+    "@te"="ktty tab $EDITOR" \
+    "@oe"="ktty overlay $EDITOR"
 
 } elif [[ "$1" == "unload" ]] {
 
 unfunction ktty
 
-unalias -- "-w" "-W" "-t" "-o" "-we" "-We" "-te" "-oe"
+unalias -- "@w" "@W" "@t" "@o" "@we" "@We" "@te" "@oe"
 
 }
