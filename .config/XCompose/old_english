@@ -31,11 +31,13 @@
 <Multi_key> <asterisk> <A> : "ᚫ" # æsċ
 <Multi_key> <asterisk> <b> : "ᛒ" # beorċ
 <Multi_key> <asterisk> <c> : "ᚳ" # cen
+<Multi_key> <asterisk> <C> : "ᛣ" # calc
 <Multi_key> <asterisk> <d> : "ᛞ" # dæġ
 <Multi_key> <asterisk> <e> : "ᛖ" # eh
 <Multi_key> <asterisk> <E> : "ᛠ" # ēar
 <Multi_key> <asterisk> <f> : "ᚠ" # feoh
 <Multi_key> <asterisk> <g> : "ᚷ" # ġyfu
+<Multi_key> <asterisk> <G> : "ᚸ" # gār
 <Multi_key> <asterisk> <h> : "ᚻ" # hæġil
 <Multi_key> <asterisk> <i> : "ᛁ" # īs
 <Multi_key> <asterisk> <I> : "ᛇ" # īw
