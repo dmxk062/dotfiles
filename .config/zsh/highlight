@@ -8,7 +8,7 @@ ZSH_HIGHLIGHT_STYLES[builtin]='fg=fg'
 ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
 ZSH_HIGHLIGHT_STYLES[command]='fg=fg'
 ZSH_HIGHLIGHT_STYLES[precommand]='fg=blue'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=blue'
+ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=${ZSH_COLORS_RGB[light-gray]}"
 ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=fg'
 ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=blue,underlined'
 ZSH_HIGHLIGHT_STYLES[path]='fg=cyan'
