@@ -40,8 +40,6 @@ function fmap {
             "$func" "${=arg}"
         done
     fi
-
-
 }
 
 # conditional map, basically tfilter|map
@@ -82,7 +80,7 @@ function cvmap {
     shift 2
     cmap "$cmp" "$expr" "$@"
 }
-#
+
 # arithmetic map, useful for e.g. unit conversion
 function amap {
     local math="print -- \$[ $1 ]"; shift
@@ -99,31 +97,6 @@ function amap {
             eval $math
         done
     fi
-}
-
-# slower than map with just `echo -n`, just here cause afold is nice
-function fold {
-    local expr="$1"; shift
-    local arg
-    local results=""
-
-    if (($# == 0)); then
-        while read -r arg; do
-            argv=(${=arg})
-            results+="$(eval $expr)"
-        done
-    else
-        for arg in "$@"; do
-            argv=(${=arg})
-            results+="$(eval $expr)"
-        done
-    fi
-    print -- $results
-}
-
-function vfold {
-    local expr="print -- $1"; shift
-    fold "$expr" "$@"
 }
 
 # accumulate the results of math expressions, kinda like amap|sum
