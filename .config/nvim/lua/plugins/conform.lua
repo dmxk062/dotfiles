@@ -21,6 +21,13 @@ M.opts = {
     },
     default_format_opts = {
         lsp_format = "fallback"
+    },
+    formatters = {
+        jq = {
+            inherit = true,
+            -- make jq conform to vims prefered tab width
+            append_args = { "--indent", vim.o.tabstop and tostring(vim.o.tabstop) <= 7 or 4 },
+        }
     }
 }
 
