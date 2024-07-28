@@ -15,6 +15,7 @@ local function setup_mason()
 
     require("mason-lspconfig").setup {
         ensure_installed = {
+            "ruff_lsp"
         }
     }
 end
