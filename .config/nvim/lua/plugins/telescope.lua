@@ -115,18 +115,6 @@ M.config = function()
     }) do
         utils.map("n", _prefix .. map[1], map[2])
     end
-
-    local function register_and_insert()
-        builtin.registers {
-            mappings = {
-                n = {
-                    ["e"] = "edit_register",
-                }
-            }
-        }
-    end
-
-    utils.map("i", "<C-R>", register_and_insert)
 end
 
 return M
