@@ -26,7 +26,7 @@ M.opts = {
         jq = {
             inherit = true,
             -- make jq conform to vims prefered tab width
-            append_args = { "--indent", vim.o.tabstop and tostring(vim.o.tabstop) <= 7 or 4 },
+            append_args = { "--indent", vim.o.tabstop <= 7 and tostring(vim.o.tabstop) or 4 },
         }
     }
 }
