@@ -310,7 +310,7 @@ function keys {
 } elif [[ "$1" == "unload" ]] {
 
 unfunction filter tfilter ffilter \
-    afold fold vfold \
+    afold \
     amap map cmap vmap cvmap fmap \
     cnt sjoin sep \
     interlace blockjoin \
