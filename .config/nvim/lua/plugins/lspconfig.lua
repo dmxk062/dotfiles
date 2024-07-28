@@ -64,7 +64,6 @@ M.config = function()
             utils.lmap(opts.buf, "n", "gi", vim.lsp.buf.implementation)
             utils.lmap(opts.buf, { "n", "v" }, "<space>a", vim.lsp.buf.code_action)
             utils.lmap(opts.buf, "n", "<space>rn", vim.lsp.buf.rename)
-            utils.lmap(opts.buf, "n", "<space>fmt", function() vim.lsp.buf.format { async = true } end)
 
             utils.lmap(opts.buf, "n", "gr", require("telescope.builtin").lsp_references)
             utils.lmap(opts.buf, "n", "gd", require("telescope.builtin").lsp_definitions)
