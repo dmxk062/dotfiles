@@ -116,16 +116,7 @@
                         (split_text :left "Connection" :right {system.platform.gpu.link})
                         (split_text :left "Driver" :right {system.platform.gpu.driver})
                         (split_text :left "Video Memory" :right "${system.platform.gpu.mem.used_nice} / ${system.platform.gpu.mem.total_nice}")
-                        (box :space-evenly false :halign "center" :style "margin-top: 1rem;"
-                            (scale :class "slider" :active false 
-                            :value {100*(system.platform.gpu.mem.used / system.platform.gpu.mem.total)})
-                        )
-                        (label :class "text" :text "Active Ports:" :style "margin-top: 1rem;")
-                        (box :orientation "v"
-                            (for port in {system.platform.gpu.ports}
-                                (label :class "text" :text {port})
-                            )
-                        )
+                        (split_text :left "Active Ports" :right {replace(jq(system.platform.gpu.ports, 'join(", ")'), '"', "")})
                     )
                     (box :class "category_box" :orientation "v" :space-evenly false
                         (box :class "padding_box"
