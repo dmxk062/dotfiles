@@ -14,7 +14,6 @@ case $1 in
                 keywd=dwindle
                 ;;
         esac
-        echo "$keywd"
         hyprctl keyword "$KEY" "$keywd"
         eww -c "$XDG_CONFIG_HOME"/eww/shell update tiling_layout="$keywd"
     ;;

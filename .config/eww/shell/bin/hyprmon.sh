@@ -68,6 +68,8 @@ function notify_urgent(){
                 hyprctl dispatch focuswindow "address:${addr}"
             fi
             ;;
+        org.pwmt.zathura)
+            ;;
         *)
             hyprctl dispatch focuswindow "address:${addr}"
             return
