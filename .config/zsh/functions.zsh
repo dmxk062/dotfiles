@@ -32,7 +32,7 @@ function @mon {
         print -n "\e]0;$output[1]\a"
         print -n "[H[2J"
         print -n "Every $interval $unit: \`${command[@]}\`\n\n${output}"
-        read -t "$interval" _
+        read -t "$interval" _ -n 0
     done
 
 }
