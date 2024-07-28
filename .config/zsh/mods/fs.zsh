@@ -235,13 +235,26 @@ function pwf {
     print -P -- "%~"
 }
 
+# go up n levels
+function .. {
+    local level="$1"
+    if [[ ! "$level" =~ '[0-9]+' ]] {
+        cd ..
+        return
+    }
+
+    while ((level != 0)) {
+        cd ..
+        ((level--))
+    }
+}
 
 
 } elif [[ "$1" == "unload" ]] {
 
-unfunction rgf mkcd mkf tmp rp bn \
-    rmi  pwf\
-    readfile readstream lr
+unfunction rgf mkcd mkf tmp rp bn in \
+    rmi pwf \
+    readfile readstream lr ..
 
 unalias md ft bft
 
