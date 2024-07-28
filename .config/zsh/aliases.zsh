@@ -1,4 +1,5 @@
-alias updategrub="sudo grub-mkconfig -o /boot/grub/grub.cfg" \
+alias \
+updategrub="sudo grub-mkconfig -o /boot/grub/grub.cfg" \
 bc="bc -l" \
 svim="sudoedit" \
 sv="sudoedit" \

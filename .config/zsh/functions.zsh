@@ -9,11 +9,11 @@ function c {
     print -n "[H[2J"
 }
 
-alias -- "-gtk_debug"="env GTK_DEBUG=interactive" \
-   "-gnome"="env XDG_CURRENT_DESKTOP=gnome"
+alias -- "@gtk_debug"="env GTK_DEBUG=interactive" \
+   "@gnome"="env XDG_CURRENT_DESKTOP=gnome"
 
 # a better `watch`
-function -mon {
+function @mon {
     local interval="$1"
     if [[ "$interval" =~ ^[+-]?[0-9]*\.?[0-9]+$ ]]; then
         shift
@@ -39,7 +39,7 @@ function -mon {
 
 
 # tell me when smth finished running
-function -alert {
+function @alert {
     local prog exitc start end time
     prog=$@
     start="$(date "+%s")"
@@ -64,7 +64,7 @@ function -alert {
 }
 
 # run smth in the background
-function -bg {
+function @bg {
     local stderr exitc prog start end time
     prog=$@
     (start="$(date +%s)"
