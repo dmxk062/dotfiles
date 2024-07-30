@@ -1,10 +1,10 @@
-local ai_textobjects = {
-    "w", "W", "p", "s", "b", "B",           -- words
-    "[", "]", "(", ")", "{", "}", "<", ">", -- punctuation
-    "`", "'", '"',                          -- quotes
-    "a", "f", "c", "L", "C", "R",           -- treesitter
-    "i", "n"                                -- my own indent and numbers
-}
+-- local ai_textobjects = {
+--     "w", "W", "p", "s", "b", "B",           -- words
+--     "[", "]", "(", ")", "{", "}", "<", ">", -- punctuation
+--     "`", "'", '"',                          -- quotes
+--     "a", "f", "c", "L", "C", "R",           -- treesitter
+--     "i", "n"                                -- my own indent and numbers
+-- }
 
 
 local M = {
@@ -25,17 +25,17 @@ M.config = function()
     -- use from normal mode: e.g. gR<leap>dd
     utils.map("n", "gR", function() require("leap.remote").action() end)
 
-    -- but i can't fully live without my textobjects:
-    -- those work like the old leap-spooky ones:
-    -- <op>{a,i}r{obj}<leap>
-    for _, obj in pairs(ai_textobjects) do
-        utils.map({ "x", "o" }, "a" .. "r" .. obj, function()
-            require("leap.remote").action { input = "a" .. obj }
-        end)
-        utils.map({ "x", "o" }, "i" .. "r" .. obj, function()
-            require("leap.remote").action { input = "i" .. obj }
-        end)
-    end
+    -- -- but i can't fully live without my textobjects:
+    -- -- those work like the old leap-spooky ones:
+    -- -- <op>{a,i}r{obj}<leap>
+    -- for _, obj in pairs(ai_textobjects) do
+    --     utils.map({ "x", "o" }, "a" .. "r" .. obj, function()
+    --         require("leap.remote").action { input = "a" .. obj }
+    --     end)
+    --     utils.map({ "x", "o" }, "i" .. "r" .. obj, function()
+    --         require("leap.remote").action { input = "i" .. obj }
+    --     end)
+    -- end
 end
 
 return M
