@@ -157,6 +157,9 @@ require("mappings")
 vim.o.modeline = true
 
 
+-- change line number based on mode:
+-- for command mode: make it absolute for ranges etc
+-- for normal mode: relative movements <3
 local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
 vim.api.nvim_create_autocmd("CmdlineEnter", {
     group = cmdline_group,
