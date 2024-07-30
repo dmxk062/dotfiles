@@ -155,3 +155,20 @@ require("mappings")
 
 -- for some reason lazy deactivates that
 vim.o.modeline = true
+
+
+local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+    group = cmdline_group,
+    callback = function()
+        vim.o.relativenumber = false
+        vim.api.nvim__redraw({statuscolumn = true})
+    end
+})
+
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+    group = cmdline_group,
+    callback = function()
+        vim.o.relativenumber = true
+    end
+})
