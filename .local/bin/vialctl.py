@@ -22,9 +22,16 @@ ANIMATIONS = {
     "solid": 2,
     "breath": 6,
     "spiral": 12,
-    "cycle": 13,
+    "color_cycle": 13,
     "cycle_lr": 14,
     "cycle_ud": 15,
+    "rainbow_chevron": 16,
+    "rainbow_wave": 17,
+    "dual_rainbow_wave": 18,
+    "rainbow_cycle": 19,
+    "rainbow_spiral": 20,
+    "rainbow_glow": 21,
+    "glow_spiral": 22,
     "jellybeans": 25,
     "heatmap": 29,
     "rain": 30,
@@ -32,7 +39,7 @@ ANIMATIONS = {
     "splash": 34,
     "linear_splash": 38,
     "wave": 39,
-    "wave2": 41,
+    "wave_mono": 41,
     "colors": 43,
 }
 
@@ -87,7 +94,6 @@ class VialKbd:
         assert rgb_version == 1
 
         self.max_brightness = data[2]
-        self.supported_anims = {0}
         max_effect = 0
         while max_effect < 0xFFFF:
             data = self.msg(
@@ -98,7 +104,6 @@ class VialKbd:
                 if value != 0xFFFF:
                     self.supported_anims.add(value)
                 max_effect = max(max_effect, value)
-
         data = self.msg(struct.pack("BB", VialCmd.GET_LIGHTING, 0x41))[2:]
         self.cur_mode = int.from_bytes(data[0:2], byteorder="little")
         self.cur_speed = data[2]
