@@ -38,6 +38,11 @@ ANIMATIONS = {
 
 CODES2ANIMS = {v: k for k, v in ANIMATIONS.items()}
 
+# colors i really like
+COLORNAMES = {
+    "pink": (0xD4, 0x3E, 0x1B, None)
+}
+
 
 def is_rawhid(dev: hid.DeviceInfo):
     return not (dev["usage_page"] != 0xFF60 or dev["usage"] != 0x61)
@@ -171,7 +176,10 @@ def main():
         exit(1)
     kbds = [VialKbd(dev) for dev in devs]
     if args.color:
-        color = parse_hex_color(args.color)
+        if args.color in COLORNAMES:
+            color = COLORNAMES[args.color]
+        else: 
+            color = parse_hex_color(args.color)
         for kbd in kbds:
             kbd.set_color(*color)
     if args.animation:
