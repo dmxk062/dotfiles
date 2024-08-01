@@ -3,8 +3,11 @@ zmodload zsh/datetime
 
 declare -A _promptvars=(
     [color]="cyan"
-    [timer]=""
+    [timer]=0
     [vcs_branch]=""
+    [vcs_modified]=0
+    [vcs_deleted]=0
+    [vcs_added]=0
 )
 # directly set the hooks instead of just adding to the hook, so ours runs first
 function preexec {
@@ -28,16 +31,41 @@ function zvm_after_select_vi_mode {
 function chpwd {
     local branch
     branch="$(git branch 2>/dev/null)"
-    _promptvars[vcs_branch]="${branch:2}"
+    if (($? == 0)) {
+        _promptvars[vcs_branch]="${branch:2}"
+        local gstatus modified=0 deleted=0 added=0
+        _promptvars[vcs_modified]=""
+        while read -r gstatus _; do
+            case "$gstatus" in 
+                (M) ((modified++));;
+                (A) ((added++));;
+                (D) ((deleted++));;
+            esac
+        done < <(git status --porcelain=v1 .)
+        _promptvars[vcs_modified]="$modified"
+        _promptvars[vcs_deleted]="$deleted"
+        _promptvars[vcs_added]="$deleted"
+    } else {
+        _promptvars[vcs_branch]=""
+    }
 }
 
 function _update_prompt {
+    PROMPT="%B%F{$_promptvars[color]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
     if [[ -n $_promptvars[vcs_branch] ]] {
-        PROMPT="%B%F{$_promptvars[color]}%S󰘬 $_promptvars[vcs_branch]%s %F{$_promptvars[color]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
-    } else {
-        PROMPT="%B%F{$_promptvars[color]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
-    }
+        local modified added deleted
+        if ((_promptvars[vcs_modified] > 0)) {
+            modified=" %F{yellow}~$_promptvars[vcs_modified]"
+        }
+        if ((_promptvars[vcs_added] > 0)) {
+            added=" %F{green}+$_promptvars[vcs_added]"
+        }
+        if ((_promptvars[vcs_deleted] > 0)) {
+            deleted=" %F{red}-$_promptvars[vcs_deleted]"
+        }
+        PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${_promptvars[vcs_branch]}${added}${modified}${deleted}%F{8}%k $PROMPT"
 
+    }
 }
 
 
