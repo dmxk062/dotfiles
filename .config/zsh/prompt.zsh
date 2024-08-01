@@ -8,6 +8,7 @@ declare -A _promptvars=(
     [vcs_modified]=0
     [vcs_deleted]=0
     [vcs_added]=0
+    [vcs_active]=0
 )
 # directly set the hooks instead of just adding to the hook, so ours runs first
 function preexec {
