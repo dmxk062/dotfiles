@@ -205,7 +205,7 @@ local lualine_layout = {
             colored = true,
             diff_color = {
                 added    = { fg = col.green },
-                modified = { fg = col.magenta },
+                modified = { fg = col.yellow },
                 removed  = { fg = col.red }
             },
             source = function()
