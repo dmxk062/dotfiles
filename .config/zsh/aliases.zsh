@@ -19,6 +19,7 @@ lar='lsd -A --tree --depth 3  --hyperlink=auto' \
 l='lsd --hyperlink=auto' \
 grep='grep --color=auto' \
 fdd="fd -t d" \
-fdf="fd -t f" 
+fdf="fd -t f" \
+g="git"
 
 alias -g "@silent"="> /dev/null 2>&1" -g "@err2out"="2> /dev/stdout"
