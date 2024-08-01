@@ -28,7 +28,7 @@ function zvm_after_select_vi_mode {
     _update_prompt
 }
 
-function chpwd {
+function _update_git_status {
     local branch
     branch="$(git branch 2>/dev/null)"
     if (($? == 0)) {
@@ -48,6 +48,10 @@ function chpwd {
     } else {
         _promptvars[vcs_branch]=""
     }
+}
+
+function chpwd {
+    _update_git_status
 }
 
 function _update_prompt {
@@ -89,6 +93,7 @@ function precmd {
         RPROMPT="%B%F{$ZSH_COLORS_RGB[orange]}%S venv%s%b%f ${RPROMPT}"
     }
     _promptvars[timer]=0
+    _update_git_status
     _update_prompt
 }
 
