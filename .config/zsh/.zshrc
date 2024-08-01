@@ -99,7 +99,7 @@ for shortcut in ${(k)DIRSHORTCUTS}; do
     hash -d ${shortcut}="${DIRSHORTCUTS[$shortcut]}"
 done
 
-unset DIRSHORTCUTS
+unset DIRSHORTCUTS shortcut
 #------------------------------------------------------------------------------
 
 
