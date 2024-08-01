@@ -79,3 +79,16 @@ utils.map({"x", "o"}, "ai", function() textobjs.indent(true) end)
 
 utils.map({"x", "o"}, "iS", function() textobjs.leap_selection(false) end)
 utils.map({"x", "o"}, "aS", function() textobjs.leap_selection(true) end)
+
+vim.api.nvim_create_user_command("MimeType", function(args)
+    local type, err = require("mimetypes").get_mime(vim.fn.expand(args.args))
+    if err then
+        vim.notify(err, vim.log.levels.ERROR)
+    else
+        print(type)
+    end
+end, {
+    desc = "Get the mimetype of a file",
+    complete = "file",
+    nargs = 1
+})
