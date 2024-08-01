@@ -68,7 +68,6 @@ function _update_prompt {
             deleted=" %F{red}-$_promptvars[vcs_deleted]"
         }
         PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${_promptvars[vcs_branch]}${added}${modified}${deleted}%F{8}%k $PROMPT"
-
     }
 }
 
@@ -112,4 +111,4 @@ Time   %E"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # explicitly update it on first run
-chpwd
+_update_git_status
