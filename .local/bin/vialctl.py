@@ -38,9 +38,13 @@ ANIMATIONS = {
 
 CODES2ANIMS = {v: k for k, v in ANIMATIONS.items()}
 
-# colors i really like
 COLORNAMES = {
-    "copper": (0xD4, 0x3E, 0x1B, None)
+    # colors i really like
+    "copper": (0xD4, 0x3E, 0x1B, None),
+    "green": (0xBE, 0x7E, 0x22, None),
+    # and standard colors
+    "red": (0xFF, 0x00, 0x00, None),
+    "purple": (0xFF, 0x00, 0x5A, None),
 }
 
 
@@ -178,7 +182,7 @@ def main():
     if args.color:
         if args.color in COLORNAMES:
             color = COLORNAMES[args.color]
-        else: 
+        else:
             color = parse_hex_color(args.color)
         for kbd in kbds:
             kbd.set_color(*color)
@@ -200,12 +204,13 @@ def main():
             kbd.set_animation(animcode, speed or None)
     if args.get_color:
         for kbd in kbds:
-            r, g, b = colorsys.hsv_to_rgb(kbd.cur_hsv[0] / 255.0, kbd.cur_hsv[1] / 255.0, kbd.cur_hsv[2] / 255.0)
-            r = int(round(r*255))
-            g = int(round(g*255))
-            b = int(round(b*255))
+            r, g, b = colorsys.hsv_to_rgb(
+                kbd.cur_hsv[0] / 255.0, kbd.cur_hsv[1] / 255.0, kbd.cur_hsv[2] / 255.0
+            )
+            r = int(round(r * 255))
+            g = int(round(g * 255))
+            b = int(round(b * 255))
             print(f"#{r:02X}{g:02X}{b:02X}")
-
 
 
 if __name__ == "__main__":
