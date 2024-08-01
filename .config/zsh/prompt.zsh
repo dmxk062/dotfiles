@@ -29,19 +29,27 @@ function zvm_after_select_vi_mode {
 }
 
 function _update_git_status {
-    local gstatus rest modified=0 deleted=0 added=0 _branch branch=""
-    while read -r gstatus rest; do
-        case "$gstatus" in 
-            (#*) IFS="." read -r branch _ <<< "$rest" ;;
-            (M) ((modified++));;
-            (A) ((added++));;
-            (D) ((deleted++));;
-        esac
-    done < <(git status --porcelain=v1 --untracked-files=no --ignored=no -b . 2>/dev/null)
-    _promptvars[vcs_branch]="$branch"
-    _promptvars[vcs_modified]="$modified"
-    _promptvars[vcs_deleted]="$deleted"
-    _promptvars[vcs_added]="$deleted"
+    # only update if inside a git dir that isnt ignored
+    git check-ignore . &> /dev/null
+    # returns 0 if dir ignored and 1 if not but still git
+    if (($? == 1)) {
+        _promptvars[vcs_active]=1
+        local gstatus rest modified=0 deleted=0 added=0 _branch branch=""
+        while read -r gstatus rest; do
+            case "$gstatus" in 
+                (#*) IFS="." read -r branch _ <<< "$rest" ;;
+                (M) ((modified++));;
+                (A) ((added++));;
+                (D) ((deleted++));;
+            esac
+        done < <(git status --porcelain=v1 --untracked-files=no --ignored=no -b . 2>/dev/null)
+        _promptvars[vcs_branch]="$branch"
+        _promptvars[vcs_modified]="$modified"
+        _promptvars[vcs_deleted]="$deleted"
+        _promptvars[vcs_added]="$deleted"
+    } else {
+        _promptvars[vcs_active]=0
+    }
 }
 
 function chpwd {
@@ -50,7 +58,7 @@ function chpwd {
 
 function _update_prompt {
     PROMPT="%B%F{$_promptvars[color]}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
-    if [[ -n $_promptvars[vcs_branch] ]] {
+    if ((_promptvars[vcs_active])) {
         local modified added deleted
         if ((_promptvars[vcs_modified] > 0)) {
             modified=" %F{yellow}~$_promptvars[vcs_modified]"
