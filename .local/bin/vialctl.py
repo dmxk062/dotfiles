@@ -40,7 +40,7 @@ CODES2ANIMS = {v: k for k, v in ANIMATIONS.items()}
 
 # colors i really like
 COLORNAMES = {
-    "pink": (0xD4, 0x3E, 0x1B, None)
+    "copper": (0xD4, 0x3E, 0x1B, None)
 }
 
 
@@ -190,7 +190,7 @@ def main():
             animcode = int(anim)
         else:
             animcode = ANIMATIONS.get(anim, None)
-            if not animcode:
+            if animcode is None:
                 print("Animation does not exist: " + anim, file=sys.stderr)
                 exit(1)
         if speed:
