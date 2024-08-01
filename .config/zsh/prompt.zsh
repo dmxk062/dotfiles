@@ -29,25 +29,19 @@ function zvm_after_select_vi_mode {
 }
 
 function _update_git_status {
-    local branch
-    branch="$(git branch 2>/dev/null)"
-    if (($? == 0)) {
-        _promptvars[vcs_branch]="${branch:2}"
-        local gstatus modified=0 deleted=0 added=0
-        _promptvars[vcs_modified]=""
-        while read -r gstatus _; do
-            case "$gstatus" in 
-                (M) ((modified++));;
-                (A) ((added++));;
-                (D) ((deleted++));;
-            esac
-        done < <(git status --porcelain=v1 .)
-        _promptvars[vcs_modified]="$modified"
-        _promptvars[vcs_deleted]="$deleted"
-        _promptvars[vcs_added]="$deleted"
-    } else {
-        _promptvars[vcs_branch]=""
-    }
+    local gstatus rest modified=0 deleted=0 added=0 _branch branch=""
+    while read -r gstatus rest; do
+        case "$gstatus" in 
+            (#*) IFS="." read -r branch _ <<< "$rest" ;;
+            (M) ((modified++));;
+            (A) ((added++));;
+            (D) ((deleted++));;
+        esac
+    done < <(git status --porcelain=v1 --untracked-files=no --ignored=no -b . 2>/dev/null)
+    _promptvars[vcs_branch]="$branch"
+    _promptvars[vcs_modified]="$modified"
+    _promptvars[vcs_deleted]="$deleted"
+    _promptvars[vcs_added]="$deleted"
 }
 
 function chpwd {
