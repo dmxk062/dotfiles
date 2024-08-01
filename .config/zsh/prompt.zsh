@@ -49,7 +49,7 @@ function chpwd {
 }
 
 function _update_prompt {
-    PROMPT="%B%F{$_promptvars[color]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+    PROMPT="%B%F{$_promptvars[color]}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
     if [[ -n $_promptvars[vcs_branch] ]] {
         local modified added deleted
         if ((_promptvars[vcs_modified] > 0)) {
@@ -61,7 +61,7 @@ function _update_prompt {
         if ((_promptvars[vcs_deleted] > 0)) {
             deleted=" %F{red}-$_promptvars[vcs_deleted]"
         }
-        PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${_promptvars[vcs_branch]}${added}${modified}${deleted}%F{8}%k $PROMPT"
+        PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${_promptvars[vcs_branch]}${added}${modified}${deleted}%K{8} $PROMPT"
     }
 }
 
