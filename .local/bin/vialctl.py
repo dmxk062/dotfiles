@@ -153,8 +153,8 @@ def parse_hex_color(hex: str) -> (int, int, int, float or None):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--list", action="store_true")
-    parser.add_argument("-c", "--color", metavar="COLOR")
-    parser.add_argument("-a", "--animation", metavar="ANIMATION")
+    parser.add_argument("-c", "--color", metavar="[#]RRGGBB[AA]")
+    parser.add_argument("-a", "--animation", metavar="animation[:speed[%]]")
     parser.add_argument(
         "-L", "--list-animations", action="store_true", dest="list_animations"
     )
@@ -183,7 +183,7 @@ def main():
         for kbd in kbds:
             kbd.set_color(*color)
     if args.animation:
-        split = args.animation.split("@")
+        split = args.animation.split(":")
         anim = split[0]
         speed = len(split) > 1 and split[1] or None
         if re.match(r"\d+", anim):
