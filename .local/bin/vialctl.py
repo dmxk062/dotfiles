@@ -36,6 +36,8 @@ ANIMATIONS = {
     "colors": 43,
 }
 
+CODES2ANIMS = {v: k for k, v in ANIMATIONS.items()}
+
 
 def is_rawhid(dev: hid.DeviceInfo):
     return not (dev["usage_page"] != 0xFF60 or dev["usage"] != 0x61)
@@ -148,7 +150,10 @@ def main():
     parser.add_argument("-l", "--list", action="store_true")
     parser.add_argument("-c", "--color", metavar="COLOR")
     parser.add_argument("-a", "--animation", metavar="ANIMATION")
-    parser.add_argument("-L", "--list-animations", action="store_true", dest="list_animations")
+    parser.add_argument(
+        "-L", "--list-animations", action="store_true", dest="list_animations"
+    )
+    parser.add_argument("-C", "--get-color", action="store_true", dest="get_color")
     args = parser.parse_args()
 
     if args.list:
@@ -164,10 +169,10 @@ def main():
     if len(devs) == 0:
         print("No devices found", file=sys.stderr)
         exit(1)
+    kbds = [VialKbd(dev) for dev in devs]
     if args.color:
         color = parse_hex_color(args.color)
-        for dev in devs:
-            kbd = VialKbd(dev)
+        for kbd in kbds:
             kbd.set_color(*color)
     if args.animation:
         split = args.animation.split("@")
@@ -183,9 +188,16 @@ def main():
         if speed:
             speed = int(speed.rstrip("%"))
             speed = int((speed * 255) / 100)
-        for dev in devs:
-            kbd = VialKbd(dev)
+        for kbd in kbds:
             kbd.set_animation(animcode, speed or None)
+    if args.get_color:
+        for kbd in kbds:
+            r, g, b = colorsys.hsv_to_rgb(kbd.cur_hsv[0] / 255.0, kbd.cur_hsv[1] / 255.0, kbd.cur_hsv[2] / 255.0)
+            r = int(round(r*255))
+            g = int(round(g*255))
+            b = int(round(b*255))
+            print(f"#{r:02X}{g:02X}{b:02X}")
+
 
 
 if __name__ == "__main__":
