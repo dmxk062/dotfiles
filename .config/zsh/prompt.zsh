@@ -1,14 +1,18 @@
 # we *need* EPOCHREALTIME for the prompt to be accurate
 zmodload zsh/datetime
 
-declare -A _promptvars
+declare -A _promptvars=(
+    [color]="cyan"
+    [timer]=""
+    [vcs_branch]=""
+)
 # directly set the hooks instead of just adding to the hook, so ours runs first
 function preexec {
     _promptvars[timer]=$EPOCHREALTIME
 }
 
 # change the color of the prompt based on mode
-PROMPT="%B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+# PROMPT="%B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 function zvm_after_select_vi_mode {
     local -A mode_colors=(
         ["$ZVM_MODE_NORMAL"]="cyan"
@@ -17,7 +21,23 @@ function zvm_after_select_vi_mode {
         ["$ZVM_MODE_VISUAL_LINE"]="12"
         ["$ZVM_MODE_REPLACE"]="red"
     )
-    PROMPT="%B%F{$mode_colors[$ZVM_MODE]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+    _promptvars[color]="$mode_colors[$ZVM_MODE]"
+    _update_prompt
+}
+
+function chpwd {
+    local branch
+    branch="$(git branch 2>/dev/null)"
+    _promptvars[vcs_branch]="${branch:2}"
+}
+
+function _update_prompt {
+    if [[ -n $_promptvars[vcs_branch] ]] {
+        PROMPT="%B%F{$_promptvars[color]}%S󰘬 $_promptvars[vcs_branch]%s %F{$_promptvars[color]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+    } else {
+        PROMPT="%B%F{$_promptvars[color]}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+    }
+
 }
 
 
@@ -41,12 +61,13 @@ function precmd {
         RPROMPT="%B%F{$ZSH_COLORS_RGB[orange]}%S venv%s%b%f ${RPROMPT}"
     }
     _promptvars[timer]=0
+    _update_prompt
 }
 
 # Prompt for nested things:
 PS2="%B%S󰅪 %_%s%f%b "
+#
 # sudo prompt
-
 export SUDO_PROMPT="$(print -P "\n%B%F{red}%S sudo%s%f%b ")"
 
 # only the default, i have a couple more functions planed for this
@@ -54,5 +75,8 @@ TIMEFMT="User   %U
 Kernel %S
 Time   %E"
 
-# disable python venv
+# disable python venv automatic prompt changing
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# explicitly update it on first run
+chpwd
