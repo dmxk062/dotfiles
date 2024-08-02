@@ -37,6 +37,8 @@
         (button :class "lbutton" :onclick "desktop/mods/open_size.sh 'nautilus' org.gnome.Nautilus" :timeout "128s" "Files")
         (button :class "lbutton" :onclick "desktop/mods/open_size.sh 'firefox' firefox" :timeout "128s" "Browser")
         (revealer :reveal rc_show_more :transition "slideup" :duration "0.2s" (box :orientation "v" :space-evenly false
+            (button :class "lbutton" :onclick "desktop/mods/open_size.sh 'gtk-launch io.missioncenter.MissionCenter' io.missioncenter.MissionCenter" :timeout "128s" "MissionCenter")
+            (button :class "lbutton" :onclick "desktop/mods/open_size.sh 'gtk-launch com.github.neithern.g4music' com.github.neithern.g4music" :timeout "128s" "Music")
             (llbutton :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :label "Open Settings")
             ;; (llbutton :onclick "../settings/bin/look/color.sh noeww" :label "Switch Color")
         ))
