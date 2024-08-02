@@ -112,8 +112,11 @@ class VialKbd:
     def set_color(self, r: int, g: int, b: int, a: float):
         r_scaled, g_scaled, b_scaled = r / 255.0, g / 255.0, b / 255.0
         h, s, v = colorsys.rgb_to_hsv(r_scaled, g_scaled, b_scaled)
+        h, s, v = int(h*255), int(s*255), int(v*255)
         if a is not None:
             v *= a
+
+        self.cur_hsv = (h, s, v)
 
         self.msg(
             struct.pack(
@@ -122,15 +125,18 @@ class VialKbd:
                 0x41,
                 self.cur_mode,
                 self.cur_speed,
-                int(h * 255),
-                int(s * 255),
-                int(v * 255),
+                h, s, v
             )
         )
 
     def set_animation(self, anim: int, speed: int or None):
         if anim not in self.supported_anims:
             raise RuntimeError("Animation not supported by device")
+
+        self.cur_mode = anim,
+        if speed:
+            self.cur_speed = speed
+
         self.msg(
             struct.pack(
                 "BBHBBBB",
