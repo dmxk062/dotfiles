@@ -20,6 +20,7 @@ l='lsd --hyperlink=auto' \
 grep='grep --color=auto' \
 fdd="fd -t d" \
 fdf="fd -t f" \
-g="git"
+g="git" \
+rg="noglob rg"
 
 alias -g "@silent"="> /dev/null 2>&1" -g "@err2out"="2> /dev/stdout"

@@ -24,19 +24,31 @@ for name in "${(k)fzf_colors[@]}"; do
 done
 colors="${colors::-1}"
 
-local -a zo_extra=(
-    "--prompt='󰉋 cd: '"
+local fzf_opts=(
     "--pointer='>'"
     "--color=prompt:cyan:bold"
     "--no-scrollbar"
     "--no-separator"
-    "--height=18"
     "--border=rounded"
+)
+local -a zo_extra=(
+    "--prompt='󰉋 cd: '"
+    "--height=18"
     "--preview='lsd \"\$(echo {}|cut -f2)\"'"
     # "--preview-window=up,noborder"
 )
 
-export FZF_DEFAULT_OPTS="$colors"
-export _ZO_FZF_OPTS="$colors ${(j: :)zo_extra}"
+function nz {
+    local res="$(fd -I --type=file|fzf --prompt=" ed: " --preview='bat -p --color=always -- {}')"
+    if [[ -z "$res" ]]; then
+        return
+    fi
+    local parent="${res:h}"
+    local fpath="${res:A}"
+    (cd "$parent"; nvim "$fpath")
+}
 
-unset colors name zo_extra fzf_colors
+export FZF_DEFAULT_OPTS="$colors ${(j: :)fzf_opts}"
+export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS ${(j: :)zo_extra}"
+
+unset colors name zo_extra fzf_colors fzf_opts
