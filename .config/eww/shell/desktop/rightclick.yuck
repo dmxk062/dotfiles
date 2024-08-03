@@ -1,4 +1,3 @@
-(defvar rc_win_area 0)
 (defvar rc_desktop_area 0)
 (defvar rc_show_more false)
 (defvar rc_show_session false)
@@ -49,27 +48,11 @@
 
 (defwidget rc_section_window []
 (box :orientation "v" :visible {window.title != "null" && !rc_start_desktop} :space-evenly false
-    (box :space-evenly false :orientation "v" :visible {rc_win_area == 0}
+    (box :space-evenly false :orientation "v"
         (llbutton :onclick "hyprctl dispatch killactive& ${EWW_CMD} close rc_popup" :label "Close")
-        (llbutton :onclick "hyprctl dispatch togglefloating& ${EWW_CMD} close rc_popup" :label "${window.floating ? "Tile" : "Float"}")
-        (llbutton :onclick "hyprctl dispatch fullscreen 0& ${EWW_CMD} close rc_popup" :visible {!window.floating} :label "${window.fullscreen ? "Unfullscreen" : "Fullscreen"}")
-        (llbutton :onclick "hyprctl dispatch pin& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "${window.pinned ? "Unpin" : "Pin"}")
         (llbutton :onclick "desktop/mods/resize.sh ${window.address}& ${EWW_CMD} close rc_popup" :visible {window.floating} :label "Resize")
-        (llbutton :onclick "${EWW_CMD} update rc_win_area=1" :label "Move to")
-        (llbutton :onclick "${EWW_CMD} close rc_popup" :label "Cancel")
-    )
-    (box :orientation "v" :space-evenly false :visible {rc_win_area == 1}
-        (box :space-evenly false :halign "center"
-            (llbutton :tooltip "Previous" :onclick "hyprctl dispatch movetoworkspace -1& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :label "󰁍")
-            (llbutton :tooltip "Main" :onclick "hyprctl dispatch movetoworkspace name:main& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false"  :label "Main")
-            (llbutton :tooltip "Next" :onclick "hyprctl dispatch movetoworkspace +1& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :label "󰁔")
-        )
-        (separator)
-        (box :orientation "v" (for ws in workspaces 
-            (llbutton :onclick "hyprctl dispatch movetoworkspacesilent ${ws.name}& ${EWW_CMD} close rc_popup; ${EWW_CMD} update rc_show_ws=false" :visible {ws.id != window.workspace.id} :label "${ws.name}" :tooltip "${ws.count} ${ws.count != 1 ? "windows" : "window"} in workspace")
-        ))
-        (separator)
-        ;; (button :class "lbutton" :onclick "${EWW_CMD} update rc_win_area=0" "Back")
+        (llbutton :onclick "desktop/mods/translate.sh selection EN&" :timeout "15s" :label "Translate (󰁔 EN)")
+        (llbutton :onclick "desktop/mods/translate.sh selection DE&" :timeout "15s" :label "Translate (󰁔 DE)")
         (llbutton :onclick "${EWW_CMD} close rc_popup" :label "Cancel")
     )
 
