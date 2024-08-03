@@ -2,6 +2,10 @@ local M = {
     "nvim-telescope/telescope.nvim",
     dependencies = {
         "nvim-lua/plenary.nvim",
+        {
+            "nvim-telescope/telescope-fzf-native.nvim",
+            build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
+        },
     },
 }
 M.config = function()
@@ -25,11 +29,22 @@ M.config = function()
 
     local function default_config(extra)
         local default = {
-            theme = "ivy",
             layout_config = {
-                height = .3,
+                height = function()
+                    return vim.o.lines
+                end,
+                width = function()
+                    return vim.o.columns
+                end,
+                preview_cutoff = 1,
+                prompt_position = "bottom",
             },
             mappings = buffer_on_enter,
+            borderchars = {
+                prompt = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+                results = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+                preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            }
         }
         return vim.tbl_deep_extend("force", default, extra or {})
     end
@@ -48,17 +63,48 @@ M.config = function()
             dynamic_preview_title = true,
             results_title = false,
             selection_caret = "> ",
-            prompt_prefix = " ",
+            prompt_prefix = " ed: ",
         },
         pickers = {
             lsp_definitions = default_config {
                 jump_type = "tab drop",
                 reuse_win = true,
+                layout_config = {
+                    preview_width = 0.8,
+                }
             },
-            diagnostics = default_config(),
+            lsp_references = default_config {
+                jump_type = "tab drop",
+                reuse_win = true,
+                layout_config = {
+                    preview_width = 0.8,
+                }
+            },
+            lsp_dynamic_workspace_symbols = default_config {
+                jump_type = "tab drop",
+                prompt_title = "Symbols",
+                reuse_win = true,
+                layout_config = {
+                    preview_width = 0.6,
+                }
+
+            },
+            lsp_document_symbols = default_config {
+                jump_type = "tab drop",
+                prompt_title = "Symbols",
+                reuse_win = true,
+                layout_config = {
+                    preview_width = 0.6,
+                }
+
+            },
+            diagnostics = default_config {
+                layout_config = {
+                    preview_width = 0.5,
+                }
+            },
             git_files = default_config { prompt_title = "Files in Git" },
             live_grep = default_config(),
-            grep_string = default_config(),
             oldfiles = default_config { prompt_title = "History" },
             registers = {
                 theme = "cursor",
@@ -69,12 +115,17 @@ M.config = function()
                 }
             },
             buffers = {
-                sort_lastused = true,     -- so i can just <space><space><cr> to cycle
+                sort_lastused = true, -- so i can just <space><space><cr> to cycle
                 theme = "dropdown",
                 previewer = false,
                 layout_config = {
-                    height = .5,
-                    width = .5,
+                    height = function()
+                        local nh = math.floor(vim.o.lines * .1)
+                        return nh >= 8 and nh or 8
+                    end,
+                    width = function()
+                        return math.min(vim.o.columns - 4, 64)
+                    end
                 },
                 mappings = {
                     n = {
@@ -93,25 +144,47 @@ M.config = function()
                     },
                 }
             },
-            lsp_references = default_config(),
-            lsp_workspace_symbols = default_config(),
             find_files = default_config(),
+            help_tags = default_config {
+                mappings = {
+                    n = {
+                        ["<CR>"] = "select_default",
+                        ["v"] = "select_vertical",
+                        ["s"] = "select_horizontal",
+                        ["t"] = "select_tab"
+                    },
+                    i = {
+                        ["<CR>"] = "select_default",
+                    }
+                }
+            },
         },
         extensions = {
+            fzf = {
+                fuzzy = true,
+                override_generic_sorter = true,
+                override_file_sorter = true,
+                case_mode = "smart_case"
+            }
         }
     }
+    require("telescope").load_extension("fzf")
     local builtin = require("telescope.builtin")
     local _prefix = "<space>"
 
 
     for _, map in ipairs({
         { "D",       builtin.diagnostics },
-        { "gF",      builtin.git_files },
+        { "g",       builtin.git_files },
         { "F",       builtin.find_files },
         { "h",       builtin.oldfiles },
+        { "H",       builtin.help_tags },
         { "/",       builtin.live_grep },
+        { "[",       builtin.lsp_document_symbols },
+        { "]",       builtin.lsp_dynamic_workspace_symbols },
         { "R",       builtin.registers },
         { "<space>", builtin.buffers },
+
     }) do
         utils.map("n", _prefix .. map[1], map[2])
     end

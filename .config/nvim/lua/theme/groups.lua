@@ -408,13 +408,13 @@ local gitsigns = with_prefix("GitSigns", {
 
 local telescope = with_prefix("Telescope", {
     PromptBorder   = { fg = pal.bg3 },
-    PromptTitle    = { fg = col.magenta },
+    PromptTitle    = { fg = col.teal },
     ResultsBorder  = { fg = pal.bg3 },
     PreviewBorder  = { fg = pal.bg3 },
-    Selection      = { bg = pal.bg1 },
-    PromptPrefix   = { fg = col.magenta },
-    SelectionCaret = { bg = col.magenta, fg = col.magenta },
-    Matching       = { fg = col.yellow },
+    Selection      = { fg = col.teal, bold = true },
+    PromptPrefix   = { fg = col.teal, bold = true },
+    SelectionCaret = {},
+    Matching       = { fg = col.teal },
 })
 
 local extra = {
