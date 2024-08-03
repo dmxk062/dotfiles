@@ -386,23 +386,24 @@ local mason = with_prefix("Mason", {
 })
 
 local gitsigns = with_prefix("GitSigns", {
-    Add              = { fg = pal.bg3 },
-    AddNr            = { fg = pal.bg3 },
-    AddLn            = { fg = pal.bg3 },
-    Change           = { fg = col.magenta },
-    ChangeNr         = { fg = pal.bg3 },
-    ChangeLn         = { fg = pal.bg3 },
-    Delete           = { fg = col.red },
-    DeleteNr         = { fg = pal.bg3 },
-    DeleteLn         = { fg = pal.bg3 },
-    CurrentLineBlame = { bg = pal.bg1, fg = pal.fg0, nocombine = true },
-    AddInline        = { fg = col.green, italic = true },
-    DeleteInline     = { fg = col.red, italic = true },
-    ChangeInline     = { italic = true, bold = true },
+    Add                = { fg = pal.bg3 },
+    AddNr              = { fg = pal.bg3 },
+    AddLn              = { fg = pal.bg3 },
+    Change             = { fg = col.magenta },
+    ChangeNr           = { fg = pal.bg3 },
+    ChangeLn           = { fg = pal.bg3 },
+    Delete             = { fg = col.red },
+    DeleteNr           = { fg = pal.bg3 },
+    DeleteLn           = { fg = pal.bg3 },
+    CurrentLineBlame   = { bg = pal.bg1, fg = pal.fg0, nocombine = true },
+    AddInline          = { fg = col.green, italic = true },
+    DeleteInline       = { fg = col.red, italic = true },
+    ChangeInline       = { italic = true, bold = true },
 
-    StagedAdd        = { fg = pal.bg3, bold = true },
-    StagedDelete     = { fg = col.red, bold = true },
-    StagedChange     = { fg = col.magenta, bold = true },
+    StagedAdd          = { fg = pal.bg3, bold = true },
+    StagedDelete       = { fg = col.red, bold = true },
+    StagedChange       = { fg = col.magenta, bold = true },
+    StagedChangeDelete = { fg = col.magenta, bold = true },
 })
 
 local telescope = with_prefix("Telescope", {
