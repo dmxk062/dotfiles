@@ -196,13 +196,13 @@ M.config = function()
                 button("󰱼 Search Files",
                     hl_prefix .. "Search",
                     ",/",
-                    function() require("telescope.builtin").find_files { layout_config = { height = .6 } } end,
+                    function() require("telescope.builtin").find_files {} end,
                     max_width
                 ),
                 button("󱎸 Grep Files",
                     hl_prefix .. "Grep",
                     ",g",
-                    function() require("telescope.builtin").live_grep { layout_config = { height = .6 } } end,
+                    function() require("telescope.builtin").live_grep {} end,
                     max_width
                 ),
                 button(" Lazy.nvim - Plugins",
@@ -220,7 +220,7 @@ M.config = function()
                 button("󰋚 Search History",
                     hl_prefix .. "History",
                     ",h",
-                    function() require("telescope.builtin").oldfiles { layout_config = { height = .6 } } end,
+                    function() require("telescope.builtin").oldfiles {} end,
                     max_width
                 ),
             }
