@@ -1,0 +1,52 @@
+[flags]
+enable_cache_memory = true
+regex = true
+memory_legend = "top-left"
+default_widget_type = "proc"
+network_use_binary_prefix = true
+# e.g. 200% when 2 cores are fully used
+unnormalized_cpu = true
+# press <Tab> to show each pid
+group_processes = true
+# clutter
+hide_time = true
+
+
+[styles]
+theme = "nord"
+
+[styles.widgets]
+border_color = "darkgray"
+selected_border_color = "cyan"
+widget_title = { color = "cyan" }
+selected_text = { bg_color = "cyan" }
+text = { color = "white" }
+
+[styles.graphs]
+graph_color = "darkgray"
+legend_text = { color = "white" }
+
+[styles.memory]
+cache_color = "green"
+
+[styles.tables]
+headers = { bold = false }
+
+[disk.mount_filter]
+list = [
+    "/boot/efi",
+    "/var/log",
+    "/var/cache"
+]
+
+[[row]]
+    [[row.child]]
+        type = "mem"
+    [[row.child]]
+        type = "cpu"
+[[row]]
+    [[row.child]]
+        ratio = 2
+        type = "proc"
+    [[row.child]]
+        type = "net"
