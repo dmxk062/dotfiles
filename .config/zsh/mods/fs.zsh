@@ -243,10 +243,10 @@ function .. {
         return
     }
 
-    while ((level != 0)) {
-        cd ..
-        ((level--))
-    }
+
+    local fmt
+    printf -v fmt "../%.0s" {1..$level}
+    cd "$fmt"
 }
 
 
