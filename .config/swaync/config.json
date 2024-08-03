@@ -1,6 +1,5 @@
 {
     "$schema": "/etc/xdg/swaync/configSchema.json",
-
     "positionX": "center",
     "positionY": "top",
     "control-center-positionX": "right",
@@ -10,7 +9,6 @@
     "control-center-margin-right": 8,
     "control-center-margin-left": 8,
     "fit-to-screen": true,
-
     "layer": "overlay",
     "control-center-layer": "overlay",
     "cssPriority": "application",
@@ -19,6 +17,7 @@
     "notification-body-image-width": 350,
     "notification-inline-replies": true,
     "timeout": 30,
+    "notification-2fa-action": false,
     "timeout-low": 30,
     "timeout-critical": 0,
     "notification-window-width": 400,
@@ -27,7 +26,6 @@
     "transition-time": 200,
     "hide-on-clear": true,
     "script-fail-notify": true,
-
     "widgets": [
         "dnd",
         "mpris",
@@ -59,7 +57,7 @@
             "image-size": 96,
             "image-radius": 12
         },
-        "volume":{
+        "volume": {
             "show-per-app": true,
             "show-per-app-icon": true,
             "show-per-app-label": true,
@@ -68,11 +66,11 @@
         }
     },
     "scripts": {
-        "urgent-sound":{
+        "urgent-sound": {
             "urgency": "Critical",
             "exec": "sh -c 'paplay ~/.config/swaync/sounds/alert.ogg'"
         },
-        "incoming-call":{
+        "incoming-call": {
             "body": "Incoming call",
             "exec": "sh -c 'paplay ~/.config/swaync/sounds/phone-incoming.ogg'"
         }
