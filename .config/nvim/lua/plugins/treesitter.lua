@@ -35,6 +35,7 @@ textobjects.select = {
         -- classes/structs
         ["iC"] = "@class.inner",
         ["aC"] = "@class.outer",
+        ["in"] = "@number.inner",
 
         ---@deprecated, gonna be more useful for indents
         -- read: inner if
@@ -53,6 +54,7 @@ textobjects.move = {
         ["]f"] = "@function.outer",
         ["]m"] = "@method.outer",
         ["]c"] = "@comment.outer",
+        ["]C"] = "@class.outer",
         ["]r"] = "@return.inner",
     },
     goto_previous_start = {
@@ -60,6 +62,7 @@ textobjects.move = {
         ["[f"] = "@function.outer",
         ["[m"] = "@method.outer",
         ["[c"] = "@comment.outer",
+        ["[C"] = "@class.outer",
         ["[r"] = "@return.inner",
     },
 

@@ -1,8 +1,12 @@
 local utils = require("utils")
 
 -- move between windows more efficiently, i rarely use W anyways
+-- still works in o pending etc
 -- also allows me to use <C-w> in kitty for the same purpose
 utils.map("n", "W", "<C-w>")
+
+-- less annoying way to exit terminal mode
+utils.map("t", "<S-Esc>", "<C-\\><C-n>")
 
 -- for some reason smth else remaps those 
 utils.map("i", "<M-k>", "<esc>k")
@@ -59,11 +63,6 @@ utils.map("t", "<C-Esc>", "<C-\\><C-n>")
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
--- numbers
--- without periods and minus
-utils.map({"x", "o"}, "in", function() textobjs.pattern("%d+") end)
--- with periods and minus
-utils.map({"x", "o"}, "an", function() textobjs.pattern("%-?%d*%.?%d+") end)
 
 -- move between diagnostics, shortcuts for textobjects are in ./plugins/lspconfig.lua, since those just work with lsp
 -- these work with all diagnostics
