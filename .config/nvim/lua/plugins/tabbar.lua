@@ -60,7 +60,14 @@ M.config = function()
         local buftype = vim.bo[bufid]["filetype"]
         local name = ""
         local show_modified = true
-        if filename then
+        if vim.b[bufid].term_title then
+            name = vim.b[bufid].term_title
+            if vim.startswith(name, "term://") then
+                local pid = string.match(name, [[term://.*//(%d+)]])
+                local prog = string.match(name, [[term://.*//%d+:(.*)]])
+                name = string.format("%s (%d)", prog, pid)
+            end
+        elseif filename then
             name = filename
         else
             if buftype == "TelescopePrompt" then
