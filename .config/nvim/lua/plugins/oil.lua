@@ -112,13 +112,13 @@ M.config = function()
         },
     })
 
-    -- automatically cd the whole nvim
     vim.api.nvim_create_autocmd("User", {
         pattern  = "OilEnter",
         callback = function(bufnr)
-            -- change directory if not ssh
-            if api.get_current_dir() then
-                actions.cd.callback()
+            -- change directory if not ssh, only for current window
+            local dir = api.get_current_dir()
+            if dir then
+                vim.cmd.lcd(dir)
             end
         end
     })
