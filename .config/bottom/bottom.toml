@@ -2,10 +2,11 @@
 enable_cache_memory = true
 regex = true
 memory_legend = "top-left"
+process_memory_as_value = true
 default_widget_type = "proc"
 network_use_binary_prefix = true
 # e.g. 200% when 2 cores are fully used
-unnormalized_cpu = true
+# unnormalized_cpu = true
 # press <Tab> to show each pid
 group_processes = true
 # clutter
