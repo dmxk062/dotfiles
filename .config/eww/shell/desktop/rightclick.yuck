@@ -6,7 +6,7 @@
 
 (defwidget rightclick_menu []
     (eventbox 
-    :ondropped "desktop/drop/on_dropped.sh '{}'&"
+    ;; :ondropped "desktop/drop/on_dropped.sh '{}'&"
     :onrightclick "desktop/bin/open_rc_menu.sh desktop&" 
     :onclick "sleep 0.1; ${EWW_CMD} close rc_popup icon_popup dock_window_popup&"   
     :timeout "128s"
@@ -29,16 +29,26 @@
     (rc_popup_menu)
 )
 
+(defwidget open_size_button [cmd class label]
+    (button
+        :class "lbutton"
+        :onclick "desktop/mods/open_size.sh '${cmd}' '${class}' & ${EWW_CMD} close rc_popup"
+        :timeout "128s"
+        "${label}"
+    )
+)
+
 (defwidget rc_section_desktop []
 (box :orientation "v" :visible {window.title == "null" || rc_start_desktop} :space-evenly false 
     (box :space-evenly false :orientation "v" :visible {rc_desktop_area == 0}
-        (button :class "lbutton" :onclick "desktop/mods/open_size.sh kitty kitty" :timeout "128s" "New Terminal")
-        (button :class "lbutton" :onclick "desktop/mods/open_size.sh 'nautilus' org.gnome.Nautilus" :timeout "128s" "Files")
-        (button :class "lbutton" :onclick "desktop/mods/open_size.sh 'firefox' firefox" :timeout "128s" "Browser")
+        (open_size_button :cmd "kitty" :class "kitty" :label "Terminal")
+        (open_size_button :cmd "gtk-launch org.gnome.Nautilus" :class "org.gnome.Nautilus" :label "Files")
+        (open_size_button :cmd "firefox" :class "firefox" :label "Browser")
         (revealer :reveal rc_show_more :transition "slideup" :duration "0.2s" (box :orientation "v" :space-evenly false
-            (button :class "lbutton" :onclick "desktop/mods/open_size.sh 'gtk-launch io.missioncenter.MissionCenter' io.missioncenter.MissionCenter" :timeout "128s" "MissionCenter")
-            (button :class "lbutton" :onclick "desktop/mods/open_size.sh 'gtk-launch com.github.neithern.g4music' com.github.neithern.g4music" :timeout "128s" "Music")
-            (llbutton :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :label "Open Settings")
+            (open_size_button :cmd "kitty btm" :class "kitty" :label "Bottom")
+            (open_size_button :cmd "gtk-launch io.missioncenter.MissionCenter" :class "io.missioncenter.MissionCenter" :label "MissionCenter")
+            (open_size_button :cmd "gtk-launch com.github.neithern.g4music" :class "com.github.neithern.g4music" :label "Music")
+            (llbutton :onclick "eww_settings.sh & ${EWW_CMD} close rc_popup" :label "Settings")
             ;; (llbutton :onclick "../settings/bin/look/color.sh noeww" :label "Switch Color")
         ))
         ;; (llbutton :onclick "bin/open_window_list.sh upd& ${EWW_CMD} update rc_desktop_area=1" :label "Windows")
