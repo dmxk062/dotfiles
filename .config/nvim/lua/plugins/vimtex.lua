@@ -50,13 +50,12 @@ return {
             callback = function(ev)
                 vim.cmd("VimtexCompile")
                 -- send a bell to focus the window
-                -- TODO: get rid of awful hack ffs
                 vim.api.nvim_create_autocmd("User", {
                     once = true,
                     pattern = "VimtexEventCompileSuccess",
                     callback = function()
                         vim.defer_fn(function()
-                            require("lowlevelhacks").write_raw("\a")
+                            vim.uv.new_tty(1, false):write("\a")
                         end, 500)
                     end
                 })
