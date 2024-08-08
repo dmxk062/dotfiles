@@ -21,7 +21,7 @@ vim.o.breakindent = true
 vim.o.breakindentopt = "sbr"
 vim.o.showbreak = ""
 
--- idk why that isnt the default, much more intuitive imo
+-- idk why that isn't the default, much more intuitive imo
 vim.o.splitright = true
 vim.o.splitbelow = true
 
@@ -98,6 +98,40 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter
 
 vim.o.titlestring = "nv: NeoVIM" -- set initial
 
+-- change line number based on mode:
+-- for command mode: make it absolute for ranges etc
+-- for normal mode: relative movements <3
+local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+    group = cmdline_group,
+    callback = function()
+        if vim.o.number then
+            vim.o.relativenumber = false
+            vim.api.nvim__redraw({statuscolumn = true})
+        end
+    end
+})
+
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+    group = cmdline_group,
+    callback = function()
+        if vim.o.number then
+            vim.o.relativenumber = true
+        end
+    end
+})
+
+
+-- sane defaults for terminal mode
+vim.api.nvim_create_autocmd("TermOpen", {
+    callback = function(ev)
+        vim.wo[0].number = false
+        vim.wo[0].relativenumber = false
+        -- immediately hand over control
+        vim.cmd.startinsert()
+    end
+})
+
 -- use lazy for the remaining config
 -- all the package definitions in ./lua/plugins/ will be loaded
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -156,27 +190,3 @@ require("mappings")
 
 -- for some reason lazy deactivates that
 vim.o.modeline = true
-
-
--- change line number based on mode:
--- for command mode: make it absolute for ranges etc
--- for normal mode: relative movements <3
-local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
-vim.api.nvim_create_autocmd("CmdlineEnter", {
-    group = cmdline_group,
-    callback = function()
-        if vim.o.number then
-            vim.o.relativenumber = false
-            vim.api.nvim__redraw({statuscolumn = true})
-        end
-    end
-})
-
-vim.api.nvim_create_autocmd("CmdlineLeave", {
-    group = cmdline_group,
-    callback = function()
-        if vim.o.number then
-            vim.o.relativenumber = true
-        end
-    end
-})
