@@ -15,7 +15,8 @@ local function setup_mason()
 
     require("mason-lspconfig").setup {
         ensure_installed = {
-            "ruff_lsp"
+            "ruff_lsp",
+            "asm_lsp"
         }
     }
 end
@@ -159,7 +160,7 @@ M.config = function()
     lspconfig.clangd.setup {
         capabilities = capabilities,
         cmd = {
-            "clangd", "--enable-config"
+            "clangd", "--enable-config", "--background-index"
         },
         on_attach = function()
             -- cycle between definition and implementation files, who cares about select mode lol
@@ -169,11 +170,7 @@ M.config = function()
     lspconfig.asm_lsp.setup {
         capabilities = capabilities,
         root_dir = function(path)
-            if vim.uv.fs_stat(".asm-lsp.toml") then
-                return "."
-            else
-                return require("lspconfig.util").find_git_ancestor(path)
-            end
+            return vim.fs.root(path, ".git")
         end
     }
 

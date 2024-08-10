@@ -45,9 +45,6 @@ M.config = function()
             utils.lmap(bufnr, "n", prefix .. "w", gitsigns.toggle_word_diff)
             utils.lmap(bufnr, "n", prefix .. "r", gitsigns.toggle_deleted)
 
-            utils.lmap(bufnr, "n", "]g", function() gitsigns.nav_hunk("next") end)
-            utils.lmap(bufnr, "n", "[g", function() gitsigns.nav_hunk("prev") end)
-
             utils.lmap(bufnr, { "x", "o" }, "igh", "<cmd>Gitsigns select_hunk<cr>")
         end,
     }

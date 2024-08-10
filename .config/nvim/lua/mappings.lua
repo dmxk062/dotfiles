@@ -67,8 +67,6 @@ local textobjs = require("textobjs")
 -- move between diagnostics, shortcuts for textobjects are in ./plugins/lspconfig.lua, since those just work with lsp
 -- these work with all diagnostics
 utils.map("n", "<space>d", vim.diagnostic.open_float)
-utils.map({"n", "x", "o"}, "[d", vim.diagnostic.goto_prev)
-utils.map({"n", "x", "o"}, "]d", vim.diagnostic.goto_next)
 
 -- indents, very useful for e.g. python
 -- skips lines with spaces and tries to generally be as simple to use as possible
