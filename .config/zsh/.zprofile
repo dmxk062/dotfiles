@@ -13,6 +13,7 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 path+=("$HOME/.config/zsh/scripts" "$HOME/.local/bin" "$HOME/.local/share/cargo/bin")
 
 eval $(ssh-agent -s) > /dev/null 2>&1
+ssh-add "$HOME/.local/share/keys/git" 2>&1
 if [[ $(tty) == /dev/tty* ]]
 then
     exec $ZDOTDIR/run_session.sh

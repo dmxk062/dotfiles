@@ -1,5 +1,3 @@
-#configures vi mode plugin
-
 fpath+="$ZDOTDIR/comp"
 declare -A ZSH_COLORS_RGB=(
     ["light-gray"]="#4c566a"
@@ -7,14 +5,14 @@ declare -A ZSH_COLORS_RGB=(
 )
 
 
-
 function zvm_config {
     ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
     ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
     ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
     ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
-    ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
+    ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLOCK
     ZVM_MODE_INSERT=true
+    ZVM_VI_SURROUND_BINDKEY=classic
     ZVM_VI_HIGHLIGHT_BACKGROUND=8
     zvm_bindkey vicmd "/" history-incremental-search-backward
 }
