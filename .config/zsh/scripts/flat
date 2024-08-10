@@ -138,4 +138,7 @@ case "$mode" in
     remove)
         flatpak remove "${pargs[@]}"
         ;;
+    update)
+        flatpak update
+        ;;
 esac
