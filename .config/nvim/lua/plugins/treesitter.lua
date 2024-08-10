@@ -123,8 +123,26 @@ M.config = function()
         },
 
         textobjects = textobjects,
-
     }
+
+    -- use the builtin repeat
+    local ts_repeat = require("nvim-treesitter.textobjects.repeatable_move")
+    vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat.repeat_last_move_next)
+    vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat.repeat_last_move_previous)
+
+    -- enable it for [fFtT]
+    for _, motion in pairs({ "f", "F", "t", "T" }) do
+        vim.keymap.set({ "n", "x", "o" }, motion, ts_repeat["builtin_" .. motion .. "_expr"], { expr = true })
+    end
+
+    -- additional repeat movements for plugins
+    local gs = require("gitsigns")
+    local nh, ph = ts_repeat.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
+    vim.keymap.set({"n", "x", "o"}, "]g", nh)
+    vim.keymap.set({"n", "x", "o"}, "[g", ph)
+    local nd, pd = ts_repeat.make_repeatable_move_pair(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
+    vim.keymap.set({"n", "x", "o"}, "]d", nd)
+    vim.keymap.set({"n", "x", "o"}, "[d", pd)
 end
 
 return M
