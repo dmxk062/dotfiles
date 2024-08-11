@@ -138,11 +138,14 @@ M.config = function()
     -- additional repeat movements for plugins
     local gs = require("gitsigns")
     local nh, ph = ts_repeat.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
-    vim.keymap.set({"n", "x", "o"}, "]g", nh)
-    vim.keymap.set({"n", "x", "o"}, "[g", ph)
-    local nd, pd = ts_repeat.make_repeatable_move_pair(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
-    vim.keymap.set({"n", "x", "o"}, "]d", nd)
-    vim.keymap.set({"n", "x", "o"}, "[d", pd)
+    vim.keymap.set({ "n", "x", "o" }, "]g", nh)
+    vim.keymap.set({ "n", "x", "o" }, "[g", ph)
+    local nd, pd = ts_repeat.make_repeatable_move_pair(
+        function() vim.diagnostic.goto_next { float = false } end,
+        function() vim.diagnostic.goto_prev { float = false } end
+    )
+    vim.keymap.set({ "n", "x", "o" }, "]d", nd)
+    vim.keymap.set({ "n", "x", "o" }, "[d", pd)
 end
 
 return M
