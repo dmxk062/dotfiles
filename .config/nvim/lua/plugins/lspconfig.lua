@@ -90,12 +90,9 @@ M.config = function()
         end,
     })
 
-    vim.diagnostic.config {
-        float = { border = "rounded" }
-    }
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
         vim.lsp.handlers.hover, {
-            border = "rounded"
+            border = "rounded",
         }
     )
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
@@ -114,12 +111,14 @@ M.config = function()
         vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
     end
 
-    vim.diagnostic.config({
+    vim.diagnostic.config {
+        float = {
+            border = "rounded",
+        },
         virtual_text = {
             prefix = "!",
         }
-    })
-
+    }
     -- individual lsps
     lspconfig.jsonls.setup {
         capabilities = capabilities,
