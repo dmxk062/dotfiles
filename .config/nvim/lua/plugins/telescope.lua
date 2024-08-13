@@ -185,15 +185,6 @@ M.config = function()
                         after_action = function(selection)
                         end
                     },
-                    -- unset defaults
-                    i = {
-                        ["<C-t>"] = nil,
-                        ["<C-s>"] = nil,
-                        ["<C-v>"] = nil,
-                        ["<C-e>"] = nil,
-                        ["<C-f>"] = nil,
-                        ["<C-b>"] = nil,
-                    },
                 }
             }
         }
