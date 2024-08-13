@@ -415,6 +415,14 @@ local telescope = with_prefix("Telescope", {
     PromptPrefix   = { fg = col.teal, bold = true },
     SelectionCaret = {},
     Matching       = { fg = col.teal },
+
+    PreviewExecute = { link = "OilExec" },
+    PreviewRead    = { link = "OilRead" },
+    PreviewWrite   = { link = "OilWrite" },
+    PreviewSticky  = { link = "OilSticky" },
+    PreviewLink    = { link = "OilLink" },
+    PreviewHyphen  = { link = "OilNoPerm" },
+    PreviewDate    = { fg = col.cyan },
 })
 
 local extra = {

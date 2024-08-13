@@ -6,8 +6,13 @@ local M = {
             "nvim-telescope/telescope-fzf-native.nvim",
             build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
         },
+        {
+            "jvgrootveld/telescope-zoxide",
+        }
     },
 }
+
+
 M.config = function()
     local telescope = require("telescope")
     local utils = require("utils")
@@ -27,26 +32,27 @@ M.config = function()
         },
     }
 
-    local function default_config(extra)
-        local default = {
-            layout_config = {
-                height = function()
-                    return vim.o.lines
-                end,
-                width = function()
-                    return vim.o.columns
-                end,
-                preview_cutoff = 1,
-                prompt_position = "bottom",
-            },
-            mappings = buffer_on_enter,
-            borderchars = {
-                prompt = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-                results = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-                preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-            }
+    local default_config_tbl = {
+        layout_config = {
+            height = function()
+                return vim.o.lines
+            end,
+            width = function()
+                return vim.o.columns
+            end,
+            preview_cutoff = 1,
+            prompt_position = "bottom",
+        },
+        mappings = buffer_on_enter,
+        borderchars = {
+            prompt = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+            results = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+            preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
         }
-        return vim.tbl_deep_extend("force", default, extra or {})
+    }
+
+    local function default_config(extra)
+        return vim.tbl_deep_extend("force", default_config_tbl, extra or {})
     end
     telescope.setup {
         defaults = {
@@ -144,7 +150,9 @@ M.config = function()
                     },
                 }
             },
-            find_files = default_config(),
+            find_files = default_config {
+                hidden = true,
+            },
             help_tags = default_config {
                 mappings = {
                     n = {
@@ -165,10 +173,40 @@ M.config = function()
                 override_generic_sorter = true,
                 override_file_sorter = true,
                 case_mode = "smart_case"
+            },
+            zoxide = {
+                prompt_title = "Zoxide",
+                mappings = {
+                    -- cd/edit instead of anything else
+                    default = {
+                        action = function(selection)
+                            vim.cmd.edit(selection.path)
+                        end,
+                        after_action = function(selection)
+                        end
+                    },
+                    -- unset defaults
+                    i = {
+                        ["<C-t>"] = nil,
+                        ["<C-s>"] = nil,
+                        ["<C-v>"] = nil,
+                        ["<C-e>"] = nil,
+                        ["<C-f>"] = nil,
+                        ["<C-b>"] = nil,
+                    },
+                }
             }
         }
     }
-    require("telescope").load_extension("fzf")
+    telescope.load_extension("fzf")
+    telescope.load_extension("zoxide")
+
+    -- fix it not using my settings xD
+    local old_zoxide = telescope.extensions.zoxide.list
+    telescope.extensions.zoxide.list = function(args)
+        old_zoxide(vim.tbl_extend("force", default_config_tbl, args or {}))
+    end
+
     local builtin = require("telescope.builtin")
     local _prefix = "<space>"
 

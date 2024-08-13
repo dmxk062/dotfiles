@@ -17,6 +17,7 @@ M.config = function()
         ["r"] = "OilRead",
         ["w"] = "OilWrite",
         ["x"] = "OilExec",
+        ["T"] = "OilSticky",
         ["t"] = "OilSticky",
         ["s"] = "OilSetuid",
     }
@@ -198,6 +199,7 @@ M.config = function()
                 { "gt",        function() goto_dir("~/Tmp") end },
 
                 { "gP",        goto_git_ancestor },
+                { "gz",        require("telescope").extensions.zoxide.list },
 
                 -- toggle hidden
                 { "gh",        actions.toggle_hidden.callback },
