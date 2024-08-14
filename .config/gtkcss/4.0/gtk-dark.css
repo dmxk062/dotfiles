@@ -123,3 +123,15 @@ toast {
   background-color: #2e3440;
   color: #eceff4;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 6px; }
+
+.image-button.osd {
+  background-color: #434c5e;
+  color: #eceff4;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 6px; }
+  .image-button.osd:hover {
+    background-color: #4c566a; }
+  .image-button.osd:disabled {
+    color: #d8dee9;
+    background-color: #434c5e; }
+  .image-button.osd:backdrop {
+    background-color: #434c5e; }
