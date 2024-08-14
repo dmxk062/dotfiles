@@ -1,0 +1,15 @@
+.image-button.osd {
+    background-color: $bg2;
+    color: $fg;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 6px;
+    &:hover {
+        background-color: $bg3;
+    }
+    &:disabled {
+        color: $fg2;
+        background-color: $bg2;
+    }
+    &:backdrop {
+        background-color: $bg2;
+    }
+}
