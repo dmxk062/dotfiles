@@ -3,7 +3,13 @@
 "workspace":"󰮸",
 "media":"󱜏",
 "overview": "󰺕",
-"default":"󰌌"
+"default":"󰌌",
+"__easymotionsubmap__": "󱖲"
 }')
-
-
+(defvar hypr_submap_names '{
+"window":"window",
+"workspace":"workspace",
+"media":"media",
+"overview": "overview",
+"__easymotionsubmap__": "leap"
+}')

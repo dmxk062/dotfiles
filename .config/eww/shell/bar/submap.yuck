@@ -3,8 +3,8 @@
 
 (defwidget submap []
     (box :space-evenly false
-    (button :class "submap_${hypr_submap}" 
+    (button :class "submap_${hypr_submap_names[hypr_submap] ?: hypr_submap}" 
     :onclick {hypr_submap != "" ? "hyprctl dispatch submap reset" : ""}
-    "${hypr_submap_icons[hypr_submap]?: hypr_submap_icons["default"]}${!vertical ? "    ${hypr_submap ?: "None"}" : "" }" )
+    "${hypr_submap_icons[hypr_submap]?: hypr_submap_icons["default"]}${!vertical ? "    ${hypr_submap_names[hypr_submap] ?: hypr_submap ?: "None"}" : "" }" )
     )
 )

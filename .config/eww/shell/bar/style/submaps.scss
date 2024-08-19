@@ -1,4 +1,4 @@
-.submap_,.submap_window,.submap_workspace,.submap_media, .submap_overview, .submap_prompt, .submap_raw{
+.submap_,.submap_window,.submap_workspace,.submap_media, .submap_overview, .submap_prompt, .submap_raw, .submap_leap {
     @extend .sbutton;
 }
 
@@ -7,6 +7,13 @@
     color: $inverted;
     &:hover{
         background-color: fade($lblue);
+    }
+}
+.submap_leap {
+    background-color: $yellow;
+    color: $inverted;
+    &:hover{
+        background-color: fade($yellow);
     }
 }
 
