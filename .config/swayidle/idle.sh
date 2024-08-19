@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-LOCK_CMD="swaylock --grace=6 --fade-in=5"
+LOCK_CMD="swaylock --grace=6 --fade-in=5 --grace-no-mouse"
 LOCK_PRE_SUSPEND_CMD="swaylock"
 SLEEP_CMD="systemctl suspend"
 # ICON="preferences-desktop-screensaver"
