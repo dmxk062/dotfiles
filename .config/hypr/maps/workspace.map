@@ -2,7 +2,6 @@
 
 
 bind = $submap, Space,  submap, workspace
-bind = $mod, backslash, submap, workspace
 
 # ------------------------------------ #
 submap = workspace
@@ -73,7 +72,6 @@ bind = , slash, submap, reset
 
 bind = , Escape, submap, reset
 bind = $submap, Space, submap, reset
-bind = $mod, backslash, submap reset
 
 submap = reset
 # ------------------------------------ #
