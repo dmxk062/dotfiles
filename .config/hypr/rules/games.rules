@@ -1,4 +1,4 @@
-# vim:ft=hyprlang
+# vim: ft=hyprlang
 # disable everything for games and move them to name:games
 # sets gamescope to always fullscreen, no animations, DP-1 and no round corners
 windowrulev2 = fullscreen,class:^(gamescope)$
@@ -22,7 +22,7 @@ windowrulev2 = noanim,title:Minecraft
 windowrulev2 = noblur,title:Minecraft
 windowrulev2 = workspace name:games,title:Minecraft
 windowrulev2 = idleinhibit always,title:Minecraft
-windowrulev2 = stayfocused,title:Minecraft
+# windowrulev2 = stayfocused,title:Minecraft
 
 # and yuzu
 windowrulev2 = fullscreen,class:yuzu
@@ -31,5 +31,3 @@ windowrulev2 = noanim,class:yuzu
 windowrulev2 = noblur,class:yuzu
 windowrulev2 = workspace name:games,class:yuzu
 windowrulev2 = idleinhibit always,class:yuzu
-
-

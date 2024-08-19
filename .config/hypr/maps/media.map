@@ -1,7 +1,8 @@
 # vim: ft=hyprlang
 
 
-bind = $submapLeader, M, submap, media
+# a submap for easily controling media/volume
+bind = $submap, M, submap, media
 
 # ------------------------------------ #
 submap = media
@@ -17,9 +18,12 @@ binde = SHIFT, H,exec, playerctl previous
 binde = , K, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio raise 3 DEFAULT_SINK
 binde = , J, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio lower 3 DEFAULT_SINK
 
+# cycle between sources/sinks
+# output
 bind = , N, exec, ~/.config/zsh/scripts/pacycle sink next; ~/.config/eww/settings/bin/sinks_sources.sh upd_active sinks; ~/.config/eww/shell/popups/bin/open_popup.sh out audio
 bind = SHIFT, N, exec, ~/.config/zsh/scripts/pacycle sink prev; ~/.config/eww/settings/bin/sinks_sources.sh upd_active sinks; ~/.config/eww/shell/popups/bin/open_popup.sh out audio
 
+# input
 bind = ALT, N, exec, ~/.config/zsh/scripts/pacycle source next; ~/.config/eww/settings/bin/sinks_sources.sh upd_active sources; ~/.config/eww/shell/popups/bin/open_popup.sh in audio
 bind = ALT SHIFT, N, exec, ~/.config/zsh/scripts/pacycle source prev; ~/.config/eww/settings/bin/sinks_sources.sh upd_active sources; ~/.config/eww/shell/popups/bin/open_popup.sh in audio
 
@@ -38,7 +42,7 @@ bind = SHIFT, M, exec, ~/.config/zsh/scripts/mute_active_window
 bind = , S, exec, ~/.local/bin/eww_settings.sh audio
 bind = , S, submap, reset
 
-# copy
+# copy from binds/media.conf
 bindl= ,      XF86AudioMute, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio mute DEFAULT_SINK
 bindl= SHIFT, XF86AudioMute, exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio mute DEFAULT_SOURCE
 bindl= , XF86AudioMicMute, exec, ~/.config/eww/shell/popups/bin/open_popup.sh out audio mute DEFAULT_SINK
@@ -47,11 +51,8 @@ bindle = ,XF86AudioLowerVolume,exec, ~/.config/eww/shell/popups/bin/open_popup.s
 bindle = SHIFT,XF86AudioRaiseVolume,exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio raise 3 DEFAULT_SOURCE
 bindle = SHIFT,XF86AudioLowerVolume,exec, ~/.config/eww/shell/popups/bin/open_popup.sh in audio lower 3 DEFAULT_SOURCE
 
-
-
-
 bind = , Escape, submap, reset
-bind = $submapLeader, M, submap, reset
+bind = $submap, M, submap, reset
 
 submap = reset
 # ------------------------------------ #

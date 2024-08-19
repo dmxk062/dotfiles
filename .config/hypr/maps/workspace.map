@@ -1,8 +1,8 @@
 # vim: ft=hyprlang
 
 
-bind = $submapLeader, Space,  submap, workspace
-bind = $submapLeader, Escape, submap, workspace
+bind = $submap, Space,  submap, workspace
+bind = $mod, backslash, submap, workspace
 
 # ------------------------------------ #
 submap = workspace
@@ -34,27 +34,29 @@ bind = , 8, workspace, 8
 bind = , 9, workspace, 9
 bind = , 0, workspace, 10
 
-bind = SHIFT, code:49, movetoworkspace, name:main
-bind = SHIFT, 1, movetoworkspace, 1
-bind = SHIFT, 2, movetoworkspace, 2
-bind = SHIFT, 3, movetoworkspace, 3
-bind = SHIFT, 4, movetoworkspace, 4
-bind = SHIFT, 5, movetoworkspace, 5
-bind = SHIFT, 6, movetoworkspace, 6
-bind = SHIFT, 7, movetoworkspace, 7
-bind = SHIFT, 8, movetoworkspace, 8
-bind = SHIFT, 9, movetoworkspace, 9
-bind = SHIFT, 0, movetoworkspace, 10
+bind = SHIFT, code:49, movetoworkspacesilent, name:main
+bind = SHIFT, 1, movetoworkspacesilent, 1
+bind = SHIFT, 2, movetoworkspacesilent, 2
+bind = SHIFT, 3, movetoworkspacesilent, 3
+bind = SHIFT, 4, movetoworkspacesilent, 4
+bind = SHIFT, 5, movetoworkspacesilent, 5
+bind = SHIFT, 6, movetoworkspacesilent, 6
+bind = SHIFT, 7, movetoworkspacesilent, 7
+bind = SHIFT, 8, movetoworkspacesilent, 8
+bind = SHIFT, 9, movetoworkspacesilent, 9
+bind = SHIFT, 0, movetoworkspacesilent, 10
 
 # Named Workspaces ------------------- #
 
 bind = , Space, workspace, name:main
 bind = , G,     workspace, name:games
 bind = , V,     workspace, name:srv
+bind = , M, togglespecialworkspace, 3
 
-bind = SHIFT, Space, movetoworkspace, name:main
-bind = SHIFT, G,     movetoworkspace, name:games
-bind = SHIFT, V,     movetoworkspace, name:srv
+bind = SHIFT, Space, movetoworkspacesilent, name:main
+bind = SHIFT, G,     movetoworkspacesilent, name:games
+bind = SHIFT, V,     movetoworkspacesilent, name:srv
+bind = SHIFT, M,     movetoworkspacesilent, special:3
 
 # Special Workspaces ----------------- #
 
@@ -70,9 +72,8 @@ bind = , slash, exec, killal rofi||~/.config/rofi/applets/window/run.sh
 bind = , slash, submap, reset
 
 bind = , Escape, submap, reset
-bind = $submapLeader, Space, submap, reset
-bind = $submapLeader, Escape, submap, reset
+bind = $submap, Space, submap, reset
+bind = $mod, backslash, submap reset
 
 submap = reset
 # ------------------------------------ #
-

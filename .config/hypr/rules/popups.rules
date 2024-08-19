@@ -1,10 +1,10 @@
 # vim: ft=hyprlang
 
+# all the applications that should be floating with smaller window size by default
+
 windowrulev2=float, class:popup
 windowrule=center, class:popup
 
-
-# windowrulev2=float, class:org.gnome.Nautilus
 windowrulev2=float, class:com.github.GradienceTeam.Gradience
 windowrulev2=float, class:org.gnome.Characters
 windowrulev2=float, class:xdg-desktop-portal-gtk
@@ -50,4 +50,3 @@ windowrulev2=center,class:org.prismlauncher.PrismLauncher
 windowrulev2=idleinhibit always,class:gamescope
 windowrulev2=float,class:yad
 windowrulev2=float,class:io.github.TheWisker.Cavasik
-
