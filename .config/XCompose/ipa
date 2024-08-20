@@ -5,6 +5,7 @@
 
 # basic consonants and vowels
 <Multi_key> <backslash> <h> : "ɦ"
+<Multi_key> <backslash> <g> : "ɡ" # use the right g
 <Multi_key> <backslash> <j> : "ʝ"
 <Multi_key> <backslash> <l> : "ɺ"
 <Multi_key> <backslash> <p> : "ɸ"
@@ -137,8 +138,8 @@
 <Multi_key> <backslash> <asciicircum> <m> : U0304           # mid
 <Multi_key> <backslash> <asciicircum> <R> <f> : U1dc8       # rising falling
 # global tones
-<Multi_key> <backslash> <asciicircum> <G> <f> : "↘"       # global falling
-<Multi_key> <backslash> <asciicircum> <G> <r> : "↗"       # global rising
+<Multi_key> <backslash> <asciicircum> <G> <f> : "↘"         # global falling
+<Multi_key> <backslash> <asciicircum> <G> <r> : "↗"         # global rising
 
 # implosives
 <Multi_key> <backslash> <less> <b> : "ɓ"
