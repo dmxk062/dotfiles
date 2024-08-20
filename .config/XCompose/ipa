@@ -1,0 +1,155 @@
+# vim: ft=xcompose
+
+# use \ as the leader
+# generally try to mimic xsampa, and rather CXS
+
+# basic consonants and vowels
+<Multi_key> <backslash> <h> : "ɦ"
+<Multi_key> <backslash> <j> : "ʝ"
+<Multi_key> <backslash> <l> : "ɺ"
+<Multi_key> <backslash> <p> : "ɸ"
+<Multi_key> <backslash> <r> : "ɹ"
+<Multi_key> <backslash> <s> : "ɕ"
+<Multi_key> <backslash> <v> : "ʋ"
+<Multi_key> <backslash> <x> : "ɧ"
+<Multi_key> <backslash> <z> : "ʑ"
+<Multi_key> <backslash> <u> : "ʉ" # CXS
+<Multi_key> <backslash> <A> : "ɑ"
+<Multi_key> <backslash> <B> : "β" # == <comp>@b
+<Multi_key> <backslash> <backslash> <B> : "ʙ"
+<Multi_key> <backslash> <C> : "ç" # == <comp>,c
+<Multi_key> <backslash> <D> : "ð" # == <comp>dh
+<Multi_key> <backslash> <E> : "ε" # == <comp>@e
+<Multi_key> <backslash> <F> : "F"
+<Multi_key> <backslash> <G> : "ɣ"
+<Multi_key> <backslash> <backslash> <G> : "ɢ"
+<Multi_key> <backslash> <H> : "ɥ"
+<Multi_key> <backslash> <backslash> <H> : "ʜ"
+<Multi_key> <backslash> <I> : "ɪ"
+<Multi_key> <backslash> <backslash> <I> : "ᵻ"
+<Multi_key> <backslash> <J> : "ɲ"
+<Multi_key> <backslash> <backslash> <J> : "ɟ"
+<Multi_key> <backslash> <K> : "ɬ"
+<Multi_key> <backslash> <backslash> <K> : "ɮ"
+<Multi_key> <backslash> <L> : "ʎ" # != <comp>@l
+<Multi_key> <backslash> <backslash> <L> : "ʟ"
+<Multi_key> <backslash> <M> : "ɯ"
+<Multi_key> <backslash> <backslash> <M> : "ɰ"
+<Multi_key> <backslash> <N> : "ŋ" # == <comp>ng
+<Multi_key> <backslash> <backslash> <N> : "ɴ"
+<Multi_key> <backslash> <O> : "ɔ"
+<Multi_key> <backslash> <backslash> <O> : "ʘ"
+<Multi_key> <backslash> <Q> : "ɒ"
+<Multi_key> <backslash> <R> : "ʁ"
+<Multi_key> <backslash> <backslash> <R> : "ʀ"
+<Multi_key> <backslash> <S> : "ʃ"
+<Multi_key> <backslash> <T> : "θ" # == <comp>@y
+<Multi_key> <backslash> <U> : "ʊ"
+<Multi_key> <backslash> <backslash> : <U> : "ᵿ"
+<Multi_key> <backslash> <V> : "ʌ"
+<Multi_key> <backslash> <W> : "ʍ"
+<Multi_key> <backslash> <X> : "χ"
+<Multi_key> <backslash> <backslash> <X> : "ħ" # == <comp>/h
+<Multi_key> <backslash> <Y> : "ʏ"
+<Multi_key> <backslash> <Z> : "ʒ"
+<Multi_key> <backslash> <at> : "ɘ" # <comp>ee is ə already, so we save one backslash
+<Multi_key> <backslash> <grave> <at> : "ɚ" # errrrrrr
+<Multi_key> <backslash> <ampersand> : "ɶ" # <comp>ae is æ already, use it like IPA, not CXS
+<Multi_key> <backslash> <1> : "ɨ" # == <comp>/i
+<Multi_key> <backslash> <2> : "ø" # == <comp>/o
+<Multi_key> <backslash> <3> : "ɜ"
+<Multi_key> <backslash> <backslash> <3> : "ɞ"
+<Multi_key> <backslash> <4> : "ɾ"
+<Multi_key> <backslash> <5> : "ɫ" # != <comp>/l
+<Multi_key> <backslash> <6> : "ɐ"
+<Multi_key> <backslash> <7> : "ɤ" # != <comp>\G (not a consonant)
+<Multi_key> <backslash> <8> : "ɵ"
+<Multi_key> <backslash> <9> : "œ" # == <comp>oe
+<Multi_key> <backslash> <question> : "ʔ"
+<Multi_key> <backslash> <backslash> <question> : "ʕ"
+<Multi_key> <backslash> <exclam> : "ǃ" # != !
+<Multi_key> <backslash> <bar> : "ǀ" # != | 
+<Multi_key> <backslash> <backslash> <bar> : "ǁ" # double | wouldnt work
+<Multi_key> <backslash> <equal> : "ǂ"
+# duplicate < and > for the fucking useless epiglottals
+<Multi_key> <backslash> <less> <less> : "ʢ"
+<Multi_key> <backslash> <greater> <greater> : "ʡ"
+
+# symbols
+<Multi_key> <backslash> <apostrophe> : "ˈ" # primary stress
+<Multi_key> <backslash> <comma> : "ˌ" # primary stress
+<Multi_key> <backslash> <colon> : "ː"
+<Multi_key> <backslash> <semicolon> : "ˑ" # not what xsampa does, but so much more logical
+<Multi_key> <backslash> <minus> : "‿" # not a dead key/combining symbol
+
+# diacritics starting with _
+<Multi_key> <backslash> <underscore> <j> : "ʲ"              # palatal: tʲ
+<Multi_key> <backslash> <underscore> <greater> : "ʼ"        # ejective: tʼ
+<Multi_key> <backslash> <underscore> <question> : "ˤ"       # pharyngeal: tˤ
+<Multi_key> <backslash> <underscore> <grave> : "˞"          # rhotacization, aka american syndrome: e˞
+<Multi_key> <backslash> <underscore> <G> : "ˠ"              # velarized: tˠ
+<Multi_key> <backslash> <underscore> <h> : "ʰ"              # aspirated: tʰ
+<Multi_key> <backslash> <underscore> <h> : "ʰ"              # aspirated: tʰ
+<Multi_key> <backslash> <underscore> <l> : "ˡ"              # lateral release: tˡ
+<Multi_key> <backslash> <underscore> <n> : "ⁿ"              # nasal release: tⁿ
+<Multi_key> <backslash> <underscore> <w> : "ʷ"              # labialized: tʷ
+
+# combining diacritics, wont show up in zsh (either as U+<XXXX> or as whitespace)
+# they do work in neovim
+# they go *after* the letter they modify
+<Multi_key> <backslash> <underscore> <quotedbl> : U0308     # centralized
+<Multi_key> <backslash> <underscore> <x> : U033d            # mid-centralized
+<Multi_key> <backslash> <underscore> <plus> : U031f         # advanced
+<Multi_key> <backslash> <underscore> <minus> : U0320        # retracted
+<Multi_key> <backslash> <underscore> <o> : U031e            # lowered
+<Multi_key> <backslash> <underscore> <r> : U031d            # raised
+<Multi_key> <backslash> <underscore> <X> : U0306            # extra short
+<Multi_key> <backslash> <underscore> <equal> : U0329        # syllabic
+<Multi_key> <backslash> <underscore> <asciicircum> : U032f  # non syllabic
+<Multi_key> <backslash> <underscore> <A> : U0318            # advanced tongue root
+<Multi_key> <backslash> <underscore> <q> : U0319            # retracted tongue root
+<Multi_key> <backslash> <underscore> <a> : U033a            # apical
+<Multi_key> <backslash> <underscore> <c> : U031c            # less rounded
+<Multi_key> <backslash> <underscore> <O> : U0339            # more rounded
+<Multi_key> <backslash> <underscore> <d> : U032a            # dental
+<Multi_key> <backslash> <underscore> <e> : U0334            # pharyngealized
+<Multi_key> <backslash> <underscore> <m> : U033b            # laminal
+<Multi_key> <backslash> <underscore> <N> : U033c            # linguolabial
+
+# voicing types (loosely)
+<Multi_key> <backslash> <underscore> <0> : U0325            # voiceless
+<Multi_key> <backslash> <underscore> <v> : U032c            # voiced
+<Multi_key> <backslash> <underscore> <asciitilde> : U0303   # nasalized
+<Multi_key> <backslash> <underscore> <braceleft> : U031a    # no audible release
+<Multi_key> <backslash> <underscore> <k> : U0330            # creaky
+<Multi_key> <backslash> <underscore> <t> : U0324            # breathy
+
+# tone, separate intentionally, different that either xsampa or CXS
+# ^ as leader
+<Multi_key> <backslash> <asciicircum> <r> : U030c           # rising 
+<Multi_key> <backslash> <asciicircum> <f> : U0302           # falling 
+<Multi_key> <backslash> <asciicircum> <l> : U0300           # low 
+<Multi_key> <backslash> <asciicircum> <L> : U030f           # extra low 
+<Multi_key> <backslash> <asciicircum> <R> <l> : U1dc5       # low rising
+<Multi_key> <backslash> <asciicircum> <h> : U0301           # high 
+<Multi_key> <backslash> <asciicircum> <H> : U030b           # extra high 
+<Multi_key> <backslash> <asciicircum> <R> <h> : U1dc4       # high rising 
+<Multi_key> <backslash> <asciicircum> <m> : U0304           # mid
+<Multi_key> <backslash> <asciicircum> <R> <f> : U1dc8       # rising falling
+# global tones
+<Multi_key> <backslash> <asciicircum> <G> <f> : "↘"       # global falling
+<Multi_key> <backslash> <asciicircum> <G> <r> : "↗"       # global rising
+
+# implosives
+<Multi_key> <backslash> <less> <b> : "ɓ"
+<Multi_key> <backslash> <less> <d> : "ɗ"
+<Multi_key> <backslash> <less> <g> : "ɠ"
+<Multi_key> <backslash> <less> <G> : "ʛ"
+<Multi_key> <backslash> <less> <J> : "ʄ"
+
+# retroflex
+<Multi_key> <backslash> <grave> <r>  : "ɽ"
+<Multi_key> <backslash> <grave> <backslash> <r>  : "ɻ" # no better way
+<Multi_key> <backslash> <grave> <l>  : "ɭ"
+<Multi_key> <backslash> <grave> <t>  : "ʈ"
+<Multi_key> <backslash> <grave> <z>  : "ʐ"
