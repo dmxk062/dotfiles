@@ -82,61 +82,63 @@
 <Multi_key> <backslash> <colon> : "ː"
 <Multi_key> <backslash> <semicolon> : "ˑ" # not what xsampa does, but so much more logical
 <Multi_key> <backslash> <minus> : "‿" # not a dead key/combining symbol
+# for rendering, see the combining diacritics below. these don't work fully in any terminal though
+<Multi_key> <backslash> <parenleft>  : U0361 # combining tie bar above: t͡ʃ
+<Multi_key> <backslash> <parenright> : U035c # combining tie bar below: t͜ʃ
 
 # diacritics starting with _
 <Multi_key> <backslash> <underscore> <j> : "ʲ"              # palatal: tʲ
 <Multi_key> <backslash> <underscore> <greater> : "ʼ"        # ejective: tʼ
 <Multi_key> <backslash> <underscore> <question> : "ˤ"       # pharyngeal: tˤ
-<Multi_key> <backslash> <underscore> <grave> : "˞"          # rhotacization, aka american syndrome: e˞
+<Multi_key> <backslash> <underscore> <grave> : "˞"          # rhotacization, aka american syndrome: ə˞
 <Multi_key> <backslash> <underscore> <G> : "ˠ"              # velarized: tˠ
-<Multi_key> <backslash> <underscore> <h> : "ʰ"              # aspirated: tʰ
 <Multi_key> <backslash> <underscore> <h> : "ʰ"              # aspirated: tʰ
 <Multi_key> <backslash> <underscore> <l> : "ˡ"              # lateral release: tˡ
 <Multi_key> <backslash> <underscore> <n> : "ⁿ"              # nasal release: tⁿ
 <Multi_key> <backslash> <underscore> <w> : "ʷ"              # labialized: tʷ
 
-# combining diacritics, wont show up in zsh (either as U+<XXXX> or as whitespace)
-# they do work in neovim
+# combining diacritics, wont show up in zsh when typing a command (either as U+<XXXX> or as whitespace)
+# they do work in neovim and when printed(thanks kitty)
 # they go *after* the letter they modify
-<Multi_key> <backslash> <underscore> <quotedbl> : U0308     # centralized
-<Multi_key> <backslash> <underscore> <x> : U033d            # mid-centralized
-<Multi_key> <backslash> <underscore> <plus> : U031f         # advanced
-<Multi_key> <backslash> <underscore> <minus> : U0320        # retracted
-<Multi_key> <backslash> <underscore> <o> : U031e            # lowered
-<Multi_key> <backslash> <underscore> <r> : U031d            # raised
-<Multi_key> <backslash> <underscore> <X> : U0306            # extra short
-<Multi_key> <backslash> <underscore> <equal> : U0329        # syllabic
-<Multi_key> <backslash> <underscore> <asciicircum> : U032f  # non syllabic
-<Multi_key> <backslash> <underscore> <A> : U0318            # advanced tongue root
-<Multi_key> <backslash> <underscore> <q> : U0319            # retracted tongue root
-<Multi_key> <backslash> <underscore> <a> : U033a            # apical
-<Multi_key> <backslash> <underscore> <c> : U031c            # less rounded
-<Multi_key> <backslash> <underscore> <O> : U0339            # more rounded
-<Multi_key> <backslash> <underscore> <d> : U032a            # dental
-<Multi_key> <backslash> <underscore> <e> : U0334            # pharyngealized
-<Multi_key> <backslash> <underscore> <m> : U033b            # laminal
-<Multi_key> <backslash> <underscore> <N> : U033c            # linguolabial
+<Multi_key> <backslash> <underscore> <quotedbl> : U0308     # centralized: ë
+<Multi_key> <backslash> <underscore> <x> : U033d            # mid-centralized: e̽
+<Multi_key> <backslash> <underscore> <plus> : U031f         # advanced: e̟
+<Multi_key> <backslash> <underscore> <minus> : U0320        # retracted: e̠
+<Multi_key> <backslash> <underscore> <o> : U031e            # lowered: e̞
+<Multi_key> <backslash> <underscore> <r> : U031d            # raised: e̝
+<Multi_key> <backslash> <underscore> <X> : U0306            # extra short: ŭ
+<Multi_key> <backslash> <underscore> <equal> : U0329        # syllabic: n̩
+<Multi_key> <backslash> <underscore> <asciicircum> : U032f  # non syllabic: u̯
+<Multi_key> <backslash> <underscore> <A> : U0318            # advanced tongue root: e̘
+<Multi_key> <backslash> <underscore> <q> : U0319            # retracted tongue root: e̙
+<Multi_key> <backslash> <underscore> <a> : U033a            # apical: t̺
+<Multi_key> <backslash> <underscore> <c> : U031c            # less rounded: o̜
+<Multi_key> <backslash> <underscore> <O> : U0339            # more rounded: o̹
+<Multi_key> <backslash> <underscore> <d> : U032a            # dental: t̪
+<Multi_key> <backslash> <underscore> <e> : U0334            # pharyngealized: t̴
+<Multi_key> <backslash> <underscore> <m> : U033b            # laminal: t̻
+<Multi_key> <backslash> <underscore> <N> : U033c            # linguolabial: f̼
 
 # voicing types (loosely)
-<Multi_key> <backslash> <underscore> <0> : U0325            # voiceless
-<Multi_key> <backslash> <underscore> <v> : U032c            # voiced
-<Multi_key> <backslash> <underscore> <asciitilde> : U0303   # nasalized
-<Multi_key> <backslash> <underscore> <braceleft> : U031a    # no audible release
-<Multi_key> <backslash> <underscore> <k> : U0330            # creaky
-<Multi_key> <backslash> <underscore> <t> : U0324            # breathy
+<Multi_key> <backslash> <underscore> <0> : U0325            # voiceless: m̥
+<Multi_key> <backslash> <underscore> <v> : U032c            # voiced: k̬
+<Multi_key> <backslash> <underscore> <asciitilde> : U0303   # nasalized: ã
+<Multi_key> <backslash> <underscore> <braceleft> : U031a    # no audible release: t̚
+<Multi_key> <backslash> <underscore> <k> : U0330            # creaky: a̰
+<Multi_key> <backslash> <underscore> <t> : U0324            # breathy: a̤
 
 # tone, separate intentionally, different that either xsampa or CXS
 # ^ as leader
-<Multi_key> <backslash> <asciicircum> <r> : U030c           # rising 
-<Multi_key> <backslash> <asciicircum> <f> : U0302           # falling 
-<Multi_key> <backslash> <asciicircum> <l> : U0300           # low 
-<Multi_key> <backslash> <asciicircum> <L> : U030f           # extra low 
-<Multi_key> <backslash> <asciicircum> <R> <l> : U1dc5       # low rising
-<Multi_key> <backslash> <asciicircum> <h> : U0301           # high 
-<Multi_key> <backslash> <asciicircum> <H> : U030b           # extra high 
-<Multi_key> <backslash> <asciicircum> <R> <h> : U1dc4       # high rising 
-<Multi_key> <backslash> <asciicircum> <m> : U0304           # mid
-<Multi_key> <backslash> <asciicircum> <R> <f> : U1dc8       # rising falling
+<Multi_key> <backslash> <asciicircum> <r> : U030c           # rising: ̌a̝
+<Multi_key> <backslash> <asciicircum> <f> : U0302           # falling: â
+<Multi_key> <backslash> <asciicircum> <l> : U0300           # low: à
+<Multi_key> <backslash> <asciicircum> <L> : U030f           # extra low: ȁ
+<Multi_key> <backslash> <asciicircum> <R> <l> : U1dc5       # low rising: a᷅
+<Multi_key> <backslash> <asciicircum> <h> : U0301           # high: á
+<Multi_key> <backslash> <asciicircum> <H> : U030b           # extra high: a̋
+<Multi_key> <backslash> <asciicircum> <R> <h> : U1dc4       # high rising: a᷄
+<Multi_key> <backslash> <asciicircum> <m> : U0304           # mid: a̻
+<Multi_key> <backslash> <asciicircum> <R> <f> : U1dc8       # rising falling: a᷈
 # global tones
 <Multi_key> <backslash> <asciicircum> <G> <f> : "↘"         # global falling
 <Multi_key> <backslash> <asciicircum> <G> <r> : "↗"         # global rising
