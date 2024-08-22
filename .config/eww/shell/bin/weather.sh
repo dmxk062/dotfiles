@@ -41,9 +41,8 @@ get_icon(){
 
 
 get_daytime(){
-    hour=`date +%H`
-    if [ $hour -ge 6 ]&& [ $hour -lt 18 ]
-    then
+    hour=$(date +%H)
+    if ((hour > 6)) && ((hour < 20)); then
         echo ""
     else
         echo "-night"
@@ -53,14 +52,13 @@ get_daytime(){
 get_formatted(){
     response=$(curl -sf "http://api.openweathermap.org/data/2.5/weather?appid=${KEY}&q=${city}&units=metric")
     code=$(jq '.weather.[]|.id' <<< "$response")
-    icon_name=$(get_icon $code)
+    icon_name=$(get_icon "$code")
     echo "$response"|jq -Mc --arg icon "weather-$icon_name$(get_daytime)" '. + {"icon": $icon}'
 }
 
 case $1 in
     upd)
-        if [ -z $2 ]
-        then
+        if [[ -z "$2" ]]; then
             city="$CITY"
         else
             city="$2"
@@ -69,7 +67,7 @@ case $1 in
         $eww update weather_load=true
         $eww update weather="$(get_formatted)" 
         $eww update weather_load=false
-        $eww update last_weather=$(date +%s)
+        $eww update last_weather="$(date +%s)"
         ;;
     change)
         city="$(zenity --entry --text="Choose new City" --entry-text="$2" --title="Weather")"
@@ -77,6 +75,6 @@ case $1 in
         $eww update weather_load=true
         $eww update weather="$(get_formatted)" 
         $eww update weather_load=false
-        $eww update last_weather=$(date +%s)
+        $eww update last_weather="$(date +%s)"
         ;;
 esac
