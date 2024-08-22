@@ -12,9 +12,9 @@ submap = window
 
 bind = , F, fullscreen, 0
 bind = , M, fullscreen, 1
-bind = , V, togglefloating
+# bind = , V, togglefloating
 bind = , P, pin
-bind = , D, killactive
+bind = , D, togglefloating
 bind = , delete, killactive
 
 # Moving, resizing, etc

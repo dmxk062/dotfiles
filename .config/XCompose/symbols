@@ -5,3 +5,6 @@
 <Multi_key> <dollar> <y> : "¥"
 <Multi_key> <dollar> <l> : "£"
 <Multi_key> <dollar> <r> : "₽"
+
+# punctuation
+<Multi_key> <ampersand> <t> : "⁊" # tironian et
