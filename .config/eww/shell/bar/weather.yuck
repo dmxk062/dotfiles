@@ -2,6 +2,7 @@
 (defvar weather '{}')
 (defvar weather_load false)
 (defvar last_weather 0)
+(defvar calendar_vals '[]')
 
 (defwindow weather_popup 
         :monitor 0
@@ -39,7 +40,16 @@
                     (button :class "button":onclick "gtk-launch org.gnome.clocks" :timeout "128s" "󰥔    Clocks")
                     (label :class "button" :text "${formattime(EWW_TIME,"%T")}" :hexpand true)
                 )
-                (clipboard_button :label {formattime(EWW_TIME,"%d.%m.%Y")} :content {formattime(EWW_TIME, "%Y/%m/%d")} :icon "󰃭")
+                (calendar :show-details true :onclick "${EWW_CMD} update calendar_vals='[{0}, {1}, {2}]'")
+                (box
+                (clipboard_button :content "${calendar_vals[0]}/${calendar_vals[1]+1}/${calendar_vals[2]}" :icon "󰃭"
+                    :label {calendar_vals != [] ? 
+                        "${strlength(calendar_vals[0]) == 1 ? "0${calendar_vals[0]}" : calendar_vals[0]}.${strlength(calendar_vals[1]+1) == 1 ? "0${calendar_vals[1]+1}" : calendar_vals[1]+1}.${calendar_vals[2]}" :
+                        formattime(EWW_TIME, "%d.%m.%Y")
+                    }
+
+                )
+                )
             )
         )
     )

@@ -40,3 +40,22 @@
     background-color: rgba($bg, 0.3);
     padding: 0 0 .4rem 0;
 }
+
+calendar {
+    background-color: transparent;
+    color: $fg;
+    .button {
+        border-radius: 50%;
+        background-color: transparent;
+        &:hover {
+            background-color: transparent;
+        }
+    }
+    &:selected {
+        color: $accent;
+        font-weight: 900;
+    }
+    &:indeterminate {
+        color: $bg3;
+    }
+}
