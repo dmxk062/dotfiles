@@ -46,4 +46,3 @@ function __readnullcommand {
 }
 
 READNULLCMD=__readnullcommand
-

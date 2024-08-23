@@ -16,50 +16,6 @@ function mkcd {
     cd "$1"
 }
 
-function mkf {
-    local -a filenames=("$@")
-    local i file no_ext
-    for  ((i=1; i<=$#filenames; i++)) {
-        file="${filenames[i]}"
-        if [[ -f "$file" || -d "$file" ]] {
-            print "File already exists: $file" > /dev/stderr
-            continue
-        }
-        case "$file" in
-            *\.c|*\.h)
-                no_ext="${file%%.*}"
-                local header source
-                if [[ "${filenames[i+1]}" == "$no_ext\.c" ]] {
-                    source="${filenames[i+1]}"
-                    header="$file"
-                } else {
-                    source="$file"
-                    header="${filenames[i+1]}"
-                }
-                ((i++))
-                echo "#include \"$header\"" > "$source"
-                echo "#pragma once" > "$header"
-                ;;
-            main.c)
-                echo "int main(int argc, char* argv[]) {\n    return 0;\n}" > "$file"
-                ;;
-            main.py)
-                echo "def main():\n    pass\n\nif __name__ == \"__main__\":\n    main()" > "$file"
-                chmod +x "$file"
-                ;;
-            *\.sh)
-                echo "#!/usr/bin/env bash" > "$file"
-                chmod +x "$file"
-                ;;
-            *\.py)
-                echo "#!/usr/bin/env python" > "$file"
-                chmod +x "$file"
-                ;;
-            *)
-                echo -n "" > "$file";;
-        esac
-    }
-}
 
 alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
@@ -252,7 +208,7 @@ function .. {
 
 } elif [[ "$1" == "unload" ]] {
 
-unfunction rgf mkcd mkf tmp rp bn in \
+unfunction rgf mkcd tmp rp bn in \
     rmi pwf \
     readfile readstream lr ..
 

@@ -22,7 +22,7 @@ function ncsend {
 }
 
 function ncrecv {
-    nc -dq 0 "$1" "${2:-$NC_PORT}"
+    nc -d "$1" "${2:-$NC_PORT}"
 }
 
 

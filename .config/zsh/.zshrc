@@ -55,7 +55,7 @@ zstyle ':completion:*' list-prompt "%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' verbose false
 
 zstyle ':completion:*:manuals'    separate-sections true
-zstyle ':completion:*:manuals.*'  insert-sections   true
+zstyle ':completion:*:manuals:*'  insert-sections   true
 
 
 autoload -Uz compinit
@@ -64,7 +64,7 @@ compinit -d "$XDG_CACHE_HOME/zcompdump-$ZSH_VERSION"
 compdef _files '-redirect-' # for some reason wasnt default
 
 #history
-HISTFILE=~/.local/share/zsh/histfile
+HISTFILE="$XDG_DATA_HOME/zsh/histfile"
 HISTSIZE=4000
 SAVEHIST=8000
 
