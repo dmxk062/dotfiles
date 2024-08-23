@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+
+error() {
+    echo -e "\e[31m${1}\e[0m" >&2
+}
+
+declare -A INIT_TEXTS=(
+    [python]='
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
+'
+)
+
+create_shebang_script() {
+    local file="$1"
+    local shell="$2"
+    local fallback="$3"
+    local extra_text="$4"
+    if [[ -z "$shell" ]]; then
+        shell="$fallback"
+    fi
+
+    if [[ "$shell" == /* ]]; then
+        echo -en "#!$shell\n$extra_text" >"$file"
+    else
+        echo -en "#!/usr/bin/env $shell\n$extra_text" >"$file"
+    fi
+
+    chmod +x "$file"
+}
+
+create_luarc_json() {
+    local file="$1"
+    local runtime="$2"
+
+    if [[ -z "$runtime" ]]; then
+        runtime="LuaJIT"
+    elif [[ "$runtime" != "Lua"* ]]; then
+        runtime="Lua $runtime"
+    fi
+
+    cat <<EOT >"$file"
+{
+    "\$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+    "runtime" : {
+        "version": "$runtime"
+    }
+}
+EOT
+}
+
+edit_after_creation=0
+force=0
+declare -a args
+for arg in "$@"; do
+    case "$arg" in
+    "-e" | "--edit")
+        edit_after_creation=1
+        ;;
+    "-f" | "--force")
+        force=1
+        ;;
+    "-ef" | "-fe")
+        force=1
+        edit_after_creation=1
+        ;;
+    *)
+        args+=("$arg")
+        ;;
+    esac
+done
+
+declare -a created
+for arg in "${args[@]}"; do
+    path="${arg%:*}"
+    type="${arg##*:}"
+    ext="${path##*.}"
+
+    did_create=0
+
+    if [[ "$ext" == "$path" ]]; then
+        ext=""
+    fi
+
+    if [[ "$type" == "$arg" ]]; then
+        type=""
+    fi
+
+    if [[ -e "$path" ]] && ((force == 0)); then
+        error "File exists: $path"
+        continue
+    fi
+
+    if ((did_create == 0)); then
+        case "$path" in
+        ".luarc.json")
+            create_luarc_json "$path" "$type" &&
+                did_create=1
+            ;;
+        "main.py")
+            create_shebang_script "$path" "$type" "python" "${INIT_TEXTS[python]}" &&
+                did_create=1
+            ;;
+        esac
+    fi
+
+    if ((did_create == 0)); then
+        case "$ext" in
+        sh)
+            create_shebang_script "$path" "$type" "bash" &&
+                did_create=1
+            ;;
+        bash)
+            create_shebang_script "$path" "bash" &&
+                did_create=1
+            ;;
+        zsh)
+            create_shebang_script "$path" "zsh" &&
+                did_create=1
+            ;;
+        py)
+            create_shebang_script "$path" "$type" "python" &&
+                did_create=1
+            ;;
+        lua)
+            create_shebang_script "$path" "$type" "luajit" &&
+                did_create=1
+            ;;
+        esac
+    fi
+
+    if ((did_create == 0)); then
+        echo -n "" >"$path" && did_create=1
+    fi
+
+    if ((did_create)); then
+        created+=("$path")
+    fi
+done
+
+if ((edit_after_creation)) && ((${#created} > 0)); then
+    exec $EDITOR "${created[@]}"
+fi
