@@ -46,7 +46,7 @@
 <Multi_key> <backslash> <S> : "ʃ"
 <Multi_key> <backslash> <T> : "θ" # == <comp>@y
 <Multi_key> <backslash> <U> : "ʊ"
-<Multi_key> <backslash> <backslash> : <U> : "ᵿ"
+<Multi_key> <backslash> <backslash> <U> : "ᵿ"
 <Multi_key> <backslash> <V> : "ʌ"
 <Multi_key> <backslash> <W> : "ʍ"
 <Multi_key> <backslash> <X> : "χ"
