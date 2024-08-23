@@ -4,6 +4,13 @@ declare -A ZSH_COLORS_RGB=(
     ["orange"]="#d08770"
 )
 
+# handle combining unicode chars
+setopt combiningchars
+#cds on path
+setopt autocd
+#no annoying beeps
+unsetopt beep
+
 
 function zvm_config {
     ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
@@ -69,12 +76,6 @@ HISTSIZE=4000
 SAVEHIST=8000
 
 
-#cds on path
-setopt autocd
-
-
-#no annoying beeps
-unsetopt beep
 
 # add whatever directories you want to be hashed(accessible via ~shortcut) here
 
