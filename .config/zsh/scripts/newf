@@ -133,7 +133,13 @@ for arg in "${args[@]}"; do
     fi
 
     if ((did_create == 0)); then
-        echo -n "" >"$path" && did_create=1
+        if [[ "$type" == *"ft="* ]]; then
+            commentchars="${type%ft*}"
+            filetype="${type##*ft=}"
+            echo -n "$commentchars vim: ft=$filetype" >"$path" && did_create=1
+        else
+            echo -n "" >"$path" && did_create=1
+        fi
     fi
 
     if ((did_create)); then
