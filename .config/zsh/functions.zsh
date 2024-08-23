@@ -85,6 +85,20 @@ ${stderr}"
     
 }
 
+function chars2codes {
+    local char
+    while read -u0 -k1 -r char; do
+        printf "%x\n" "'$char"
+    done
+}
+
+function codes2chars {
+    local code
+    while read -r code; do
+        printf "\\U$code"
+    done
+}
+
 
 
 source $ZDOTDIR/handlers.zsh
