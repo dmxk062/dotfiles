@@ -40,7 +40,7 @@ local -a zo_extra=(
 
 function nz {
     local res="$(fd --hidden -I --type=file -E "*.pyc" -E "*.o" -E "*.bin" -E "*.so" -E "*.tmp" -E "*cache*" -E "*.git/*" \
-        |fzf --prompt=" ed: " --preview='bat -p --color=always -- {}')"
+        |fzf --height=18 --prompt=" ed: " --preview='bat -p --color=always -- {}')"
     if [[ -z "$res" ]]; then
         return
     fi
