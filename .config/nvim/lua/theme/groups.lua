@@ -453,7 +453,8 @@ local extra = {
     IndentBlanklineChar       = { fg = pal.bg1 },
     IndentBlanklineCharActive = { fg = pal.bg3 },
 
-    BinedContext              = { bg = pal.bg2 },
+    BinedCurrentLine          = { bg = pal.bg2 },
+    -- BinedCurrentCHar          = { fg = col.red },
 }
 
 
