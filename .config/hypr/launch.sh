@@ -1,6 +1,5 @@
 #!/bin/bash
 
-$HOME/.config/background/wallpaper.sh set
 $HOME/.config/hypr/eww.sh & disown
 
 killall udiskmon 
@@ -11,3 +10,4 @@ swayidle -w& disown #idle daemon for lockscreen & suspending
 killall playerctld 
 playerctld& disown #allows me to control mpris stuff with keybinds
 nm-applet& disown
+$HOME/.config/background/wallpaper.sh set

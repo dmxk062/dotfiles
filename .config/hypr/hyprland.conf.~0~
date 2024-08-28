@@ -1,34 +1,54 @@
 # vim: ft=hyprlang
-# sets $mod as SUPER for all keybinds
-$mod = SUPER
+#sets $mainMod as SUPER for all keybinds
+$mainMod = SUPER
 
 $configdir = ~/.config/hypr
-source = $configdir/mods.conf
-source = $configdir/displays.conf
-source = $configdir/workspaces.conf
-source = $configdir/theme/colors.conf
-source = $configdir/start.conf
+#sets up monitors, binds even to larger, odd to smaller monitor
+monitor=eDP-1, 2880x1800@60, 0x0,1.75,
+monitor=HDMI-A-1,preferred,auto,1,
 
+
+source = $configdir/workspaces.conf
+source = $configdir/extra.conf
+source = $configdir/theme/colors.conf
+
+#enables variable refresh rate for fullscreen apps
 misc {
     layers_hog_keyboard_focus = false
     disable_hyprland_logo = true
     disable_splash_rendering = true
     force_default_wallpaper = 0
 }
+env = QT_QPA_PLATFORM,wayland
+# kvantum
+# env=QT_STYLE_OVERRIDE,kvantum
+env = QT_QPA_PLATFORMTHEME,qt5ct
+
+# starts autostart apps
+exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec-once=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec-once=~/.config/hypr/launch.sh
+
+exec-once=ydotoold
+exec-once=swaync
+# cursor size
+exec-once=hyprctl setcursor volantes_light_cursors 24
+env = XCURSOR_SIZE,24
 
 # kbd layout
 input {
     kb_layout = us
     kb_variant =
     kb_model =
-    kb_options = compose:ralt, shift:both_capslock, caps:escape
+    kb_options = compose:ralt, shift:both_capslock
 
     kb_rules =
     numlock_by_default=true
     follow_mouse = 1
 
     touchpad {
-        natural_scroll = true
+        natural_scroll = no
         tap-to-click = true
     }
     sensitivity = 0 
@@ -39,14 +59,14 @@ binds {
     allow_workspace_cycles=true
 }
 general {
+
     gaps_in = 4
     gaps_out = 8
     border_size = 0
     col.inactive_border = $inactive
     col.active_border = $active_b
     # col.active_border = $active_b $inactive_b 45deg
-    hover_icon_on_border = true
-    extend_border_grab_area = 12
+    hover_icon_on_border = false
 
     resize_on_border = true
 }
@@ -56,7 +76,7 @@ decoration {
     drop_shadow = yes
     shadow_range = 12
     shadow_render_power = 4
-    col.shadow = $shadow
+    col.shadow = rgba(00000080)
     blur {
         enabled = true
         size = 3
@@ -75,7 +95,7 @@ gestures {
 }
 
 debug {
-    suppress_errors = true
+	# suppress_errors = true
 }
 
 # sources other configs

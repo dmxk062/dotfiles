@@ -1,0 +1,10 @@
+# vim: ft=hyprlang
+$background = rgb(d8dee9)
+$inactive = $gray
+$foreground = $dark
+
+$inactive = rgba(4c566abb)
+$active = rgba(8fbcbbff)
+$inactive_b = rgba(4c566abb)
+$active_b = rgba(8fbcbbbb)
+
