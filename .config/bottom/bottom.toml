@@ -51,3 +51,5 @@ list = [
         type = "proc"
     [[row.child]]
         type = "net"
+    [[row.child]]
+        type = "battery"
