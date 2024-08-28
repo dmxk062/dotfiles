@@ -1,0 +1,119 @@
+
+check {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 40%;
+    margin-right: .5rem;
+    color: $bg1;
+    border: 2px solid $bg3;
+    min-height: 1rem;
+    min-width: 1rem;
+    &:hover{
+        background-color: $bg2;
+    }
+    image {
+        margin: .1rem;
+    }
+    &:checked {
+        background-color: $accent;
+        color: $inverted;
+        background-image: -gtk-icontheme('dino-tick-symbolic');
+        background-repeat: no-repeat;
+        border: 2px solid $accent;
+        background-position: center;
+        &:hover{
+            background-color: fade($accent);
+            border: 2px solid fade($accent);
+        }
+    }
+
+}
+
+
+window {
+    decoration {
+        // box-shadow: 0 8px 6px -5px rgba(0,0,0,0.5);
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+
+        background-clip: padding-box;
+        margin: 1rem;
+        border-radius: $rounding-large;
+    }
+
+}
+menu {
+    background-color: $bg0;
+    border-radius: 18px;
+    margin: 2rem;
+    padding: .5rem;
+    padding-top: 1rem;
+    
+    menu {
+        border-radius: 12px;
+        padding: .4rem;
+        margin: 1rem;
+    }
+
+    separator {
+        margin: 4px;
+        margin-top: .8rem;
+        margin-bottom: .8rem;
+        min-height: .2rem;
+        border-radius: 2rem;
+        background-color: $bg1;
+    }
+    > menuitem {
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: $rounding-small;
+        padding: $padding-std;
+        color: $fg;
+
+        &:disabled{
+            color: $bg3;
+        }
+        &:hover {
+            background-color: $bg1;
+        }
+    }
+
+}
+
+
+// menubar {
+//     > menuitem {
+//         padding: 0.07rem 1.15rem 0.07rem 0.85rem;
+//         border-radius: $rounding-small;
+//         background-color: $bg2;
+//         color: $fg;
+//         margin: .5rem;
+//         &:hover{
+//             background-color: $bg3;
+//         }
+//
+//     }
+// }
+
+.traybox {
+     > * {
+        &:hover{
+            > image {
+                background-color: $bg3;
+            }
+        }
+        > image {
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 0.07rem 1.15rem 0.07rem 0.85rem;
+            border-radius: $rounding-small;
+            background-color: $bg2;
+            color: $fg;
+            margin: .5rem;
+        }
+    }
+}
+
+arrow.right, arrow.left {
+    border-radius: 2rem;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid $fg0;
+}
+

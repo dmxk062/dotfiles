@@ -2,7 +2,7 @@
 
 killall nwg-drawer
 sleep 0.1
-nwg-drawer -c 10 \
+nwg-drawer -c 6 \
            -fm nautilus \
            -ovl \
            -term "kitty" \

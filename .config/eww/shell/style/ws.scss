@@ -1,0 +1,36 @@
+.ws-active, .ws-inactive, .ws-special-active, .ws-special-inactive, .ws-urgent{
+    padding: $padding-std;
+    border-radius: $rounding-small;
+    background-color: $bg2;
+    margin: .5rem;
+    color: $fg0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.ws-active{
+    background-color: $accent;
+    color: $inverted;
+    &:hover{
+        background-color: fade($accent)
+    }
+}
+.ws-special-inactive{
+    background-color: $special;
+    color: $inverted;
+    &:hover{
+        background-color: fade($special)
+    }
+}
+.ws-special-active{
+    @extend .ws-active;
+}
+.ws-urgent{
+    background-color: $light-red;
+    color: $inverted;
+    &:hover{
+        background-color: fade($light-red)
+    }
+}
+.ws-inactive:hover{
+    background-color: $bg3;
+}
+

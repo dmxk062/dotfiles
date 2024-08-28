@@ -1,0 +1,43 @@
+.submap_,.submap_window,.submap_workspace,.submap_media, .submap_overview, .submap_prompt, .submap_raw{
+    @extend .sbutton;
+}
+
+.submap_window{
+    background-color: $lblue;
+    color: $inverted;
+    &:hover{
+        background-color: fade($lblue);
+    }
+}
+
+.submap_media{
+    background-color: $special;
+    color: $inverted;
+    &:hover{
+        background-color: fade($special);
+    }
+}
+
+.submap_workspace{
+    background-color: $green;
+    color: $inverted;
+    &:hover{
+        background-color: fade($green);
+    }
+}
+
+.submap_overview{
+    background-color: $accent;
+    color: $inverted;
+    &:hover{
+        background-color: fade($accent);
+    }
+}
+
+.submap_popup_box{
+    background-color: $blurred;
+    border-radius: 16px 16px 0 0;
+    // box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+    margin: 2rem 2rem 0 2rem;
+
+}

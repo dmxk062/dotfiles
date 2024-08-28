@@ -1,0 +1,86 @@
+(defvar hypr_submap_icons '{
+"window":"󱂬",
+"workspace":"󰾍",
+"media":"󱜏",
+"default":"󰌌"
+}')
+
+
+(defvar hypr_submap_options '{
+"media":[
+    {
+        "keys":"󱁐",
+        "action":"Play-Pause"
+    },
+    {
+        "keys":"[H L]",
+        "action":"Skip 5 Seconds"
+    },
+    {
+        "keys":"shift + [H L]",
+        "action":"Switch Track"
+    },
+    {
+        "keys":"M",
+        "action":"Toggle Output Mute"
+    },
+    {
+        "keys":"I",
+        "action":"Toggle Input Mute"
+    },
+    {
+        "keys":"[J K]",
+        "action":"Change Volume"
+    },
+    {
+        "keys":"S",
+        "action":"Open Audio Settings"
+    }
+],
+"workspace":[
+    {
+        "keys":"[0-9]",
+        "action":"Switch to Workspace"
+    },
+    {
+        "keys":"shift + [0-9]",
+        "action":"Move Window to Workspace"
+    }
+],
+"window":[
+    {
+        "keys":"F",
+        "action":"Toggle Fullscreen"
+    },
+    {
+        "keys":"M",
+        "action":"Toggle Maximize"
+    },
+    {
+        "keys":"V",
+        "action":"Toggle Floating"
+    },
+    {
+        "keys":"P",
+        "action":"Pin Window"
+    },
+    {
+        "keys":"Q",
+        "action":"Close Window"
+    },
+    {
+        "keys":"[h j k l ]",
+        "action":"Move Window"
+    },
+    {
+        "keys":"shift + [h j k l ]",
+        "action":"Grow Window"
+    },
+    {
+        "keys":"alt + [h j k l ]",
+        "action":"Shrink Window"
+    }
+
+]
+
+}')

@@ -22,18 +22,5 @@
         "exec":"gtk-launch libreoffice-startcenter",
         "image":"libreoffice",
         "menu":"office"
-    },
-    {
-        "description":"Steam Game Store",
-        "exec":"gtk-launch steam",
-        "image":"steam",
-        "menu":"steam"
-    },
-    {
-        "description":"Prismlauncher Minecraft Launcher",
-        "exec":"gtk-launch org.prismlauncher.PrismLauncher",
-        "image":"org.prismlauncher.PrismLauncher",
-        "menu":"minecraft"
     }
-
 ]

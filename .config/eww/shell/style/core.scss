@@ -1,0 +1,42 @@
+.sbutton{
+    @extend .button;
+    min-height: 0rem;
+}
+.sbutton-active{
+    @extend .button-active;
+    min-height: 0rem;
+}
+
+
+
+.leftbox{
+    background-color: $bg1;
+    border-radius: 0px 0px 1.2rem 0px;
+    margin-right: 2rem;
+    // border-bottom: 2px solid $bg3;
+    // border-right: 2px solid $accent;
+}
+
+
+.centerbox{
+    background-color: $bg1;
+    border-radius: 0px 0px 1.2rem 1.2rem;
+    // border-left: 2px solid $accent; 
+    // border-right: 2px solid $accent; 
+    // border-bottom: 2px solid $bg3; 
+}
+
+.rightbox{
+    background-color: $bg1;
+    border-radius: 0px 0px 0px 1.2rem;
+    margin-left: 2rem;
+    // border-bottom: 2px solid $bg3;
+    // border-left: 2px solid $accent;
+}
+
+
+.top-bar{
+    min-height: 3rem;
+    background-color: rgba($bg, 0.3);
+    padding: 0 0 .4rem 0;
+}

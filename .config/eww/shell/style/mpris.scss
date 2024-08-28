@@ -1,0 +1,19 @@
+.mpris-button,.mpris-button-playing{
+    @extend .sbutton;
+}
+.mpris-button-playing{
+    background: linear-gradient(to left, $accent, $bg2 70%);
+    &:hover{
+        background: linear-gradient(to left, fade($accent), $bg3);
+    }
+}
+
+.mpris-progress{
+    background-color: $blurred;
+    margin: 2rem;
+    margin-bottom: 0;
+    border-radius: 12px;
+    scale {
+        margin-bottom: unset;
+    }
+}
