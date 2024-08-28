@@ -4,6 +4,14 @@
         "name":"Forrest Tower"
     },
     {
+        "path":"/home/dmx/.config/background/img/foggy_island-res",
+        "name":"Foggy Island"
+    },
+    {
+        "path":"/home/dmx/.config/background/img/shell",
+        "name":"Colorful Shell"
+    },
+    {
         "path":"/home/dmx/.config/background/img/dark_leaves",
         "name":"Dark Leaves"
     },
@@ -68,8 +76,7 @@
         "name":"Rainbow"
     },
     {
-        "path":"/home/dmx/.config/background/img/blur",
-        "name":"Blur"
+        "path":"/home/dmx/.config/background/img/pink_blue_gradient",
+        "name":"Purple & Blue"
     }
-
 ]
