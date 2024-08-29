@@ -81,13 +81,13 @@ textobjects.move = {
 textobjects.swap = {
     enable = true,
     swap_next = {
-        [">a"] = "@parameter.inner",
-        [">f"] = "@function.outer",
+        ["g>a"] = "@parameter.inner",
+        ["g>f"] = "@function.outer",
     },
 
     swap_previous = {
-        ["<a"] = "@parameter.inner",
-        ["<f"] = "@function.outer",
+        ["g<a"] = "@parameter.inner",
+        ["g<f"] = "@function.outer",
     },
 }
 
