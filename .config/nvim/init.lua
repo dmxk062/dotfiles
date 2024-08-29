@@ -13,6 +13,7 @@ vim.o.shiftwidth = 4
 vim.o.hlsearch = true
 vim.o.termguicolors = true
 vim.o.wildmenu = false
+vim.o.scrolloff = 1
 
 -- wrap at whitespace, indent wrapped lines and show an indicator
 vim.o.wrap = true
@@ -33,6 +34,13 @@ vim.opt.fillchars = {
     -- its visible from the gaps anyways
     diff = " ",
     lastline = "",
+}
+
+vim.opt.listchars = {
+    eol = "",
+    tab = "󰌒 ",
+    space = "·",
+    multispace = " · ",
 }
 
 -- command mode: underline
@@ -107,7 +115,7 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
     callback = function()
         if vim.o.number then
             vim.o.relativenumber = false
-            vim.api.nvim__redraw({statuscolumn = true})
+            vim.api.nvim__redraw({ statuscolumn = true })
         end
     end
 })
