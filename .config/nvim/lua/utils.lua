@@ -25,7 +25,7 @@ function M.kitty_shell_in(uri, type, opts)
     vim.system(cmd, { detach = true })
 end
 
----@alias nvim_mode "n"|"i"|"c"|"v"|"s"|"o"|"t"|{}
+---@alias nvim_mode "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"|{}
 
 ---@param mode nvim_mode
 ---@param keys string
