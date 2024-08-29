@@ -435,26 +435,27 @@ local extra = {
     -- diffLine                  = { fg = pal.bg3 },
     -- diffIndexLine             = { fg = col.light_blue },
 
-    Added                     = { link = "diffAdded" },
-    Changed                   = { link = "diffChanged" },
-    Removed                   = { link = "diffRemoved" },
+    Added                       = { link = "diffAdded" },
+    Changed                     = { link = "diffChanged" },
+    Removed                     = { link = "diffRemoved" },
 
-    Headline1                 = { fg = col.red, bg = utils.blend(col.red, pal.bg0, 0.3), bold = true },
-    Headline2                 = { fg = col.orange, bg = utils.blend(col.orange, pal.bg0, 0.3), bold = true },
-    Headline3                 = { fg = col.yellow, bg = utils.blend(col.yellow, pal.bg0, 0.3), bold = true },
-    Headline4                 = { fg = col.green, bg = utils.blend(col.green, pal.bg0, 0.3), bold = true },
-    Headline5                 = { fg = col.teal, bg = utils.blend(col.teal, pal.bg0, 0.3), bold = true },
-    Headline6                 = { fg = pal.fg0, bg = utils.blend(col.white, pal.bg0, 0.3), bold = true },
+    Headline1                   = { fg = col.red, bg = utils.blend(col.red, pal.bg0, 0.3), bold = true },
+    Headline2                   = { fg = col.orange, bg = utils.blend(col.orange, pal.bg0, 0.3), bold = true },
+    Headline3                   = { fg = col.yellow, bg = utils.blend(col.yellow, pal.bg0, 0.3), bold = true },
+    Headline4                   = { fg = col.green, bg = utils.blend(col.green, pal.bg0, 0.3), bold = true },
+    Headline5                   = { fg = col.teal, bg = utils.blend(col.teal, pal.bg0, 0.3), bold = true },
+    Headline6                   = { fg = pal.fg0, bg = utils.blend(col.white, pal.bg0, 0.3), bold = true },
 
-    LeapMatch                 = { underline = true, fg = col.yellow },
-    LeapLabel                 = { fg = pal.inverted, bg = col.yellow, nocombine = true },
+    LeapMatch                   = { underline = true, fg = col.yellow },
+    LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
     -- LeapLabelPrimary          = { fg = pal.inverted, bg = col.magenta, nocombine = true },
 
-    IndentBlanklineChar       = { fg = pal.bg1 },
-    IndentBlanklineCharActive = { fg = pal.bg3 },
+    IndentBlanklineChar         = { fg = pal.bg1 },
+    IndentBlanklineCharActive   = { fg = pal.bg3 },
 
-    BinedCurrentLine          = { bg = pal.bg2 },
-    -- BinedCurrentCHar          = { fg = col.red },
+    BinedCurrentLine            = { bg = pal.bg2 },
+    TreesitterContext           = { bg = pal.bg2 },
+    TreesitterContextLineNumber = { fg = col.teal }
 }
 
 
