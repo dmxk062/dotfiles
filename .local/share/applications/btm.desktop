@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Bottom
-GenericName=System Monitor
-Exec=kitty --title "Bottom" -e btm -C /home/dmx/.config/bottom/config.toml
-Type=Application
-Keywords=Btm;bottom;top;hto;monitor;
-Icon=utilities-system-monitor

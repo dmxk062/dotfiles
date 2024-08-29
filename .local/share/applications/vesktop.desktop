@@ -3,7 +3,7 @@ Name=Vencord Desktop
 Comment=Vencord Desktop is a free/libre cross platform desktop app aiming to give you a snappier Discord experience with Vencord pre-installed
 GenericName=Internet Messenger
 Type=Application
-Exec=/usr/bin/vesktop --enable-features=UseOzonePlatform --ozone-platform=wayland
+Exec=/usr/bin/vesktop --enable-features=UseOzonePlatform --ozone-platform=wayland -enable-wayland-ime
 Icon=discord
 Categories=Network;InstantMessaging;
 StartupWMClass=vencord-desktop

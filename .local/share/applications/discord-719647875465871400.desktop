@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Game 719647875465871400
-Exec=/tmp/.mount_citra-ZpAAsa/usr/bin/citra-qt %u
+Exec=/usr/bin/citra-qt %u
 Type=Application
 NoDisplay=true
 Categories=Discord;Games;

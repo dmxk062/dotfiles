@@ -8,3 +8,4 @@ Exec=/home/dmx/Scripts/lflauncher.sh %U
 Categories=System;FileTools;FileManager
 MimeType=inode/directory;
 Keywords=folders;filesystem;explorer;list;files;fs;fl;lf;nemo;
+Hidden=true
