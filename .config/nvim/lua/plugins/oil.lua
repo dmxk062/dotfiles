@@ -77,7 +77,7 @@ local function open_external()
         -- where application is an app that can talk sftp
         -- org.gnome.Nautilus works for instance
         -- TODO: write some hacky handler myself that uses gio to then open that
-        local bufname = vim.require("oil").nvim_buf_get_name(0)
+        local bufname = vim.api.nvim_buf_get_name(0)
         local addr = bufname:match("//(.-)/")
         local remote_path = bufname:match("//.-(/.*)"):sub(2, -1)
         local uri = "sftp://" .. addr .. remote_path .. require("oil").get_cursor_entry().name
