@@ -40,7 +40,7 @@ get_installed(){
 highlight_pkgs() {
     local number="$1"
     local installed="$2"
-    local count=1
+    local count=$number
     local name desc id ver branch repo format repo_color
     while read -r line; do
         IFS=$'\t' read -r name desc id ver branch repo <<< "$line"
@@ -69,7 +69,7 @@ highlight_pkgs() {
         fi
         if ((number)); then
             format="${PURPLE}${count} ${RESET}${format}"
-            ((count++))
+            ((count--))
         fi
         printf "$format" "$repo" "$id" "$name" "$ver" "$desc"
     done
@@ -115,7 +115,7 @@ case "$mode" in
         fi
         get_installed
         IFS=$'\n' read -r -d '' -a packages <<< "$packagestr"
-        echo "$packagestr"|highlight_pkgs 1 1
+        echo "$packagestr"|highlight_pkgs "${#packages[@]}" 1
         echo -en "${GREEN}${BOLD}==> ${RESET}Packages to install \n${GREEN}${BOLD}==> ${RESET}"
 
         read -r index
