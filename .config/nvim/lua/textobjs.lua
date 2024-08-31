@@ -1,8 +1,6 @@
 -- see https://github.com/chrisgrieser/nvim-various-textobjs
 -- nowhere near as complex, but i just want some framework for making my own
 
-
-
 ---@param linenum integer
 local function getline(linenum)
     return vim.api.nvim_buf_get_lines(0, linenum - 1, linenum, true)[1]
@@ -210,10 +208,10 @@ end
 local function leap_get_point(cb)
     local curwin = vim.api.nvim_get_current_win()
     require("leap").leap {
-        target_windows = {curwin},
+        target_windows = { curwin },
         action = function(target1)
             require("leap").leap {
-                target_windows = {curwin},
+                target_windows = { curwin },
                 action = function(target2)
                     cb(target1, target2)
                 end
@@ -229,11 +227,11 @@ local function leap_selection(outer)
         local pos1, pos2
         -- coordinates given by leap are 0 indexed
         if not outer then
-            pos1 = {t1.pos[1], t1.pos[2]}
-            pos2 = {t2.pos[1], t2.pos[2] - 2}
+            pos1 = { t1.pos[1], t1.pos[2] }
+            pos2 = { t2.pos[1], t2.pos[2] - 2 }
         else
-            pos1 = {t1.pos[1], t1.pos[2] - 1}
-            pos2 = {t2.pos[1], t2.pos[2] - 1}
+            pos1 = { t1.pos[1], t1.pos[2] - 1 }
+            pos2 = { t2.pos[1], t2.pos[2] - 1 }
         end
         set_visual_selection(pos1, pos2)
     end)
