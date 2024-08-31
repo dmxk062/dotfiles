@@ -56,6 +56,8 @@ local function goto_git_ancestor()
     local git_ancestor = require("lspconfig.util").find_git_ancestor(path)
     if git_ancestor then
         require("oil").open(git_ancestor)
+    else
+        vim.notify("oil: Not in a git repo", vim.log.levels.WARN)
     end
 end
 
