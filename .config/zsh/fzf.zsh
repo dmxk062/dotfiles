@@ -45,8 +45,8 @@ function nz {
         return
     fi
     local parent="${res:h}"
-    local fpath="${res:A}"
-    (cd "$parent"; nvim "$fpath")
+    local abs="${res:A}"
+    (cd "$parent"; nvim "$abs")
 }
 
 export FZF_DEFAULT_OPTS="$colors ${(j: :)fzf_opts}"

@@ -36,10 +36,10 @@ function _jreq {
 alias jreq="noglob _jreq"
 
 function urlenc {
-    local fpath
-    fpath="${1:A}"
-    if [[ "$fpath" == "/run/user/$UID/gvfs/sftp"* ]]; then
-        local sftppath="${fpath/"\/run\/user\/$UID\/gvfs\/sftp:"/}"
+    local file_path
+    file_path="${1:A}"
+    if [[ "$file_path" == "/run/user/$UID/gvfs/sftp"* ]]; then
+        local sftppath="${file_path/"\/run\/user\/$UID\/gvfs\/sftp:"/}"
         local host="${sftppath/host=/}"
         host="${host/"\/"*/}"
         local remote_path="${sftppath#*/}"
@@ -47,7 +47,7 @@ function urlenc {
         return 0
     fi
     print -n "file://"
-    printf '%s' "$fpath"|jq -sRr @uri|sed 's/%2F/\//g'
+    printf '%s' "$file_path"|jq -sRr @uri|sed 's/%2F/\//g'
 }
 
 

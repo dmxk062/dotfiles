@@ -36,12 +36,12 @@ function command_not_found_handler() {
 
 
 function __readnullcommand {
-    local fpath="/proc/self/fd/0"
-    fpath="${fpath:A}"
-    if [[ -f "$fpath" ]] {
-        \bat --color=always -Pp "$fpath"
-    } elif [[ -d "$fpath" ]] {
-        \lsd "$fpath"
+    local realpath="/proc/self/fd/0"
+    realpath="${realpath:A}"
+    if [[ -f "$realpath" ]] {
+        \bat --color=always -Pp "$realpath"
+    } elif [[ -d "$realpath" ]] {
+        \lsd "$realpath"
     }
 }
 
