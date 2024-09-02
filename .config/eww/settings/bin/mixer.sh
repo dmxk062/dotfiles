@@ -28,7 +28,7 @@ do
     then
         name="$(pactl list sink-inputs|grep "${stream[1]}" -A30|grep media.name|awk -F = '{print $2}')"
     else
-        name=$(printf '"%s"' "$(echo "$name"|sed 's/"/\\"/g')")
+        name="\"${name//\"/\\\"}\""
     fi
     printf '{"id":%s,"name":%s,"app":"%s","volume":%s, "mute":%s, "icon":"%s", "iconAbs":%s}' "${stream[1]}" "$name" "${stream[2]}" "$volume" "${stream[4]}" "${icon}" "${abs}"
     if ((i != length))
