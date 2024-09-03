@@ -13,75 +13,6 @@ alias req="noglob curl -s"
 
 zmodload zsh/net/socket
 
-function fupload {
-    curl -F file=@"$1" "${2:-"https://0x0.st"}"
-}
-
-function ncsend {
-    nc -l  -p "${1:-$NC_PORT}"
-}
-
-function ncrecv {
-    nc -d "$1" "${2:-$NC_PORT}"
-}
-
-
-function _jreq {
-    local url="$1"
-    shift
-    local jqopts="${(j:,:)@}"
-    curl -s "$url"|jq -r "${jqopts:-.}"
-}
-
-alias jreq="noglob _jreq"
-
-function urlenc {
-    local file_path
-    file_path="${1:A}"
-    if [[ "$file_path" == "/run/user/$UID/gvfs/sftp"* ]]; then
-        local sftppath="${file_path/"\/run\/user\/$UID\/gvfs\/sftp:"/}"
-        local host="${sftppath/host=/}"
-        host="${host/"\/"*/}"
-        local remote_path="${sftppath#*/}"
-        print "sftp://${host}/${remote_path}"
-        return 0
-    fi
-    print -n "file://"
-    printf '%s' "$file_path"|jq -sRr @uri|sed 's/%2F/\//g'
-}
-
-
-function urldec {
-    local url="$1"
-    local file
-    if ! [[ "$url" == "file://"* ]]; then
-        return
-    fi
-    file="${url//file:\/\//}"
-    file="${file//\%/\\x}"
-    print -- "$file"
-}
-
-
-function local_ip {
-    local -a line
-    ip route | while read -rA line; do
-        if [[ "$line[1]" == "default" ]] {
-            print "$line[9]"
-        }
-    done
-}
-
-
-alias public_ip="req ifconfig.es"
-
-# not necessarily a network thing
-# params: $1: text to encode
-#         $@:2 flags for qrencode
-function qrgen {
-    qrencode "$1" --margin=2 --output=- --size=2 --type=ANSIUTF8 "${@:2}" 
-}
-
 function deepl_request {
     local request="$1"
     local auth_key="$( < "$XDG_DATA_HOME/keys/deepl" )"
@@ -135,9 +66,6 @@ function ncdir {
 }
 autoload -Uz _translate
 compdef _translate translate
-
-
-
 
 elif [[ "$1" == "unload" ]]; then
 

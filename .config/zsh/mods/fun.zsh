@@ -292,11 +292,12 @@ alias ret="print --"
 alias yield="print -l --"
 
 # not just functions, also aliases and exes
-
 function getdef {
     whence -f -x 4 "$@"|bat --plain --language zsh
 }
+
 compdef getdef=whence
+
 
 
 function keys {
@@ -315,7 +316,7 @@ unfunction filter tfilter ffilter \
     cnt sjoin sep \
     interlace blockjoin \
     keys \
-    getdef 
+    getdef
 
 unalias fn '\\' 'λ' ret yield
 
