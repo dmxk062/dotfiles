@@ -185,7 +185,16 @@ compdef getdef=whence
 
 function keys {
     local arrayname="${1}"
-    print -l -- ${(k)${(P)arrayname}}
+    print -l -- ${(@k)${(P)arrayname}}
+}
+
+function pairs {
+    local arrayname="$1"
+    local sep="${2:-": "}"
+    local key value
+    for key value in "${(@kv)${(P)arrayname}}"; do
+        print -- "$key$sep$value"
+    done
 }
 
 
@@ -196,7 +205,7 @@ function keys {
 unfunction filter tfilter ffilter \
     map cmap vmap cvmap fmap \
     interlace \
-    keys \
+    keys pairs \
     getdef
 
 unalias fn '\\' 'λ' ret yield
