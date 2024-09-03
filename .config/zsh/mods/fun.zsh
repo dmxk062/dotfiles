@@ -81,48 +81,6 @@ function cvmap {
     cmap "$cmp" "$expr" "$@"
 }
 
-# arithmetic map, useful for e.g. unit conversion
-function amap {
-    local math="print -- \$[ $1 ]"; shift
-    local arg
-
-    if (($# == 0)); then
-        while read -r arg; do
-            argv=(${=arg})
-            eval $math
-        done
-    else
-        for arg in "$@"; do
-            argv=(${=arg})
-            eval $math
-        done
-    fi
-}
-
-# accumulate the results of math expressions, kinda like amap|sum
-function afold {
-    local math="print -- \$[ $1 ]"; shift
-    local arg
-    local result=0
-    local _res
-
-    if (($# == 0)); then
-        while read -r arg; do
-            argv=(${=arg})
-            _res=$(eval "$math")
-            ((result+=_res))
-        done
-    else
-        for arg in "$@"; do
-            argv=(${=arg})
-            _res=$(eval "$math")
-            ((result+=_res))
-        done
-    fi
-    print -- $result
-
-}
-
 # only return values for with $expr returns 0
 function filter {
     local expr="$1"; shift
@@ -190,99 +148,24 @@ function tfilter {
     fi
 }
 
-# count, faster than just afold '1' or amap 1|sum
-function cnt {
-    if (($# > 0)); then
-        print -- $#
-        return
-    fi
-
-    local counter=0
-    while read _; do
-        ((counter++))
-    done
-    print -- "$counter"
-}
-
-# join the result of a process to stdout
-# e.g.
-# pgrep zsh|sjoin pgrep bash
-# to get all pids of both
-# basically the same as (pgrep zsh; pgrep bash)
-function sjoin {
-    local expr="$1"
-    shift
-    local elem
-    while read -r elem; do
-        print -- "$elem"
-    done
-    eval $expr "$@"
-}
-
-# split nicely, either expanded args or each line
-function sep {
-    local elem
-    local line
-    if (($# == 0)); then
-        while read -rA line; do
-            print -l -- "${line[@]}"
-        done
-    else
-        print -l -- "${@}"
-    fi
-}
-
-# join $1 lines together with $2
-# very useful with e.g. jq to get properties into a more shell-friendly form
+# join every $1 lines together with $2
 function interlace {
     local numcols="${1:-2}"
     local sep="${2:-" "}"
-    local line 
-    local counter=1
-    local -a buf=()
+
+    local -a buf
+    local count=1
+
     while read -r line; do
-        buf+=("$line")
-        if ((counter < numcols)) {
-            ((counter++))
-        } else {
-            counter=1
-            # hacky, but we sadly need eval here, otherwise sep wont expand
-            eval "print -- \${(j(${sep}))buf}"
+        buf[$[count++]]="$line"
+
+        if ((count == numcols+1)); then
+            eval print "\${(j[$sep])buf}"
+            count=1
             buf=()
-        }
+        fi
     done
 }
-
-# separate all of stdin into $1 blocks and then join block1[1] and block2[1] ... blockn[1] to a single line separated by $2
-# not that fast
-# useful with e.g. sjoin to join two streams into one block
-function blockjoin {
-    local blocks="${1:-2}"
-    local sep="${2:-" "}"
-    local -a buf=()
-    local num_lines=1
-    local line blocklen 
-    local -a outline=()
-
-    while read -r line; do
-        buf+=("$line")
-        ((num_lines++))
-    done
-
-    blocklen=$((num_lines / blocks))
-
-    for ((i=1; i<=blocklen; i++)){
-        outline=()
-        for ((j=0; j<blocks; j++)){
-            local offset=$[ (j*blocklen) + i ]
-            # print line: $i, block: $j, offset:$offset
-            outline+=("${buf[$offset]}")
-        }
-        # same as above sadly
-        eval "print -- \${(j(${sep}))outline}"
-    }
-}
-
 
 # nicer to type
 alias fn="function" '\\'="function" 'λ'="function"
@@ -311,10 +194,8 @@ function keys {
 } elif [[ "$1" == "unload" ]] {
 
 unfunction filter tfilter ffilter \
-    afold \
-    amap map cmap vmap cvmap fmap \
-    cnt sjoin sep \
-    interlace blockjoin \
+    map cmap vmap cvmap fmap \
+    interlace \
     keys \
     getdef
 
