@@ -6,6 +6,7 @@
 # table: a list of newline delimitted entries with fixed, delimiter based fields
 # hash: a built in zsh hashtable
 # json: arbitrary json arrays or maps
+# proplist: a series of "blocks", delimitted by blank lines. lines match a key: value pattern
 
 if [[ "$1" == "load" ]]; then
 
@@ -57,7 +58,75 @@ function table2json {
     fi
 }
 
+function proplist2table {
+    local outsep="${1:-"	"}"
+    local -a keys current
+    local had_keys=0
+
+    local line key rest value=""
+    while IFS=":" read -r key rest; do 
+        if [[ "$key" == "" ]]; then
+            if ((!had_keys)); then
+                eval print -- "\${(j[$outsep])keys}"
+            fi
+            eval print -- "\${(j[$outsep])current}"
+            current=()
+            had_keys=1
+            continue
+        fi
+        if ((!had_keys)); then
+            key=${key%"${key##*[![:space:]]}"}
+            keys+=("$key")
+        fi
+
+        value=${rest#"${rest%%[![:space:]]*}"}
+        value=${value%"${value##*[![:space:]]}"}
+        current+=("$value")
+    done
+}
+
+# index the named columns of a table, the first line is assumed to be the header, separated by IFS
+function filter_table {
+    local -a indices columns to_get=("$@")
+    read -rA columns
+    local sep=$'\t'
+
+    if [[ "$1" == "-s" ]]; then
+        sep="$2"
+    elif [[ "$1" == "-s"* ]]; then
+        sep="${1:2}"
+    fi
+
+
+    local field col i
+    local -a found_in_table
+
+    for field in "${to_get[@]}"; do
+        i=1
+        for ((i=1; i <= "${#columns}"; i++)); do
+            if [[ "${columns[i]}" == "$field" ]]; then
+                indices+=($i)
+                found_in_table+=("$field")
+                break
+            fi
+        done
+    done
+
+    eval print -- "\${(j[$sep])found_in_table[@]}"
+
+    local line cur
+    while read -rA line; do
+        cur=()
+        for i in "${indices[@]}"; do
+            cur+=("${line[$i]}")
+        done
+        eval print -- "\${(j[$sep])cur[@]}"
+    done
+}
+
 elif [[ "$1" == "unload" ]]; then
     unfunction json2hash hash2json \
-        table2json
+        table2json \
+        proplist2table \
+        filter_table
 fi
