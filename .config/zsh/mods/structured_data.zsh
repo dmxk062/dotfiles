@@ -35,7 +35,7 @@ function hash2json {
 # $1: separator, empty string for IFS
 # $@:2: names for columns, if not given first row of stream will be used
 function table2json {
-    local sep="$1"
+    local sep="${1:-"	"}"
     local separate=0
     shift
 
@@ -56,6 +56,22 @@ function table2json {
     else
         column -tJ|jq -cM '.table'
     fi
+}
+
+function json2table {
+    local line
+    local sep="${1:-"	"}"
+
+    local -a columns
+    local jsonObj=""
+
+    while read -r line; do
+        jsonObj+="$line"
+    done
+
+    IFS=$'\t' read -rA columns < <(print -- "$jsonObj"| jq -r '.[0]|keys_unsorted|join("\t")')
+    eval print -- "\${(j[$sep])columns}"
+    print -- "$jsonObj"|jq --arg sep "$sep" -r '.[]|[.[]]|join($sep)'
 }
 
 function proplist2table {
@@ -126,7 +142,7 @@ function filter_table {
 
 elif [[ "$1" == "unload" ]]; then
     unfunction json2hash hash2json \
-        table2json \
+        json2table table2json \
         proplist2table \
         filter_table
 fi
