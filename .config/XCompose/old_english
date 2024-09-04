@@ -25,6 +25,16 @@
 <Multi_key> <minus> <slash> <o> : "ø̄"
 <Multi_key> <minus> <slash> <O> : "Ø̄"
 
+# Ligatures for the, that and this
+<Multi_key> <y> <e> : "yͤ"
+<Multi_key> <y> <t> : "yͭ"
+<Multi_key> <y> <s> : "yᷤ"
+# with þorn
+<Multi_key> <t> <e> : "þͤ"
+<Multi_key> <t> <t> : "ͭþͭ"
+# þū / thou
+<Multi_key> <t> <u> : "þͧ"
+
 # runes, starting with *
 # I use the latin order I know.....
 <Multi_key> <asterisk> <a> : "ᚪ" # āc       -> Oak
