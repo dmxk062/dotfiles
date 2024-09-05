@@ -122,7 +122,8 @@ function precmd {
         } else  {
             printf -v elapsed "%.2fms" $elapsed_ms
         }
-        RPROMPT="%F{8}%K{8}%f󱎫 ${elapsed} %(?.%F{green}.%F{red})%k%S%(?.󰄬 %?.󰅖 %?) %s"
+        # format: <elapsed time> <jobs? and if yes <count>&> <exit code with symbol> <time it took>
+        RPROMPT="%F{8}%K{8}%f󱎫 ${elapsed} %(1j.%F{cyan}%j& %f.)%(?.%F{green}.%F{red})%k%S%(?.󰄬 %?.󰅖 %?) %s"
     fi
     # set the title
     print -Pn "\e]0;zsh: %~\a"
@@ -135,7 +136,7 @@ function precmd {
 }
 
 # Prompt for nested things:
-PS2="%B%S󰅪 %_%s%f%b "
+PS2="%F{8}%K{8}%f󰅪 %_%k%F{8}%f "
 #
 # sudo prompt
 export SUDO_PROMPT="$(print -P "\n%B%F{red}%S sudo%s%f%b ")"
