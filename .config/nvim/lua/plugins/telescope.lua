@@ -30,10 +30,20 @@ local buffer_on_enter = {
 local default_config_tbl = {
     layout_config = {
         height = function()
-            return vim.o.lines
+            local lines = vim.o.lines
+            if lines > 40 then
+                return math.floor(lines * 0.9)
+            end
+
+            return lines
         end,
         width = function()
-            return vim.o.columns
+            local cols = vim.o.columns
+            if cols > 80 then
+                return math.floor(cols * 0.9)
+            end
+
+            return cols
         end,
         preview_cutoff = 1,
         prompt_position = "bottom",
@@ -49,6 +59,7 @@ local default_config_tbl = {
 local function default_config(extra)
     return vim.tbl_deep_extend("force", default_config_tbl, extra or {})
 end
+
 M.opts = {}
 M.opts.defaults = {
     mappings = {
