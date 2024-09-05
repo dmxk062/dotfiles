@@ -191,18 +191,23 @@ function pwf {
     print -P -- "%~"
 }
 
-# go up n levels
+# go up n levels, in a subshell, return the absolute path to the directory n levels above
 function .. {
     local level="$1"
-    if [[ ! "$level" =~ '[0-9]+' ]] {
-        cd ..
-        return
+    if [[ -t 1 ]] {
+        if [[ ! "$level" =~ '[0-9]+' ]] {
+            cd ..
+            return
+        }
+
+        local fmt
+        printf -v fmt "../%.0s" {1..$level}
+        cd "$fmt"
+    } else {
+        local fmt
+        printf -v fmt "../%.0s" {1..$level}
+        print -- "${fmt:a}"
     }
-
-
-    local fmt
-    printf -v fmt "../%.0s" {1..$level}
-    cd "$fmt"
 }
 
 
