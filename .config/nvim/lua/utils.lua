@@ -37,6 +37,24 @@ end
 
 ---@param mode nvim_mode
 ---@param keys string
+---@param opts vim.keymap.del.Opts?
+function M.unmap(mode, keys, opts)
+    vim.keymap.del(mode, keys, opts or {})
+end
+
+---@param bufnr integer
+---@param mode nvim_mode
+---@param keys string
+---@param opts vim.keymap.del.Opts?
+function M.lunmap(bufnr, mode, keys, opts)
+    opts = opts or {}
+    opts.buffer = bufnr
+    vim.keymap.del(mode, keys, opts)
+end
+
+---@param bufnr integer
+---@param mode nvim_mode
+---@param keys string
 ---@param action string|function
 ---@param opts vim.keymap.set.Opts|nil
 function M.lmap(bufnr, mode, keys, action, opts)
