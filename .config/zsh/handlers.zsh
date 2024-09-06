@@ -71,7 +71,7 @@ function _clipboard_directory_name {
         if [[ "$type" == "clip" ]]; then
             if ((use_mime)); then
                 local -a mime_types=($(wl-paste -l 2>/dev/null))
-                if ! (($mime_types[(I)$mime])); then
+                if ! (($mime_types[(Ie)$mime])); then
                     return 1
                 fi
                 content="$(wl-paste --type "$mime" 2>/dev/null)"
@@ -83,7 +83,7 @@ function _clipboard_directory_name {
         elif [[ "$type" == "sel" ]]; then
             if ((use_mime)); then
                 local -a mime_types=($(wl-paste --primary -l 2>/dev/null))
-                if ! (($mime_types[(I)$mime])); then
+                if ! (($mime_types[(Ie)$mime])); then
                     return 1
                 fi
                 content="$(wl-paste --primary --type "$mime" 2>/dev/null)"
