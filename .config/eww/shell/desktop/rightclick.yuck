@@ -42,7 +42,7 @@
 (box :orientation "v" :visible {window.title == "null" || rc_start_desktop} :space-evenly false 
     (box :space-evenly false :orientation "v" :visible {rc_desktop_area == 0}
         (open_size_button :cmd "kitty" :class "kitty" :label "Terminal")
-        (open_size_button :cmd "gtk-launch org.gnome.Nautilus" :class "org.gnome.Nautilus" :label "Files")
+        (open_size_button :cmd "nautilus -w" :class "org.gnome.Nautilus" :label "Files")
         (open_size_button :cmd "firefox" :class "firefox" :label "Browser")
         (revealer :reveal rc_show_more :transition "slideup" :duration "0.2s" (box :orientation "v" :space-evenly false
             (open_size_button :cmd "kitty btm" :class "kitty" :label "Bottom")
