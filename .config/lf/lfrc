@@ -162,19 +162,19 @@ cmd link %{{
 }}
 # zoxide
 cmd z %{{
-	result="$(zoxide query --exclude $PWD $@)"
+    result="$(zoxide query --exclude $PWD $@)"
     escresult="$(echo $result|sed 's/ /\\ /g')"
-	lf -remote "send $id cd $escresult"
+    lf -remote "send $id cd $escresult"
 }}
 # zoxide+fzf
 cmd zi ${{
-	result="$(zoxide query -i)"
+    result="$(_ZO_FZF_OPTS="$_ZO_FZF_OPTS --height=99999" zoxide query -i)"
     escresult="$(echo $result|sed 's/ /\\ /g')"
-	lf -remote "send $id cd $escresult"
+    lf -remote "send $id cd $escresult"
 }}
 # jump to dir using fzf
 cmd fzf_jump ${{
-    res="$(find . -type f -o -path ./.local/share/Steam -prune -o -path ./.steam -prune -o -path ./Games -prune -o -print | fzf --header='Jump to location' --preview 'lsd {}' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    res="$(fd --hidden -I --type=dir -E "*.steam/*"|fzf --prompt="cd: " --preview='lsd "$(echo {}|cut -f2)"')"
     if [ -d "$res" ] ; then
         cmd="cd"
     elif [ -f "$res" ] ; then
