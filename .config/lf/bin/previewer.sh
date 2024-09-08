@@ -17,7 +17,7 @@ COLUMNS="$W"
 IMAGE_SIZE="600x400"
 
 function display_image {
-    kitten icat --silent --stdin no --transfer-mode memory --place "${W}x${H}@${X}x${Y}" "$1" < /dev/null > /dev/tty
+    kitten icat --silent --stdin no --transfer-mode memory --place "${W}x$[H-${2:-0}]@${X}x$[Y+${2:-0}]" "$1" < /dev/null > /dev/tty
 }
 
 function info {
@@ -60,43 +60,62 @@ case "$MIMETYPE" in
         tmpfile="$(create_cache "${FILE}")"
         datafile="$(create_cache "$FILE" ".desc")"
         if [[ ! -f "$tmpfile" ]] {
-            magick convert "$FILE" -resize "$IMAGE_SIZE" "$tmpfile"
-            identify -format 'Format: %m\nResolution: %wx%h\nColor Depth: %z Bits per Pixel\nTaken by: %[EXIF:Make] %[EXIF:Model]\n' "$FILE" > "$datafile"
+            magick convert "$FILE" -resize "$IMAGE_SIZE" "$tmpfile"&
+            identify -format 'Format: %m\nResolution: %wx%h\nColor Depth: %z Bits per Pixel\nTaken by: %[EXIF:Make] %[EXIF:Model]\n' "$FILE" > "$datafile"&
+            wait
         }
         cat "$datafile"
-        H=$[H-6]
-        Y=$[Y+6]
-        display_image "$tmpfile"
+        display_image "$tmpfile" 6
         exit 1
         ;;
 
     video/*)
         tmpfile="$(create_cache "${FILE}" ".png")"
+        datafile="$(create_cache "${FILE}" ".desc")"
         if ! [[ -f "$tmpfile" ]] {
-            ffmpegthumbnailer -s 512 -m -i "$FILE" -o "$tmpfile"
+            IFS=$'\t' read -r audio_format audio_bitrate video_format video_bitrate video_resolution video_framerate video_duration < <(mediainfo --output=JSON "$FILE" \
+                |jq -r '([.media.track|.[]|select(."@type" == "Video")][0]) as $video | ([.media.track|.[]|select(."@type" == "Audio")][0]) as $audio|
+                "\($audio.Format)\t\($audio.BitRate)\t\($video.Format)\t\($video.BitRate)\t\($video.Width)x\($video.Height)\t\($video.FrameRate)\t\($video.Duration)"'
+            )
+            ffmpegthumbnailer -s 512 -m -i "$FILE" -o "$tmpfile"&
+            seconds="${video_duration%.*}"
+            minutes=$[seconds / 60]
+            hours=$[minutes / 60]
+            minutes=$[minutes % 60]
+            seconds=$[seconds % 60]
+            audio_bitrate=$[audio_bitrate / 1000]
+            video_bitrate=$[video_bitrate / 1000000]
+            ((audio_bitrate == 0)) && audio_bitrate="unknown bitrate" || audio_bitrate="${audio_bitrate}kbps"
+            ((video_bitrate == 0)) && video_bitrate="unknown bitrate" || video_bitrate="${video_bitrate}mbps"
+            printf "Audio: %s (%s)\nVideo: %s (%s)\nResolution: %s\nFramerate: %sfps\nRuntime: %02d:%02d:%02d\n" \
+                "$audio_format" "$audio_bitrate" "$video_format" "$video_bitrate" "$video_resolution" "$video_framerate" "$hours" "$minutes" "$seconds" \
+            > "$datafile"
+
+            wait
         }
-        display_image "$tmpfile"
+        cat "$datafile"
+        display_image "$tmpfile" 5
         exit 1
         ;;
 
     audio/*)
-        local -a fields
-        IFS=$'\n' fields=($(mediainfo --output=JSON "$FILE" \
-            |jq -r '.media.track[0]|.Title // "-", .Album // "-", .Album_Performer // "-", .Genre // "-", .Format // "-", .Duration, .OverallBitRate'))
-        seconds="${fields[6]%.*}"
-        minutes=$[seconds / 60]
-        seconds=$[seconds % 60]
-        tmpfile="$(create_cache "$FILE" ".png")"
-        if ! [[ -f "$tmpfile" ]] {
+        tmpfile="$(create_cache "${FILE}" ".png")"
+        datafile="$(create_cache "${FILE}" ".desc")"
+        if [[ ! -f "$tmpfile" ]] {
+            local -a fields
+            IFS=$'\t' read -rA fields < <(mediainfo --output=JSON "$FILE" \
+                |jq -r '.media.track[0]|"\(.Title)\t\(.Album)\t\(.Performer)\t\(.Genre)\t\(.Format)\t\(.Duration)\t\(.OverallBitRate)"')
+            seconds="${fields[6]%.*}"
+            minutes=$[seconds / 60]
+            seconds=$[seconds % 60]
+            local -a genres=("${(@s: /:)fields[4]}")
+            local genre_str="${(j:,:)genres}"
+            printf "Title: %s\nArtist: %s\nAlbum: %s\nGenre(s): %s\nFormat: %s\nBitrate: %skbps\nDuration: %02d:%02d"  \
+                "${fields[1]}" "${fields[3]}" "${fields[2]}" "${genre_str}" "${fields[5]}"  $[fields[7] / 1000] $minutes $seconds > "$datafile"
             ffmpegthumbnailer -s 512 -m -i "$FILE" -o "$tmpfile"
         }
-        ((H-=7))
-        ((Y+=7))
-        local -a genres=("${(@s: /:)fields[4]}")
-        local genre_str="${(j:,:)genres}"
-        printf "Title: %s\nArtist: %s\nAlbum: %s\nGenre(s): %s\nFormat: %s\nBitrate: %skbps\nDuration: %02d:%02d"  \
-            "${fields[1]}" "${fields[3]}" "${fields[2]}" "${genre_str}" "${fields[5]}"  $[fields[7] / 1000] $minutes $seconds
-        display_image "$tmpfile"
+        cat "$datafile"
+        display_image "$tmpfile" 8
         exit 1
         ;;
 
@@ -250,9 +269,7 @@ ${(j:, :)undef}"|fmt -sw $((W-4))
             curl "$icon_url" > "$tmpfile"
         }
         print "$name\n$desc\nVersion: $ver\nHomepage: $url\nRepo: $repo"
-        ((H-=8))
-        ((Y+=8))
-        display_image "$tmpfile"
+        display_image "$tmpfile" 8
 
         exit 1
         ;;
