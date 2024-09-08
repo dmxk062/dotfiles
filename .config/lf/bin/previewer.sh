@@ -5,7 +5,6 @@
 CACHEDIR="$XDG_CACHE_HOME/lf"
 if ! [[ -d "$CACHEDIR" ]] { mkdir -p "$CACHEDIR" }
 
-MAX_IMAGE_SIZE=20971520
 
 FILE=$1
 W=$2
@@ -14,6 +13,8 @@ X=$4
 Y=$5
 LINES="$H"
 COLUMNS="$W"
+
+IMAGE_SIZE="600x400"
 
 function display_image {
     kitten icat --silent --stdin no --transfer-mode memory --place "${W}x${H}@${X}x${Y}" "$1" < /dev/null > /dev/tty
@@ -56,15 +57,16 @@ case "$MIMETYPE" in
         ;;
 
     image/*)
-        size=$(stat -c %s "$FILE")
-        if ((size > MAX_IMAGE_SIZE)) {
-            print -P -- "%F{blue}󰋽 Image is greater than 20mb"
-        } else {
-            identify -format 'Format: %m\nSize: %wx%h\nColor Depth: %z Bits per Pixel\n' "$FILE"
-            H=$[H-4]
-            Y=$[Y+4]
-            display_image "$FILE"
+        tmpfile="$(create_cache "${FILE}")"
+        datafile="$(create_cache "$FILE" ".desc")"
+        if [[ ! -f "$tmpfile" ]] {
+            magick convert "$FILE" -resize "$IMAGE_SIZE" "$tmpfile"
+            identify -format 'Format: %m\nResolution: %wx%h\nColor Depth: %z Bits per Pixel\nTaken by: %[EXIF:Make] %[EXIF:Model]\n' "$FILE" > "$datafile"
         }
+        cat "$datafile"
+        H=$[H-6]
+        Y=$[Y+6]
+        display_image "$tmpfile"
         exit 1
         ;;
 
