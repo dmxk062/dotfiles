@@ -15,17 +15,12 @@ Y=$5
 LINES="$H"
 COLUMNS="$W"
 
-
-
-
-
-
 function display_image {
     kitten icat --silent --stdin no --transfer-mode memory --place "${W}x${H}@${X}x${Y}" "$1" < /dev/null > /dev/tty
 }
 
 function info {
-    print -P "\e[90m%F{white}\e[100m${1}\e[40m\e[90m\e[0m\n"
+    print -P "%F{8}%F{white}%K{8}${1}%K{black}%F{8}\e[0m\n"
 
 }
 
@@ -125,14 +120,14 @@ case "$MIMETYPE" in
         exit 1
         ;;
 
-    text/*|*/xml| application/javascript|application/pgp-signature|application/x-setupscript|application/x-wine-extension-ini)
+    text/*|*/xml|application/javascript|application/pgp-signature|application/x-setupscript|application/x-wine-extension-ini)
         case $MIMETYPE in
             text/*)
                 name="${MIMETYPE//text\//}";;
             *)
                 name="${MIMETYPE}";;
         esac
-        info "󰈔 $name"
+        # info "󰈔 $name"
         COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$((W-4)) -f --number \
             --line-range 1:$[LINES - 2] "$FILE"
         exit 1
