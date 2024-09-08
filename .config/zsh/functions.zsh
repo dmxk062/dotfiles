@@ -99,6 +99,10 @@ function codes2chars {
     done
 }
 
+function lcd {
+    cd "$(command lf -print-last-dir "$@")"
+}
+
 
 
 source $ZDOTDIR/handlers.zsh
