@@ -28,7 +28,7 @@ set ratios '1:2:3'
 # my opening script
 cmd open $~/.config/lf/bin/open.sh $fx
 # command to set selected file as wallpaper using swww
-cmd wallpaper ${{
+cmd wallpaper &{{
     ~/.config/background/wallpaper.sh wall $f
 }}
 # display PWD in window title
