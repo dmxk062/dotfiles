@@ -22,7 +22,10 @@ function display_image {
 
 function info {
     print -P "%F{8}%F{white}%K{8}${1}%K{black}%F{8}\e[0m\n"
+}
 
+function separator {
+    printf "%.0s-" {1..$W}
 }
 
 function create_cache {
@@ -73,28 +76,35 @@ case "$MIMETYPE" in
         tmpfile="$(create_cache "${FILE}" ".png")"
         datafile="$(create_cache "${FILE}" ".desc")"
         if ! [[ -f "$tmpfile" ]] {
-            IFS=$'\t' read -r audio_format audio_bitrate video_format video_bitrate video_resolution video_framerate video_duration < <(mediainfo --output=JSON "$FILE" \
-                |jq -r '([.media.track|.[]|select(."@type" == "Video")][0]) as $video | ([.media.track|.[]|select(."@type" == "Audio")][0]) as $audio|
-                "\($audio.Format)\t\($audio.BitRate)\t\($video.Format)\t\($video.BitRate)\t\($video.Width)x\($video.Height)\t\($video.FrameRate)\t\($video.Duration)"'
-            )
+            (
+                IFS=$'\t' read -r audio_format audio_bitrate video_format video_bitrate video_resolution video_framerate video_duration < <(mediainfo --output=JSON "$FILE" \
+                    |jq -r '([.media.track|.[]|select(."@type" == "Video")][0]) as $video | ([.media.track|.[]|select(."@type" == "Audio")][0]) as $audio|
+                    "\($audio.Format)\t\($audio.BitRate)\t\($video.Format)\t\($video.BitRate)\t\($video.Width)x\($video.Height)\t\($video.FrameRate)\t\($video.Duration)"'
+                )
+                seconds="${video_duration%.*}"
+                minutes=$[seconds / 60]
+                hours=$[minutes / 60]
+                minutes=$[minutes % 60]
+                seconds=$[seconds % 60]
+                audio_bitrate=$[audio_bitrate / 1000]
+                video_bitrate=$[video_bitrate / 1000000]
+                ((audio_bitrate == 0)) && audio_bitrate="unknown bitrate" || audio_bitrate="${audio_bitrate}kbps"
+                ((video_bitrate == 0)) && video_bitrate="unknown bitrate" || video_bitrate="${video_bitrate}mbps"
+                if [[ "$audio_format" == "null" ]]; then
+                    audio="none"
+                else
+                    audio="$audio_format (${audio_bitrate})"
+                fi
+                printf "Audio: %s\nVideo: %s (%s)\nResolution: %s\nFramerate: %sfps\nRuntime: %02d:%02d:%02d\n" \
+                    "$audio" "$video_format" "$video_bitrate" "$video_resolution" "$video_framerate" "$hours" "$minutes" "$seconds" \
+                > "$datafile"
+            )&
             ffmpegthumbnailer -s 512 -m -i "$FILE" -o "$tmpfile"&
-            seconds="${video_duration%.*}"
-            minutes=$[seconds / 60]
-            hours=$[minutes / 60]
-            minutes=$[minutes % 60]
-            seconds=$[seconds % 60]
-            audio_bitrate=$[audio_bitrate / 1000]
-            video_bitrate=$[video_bitrate / 1000000]
-            ((audio_bitrate == 0)) && audio_bitrate="unknown bitrate" || audio_bitrate="${audio_bitrate}kbps"
-            ((video_bitrate == 0)) && video_bitrate="unknown bitrate" || video_bitrate="${video_bitrate}mbps"
-            printf "Audio: %s (%s)\nVideo: %s (%s)\nResolution: %s\nFramerate: %sfps\nRuntime: %02d:%02d:%02d\n" \
-                "$audio_format" "$audio_bitrate" "$video_format" "$video_bitrate" "$video_resolution" "$video_framerate" "$hours" "$minutes" "$seconds" \
-            > "$datafile"
 
             wait
         }
         cat "$datafile"
-        display_image "$tmpfile" 5
+        display_image "$tmpfile" 6
         exit 1
         ;;
 
@@ -102,17 +112,20 @@ case "$MIMETYPE" in
         tmpfile="$(create_cache "${FILE}" ".png")"
         datafile="$(create_cache "${FILE}" ".desc")"
         if [[ ! -f "$tmpfile" ]] {
-            local -a fields
-            IFS=$'\t' read -rA fields < <(mediainfo --output=JSON "$FILE" \
-                |jq -r '.media.track[0]|"\(.Title)\t\(.Album)\t\(.Performer)\t\(.Genre)\t\(.Format)\t\(.Duration)\t\(.OverallBitRate)"')
-            seconds="${fields[6]%.*}"
-            minutes=$[seconds / 60]
-            seconds=$[seconds % 60]
-            local -a genres=("${(@s: /:)fields[4]}")
-            local genre_str="${(j:,:)genres}"
-            printf "Title: %s\nArtist: %s\nAlbum: %s\nGenre(s): %s\nFormat: %s\nBitrate: %skbps\nDuration: %02d:%02d"  \
-                "${fields[1]}" "${fields[3]}" "${fields[2]}" "${genre_str}" "${fields[5]}"  $[fields[7] / 1000] $minutes $seconds > "$datafile"
-            ffmpegthumbnailer -s 512 -m -i "$FILE" -o "$tmpfile"
+            (
+                IFS=$'\t' read -r title album artist genre format duration bitrate < <(mediainfo --output=JSON "$FILE" \
+                    |jq -r '.media.track[0]|"\(.Title // "-")\t\(.Album // "-")\t\(.Performer // "-")\t\(.Genre // "-")\t\(.Format)\t\(.Duration)\t\(.OverallBitRate)"')
+                seconds="${duration%.*}"
+                minutes=$[seconds / 60]
+                seconds=$[seconds % 60]
+                local -a genres=("${(@s: /:)genre}")
+                local genre_str="${(j:,:)genres}"
+                printf "Title: %s\nArtist: %s\nAlbum: %s\nGenre(s): %s\nFormat: %s\nBitrate: %skbps\nDuration: %02d:%02d"  \
+                    "${title}" "${artist}" "${album}" "${genre_str}" "${format}"  $[bitrate / 1000] $minutes $seconds \
+                > "$datafile"
+            )&
+            ffmpegthumbnailer -s 512 -m -i "$FILE" -o "$tmpfile"&
+            wait
         }
         cat "$datafile"
         display_image "$tmpfile" 8
@@ -121,17 +134,37 @@ case "$MIMETYPE" in
 
 
     *x-iso9660-image)
-        info "󰗮 Disk Image"
-        iso-info --no-header "$FILE" -f|tail -n+10|while read -r num file; do
-            print -- "$file"
-        done
+        datafile="$(create_cache "${FILE}" ".desc")"
+        if [[ ! -f "$datafile" ]]; then
+            local keywords=1 application creator publisher volume
+            local -a files
+            iso-info --no-header -i "$FILE"|while read -r line; do
+                if ((keywords)) && [[ "$line" =~ ^.*:.*$ ]]; then
+                    IFS="${IFS}:" read -r key value <<< "$line"
+                    case "$key" in
+                        Application) application="$value";;
+                        Preparer) creator="$value";;
+                        Publisher) publisher="$value";;
+                        Volume) [[ "$value" != "Set"* ]] && volume="$value";;
+                    esac
+                elif [[ "$line" == "ISO-9660 Information" ]]; then
+                    keywords=0
+                elif ! ((keywords)); then
+                    read -r size file <<< "$line"
+                    files+=("$file")
+                fi
+            done
+            print "Name: ${application:--}\nCreated by: ${creator:--}\nPublisher: ${publisher:--}\nVolume: ${volume:--}\n\nFile Listing:" > "$datafile"
+            print "${(j:\n:)files}" >> "$datafile"
+        fi
+        cat "$datafile"
         exit 1
         ;;
 
     *opendocument*|application/vnd.openxmlformats-officedocument.*)
         tmpfile="$(create_cache "$FILE" ".png")"
         if ! [[ -f "$tmpfile" ]] {
-            libreoffice --convert-to pdf "$FILE" --outdir "$CACHEDIR" 2>/dev/null
+            libreoffice --convert-to pdf "$FILE" --outdir "$CACHEDIR" >/dev/null 2>&1
             outfile="$CACHEDIR/${FILE:t}" 2>/dev/null
             outfile="${outfile%.*}.pdf" 2>/dev/null
             pdftoppm -f 1 -l 1 -png "$outfile" >> "$tmpfile" 2>/dev/null
@@ -142,14 +175,7 @@ case "$MIMETYPE" in
         ;;
 
     text/*|*/xml|application/javascript|application/pgp-signature|application/x-setupscript|application/x-wine-extension-ini)
-        case $MIMETYPE in
-            text/*)
-                name="${MIMETYPE//text\//}";;
-            *)
-                name="${MIMETYPE}";;
-        esac
-        # info "󰈔 $name"
-        COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$((W-4)) -f --number \
+        COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$[W-4] -f --number \
             --line-range 1:$[LINES - 2] "$FILE"
         exit 1
         ;;
@@ -218,9 +244,7 @@ ${(j:
         ;;
     application/x-object)
         info "󰈮 Object File"
-        local -a funcs
-        local -a undef
-        local -a vars
+        local -a funcs undef vars
         while read -r symbol type _; do
             case $type in
                 T)
@@ -258,19 +282,11 @@ ${(j:, :)undef}"|fmt -sw $((W-4))
                     desc=$value;;
                 Url)
                     url=$value;;
-                Icon)
-                    icon_url=$value;;
                 RuntimeRepo)
                     repo=$value;;
             esac
         done < "$FILE"
-        tmpfile="$(create_cache "$FILE" "svg")"
-        if ! [[ -f "$tmpfile" ]] {
-            curl "$icon_url" > "$tmpfile"
-        }
-        print "$name\n$desc\nVersion: $ver\nHomepage: $url\nRepo: $repo"
-        display_image "$tmpfile" 8
-
+        print "$name: $desc\nVersion: $ver\nHomepage: $url\nRepo: $repo"
         exit 1
         ;;
 
@@ -283,16 +299,18 @@ The quick brown fox jumps over the lazy dog.
 Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.
 "
         tmpfile="$(create_cache "${FILE}" ".png")"
+        datafile="$(create_cache "${FILE}" ".desc")"
         if ! [[ -f "$tmpfile" ]] {
             convert -background transparent -fill '#eceff4' -font "$FILE" \
-                -pointsize 24 label:"$example_text" \
-                "$tmpfile"
+                -pointsize 12 label:"$example_text" \
+                "$tmpfile" &
+            fc-scan \
+                --format="Name: %{fullname}\nFamily: %{family}\nPostscript: %{postscriptname}\nStyle(s): %{style}\n" \
+                -- "$FILE" > "$datafile"&
+            wait
         }
-        # fc-scan --format="%{fullname}\nStyle: %{style}\nScalable: %{scalable}\nVariable: %{variable}\nSymbols: %{symbol}\nHinting: %{fonthashint}\n\n" -- "$FILE"
-        # ((H-=8))
-        # ((Y+=8))
-        display_image "$tmpfile"
-
+        cat "$datafile"
+        display_image "$tmpfile" 5
         exit 1
         ;;
 
