@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-
-
 CACHEDIR="$XDG_CACHE_HOME/lf"
 if ! [[ -d "$CACHEDIR" ]] { mkdir -p "$CACHEDIR" }
 
@@ -37,14 +35,8 @@ function create_cache {
 
 
 if ! [[ -r "$FILE" ]] {
-    read -r owner group perms <<< $(stat -c "%U %G %A" "$FILE")
-    print -P "%B%F{red}Permission Denied%b%F{white}
-
-Owner: %F{yellow}$owner%F{white}
-Group: %F{cyan}$group%F{white}
-Perms: %F{yellow}$perms%F{white}"
-    exit 0
-    
+    print -P "%SPermission Denied"
+    exit 1
 }
 
 MIMETYPE="$(file --dereference --brief --mime-type -- "$FILE")"
