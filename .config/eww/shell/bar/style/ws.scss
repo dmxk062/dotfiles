@@ -14,14 +14,18 @@
     }
 }
 .ws-special-inactive{
-    background-color: $special;
-    color: $inverted;
+    border-left: 2px solid $special;
     &:hover{
-        background-color: fade($special)
+        background-color: $bg3;
     }
 }
 .ws-special-active{
-    @extend .ws-active;
+    border-left: 2px solid $special;
+    background-color: $special;
+    color: $inverted;
+    &:hover{
+        background-color: fade($special);
+    }
 }
 .ws-urgent{
     background-color: $light-red;
