@@ -126,7 +126,25 @@ M.opts.load = with_prefix("core.", {
     ["integrations.treesitter"] = {},
     ["esupports.indent"] = {},
     ["esupports.hop"] = {},
-    ["esupports.metagen"] = {},
+    ["esupports.metagen"] = {
+        config = {
+            type = "auto",
+            template = {
+                { "title", },
+                { "autors", function()
+                    local usr = os.getenv("USER")
+                    if usr == "dmx" or usr == "" then
+                        return "jhk"
+                    else
+                        return usr
+                    end
+                end},
+                { "categories", },
+                { "created", },
+                { "updated", },
+            }
+        }
+    },
 })
 
 local normal_mappings = {

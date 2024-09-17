@@ -54,6 +54,7 @@ local kind_symbols = {
     Operator = "󰆕 op",
     TypeParameter = " param",
     Latex = " tex",
+    Neorg = "󱞁 norg",
     Omnifunc = " omni",
 }
 
@@ -83,6 +84,9 @@ local function format_entry(entry, vitem)
     if entry.source.name == "vimtex" then
         kind = "Latex"
         vitem.kind_hl_group = hlleader .. "Latex"
+    elseif entry.source.name == "neorg" then
+        kind = "Neorg"
+        vitem.kind_hl_group = hlleader .. "Neorg"
     elseif entry.source.name == "omni" then
         kind = "Omnifunc"
         local infered_kind, hl = get_omni_kind(vitem)
@@ -153,6 +157,15 @@ M.config = function()
             { name = "path" },
             { name = "buffer" },
             { name = "nvim_lsp" },
+            { name = "spell" } -- move spell to the bottom so it doesnt slow it down that much
+        })
+    })
+    cmp.setup.filetype("norg", {
+        sources = cmp.config.sources({
+            { name = "neorg" },
+            { name = "luasnip" },
+            { name = "path" },
+            { name = "buffer" },
             { name = "spell" } -- move spell to the bottom so it doesnt slow it down that much
         })
     })

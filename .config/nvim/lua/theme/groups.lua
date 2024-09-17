@@ -181,7 +181,7 @@ local cmp = with_prefix("CmpItem", {
     Kind            = { fg = col.yellow },
     KindText        = { fg = pal.bg3 },
     KindLatex       = { fg = col.green },
-    KindNeorg       = { fg = col.blue },
+    KindNeorg       = { fg = col.light_blue },
     KindMethod      = { fg = col.magenta },
     KindFunction    = { fg = col.teal },
     KindConstructor = { fg = col.magenta },
@@ -359,6 +359,7 @@ local startscreen = with_prefix("StartScreen", {
     ShortcutGrep    = { fg = col.yellow },
     ShortcutDir     = { fg = col.teal },
     ShortcutHistory = { fg = col.blue },
+    ShortcutNeorg   = { fg = col.light_blue },
     ShortcutLazy    = { fg = col.green },
     ShortcutQuit    = { fg = col.red },
 
