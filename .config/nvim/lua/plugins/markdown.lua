@@ -10,27 +10,5 @@ local M = {
         vim.g.mkdp_markdown_css = (vim.fn.stdpath("config") .. "/style/markdown.css")
     end
 }
-M.dependencies = {
-    {
-        "lukas-reineke/headlines.nvim",
-        opts = {
-            markdown = {
-                headline_highlights = {
-                    "Headline1",
-                    "Headline2",
-                    "Headline3",
-                    "Headline4",
-                    "Headline5",
-                    "Headline6",
-                },
-                bullets = { "" },
-                dash_string = "-",
-                codeblock_highlight = "CodeBlock",
-                dash_highlight = "Dash",
-                quote_highlight = "Quote",
-            },
-        }
-    },
-}
 
 return M

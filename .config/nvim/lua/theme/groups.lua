@@ -181,6 +181,7 @@ local cmp = with_prefix("CmpItem", {
     Kind            = { fg = col.yellow },
     KindText        = { fg = pal.bg3 },
     KindLatex       = { fg = col.green },
+    KindNeorg       = { fg = col.blue },
     KindMethod      = { fg = col.magenta },
     KindFunction    = { fg = col.teal },
     KindConstructor = { fg = col.magenta },
@@ -273,12 +274,14 @@ local treesitter = with_prefix("@", {
     ["tag.delimiter"]              = { fg = col.bright_gray },
 
     ["markup.heading"]             = { link = "Title" },
-    ["markup.heading.1"]           = { fg = col.red, bold = true },
-    ["markup.heading.2"]           = { fg = col.orange, bold = true },
-    ["markup.heading.3"]           = { fg = col.yellow, bold = true },
-    ["markup.heading.4"]           = { fg = col.green, bold = true },
-    ["markup.heading.5"]           = { fg = col.teal, bold = true },
-    ["markup.heading.6"]           = { fg = col.fg0, bold = true },
+    ["markup.heading.1"]           = { fg = col.yellow, bold = true },
+    ["markup.heading.2"]           = { fg = col.green, bold = true },
+    ["markup.heading.3"]           = { fg = col.teal, bold = true },
+    ["markup.heading.4"]           = { fg = col.light_cyan, bold = true },
+    ["markup.heading.5"]           = { fg = col.light_blue, bold = true },
+    ["markup.heading.6"]           = { fg = col.blue, bold = true },
+    ["markup.heading.7"]           = { fg = col.blue, bold = true },
+    ["markup.heading.8"]           = { fg = col.blue, bold = true },
     ["markup.math"]                = { italic = true },
     ["markup.raw.markdown_inline"] = { bg = pal.bg1 },
     ["markup.link"]                = { fg = col.fg2, italic = true },
@@ -291,7 +294,6 @@ local treesitter = with_prefix("@", {
 
     ["lsp.type.macro"]             = { link = "@macro" },
     ["lsp.mod.deprecated"]         = { fg = col.bright_gray, italic = true, strikethrough = true },
-
 })
 
 local lsp = with_prefix("Lsp", {
@@ -439,13 +441,6 @@ local extra = {
     Changed                     = { link = "diffChanged" },
     Removed                     = { link = "diffRemoved" },
 
-    Headline1                   = { fg = col.red, bg = utils.blend(col.red, pal.bg0, 0.3), bold = true },
-    Headline2                   = { fg = col.orange, bg = utils.blend(col.orange, pal.bg0, 0.3), bold = true },
-    Headline3                   = { fg = col.yellow, bg = utils.blend(col.yellow, pal.bg0, 0.3), bold = true },
-    Headline4                   = { fg = col.green, bg = utils.blend(col.green, pal.bg0, 0.3), bold = true },
-    Headline5                   = { fg = col.teal, bg = utils.blend(col.teal, pal.bg0, 0.3), bold = true },
-    Headline6                   = { fg = pal.fg0, bg = utils.blend(col.white, pal.bg0, 0.3), bold = true },
-
     LeapMatch                   = { underline = true, fg = col.yellow },
     LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
     -- LeapLabelPrimary          = { fg = pal.inverted, bg = col.magenta, nocombine = true },
@@ -457,6 +452,19 @@ local extra = {
     TreesitterContext           = { bg = pal.bg2 },
     TreesitterContextLineNumber = { fg = col.teal }
 }
+
+local neorg = with_prefix("@neorg.", {
+    ["code_block"] = { link = "CodeBlock" },
+    ["markup.verbatim.norg"] = { link = "@markup.raw.markdown_inline" },
+    undone = { fg = pal.bg3 },
+    cancelled = { fg = pal.bg3 },
+    done = { fg = col.green },
+    pending = { fg = col.magenta },
+    urgent = { fg = col.red },
+    recurring = { fg = col.teal },
+    uncertain = { fg = col.light_cyan, },
+    on_hold = { fg = col.light_blue },
+})
 
 
 return {
@@ -471,5 +479,6 @@ return {
     mason,
     startscreen,
     gitsigns,
+    neorg,
     diag
 }
