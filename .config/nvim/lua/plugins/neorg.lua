@@ -1,7 +1,8 @@
 local M = {
     "nvim-neorg/neorg",
-    cmd = { "Neorg" },
-    ft  = { "norg" }
+    cmd          = { "Neorg" },
+    ft           = { "norg" },
+    dependencies = {}
 }
 
 M.opts = {}
@@ -83,7 +84,8 @@ M.opts.load = with_prefix("core.", {
     dirman = {
         config = {
             workspaces = {
-                journal = "~/Documents/journal"
+                journal = "~/Documents/journal",
+                school = "~/Documents/school"
             }
         }
     },
@@ -113,7 +115,10 @@ M.opts.load = with_prefix("core.", {
     ["qol.todo_items"] = {},
     ["todo-introspector"] = {
         config = {
-            highlight_group = "Comment"
+            highlight_group = "Comment",
+            format = function(completed, total)
+                return string.format("=> %d out of %d (%0.f%%)", completed, total, (completed / total) * 100)
+            end
         }
     },
     ["looking-glass"] = {},
@@ -121,6 +126,7 @@ M.opts.load = with_prefix("core.", {
     ["integrations.treesitter"] = {},
     ["esupports.indent"] = {},
     ["esupports.hop"] = {},
+    ["esupports.metagen"] = {},
 })
 
 local normal_mappings = {
@@ -128,6 +134,18 @@ local normal_mappings = {
     [">."] = "<Plug>(neorg.promo.promote)",
     ["<<"] = "<Plug>(neorg.promo.demote.nested)",
     ["<,"] = "<Plug>(neorg.promo.demote)",
+    ["<CR>"] = "<Plug>(neorg.esupports.hop.hop-link)",
+    ["<space>ce"] = "<Plug>(neorg.looking-glass.magnify-code-block)",
+    ["<space>ta"] = "<Plug>(neorg.qol.todo-items.todo.task-ambiguous)",
+    ["<space>td"] = "<Plug>(neorg.qol.todo-items.todo.task-done)",
+    ["<space>tc"] = "<Plug>(neorg.qol.todo-items.todo.task-cancelled)",
+    ["<space>th"] = "<Plug>(neorg.qol.todo-items.todo.task-on-hold)",
+    ["<space>ti"] = "<Plug>(neorg.qol.todo-items.todo.task-important)",
+    ["<space>t!"] = "<Plug>(neorg.qol.todo-items.todo.task-important)",
+    ["<space>tp"] = "<Plug>(neorg.qol.todo-items.todo.task-pending)",
+    ["<space>tr"] = "<Plug>(neorg.qol.todo-items.todo.task-recurring)",
+    ["<space>tu"] = "<Plug>(neorg.qol.todo-items.todo.task-undone)",
+    ["<space>t<space>"] = "<Plug>(neorg.qol.todo-items.todo.task-undone)",
 }
 
 M.config = function(_, opts)
@@ -135,14 +153,13 @@ M.config = function(_, opts)
     vim.api.nvim_create_autocmd("Filetype", {
         pattern = "norg",
         callback = function(args)
-            local function map(mode, keys, cb)
-                require("utils").lmap(args.buf, mode, keys, cb)
-            end
+            local utils = require("utils")
             for key, action in pairs(normal_mappings) do
-                map("n", key, action)
+                utils.lmap(args.buf, "n", key, action)
             end
             vim.wo[0].conceallevel = 2
-            -- vim.wo[0].concealcursor = "nc"
+            utils.lmap(args.buf, "x", "<", "<Plug>(neorg.promo.demote.range)")
+            utils.lmap(args.buf, "x", ">", "<Plug>(neorg.promo.promote.range)")
         end
     })
 end
