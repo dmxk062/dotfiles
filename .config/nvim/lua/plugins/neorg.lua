@@ -54,6 +54,33 @@ local conceals = {
         recurring = { icon = "󰑖", },
         uncertain = { icon = "?", },
         on_hold   = { icon = "󰒲", },
+    },
+    definition = {
+        multi_prefix = {
+            icon = "⟪"
+        },
+        multi_suffix = {
+            icon = "⟫"
+        },
+        single = {
+            icon = "≡"
+        },
+    },
+    footnote = {
+        multi_prefix = {
+            icon = "⟪"
+        },
+        multi_suffix = {
+            icon = "⟫"
+        },
+        single = {
+            icon = "󰙎"
+        },
+    },
+    quote = {
+        icons = {
+            "▎"
+        }
     }
 }
 
@@ -61,6 +88,10 @@ local highlights = {
     headings = vim.tbl_map(function(num)
         local hl = "+@markup.heading." .. num
         return { prefix = hl, title = hl }
+    end, headings),
+    quotes = vim.tbl_map(function(num)
+        local hl = "+" .. hlprefix .. "quote." .. num
+        return { prefix = hl, content = hl }
     end, headings),
 
     todo_items = {
@@ -125,6 +156,7 @@ M.opts.load = with_prefix("core.", {
     -- autocommands = {},
     ["integrations.treesitter"] = {},
     ["esupports.indent"] = {},
+    ["text-objects"] = {},
     ["esupports.hop"] = {},
     ["esupports.metagen"] = {
         config = {
@@ -178,6 +210,10 @@ M.config = function(_, opts)
             vim.wo[0].conceallevel = 2
             utils.lmap(args.buf, "x", "<", "<Plug>(neorg.promo.demote.range)")
             utils.lmap(args.buf, "x", ">", "<Plug>(neorg.promo.promote.range)")
+            utils.lmap(args.buf, {"x", "o"}, "ah", "<Plug>(neorg.text-objects.textobject.heading.outer)")
+            utils.lmap(args.buf, {"x", "o"}, "ih", "<Plug>(neorg.text-objects.textobject.heading.inner)")
+            utils.lmap(args.buf, {"x", "o"}, "at", "<Plug>(neorg.text-objects.textobject.tag.inner)")
+            utils.lmap(args.buf, {"x", "o"}, "it", "<Plug>(neorg.text-objects.textobject.tag.inner)")
         end
     })
 end

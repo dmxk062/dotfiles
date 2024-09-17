@@ -465,6 +465,14 @@ local neorg = with_prefix("@neorg.", {
     recurring = { fg = col.teal },
     uncertain = { fg = col.light_cyan, },
     on_hold = { fg = col.light_blue },
+    ["quote.1"]           = { italic = true, fg = utils.blend(col.yellow, pal.fg0, 0.7)},
+    ["quote.2"]           = { italic = true, fg = utils.blend(col.green, pal.fg0, 0.7)},
+    ["quote.3"]           = { italic = true, fg = utils.blend(col.teal, pal.fg0, 0.7)},
+    ["quote.4"]           = { italic = true, fg = utils.blend(col.light_cyan, pal.fg0, 0.7)},
+    ["quote.5"]           = { italic = true, fg = utils.blend(col.light_blue, pal.fg0, 0.7)},
+    ["quote.6"]           = { italic = true, fg = utils.blend(col.blue, pal.fg0, 0.7)},
+    ["quote.7"]           = { link = "@neorg.quote.6"},
+    ["quote.8"]           = { link = "@neorg.quote.6"},
 })
 
 
