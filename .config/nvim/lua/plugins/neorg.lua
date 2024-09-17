@@ -26,7 +26,7 @@ local conceals = {
         padding = { left = 2 }
     },
     heading = {
-        icons = vim.tbl_map(function(num) return num .. "." end, headings),
+        icons = vim.tbl_map(function(num) return  "▎" end, headings),
         highlights = vim.tbl_map(function(num) return hlprefix .. "h" .. num end, headings)
     },
     markup = {

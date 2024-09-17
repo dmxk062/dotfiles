@@ -223,6 +223,12 @@ M.config = function()
                     function() require("telescope.builtin").oldfiles {} end,
                     max_width
                 ),
+                button("󱚌 Neorg Journal",
+                    hl_prefix .. "Neorg",
+                    ",j",
+                    function() vim.cmd("Neorg journal today") end,
+                    max_width
+                ),
             }
         end)()
     }
