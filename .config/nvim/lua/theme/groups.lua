@@ -57,8 +57,8 @@ local editor = {
     DiffText          = { fg = col.magenta, italic = true },
 
     Question          = { fg = col.bright_gray },
-    Warnings          = { fg = col.yellow },
-    ErrorMsg          = { fg = col.orange },
+    Warnings          = { fg = col.orange },
+    ErrorMsg          = { fg = col.red },
     MoreMSg           = { fg = col.bright_gray },
     ModeMSg           = { fg = col.bright_gray },
 
