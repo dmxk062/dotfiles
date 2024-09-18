@@ -2,7 +2,9 @@ local M = {
     "nvim-neorg/neorg",
     cmd          = { "Neorg" },
     ft           = { "norg" },
-    dependencies = {}
+    dependencies = {
+        "3rd/image.nvim"
+    }
 }
 
 M.opts = {}
@@ -81,7 +83,7 @@ local conceals = {
         icons = {
             "▎"
         }
-    }
+    },
 }
 
 local highlights = {
@@ -103,7 +105,7 @@ local highlights = {
         recurring = "+" .. hlprefix .. "recurring",
         uncertain = "+" .. hlprefix .. "uncertain",
         on_hold = "+" .. hlprefix .. "on_hold",
-    }
+    },
 }
 
 M.opts.load = with_prefix("core.", {
@@ -135,15 +137,11 @@ M.opts.load = with_prefix("core.", {
             default_keybinds = false
         }
     },
-    neorgcmd = {},
     concealer = {
         config = {
             icons = conceals
         }
     },
-    promo = {},
-    ["qol.toc"] = {},
-    ["qol.todo_items"] = {},
     ["todo-introspector"] = {
         config = {
             highlight_group = "Comment",
@@ -152,12 +150,11 @@ M.opts.load = with_prefix("core.", {
             end
         }
     },
-    ["looking-glass"] = {},
-    -- autocommands = {},
-    ["integrations.treesitter"] = {},
-    ["esupports.indent"] = {},
-    ["text-objects"] = {},
-    ["esupports.hop"] = {},
+    ["latex.renderer"] = {
+        config = {
+            render_on_enter = true,
+        }
+    },
     ["esupports.metagen"] = {
         config = {
             type = "auto",
@@ -177,6 +174,15 @@ M.opts.load = with_prefix("core.", {
             }
         }
     },
+    promo = {},
+    neorgcmd = {},
+    ["qol.toc"] = {},
+    ["qol.todo_items"] = {},
+    ["looking-glass"] = {},
+    ["integrations.treesitter"] = {},
+    ["esupports.indent"] = {},
+    ["text-objects"] = {},
+    ["esupports.hop"] = {},
 })
 
 local normal_mappings = {
