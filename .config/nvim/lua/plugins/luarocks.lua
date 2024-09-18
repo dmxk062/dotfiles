@@ -3,7 +3,8 @@ local rocks = {
 }
 local M = {
     "vhyrro/luarocks.nvim",
-    priority = 1001,
+    cmd = { "RocksInstall" },
+    lazy = true,
     opts = {
         rocks = rocks
     },
