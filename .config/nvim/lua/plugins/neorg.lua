@@ -117,6 +117,7 @@ M.opts.load = with_prefix("core.", {
     dirman = {
         config = {
             workspaces = {
+                thoughts = "~/Documents/thoughts/",
                 journal = "~/Documents/journal",
                 school = "~/Documents/school"
             }
@@ -160,7 +161,7 @@ M.opts.load = with_prefix("core.", {
             type = "auto",
             template = {
                 { "title", },
-                { "autors", function()
+                { "authors", function()
                     local usr = os.getenv("USER")
                     if usr == "dmx" or usr == "" then
                         return "jhk"
