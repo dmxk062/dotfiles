@@ -4,10 +4,6 @@ function update(){
     eww -c "$HOME/.config/eww/shell/" update $@
 }
 
-NOTIFID=1000
-LAST_URGENT=""
-SUBMAP_ICON="/usr/share/icons/Tela/scalable/apps/preferences-desktop-theme-windowdecorations.svg"
-
 workspace_order='{
 "web":1,
 "web2":2,
@@ -53,30 +49,6 @@ function get_active_workspace_id(){
     hyprctl activeworkspace -j|jq  '.id'
 }
 
-function notify_urgent(){
-    addr="0x$1"
-    IFS=$'\t' read -r title class <<< "$(hyprctl -j clients| jq -r --arg addr "$addr" '.[]|select(.address == $addr)|.title,.class'|tr '\n' '\t')"
-    case $class in 
-        firefox)
-            response="$(notify-send -a "$class" -i "$class" \
-                "$class demands attention" \
-                --transient \
-                --action="focus"="Go to Window" \
-                -h string:x-canonical-private-synchronous:sys-notify \
-                "$title")"
-            if [[ "$response" == "focus" ]]; then
-                hyprctl dispatch focuswindow "address:${addr}"
-            fi
-            ;;
-        org.pwmt.zathura)
-            ;;
-        *)
-            hyprctl dispatch focuswindow "address:${addr}"
-            return
-            ;;
-    esac
-}
-
 function list_workspaces(){
         active=$(get_active_workspace_id)
         hyprctl workspaces -j|jq --argjson order "$workspace_order" --argjson activeid "$active" 'map({
@@ -101,9 +73,7 @@ function monitor_changes(){
         case "$line" in
             urgent*)
                 IFS=">" read -r _ _ addr <<< "$line"
-                # hyprctl dispatch focuswindow "address:0x${addr}"
-                LAST_URGENT="$addr"
-                notify_urgent "$addr"&
+                hyprctl dispatch focuswindow "address:0x${addr}"
                 ;;
             submap*)
                 IFS=">" read -r _ _ map <<< "$line"
