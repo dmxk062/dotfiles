@@ -106,6 +106,20 @@ tooltip label {
 #NautilusQueryEditor {
   background-color: #d8dee9; }
 
+window.nautilus-window rubberband {
+  background-color: rgba(143, 188, 187, 0.2);
+  border: 1px solid #8fbcbb; }
+
+.nautilus-list-view columnview > listview > row:selected,
+.nautilus-grid-view gridview > child:selected {
+  box-shadow: unset;
+  background-color: rgba(143, 188, 187, 0.1); }
+
+.nautilus-list-view columnview > listview > row.activatable:hover,
+.nautilus-grid-view gridview > child:selected {
+  box-shadow: unset;
+  border: unset; }
+
 .floating-bar {
   box-shadow: unset;
   background-color: #d8dee9; }
