@@ -52,10 +52,6 @@ utils.map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand
 utils.map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
 utils.map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
 
--- evaluate lua and insert result, expr=true needed for repeat
--- pretty useful to quickly insert e.g. a random nummer or math
-utils.map("n", "<space>el", utils.insert_eval_lua, {expr = true})
-
 -- exit terminal mode with a single chord instead of 2
 utils.map("t", "<C-Esc>", "<C-\\><C-n>")
 
@@ -89,3 +85,26 @@ end, {
     complete = "file",
     nargs = 1
 })
+
+local operators = require("operators")
+
+
+-- evaluate lua and insert result in buffer
+operators.map_function("<space>el", function (mode, region, get_content)
+    local code = table.concat(get_content(), "\n") .. "\n"
+    local result = vim.split(vim.inspect(loadstring(code)()), "\n")
+
+    return result, region[1], region[2]
+end)
+
+-- evalute qalculate expression/math and insert result in buffer
+operators.map_function("<space>eq", function (mode, region, get_content)
+    local expressions = get_content()
+    local result = vim.system({ "qalc", "-t", "-f", "-" }, { stdin = expressions }):wait().stdout
+    if not result then
+        return nil
+    end
+
+    local output = vim.split(result, "\n")
+    return output, region[1], region[2]
+end)
