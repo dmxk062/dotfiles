@@ -1,10 +1,5 @@
 local utils = require("utils")
 
--- move between windows more efficiently, i rarely use W anyways
--- still works in o pending etc
--- also allows me to use <C-w> in kitty for the same purpose
--- utils.map("n", "W", "<C-w>")
-
 -- less annoying way to exit terminal mode
 utils.map("t", "<S-Esc>", "<C-\\><C-n>")
 

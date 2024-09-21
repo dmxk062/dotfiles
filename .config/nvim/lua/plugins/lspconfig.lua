@@ -56,19 +56,21 @@ M.config = function()
         group = augroup,
         callback = function(opts)
             local textobjs = require("textobjs")
+            local map = utils.local_mapper(opts.buf)
             -- target a lsp diagnostic as a textobject
-            utils.lmap(opts.buf, { "x", "o" }, "idd", textobjs.diagnostic)
-            utils.lmap(opts.buf, { "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
-            utils.lmap(opts.buf, { "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
-            utils.lmap(opts.buf, { "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
-            utils.lmap(opts.buf, { "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
+            map({ "x", "o" }, "idd", textobjs.diagnostic)
+            map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
+            map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
+            map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
+            map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
 
-            utils.lmap(opts.buf, { "n", "v" }, "<space>a", vim.lsp.buf.code_action)
-            utils.lmap(opts.buf, "n", "<space>rn", vim.lsp.buf.rename)
+            map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
+            map("n", "<space>rn", vim.lsp.buf.rename)
 
-            utils.lmap(opts.buf, "n", "gr", require("telescope.builtin").lsp_references)
-            utils.lmap(opts.buf, "n", "gd", require("telescope.builtin").lsp_definitions)
-            utils.lmap(opts.buf, "n", "gi", require("telescope.builtin").lsp_implementations)
+            map("n", "gr", require("telescope.builtin").lsp_references)
+            map("n", "gd", require("telescope.builtin").lsp_definitions)
+            map("n", "<C-w>gd", "<C-w>v<C-]>")
+            map("n", "gi", require("telescope.builtin").lsp_implementations)
 
             vim.api.nvim_buf_create_user_command(opts.buf, "InlayHint", function(args)
                 if args.fargs[1] then
