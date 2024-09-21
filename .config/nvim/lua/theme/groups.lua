@@ -2,14 +2,26 @@ local theme = require("theme.colors")
 local col = theme.colors
 local pal = theme.palettes.dark
 
-local utils = require("theme.blend")
-
 local function with_prefix(prefix, table)
     local res = {}
     for k, v in pairs(table) do
         res[prefix .. k] = v
     end
     return res
+end
+
+---@param col1 string
+---@param col2 string
+---@param alpha decimal
+local function blend(col1, col2, alpha)
+    local r1, g1, b1 = tonumber(col1:sub(2, 3), 16), tonumber(col1:sub(4, 5), 16), tonumber(col1:sub(6, 7), 16)
+    local r2, g2, b2 = tonumber(col2:sub(2, 3), 16), tonumber(col2:sub(4, 5), 16), tonumber(col2:sub(6, 7), 16)
+
+    local rr = math.floor((r1 * alpha) + (r2 * (1 - alpha)))
+    local gr = math.floor((g1 * alpha) + (g2 * (1 - alpha)))
+    local br = math.floor((b1 * alpha) + (b2 * (1 - alpha)))
+
+    return string.format("#%02X%02X%02x", rr, gr, br)
 end
 
 local editor = {
@@ -26,8 +38,8 @@ local editor = {
     Substitute   = { bg = col.yellow, fg = pal.inverted },
 
     LineNr       = { fg = col.bright_gray },
-    LineNrAbove  = { fg = utils.blend(col.teal, pal.bg3, 0.5) },
-    LineNrBelow  = { fg = utils.blend(col.blue, pal.bg3, 0.5) },
+    LineNrAbove  = { fg = blend(col.teal, pal.bg3, 0.5) },
+    LineNrBelow  = { fg = blend(col.blue, pal.bg3, 0.5) },
     CursorLineNr = { fg = pal.fg0 },
     Cursor       = { reverse = true },
     CursorLine   = { bg = pal.bg1 },
@@ -455,24 +467,24 @@ local extra = {
 }
 
 local neorg = with_prefix("@neorg.", {
-    ["code_block"] = { link = "CodeBlock" },
+    ["code_block"]           = { link = "CodeBlock" },
     ["markup.verbatim.norg"] = { link = "@markup.raw.markdown_inline" },
-    undone = { fg = pal.bg3 },
-    cancelled = { fg = pal.bg3 },
-    done = { fg = col.green },
-    pending = { fg = col.magenta },
-    urgent = { fg = col.red },
-    recurring = { fg = col.teal },
-    uncertain = { fg = col.light_cyan, },
-    on_hold = { fg = col.light_blue },
-    ["quote.1"]           = { italic = true, fg = utils.blend(col.yellow, pal.fg0, 0.7)},
-    ["quote.2"]           = { italic = true, fg = utils.blend(col.green, pal.fg0, 0.7)},
-    ["quote.3"]           = { italic = true, fg = utils.blend(col.teal, pal.fg0, 0.7)},
-    ["quote.4"]           = { italic = true, fg = utils.blend(col.light_cyan, pal.fg0, 0.7)},
-    ["quote.5"]           = { italic = true, fg = utils.blend(col.light_blue, pal.fg0, 0.7)},
-    ["quote.6"]           = { italic = true, fg = utils.blend(col.blue, pal.fg0, 0.7)},
-    ["quote.7"]           = { link = "@neorg.quote.6"},
-    ["quote.8"]           = { link = "@neorg.quote.6"},
+    undone                   = { fg = pal.bg3 },
+    cancelled                = { fg = pal.bg3 },
+    done                     = { fg = col.green },
+    pending                  = { fg = col.magenta },
+    urgent                   = { fg = col.red },
+    recurring                = { fg = col.teal },
+    uncertain                = { fg = col.light_cyan, },
+    on_hold                  = { fg = col.light_blue },
+    ["quote.1"]              = { italic = true, fg = blend(col.yellow, pal.fg0, 0.7) },
+    ["quote.2"]              = { italic = true, fg = blend(col.green, pal.fg0, 0.7) },
+    ["quote.3"]              = { italic = true, fg = blend(col.teal, pal.fg0, 0.7) },
+    ["quote.4"]              = { italic = true, fg = blend(col.light_cyan, pal.fg0, 0.7) },
+    ["quote.5"]              = { italic = true, fg = blend(col.light_blue, pal.fg0, 0.7) },
+    ["quote.6"]              = { italic = true, fg = blend(col.blue, pal.fg0, 0.7) },
+    ["quote.7"]              = { link = "@neorg.quote.6" },
+    ["quote.8"]              = { link = "@neorg.quote.6" },
 })
 
 
