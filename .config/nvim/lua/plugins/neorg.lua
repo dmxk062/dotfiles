@@ -17,7 +17,7 @@ local function with_prefix(prefix, input)
 end
 
 local hlprefix = "@neorg."
-local headings = { 1, 2, 3, 4, 5, 6, 7, 8 }
+local headings = {1, 2, 3, 4, 5, 6, 7, 8 }
 
 local conceals = {
     code_block = {
@@ -154,6 +154,7 @@ M.opts.load = with_prefix("core.", {
     ["latex.renderer"] = {
         config = {
             render_on_enter = true,
+            scale = 2,
         }
     },
     ["esupports.metagen"] = {
