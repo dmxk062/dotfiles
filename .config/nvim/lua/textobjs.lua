@@ -95,54 +95,6 @@ local function diagnostic(_type, pos)
 end
 
 
----@param pattern string
----@return position? startpos
----@return position? endpos
-local function find_pattern(pattern)
-    local cursor_row, cursor_col = unpack(vim.api.nvim_win_get_cursor(0))
-    local line = getline(cursor_row)
-    local lastline = vim.api.nvim_buf_line_count(0)
-    local begin_col = 0 ---@type integer|nil
-    local end_col, none_in_first
-
-    repeat
-        begin_col = begin_col + 1
-        begin_col, end_col, _, _ = line:find(pattern, begin_col)
-        none_in_first = not begin_col
-        local on_or_infront = end_col and end_col > cursor_col
-    until on_or_infront or none_in_first
-
-    local searched = 0
-
-    if none_in_first then
-        while true do
-            searched = searched + 1
-            if cursor_row + searched > lastline then return end
-
-            line = getline(cursor_row + searched)
-            begin_col, end_col, _, _ = line:find(pattern, begin_col)
-            if begin_col then break end
-        end
-    end
-
-    local startpos = { cursor_row + searched, begin_col - 1 }
-    local endpos   = { cursor_row + searched, end_col - 1 }
-
-    return startpos, endpos
-end
-
----select a pattern, regex
----@param pattern string
-local function pattern(pattern)
-    local startpos, endpos = find_pattern(pattern)
-    if not (startpos and endpos) then
-        cancel_selection()
-        return false
-    end
-
-    set_visual_selection(startpos, endpos)
-end
-
 local function line_is_empty(linenr)
     local line = vim.api.nvim_buf_get_lines(0, linenr - 1, linenr, false)[1]
     return (not line or line == "")
@@ -239,7 +191,6 @@ end
 
 return {
     indent = indent,
-    pattern = pattern,
     diagnostic = diagnostic,
     leap_selection = leap_selection,
 }
