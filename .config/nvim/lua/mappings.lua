@@ -41,10 +41,8 @@ utils.abbrev("c", "spoff", "setlocal spell& spelllang&")
 -- works even for remote oil buffers via ssh
 local shellleader = "<space>s"
 utils.map("n", shellleader .. "w", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") end)
-utils.map("n", shellleader .. "v",
-    function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "vsplit" }) end)
-utils.map("n", shellleader .. "s",
-    function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "hsplit" }) end)
+utils.map("n", shellleader .. "v", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "vsplit" }) end)
+utils.map("n", shellleader .. "s", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "hsplit" }) end)
 utils.map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") end)
 utils.map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
 utils.map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
@@ -55,7 +53,6 @@ utils.map("t", "<C-Esc>", "<C-\\><C-n>")
 
 -- my own custom textobjects
 local textobjs = require("textobjs")
-
 
 -- these work with all diagnostics
 utils.map("n", "<space>d", vim.diagnostic.open_float)
@@ -72,21 +69,10 @@ utils.map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
 utils.map({ "x", "o" }, "ii", function() textobjs.indent(false) end)
 utils.map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
 
+-- an arbitrary selection on the screen between two points using leap
+---@TODO decided whether to remove this
 utils.map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
 utils.map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
-
-vim.api.nvim_create_user_command("MimeType", function(args)
-    local type, err = require("mimetypes").get_mime(vim.fn.expand(args.args))
-    if err then
-        vim.notify(err, vim.log.levels.ERROR)
-    else
-        print(type)
-    end
-end, {
-    desc = "Get the mimetype of a file",
-    complete = "file",
-    nargs = 1
-})
 
 local operators = require("operators")
 
