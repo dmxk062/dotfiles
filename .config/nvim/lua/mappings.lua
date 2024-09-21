@@ -90,7 +90,7 @@ local operators = require("operators")
 
 
 -- evaluate lua and insert result in buffer
-operators.map_function("<space>el", function (mode, region, get_content)
+operators.map_function("<space>el", function(mode, region, get_content)
     local code = get_content()
     if not code[#code]:match("return %s+") then
         code[#code] = "return " .. code[#code]
@@ -102,7 +102,7 @@ operators.map_function("<space>el", function (mode, region, get_content)
 end)
 
 -- evalute qalculate expression/math and insert result in buffer
-operators.map_function("<space>eq", function (mode, region, get_content)
+operators.map_function("<space>eq", function(mode, region, get_content)
     local expressions = get_content()
     local result = vim.system({ "qalc", "-t", "-f", "-" }, { stdin = expressions }):wait().stdout
     if not result then
@@ -110,6 +110,9 @@ operators.map_function("<space>eq", function (mode, region, get_content)
     end
 
     local output = vim.split(result, "\n")
+    if #(output[#output]) then
+        table.remove(output, #output)
+    end
     return output, region[1], region[2]
 end)
 
@@ -117,24 +120,31 @@ local sort_functions = {
     numeric = function(x, y)
         local xnumeric = x:match("^[+-]?%d*%.?%d+")
         local ynumeric = y:match("^[+-]?%d*%.?%d+")
-        local xnum = xnumeric and tonumber(xnumeric) or math.huge
-        local ynum = ynumeric and tonumber(ynumeric) or math.huge
+        -- sort alphabetic 
+        local xnum = xnumeric and tonumber(xnumeric) or nil
+        local ynum = ynumeric and tonumber(ynumeric) or nil
+        if (not xnum) and (not ynum) then
+            -- fall back to alphabetic comparisons
+            return x < y
+        end
 
-        return (xnum) < (ynum)
+        -- sort pure text at the end of the list
+        return (xnum or math.huge) < (ynum or math.huge)
     end,
+
     string = function(x, y)
         return x < y
     end
 }
 
--- sort: 
+-- sort selection/object: 
 -- charwise: csv
 -- linewise: lines
--- preserves indent
-operators.map_function("g=", function (mode, region, get_content)
+-- preserves indent/spacing
+operators.map_function("g=", function(mode, region, get_content)
     local split
     if mode == "char" then
-        local content = table.concat(get_content("char"), "")
+        local content = table.concat(get_content(), "")
         split = vim.split(content, ",")
     else
         split = get_content()
