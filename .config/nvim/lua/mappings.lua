@@ -91,8 +91,12 @@ local operators = require("operators")
 
 -- evaluate lua and insert result in buffer
 operators.map_function("<space>el", function (mode, region, get_content)
-    local code = table.concat(get_content(), "\n") .. "\n"
-    local result = vim.split(vim.inspect(loadstring(code)()), "\n")
+    local code = get_content()
+    if not code[#code]:match("return %s+") then
+        code[#code] = "return " .. code[#code]
+    end
+    local exprs = table.concat(code, "\n") .. "\n"
+    local result = vim.split(vim.inspect(loadstring(exprs)()), "\n")
 
     return result, region[1], region[2]
 end)
@@ -106,5 +110,61 @@ operators.map_function("<space>eq", function (mode, region, get_content)
     end
 
     local output = vim.split(result, "\n")
+    return output, region[1], region[2]
+end)
+
+local sort_functions = {
+    numeric = function(x, y)
+        local xnumeric = x:match("^[+-]?%d*%.?%d+")
+        local ynumeric = y:match("^[+-]?%d*%.?%d+")
+        local xnum = xnumeric and tonumber(xnumeric) or math.huge
+        local ynum = ynumeric and tonumber(ynumeric) or math.huge
+
+        return (xnum) < (ynum)
+    end,
+    string = function(x, y)
+        return x < y
+    end
+}
+
+-- sort: 
+-- charwise: csv
+-- linewise: lines
+-- preserves indent
+operators.map_function("g=", function (mode, region, get_content)
+    local split
+    if mode == "char" then
+        local content = table.concat(get_content("char"), "")
+        split = vim.split(content, ",")
+    else
+        split = get_content()
+    end
+
+    local to_sort = {}
+    local indents = {}
+    for i, val in ipairs(split) do
+        indents[i], to_sort[i] = val:match("^(%s*)(.-)%s*$")
+    end
+
+    local sort_fun
+    if to_sort[1]:match("^[+-]?%d*%.?%d+") then
+        sort_fun = sort_functions.numeric
+    else
+        sort_fun = sort_functions.string
+    end
+
+    table.sort(to_sort, sort_fun)
+    local sorted = {}
+    for i, val in ipairs(to_sort) do
+        table.insert(sorted, indents[i] .. val)
+    end
+
+    local output
+    if mode == "char" then
+        output = {table.concat(sorted, ", ")}
+    else
+        output = sorted
+    end
+
     return output, region[1], region[2]
 end)
