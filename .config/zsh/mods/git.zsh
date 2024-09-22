@@ -18,16 +18,15 @@ function lschg {
             read -r mode _ _ _ _ _ _ file <<< "$line";
             case $mode in 
                 \.M) prefix="%F{magenta}";;
-                M\.) prefix="%F{magenta}";;
+                M\.) prefix="%B%F{magenta}";;
                 MM)  prefix="%B%F{magenta}";;
-                A\.) prefix="%F{green}";;
+                A\.) prefix="%B%F{green}";;
                 \.A) prefix="%F{greem}";;
                 AA) prefix="%B%F{green}";;
-                D\.) prefix="%F{red}";;
+                D\.) prefix="%B%F{red}";;
                 \.D) prefix="%F{red}";;
                 DD) prefix="%B%F{red}";;
             esac
-
             print -P -- "$prefix$mode $file%f%b"
         } elif [[ "$type" == '?' || "$type" == "!" ]] && ((all)) {
             print -P -- "\e[90m$type  $line%f"
