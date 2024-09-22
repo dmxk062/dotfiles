@@ -86,6 +86,7 @@ nameddirs=(
     ["build"]="$HOME/ws/build"
     ["music"]="$HOME/Media/Music"
     ["docs"]="$HOME/Documents"
+    ["jrnl"]="$HOME/Documents/journal/journal/"
     ["school"]="$HOME/Documents/school"
     ["mnt"]="/mnt"
     ["arc"]="$HOME/.avfs"
