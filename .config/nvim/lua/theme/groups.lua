@@ -169,6 +169,19 @@ local oil = with_prefix("Oil", {
     Copy                            = { fg = col.yellow },
     Change                          = { fg = col.magenta },
 
+    TimeLastHour                    = { fg = col.green },
+    TimeLastDay                     = { fg = col.teal },
+    TimeLastWeek                    = { fg = col.light_cyan },
+    TimeLastMonth                   = { fg = col.light_blue },
+    TimeLastYear                    = { fg = col.blue },
+    TimeSuperOld                    = { fg = pal.bg3 },
+
+    SizeNone                        = { fg = pal.bg3 },
+    SizeSmall                       = { fg = pal.fg0 },
+    SizeMedium                      = { fg = col.yellow },
+    SizeLarge                       = { fg = col.orange },
+    SizeHuge                        = { fg = col.red },
+
     GitStatusIndexIgnored           = { fg = pal.bg3 },
     GitStatusWorkingTreeIgnored     = { link = "OilGitStatusIndexIgnored" },
     GitStatusIndexUntracked         = { link = "OilGitStatusIndexIgnored" },
