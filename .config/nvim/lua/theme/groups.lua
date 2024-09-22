@@ -171,9 +171,9 @@ local oil = with_prefix("Oil", {
 
     TimeLastHour                    = { fg = col.green },
     TimeLastDay                     = { fg = col.teal },
-    TimeLastWeek                    = { fg = col.light_cyan },
-    TimeLastMonth                   = { fg = col.light_blue },
-    TimeLastYear                    = { fg = col.blue },
+    TimeLastWeek                    = { fg = col.light_blue },
+    TimeLastMonth                   = { fg = col.blue },
+    TimeLastYear                    = { fg = blend(col.blue, pal.bg3, 0.8) },
     TimeSuperOld                    = { fg = pal.bg3 },
 
     SizeNone                        = { fg = pal.bg3 },
