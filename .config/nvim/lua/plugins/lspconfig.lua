@@ -57,13 +57,6 @@ M.config = function()
         callback = function(opts)
             local textobjs = require("textobjs")
             local map = utils.local_mapper(opts.buf)
-            -- target a lsp diagnostic as a textobject
-            map({ "x", "o" }, "idd", textobjs.diagnostic)
-            map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
-            map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
-            map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
-            map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
-
             map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
             map("n", "<space>rn", vim.lsp.buf.rename)
 
@@ -95,11 +88,6 @@ M.config = function()
         group = augroup,
         callback = function(opts)
             for mapping, mode in pairs {
-                ["idd"] = {"x", "o"},
-                ["ide"] = {"x", "o"},
-                ["idw"] = {"x", "o"},
-                ["idi"] = {"x", "o"},
-                ["idh"] = {"x", "o"},
                 ["<space>a"] = {"n", "v"},
                 ["gr"]  = "n",
                 ["gd"]  = "n",
