@@ -19,7 +19,7 @@ M.config = function()
 
     local const_max = {
         v = 80,
-        h = 80
+        h = 60,
     }
     local function button(text, hl, bind, callback, width, texthl)
         local function command()
@@ -244,7 +244,7 @@ M.config = function()
     require("alpha").setup {
         layout = {
             header,
-            { type = "padding", val = 4 },
+            { type = "padding", val = 2 },
             shortcuts,
             { type = "padding", val = 1 },
             history,
