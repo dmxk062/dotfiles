@@ -12,8 +12,9 @@ vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.hlsearch = true
 vim.o.termguicolors = true
-vim.o.wildmenu = false
+-- vim.o.wildmenu = false
 vim.o.scrolloff = 1
+vim.o.undofile = true
 
 -- wrap at whitespace, indent wrapped lines and show an indicator
 vim.o.wrap = true
@@ -193,7 +194,7 @@ require("lazy").setup("plugins", {
     }
 })
 
--- set all the other mappings
+-- set all the mappings
 require("mappings")
 
 -- for some reason lazy deactivates that
