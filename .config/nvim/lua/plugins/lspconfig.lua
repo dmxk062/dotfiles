@@ -55,7 +55,6 @@ M.config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
         group = augroup,
         callback = function(opts)
-            local textobjs = require("textobjs")
             local map = utils.local_mapper(opts.buf)
             map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
             map("n", "<space>rn", vim.lsp.buf.rename)

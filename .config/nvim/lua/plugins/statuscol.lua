@@ -18,14 +18,15 @@ M.config = function()
                     " "
                 },
                 condition = {
-                    true,
                     require("statuscol.builtin").not_empty
                 },
                 click = "v:lua.ScLa",
             },
             {
-                text = { "%s" },
-                click = "v:lua.ScSa"
+                text = {
+                    "%s",
+                },
+                click = "v:lua.ScSa",
             },
         },
     }
