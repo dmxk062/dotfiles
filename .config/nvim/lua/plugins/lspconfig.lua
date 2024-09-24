@@ -112,13 +112,13 @@ M.config = function()
     )
 
     local signs = {
-        { name = "DiagnosticSignError", text = "󰅖" },
-        { name = "DiagnosticSignWarn", text = "" },
-        { name = "DiagnosticSignInfo", text = "󰋼" },
-        { name = "DiagnosticSignHint", text = "󰟶" }
+        "DiagnosticSignError",
+        "DiagnosticSignWarn",
+        "DiagnosticSignInfo",
+        "DiagnosticSignHint",
     }
     for _, sign in ipairs(signs) do
-        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
+        vim.fn.sign_define(sign, { texthl = sign, text = "", numhl = sign})
     end
 
     vim.diagnostic.config {
