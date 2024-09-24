@@ -38,7 +38,7 @@ local editor = {
     Substitute   = { bg = col.yellow, fg = pal.inverted },
 
     LineNr       = { fg = col.bright_gray },
-    LineNrAbove  = { fg = blend(col.teal, pal.bg3, 0.5) },
+    LineNrAbove  = { fg = blend(col.magenta, pal.bg3, 0.5) },
     LineNrBelow  = { fg = blend(col.blue, pal.bg3, 0.5) },
     CursorLineNr = { fg = pal.fg0 },
     Cursor       = { reverse = true },
