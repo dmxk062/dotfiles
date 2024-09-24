@@ -77,7 +77,7 @@ utils.map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
 local operators = require("operators")
 
 -- evaluate lua and insert result in buffer
-operators.map_function("<space>el", function(mode, region, get_content)
+operators.map_function("<space>el", function(mode, region, extra, get_content)
     local code = get_content()
     if not code[#code]:match("return %s+") then
         code[#code] = "return " .. code[#code]
@@ -89,7 +89,7 @@ operators.map_function("<space>el", function(mode, region, get_content)
 end)
 
 -- evalute qalculate expression/math and insert result in buffer
-operators.map_function("<space>eq", function(mode, region, get_content)
+operators.map_function("<space>eq", function(mode, region, extra, get_content)
     local expressions = get_content()
     local result = vim.system({ "qalc", "-t", "-f", "-" }, { stdin = expressions }):wait().stdout
     if not result then
@@ -128,7 +128,7 @@ local sort_functions = {
 -- charwise: csv
 -- linewise: lines
 -- preserves indent/spacing
-operators.map_function("g=", function(mode, region, get_content)
+operators.map_function("g=", function(mode, region, extra, get_content)
     local split
     if mode == "char" then
         local content = table.concat(get_content(), "")

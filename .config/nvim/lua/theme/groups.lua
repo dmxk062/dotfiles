@@ -476,7 +476,9 @@ local extra = {
 
     BinedCurrentLine            = { bg = pal.bg2 },
     TreesitterContext           = { bg = pal.bg2 },
-    TreesitterContextLineNumber = { fg = col.teal }
+    TreesitterContextLineNumber = { fg = col.teal },
+
+    MultiCursorCursor           = { bg = pal.bg3 },
 }
 
 local neorg = with_prefix("@neorg.", {

@@ -4,7 +4,9 @@ M.Ctx = {
     funs = {
 
     },
-    cb = nil
+    cb = nil,
+    -- HACK: preserve last cursor before going into O-pending mode
+    last_cursor = nil
 }
 
 local function get_mark(mark)
@@ -23,10 +25,10 @@ function M.opfunc(mode)
     M.Ctx.funs[M.Ctx.cb](mode)
 end
 
----@alias op_point {[1]: integer, [2]: integer}
----@alias op_region {[1]: op_point, [2]: op_point}
-
----@alias op_function fun(mode: string, region: op_region, get: fun(mode: string?): string[]): string[]?, op_point?, op_point?
+---@alias op_point [integer, integer]
+---@alias op_region [op_point, op_point]
+---@alias op_extra {cursor: op_point}
+---@alias op_function fun(mode: string, region: op_region, extra: op_extra, get: fun(mode: string?): string[]): string[]?, op_point?, op_point?
 
 ---@param name string
 ---@param cb function
@@ -34,6 +36,7 @@ function M.make_operator(name, cb)
     local function operator(mode)
         if mode == nil then
             M.Ctx.cb = name
+            M.Ctx.last_cursor = vim.api.nvim_win_get_cursor(0)
             vim.o.operatorfunc = "v:lua.require'operators'.opfunc"
             return "g@"
         end
@@ -46,7 +49,10 @@ function M.make_operator(name, cb)
                 return vim.api.nvim_buf_get_text(0, region[1][1]-1, region[1][2], region[2][1]-1, region[2][2] + 1, {})
             end
         end
-        local replacement, startpos, endpos = cb(mode, region, get_content)
+        local extra = {
+            cursor = M.Ctx.last_cursor
+        }
+        local replacement, startpos, endpos = cb(mode, region, extra, get_content)
         if replacement then
             if mode == "line" then
                 vim.api.nvim_buf_set_lines(0, startpos[1] - 1, endpos[1], false, replacement)
@@ -63,14 +69,19 @@ end
 --- Maps a function as a visual and normal mode operator
 ---@param keys string
 ---@param cb op_function
-function M.map_function(keys, cb)
+---@param opts {normal_only: boolean}?
+function M.map_function(keys, cb, opts)
+    opts = opts or {}
     local id = keys .. "_operator"
     local operator = M.make_operator(id, cb)
     -- use last char of string to indicate repeat for one line
     local repeat_char = keys:sub(-1, -1)
 
-    vim.keymap.set({ "x", "n" }, keys, operator, { expr = true })
-    vim.keymap.set({ "n" }, keys .. repeat_char, function()
+    if not opts.normal_only then
+        vim.keymap.set("x", keys, operator, { expr = true })
+    end
+    vim.keymap.set("n", keys, operator, { expr = true })
+    vim.keymap.set("n", keys .. repeat_char, function()
         operator()
         return "g@Vl"
     end, { expr = true })
