@@ -7,7 +7,7 @@ configuration {
     case-sensitive: false;
     cycle: false;
     scroll-method: 1;
-    cache-dir: "/home/dmx/.cache/";
+    cache-dir: "~/.cache/";
     window-thumbnail: true;
     steal-focus:false;
     drun-use-desktop-cache: true;

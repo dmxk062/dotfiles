@@ -9,7 +9,7 @@ window {
     children: [mainbox];
     border-radius: 18px;
     border: 2px;
-    width: 32em;
+    width: 24em;
     height: 32em;
 }
 
@@ -86,6 +86,7 @@ element-text, element-icon {
 }
 element-icon {
     size: 2em;
+    padding: 0em 0.5em 0em 0em;
 }
 inputbar {
     color: @fg0;

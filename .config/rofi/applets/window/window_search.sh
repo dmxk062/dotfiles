@@ -2,6 +2,7 @@
 
 PROMPT="\0prompt\x1f"
 ICON="\0icon\x1f"
+ACTIVE="\0active\x1f"
 SET_DELIM="\0delim\x1f"
 META="\x1fmeta\x1f"
 INFO="\x1finfo\x1f"
@@ -53,15 +54,21 @@ list_windows() {
     hyprctl -j clients \
         | jq -cr --argjson order "$WORKSPACE_ORDER" \
         'map(. + {pos:$order[.workspace.name],})|sort_by(.at[1])|sort_by(.pos)
-            |.[]|"\(.title)\t\(.class)\t\(.address)\t\(.workspace.id)\t\(.workspace.name)"' 
+            |.[]|"\(.title)\t\(.address)\t\(.workspace.id)\t\(.workspace.name)\t\(.class)"' 
 }
 
 if ((ROFI_RETV == 0)); then
+    active="$(hyprctl -j activewindow|jq -r '.address')"
     echo -en "${SET_DELIM}\t\n"
     echo -en "${PROMPT}Search Windows...\t"
-    while IFS=$'\t' read -r title class address workspace_id workspace_name; do 
-        echo -en "${title}\n${class} in ${workspace_name}${ICON}${class}${INFO}${address}\t"
+    i=0
+    while IFS=$'\t' read -r title address workspace_id workspace_name class; do 
+        if [[ "$active" == "$address" ]]; then
+            echo -en "${ACTIVE}$i\t"
+        fi
+        ((i++))
+        printf "%s\n%s in %s$ICON%s$INFO%s\t" "${title}" "${class:-$title}" "${workspace_name}" "${class:-"desktop"}" "${address}"
     done < <(list_windows)
 else 
-    ( hyprctl dispatch focuswindow "address:$ROFI_INFO" > /dev/null 2>&1) & disown
+    ( hyprctl -- dispatch focuswindow "address:$ROFI_INFO" > /dev/null 2>&1) & disown
 fi
