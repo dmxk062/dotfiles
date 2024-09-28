@@ -141,6 +141,35 @@ local function open_dir_shell(type, where)
 end
 
 
+local sort = {
+    {"type", "asc"},
+    {"name", "asc"},
+}
+
+local sort_types = {
+    size = {
+        {"size", "desc"},
+        {"name", "asc"}
+    },
+    mtime = {
+        {"mtime", "desc"},
+        {"name", "asc"}
+    },
+    default = {
+        {"type", "asc"},
+        {"name", "asc"}
+    }
+}
+
+local function set_sort(action)
+    if action == "invert" then
+        sort[1][2] = (sort[1][2] == "asc" and "desc" or "asc")
+    else
+        sort = sort_types[action]
+    end
+
+    require("oil").set_sort(sort)
+end
 
 
 M.opts = {
@@ -189,6 +218,7 @@ M.opts = {
             return name == "."
         end,
         natural_order = true,
+        sort = sort,
     },
 
     keymaps = {
@@ -235,6 +265,11 @@ M.opts = {
         ["<space>sW"] = function() open_dir_shell("os-window") end,
         ["<space>so"] = function() open_dir_shell("overlay") end,
         ["<space>st"] = function() open_dir_shell("tab") end,
+
+        ["g=s"] = function() set_sort("size") end,
+        ["g=t"] = function() set_sort("mtime") end,
+        ["g=i"] = function() set_sort("invert") end,
+        ["g=d"] = function() set_sort("default") end,
     },
 }
 
