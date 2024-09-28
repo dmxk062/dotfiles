@@ -52,28 +52,11 @@ local function tbl_reverse(tbl)
     return res
 end
 
-local function code_to_unichar(code)
-    if code <= 0x7f then
-        return string.char(code)
-    elseif code <= 0x7FF then
-        return string.char(
-            0xC0 + math.floor(code / 0x40),
-            0x80 + (code % 0x40)
-        )
-    elseif code <= 0xFFFF then
-        return string.char(
-            0xE0 + math.floor(code / 0x1000),
-            0x80 + math.floor((code / 0x40) % 0x40),
-            0x80 + (code % 0x40)
-        )
-    end
-end
-
 local function ordered_alphabet(start, num_letters, suffix)
     return function(i)
         local res = {}
         while i > 0 do
-            res[#res + 1] = code_to_unichar(start + (i - 1) % num_letters)
+            res[#res + 1] = string.char(start + (i - 1) % num_letters)
             i = math.floor((i - 1) / num_letters)
         end
         return table.concat(tbl_reverse(res)) .. suffix
@@ -111,14 +94,30 @@ local function roman_numerals(i)
     return table.concat(result)
 end
 
+local greek_alphabet = {
+    lower = {"α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"},
+    upper = {"Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"},
+}
+
+local function numbering_from_list(list, suffix)
+    return function(i)
+        local res = {}
+        while i > 0 do
+            res[#res + 1] = list[1 + (i - 1)% #list]
+            i = math.floor((i - 1) / #list)
+        end
+        return table.concat(tbl_reverse(res)) .. suffix
+    end
+end
+
 local ordered_icon_formats = {
     numeric = function(i)
         return tostring(i) .. "."
     end,
     latin_lower = ordered_alphabet(string.byte("a"), 26, ")"),
     latin_upper = ordered_alphabet(string.byte("A"), 26, "."),
-    greek_lower = ordered_alphabet(0x03b1, 24, ")"),
-    greek_upper = ordered_alphabet(0x0391, 24, "."),
+    greek_lower = numbering_from_list(greek_alphabet.lower, ")"),
+    greek_upper = numbering_from_list(greek_alphabet.upper, "."),
     roman_lower = function(i) return roman_numerals(i) .. ")" end,
     roman_upper = function(i) return roman_numerals(i):upper() .. "." end,
 }
