@@ -79,11 +79,19 @@ local operators = require("operators")
 -- evaluate lua and insert result in buffer
 operators.map_function("<space>el", function(mode, region, extra, get_content)
     local code = get_content()
-    if not code[#code]:match("return %s+") then
+    if not code[#code]:match(".*return%s+%S+") then
         code[#code] = "return " .. code[#code]
     end
     local exprs = table.concat(code, "\n") .. "\n"
-    local result = vim.split(vim.inspect(loadstring(exprs)()), "\n")
+    local return_val = loadstring(exprs)()
+    local result
+    if type(return_val) == "table" or type(return_val) == "userdata" then
+        result = vim.split(vim.inspect(return_val), "\n")
+    elseif type(return_val) == "nil" then
+        result = {}
+    else
+        result = vim.split(return_val, "\n")
+    end
 
     return result, region[1], region[2]
 end)
