@@ -23,8 +23,10 @@ function M.config(_, opts)
         mc.action(function(ctx)
             local maincol = ctx:mainCursor():getPos()[2]
             ctx:forEachCursor(function(cursor, i, all)
-                local row = cursor:getPos()[1]
-                cursor:setPos({ row, maincol })
+                local pos = cursor:getPos()
+                if pos[2] ~= maincol then
+                    cursor:setPos({ pos[1], maincol })
+                end
             end)
         end)
     end)
