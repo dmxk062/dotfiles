@@ -17,9 +17,15 @@ local function with_prefix(prefix, input)
 end
 
 local hlprefix = "@neorg."
-local headings = {1, 2, 3, 4, 5, 6, 7, 8 }
+local headings = { 1, 2, 3, 4, 5, 6, 7, 8 }
+
+
+local neorg_tools = require("plugin_utils.neorg")
 
 local conceals = {
+    ordered = {
+        render = neorg_tools.render_ordered {"numeric", "latin_lower", "greek_lower", "roman_lower"}
+    },
     code_block = {
         conceal = false,
         content_only = false,
@@ -28,23 +34,13 @@ local conceals = {
         padding = { left = 2 }
     },
     heading = {
-        icons = vim.tbl_map(function(num) return  "▎" end, headings),
+        icons = vim.tbl_map(function(num) return "▎" end, headings),
         highlights = vim.tbl_map(function(num) return hlprefix .. "h" .. num end, headings)
     },
     markup = {
         spoiler = {
             highlight = "Comment",
             icon = "*",
-        }
-    },
-    ordered = {
-        icons = {
-            "1.",
-            "1.",
-            "A.",
-            "a.",
-            "I.",
-            "i."
         }
     },
     todo = {
@@ -169,7 +165,7 @@ M.opts.load = with_prefix("core.", {
                     else
                         return usr
                     end
-                end},
+                end },
                 { "categories", },
                 { "created", },
                 { "updated", },
@@ -218,10 +214,10 @@ M.config = function(_, opts)
             vim.wo[0].conceallevel = 2
             utils.lmap(args.buf, "x", "<", "<Plug>(neorg.promo.demote.range)")
             utils.lmap(args.buf, "x", ">", "<Plug>(neorg.promo.promote.range)")
-            utils.lmap(args.buf, {"x", "o"}, "ah", "<Plug>(neorg.text-objects.textobject.heading.outer)")
-            utils.lmap(args.buf, {"x", "o"}, "ih", "<Plug>(neorg.text-objects.textobject.heading.inner)")
-            utils.lmap(args.buf, {"x", "o"}, "at", "<Plug>(neorg.text-objects.textobject.tag.inner)")
-            utils.lmap(args.buf, {"x", "o"}, "it", "<Plug>(neorg.text-objects.textobject.tag.inner)")
+            utils.lmap(args.buf, { "x", "o" }, "ah", "<Plug>(neorg.text-objects.textobject.heading.outer)")
+            utils.lmap(args.buf, { "x", "o" }, "ih", "<Plug>(neorg.text-objects.textobject.heading.inner)")
+            utils.lmap(args.buf, { "x", "o" }, "at", "<Plug>(neorg.text-objects.textobject.tag.inner)")
+            utils.lmap(args.buf, { "x", "o" }, "it", "<Plug>(neorg.text-objects.textobject.tag.inner)")
         end
     })
 end
