@@ -186,11 +186,7 @@ end)
 -- allows me to repeat commands like theyre regular mappings
 operators.map_function("g:", function(mode, region, extra, get)
     if extra.repeated then
-        -- vim.cmd(string.format(":%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
-        vim.api.nvim_cmd({
-            cmd = extra.saved.cmd,
-            range = {region[1][1], region[2][1]}
-        }, {})
+        vim.cmd(string.format(":%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
     else
         local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
         vim.api.nvim_feedkeys(cmdstr, "n", false)
