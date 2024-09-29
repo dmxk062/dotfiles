@@ -7,6 +7,10 @@ utils.map("t", "<S-Esc>", "<C-\\><C-n>")
 utils.map("i", "<M-k>", "<esc>k")
 utils.map("i", "<M-j>", "<esc>j")
 
+-- move visual selection around
+utils.map("x", "K", ":m '<-2<cr>gv=gv")
+utils.map("x", "J", ":m '>+1<cr>gv=gv")
+
 local tableader = "\\"
 
 -- tabs 1 - 9
@@ -26,7 +30,7 @@ utils.map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.
 utils.map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
 -- use <space>@ for macros instead, i dont use them that often
-utils.map("n", "<space>@", "q", {})
+utils.map("n", "<space>@", "q")
 
 -- faster to exit
 utils.map("n", "q", "<cmd>q<CR>")
@@ -49,7 +53,6 @@ utils.map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand
 
 -- exit terminal mode with a single chord instead of 2
 utils.map("t", "<C-Esc>", "<C-\\><C-n>")
-
 
 -- my own custom textobjects
 local textobjs = require("textobjs")
@@ -74,6 +77,7 @@ utils.map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
 utils.map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
 utils.map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
 
+-- Custom Operators {{{
 local operators = require("operators")
 
 -- evaluate lua and insert result in buffer
@@ -180,3 +184,4 @@ operators.map_function("g:", function(mode, region, extra, get)
     vim.api.nvim_feedkeys(cmdstr, "n", false)
     return nil
 end)
+-- }}}
