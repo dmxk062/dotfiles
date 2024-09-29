@@ -22,8 +22,8 @@ utils.map("n", tableader .. "v", ":vsp ")
 utils.map("n", tableader .. "s", ":sp ")
 
 -- stop {} from polluting the jumplist
-utils.map({ "x", "o", "n" }, "{", "<cmd>keepj normal!{<cr>", { remap = false })
-utils.map({ "x", "o", "n" }, "}", "<cmd>keepj normal!}<cr>", { remap = false })
+utils.map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
+utils.map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
 -- use <space>@ for macros instead, i dont use them that often
 utils.map("n", "<space>@", "q", {})
