@@ -173,3 +173,10 @@ operators.map_function("g=", function(mode, region, extra, get_content)
 
     return output, region[1], region[2]
 end)
+
+-- open a cmdline in a region specified by a textobject or motion
+operators.map_function("g:", function(mode, region, extra, get)
+    local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
+    vim.api.nvim_feedkeys(cmdstr, "n", false)
+    return nil
+end)
