@@ -1,12 +1,13 @@
 local M = {}
 
-M.Ctx = {
-    funs = {
-
-    },
+Ctx = {
+    funs = { },
+    extra_data = {},
+    was_repeat = {},
     cb = nil,
     -- HACK: preserve last cursor before going into O-pending mode
-    last_cursor = nil
+    last_cursor = nil,
+
 }
 
 local function get_mark(mark)
@@ -22,23 +23,27 @@ local function get_op_region(mode)
 end
 
 function M.opfunc(mode)
-    M.Ctx.funs[M.Ctx.cb](mode)
+    Ctx.funs[Ctx.cb](mode)
 end
 
 ---@alias op_point [integer, integer]
 ---@alias op_region [op_point, op_point]
----@alias op_extra {cursor: op_point}
+---@alias op_extra {saved: table, repeated: boolean}
 ---@alias op_function fun(mode: string, region: op_region, extra: op_extra, get: fun(mode: string?): string[]): string[]?, op_point?, op_point?
 
 ---@param name string
 ---@param cb function
 function M.make_operator(name, cb)
     local function operator(mode)
+        local is_repeat = true
         if mode == nil then
-            M.Ctx.cb = name
-            M.Ctx.last_cursor = vim.api.nvim_win_get_cursor(0)
+            Ctx.cb = name
+            Ctx.was_repeat[name] = false
             vim.o.operatorfunc = "v:lua.require'operators'.opfunc"
             return "g@"
+        elseif not Ctx.was_repeat[name] then
+            Ctx.was_repeat[name] = true
+            is_repeat = false
         end
         local region = get_op_region(mode)
         local function get_content(_mode)
@@ -49,8 +54,14 @@ function M.make_operator(name, cb)
                 return vim.api.nvim_buf_get_text(0, region[1][1]-1, region[1][2], region[2][1]-1, region[2][2] + 1, {})
             end
         end
+
+        if not Ctx.extra_data[name] then
+            Ctx.extra_data[name] = {}
+        end
+        ---@type op_extra
         local extra = {
-            cursor = M.Ctx.last_cursor
+            saved = Ctx.extra_data[name],
+            repeated = is_repeat,
         }
         local replacement, startpos, endpos = cb(mode, region, extra, get_content)
         if replacement then
@@ -62,7 +73,7 @@ function M.make_operator(name, cb)
         end
     end
 
-    M.Ctx.funs[name] = operator
+    Ctx.funs[name] = operator
     return operator
 end
 

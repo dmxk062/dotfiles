@@ -26,8 +26,10 @@ utils.map("n", tableader .. "v", ":vsp ")
 utils.map("n", tableader .. "s", ":sp ")
 
 -- stop {} from polluting the jumplist
-utils.map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
-utils.map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
+utils.map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
+    { remap = false, expr = true })
+utils.map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
+    { remap = false, expr = true })
 
 -- use <space>@ for macros instead, i dont use them that often
 utils.map("n", "<space>@", "q")
@@ -45,8 +47,10 @@ utils.abbrev("c", "spoff", "setlocal spell& spelllang&")
 -- works even for remote oil buffers via ssh
 local shellleader = "<space>s"
 utils.map("n", shellleader .. "w", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") end)
-utils.map("n", shellleader .. "v", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "vsplit" }) end)
-utils.map("n", shellleader .. "s", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "hsplit" }) end)
+utils.map("n", shellleader .. "v",
+    function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "vsplit" }) end)
+utils.map("n", shellleader .. "s",
+    function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "hsplit" }) end)
 utils.map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") end)
 utils.map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
 utils.map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
@@ -81,8 +85,8 @@ utils.map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
 local operators = require("operators")
 
 -- evaluate lua and insert result in buffer
-operators.map_function("<space>el", function(mode, region, extra, get_content)
-    local code = get_content()
+operators.map_function("<space>el", function(mode, region, extra, get)
+    local code = get()
     if not code[#code]:match(".*return%s+%S+") then
         code[#code] = "return " .. code[#code]
     end
@@ -101,8 +105,8 @@ operators.map_function("<space>el", function(mode, region, extra, get_content)
 end)
 
 -- evalute qalculate expression/math and insert result in buffer
-operators.map_function("<space>eq", function(mode, region, extra, get_content)
-    local expressions = get_content()
+operators.map_function("<space>eq", function(mode, region, extra, get)
+    local expressions = get()
     local result = vim.system({ "qalc", "-t", "-f", "-" }, { stdin = expressions }):wait().stdout
     if not result then
         return nil
@@ -140,13 +144,13 @@ local sort_functions = {
 -- charwise: csv
 -- linewise: lines
 -- preserves indent/spacing
-operators.map_function("g=", function(mode, region, extra, get_content)
+operators.map_function("g=", function(mode, region, extra, get)
     local split
     if mode == "char" then
-        local content = table.concat(get_content(), "")
+        local content = table.concat(get(), "")
         split = vim.split(content, ",")
     else
-        split = get_content()
+        split = get()
     end
 
     local to_sort = {}
@@ -179,9 +183,30 @@ operators.map_function("g=", function(mode, region, extra, get_content)
 end)
 
 -- open a cmdline in a region specified by a textobject or motion
+-- allows me to repeat commands like theyre regular mappings
 operators.map_function("g:", function(mode, region, extra, get)
-    local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
-    vim.api.nvim_feedkeys(cmdstr, "n", false)
+    if extra.repeated then
+        -- vim.cmd(string.format(":%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
+        vim.api.nvim_cmd({
+            cmd = extra.saved.cmd,
+            range = {region[1][1], region[2][1]}
+        }, {})
+    else
+        local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
+        vim.api.nvim_feedkeys(cmdstr, "n", false)
+
+        vim.api.nvim_create_autocmd("CmdlineLeave", {
+            once = true,
+            callback = function()
+                local command_line = vim.fn.getcmdline()
+                local command = command_line:match("^%d+,%d+(.*)$")
+                if not command then
+                    command = ""
+                end
+                extra.saved.cmd = command
+            end
+        })
+    end
     return nil
 end)
 -- }}}
