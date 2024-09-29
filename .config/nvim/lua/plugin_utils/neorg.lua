@@ -86,7 +86,7 @@ local function roman_numerals(i)
         local value = numeral[1]
         local symbol = numeral[2]
         while i >= value do
-            result[#result+1] = symbol
+            result[#result + 1] = symbol
             i = i - value
         end
     end
@@ -95,15 +95,15 @@ local function roman_numerals(i)
 end
 
 local greek_alphabet = {
-    lower = {"α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"},
-    upper = {"Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"},
+    lower = { "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω" },
+    upper = { "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω" },
 }
 
 local function numbering_from_list(list, suffix)
     return function(i)
         local res = {}
         while i > 0 do
-            res[#res + 1] = list[1 + (i - 1)% #list]
+            res[#res + 1] = list[1 + (i - 1) % #list]
             i = math.floor((i - 1) / #list)
         end
         return table.concat(tbl_reverse(res)) .. suffix
