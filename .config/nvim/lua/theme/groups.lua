@@ -255,12 +255,14 @@ local treesitter = with_prefix("@", {
 
     ["variable"]                   = { fg = col.light_blue },
     ["variable.builtin"]           = { fg = pal.fg0, italic = true },
+    ["variable.typecast"]          = { fg = col.light_blue, italic = true },
     ["variable.parameter.builtin"] = { fg = col.light_blue, italic = true },
 
     ["constant"]                   = { fg = col.yellow },
     ["constant.builtin"]           = { fg = pal.fg2 },
 
     ["type"]                       = { fg = col.magenta },
+    ["type.typecast"]              = { fg = col.magenta, italic = true },
     ["type.builtin"]               = { fg = col.light_blue },
 
     ["function"]                   = { fg = col.light_cyan },
