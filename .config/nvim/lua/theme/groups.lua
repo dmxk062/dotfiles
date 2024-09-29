@@ -479,6 +479,14 @@ local extra = {
     TreesitterContextLineNumber = { fg = col.teal },
 
     MultiCursorCursor           = { bg = pal.bg3 },
+
+    UndotreeTimeStamp           = { fg = col.light_blue },
+    UndotreeCurrent             = { fg = col.teal },
+    UndotreeNext                = { fg = col.yellow },
+    UndotreeHead                = { fg = col.blue },
+    UndotreeBranch              = { fg = col.magenta },
+    UndotreeSavedSmall          = { fg = col.green },
+    UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
 }
 
 local neorg = with_prefix("@neorg.", {
