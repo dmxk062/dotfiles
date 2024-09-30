@@ -1,0 +1,3 @@
+#!/bin/bash
+name=$(< ~/Pictures/Backgrounds/active/.index)
+swww img /home/dmx/Pictures/Backgrounds/active/$name -t bottom --transition-duration 1

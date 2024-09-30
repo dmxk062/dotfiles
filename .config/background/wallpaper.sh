@@ -31,5 +31,6 @@ case $1 in
         ;;
     set)
         set
+        set
         ;;
 esac
