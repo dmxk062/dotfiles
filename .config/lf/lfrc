@@ -1,4 +1,3 @@
-#use zshell 
 set shell zsh
 # my preview script, see there for explanation
 set previewer '~/.config/lf/bin/previewer.sh'
@@ -10,10 +9,10 @@ set ifs "\n"
 set ignorecase
 set smartcase
 set drawbox true
+set relativenumber
+set number
 # show how many files there are in dirs
 set dircounts true 
-# use dark text on red background for errors
-#show file/dir size next to files
 set info 'size'
 # message for ! commands
 set waitmsg ' Press any key to continue to lf.'
@@ -22,314 +21,84 @@ set mouse
 
 source "~/.config/lf/fmt.conf"
 source "~/.config/lf/binds/open.conf"
-# sets the same reverse cursor style for right pane
-# sets the prompt to user PDW/FILE
-set ratios '1:2:3'
-#my opening script
-cmd open $~/.config/lf/bin/open.sh $fx
-#command to set selected file as wallpaper using swww
-cmd wallpaper ${{
-    swww img -t grow --transition-duration=0.5 $f
-}}
-#display PWD in window title
-cmd on-cd &{{
-   printf "\033]0;lf: $(pwd | sed "s|$HOME|~|" )\007" > /dev/tty
-}}
-#run it once so the title is displayed immediately
-on-cd
-#tar selected files into di
-cmd tar &{{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    tar czf $1.tar.gz $1
-    rm -rf $1
-    lf -remote "send $id echo  󰛫 Compressing Files with gzip finished."
-}}
-#tar whole dir
-cmd tardir &{{
-    tar czf $f.tar.gz $f
-    lf -remote "send $id echo  󰛫 Compressing Directory $f with gzip finished."
-}}
-#tar and compress using lzma
-cmd xz_tardir &{{
-   tar -c --use-compress-program='xz -7 -T0' -f $f.tar.xz $f 
-    lf -remote "send $id echo  󰛫 Compressing Directory $f with lzma finished."
-}}
-#zip
-cmd zip &{{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    zip -r $1.zip $1
-    rm -rf $1
-    lf -remote "send $id echo  󰛫 Zipping Files finished."
-}}
-#zip selected item
-cmd zipdir ${{
-    zip -r $f.zip $f
-    lf -remote "send $id echo  󰛫 Zipping File $f finished."
-}}
-#simple chmod
-cmd chmod %{{
-    chmod "$@" $fx
-}}
-#chown
-cmd chown %{{
-    chown "$a" $fx
-}}
-#same as root
-cmd sudochmod %{{
-    sudo chmod "$@" $fx
-}}
-cmd sudochown ${{
-    sudo chown "$@" $fx
-}}
-#show octal permissions for current file
-cmd octal_perms &{{
-    perms=$(stat -c %a $f)
-    lf -remote "send $id echo  Octal permissions of file $f: $perms"
-}}
-#show perms of all files in dir
-cmd perms !{{
-    clear
-    lsd -la --blocks 'permission' --blocks 'user' --blocks 'group' --blocks 'name'
-}}
-#create a dir
-cmd mkdir %{{
-    mkdir -p "$@" 
-    lf -remote "send $id select $1"
-    printf " Created Directory(s): $@"
-}}
-#create a file
-cmd touch %{{
-    touch "$@"
-    lf -remote "send $id select $1"
-    printf "󰈔 Created File(s): $@"
-}}
-#create a .odt file
-cmd mkodt %{{
-    name="$1"
-    escname=$(echo "$name"|sed 's/ /\\ /g')
-    cp ~/.local/share/templates/odt.odt ./"$name".odt 
-    # mv ./odt.odt ./$escname.odt
-    lf -remote "send $id select $escname.odt"
-    printf "󰈙 Created odt file: $name.odt"
-}}
-#trash smth using gio(moves to ~/.local/share/Trash/files and adds entry)
-cmd trash_trash %{{
-    ~/.config/lf/bin/trash.sh add $fx
-}}
-#restores file from gio trash, use in trash directory on file
-cmd trash_restore %{{
-    ~/.config/lf/bin/trash.sh restore $fx
-}}
-#empty the entire trash
-cmd trash_clear %{{
-    printf "  Do you really want to empty the Trash? <y/N> "
-    read answer
-    if [[ "$answer" == "y" ]]
-    then 
-        gio trash --empty
-        printf "  Trash emptied"
-    else
-        printf "  Trash not emptied"
-    fi
-}}
-#copy file name into clipboard
-cmd copy_fname &{{
-    printf "$f"|wl-copy
-    lf -remote "send $id echo  Path copied to clipboard"
-}}
-#copy file into clipboard for e.g. libreoffice
-cmd copy_file &{{
-    wl-copy < $f
-    echo $f|xargs -n 1 basename > /tmp/workspaces_dmx/cache/clip/.current.txt
-    lf -remote "send $id echo 󰈔 File copied to clipboard"
-}} 
-cmd paste_file &{{
-    wl-paste > "$(cat /tmp/workspaces_dmx/cache/clip/.current.txt)"
-    if [[ $? -eq 0 ]]
-    then
-        lf -remote "send $id echo 󰈔 File copied from clipboard"
-    else
-        lf -remote "send $id echoerr  No file in clipboard"
-    fi
-}}
-#paste with different name, needed when copied from things other than lf/wlsc script
-cmd Paste ${{
-    wl-paste > $1
-    if [[ $? -eq 0 ]]
-    then
-        lf -remote "send $id echo 󰈔 File copied from clipboard"
-    else
-        lf -remote "send $id echoerr  No file in clipboard"
-    fi
-}}
-#info about file mimetype, same use case as above
-cmd pasteinfo !{{
-    wl-paste -l|bat --file-name "Available mimetypes for copied content:"
-}}
-#symlink a file
-cmd link %{{
-    ln -s $f $1
-}}
-#zoxide
-cmd z %{{
-	result="$(zoxide query --exclude $PWD $@)"
-    escresult="$(echo $result|sed 's/ /\\ /g')"
-	lf -remote "send $id cd $escresult"
-}}
-#zoxide+fzf
-cmd zi ${{
-	result="$(zoxide query -i)"
-    escresult="$(echo $result|sed 's/ /\\ /g')"
-	lf -remote "send $id cd $escresult"
-}}
-#jump to dir using fzf
-cmd fzf_jump ${{
-    res="$(find . -type f -o -path ./.local/share/Steam -prune -o -path ./.steam -prune -o -path ./Games -prune -o -print | fzf --header='Jump to location' --preview 'lsd {}' | sed 's/\\/\\\\/g;s/"/\\"/g')"
-    if [ -d "$res" ] ; then
-        cmd="cd"
-    elif [ -f "$res" ] ; then
-        cmd="select"
-    else
-        exit 0
-    fi
-    lf -remote "send $id $cmd \"$res\""
-}}
-#async cp
-cmd pasteasync &{{
-    set -- $(cat ~/.local/share/lf/files)
-    mode="$1"
-    shift
-    case "$mode" in
-        copy) cp -rn -- "$@" .;;
-        move) mv -n -- "$@" .;;
-    esac
-    rm ~/.local/share/lf/files
-    lf -remote "send $id echo 󰈔 Finished copying/moving files."
-}}
-#mounting
-cmd dmount ${{
-    udisksctl mount -b $f
-    lf -remote "send $id echo 󱊞 Mounted device $f."
-}}
-cmd dumount ${{
-    udisksctl unmount -b $f
-    lf -remote "send $id echo 󱊟 Unmounted device $f."
-}}
-cmd ddecrypt ${{
-    udisksctl unlock -b $f
-    lf -remote "send $id echo  Unlocked encrypted device $f."
-}}
-cmd dencrypt ${{
-    udisksctl lock -b $f
-    lf -remote "send $id echo  Locked encrypted device $f"
-}}
-cmd fmount &{{
-    file=$f
-    function find_block_device
-    {
-        block_device=$(losetup -a | grep "$file" | sed 's/: .*$//')
-    }
-    udisksctl loop-setup -f $file; find_block_device
-    ls "${block_device}p1" &&udisksctl mount -b ${block_device}p1||udisksctl mount -b ${block_device}
-    lf -remote "send $id echo 󰗮 Mounted file $f at $block_device"
-}}
-cmd fumount &{{
-    file=$f
-    function find_block_device
-    {
-        block_device=$(losetup -a | grep "$file" | sed 's/: .*$//')
-    }
-    find_block_device
-    ls "${block_device}p1" &&udisksctl unmount -b ${block_device}p1||udisksctl unmount -b ${block_device}
-    udisksctl loop-delete -b ${block_device}
-    lf -remote "send $id echo 󰗮 Unmounted file $f formerly mounted at $block_device"
- 
-}}
-cmd deject ${{
-    udisksctl power-off -b $f
-    lf -remote "send $id echo 󰕓 Ejected device $f"
-}}
+source "~/.config/lf/commands.conf"
 
-#info about files
-cmd fileinfo &{{
-    file=$f
-    type=$(xdg-mime query filetype $file)
-    lf -remote "send $id echo 󰈔 $type"
-}}
-#backup
-cmd backup &{{
-    ~/.config/lf/bin/bak.sh $f
-}}
-#window
-# mappings
-#move between neighbour dirs
+set ratios '1:2:3'
+# run it once so the title is displayed immediately
+on-cd
+
 map J :updir; down;open
 map K :updir; up;open
-#open files/dirs with enter
+# open files/dirs with enter
 map <enter> open
 map <backspace2> updir
-#trash commands
+# trash commands
 map tt trash_trash
 map tr trash_restore
-map tD trash_clear
+map tDD trash_clear
 map t
-#tag a file
+# tag a file
 map T tag-toggle ""
-#Options
-map Oh set hidden!
+# Options
 map Op set previewer '~/.config/lf/bin/npv.sh'
 map OP set previewer '~/.config/lf/bin/previewer.sh'
-#rename a file
+# rename a file
 map R rename
-#completely delete a file
+# completely delete a file
 map D delete
 map w
 map r
-#different copy, async
+# different copy, async
 map <c-p> pasteasync
-#copy the file name to clipboard
+# copy the file name to clipboard
 map Yf copy_file
-#copy file to clipboard
+# copy file to clipboard
 map Yn copy_fname
-#paste file from clipboard
-map Pf paste_file
+# paste file from clipboard
 map Pm push :Paste<space>
 map Pi pasteinfo
-#chmods
-map - push :chmod<space>
-map — octal_perms
-#chown
-map – push :chown<space>
+# chmods
+map cm push :chmod<space>
+# chown
+map co push :chown<space>
+map cn :rename
 
-#some dirs
-map gh cd ~
-map gm cd ~/places/media
+map rcm push :sudochmod<space>
+map rco push :sudochown<space>
+map rcn push :sudorename<space>
+
+# some dirs etc
+map gh set hidden!
+map gm &{{
+    lf -remote "send $id cd /run/media/$USER"
+}}
+map gG &{{
+    lf -remote "send $id cd /run/user/$UID/gvfs"
+}}
+map g~ cd ~
 map gM cd /mnt
 map gS cd ~/Documents/school/
-map gT cd ~/Tmp
-map gt cd ~/.local/share/Trash/files
+map gt cd ~/Tmp
+map gT cd ~/.local/share/Trash/files
 map g/ cd /
 map gr cd /
 map gE cd /etc 
 map gc cd ~/.config
 map gd cd /dev/disk/by-label
-map gD cd /dev
+map gD cd ~/Documents/
 map gv cd ~/Media
 map gV cd ~/places/gvfs
 map gU cd ~/places
 map gp cd ~/Pictures
 map gs cd ~/Pictures/Screenshots
 map gw cd ~/ws
-#clears the set marks
+map g<space> push :cd<space>
+# clears the set marks
 map u unselect
 map <esc> clear
-#bookmark
+# bookmark
 map M mark-save
-#sort
+# sort
 map sa
 map sc
 map sn
@@ -337,73 +106,48 @@ map st :set sortby time; set info 'time'
 map sd :set sortby natural; set info size
 map si :set reverse!
 map sT :set sortby time; set reverse!;top;set info 'time'
-#selections
+# selections
 map <space>
 map <space> :push :select<space>
 map . :toggle
 map <gt> :toggle;down
+map <lt> :toggle;up
 map i
-map i invert
 map A invert
-#System bindings
-#gives me a shell
+# System bindings
+# gives me a shell
 map Ss $zsh -i
-#btm
-map Sm $btm -C ~/.config/bottom/config.toml
-cmd follow_link %{{
-    fpath="${f:A}"
-    escpath=$(echo $fpath|sed 's/ /\\ /g')
-    lf -remote "send $id select $escpath" 
-}}
+# btm
+map Sm $btm
 map <c-l> follow_link
 map gl follow_link
-#create stuff
+# create stuff
 map m
 map md push :mkdir<space>
-cmd mf &{{
-    ~/.config/lf/bin/mf $@
-}}
 map mf push :mf<space>
 map ml push :link<space>
 map mD push :mkodt<space>""<left>
 map ~ backup
-#quit(muscle memory)
-cmd q :quit
-#move to bg
+# move to bg
 map <c-z> $ kill -STOP $PPID
-#various open commands
-map F :{{
-setfilter 
-filter
+# various open commands
+map <c-f> :{{
+    setfilter 
+    filter
 }}
 set incfilter true
-map <c-f> search
-#open using xdg-open
+# open using xdg-open
 map oDm fmount
 map oDu fumount
-#mount/unmount a device
+# mount/unmount a device
 map odm dmount
 map odu dumount
-#for luks
+# for luks
 map odd ddecrypt
 map odc dencrypt
-#eject device
+# eject device
 map ode deject
-#remote
-cmd remotefs &{{
-    if [[ $# -eq 2 ]]
-    then
-        ~/.config/lf/bin/remotefs.sh $1 $2
-    else
-        file=$(echo $f| xargs -n 1 basename)
-        ~/.config/lf/bin/remotefs.sh $1 $file
-    fi
-}}
-cmd mtpfs &{{
-   ~/.config/lf/bin/mtp.sh  
-}}
-map odr push :remotefs<space>
-#archives
+# archives
 map ae &{{~/.config/lf/bin/extract.sh $fx}}
 map aE $nvim $f
 map ax extract
@@ -418,18 +162,15 @@ map zn
 map zr
 map zs
 map zt
-#zoxide
+# zoxide
 map z push :z<space>
 map Z zi
-#edit file using fzf
+# edit file using fzf
 map c
-#cd
-map c push :cd<space>
-map C push :select<space>
+# cd
+map F push :select<space>
 map <c-c> fzf_jump
-#check disk usage
+# check disk usage
 map U %echo " 󰋊 $(du -shD $f)"
-#pager
-map b !bat $f
-#info
+# info
 map I fileinfo

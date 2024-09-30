@@ -17,3 +17,20 @@
 //         background-color: $bg;
 //     }
 // }
+
+// fix weird border
+window.nautilus-window rubberband {
+    background-color: rgba($accent, 0.2);
+    border: 1px solid $accent;
+}
+
+.nautilus-list-view columnview > listview > row:selected,
+.nautilus-grid-view gridview > child:selected {
+    box-shadow: unset;
+    background-color: rgba($accent, 0.1);
+}
+.nautilus-list-view columnview > listview > row.activatable:hover,
+.nautilus-grid-view gridview > child:selected {
+    box-shadow: unset;
+    border: unset;
+}
