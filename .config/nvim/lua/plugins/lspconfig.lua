@@ -1,34 +1,32 @@
-local function setup_mason()
-    require("mason").setup {
-        ui = {
-            border = "rounded",
-            width = 0.8,
-            height = 0.8,
-
-            icons = {
-                package_installed   = "󱝍",
-                package_pending     = "󱝏",
-                package_uninstalled = "󱝋",
-            }
-        }
-    }
-
-    require("mason-lspconfig").setup {
-        ensure_installed = {
-            "ruff_lsp",
-            "asm_lsp"
-        }
-    }
-end
-
 local M = {
     "neovim/nvim-lspconfig",
     dependencies = {
         "b0o/schemastore.nvim",
         {
             "williamboman/mason.nvim",
+            config = function()
+                require("mason").setup {
+                    ui = {
+                        border = "rounded",
+                        width = 0.8,
+                        height = 0.8,
+
+                        icons = {
+                            package_installed   = "󱝍",
+                            package_pending     = "󱝏",
+                            package_uninstalled = "󱝋",
+                        }
+                    }
+                }
+
+                require("mason-lspconfig").setup {
+                    ensure_installed = {
+                        "ruff_lsp",
+                        "asm_lsp"
+                    }
+                }
+            end,
             cmd = { "Mason", "MasonUpdate", "MasonInstall", "MasonUninstall", "MasonLog", "MasonUninstallAll" },
-            config = setup_mason,
             dependencies = {
                 "williamboman/mason-lspconfig.nvim",
             },
@@ -39,11 +37,12 @@ local M = {
 
 
 M.config = function()
-    setup_mason()
     local lspconfig = require("lspconfig")
     local utils = require("utils")
 
-    require("lspconfig.ui.windows").default_options.border = "rounded"
+    require("lspconfig.ui.windows").default_options = {
+        border = "rounded"
+    }
     local capabilities = vim.lsp.protocol.make_client_capabilities()
 
     capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -52,24 +51,18 @@ M.config = function()
         lineFoldingOnly = true
     }
 
+    local augroup = vim.api.nvim_create_augroup("UserLspConfig", {})
     vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+        group = augroup,
         callback = function(opts)
-            local textobjs = require("textobjs")
-            -- target a lsp diagnostic as a textobject
-            utils.lmap(opts.buf, { "x", "o" }, "idd", textobjs.diagnostic)
-            utils.lmap(opts.buf, { "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
-            utils.lmap(opts.buf, { "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
-            utils.lmap(opts.buf, { "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
-            utils.lmap(opts.buf, { "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
+            local map = utils.local_mapper(opts.buf)
+            map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
+            map("n", "<space>rn", vim.lsp.buf.rename)
 
-            utils.lmap(opts.buf, "n", "gi", vim.lsp.buf.implementation)
-            utils.lmap(opts.buf, { "n", "v" }, "<space>a", vim.lsp.buf.code_action)
-            utils.lmap(opts.buf, "n", "<space>rn", vim.lsp.buf.rename)
-
-            utils.lmap(opts.buf, "n", "gr", require("telescope.builtin").lsp_references)
-            utils.lmap(opts.buf, "n", "gd", require("telescope.builtin").lsp_definitions)
-            utils.lmap(opts.buf, "n", "gi", require("telescope.builtin").lsp_implementations)
+            map("n", "gr", require("telescope.builtin").lsp_references)
+            map("n", "gd", require("telescope.builtin").lsp_definitions)
+            map("n", "<C-w>gd", "<C-w>v<C-]>")
+            map("n", "gi", require("telescope.builtin").lsp_implementations)
 
             vim.api.nvim_buf_create_user_command(opts.buf, "InlayHint", function(args)
                 if args.fargs[1] then
@@ -90,6 +83,23 @@ M.config = function()
         end,
     })
 
+    vim.api.nvim_create_autocmd("LspDetach", {
+        group = augroup,
+        callback = function(opts)
+            for mapping, mode in pairs {
+                ["<space>a"] = {"n", "v"},
+                ["gr"]  = "n",
+                ["gd"]  = "n",
+                ["gi"]  = "n",
+                ["<space>rn"]  = "n",
+            } do
+                utils.lunmap(opts.buf, mode, mapping)
+            end
+
+            vim.api.nvim_buf_del_user_command(opts.buf, "InlayHint")
+        end
+    })
+
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
         vim.lsp.handlers.hover, {
             border = "rounded",
@@ -102,13 +112,13 @@ M.config = function()
     )
 
     local signs = {
-        { name = "DiagnosticSignError", text = "󰅖" },
-        { name = "DiagnosticSignWarn", text = "" },
-        { name = "DiagnosticSignInfo", text = "󰋼" },
-        { name = "DiagnosticSignHint", text = "󰟶" }
+        "DiagnosticSignError",
+        "DiagnosticSignWarn",
+        "DiagnosticSignInfo",
+        "DiagnosticSignHint",
     }
     for _, sign in ipairs(signs) do
-        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
+        vim.fn.sign_define(sign, { texthl = sign, text = "", numhl = sign})
     end
 
     vim.diagnostic.config {
@@ -119,6 +129,7 @@ M.config = function()
             prefix = "!",
         }
     }
+
     -- individual lsps
     lspconfig.jsonls.setup {
         capabilities = capabilities,
@@ -178,7 +189,7 @@ M.config = function()
 
     }
     -- dont need anything special from those *yet*
-    for _, lsp in pairs({ "bashls", "tsserver", "html", "jedi_language_server", "ruff_lsp", "taplo" }) do
+    for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff_lsp", "taplo" }) do
         lspconfig[lsp].setup {
             capabilities = capabilities
         }

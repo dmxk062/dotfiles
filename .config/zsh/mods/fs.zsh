@@ -5,6 +5,8 @@
 
 if [[ "$1" == "load" ]] {
 
+zmodload zsh/mapfile
+
 alias md="mkdir -p"
 
 function mkcd {
@@ -104,10 +106,10 @@ function bn {
 }
 
 function readfile {
-    local arrayname="${1}"
-    local filename="${2}"
+    local arrayname="$1"
+    local file="$2"
 
-    eval "IFS=$'\n' ${arrayname}=(\$(< "${filename}"))"
+    eval "$arrayname"='("${(@f)mapfile['"$file"']}")'
 }
 
 function readstream {
@@ -120,7 +122,6 @@ function readstream {
     done
 
     eval "${arrayname}=("\${buffer}")"
-
 }
 
 # rm wrapper
@@ -191,18 +192,23 @@ function pwf {
     print -P -- "%~"
 }
 
-# go up n levels
+# go up n levels, in a subshell, return the absolute path to the directory n levels above
 function .. {
     local level="$1"
-    if [[ ! "$level" =~ '[0-9]+' ]] {
-        cd ..
-        return
+    if [[ -t 1 ]] {
+        if [[ ! "$level" =~ '[0-9]+' ]] {
+            cd ..
+            return
+        }
+
+        local fmt
+        printf -v fmt "../%.0s" {1..$level}
+        cd "$fmt"
+    } else {
+        local fmt
+        printf -v fmt "../%.0s" {1..$level}
+        print -- "${fmt:a}"
     }
-
-
-    local fmt
-    printf -v fmt "../%.0s" {1..$level}
-    cd "$fmt"
 }
 
 
@@ -213,5 +219,7 @@ unfunction rgf mkcd tmp rp bn in \
     readfile readstream lr ..
 
 unalias md ft bft
+
+zmodload -u zsh/mapfile
 
 }

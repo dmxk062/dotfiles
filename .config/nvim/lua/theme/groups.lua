@@ -2,14 +2,26 @@ local theme = require("theme.colors")
 local col = theme.colors
 local pal = theme.palettes.dark
 
-local utils = require("theme.blend")
-
 local function with_prefix(prefix, table)
     local res = {}
     for k, v in pairs(table) do
         res[prefix .. k] = v
     end
     return res
+end
+
+---@param col1 string
+---@param col2 string
+---@param alpha decimal
+local function blend(col1, col2, alpha)
+    local r1, g1, b1 = tonumber(col1:sub(2, 3), 16), tonumber(col1:sub(4, 5), 16), tonumber(col1:sub(6, 7), 16)
+    local r2, g2, b2 = tonumber(col2:sub(2, 3), 16), tonumber(col2:sub(4, 5), 16), tonumber(col2:sub(6, 7), 16)
+
+    local rr = math.floor((r1 * alpha) + (r2 * (1 - alpha)))
+    local gr = math.floor((g1 * alpha) + (g2 * (1 - alpha)))
+    local br = math.floor((b1 * alpha) + (b2 * (1 - alpha)))
+
+    return string.format("#%02X%02X%02x", rr, gr, br)
 end
 
 local editor = {
@@ -26,8 +38,8 @@ local editor = {
     Substitute   = { bg = col.yellow, fg = pal.inverted },
 
     LineNr       = { fg = col.bright_gray },
-    LineNrAbove  = { fg = utils.blend(col.teal, pal.bg3, 0.5) },
-    LineNrBelow  = { fg = utils.blend(col.blue, pal.bg3, 0.5) },
+    LineNrAbove  = { fg = blend(col.magenta, pal.bg3, 0.5) },
+    LineNrBelow  = { fg = blend(col.blue, pal.bg3, 0.5) },
     CursorLineNr = { fg = pal.fg0 },
     Cursor       = { reverse = true },
     CursorLine   = { bg = pal.bg1 },
@@ -57,8 +69,8 @@ local editor = {
     DiffText          = { fg = col.magenta, italic = true },
 
     Question          = { fg = col.bright_gray },
-    Warnings          = { fg = col.yellow },
-    ErrorMsg          = { fg = col.orange },
+    Warnings          = { fg = col.orange },
+    ErrorMsg          = { fg = col.red },
     MoreMSg           = { fg = col.bright_gray },
     ModeMSg           = { fg = col.bright_gray },
 
@@ -157,6 +169,19 @@ local oil = with_prefix("Oil", {
     Copy                            = { fg = col.yellow },
     Change                          = { fg = col.magenta },
 
+    TimeLastHour                    = { fg = col.green },
+    TimeLastDay                     = { fg = col.teal },
+    TimeLastWeek                    = { fg = col.light_blue },
+    TimeLastMonth                   = { fg = col.blue },
+    TimeLastYear                    = { fg = blend(col.blue, pal.bg3, 0.8) },
+    TimeSuperOld                    = { fg = pal.bg3 },
+
+    SizeNone                        = { fg = pal.bg3 },
+    SizeSmall                       = { fg = pal.fg0 },
+    SizeMedium                      = { fg = col.yellow },
+    SizeLarge                       = { fg = col.orange },
+    SizeHuge                        = { fg = col.red },
+
     GitStatusIndexIgnored           = { fg = pal.bg3 },
     GitStatusWorkingTreeIgnored     = { link = "OilGitStatusIndexIgnored" },
     GitStatusIndexUntracked         = { link = "OilGitStatusIndexIgnored" },
@@ -181,6 +206,7 @@ local cmp = with_prefix("CmpItem", {
     Kind            = { fg = col.yellow },
     KindText        = { fg = pal.bg3 },
     KindLatex       = { fg = col.green },
+    KindNeorg       = { fg = col.light_blue },
     KindMethod      = { fg = col.magenta },
     KindFunction    = { fg = col.teal },
     KindConstructor = { fg = col.magenta },
@@ -229,12 +255,14 @@ local treesitter = with_prefix("@", {
 
     ["variable"]                   = { fg = col.light_blue },
     ["variable.builtin"]           = { fg = pal.fg0, italic = true },
+    ["variable.typecast"]          = { fg = col.light_blue, italic = true },
     ["variable.parameter.builtin"] = { fg = col.light_blue, italic = true },
 
     ["constant"]                   = { fg = col.yellow },
     ["constant.builtin"]           = { fg = pal.fg2 },
 
     ["type"]                       = { fg = col.magenta },
+    ["type.typecast"]              = { fg = col.magenta, italic = true },
     ["type.builtin"]               = { fg = col.light_blue },
 
     ["function"]                   = { fg = col.light_cyan },
@@ -273,12 +301,14 @@ local treesitter = with_prefix("@", {
     ["tag.delimiter"]              = { fg = col.bright_gray },
 
     ["markup.heading"]             = { link = "Title" },
-    ["markup.heading.1"]           = { fg = col.red, bold = true },
-    ["markup.heading.2"]           = { fg = col.orange, bold = true },
-    ["markup.heading.3"]           = { fg = col.yellow, bold = true },
-    ["markup.heading.4"]           = { fg = col.green, bold = true },
-    ["markup.heading.5"]           = { fg = col.teal, bold = true },
-    ["markup.heading.6"]           = { fg = col.fg0, bold = true },
+    ["markup.heading.1"]           = { fg = col.yellow, bold = true },
+    ["markup.heading.2"]           = { fg = col.green, bold = true },
+    ["markup.heading.3"]           = { fg = col.teal, bold = true },
+    ["markup.heading.4"]           = { fg = col.light_cyan, bold = true },
+    ["markup.heading.5"]           = { fg = col.light_blue, bold = true },
+    ["markup.heading.6"]           = { fg = col.blue, bold = true },
+    ["markup.heading.7"]           = { fg = col.blue, bold = true },
+    ["markup.heading.8"]           = { fg = col.blue, bold = true },
     ["markup.math"]                = { italic = true },
     ["markup.raw.markdown_inline"] = { bg = pal.bg1 },
     ["markup.link"]                = { fg = col.fg2, italic = true },
@@ -291,7 +321,6 @@ local treesitter = with_prefix("@", {
 
     ["lsp.type.macro"]             = { link = "@macro" },
     ["lsp.mod.deprecated"]         = { fg = col.bright_gray, italic = true, strikethrough = true },
-
 })
 
 local lsp = with_prefix("Lsp", {
@@ -357,6 +386,7 @@ local startscreen = with_prefix("StartScreen", {
     ShortcutGrep    = { fg = col.yellow },
     ShortcutDir     = { fg = col.teal },
     ShortcutHistory = { fg = col.blue },
+    ShortcutNeorg   = { fg = col.light_blue },
     ShortcutLazy    = { fg = col.green },
     ShortcutQuit    = { fg = col.red },
 
@@ -435,27 +465,52 @@ local extra = {
     -- diffLine                  = { fg = pal.bg3 },
     -- diffIndexLine             = { fg = col.light_blue },
 
-    Added                     = { link = "diffAdded" },
-    Changed                   = { link = "diffChanged" },
-    Removed                   = { link = "diffRemoved" },
+    Added                       = { link = "diffAdded" },
+    Changed                     = { link = "diffChanged" },
+    Removed                     = { link = "diffRemoved" },
 
-    Headline1                 = { fg = col.red, bg = utils.blend(col.red, pal.bg0, 0.3), bold = true },
-    Headline2                 = { fg = col.orange, bg = utils.blend(col.orange, pal.bg0, 0.3), bold = true },
-    Headline3                 = { fg = col.yellow, bg = utils.blend(col.yellow, pal.bg0, 0.3), bold = true },
-    Headline4                 = { fg = col.green, bg = utils.blend(col.green, pal.bg0, 0.3), bold = true },
-    Headline5                 = { fg = col.teal, bg = utils.blend(col.teal, pal.bg0, 0.3), bold = true },
-    Headline6                 = { fg = pal.fg0, bg = utils.blend(col.white, pal.bg0, 0.3), bold = true },
-
-    LeapMatch                 = { underline = true, fg = col.yellow },
-    LeapLabel                 = { fg = pal.inverted, bg = col.yellow, nocombine = true },
+    LeapMatch                   = { underline = true, fg = col.yellow },
+    LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
     -- LeapLabelPrimary          = { fg = pal.inverted, bg = col.magenta, nocombine = true },
 
-    IndentBlanklineChar       = { fg = pal.bg1 },
-    IndentBlanklineCharActive = { fg = pal.bg3 },
+    IndentBlanklineChar         = { fg = pal.bg1 },
+    IndentBlanklineCharActive   = { fg = pal.bg3 },
 
-    BinedCurrentLine          = { bg = pal.bg2 },
-    -- BinedCurrentCHar          = { fg = col.red },
+    BinedCurrentLine            = { bg = pal.bg2 },
+    TreesitterContext           = { bg = pal.bg2 },
+    TreesitterContextLineNumber = { fg = col.teal },
+
+    MultiCursorCursor           = { bg = pal.bg3 },
+
+    UndotreeTimeStamp           = { fg = col.light_blue },
+    UndotreeCurrent             = { fg = col.teal },
+    UndotreeNext                = { fg = col.yellow },
+    UndotreeHead                = { fg = col.blue },
+    UndotreeBranch              = { fg = col.magenta },
+    UndotreeSavedSmall          = { fg = col.green },
+    UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
 }
+
+local neorg = with_prefix("@neorg.", {
+    ["code_block"]           = { link = "CodeBlock" },
+    ["markup.verbatim.norg"] = { link = "@markup.raw.markdown_inline" },
+    undone                   = { fg = pal.bg3 },
+    cancelled                = { fg = pal.bg3 },
+    done                     = { fg = col.green },
+    pending                  = { fg = col.magenta },
+    urgent                   = { fg = col.red },
+    recurring                = { fg = col.teal },
+    uncertain                = { fg = col.light_cyan, },
+    on_hold                  = { fg = col.light_blue },
+    ["quote.1"]              = { italic = true, fg = blend(col.yellow, pal.fg0, 0.7) },
+    ["quote.2"]              = { italic = true, fg = blend(col.green, pal.fg0, 0.7) },
+    ["quote.3"]              = { italic = true, fg = blend(col.teal, pal.fg0, 0.7) },
+    ["quote.4"]              = { italic = true, fg = blend(col.light_cyan, pal.fg0, 0.7) },
+    ["quote.5"]              = { italic = true, fg = blend(col.light_blue, pal.fg0, 0.7) },
+    ["quote.6"]              = { italic = true, fg = blend(col.blue, pal.fg0, 0.7) },
+    ["quote.7"]              = { link = "@neorg.quote.6" },
+    ["quote.8"]              = { link = "@neorg.quote.6" },
+})
 
 
 return {
@@ -470,5 +525,6 @@ return {
     mason,
     startscreen,
     gitsigns,
+    neorg,
     diag
 }

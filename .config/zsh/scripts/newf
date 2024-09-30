@@ -78,6 +78,10 @@ for arg in "${args[@]}"; do
     path="${arg%:*}"
     type="${arg##*:}"
     ext="${path##*.}"
+    basename="$(basename -- "$path")"
+    if [[ ".$ext" == "$basename" ]]; then
+        ext=""
+    fi
 
     did_create=0
 
@@ -105,6 +109,10 @@ for arg in "${args[@]}"; do
                 did_create=1
             ;;
         esac
+    fi
+
+    if [[ -z "$ext" ]] && [[ -n "$type" ]]; then
+        ext="$type"
     fi
 
     if ((did_create == 0)); then

@@ -99,27 +99,23 @@ function codes2chars {
     done
 }
 
+function lcd {
+    cd "$(command lf -print-last-dir "$@")"
+}
+
 
 
 source $ZDOTDIR/handlers.zsh
 
-# functions to use modules
-source $ZDOTDIR/modules.zsh
-
 # load all the modules i always want
-+mod fun  silent
-+mod proc silent
-+mod math silent
-+mod pkg  silent
-+mod net  silent
-+mod fs   silent
-+mod json silent
-+mod virt silent
-+mod git  silent
+source "$ZDOTDIR/mods/fun.zsh" load
+source "$ZDOTDIR/mods/pkg.zsh" load
+source "$ZDOTDIR/mods/proc.zsh" load
+source "$ZDOTDIR/mods/net.zsh" load
+source "$ZDOTDIR/mods/fs.zsh" load
+source "$ZDOTDIR/mods/structured_data.zsh" load
+source "$ZDOTDIR/mods/git.zsh" load
 
 if [[ "$TERM" == "xterm-kitty" ]] {
-    +mod kitty silent
+    source "$ZDOTDIR/mods/kitty.zsh" load
 }
-
-# desktop stuff
-+mod sound silent

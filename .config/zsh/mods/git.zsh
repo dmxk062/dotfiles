@@ -5,28 +5,33 @@ if [[ "$1" == "load" ]] {
 
 function lschg {
     local dir="${1:-.}"
+    local all=0
     local hide="${2}"
+    local ignored=no
+    if [[ "$hide" == "-a" ]] || [[ "$hide" == "--all" ]]; then
+        all=1
+        ignored="traditional"
+    fi
     local line mode file prefix
     while read -r type line; do
         if [[ $type == 1 ]] {
             read -r mode _ _ _ _ _ _ file <<< "$line";
             case $mode in 
-                \.M) prefix="%F{blue}* ";;
-                M\.) prefix="%F{yellow}* ";;
-                MM)  prefix="%B%F{yellow}* ";;
-                A\.) prefix="%F{green}+ ";;
-                \.A) prefix="%F{blue}+ ";;
-                AA) prefix="%B%F{green}+ ";;
-                D\.) prefix="%F{red}- ";;
-                \.D) prefix="%F{magenta}- ";;
-                DD) prefix="%B%F{red}- ";;
+                \.M) prefix="%F{magenta}";;
+                M\.) prefix="%B%F{magenta}";;
+                MM)  prefix="%B%F{magenta}";;
+                A\.) prefix="%B%F{green}";;
+                \.A) prefix="%F{greem}";;
+                AA) prefix="%B%F{green}";;
+                D\.) prefix="%B%F{red}";;
+                \.D) prefix="%F{red}";;
+                DD) prefix="%B%F{red}";;
             esac
-
-            print -P -- "$prefix$file%f%b"
-        } elif [[ "$type" == '?' && "$hide" == "-a" ]] {
-            print -P -- "\e[90m~ $line%f"
+            print -P -- "$prefix$mode $file%f%b"
+        } elif [[ "$type" == '?' || "$type" == "!" ]] && ((all)) {
+            print -P -- "\e[90m$type  $line%f"
         }
-    done < <(git status --porcelain=v2 "$dir")
+    done < <(git status --porcelain=v2 --ignored="$ignored" "$dir")
 }
 
 alias lgit="lsd -l --config-file $HOME/.config/lsd/brief.yaml" \

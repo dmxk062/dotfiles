@@ -6,6 +6,13 @@ local M = {
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
         "nvim-treesitter/nvim-treesitter-textobjects",
+        {
+            "nvim-treesitter/nvim-treesitter-context",
+            opts = {
+                enable = true,
+                max_lines = 0,
+            }
+        },
     },
 }
 
@@ -78,19 +85,16 @@ textobjects.move = {
     },
 }
 
-local swapnext = "<space>>"
-local swapprev = "<space><"
-
 textobjects.swap = {
     enable = true,
     swap_next = {
-        [swapnext .. "a"] = "@parameter.inner",
-        [swapnext .. "f"] = "@function.outer",
+        ["g>a"] = "@parameter.inner",
+        ["g>f"] = "@function.outer",
     },
 
     swap_previous = {
-        [swapprev .. "a"] = "@parameter.inner",
-        [swapprev .. "f"] = "@function.outer",
+        ["g<a"] = "@parameter.inner",
+        ["g<f"] = "@function.outer",
     },
 }
 

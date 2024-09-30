@@ -16,7 +16,7 @@ Display: ${ws.display}
 Id: ${ws.id}
 Fullscreen: ${ws.fullscreen}"
             (box :space-evenly false
-                (label :text "${ws_icons[ws.name] ?: ws.name}${(vertical || only_icon) ? "" : "    ${ws.title ?: ( short ? "-" : "empty")}"}" :limit-width {short ? 6 : 10})
+                (label :text "${ws_icons[ws.name] ?: ws.name}${(vertical || only_icon) ? "" : "    ${ws.title ?: ( short ? "-" : "empty")}"}" :limit-width {short ? 6 : 8})
             )
         )
     ))
@@ -25,7 +25,7 @@ Fullscreen: ${ws.fullscreen}"
 (defwidget workspaces[]
 (box :space-evenly false :halign "start" :class "leftbox"
     (overview_button)
-    (workspace_list :short {arraylength(workspaces) > 6} :only_icon {arraylength(workspaces) > 9})
+    (workspace_list :short {arraylength(workspaces) > 3} :only_icon {arraylength(workspaces) > 5})
     (button :class "ws-inactive" :timeout "16s"
         :onclick "hyprctl dispatch workspace empty"
         :tooltip "Open next empty Workspace"

@@ -12,7 +12,7 @@
         :onclick "${EWW_CMD} update window_controls=${!window_controls}"
         ;; :onrightclick "desktop/bin/open_rc_menu.sh window"
         :onmiddleclick "hyprctl dispatch killactive" 
-            (label :text "${window.xwayland?: false ? "    " : ""}${window.title ?: "No Window Selected"}" :limit-width {vertical ? 8 : (window_controls ? 48 : 24)}  )
+            (label :text "${window.xwayland?: false ? "    " : ""}${window.title ?: "No Window Selected"}" :limit-width {vertical ? 8 : (window_controls ? 48 : 16)}  )
         )
         (revealer :reveal window_controls :transition "slideright" :duration "200ms"
             (box :class "sbutton" :space-evenly false

@@ -5,20 +5,28 @@ if [[ "$1" == "load" ]]; then
 
 # check which package a file belongs to, first tries to find it in $PATH
 which_pkg(){
-    local progpath
-    if [[ -f "$1" ]]; then
-        progpath="$1"
+    local file progpath
+    local -a paths
+    for file in "$@"; do
+        if [[ -f "$file" ]]; then
+            paths+=("$file")
+        else
+            progpath="$(which "$file")"
+            if [[ "$progpath" == *"aliased"* ]]; then
+                progpath="/usr/bin/${file}"
+            fi
+            if ! [[ -e "$progpath" ]]; then
+                print "No such program in \$PATH, file or directory: $file" >&2
+                continue
+            fi
+            paths+=("$progpath")
+        fi
+    done
+    if ((${#paths} > 0)); then
+        pacman -Qo "${paths[@]}"
     else
-        progpath="$(which "$1")"
-        if [[ "$progpath" == *"aliased"* ]]; then
-            progpath="/usr/bin/${1}"
-        fi
-        if ! [[ -e "$progpath" ]]; then
-            print "File does not exist: ${progpath}"
-            return 1
-        fi
+        return 1
     fi
-    pacman -Qo "$progpath"
 }
 
 

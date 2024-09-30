@@ -6,9 +6,9 @@ declare -A ZSH_COLORS_RGB=(
 
 # handle combining unicode chars
 setopt combiningchars
-#cds on path
+# cds on path
 setopt autocd
-#no annoying beeps
+# no annoying beeps
 unsetopt beep
 
 
@@ -78,8 +78,7 @@ SAVEHIST=8000
 
 
 # add whatever directories you want to be hashed(accessible via ~shortcut) here
-
-local -A DIRSHORTCUTS=(
+nameddirs=(
     ["cfg"]="$HOME/.config"
     ["dl"]="$HOME/Downloads"
     ["tmp"]="$HOME/Tmp"
@@ -87,20 +86,13 @@ local -A DIRSHORTCUTS=(
     ["build"]="$HOME/ws/build"
     ["music"]="$HOME/Media/Music"
     ["docs"]="$HOME/Documents"
+    ["jrnl"]="$HOME/Documents/journal/journal/"
     ["school"]="$HOME/Documents/school"
     ["mnt"]="/mnt"
     ["arc"]="$HOME/.avfs"
     ["media"]="/run/media/$USER"
     ["games"]="$HOME/Games"
 )
-
-for shortcut in ${(k)DIRSHORTCUTS}; do
-    hash -d ${shortcut}="${DIRSHORTCUTS[$shortcut]}"
-done
-
-unset DIRSHORTCUTS shortcut
-#------------------------------------------------------------------------------
-
 
 #autopairing for quotes, brackets etc
 source $ZDOTDIR/autopair.zsh

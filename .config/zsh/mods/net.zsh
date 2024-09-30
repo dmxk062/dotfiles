@@ -1,8 +1,6 @@
 #!/bin/false
 # vim: ft=zsh
 
-
-
 NC_PORT=60246
 
 # a bunch of network dependant stuff, such as different network services
@@ -14,85 +12,55 @@ alias req="noglob curl -s"
 zmodload zsh/net/socket
 
 function fupload {
-    curl -F file=@"$1" "${2:-"https://0x0.st"}"
+    curl -sF file="@$1" "${2:-"https://0x0.st"}"
 }
-
-function ncsend {
-    nc -l  -p "${1:-$NC_PORT}"
-}
-
-function ncrecv {
-    nc -d "$1" "${2:-$NC_PORT}"
-}
-
-
-function _jreq {
-    local url="$1"
-    shift
-    local jqopts="${(j:,:)@}"
-    curl -s "$url"|jq -r "${jqopts:-.}"
-}
-
-alias jreq="noglob _jreq"
 
 function urlenc {
-    local fpath
-    fpath="${1:A}"
-    if [[ "$fpath" == "/run/user/$UID/gvfs/sftp"* ]]; then
-        local sftppath="${fpath/"\/run\/user\/$UID\/gvfs\/sftp:"/}"
-        local host="${sftppath/host=/}"
-        host="${host/"\/"*/}"
-        local remote_path="${sftppath#*/}"
-        print "sftp://${host}/${remote_path}"
-        return 0
-    fi
-    print -n "file://"
-    printf '%s' "$fpath"|jq -sRr @uri|sed 's/%2F/\//g'
-}
+    local arg
+    for arg in "$@"; do
+        local urlpath="$arg"
+        local prefix=""
+        if [[ ! "$urlpath" =~ ^.*://.*$ ]]; then
+            # resolve the path and use the correct schema
+            prefix="file://"
+            urlpath="${urlpath:A}"
+        fi
 
-
-function urldec {
-    local url="$1"
-    local file
-    if ! [[ "$url" == "file://"* ]]; then
-        return
-    fi
-    file="${url//file:\/\//}"
-    file="${file//\%/\\x}"
-    print -- "$file"
-}
-
-
-function local_ip {
-    local -a line
-    ip route | while read -rA line; do
-        if [[ "$line[1]" == "default" ]] {
-            print "$line[9]"
-        }
+        print -n "$prefix"
+        print -n -- "$urlpath"|jq -sRr @uri|sed 's/%2F/\//g'
     done
 }
 
+function urldec {
+    local url
+    for url in "$@"; do
+        if [[ "$url" != "file://"* ]]; then
+            # ignore other urls
+            print -- "$url"
+            continue
+        fi
 
-alias public_ip="req ifconfig.es"
-
-# not necessarily a network thing
-# params: $1: text to encode
-#         $@:2 flags for qrencode
-function qrgen {
-    qrencode "$1" --margin=2 --output=- --size=2 --type=ANSIUTF8 "${@:2}" 
+        local file="${url//file:\/\//}"
+        file="${file//\%/\\x}"
+        print -- "$file"
+    done
 }
 
 function deepl_request {
     local request="$1"
     local auth_key="$( < "$XDG_DATA_HOME/keys/deepl" )"
-    if [[ "$auth_key" == "" ]] {
+    if [[ "$auth_key" == "" ]]; then
         print -P -- "%F{red}Please make sure your auth key is placed at $XDG_DATA_HOME/keys/deepl%f" > /dev/stderr
         return 1
-    }
+    fi
     curl -s --request POST --header "Authorization: DeepL-Auth-Key $auth_key" \
         --header "Content-Type: application/json" \
         --data "$request" \
         'https://api-free.deepl.com/v2/translate'
+}
+
+function makeqr {
+    qrencode --size=2 --margin=2 --type=ANSIUTF8 --output=- 
 }
 
 function translate {
@@ -103,52 +71,27 @@ function translate {
         buffer+=("$line")
     done
     local request_body
-    if [[ -n "$2" ]] {
+    if [[ -n "$2" ]]; then
         request_body="{\"text\":[\"${(j:\n:)buffer[@]}\"],\"target_lang\":\"$target\", \"source_lang\": \"$2\"}"
-    } else {
+    else
         request_body="{\"text\":[\"${(j:\n:)buffer[@]}\"],\"target_lang\":\"$target\"}"
-    }
+    fi
     deepl_request "$request_body"|jq '.translations.[0].text' -r
 
 
 }
 
-function ncdir {
-    local mode="$1"
-    local arg="$2"
-    local port="${3:-$NC_PORT}"
-
-    case $mode in 
-        send)
-            local dir="$arg"
-            if ! [[ -d "$dir" ]] {
-                print -- "Not a directory: $dir"
-                return 1
-            }
-            tar czp "$dir"|nc -l -p "$port"
-            ;;
-        recv|*)
-            local host="$arg"
-            nc -dq 0 "$host" "$port"|tar zxv
-            ;;
-    esac
-}
 autoload -Uz _translate
 compdef _translate translate
 
-
-
-
 elif [[ "$1" == "unload" ]]; then
 
-unfunction fupload _jreq \
+unfunction fupload \
     urlenc urldec \
-    ncsend ncrecv ncdir \
-    local_ip \
-    qrgen \
+    makeqr \
     deepl_request translate 
 
-unalias req jreq public_ip
+unalias req 
 
 zmodload -u zsh/net/socket
 

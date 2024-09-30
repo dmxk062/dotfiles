@@ -12,7 +12,9 @@ vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.hlsearch = true
 vim.o.termguicolors = true
-vim.o.wildmenu = false
+-- vim.o.wildmenu = false
+vim.o.scrolloff = 1
+vim.o.undofile = true
 
 -- wrap at whitespace, indent wrapped lines and show an indicator
 vim.o.wrap = true
@@ -33,6 +35,13 @@ vim.opt.fillchars = {
     -- its visible from the gaps anyways
     diff = " ",
     lastline = "",
+}
+
+vim.opt.listchars = {
+    eol = "",
+    tab = "󰌒 ",
+    space = "·",
+    multispace = " · ",
 }
 
 -- command mode: underline
@@ -107,7 +116,7 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
     callback = function()
         if vim.o.number then
             vim.o.relativenumber = false
-            vim.api.nvim__redraw({statuscolumn = true})
+            vim.api.nvim__redraw({ statuscolumn = true })
         end
     end
 })
@@ -136,12 +145,12 @@ vim.api.nvim_create_autocmd("TermOpen", {
 -- all the package definitions in ./lua/plugins/ will be loaded
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
-    vim.fn.system({
+    vim.system({
         "git",
         "clone",
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
+        "--branch=stable",
         lazypath,
     })
 end
@@ -185,7 +194,7 @@ require("lazy").setup("plugins", {
     }
 })
 
--- set all the other mappings
+-- set all the mappings
 require("mappings")
 
 -- for some reason lazy deactivates that

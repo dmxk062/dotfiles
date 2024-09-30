@@ -5,6 +5,9 @@ declare -A _promptvars=(
     [color]="cyan"
     [timer]=0
     [vcs_branch]=""
+    [vcs_remote]=""
+    [vcs_ahead]=0
+    [vcs_behind]=0
     [vcs_modified]=0
     [vcs_deleted]=0
     [vcs_added]=0
@@ -35,19 +38,45 @@ function _update_git_status {
     # returns 0 if dir ignored and 1 if not but still git
     if (($? == 1)) {
         _promptvars[vcs_active]=1
-        local gstatus rest modified=0 deleted=0 added=0 _branch branch=""
-        while read -r gstatus rest; do
-            case "$gstatus" in 
-                (#*) IFS="." read -r branch _ <<< "$rest" ;;
-                (M) ((modified++));;
-                (A) ((added++));;
-                (D) ((deleted++));;
+        local type gstatus submod hname iname score file _
+        local modified=0 deleted=0 added=0 _branch branch="" remote="" ahead=0 behind=0
+        while read -r type gstatus submod hname iname score file; do
+            case "$type" in 
+                (\#) 
+                    case "$gstatus" in 
+                        (branch.oid);;
+                        (branch.head) branch="$submod";;
+                        (branch.upstream) upstream="$submod";;
+                        (branch.ab) 
+                            ahead="$submod"
+                            behind="$hname"
+                            ahead="${ahead#+}"
+                            behind="${behind#-}"
+                            if [[ "$ahead" == -* ]] {
+                                behind="${ahead#-}"
+                            }
+                            ;;
+                    esac
+                    ;;
+                (1)
+                    case "$gstatus" in 
+                        (*A*) ((added++));;
+                        (*D*) ((deleted++));;
+                        (*M*) ((modified++));;
+                    esac
+                    ;;
+                (2)
+                    # Nothing for moved/renamed for now
+                    ;;
             esac
-        done < <(git status --porcelain=v1 --untracked-files=no --ignored=no -b . 2>/dev/null)
+        done < <(git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null)
         _promptvars[vcs_branch]="$branch"
+        _promptvars[vcs_remote]="$upstream"
         _promptvars[vcs_modified]="$modified"
         _promptvars[vcs_deleted]="$deleted"
-        _promptvars[vcs_added]="$deleted"
+        _promptvars[vcs_added]="$added"
+        _promptvars[vcs_ahead]="$ahead"
+        _promptvars[vcs_behind]="$behind"
     } else {
         _promptvars[vcs_active]=0
     }
@@ -60,7 +89,7 @@ function chpwd {
 function _update_prompt {
     PROMPT="%B%F{$_promptvars[color]}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
     if ((_promptvars[vcs_active])) {
-        local modified added deleted
+        local modified added deleted ahead behind
         if ((_promptvars[vcs_modified] > 0)) {
             modified=" %F{yellow}~$_promptvars[vcs_modified]"
         }
@@ -70,7 +99,13 @@ function _update_prompt {
         if ((_promptvars[vcs_deleted] > 0)) {
             deleted=" %F{red}-$_promptvars[vcs_deleted]"
         }
-        PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${_promptvars[vcs_branch]}${added}${modified}${deleted}%K{8} $PROMPT"
+        if ((_promptvars[vcs_ahead] > 0)) {
+            ahead="%F{green}+$_promptvars[vcs_ahead] "
+        }
+        if ((_promptvars[vcs_behind] > 0)) {
+            ahead="%F{red}-$_promptvars[vcs_behind] "
+        }
+        PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${ahead}${behind}%F{white}${_promptvars[vcs_branch]}${added}${modified}${deleted}${ahead_behind}%K{8} $PROMPT"
     }
 }
 
@@ -87,7 +122,8 @@ function precmd {
         } else  {
             printf -v elapsed "%.2fms" $elapsed_ms
         }
-        RPROMPT="%F{8}%K{8}%f󱎫 ${elapsed} %(?.%F{green}.%F{red})%k%S%(?.󰄬 %?.󰅖 %?) %s"
+        # format: <elapsed time> <jobs? and if yes <count>&> <exit code with symbol> <time it took>
+        RPROMPT="%F{8}%K{8}%f󱎫 ${elapsed} %(1j.%F{cyan}%j& %f.)%(?.%F{green}.%F{red})%k%S%(?.󰄬 %?.󰅖 %?) %s"
     fi
     # set the title
     print -Pn "\e]0;zsh: %~\a"
@@ -100,7 +136,7 @@ function precmd {
 }
 
 # Prompt for nested things:
-PS2="%B%S󰅪 %_%s%f%b "
+PS2="%F{8}%K{8}%f󰅪 %_%k%F{8}%f "
 #
 # sudo prompt
 export SUDO_PROMPT="$(print -P "\n%B%F{red}%S sudo%s%f%b ")"

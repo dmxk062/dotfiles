@@ -25,7 +25,7 @@ function M.kitty_shell_in(uri, type, opts)
     vim.system(cmd, { detach = true })
 end
 
----@alias nvim_mode "n"|"i"|"c"|"v"|"s"|"o"|"t"|{}
+---@alias nvim_mode "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"|{}
 
 ---@param mode nvim_mode
 ---@param keys string
@@ -37,12 +37,43 @@ end
 
 ---@param mode nvim_mode
 ---@param keys string
+---@param opts vim.keymap.del.Opts?
+function M.unmap(mode, keys, opts)
+    vim.keymap.del(mode, keys, opts or {})
+end
+
+---@param bufnr integer
+---@param mode nvim_mode
+---@param keys string
+---@param opts vim.keymap.del.Opts?
+function M.lunmap(bufnr, mode, keys, opts)
+    opts = opts or {}
+    opts.buffer = bufnr
+    vim.keymap.del(mode, keys, opts)
+end
+
+---@param bufnr integer
+---@param mode nvim_mode
+---@param keys string
 ---@param action string|function
 ---@param opts vim.keymap.set.Opts|nil
 function M.lmap(bufnr, mode, keys, action, opts)
     opts = opts or {}
     opts.buffer = bufnr
     vim.keymap.set(mode, keys, action, opts)
+end
+
+---@param bufnr integer
+function M.local_mapper(bufnr)
+    ---@param mode nvim_mode
+    ---@param keys string
+    ---@param action string|function
+    ---@param opts vim.keymap.set.Opts|nil
+    return function(mode, keys, action, opts)
+        opts = opts or {}
+        opts.buffer = bufnr
+        vim.keymap.set(mode, keys, action, opts)
+    end
 end
 
 ---@param mode nvim_mode
@@ -55,63 +86,6 @@ function M.abbrev(mode, keys, string)
         end, mode), keys, string)
     else
         vim.keymap.set(mode .. "a", keys, string)
-    end
-end
-
-local function put_result(res)
-    if (res) then
-        vim.api.nvim_put(vim.split(tostring(res), "\n"), "c", false, false)
-    end
-end
-
-function M.NOOP()
-end
-
--- evaluate a lua expression and insert the result
--- useful for math
-function M.insert_eval_lua(is_repeat)
-    local buf = vim.api.nvim_get_current_buf()
-
-    -- called from the direct mapping, not dot completion
-    if not is_repeat then
-        -- reset the last expression
-        vim.b[buf].last_lua_eval_expr = nil
-        -- tell nvim to call our callback on g@
-        vim.go.operatorfunc = "v:lua.require'utils'.insert_eval_lua_callback"
-        -- needs to me mapped with {expr = true}, calls the callback
-        return "g@l"
-    end
-    -- insert the evaluated expression into the buffer vim.v.count times
-    if vim.v.count == 0 then
-        put_result(vim.b[buf].last_lua_eval_expr())
-    else
-        for _ = 1, vim.v.count1 do
-            put_result(vim.b[buf].last_lua_eval_expr())
-        end
-    end
-end
-
-function M.insert_eval_lua_callback()
-    local buf = vim.api.nvim_get_current_buf()
-
-    -- not dot repeat
-    if not vim.b[buf].last_lua_eval_expr then
-        vim.ui.input({ prompt = "Evaluate Lua", completion = "lua" }, function(input)
-            vim.b[buf].last_lua_eval_expr = load("return " .. (input or ""))
-
-            -- set the last used command to "g@l" so repeat works
-            vim.go.operatorfunc = "v:lua.require'utils'.NOOP"
-            vim.api.nvim_command("normal! g@l")
-
-            -- set the operatorfunc back to our handler
-            vim.go.operatorfunc = "v:lua.require'utils'.insert_eval_lua_callback"
-
-            -- call the main function, repeated cause vim.ui.input is async
-            M.insert_eval_lua(true)
-        end)
-    else
-        -- repeat
-        M.insert_eval_lua(true)
     end
 end
 
