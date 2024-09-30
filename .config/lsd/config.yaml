@@ -8,7 +8,7 @@ blocks:
 color:
   when: always
   theme: custom
-date: '+%X %d.%m.%y'
+date: '+%H:%M %d-%m-%y'
 icons:
   when: always
   seperator: " "

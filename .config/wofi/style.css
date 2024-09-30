@@ -1,0 +1,59 @@
+* {
+  all: unset;
+  font-family: "Torus Pro", "Torus", "Cantarell";
+  font-weight: 500;
+  font-size: 14px; }
+
+#outer-box {
+  padding: .5rem;
+  background-color: #2e3440;
+  border-radius: 1.5rem;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+  background-clip: padding-box;
+  margin: 1rem; }
+
+#input {
+  background-color: #3b4252;
+  border: 2px solid #4c566a;
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  color: #eceff4;
+  padding: .5rem;
+  caret-color: #eceff4;
+  margin-bottom: 2rem; }
+  #input:focus {
+    border: 2px solid #8fbcbb; }
+  #input selection {
+    color: #2e3440;
+    background-color: #8fbcbb; }
+  #input label {
+    color: #eceff4; }
+  #input image {
+    margin-right: 1rem; }
+
+#inner-box {
+  padding: .2rem; }
+  #inner-box #entry expander, #inner-box #entry > .entry {
+    border-radius: 1rem;
+    padding: .5rem;
+    background-color: #2e3440;
+    border-radius: .8rem; }
+    #inner-box #entry expander #text, #inner-box #entry > .entry #text {
+      color: #eceff4; }
+    #inner-box #entry expander #img, #inner-box #entry > .entry #img {
+      margin-right: .6rem; }
+  #inner-box #entry expander arrow {
+    color: #eceff4;
+    background-image: -gtk-icontheme("go-next-symbolic");
+    margin-right: .2rem; }
+    #inner-box #entry expander arrow:checked {
+      background-image: -gtk-icontheme("go-down-symbolic"); }
+  #inner-box #entry expander .entry {
+    all: unset;
+    padding: .2rem; }
+  #inner-box #entry:selected expander, #inner-box #entry:selected > .entry {
+    background-color: #8fbcbb; }
+    #inner-box #entry:selected expander #text, #inner-box #entry:selected > .entry #text {
+      color: #2e3440; }
+    #inner-box #entry:selected expander arrow, #inner-box #entry:selected > .entry arrow {
+      color: #2e3440; }

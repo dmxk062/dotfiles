@@ -1,6 +1,6 @@
 # ft=conf
-width=16%
-height=32%
+width=24%
+height=48%
 allow_images=true
 hide_scroll=true
 prompt=Search...
