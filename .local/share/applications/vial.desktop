@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=Vial
-Description=Manage vial firmware qmk devices
-Exec=Vial-v0.7-x86_64.AppImage
-Type=Application
-Icon=keyboard

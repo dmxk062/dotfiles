@@ -7,4 +7,4 @@ Exec=nvtop
 Icon=nvtop
 Categories=System;Monitor;
 X-AppImage-Integrate=false
-Hidden=true
+NoDisplay=true

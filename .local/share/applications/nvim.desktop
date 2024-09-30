@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Neovim
 GenericName=Text Editor
-Exec=kitty -- nvim %F -O
+Exec=nvim.sh %F
 Comment=Edit Text in Neovim
 Terminal=false
 Type=Application
