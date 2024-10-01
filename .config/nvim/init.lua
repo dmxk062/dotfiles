@@ -1,5 +1,4 @@
-require("theme.theme").load()
-
+vim.cmd.colorschem "mynord"
 vim.o.relativenumber = true
 vim.o.number = true
 vim.o.incsearch = true
