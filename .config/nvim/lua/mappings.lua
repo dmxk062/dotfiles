@@ -7,10 +7,6 @@ utils.map("t", "<S-Esc>", "<C-\\><C-n>")
 utils.map("i", "<M-k>", "<esc>k")
 utils.map("i", "<M-j>", "<esc>j")
 
--- move visual selection around
-utils.map("x", "K", ":m '<-2<cr>gv=gv")
-utils.map("x", "J", ":m '>+1<cr>gv=gv")
-
 local tableader = "\\"
 
 -- tabs 1 - 9
