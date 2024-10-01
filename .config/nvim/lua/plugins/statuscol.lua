@@ -13,7 +13,10 @@ M.config = function()
                 click = "v:lua.ScFa"
             },
             {
-                sign = { namespace = { "gitsigns.*" } },
+                sign = {
+                    namespace = { "gitsigns.*" },
+                    maxwidth = 1,
+                },
                 click = "v:lua.ScSa",
             },
             {
@@ -28,7 +31,11 @@ M.config = function()
             },
             {
                 -- HACK: dont show the second column
-                sign = { namespace = { "oil.*" }, maxwidth = 1, auto = true },
+                sign = {
+                    namespace = { "oil.*" },
+                    maxwidth = 1,
+                    auto = true
+                },
             }
         },
     }
