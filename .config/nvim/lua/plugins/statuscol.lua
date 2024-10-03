@@ -13,6 +13,13 @@ M.config = function()
                 click = "v:lua.ScFa"
             },
             {
+                sign = {
+                    namespace = { "gitsigns.*" },
+                    maxwidth = 1,
+                },
+                click = "v:lua.ScSa",
+            },
+            {
                 text = {
                     require("statuscol.builtin").lnumfunc,
                     " "
@@ -23,11 +30,13 @@ M.config = function()
                 click = "v:lua.ScLa",
             },
             {
-                text = {
-                    "%s",
+                -- HACK: dont show the second column
+                sign = {
+                    namespace = { "oil.*" },
+                    maxwidth = 1,
+                    auto = true
                 },
-                click = "v:lua.ScSa",
-            },
+            }
         },
     }
 end
