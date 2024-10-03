@@ -66,3 +66,8 @@
 # sampi, i know its probably /ss/ or /s:/, but it looks like <T>
 <Multi_key> <at> <at> <t> : "ͳ"
 <Multi_key> <at> <at> <T> : "Ͳ"
+
+# accents etc
+<Multi_key> <at> <asciitilde> : U0342       # ᾶ
+<Multi_key> <at> <apostrophe> : U0343       # ἀ
+<Multi_key> <at> <quotedbl> : U0344         # α̈́

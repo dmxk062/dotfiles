@@ -12,6 +12,10 @@
 <Multi_key> <P> <W> : "Ƿ"
 <Multi_key> <p> <W> : "Ƿ"
 
+# uppercase þorn and eð
+<Multi_key> <T> <h> : "Þ"
+<Multi_key> <D> <h> : "Ð"
+
 # ȝogh, technically not old english
 <Multi_key> <g> <h> : "ȝ"
 <Multi_key> <G> <h> : "Ȝ"
