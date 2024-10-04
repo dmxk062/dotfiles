@@ -45,7 +45,7 @@ local editor = {
     SignColumn   = { fg = pal.bg3 },
 
 
-    Visual            = { bg = pal.bg2 },
+    Visual            = { bg = pal.bg1 },
     NonText           = { fg = col.bright_gray },
     SpecialKey        = { link = "NonText" },
     MatchParen        = { fg = col.magenta, bg = pal.bg2, bold = true },
@@ -422,19 +422,6 @@ local telescope = with_prefix("Telescope", {
 })
 
 local extra = {
-    -- diffAdded                 = { fg = col.green },
-    -- diffRemoved               = { fg = col.red },
-    -- diffChanged               = { fg = col.magenta },
-    -- diffOldFile               = { fg = col.yellow },
-    -- diffNewFile               = { fg = col.orange },
-    -- diffFile                  = { fg = col.teal },
-    -- diffLine                  = { fg = pal.bg3 },
-    -- diffIndexLine             = { fg = col.light_blue },
-
-    Added                       = { link = "diffAdded" },
-    Changed                     = { link = "diffChanged" },
-    Removed                     = { link = "diffRemoved" },
-
     LeapMatch                   = { underline = true, fg = col.yellow },
     LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
     -- LeapLabelPrimary          = { fg = pal.inverted, bg = col.magenta, nocombine = true },
