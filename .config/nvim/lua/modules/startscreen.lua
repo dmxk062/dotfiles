@@ -119,7 +119,7 @@ local Buttons = {
     },
     {
         map = "M",
-        cb = vim.cmd.Lazy,
+        cb = vim.cmd.Mason,
         text = "Mason - Packages",
         hl = "Mason",
         icon = "",
