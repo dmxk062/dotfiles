@@ -112,6 +112,13 @@ local Buttons = {
         hl = "Mason",
         icon = "",
     },
+    {
+        map = "q",
+        cb = vim.cmd.q,
+        text = "Exit Neovim",
+        hl = "Quit",
+        icon = "󰿅",
+    },
 }
 
 local function draw_logo(size)

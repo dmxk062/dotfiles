@@ -480,9 +480,10 @@ local extra = {
     StartscreenFiles            = { fg = col.teal },
     StartscreenJournal          = { fg = col.green },
     StartscreenSearch           = { fg = col.light_blue },
-    StartscreenHistory           = { fg = col.blue },
+    StartscreenHistory          = { fg = col.blue },
     StartscreenLazy             = { fg = col.yellow },
     StartscreenMason            = { fg = col.orange },
+    StartscreenQuit             = { fg = col.red },
 }
 
 local neorg = with_prefix("@neorg.", {
