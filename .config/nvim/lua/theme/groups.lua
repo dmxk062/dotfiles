@@ -379,28 +379,6 @@ local diag = with_prefix("Diagnostic", {
     SignHint         = { fg = col.light_blue, bold = true },
 })
 
-local startscreen = with_prefix("StartScreen", {
-    ShortcutGeneric = { fg = col.magenta },
-    ShortcutFiles   = { fg = col.teal },
-    ShortcutSearch  = { fg = col.orange },
-    ShortcutGrep    = { fg = col.yellow },
-    ShortcutDir     = { fg = col.teal },
-    ShortcutHistory = { fg = col.blue },
-    ShortcutNeorg   = { fg = col.light_blue },
-    ShortcutLazy    = { fg = col.green },
-    ShortcutQuit    = { fg = col.red },
-
-    History         = { fg = col.blue },
-    Title1          = { fg = col.red },
-    Title2          = { fg = col.orange },
-    Title3          = { fg = col.yellow },
-    Title4          = { fg = col.green },
-    Title5          = { fg = col.teal },
-    Title6          = { fg = col.light_blue },
-    Title7          = { fg = col.blue },
-    Title8          = { fg = col.magenta },
-})
-
 local mason = with_prefix("Mason", {
     Header                      = { fg = pal.bg0, bg = col.teal },
     HeaderSecondary             = { fg = pal.bg0, bg = col.teal },
@@ -489,6 +467,22 @@ local extra = {
     UndotreeBranch              = { fg = col.magenta },
     UndotreeSavedSmall          = { fg = col.green },
     UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
+
+    StartscreenTitle1           = { fg = col.red },
+    StartscreenTitle2           = { fg = col.red },
+    StartscreenTitle3           = { fg = col.orange },
+    StartscreenTitle4           = { fg = col.yellow },
+    StartscreenTitle5           = { fg = col.green },
+    StartscreenTitle6           = { fg = col.teal },
+    StartscreenTitle7           = { fg = col.light_blue },
+    StartscreenTitle8           = { fg = col.blue },
+
+    StartscreenFiles            = { fg = col.teal },
+    StartscreenJournal          = { fg = col.green },
+    StartscreenSearch           = { fg = col.light_blue },
+    StartscreenHistory           = { fg = col.blue },
+    StartscreenLazy             = { fg = col.yellow },
+    StartscreenMason            = { fg = col.orange },
 }
 
 local neorg = with_prefix("@neorg.", {
@@ -523,7 +517,6 @@ return {
     telescope,
     extra,
     mason,
-    startscreen,
     gitsigns,
     neorg,
     diag

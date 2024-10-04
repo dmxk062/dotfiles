@@ -1,3 +1,13 @@
+local open_start_screen = (vim.fn.argc() == 0)
+
+vim.api.nvim_create_autocmd("StdinReadPre", {
+    once = true,
+    callback = function(ctx)
+        open_start_screen = false
+    end
+})
+
+
 vim.cmd.colorschem "mynord"
 vim.o.relativenumber = true
 vim.o.number = true
@@ -198,3 +208,12 @@ require("mappings")
 
 -- for some reason lazy deactivates that
 vim.o.modeline = true
+
+vim.api.nvim_create_autocmd("VimEnter", {
+    once = true,
+    callback = function(ctx)
+        if open_start_screen then
+            require("modules.startscreen").show_start_screen()
+        end
+    end
+})
