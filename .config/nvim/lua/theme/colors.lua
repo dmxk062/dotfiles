@@ -1,3 +1,17 @@
+---@param col1 string
+---@param col2 string
+---@param alpha decimal
+local function blend(col1, col2, alpha)
+    local r1, g1, b1 = tonumber(col1:sub(2, 3), 16), tonumber(col1:sub(4, 5), 16), tonumber(col1:sub(6, 7), 16)
+    local r2, g2, b2 = tonumber(col2:sub(2, 3), 16), tonumber(col2:sub(4, 5), 16), tonumber(col2:sub(6, 7), 16)
+
+    local rr = math.floor((r1 * alpha) + (r2 * (1 - alpha)))
+    local gr = math.floor((g1 * alpha) + (g2 * (1 - alpha)))
+    local br = math.floor((b1 * alpha) + (b2 * (1 - alpha)))
+
+    return string.format("#%02X%02X%02x", rr, gr, br)
+end
+
 local named_colors = {
     black = "#2E3440",
     dark_gray = "#3B4252",
@@ -16,6 +30,7 @@ local named_colors = {
     yellow = "#EBCB8B",
     green = "#A3BE8C",
     magenta = "#B48EAD",
+    purple = blend("#B48EAD", "#5E81AC", 0.7),
 }
 
 local dark_palette = {
@@ -35,5 +50,6 @@ return {
     colors = named_colors,
     palettes = {
         dark = dark_palette
-    }
+    },
+    blend = blend,
 }

@@ -71,6 +71,16 @@ local Logo_small = vim.split([[ _                _
 
 local Buttons = {
     {
+        map = "n",
+        cb = function()
+            vim.cmd.new()
+            vim.cmd.wincmd("o")
+        end,
+        text = "New Buffer",
+        hl = "New",
+        icon = "󰋚",
+    },
+    {
         map = "H",
         cb = function() require("telescope.builtin").oldfiles {} end,
         text = "Search History",
