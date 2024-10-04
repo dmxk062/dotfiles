@@ -53,23 +53,69 @@ end
 
 
 
-local Logo_big = vim.split([[ _        _______  _______          _________ _______
-( (    /|(  ____ \(  ___  )|\     /|\__   __/(       )
-|  \  ( || (    \/| (   ) || )   ( |   ) (   | () () |
-|   \ | || (__    | |   | || |   | |   | |   | || || |
-| (\ \) ||  __)   | |   | |( (   ) )   | |   | |(_)| |
-| | \   || (      | |   | | \ \_/ /    | |   | |   | |
-| )  \  || (____/\| (___) |  \   /  ___) (___| )   ( |
-|/    )_)(_______/(_______)   \_/   \_______/|/     \|]], "\n", { plain = true })
+local Letters = {
+    {
+        [[                      ]],
+        [[       ████ ██████]],
+        [[      ███████████]],
+        [[      █████████]],
+        [[     █████████]],
+        [[    █████████]],
+        [[  ███████████]],
+        [[ ██████  ███]],
+    },
+    {
+        [[          ]],
+        [[          ]],
+        [[         ]],
+        [[ ████████]],
+        [[  ███    ]],
+        [[ ████████]],
+        [[ ███    ]],
+        [[█████████]],
+    },
+    {
+        [[]],
+        [[]],
+        [[   ]],
+        [[███]],
+        [[█████]],
+        [[██ ██]],
+        [[███ ███]],
+        [[█████████]],
+    },
+    {
+        [[              ]],
+        [[ █████      ]],
+        [[ █████    ]],
+        [[████████ ]],
+        [[████████ ]],
+        [[███████ ]],
+        [[██████ ]],
+        [[ ████ ]],
+    },
+    {
+        [[    ]],
+        [[ ██ ]],
+        [[      ]],
+        [[███ ]],
+        [[█████]],
+        [[█████]],
+        [[█████]],
+        [[█████]],
+    },
+    {
+        [[                 ]],
+        [[                 ]],
+        [[                 ]],
+        [[  ███████████]],
+        [[ ██████████████]],
+        [[ █████ ████ █████]],
+        [[ █████ ████ █████]],
+        [[ █████ ████ ██████]],
+    }
 
-local Logo_small = vim.split([[ _                
-( (    /||\     /|
-|  \  ( || )   ( |
-|   \ | || |   | |
-| (\ \) |( (   ) )
-| | \   | \ \_/ /
-| )  \  |  \   /
-|/    )_)   \_/   ]], "\n", { plain = true })
+}
 
 local Buttons = {
     {
@@ -134,19 +180,20 @@ local Buttons = {
 }
 
 local function draw_logo(size)
-    local logo
-    if size.cols <= #Logo_big[1] + 2 then
-        logo = Logo_small
-    else
-        logo = Logo_big
-    end
-    local start_row = math.floor((size.rows - #logo - #Buttons) / 2)
+    local start_row = math.floor((size.rows - #Letters[1] - #Buttons - 2) / 2)
     print_padding_lines(start_row - 1)
-    local text_len = #logo[1]
+    local text_len = 0
+    for _, ltr in pairs(Letters) do
+        text_len = text_len + vim.fn.strdisplaywidth(ltr[1])
+    end
     local start_offset = math.floor((size.cols - text_len) / 2)
 
-    for i = 1, #logo do
-        print_hl_line(logo[i], "StartscreenTitle" .. i, start_offset, true)
+    if text_len < size.cols + 2 then
+        for i = 1, #Letters[1] do
+            for j = 1, #Letters do
+                print_hl_line(Letters[j][i], "StartscreenTitle" .. j, j == 1 and start_offset or 0, j == #Letters)
+            end
+        end
     end
 end
 
@@ -188,7 +235,7 @@ local function draw_screen()
     }
 
     draw_logo(size)
-    print_padding_lines(1)
+    print_padding_lines(2)
     state.first_editable = state.cur_row + 1
 
     vim.tbl_map(function(btn) button(size, btn) end, Buttons)
