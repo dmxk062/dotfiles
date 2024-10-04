@@ -62,7 +62,7 @@ local Logo_big = vim.split([[ _        _______  _______          _________ _____
 | )  \  || (____/\| (___) |  \   /  ___) (___| )   ( |
 |/    )_)(_______/(_______)   \_/   \_______/|/     \|]], "\n", { plain = true })
 
-local Logo_small = vim.split([[ _                _
+local Logo_small = vim.split([[ _                
 ( (    /||\     /|
 |  \  ( || )   ( |
 |   \ | || |   | |
@@ -135,7 +135,7 @@ local Buttons = {
 
 local function draw_logo(size)
     local logo
-    if size.cols <= #Logo_big[1] - 2 then
+    if size.cols <= #Logo_big[1] + 2 then
         logo = Logo_small
     else
         logo = Logo_big
@@ -154,7 +154,7 @@ local line_handlers = {}
 
 ---@param opts {text: string, hl: string, cb: function, map: string, icon: string}
 local function button(size, opts)
-    local target_width = size.cols > 40 and 40 or 30
+    local target_width = size.cols > 46 and 40 or 30
 
     local initial_padd = math.floor((size.cols - target_width) / 2)
     state.set_col = initial_padd + 2
