@@ -10,7 +10,9 @@ local state = {
     first_editable = 0,
     was_newline = false,
     set_col = 0,
-    old_statuscol = nil,
+    saved = {
+
+    }
 }
 
 local function print_hl_line(string, hlgroup, offset, do_newline)
@@ -65,8 +67,8 @@ local Logo_small = vim.split([[ _                _
 |  \  ( || )   ( |
 |   \ | || |   | |
 | (\ \) |( (   ) )
-| | \   | \ \_/ / 
-| )  \  |  \   /  
+| | \   | \ \_/ /
+| )  \  |  \   /
 |/    )_)   \_/   ]], "\n", { plain = true })
 
 local Buttons = {
@@ -74,11 +76,11 @@ local Buttons = {
         map = "n",
         cb = function()
             vim.cmd.new()
-            vim.cmd.wincmd("o")
+            vim.cmd.only()
         end,
         text = "New Buffer",
         hl = "New",
-        icon = "󰋚",
+        icon = "󰈔",
     },
     {
         map = "H",
@@ -196,6 +198,12 @@ local function draw_screen()
     vim.bo[state.buf].modified = false
 end
 
+local saved_opts = {
+    number = false,
+    relativenumber = false,
+    foldenable = false,
+    statuscolumn = "",
+}
 
 function M.show_start_screen()
     state.buf = vim.api.nvim_get_current_buf()
@@ -203,11 +211,10 @@ function M.show_start_screen()
     state.ns = vim.api.nvim_create_namespace("Startscreen")
     state.augroup = vim.api.nvim_create_augroup("Startscreen", {})
 
-    vim.wo[state.win].number = false
-    vim.wo[state.win].relativenumber = false
-    vim.wo[state.win].foldenable = false
-    state.old_statuscol = vim.wo[state.win].statuscolumn
-    vim.wo[state.win].statuscolumn = ""
+    for k, v in pairs(saved_opts) do
+        state.saved[k] = vim.wo[state.win][k]
+        vim.wo[state.win][k] = v
+    end
 
     -- constrain cursor
     vim.api.nvim_create_autocmd("CursorMoved", {
@@ -230,17 +237,20 @@ function M.show_start_screen()
         callback = draw_screen,
     })
 
-    vim.api.nvim_create_autocmd("BufHidden", {
+    vim.api.nvim_create_autocmd({ "BufWinLeave", "BufHidden" }, {
         buffer = state.buf,
         once = true,
         group = state.augroup,
         callback = function(ctx)
             vim.api.nvim_del_augroup_by_id(state.augroup)
-            vim.wo[state.win].statuscolumn = state.old_statuscol
-            vim.wo[state.win].number = true
-            vim.wo[state.win].relativenumber = true
+
+            for k, v in pairs(state.saved) do
+                vim.wo[state.win][k] = v
+                vim.wo[0][k] = v
+            end
+
             vim.defer_fn(function()
-                vim.api.nvim_buf_delete(state.buf, {force = true})
+                vim.api.nvim_buf_delete(state.buf, { force = true })
             end, 10)
         end
     })
