@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd("StdinReadPre", {
 })
 
 
-vim.cmd.colorschem "mynord"
+vim.cmd.colorscheme "mynord"
 vim.o.relativenumber = true
 vim.o.number = true
 vim.o.incsearch = true
@@ -171,6 +171,10 @@ require("lazy").setup("plugins", {
         path = "~/ws/nvim_plugins",
         patterns = { "dmxk062" },
         fallback = true,
+    },
+
+    install = {
+        colorscheme = { "mynord" },
     },
 
     -- just plain annoying with a simpler config
