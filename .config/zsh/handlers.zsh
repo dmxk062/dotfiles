@@ -39,14 +39,13 @@ function __readnullcommand {
     local realpath="/proc/self/fd/0"
     realpath="${realpath:A}"
     if [[ -f "$realpath" ]] {
-        \bat --color=always -Pp "$realpath"
+        command bat --color=always -Pp "$realpath"
     } elif [[ -d "$realpath" ]] {
-        \lsd "$realpath"
+        command lsd "$realpath"
     }
 }
 
 READNULLCMD=__readnullcommand
-
 
 # abuse for the clipboard, can contain any data, not just a dir
 function _clipboard_directory_name {
@@ -123,8 +122,6 @@ function _clipboard_directory_name {
 
         _wanted dynamic-dirs expl 'clipboards' compadd -S\] -a compls
     fi
-
-
 }
 
 zsh_directory_name_functions+=(_clipboard_directory_name)

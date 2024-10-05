@@ -10,7 +10,6 @@ if [[ "$1" == "load" ]] {
 # argv will be set based on an element in either an array or a line in stdin, split based on IFS
 # use "$*" if you want to access it all like one variable
 
-
 function map {
     local expr="$1"; shift
     local arg
@@ -27,6 +26,7 @@ function map {
         done
     fi
 }
+
 
 # first param is a function name
 function fmap {
@@ -79,6 +79,44 @@ function cvmap {
     local expr="print -- $2"
     shift 2
     cmap "$cmp" "$expr" "$@"
+}
+
+
+# for each input, run expr, passing the accumulator as $acc, then print the accumulator
+function fold {
+    local expr="$1"; shift
+    local arg
+    local accumulator=""
+
+    if (($# == 0)); then
+        while read -r arg; do
+            argv=(${=arg})
+            local acc="$accumulator"
+            accumulator="$(eval "$expr")"
+        done
+    else
+        for arg in "$@"; do
+            argv=(${=arg})
+            local acc="$accumulator"
+            accumulator="$(eval "$expr")"
+        done
+    fi
+
+    print -- "$accumulator"
+}
+
+# same as vmap etc
+function vfold {
+    local expr="print -- $1"
+    shift 1
+    fold "$expr" "$@"
+}
+
+# for numbers specifically
+function afold {
+    local expr="print -- \$[ "$1" ]"
+    shift 1
+    fold "$expr" "$@"
 }
 
 # only return values for with $expr returns 0
@@ -204,6 +242,7 @@ function pairs {
 
 unfunction filter tfilter ffilter \
     map cmap vmap cvmap fmap \
+    fold vfold afold \
     interlace \
     keys pairs \
     getdef
