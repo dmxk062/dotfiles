@@ -34,8 +34,8 @@ local editor = {
     CursorColumn = { bg = pal.bg1 },
 
     SpellBad     = { sp = col.orange, undercurl = true },
-    SpellRare    = { sp = col.magenta, undercurl = true },
-    SpellLocal   = { sp = col.teal, undercurl = true },
+    SpellRare    = { sp = col.magenta, underdotted = true },
+    SpellLocal   = { sp = col.teal, underdotted = true },
     SpellCap     = { sp = col.teal, undercurl = true },
 
     StatusLine   = { bg = pal.bg0 },
