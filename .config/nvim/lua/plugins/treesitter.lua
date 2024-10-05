@@ -28,27 +28,21 @@ textobjects.select = {
         -- read: inside/around argument
         ["ia"] = "@parameter.inner",
         ["aa"] = "@parameter.outer",
-        -- variables
         -- value
-        ["vv"] = "@assignment.rhs",
+        ["iv"] = "@assignment.rhs",
         -- name
-        ["vn"] = "@assignment.lhs",
+        ["iN"] = "@assignment.lhs",
         -- comment
         ["ic"] = "@comment.inner",
         ["ac"] = "@comment.outer",
         -- loops
-        ["iL"] = "@loop.inner",
-        ["aL"] = "@loop.outer",
+        ["il"] = "@loop.inner",
+        ["al"] = "@loop.outer",
         -- classes/structs
         ["iC"] = "@class.inner",
         ["aC"] = "@class.outer",
+        -- numbers
         ["in"] = "@number.inner",
-
-        ---@deprecated, gonna be more useful for indents
-        -- read: inner if
-        -- ["ii"] = "@conditional.inner",
-        -- ["ai"] = "@conditional.outer",
-
         -- return value
         ["ir"] = "@return.inner",
         ["ar"] = "@return.outer",
@@ -63,6 +57,8 @@ textobjects.move = {
         ["]c"] = "@comment.outer",
         ["]C"] = "@class.outer",
         ["]r"] = "@return.inner",
+        ["]v"] = "@assignment.lhs",
+        ["]l"] = "@loop.outer",
     },
     goto_previous_start = {
         ["[a"] = "@parameter.inner",
@@ -71,6 +67,8 @@ textobjects.move = {
         ["[c"] = "@comment.outer",
         ["[C"] = "@class.outer",
         ["[r"] = "@return.inner",
+        ["[v"] = "@assignment.lhs",
+        ["[l"] = "@loop.outer",
     },
 
     goto_next_end = {

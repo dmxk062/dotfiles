@@ -77,10 +77,16 @@ vim.api.nvim_create_autocmd("TermOpen", {
 })
 
 -- when opening a file, automatically tcd to its git repo ancestor
+-- if already in a repo, behave somewhat like autocd
 vim.api.nvim_create_autocmd("BufReadPost", {
     callback = function(ev)
         local buffile = vim.api.nvim_buf_get_name(ev.buf)
         local git_root = vim.fs.root(buffile, ".git")
-        vim.cmd.tcd(git_root)
+        local pwd = vim.fn.getcwd()
+        if not git_root or not vim.startswith(pwd, git_root) then
+            vim.cmd.tcd(git_root)
+        else
+            vim.cmd.tcd(vim.fn.expand("%:p:h"))
+        end
     end
 })
