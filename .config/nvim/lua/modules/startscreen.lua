@@ -180,6 +180,9 @@ local Buttons = {
 }
 
 local function draw_logo(size)
+    if size.rows < (#Letters[1] + #Buttons + 2) then
+        return
+    end
     local start_row = math.floor((size.rows - #Letters[1] - #Buttons - 2) / 2)
     print_padding_lines(start_row - 1)
     local text_len = 0
@@ -188,7 +191,7 @@ local function draw_logo(size)
     end
     local start_offset = math.floor((size.cols - text_len) / 2)
 
-    if text_len < size.cols + 2 then
+    if text_len < size.cols - 4 then
         for i = 1, #Letters[1] do
             for j = 1, #Letters do
                 print_hl_line(Letters[j][i], "StartscreenTitle" .. j, j == 1 and start_offset or 0, j == #Letters)
