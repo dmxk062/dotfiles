@@ -23,7 +23,7 @@ case $1 in
         file=$(zenity --file-selection --file-filter="Image files | *.png *.jpg *.jpeg *.gif *.bmp *.tiff *.svg"||_exit)
         if [[ "$(file --dereference --brief --mime-type -- "$file")" == image/* ]]
         then
-            swww img -t center "$file"
+            ~/.config/background/wallpaper.sh wall "$file"
         fi
         ;;
 esac

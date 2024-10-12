@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 eww="eww -c $HOME/.config/eww/settings"
-KITTY_OPACITY=0.9
+KITTY_OPACITY=0.8
 
 function hyprctl_keywd(){
     value="$(hyprctl -j getoption $1)"
