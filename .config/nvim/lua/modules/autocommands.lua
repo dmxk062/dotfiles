@@ -80,6 +80,8 @@ vim.api.nvim_create_autocmd("TermOpen", {
     callback = function(ev)
         vim.wo[0].number = false
         vim.wo[0].relativenumber = false
+        vim.wo[0].statuscolumn = ""
+        vim.wo[0].signcolumn = "no"
         -- immediately hand over control
         vim.cmd.startinsert()
     end
