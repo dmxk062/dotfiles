@@ -57,6 +57,8 @@ bind = , 0, movetoworkspace, 10
 bind = , code:49, movetoworkspace, name:main
 bind = , Space, movetoworkspace, name:main
 
+bind = , C, centerwindow
+
 bind = , bracketleft, movetoworkspace, -1
 bind = , bracketright, movetoworkspace, +1
 

@@ -5,9 +5,9 @@ ID_FILE="/run/user/1000/hypr/$HYPRLAND_INSTANCE_SIGNATURE/popup"
 
 read -r _ _ _ cur_bright _ < <(ddcutil -d 1 getvcp 10 -t --lazy-sleep --disable-dynamic-sleep --sleep-multiplier 0.1)
 if [[ "$1" == "raise" ]]; then
-    change=10
+    change=$2
 else
-    change=-10
+    change=-$2
 fi
 new_bright=$((cur_bright + change))
 new_bright=$((new_bright >= 100 ? 100 : (new_bright <= 0 ? 0 : new_bright)))
