@@ -276,7 +276,7 @@ window {
     button {
         color: $fg;
         &:hover {
-            background-color: $bg2;
+            background-color: #{rgba($bg0, 0.6)};
         }
         &:disabled{
             color: $fg3;
