@@ -28,8 +28,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter
             path = "Help"
         elseif filetype == "lazy" then
             path = "Plugins"
-        elseif filetype == "alpha" then
-            path = "NeoVIM"
         elseif bufname == "" then
             return
         else
@@ -46,19 +44,30 @@ vim.o.titlestring = "nv: NeoVIM" -- set initial
 -- for command mode: make it absolute for ranges etc
 -- for normal mode: relative movements <3
 local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
+-- debounce cmdline enter events to make sure we dont have flickering for non user cmdline use
+-- e.g. mappings using : instead of <cmd>
+local cmdline_debounce_timer
+
 vim.api.nvim_create_autocmd("CmdlineEnter", {
     group = cmdline_group,
     callback = function()
-        if vim.o.number then
-            vim.o.relativenumber = false
-            vim.api.nvim__redraw({ statuscolumn = true })
-        end
+        cmdline_debounce_timer = vim.uv.new_timer()
+        cmdline_debounce_timer:start(100, 0, vim.schedule_wrap(function()
+            if vim.o.number then
+                vim.o.relativenumber = false
+                vim.api.nvim__redraw({ statuscolumn = true })
+            end
+        end))
     end
 })
 
 vim.api.nvim_create_autocmd("CmdlineLeave", {
     group = cmdline_group,
     callback = function()
+        if cmdline_debounce_timer then
+            cmdline_debounce_timer:stop()
+            cmdline_debounce_timer = nil
+        end
         if vim.o.number then
             vim.o.relativenumber = true
         end
@@ -84,9 +93,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         local git_root = vim.fs.root(buffile, ".git")
         local pwd = vim.fn.getcwd()
         if not git_root or not vim.startswith(pwd, git_root) then
-            vim.cmd.tcd(git_root)
+            vim.cmd.lcd(git_root)
         else
-            vim.cmd.tcd(vim.fn.expand("%:p:h"))
+            vim.cmd.lcd(vim.fn.expand("%:p:h"))
         end
     end
 })
