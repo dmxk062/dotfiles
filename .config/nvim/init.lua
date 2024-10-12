@@ -20,7 +20,7 @@ vim.o.expandtab = true
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.hlsearch = true
-vim.o.termguicolors = true
+-- vim.o.termguicolors = true
 -- vim.o.wildmenu = false
 vim.o.scrolloff = 1
 vim.o.undofile = true
@@ -59,9 +59,10 @@ vim.opt.listchars = {
 -- normal: blink
 vim.opt.guicursor = {
     "c-ci-cr:hor20",
-    "n-o-r-v-sm:block",
+    "n-o-v-sm:block",
+    "r:hor20",
     "i-ve:ver10",
-    "n-i-ve:blinkon1"
+    "n-i-ve:blinkon1",
 }
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
