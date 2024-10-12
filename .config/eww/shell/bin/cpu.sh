@@ -9,5 +9,3 @@ while true; do
 
     printf '{"usage":%s, "temp":%s}\n' "$usage" "$temp"
 done
-
-

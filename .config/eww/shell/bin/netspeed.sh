@@ -18,5 +18,3 @@ while true; do
         "$UPMAX" "$DOWNMAX" "$up" "$down" "$upnice" "$downnice"
     sleep 3
 done
-
-
