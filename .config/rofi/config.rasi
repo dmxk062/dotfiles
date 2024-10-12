@@ -7,7 +7,6 @@ configuration {
     case-sensitive: false;
     cycle: false;
     scroll-method: 1;
-    cache-dir: "~/.cache/";
     window-thumbnail: true;
     steal-focus:false;
     drun-use-desktop-cache: true;
@@ -22,7 +21,6 @@ configuration {
     display-window: "Switch";
     display-calc: "Calculator";
     display-emoji: "Emoji";
-    show-icons:     true;
     window {
         fallback-icon: "desktop";
         hide-active-window: true;
