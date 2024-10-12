@@ -20,7 +20,7 @@ ANIMATIONS = {
     "off": 0,
     "direct": 1,
     "solid": 2,
-    "breath": 6,
+    "breathe": 6,
     "spiral": 12,
     "color_cycle": 13,
     "cycle_lr": 14,
