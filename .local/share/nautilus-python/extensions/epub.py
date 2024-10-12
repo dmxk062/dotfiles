@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-from datetime import datetime
 import re
 import xml.etree.ElementTree as ET
 import zipfile
-from gi.repository import GObject, Nautilus, Gio
+from datetime import datetime
 from urllib.parse import unquote
+
+from gi.repository import Gio, GObject, Nautilus
 
 META_NS={'dc': 'http://purl.org/dc/elements/1.1/'}
 

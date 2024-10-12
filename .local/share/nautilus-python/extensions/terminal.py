@@ -1,29 +1,29 @@
 #!/usr/bin/env python
-import os
 import subprocess
 from gi.repository import Nautilus, GObject
 from typing import List
 from urllib.parse import urlparse, unquote
 
 TEXT_TYPES = (
-    'text/plain',
-    'text/markdown',
-    'text/html',
-    'text/css',
-    'text/x-lisp',
-    'text/x-shellscript',
-    'text/javascript',
-    'application/json',
-    'application/xml',
-    'application/xhtml+xml',
-    'application/rss+xml',
-    'application/atom+xml',
-    'application/javascript',
-    'application/ecmascript',
+    "text/plain",
+    "text/markdown",
+    "text/html",
+    "text/css",
+    "text/x-lisp",
+    "text/x-shellscript",
+    "text/javascript",
+    "application/json",
+    "application/xml",
+    "application/xhtml+xml",
+    "application/rss+xml",
+    "application/atom+xml",
+    "application/javascript",
+    "application/ecmascript",
 )
 
 def launch_term(command: list[str], pwd: str) -> None:
     subprocess.run(["kitty", "--detach", f"--directory={pwd}", "--"] + command)
+
 
 def open_uri_in_term(file: Nautilus.FileInfo, cmd=[]) -> None:
     if cmd != []:
@@ -46,17 +46,10 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
         open_uri_in_term(file)
 
     def edit_term(self, _: Nautilus.MenuItem, files: list[Nautilus.FileInfo]) -> None:
-        files = [
-                unquote(
-                    urlparse(
-                        f.get_location().get_uri()
-                    ).path)
-        for f in files]
+        files = [unquote(urlparse(f.get_location().get_uri()).path) for f in files]
 
         cmd = ["nvim"] + files
-        open_uri_in_term('', cmd)
-
-
+        open_uri_in_term("", cmd)
 
     def get_file_items(
         self,
@@ -99,4 +92,3 @@ class TerminalMenu(GObject.GObject, Nautilus.MenuProvider):
         return [
             openInItem,
         ]
-

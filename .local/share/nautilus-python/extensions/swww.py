@@ -33,8 +33,12 @@ def set_as_lock(ctx, file):
     if path is None:
         return
 
-    os.unlink(LOCKSCREEN_PATH)
-    os.link(path, LOCKSCREEN_PATH)
+    try:
+        os.unlink(LOCKSCREEN_PATH)
+    except:
+        pass
+
+    os.symlink(path, LOCKSCREEN_PATH)
 
 
 def set_as_wall(ctx, file):
@@ -42,8 +46,12 @@ def set_as_wall(ctx, file):
     if path is None:
         return
 
-    os.unlink(WALLPAPER_PATH)
-    os.link(path, WALLPAPER_PATH)
+    try:
+        os.unlink(WALLPAPER_PATH)
+    except:
+        pass
+    
+    os.symlink(path, WALLPAPER_PATH)
 
     subprocess.run(
         [
