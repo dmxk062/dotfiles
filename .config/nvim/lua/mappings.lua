@@ -27,8 +27,8 @@ utils.map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.
 utils.map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
     { remap = false, expr = true })
 
--- use <space>@ for macros instead, i dont use them that often
-utils.map("n", "<space>@", "q")
+-- use <space>q for macros instead, i dont use them that often
+utils.map("n", "<space>q", "q")
 
 -- faster to exit
 utils.map("n", "q", "<cmd>q<CR>")
@@ -180,7 +180,7 @@ end)
 -- allows me to repeat commands like theyre regular mappings
 operators.map_function("g:", function(mode, region, extra, get)
     if extra.repeated then
-        vim.cmd(string.format(":%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
+        vim.cmd(string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
     else
         local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
         vim.api.nvim_feedkeys(cmdstr, "n", false)

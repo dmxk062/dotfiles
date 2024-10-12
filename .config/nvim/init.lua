@@ -1,3 +1,4 @@
+vim.cmd.colorscheme "mynord"
 local open_start_screen = (vim.fn.argc() == 0)
 
 vim.api.nvim_create_autocmd("StdinReadPre", {
@@ -8,7 +9,6 @@ vim.api.nvim_create_autocmd("StdinReadPre", {
 })
 
 
-vim.cmd.colorscheme "mynord"
 vim.o.relativenumber = true
 vim.o.number = true
 vim.o.incsearch = true
@@ -16,12 +16,9 @@ vim.o.ignorecase = true
 vim.o.showmode = false
 vim.o.smartcase = true
 vim.o.expandtab = true
--- vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.hlsearch = true
--- vim.o.termguicolors = true
--- vim.o.wildmenu = false
 vim.o.scrolloff = 1
 vim.o.undofile = true
 
@@ -62,7 +59,7 @@ vim.opt.guicursor = {
     "n-o-v-sm:block",
     "r:hor20",
     "i-ve:ver10",
-    "n-i-ve:blinkon1",
+    "r-n-i-ve:blinkon1",
 }
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
