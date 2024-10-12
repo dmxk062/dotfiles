@@ -77,7 +77,6 @@ utils.map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
 utils.map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
 utils.map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
 
--- Custom Operators {{{
 local operators = require("operators")
 
 -- evaluate lua and insert result in buffer
@@ -130,7 +129,6 @@ local sort_functions = {
         -- sort pure text at the end of the list
         return (xnum or math.huge) < (ynum or math.huge)
     end,
-
     string = function(x, y)
         return x < y
     end
@@ -201,4 +199,3 @@ operators.map_function("g:", function(mode, region, extra, get)
     end
     return nil
 end)
--- }}}
