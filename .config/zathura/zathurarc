@@ -34,4 +34,4 @@ set highlight-transparency 0.6
 map <C-r> rotate rotate-ccw
 map <C-m> mark_add
 map <C-M> mark_evaluate
-set font "Torus Pro, 10"
+set font "FiraCode Nerd Font Mono, 10"
