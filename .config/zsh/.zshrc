@@ -38,8 +38,8 @@ zle -N down-line-or-beginning-search
 #history
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
-bindkey "^[[A" up-line-or-search # Up
-bindkey "^[[B" down-line-or-search # Down
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
 
 bindkey '^Z' push-line
 
