@@ -26,21 +26,22 @@ function zvm_config {
 #sources the plugin
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
-#completion
-autoload -U up-line-or-beginning-search
-autoload -U down-line-or-beginning-search
 
 #fish-like suggestions
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-bindkey '^ ' autosuggest-accept
+zvm_bindkey viins '^ ' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
 #history
-bindkey "^[[A" up-line-or-beginning-search # Up
-bindkey "^[[B" down-line-or-beginning-search # Down
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+bindkey "^[[A" up-line-or-search # Up
+bindkey "^[[B" down-line-or-search # Down
+
+bindkey '^Z' push-line
 
 
 #my color theme
