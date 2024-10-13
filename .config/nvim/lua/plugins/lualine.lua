@@ -92,7 +92,6 @@ local mode = {
 }
 
 
-local lsp_infos_show_all = false
 local lsp_infos = {
     function()
         local icons = require("nvim-web-devicons")
@@ -110,195 +109,175 @@ local lsp_infos = {
 
             table.insert(active_clients, (icon and icon .. " " or "") .. client.name)
         end
-        if lsp_infos_show_all then
-            return table.concat(active_clients, ", ")
-        else
-            local ret = active_clients[1]
-            if #active_clients > 1 then
-                ret = ret .. " [+" .. #active_clients - 1 .. "]"
-            end
-            return ret or ""
-        end
-    end,
 
-    ---@param num_clicks integer
-    ---@param btn "l"|"r"|"m"
-    ---@param mods "s"|"c"|"a"|"m"
-    on_click = function(num_clicks, btn, mods)
-        if btn == "r" then
-            vim.api.nvim_command("LspInfo")
-        elseif btn == "l" then
-            lsp_infos_show_all = not lsp_infos_show_all
-            require("lualine").refresh()
-        end
+        return table.concat(active_clients, ", ")
     end,
     color = { fg = pal.fg0, bg = pal.bg1 },
-
 }
 
 
-local lualine_layout = {
-    lualine_a = {
-        mode,
-    },
-    lualine_b = {
-        {
-            "filename",
-            icons_enabled = true,
-            padding = { left = 2, right = 2 },
-            separator = rbubble,
-            path = 4,
-            file_status = true,
-            newfile_status = true,
-            shortening_target = 40,
-            symbols = {
-                modified = "[+]",
-                readonly = "[ro]",
-                unnamed = "[-]",
-                newfile = "[~]",
-            }
-        }
-    },
-    lualine_c = {
-        lsp_infos,
-        {
-            "diagnostics",
-            color = { fg = pal.fg0, bg = pal.bg1 },
-            sources = { "nvim_lsp" },
-            sections = { "error", "warn", "info", "hint" },
 
-            diagnostics_color = {
-                error = { fg = col.red },
-                warn  = { fg = col.orange },
-                info  = { fg = col.blue },
-                hint  = { fg = col.teal },
-            },
-            symbols = { error = "󰅖 ", warn = " ", info = " ", hint = "󰟶 " },
-            colored = true,
-            update_in_insert = false,
-            always_visible = false,
-            draw_empty = true, -- always draw the bubble
-            separator = rbubble,
+M.opts = {
+    options = {
+        theme = nord,
+        ignore_focus = {},
+        always_divide_middle = true,
+        globalstatus = true,
+        refresh = {
+            statusline = 1000,
         },
-        {
-            function()
-                local reg = vim.fn.reg_recording()
-                if reg == "" then
-                    -- show last register
-                    local last = vim.fn.reg_recorded()
-                    if last == "" then
+        disabled_filetypes = {
+            statusline = {
+                -- "alpha",
+                -- "TelescopePrompt"
+            },
+        },
+        component_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
+    },
+    sections = {
+        lualine_a = {
+            mode,
+        },
+        lualine_b = {
+            {
+                "filename",
+                icons_enabled = true,
+                padding = { left = 2, right = 2 },
+                separator = rbubble,
+                path = 4,
+                file_status = true,
+                newfile_status = true,
+                shortening_target = 40,
+                symbols = {
+                    modified = "[+]",
+                    readonly = "[ro]",
+                    unnamed = "[-]",
+                    newfile = "[~]",
+                }
+            }
+        },
+        lualine_c = {
+            lsp_infos,
+            {
+                "diagnostics",
+                color = { fg = pal.fg0, bg = pal.bg1 },
+                sources = { "nvim_lsp" },
+                sections = { "error", "warn", "info", "hint" },
+
+                diagnostics_color = {
+                    error = { fg = col.red },
+                    warn  = { fg = col.orange },
+                    info  = { fg = col.blue },
+                    hint  = { fg = col.teal },
+                },
+                symbols = { error = "󰅖 ", warn = " ", info = " ", hint = "󰟶 " },
+                colored = true,
+                update_in_insert = false,
+                always_visible = false,
+                draw_empty = true, -- always draw the bubble
+                separator = rbubble,
+            },
+            {
+                function()
+                    local reg = vim.fn.reg_recording()
+                    if reg == "" then
+                        -- show last register
+                        local last = vim.fn.reg_recorded()
+                        if last == "" then
+                            return ""
+                        end
+
+                        return [["]] .. last
+                    end
+                    return [[recording -> "]] .. reg
+                end,
+                icon = { "󰌌", color = { fg = col.magenta, bold = true } }
+
+            }
+        },
+        lualine_x = {
+            {
+                "diff",
+                color = { bg = pal.bg1 },
+                colored = true,
+                diff_color = {
+                    added    = { fg = col.green },
+                    modified = { fg = col.yellow },
+                    removed  = { fg = col.red }
+                },
+                source = function()
+                    if vim.b.gitsigns_status_dict then
+                        local signs = vim.b.gitsigns_status_dict
+                        return {
+                            added    = signs.added,
+                            removed  = signs.removed,
+                            modified = signs.changed,
+                        }
+                    end
+                end,
+                draw_empty = true,
+                separator = lbubble,
+            }
+        },
+        lualine_y = {
+            {
+                "filetype",
+                fmt = function(str)
+                    if str == "" then
+                        return "[noft]"
+                    else
+                        return str
+                    end
+                end,
+                colored = false,
+                separator = lbubble,
+            },
+            {
+                "fileformat",
+                symbols = {
+                    unix = "\\n",
+                    dos = "\\r\\n",
+                    mac = "\\r",
+                }
+            },
+        },
+        lualine_z = {
+            {
+                "progress",
+                separator = lbubble,
+            },
+            {
+                function()
+                    if vim.v.hlsearch == 0 then
                         return ""
                     end
 
-                    return [["]] .. last
-                end
-                return [[recording -> "]] .. reg
-            end,
-            icon = { "󰌌", color = { fg = col.magenta, bold = true } }
-
-        }
-    },
-    lualine_x = {
-        {
-            "diff",
-            color = { bg = pal.bg1 },
-            colored = true,
-            diff_color = {
-                added    = { fg = col.green },
-                modified = { fg = col.yellow },
-                removed  = { fg = col.red }
+                    local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 500 })
+                    if not ok or next(res) == nil then
+                        return ""
+                    end
+                    local found = math.min(res.total, res.maxcount)
+                    return string.format("%d/%d", res.current, found)
+                end,
             },
-            source = function()
-                if vim.b.gitsigns_status_dict then
-                    local signs = vim.b.gitsigns_status_dict
-                    return {
-                        added    = signs.added,
-                        removed  = signs.removed,
-                        modified = signs.changed,
-                    }
-                end
-            end,
-            draw_empty = true,
-            separator = lbubble,
-        }
-    },
-    lualine_y = {
-        {
-            "filetype",
-            fmt = function(str)
-                if str == "" then
-                    return "[noft]"
-                else
-                    return str
-                end
-            end,
-            colored = false,
-            separator = lbubble,
-        },
-        {
-            "fileformat",
-            symbols = {
-                unix = "",
-                dos = "\\r\\n",
-                mac = "\\r",
-            }
-        },
-    },
-    lualine_z = {
-        {
-            "progress",
-            separator = lbubble,
-        },
-        {
-            function()
-                if vim.v.hlsearch == 0 then
-                    return ""
-                end
-
-                local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 500 })
-                if not ok or next(res) == nil then
-                    return ""
-                end
-                local found = math.min(res.total, res.maxcount)
-                return string.format("%d/%d", res.current, found)
-            end,
-        },
-        {
-            function()
-                local wc = vim.fn.wordcount()
-                if wc.visual_words then -- text is selected in visual mode
-                    return wc.visual_words .. "w" .. "/" .. wc.visual_chars .. "c"
-                else
-                    return wc.words .. "w"
-                end
-            end,
-            separator = rbubble,
+            {
+                function()
+                    local wc = vim.fn.wordcount()
+                    if wc.visual_words then -- text is selected in visual mode
+                        return wc.visual_words .. "w/" .. wc.visual_chars .. "c"
+                    else
+                        return wc.words .. "w"
+                    end
+                end,
+                separator = rbubble,
+            },
         },
     }
 }
 
-M.config = function()
-    require("lualine").setup {
-        options = {
-            -- icons_enabled = true,
-            theme = nord,
-            ignore_focus = {},
-            always_divide_middle = true,
-            globalstatus = true,
-            refresh = {
-                statusline = 1000,
-            },
-            disabled_filetypes = {
-                statusline = {
-                    -- "alpha",
-                    -- "TelescopePrompt"
-                },
-            },
-            component_separators = { left = "", right = "" },
-            section_separators = { left = "", right = "" },
-        },
-        sections = lualine_layout,
-    }
+M.config = function(_, opts)
+    require("lualine").setup(opts)
 
     -- refresh statusline on macro recording
     vim.api.nvim_create_autocmd("RecordingEnter", { callback = require("lualine").refresh })
@@ -309,6 +288,5 @@ M.config = function()
         end
     })
 end
-
 
 return M
