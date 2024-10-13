@@ -27,8 +27,9 @@ set ratios '1:2:3'
 # run it once so the title is displayed immediately
 on-cd
 
-map J :updir; down;open
-map K :updir; up;open
+# move in parent pane
+map J :set dironly;updir; down;open;set dironly!
+map K :set dironly;updir; up;open;set dironly!
 # open files/dirs with enter
 map <enter> open
 map <backspace2> updir
@@ -38,7 +39,7 @@ map tr trash_restore
 map tDD trash_clear
 map t
 # tag a file
-map T tag-toggle ""
+map T tag-toggle "-"
 # Options
 map Op set previewer '~/.config/lf/bin/npv.sh'
 map OP set previewer '~/.config/lf/bin/previewer.sh'
@@ -56,6 +57,7 @@ map Yf copy_file
 map Yn copy_fname
 # paste file from clipboard
 map Pm push :Paste<space>
+map Pl paste_link
 map Pi pasteinfo
 # chmods
 map cm push :chmod<space>
@@ -108,7 +110,7 @@ map si :set reverse!
 map sT :set sortby time; set reverse!;top;set info 'time'
 # selections
 map <space>
-map <space> :push :select<space>
+map <space> push :select<space>
 map . :toggle
 map <gt> :toggle;down
 map <lt> :toggle;up
@@ -170,6 +172,7 @@ map c
 # cd
 map F push :select<space>
 map <c-c> fzf_jump
+map <c-space> fzf_select
 # check disk usage
 map U %echo " 󰋊 $(du -shD $f)"
 # info
