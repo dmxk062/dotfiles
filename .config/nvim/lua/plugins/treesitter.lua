@@ -1,8 +1,5 @@
-local blocked_langs = {
-    -- "tex", "latex"
-}
-
 local M = {
+    event = { "BufReadPost", "BufNewFile", "FileType" },
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -124,12 +121,6 @@ M.config = function()
             enable = true,
 
             disable = function(lang, buf)
-                for _, l in ipairs(blocked_langs) do
-                    if l == lang then
-                        return true
-                    end
-                end
-
                 local max_filesize = 500 * 1024
                 local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
                 if ok and stats and stats.size > max_filesize then
