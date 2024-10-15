@@ -55,7 +55,7 @@ local conceals = {
     },
     definition = {
         multi_prefix = {
-            icon = "⟪"
+            icon = "≡"
         },
         multi_suffix = {
             icon = "⟫"
@@ -66,7 +66,7 @@ local conceals = {
     },
     footnote = {
         multi_prefix = {
-            icon = "⟪"
+            icon = "󰙎"
         },
         multi_suffix = {
             icon = "⟫"
