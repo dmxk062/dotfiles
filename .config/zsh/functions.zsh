@@ -22,7 +22,7 @@ function @mon {
     }
     local output
     while true; do
-        IFS=$'\n' output=($(eval -- "${command[@]}"))
+        local IFS=$'\n' output=($(eval -- "${command[@]}"))
         print -n "\e]0;$output[1]\a"
         print -n "[H[2J"
         print -n "Every $interval $unit: \`${command[@]}\`\n\n${output}"
