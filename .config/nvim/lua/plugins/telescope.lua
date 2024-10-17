@@ -16,8 +16,8 @@ local M = {
             mode = { "n", "x" },
             function() require("telescope.builtin").spell_suggest() end
         },
-        cmd = { "Telescope" },
     },
+    cmd = { "Telescope" },
     dependencies = {
         "nvim-lua/plenary.nvim",
         {
@@ -26,7 +26,7 @@ local M = {
         },
         {
             "jvgrootveld/telescope-zoxide",
-        }
+        },
     },
 }
 
@@ -228,6 +228,9 @@ M.opts.extensions = {
                 end
             },
         }
+    },
+    smart_open = {
+        prompt_title = "test",
     }
 }
 
@@ -238,6 +241,7 @@ M.config = function(_, opts)
     telescope.setup(opts)
     telescope.load_extension("fzf")
     telescope.load_extension("zoxide")
+    telescope.load_extension("smart_open")
 
     -- fix it not using my settings xD
     local old_zoxide = telescope.extensions.zoxide.list
