@@ -241,7 +241,6 @@ M.config = function(_, opts)
     telescope.setup(opts)
     telescope.load_extension("fzf")
     telescope.load_extension("zoxide")
-    telescope.load_extension("smart_open")
 
     -- fix it not using my settings xD
     local old_zoxide = telescope.extensions.zoxide.list
