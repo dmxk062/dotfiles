@@ -212,9 +212,14 @@ alias fn="function" '\\'="function" 'λ'="function"
 alias ret="print --"
 alias yield="print -l --"
 
-# not just functions, also aliases and exes
+# show a nice definition of the command after it
+# for functions and aliases, shows the definition
+# for builtins and programs, show the full invocation
 function getdef {
-    whence -f -x 4 "$@"|bat --plain --language zsh
+    (
+        whence -w -- "$@"|sed 's/^.*: \(.*\)/\1 /'|tr -d '\n'
+        whence -f -x 4 -- "$@"
+    ) | bat --plain --language zsh
 }
 
 compdef getdef=whence

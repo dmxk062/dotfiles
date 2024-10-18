@@ -103,6 +103,15 @@ function lcd {
     cd "$(command lf -print-last-dir "$@")"
 }
 
+# simple clone of the tool with the same name
+function vipe {
+    local tmpfile="$(mktemp)"
+    cat > "$tmpfile"
+    $EDITOR "$tmpfile" > /dev/tty < /dev/tty
+    cat "$tmpfile"
+    command rm -rf "$tmpfile"
+}
+
 
 
 source $ZDOTDIR/handlers.zsh
