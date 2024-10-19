@@ -87,7 +87,15 @@ function ncsend {
 }
 
 function ncrecv {
-    nc -l -p $NC_PORT < /dev/null
+    nc -d -q 1 -l -p $NC_PORT
+}
+
+function ncsenddir {
+    tar czf - -- "$2" | nc "$1" $NC_PORT
+}
+
+function ncrecvdir {
+    nc -d -q 1 -l -p $NC_PORT | tar xz -C "$1"
 }
 
 elif [[ "$1" == "unload" ]]; then
@@ -96,7 +104,7 @@ unfunction fupload \
     urlenc urldec \
     makeqr \
     deepl_request translate \
-    ncsend ncrecv
+    ncsend ncrecv ncsenddir ncrecvdir
 
 unalias req 
 
