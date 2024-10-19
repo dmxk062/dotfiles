@@ -91,11 +91,11 @@ function ncrecv {
 }
 
 function ncsenddir {
-    tar czf - "$2" --checkpoint=10 | nc "$1" $NC_PORT
+    tar cvf - "$2" | nc "$1" $NC_PORT
 }
 
 function ncrecvdir {
-    nc -l -p $NC_PORT | tar xzf - -C "$2"
+    nc -l -p $NC_PORT | tar xvf - -C "$2"
 }
 
 elif [[ "$1" == "unload" ]]; then
