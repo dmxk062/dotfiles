@@ -83,11 +83,11 @@ autoload -Uz _translate
 compdef _translate translate
 
 function ncsend {
-    nc -l $NC_PORT -q 1 < /dev/null
+    cat | nc "$1" $NC_PORT
 }
 
 function ncrecv {
-    nc "$1" $NC_PORT
+    nc -l -p $NC_PORT < /dev/null
 }
 
 elif [[ "$1" == "unload" ]]; then
