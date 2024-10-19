@@ -211,12 +211,34 @@ function .. {
     }
 }
 
+# find the parent directory containing a file or dir
+# e.g. `root .git` or `root compile_commands.json`
+function root {
+    local pattern="$1"
+    local cwd="$PWD"
+
+    while [[ "$cwd" != "" && ! -e "$cwd/$pattern" ]]; do
+        cwd="${cwd%/*}"
+    done
+
+    if [[ "$cwd" == "" ]]; then
+        if [[ -e "/$pattern" ]]; then
+            print "/"
+        else
+            return 1
+        fi
+    else
+        print "$cwd"
+    fi
+}
+
 
 } elif [[ "$1" == "unload" ]] {
 
 unfunction rgf mkcd tmp rp bn in \
     rmi pwf \
-    readfile readstream lr ..
+    readfile readstream lr .. \
+    root
 
 unalias md ft bft
 
