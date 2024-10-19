@@ -10,8 +10,15 @@ setopt combiningchars
 setopt autocd
 # no annoying beeps
 unsetopt beep
+# complete inside words, brackets etc 
+setopt completeinword
+
+# make directory stack better
+setopt auto_pushd
+setopt pushd_ignore_dups
 
 
+# vi mode plugin
 function zvm_config {
     ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
     ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
@@ -23,11 +30,10 @@ function zvm_config {
     ZVM_VI_HIGHLIGHT_BACKGROUND=8
     zvm_bindkey vicmd "/" history-incremental-search-backward
 }
-#sources the plugin
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 
-#fish-like suggestions
+# fish-like suggestions
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 zvm_bindkey viins '^ ' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
@@ -35,7 +41,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
-#history
+# history
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
@@ -44,13 +50,18 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 bindkey '^Z' push-line
 
 
-#my color theme
-case $KITTY_THEME in
-    dark)
-        export LS_COLORS="$(vivid generate ~/.config/vivid/themes/darknord.yaml)";;
-    light)
-        export LS_COLORS="$(vivid generate ~/.config/vivid/themes/lightnord.yaml)";;
-esac
+# semi lazily generate and load colors for ls etc
+if [[ -z "$LS_COLORS" ]]; then
+    color_cache="$XDG_CACHE_HOME/zsh_theme_$KITTY_THEME"
+    if [[ ! -f "$color_cache" ]]; then
+        print -n "LS_COLORS='" > "$color_cache"
+        vivid generate "$XDG_CONFIG_HOME/vivid/themes/${KITTY_THEME}nord.yaml" >> "$color_cache"
+        print -n "'" >> "$color_cache"
+    fi
+    source "$color_cache"
+    export LS_COLORS
+    unset color_cache
+fi
 
 
 #completion opts
@@ -61,7 +72,6 @@ zstyle ':completion:*' menu select=-1
 zstyle ':completion:*' select-prompt"%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' list-prompt "%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' verbose false
-
 zstyle ':completion:*:manuals'    separate-sections true
 zstyle ':completion:*:manuals:*'  insert-sections   true
 
@@ -76,9 +86,7 @@ HISTFILE="$XDG_DATA_HOME/zsh/histfile"
 HISTSIZE=4000
 SAVEHIST=8000
 
-
-
-# add whatever directories you want to be hashed(accessible via ~shortcut) here
+# hashed directories (accessible via ~name)
 nameddirs=(
     ["cfg"]="$HOME/.config"
     ["dl"]="$HOME/Downloads"
@@ -95,26 +103,25 @@ nameddirs=(
     ["games"]="$HOME/Games"
 )
 
-#autopairing for quotes, brackets etc
-source $ZDOTDIR/autopair.zsh
-source $ZDOTDIR/variables.zsh
-source $ZDOTDIR/functions.zsh
-source $ZDOTDIR/aliases.zsh
-source $ZDOTDIR/prompt.zsh
-source $ZDOTDIR/fzf.zsh
+# autopairing for quotes, brackets etc
+source "$ZDOTDIR/autopair.zsh"
+
+# my own config
+source "$ZDOTDIR/variables.zsh"
+source "$ZDOTDIR/functions.zsh"
+source "$ZDOTDIR/aliases.zsh"
+source "$ZDOTDIR/prompt.zsh"
+source "$ZDOTDIR/fzf.zsh"
+# init autopair after all of that
 autopair-init
 
-#syntax highlighting
+# syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-source "$ZDOTDIR/highlight"
+source "$ZDOTDIR/highlight.zsh"
 
-
-
-#zoxide
+# zoxide
 eval "$(zoxide init zsh)"
-
-
 
 export BAT_THEME="Nord"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
