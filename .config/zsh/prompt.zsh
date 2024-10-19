@@ -126,7 +126,7 @@ function precmd {
         RPROMPT="%F{8}%K{8}%f󱎫 ${elapsed} %(1j.%F{cyan}%j& %f.)%(?.%F{green}.%F{red})%k%S%(?.󰄬 %?.󰅖 %?) %s"
     fi
     # set the title
-    print -Pn "\e]0;zsh: %~\a"
+    print -Pn "\e]0;zsh%(1j. %j&.): %~\a"
     if [[ -n "$VIRTUAL_ENV" ]] {
         RPROMPT="%B%F{$ZSH_COLORS_RGB[orange]}%S venv%s%b%f ${RPROMPT}"
     }
