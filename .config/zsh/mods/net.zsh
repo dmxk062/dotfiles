@@ -77,19 +77,26 @@ function translate {
         request_body="{\"text\":[\"${(j:\n:)buffer[@]}\"],\"target_lang\":\"$target\"}"
     fi
     deepl_request "$request_body"|jq '.translations.[0].text' -r
-
-
 }
 
 autoload -Uz _translate
 compdef _translate translate
+
+function ncsend {
+    nc -l $NC_PORT -q 1 < /dev/null
+}
+
+function ncrecv {
+    nc "$1" $NC_PORT
+}
 
 elif [[ "$1" == "unload" ]]; then
 
 unfunction fupload \
     urlenc urldec \
     makeqr \
-    deepl_request translate 
+    deepl_request translate \
+    ncsend ncrecv
 
 unalias req 
 
