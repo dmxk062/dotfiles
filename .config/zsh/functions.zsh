@@ -125,6 +125,10 @@ source "$ZDOTDIR/mods/fs.zsh" load
 source "$ZDOTDIR/mods/structured_data.zsh" load
 source "$ZDOTDIR/mods/git.zsh" load
 
-if [[ "$TERM" == "xterm-kitty" ]] {
+if [[ "$TERM" == "xterm-kitty" ]]; then
     source "$ZDOTDIR/mods/kitty.zsh" load
-}
+fi
+
+if [[ -n "$WAYLAND_DISPLAY" ]]; then
+    source "$ZDOTDIR/mods/gui.zsh" load
+fi
