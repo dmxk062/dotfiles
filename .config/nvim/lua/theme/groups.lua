@@ -132,7 +132,7 @@ local syntax = {
     Function            = { fg = col.light_cyan },
     Identifier          = { fg = col.light_blue },
     Keyword             = { fg = pal.fg0 },
-    Repeat              = { fg = col.yellow },
+    Repeat              = { fg = col.light_blue },
     Quote               = { fg = pal.bg2 },
     CodeBlock           = { bg = pal.bg1 },
     Dash                = { fg = col.blue, bold = true },
@@ -309,6 +309,13 @@ local treesitter = with_prefix("@", {
 
     ["lsp.type.macro"]             = { link = "@macro" },
     ["lsp.mod.deprecated"]         = { fg = col.bright_gray, italic = true, strikethrough = true },
+
+    ["character.printf"]           = {},
+    ["number.printf"]              = { fg = col.magenta, bg = pal.bg1 },
+    ["constant.printf"]            = { fg = col.yellow, bg = pal.bg1 },
+    ["float.printf"]               = { fg = col.magenta, bg = pal.bg1 },
+    ["symbol.printf"]              = { fg = col.light_blue, bg = pal.bg1 },
+    ["string.printf"]              = { fg = col.green, bg = pal.bg1 },
 })
 
 local lsp = with_prefix("Lsp", {
