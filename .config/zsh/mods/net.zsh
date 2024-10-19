@@ -95,7 +95,8 @@ function ncsenddir {
 }
 
 function ncrecvdir {
-    nc -l -p $NC_PORT | tar xvf - -C "$2"
+    mkdir -p -- "$1"
+    nc -l -p $NC_PORT | tar xvf - -C "$1"
 }
 
 elif [[ "$1" == "unload" ]]; then
