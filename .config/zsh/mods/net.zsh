@@ -91,7 +91,7 @@ function ncrecv {
 }
 
 function ncsenddir {
-    tar czvf - "$2" | nc "$1" $NC_PORT
+    tar czvf - "$2" --checkpoint=10 | nc "$1" $NC_PORT
 }
 
 function ncrecvdir {
