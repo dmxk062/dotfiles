@@ -3,142 +3,175 @@ local col = theme.colors
 local pal = theme.palettes.dark
 local blend = theme.blend
 
-local function with_prefix(prefix, table)
-    local res = {}
+local function add_with_prefix(to_append, prefix, table)
     for k, v in pairs(table) do
-        res[prefix .. k] = v
+        to_append[prefix .. k] = v
     end
-    return res
 end
 
 
-local editor = {
-    Normal       = { fg = pal.fg0, bg = pal.bg0 },
-    NormalFloat  = { fg = pal.fg0, bg = pal.bg0 },
-    FloatBorder  = { fg = pal.bg3 },
-    WinSeparator = { fg = pal.bg2 },
+local colorscheme = {
+    Normal                      = { fg = pal.fg0, bg = pal.bg0 },
+    NormalFloat                 = { fg = pal.fg0, bg = pal.bg0 },
+    FloatBorder                 = { fg = pal.bg3 },
+    WinSeparator                = { fg = pal.bg2 },
 
-    ColorColumn  = { bg = pal.bg1, blend = 90 },
+    ColorColumn                 = { bg = pal.bg1, blend = 90 },
 
-    Search       = { bg = pal.bg1 },
-    CurSearch    = { bg = pal.bg3 },
-    IncSearch    = { bg = pal.bg3 },
-    Substitute   = { bg = col.yellow, fg = pal.inverted },
+    Search                      = { bg = pal.bg1 },
+    CurSearch                   = { bg = pal.bg3 },
+    IncSearch                   = { bg = pal.bg3 },
+    Substitute                  = { bg = col.yellow, fg = pal.inverted },
 
-    LineNr       = { fg = col.bright_gray },
-    LineNrAbove  = { fg = blend(col.magenta, pal.bg3, 0.5) },
-    LineNrBelow  = { fg = blend(col.blue, pal.bg3, 0.5) },
-    CursorLineNr = { fg = pal.fg0 },
-    Cursor       = { reverse = true },
-    CursorLine   = { bg = pal.bg1 },
-    CursorColumn = { bg = pal.bg1 },
+    LineNr                      = { fg = col.bright_gray },
+    LineNrAbove                 = { fg = blend(col.magenta, pal.bg3, 0.5) },
+    LineNrBelow                 = { fg = blend(col.blue, pal.bg3, 0.5) },
+    CursorLineNr                = { fg = pal.fg0 },
+    Cursor                      = { reverse = true },
+    CursorLine                  = { bg = pal.bg1 },
+    CursorColumn                = { bg = pal.bg1 },
 
-    SpellBad     = { sp = col.orange, undercurl = true },
-    SpellRare    = { sp = col.magenta, underdotted = true },
-    SpellLocal   = { sp = col.teal, underdotted = true },
-    SpellCap     = { sp = col.teal, undercurl = true },
+    SpellBad                    = { sp = col.orange, undercurl = true },
+    SpellRare                   = { sp = col.magenta, underdotted = true },
+    SpellLocal                  = { sp = col.teal, underdotted = true },
+    SpellCap                    = { sp = col.teal, undercurl = true },
 
-    StatusLine   = { bg = pal.bg0 },
-    Tabline      = { link = "StatusLine" },
-    Folded       = { fg = pal.bg3 },
-    FoldColumn   = { fg = pal.bg3 },
-    SignColumn   = { fg = pal.bg3 },
+    StatusLine                  = { bg = pal.bg0 },
+    Tabline                     = { link = "StatusLine" },
+    Folded                      = { fg = pal.bg3 },
+    FoldColumn                  = { fg = pal.bg3 },
+    SignColumn                  = { fg = pal.bg3 },
 
+    Visual                      = { bg = pal.bg1 },
+    NonText                     = { fg = col.bright_gray },
+    SpecialKey                  = { link = "NonText" },
+    MatchParen                  = { fg = col.magenta, bg = pal.bg2, bold = true },
 
-    Visual            = { bg = pal.bg1 },
-    NonText           = { fg = col.bright_gray },
-    SpecialKey        = { link = "NonText" },
-    MatchParen        = { fg = col.magenta, bg = pal.bg2, bold = true },
-
-    DiffAdd           = { fg = col.green },
+    DiffAdd                     = { fg = col.green },
     -- the actual changes are highlighted anyways
-    DiffChange        = {},
-    DiffDelete        = { fg = col.red },
-    DiffText          = { fg = col.magenta, italic = true },
+    DiffChange                  = {},
+    DiffDelete                  = { fg = col.red },
+    DiffText                    = { fg = col.magenta, italic = true },
 
-    Question          = { fg = col.bright_gray },
-    Warnings          = { fg = col.orange },
-    ErrorMsg          = { fg = col.red },
-    MoreMSg           = { fg = col.bright_gray },
-    ModeMSg           = { fg = col.bright_gray },
+    Question                    = { fg = col.bright_gray },
+    Warnings                    = { fg = col.orange },
+    ErrorMsg                    = { fg = col.red },
+    MoreMSg                     = { fg = col.bright_gray },
+    ModeMSg                     = { fg = col.bright_gray },
 
-    EndOfBuffer       = { fg = pal.bg1 },
+    EndOfBuffer                 = { fg = pal.bg1 },
 
-    DiagnosticError   = { fg = col.red },
-    DiagnosticOk      = { fg = col.green },
-    DiagnosticWarning = { fg = col.orange },
+    DiagnosticError             = { fg = col.red },
+    DiagnosticOk                = { fg = col.green },
+    DiagnosticWarning           = { fg = col.orange },
 
-    Title             = { fg = col.teal, bold = true },
+    Title                       = { fg = col.teal, bold = true },
 
-    QuickFixLine      = { fg = col.teal },
-    Directory         = { fg = col.teal },
+    QuickFixLine                = { fg = col.teal },
+    Directory                   = { fg = col.teal },
 
-    Pmenu             = { bg = pal.bg1, fg = pal.fg0 },
-    PmenuSel          = { bg = col.teal, fg = pal.inverted },
-    PmenuKind         = { fg = col.magenta },
-    PmenuKindSel      = { fg = pal.inverted },
-    PmenuExtra        = { fg = pal.bg3 },
-    PmenuExtraSel     = { fg = pal.bg3 },
-    PmenuSbar         = { fg = pal.fg2 },
-    PmenuThumb        = { fg = pal.fg0 },
+    Pmenu                       = { bg = pal.bg1, fg = pal.fg0 },
+    PmenuSel                    = { bg = col.teal, fg = pal.inverted },
+    PmenuKind                   = { fg = col.magenta },
+    PmenuKindSel                = { fg = pal.inverted },
+    PmenuExtra                  = { fg = pal.bg3 },
+    PmenuExtraSel               = { fg = pal.bg3 },
+    PmenuSbar                   = { fg = pal.fg2 },
+    PmenuThumb                  = { fg = pal.fg0 },
 
+    Type                        = { fg = col.magenta },
+    StorageClass                = { fg = col.light_blue },
+    Structure                   = { fg = col.magenta },
+    Statement                   = { fg = col.light_blue },
+    Character                   = { fg = col.green },
+    String                      = { fg = col.green },
+    Number                      = { fg = col.magenta },
+    Float                       = { fg = col.magenta },
+    Constant                    = { fg = col.yellow },
+    Boolean                     = { fg = col.yellow },
+    Label                       = { fg = col.magenta },
+    Operator                    = { link = "@operator" },
+    Exception                   = { fg = col.light_blue },
+    Comment                     = { fg = col.bright_gray, italic = true },
+    SpecialComment              = { fg = col.light_cyan, italic = true },
+    PreProc                     = { fg = col.light_blue },
+    Include                     = { fg = col.light_blue },
+    Define                      = { fg = col.light_blue },
+    Macro                       = { fg = col.light_cyan },
+    Typedef                     = { fg = col.light_blue },
+    PreCondit                   = { fg = col.yellow },
+    Special                     = { fg = pal.fg2 },
+    SpecialChar                 = { fg = col.yellow },
+    Tag                         = { fg = col.fg2 },
+    Delimiter                   = { fg = pal.fg0 },
+    Debug                       = { fg = col.red },
+    Underlined                  = { fg = col.blue, underline = true },
+    Ignore                      = { fg = pal.bg1 },
+    Todo                        = { fg = col.yellow, bold = true, italic = true },
+    Conceal                     = { bg = pal.bg0 },
+    htmlLink                    = { fg = col.blue, italic = true, underline = true },
+    markdownH1Delimiter         = { fg = col.light_cyan },
+    markdownH2Delimiter         = { fg = col.red },
+    markdownH3Delimiter         = { fg = col.green },
+    htmlH1                      = { fg = col.light_cyan, bold = true },
+    htmlH2                      = { fg = col.red, bold = true },
+    htmlH3                      = { fg = col.green, bold = true },
+    htmlH4                      = { fg = col.magenta, bold = true },
+    htmlH5                      = { fg = col.light_blue, bold = true },
+    markdownH1                  = { fg = col.light_cyan, bold = true },
+    markdownH2                  = { fg = col.red, bold = true },
+    markdownH3                  = { fg = col.green, bold = true },
+    Error                       = { fg = col.red, bold = true, underline = true },
+    Conditional                 = { fg = col.blue },
+    Function                    = { fg = col.light_cyan },
+    Identifier                  = { fg = col.light_blue },
+    Keyword                     = { fg = pal.fg0 },
+    Repeat                      = { fg = col.light_blue },
+    Quote                       = { fg = pal.bg2 },
+    CodeBlock                   = { bg = pal.bg1 },
+    Dash                        = { fg = col.blue, bold = true },
+
+    LeapMatch                   = { underline = true, fg = col.yellow },
+    LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
+    -- LeapLabelPrimary          = { fg = pal.inverted, bg = col.magenta, nocombine = true },
+    IndentBlanklineChar         = { fg = pal.bg1 },
+    IndentBlanklineCharActive   = { fg = pal.bg3 },
+
+    BinedCurrentLine            = { bg = pal.bg2 },
+    TreesitterContext           = { bg = pal.bg2 },
+    TreesitterContextLineNumber = { fg = col.purple },
+
+    MultiCursorCursor           = { bg = pal.bg3 },
+
+    UndotreeTimeStamp           = { fg = col.light_blue },
+    UndotreeCurrent             = { fg = col.teal },
+    UndotreeNext                = { fg = col.yellow },
+    UndotreeHead                = { fg = col.blue },
+    UndotreeBranch              = { fg = col.magenta },
+    UndotreeSavedSmall          = { fg = col.green },
+    UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
 }
+add_with_prefix(colorscheme, "Startscreen", {
+    Title0  = { fg = col.purple },
+    Title1  = { fg = col.red },
+    Title2  = { fg = col.orange },
+    Title3  = { fg = col.yellow },
+    Title4  = { fg = col.green },
+    Title5  = { fg = col.teal },
+    Title6  = { fg = col.light_blue },
+    Title7  = { fg = col.blue },
 
-local syntax = {
-    Type                = { fg = col.magenta },
-    StorageClass        = { fg = col.light_blue },
-    Structure           = { fg = col.magenta },
-    Statement           = { fg = col.light_blue },
-    Character           = { fg = col.green },
-    String              = { fg = col.green },
-    Number              = { fg = col.magenta },
-    Float               = { fg = col.magenta },
-    Constant            = { fg = col.yellow },
-    Boolean             = { fg = col.yellow },
-    Label               = { fg = col.magenta },
-    Operator            = { link = "@operator" },
-    Exception           = { fg = col.light_blue },
-    Comment             = { fg = col.bright_gray, italic = true },
-    SpecialComment      = { fg = col.light_cyan, italic = true },
-    PreProc             = { fg = col.light_blue },
-    Include             = { fg = col.light_blue },
-    Define              = { fg = col.light_blue },
-    Macro               = { fg = col.light_cyan },
-    Typedef             = { fg = col.light_blue },
-    PreCondit           = { fg = col.yellow },
-    Special             = { fg = pal.fg2 },
-    SpecialChar         = { fg = col.yellow },
-    Tag                 = { fg = col.fg2 },
-    Delimiter           = { fg = pal.fg0 },
-    Debug               = { fg = col.red },
-    Underlined          = { fg = col.blue, underline = true },
-    Ignore              = { fg = pal.bg1 },
-    Todo                = { fg = col.yellow, bold = true, italic = true },
-    Conceal             = { bg = pal.bg0 },
-    htmlLink            = { fg = col.blue, italic = true, underline = true },
-    markdownH1Delimiter = { fg = col.light_cyan },
-    markdownH2Delimiter = { fg = col.red },
-    markdownH3Delimiter = { fg = col.green },
-    htmlH1              = { fg = col.light_cyan, bold = true },
-    htmlH2              = { fg = col.red, bold = true },
-    htmlH3              = { fg = col.green, bold = true },
-    htmlH4              = { fg = col.magenta, bold = true },
-    htmlH5              = { fg = col.light_blue, bold = true },
-    markdownH1          = { fg = col.light_cyan, bold = true },
-    markdownH2          = { fg = col.red, bold = true },
-    markdownH3          = { fg = col.green, bold = true },
-    Error               = { fg = col.red, bold = true, underline = true },
-    Conditional         = { fg = col.blue },
-    Function            = { fg = col.light_cyan },
-    Identifier          = { fg = col.light_blue },
-    Keyword             = { fg = pal.fg0 },
-    Repeat              = { fg = col.light_blue },
-    Quote               = { fg = pal.bg2 },
-    CodeBlock           = { bg = pal.bg1 },
-    Dash                = { fg = col.blue, bold = true },
-}
+    Files   = { fg = col.teal },
+    Journal = { fg = col.green },
+    Search  = { fg = col.light_blue },
+    History = { fg = col.blue },
+    Lazy    = { fg = col.yellow },
+    Mason   = { fg = col.orange },
+    Quit    = { fg = col.red },
+    New     = { fg = col.purple },
+})
 
-local oil = with_prefix("Oil", {
+add_with_prefix(colorscheme, "Oil", {
     Link                            = { fg = col.blue, bold = true },
     Dir                             = { fg = col.teal, bold = true },
     LinkTarget                      = { fg = col.blue, italic = true },
@@ -190,7 +223,7 @@ local oil = with_prefix("Oil", {
     GitStatusWorkingTreeUnmerged    = { link = "OilGitStatusIndexUnmerged" },
 })
 
-local cmp = with_prefix("CmpItem", {
+add_with_prefix(colorscheme, "CmpItem", {
     Kind            = { fg = col.yellow },
     KindText        = { fg = pal.bg3 },
     KindLatex       = { fg = col.green },
@@ -217,7 +250,7 @@ local cmp = with_prefix("CmpItem", {
     Menu            = { fg = col.green },
 })
 
-local treesitter = with_prefix("@", {
+add_with_prefix(colorscheme, "@", {
     number                         = { fg = col.magenta },
     float                          = { fg = col.magenta },
     macro                          = { fg = col.teal },
@@ -318,63 +351,50 @@ local treesitter = with_prefix("@", {
     ["string.printf"]              = { fg = col.green, bg = pal.bg1 },
 })
 
-local lsp = with_prefix("Lsp", {
-
-    InlayHint                         = { fg = col.bright_gray, italic = true },
-    InfoBorder                        = { fg = pal.bg3 },
-    DiagnosticsDefaultError           = { fg = col.red },
-    DiagnosticsSignError              = { fg = col.red },
-    DiagnosticsFloatingError          = { fg = col.red },
-    DiagnosticsVirtualTextError       = { fg = col.red },
-    DiagnosticsUnderlineError         = { undercurl = true, sp = col.red },
-    DiagnosticsDefaultWarning         = { fg = col.orange },
-    DiagnosticsSignWarning            = { fg = col.orange },
-    DiagnosticsFloatingWarning        = { fg = col.orange },
-    DiagnosticsVirtualTextWarning     = { fg = col.orange },
-    DiagnosticsUnderlineWarning       = { undercurl = true, sp = col.orange },
-    DiagnosticsDefaultInformation     = { fg = col.blue },
-    DiagnosticsSignInformation        = { fg = col.blue },
-    DiagnosticsFloatingInformation    = { fg = col.blue },
-    DiagnosticsVirtualTextInformation = { fg = col.blue },
-    StaticMethod                      = { fg = col.magenta },
-    DiagnosticsUnderlineInformation   = { undercurl = true, sp = col.blue },
-    DiagnosticsDefaultHint            = { fg = col.light_blue },
-    DiagnosticsSignHint               = { fg = col.light_blue },
-    DiagnosticsFloatingHint           = { fg = col.light_blue },
-    DiagnosticsVirtualTextHint        = { fg = col.light_blue },
-    DiagnosticsUnderlineHint          = { undercurl = true, sp = col.blue },
-    ReferenceText                     = { fg = pal.fg2, bg = pal.bg1 },
-    ReferenceRead                     = { fg = pal.fg2, bg = pal.bg1 },
-    ReferenceWrite                    = { fg = pal.fg2, bg = pal.bg1 },
-
+add_with_prefix(colorscheme, "Lsp", {
+    InlayHint      = { fg = col.bright_gray, italic = true },
+    InfoBorder     = { fg = pal.bg3 },
+    StaticMethod   = { fg = col.magenta },
+    ReferenceText  = { fg = pal.fg2, bg = pal.bg1 },
+    ReferenceRead  = { fg = pal.fg2, bg = pal.bg1 },
+    ReferenceWrite = { fg = pal.fg2, bg = pal.bg1 },
 })
 
-local diag = with_prefix("Diagnostic", {
-    Error            = { link = "LspDiagnosticsDefaultError" },
-    Warn             = { link = "LspDiagnosticsDefaultWarning" },
-    Info             = { link = "LspDiagnosticsDefaultInformation" },
-    Hint             = { link = "LspDiagnosticsDefaultHint" },
+add_with_prefix(colorscheme, "Diagnostic", {
+    Error            = { fg = col.red },
+    SignError        = { link = "DiagnosticError" },
+    UnderlineError   = { undercurl = true, sp = col.red },
+    VirtualTextError = { fg = col.red, italic = true },
+    FloatingError    = { link = "DiagnosticError" },
+
+    Warn             = { fg = col.orange },
+    SignWarn         = { link = "DiagnosticWarn" },
+    UnderlineWarn    = { undercurl = true, sp = col.orange },
+    VirtualTextWarn  = { fg = col.orange, italic = true },
+    FloatingWarn     = { link = "DiagnosticWarn" },
+
+    Info             = { fg = col.blue },
+    SignInfo         = { link = "DiagnosticInfo" },
+    UnderlineInfo    = { undercurl = true, sp = col.blue },
+    VirtualTextInfo  = { fg = col.blue, italic = true },
+    FloatingInfo     = { link = "DiagnosticInfo" },
+
+    Hint             = { fg = col.light_blue },
+    SignHint         = { link = "DiagnosticHint" },
+    UnderlineHint    = { undercurl = true, sp = col.light_blue },
+    VirtualTextHint  = { fg = col.light_blue, italic = true },
+    FloatingHint     = { link = "DiagnosticHint" },
+
+    Ok               = { fg = col.green },
+    SignOk           = { link = "DiagnosticOk" },
+    UnderlineOk      = { undercurl = true, sp = col.green },
+    VirtualTextOk    = { fg = col.green, italic = true },
+    FloatingOk       = { link = "DiagnosticOk" },
+
     Deprecated       = { link = "@lsp.mod.deprecated" },
-    VirtualTextWarn  = { link = "LspDiagnosticsVirtualTextWarning" },
-    UnderlineWarn    = { link = "LspDiagnosticsUnderlineWarning" },
-    FloatingWarn     = { link = "LspDiagnosticsFloatingWarning" },
-    VirtualTextError = { link = "LspDiagnosticsVirtualTextError" },
-    UnderlineError   = { link = "LspDiagnosticsUnderlineError" },
-    FloatingError    = { link = "LspDiagnosticsFloatingError" },
-    VirtualTextInfo  = { link = "LspDiagnosticsVirtualTextInformation" },
-    UnderlineInfo    = { link = "LspDiagnosticsUnderlineInformation" },
-    FloatingInfo     = { link = "LspDiagnosticsFloatingInformation" },
-    VirtualTextHint  = { link = "LspDiagnosticsVirtualTextHint" },
-    UnderlineHint    = { link = "LspDiagnosticsUnderlineHint" },
-    FloatingHint     = { link = "LspDiagnosticsFloatingHint" },
-
-    SignError        = { fg = col.red, bold = true },
-    SignWarn         = { fg = col.orange, bold = true },
-    SignInfo         = { fg = col.blue, bold = true },
-    SignHint         = { fg = col.light_blue, bold = true },
 })
 
-local mason = with_prefix("Mason", {
+add_with_prefix(colorscheme, "Mason", {
     Header                      = { fg = pal.bg0, bg = col.teal },
     HeaderSecondary             = { fg = pal.bg0, bg = col.teal },
     Highlight                   = { fg = col.magenta },
@@ -388,7 +408,7 @@ local mason = with_prefix("Mason", {
     MutedBlockBold              = { link = "MasonMutedBlock" },
 })
 
-local gitsigns = with_prefix("GitSigns", {
+add_with_prefix(colorscheme, "GitSigns", {
     Add                = { fg = pal.bg3 },
     AddNr              = { fg = pal.bg3 },
     AddLn              = { fg = pal.bg3 },
@@ -409,7 +429,7 @@ local gitsigns = with_prefix("GitSigns", {
     StagedChangeDelete = { fg = col.magenta, bold = true },
 })
 
-local telescope = with_prefix("Telescope", {
+add_with_prefix(colorscheme, "Telescope", {
     PromptBorder   = { fg = pal.bg3 },
     PromptTitle    = { fg = col.teal },
     ResultsBorder  = { fg = pal.bg3 },
@@ -428,48 +448,7 @@ local telescope = with_prefix("Telescope", {
     PreviewDate    = { fg = col.cyan },
 })
 
-local extra = {
-    LeapMatch                   = { underline = true, fg = col.yellow },
-    LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
-    -- LeapLabelPrimary          = { fg = pal.inverted, bg = col.magenta, nocombine = true },
-
-    IndentBlanklineChar         = { fg = pal.bg1 },
-    IndentBlanklineCharActive   = { fg = pal.bg3 },
-
-    BinedCurrentLine            = { bg = pal.bg2 },
-    TreesitterContext           = { bg = pal.bg2 },
-    TreesitterContextLineNumber = { fg = col.purple },
-
-    MultiCursorCursor           = { bg = pal.bg3 },
-
-    UndotreeTimeStamp           = { fg = col.light_blue },
-    UndotreeCurrent             = { fg = col.teal },
-    UndotreeNext                = { fg = col.yellow },
-    UndotreeHead                = { fg = col.blue },
-    UndotreeBranch              = { fg = col.magenta },
-    UndotreeSavedSmall          = { fg = col.green },
-    UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
-
-    StartscreenTitle0           = { fg = col.purple },
-    StartscreenTitle1           = { fg = col.red },
-    StartscreenTitle2           = { fg = col.orange },
-    StartscreenTitle3           = { fg = col.yellow },
-    StartscreenTitle4           = { fg = col.green },
-    StartscreenTitle5           = { fg = col.teal },
-    StartscreenTitle6           = { fg = col.light_blue },
-    StartscreenTitle7           = { fg = col.blue },
-
-    StartscreenFiles            = { fg = col.teal },
-    StartscreenJournal          = { fg = col.green },
-    StartscreenSearch           = { fg = col.light_blue },
-    StartscreenHistory          = { fg = col.blue },
-    StartscreenLazy             = { fg = col.yellow },
-    StartscreenMason            = { fg = col.orange },
-    StartscreenQuit             = { fg = col.red },
-    StartscreenNew              = { fg = col.purple },
-}
-
-local neorg = with_prefix("@neorg.", {
+add_with_prefix(colorscheme, "@neorg.", {
     ["code_block"]            = { link = "CodeBlock" },
     ["markup.verbatim.norg"]  = { link = "@markup.raw.markdown_inline" },
     undone                    = { fg = pal.bg3 },
@@ -492,17 +471,4 @@ local neorg = with_prefix("@neorg.", {
 })
 
 
-return {
-    editor,
-    syntax,
-    oil,
-    cmp,
-    treesitter,
-    lsp,
-    telescope,
-    extra,
-    mason,
-    gitsigns,
-    neorg,
-    diag
-}
+return colorscheme
