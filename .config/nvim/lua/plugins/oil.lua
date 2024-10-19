@@ -108,14 +108,6 @@ local function goto_git_ancestor()
     end
 end
 
-local function toggle_git_shown()
-    if vim.wo.signcolumn == "no" then
-        vim.wo.signcolumn = "auto"
-    else
-        vim.wo.signcolumn = "no"
-    end
-end
-
 local function open_external()
     local entry = require("oil").get_cursor_entry()
     local dir   = require("oil").get_current_dir()
@@ -256,7 +248,6 @@ M.opts = {
         -- toggle hidden
         ["gh"] = "actions.toggle_hidden",
         ["gH"] = "actions.toggle_hidden",
-        ["gS"] = toggle_git_shown,
         ["g<space>"] = open_cd,
 
         ["<space>sw"] = function() open_dir_shell("window") end,
