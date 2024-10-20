@@ -78,12 +78,12 @@ function monitor_changes() {
             IFS=">" read -r _ _ map <<<"$line"
             update hypr_submap="$map"
             ;;
-        'openlayer>>gtk-layer-shell') # this is for nwg-look
-            hyprctl keyword decoration:blur:xray true
-            ;;
-        'closelayer>>gtk-layer-shell')
-            hyprctl keyword decoration:blur:xray false
-            ;;
+        # 'openlayer>>gtk-layer-shell') # this is for nwg-look
+        #     hyprctl keyword decoration:blur:xray true
+        #     ;;
+        # 'closelayer>>gtk-layer-shell')
+        #     hyprctl keyword decoration:blur:xray false
+        #     ;;
         activewindowv2* | closelayer* | openlayer* | moveworkspacev2* | movewindowv2* | createWorkspacev2* | destroyWorkspacev2* | workspacev2*) # ignore stuff we dont really care about
             continue ;;
 
