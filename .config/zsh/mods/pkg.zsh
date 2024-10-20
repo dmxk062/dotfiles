@@ -53,12 +53,12 @@ lspkg(){
     for file in $files; do
         case $searchtype in
             exe)
-                if [[ -x "$file" ]]&&[[ -f "$file" ]]; then
+                if [[ -x "$file" && -f "$file" ]]; then
                     print "$file"
                 fi
                 ;;
             man)
-                if [[ -f "$file" ]]&&[[ "$file" == "/usr/share/man/"* ]]; then
+                if [[ -f "$file" && "$file" == "/usr/share/man/"* ]]; then
                     print "$file"
                 fi
                 ;;
@@ -74,6 +74,6 @@ lspkg(){
 elif [[ "$1" == "unload" ]]; then
 
 
-unfunction which_pkg flat lspkg
+unfunction which_pkg lspkg
 
 fi

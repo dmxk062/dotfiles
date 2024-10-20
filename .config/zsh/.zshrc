@@ -116,8 +116,6 @@ source "$ZDOTDIR/fzf.zsh"
 autopair-init
 
 # syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 source "$ZDOTDIR/highlight.zsh"
 
 # zoxide
