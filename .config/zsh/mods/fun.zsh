@@ -198,7 +198,7 @@ function interlace {
         buf[$[count++]]="$line"
 
         if ((count == numcols+1)); then
-            eval print "\${(j[$sep])buf}"
+            print "${(pj[$sep])buf}"
             count=1
             buf=()
         fi

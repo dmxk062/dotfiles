@@ -70,7 +70,7 @@ function json2table {
     done
 
     IFS=$'\t' read -rA columns < <(print -- "$jsonObj"| jq -r '.[0]|keys_unsorted|join("\t")')
-    eval print -- "\${(j[$sep])columns}"
+    print -- "${(pj[$sep])columns}"
     print -- "$jsonObj"|jq --arg sep "$sep" -r '.[]|[.[]]|join($sep)'
 }
 
@@ -83,9 +83,9 @@ function proplist2table {
     while IFS=":" read -r key rest; do 
         if [[ "$key" == "" ]]; then
             if ((!had_keys)); then
-                eval print -- "\${(j[$outsep])keys}"
+                print -- "${(pj[$outsep])keys}"
             fi
-            eval print -- "\${(j[$outsep])current}"
+            print -- "${(pj[$outsep])current}"
             current=()
             had_keys=1
             continue
@@ -128,7 +128,7 @@ function filter_table {
         done
     done
 
-    eval print -- "\${(j[$sep])found_in_table[@]}"
+    print -- "${(pj[$sep]found_in_table[@])}"
 
     local line cur
     while read -rA line; do
@@ -136,7 +136,7 @@ function filter_table {
         for i in "${indices[@]}"; do
             cur+=("${line[$i]}")
         done
-        eval print -- "\${(j[$sep])cur[@]}"
+        print -- "${(pj[$sep])cur[@]}"
     done
 }
 
