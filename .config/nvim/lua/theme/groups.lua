@@ -47,10 +47,10 @@ local colorscheme = {
     SpecialKey                  = { link = "NonText" },
     MatchParen                  = { fg = col.magenta, bg = pal.bg2, bold = true },
 
-    DiffAdd                     = { fg = col.green },
-    -- the actual changes are highlighted anyways
-    DiffChange                  = {},
-    DiffDelete                  = { fg = col.red },
+    Added                       = { fg = col.green },
+    Deleted                     = { fg = col.red },
+    Removed                     = { link = "Deleted" },
+    Changed                     = {},
     DiffText                    = { fg = col.magenta, italic = true },
 
     Question                    = { fg = col.bright_gray },
@@ -312,9 +312,9 @@ add_with_prefix(colorscheme, "@", {
     ["text.title"]                 = { fg = col.blue },
     ["text.strong"]                = { fg = pal.fg0, bold = true },
 
-    ["diff.plus"]                  = { link = "DiffAdd" },
-    ["diff.minus"]                 = { link = "DiffDelete" },
-    ["diff.delta"]                 = { link = "DiffChange" },
+    ["diff.plus"]                  = { link = "Added" },
+    ["diff.minus"]                 = { link = "Delete" },
+    ["diff.delta"]                 = { link = "Change" },
 
     ["tag"]                        = { link = "@keyword" },
     ["tag.attribute"]              = { fg = pal.fg0 },
