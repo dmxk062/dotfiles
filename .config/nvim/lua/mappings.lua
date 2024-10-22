@@ -59,11 +59,11 @@ local textobjs = require("textobjs")
 
 -- these work with all diagnostics
 utils.map("n", "<space>d", vim.diagnostic.open_float)
-utils.map({ "x", "o" }, "idd", textobjs.diagnostic)
-utils.map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
-utils.map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
-utils.map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
-utils.map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
+utils.map({ "x", "o" }, "id", textobjs.diagnostic)
+-- utils.map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
+-- utils.map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
+-- utils.map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
+-- utils.map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
 
 
 -- indents, very useful for e.g. python
