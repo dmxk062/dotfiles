@@ -55,6 +55,10 @@ map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:
 -- exit terminal mode with a single chord instead of 2
 map("t", "<C-Esc>", "<C-\\><C-n>")
 
+-- useful in insert mode, especially with lshift and rshift as bs and del
+map("i", "<S-BS>", "<C-w>")
+map("i", "<S-Del>", "<esc>cw")
+
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
