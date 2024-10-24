@@ -1,37 +1,38 @@
 local utils = require("utils")
+local map = utils.map
 
 -- less annoying way to exit terminal mode
-utils.map("t", "<S-Esc>", "<C-\\><C-n>")
+map("t", "<S-Esc>", "<C-\\><C-n>")
 
 -- for some reason smth else remaps those
-utils.map("i", "<M-k>", "<esc>k")
-utils.map("i", "<M-j>", "<esc>j")
+map("i", "<M-k>", "<esc>k")
+map("i", "<M-j>", "<esc>j")
 
 local tableader = "\\"
 
 -- tabs 1 - 9
 for i = 1, 9 do
-    utils.map("n", tableader .. i, i .. "gt", { silent = true })
+    map("n", tableader .. i, i .. "gt", { silent = true })
 end
 
-utils.map("n", tableader .. "h", "<cmd>tabprevious<cr>")
-utils.map("n", tableader .. "l", "<cmd>tabnext<cr>")
+map("n", tableader .. "h", "<cmd>tabprevious<cr>")
+map("n", tableader .. "l", "<cmd>tabnext<cr>")
 
-utils.map("n", tableader .. "t", ":tabnew ")
-utils.map("n", tableader .. "v", ":vsp ")
-utils.map("n", tableader .. "s", ":sp ")
+map("n", tableader .. "t", ":tabnew ")
+map("n", tableader .. "v", ":vsp ")
+map("n", tableader .. "s", ":sp ")
 
 -- stop {} from polluting the jumplist
-utils.map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
+map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
     { remap = false, expr = true })
-utils.map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
+map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
     { remap = false, expr = true })
 
 -- use <space>q for macros instead, i dont use them that often
-utils.map("n", "<space>q", "q")
+map("n", "<space>q", "q")
 
 -- faster to exit
-utils.map("n", "q", "<cmd>q<CR>")
+map("n", "q", "<cmd>q<CR>")
 utils.abbrev("c", "Q", "q!")
 
 -- shortcuts to enable/disable spelling
@@ -42,40 +43,40 @@ utils.abbrev("c", "spoff", "setlocal spell& spelllang&")
 -- open a shell in a kitty window of some kind
 -- works even for remote oil buffers via ssh
 local shellleader = "<space>s"
-utils.map("n", shellleader .. "w", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") end)
-utils.map("n", shellleader .. "v",
+map("n", shellleader .. "w", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") end)
+map("n", shellleader .. "v",
     function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "vsplit" }) end)
-utils.map("n", shellleader .. "s",
+map("n", shellleader .. "s",
     function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "hsplit" }) end)
-utils.map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") end)
-utils.map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
-utils.map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
+map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") end)
+map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
+map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
 
 -- exit terminal mode with a single chord instead of 2
-utils.map("t", "<C-Esc>", "<C-\\><C-n>")
+map("t", "<C-Esc>", "<C-\\><C-n>")
 
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
 -- these work with all diagnostics
-utils.map("n", "<space>d", vim.diagnostic.open_float)
-utils.map({ "x", "o" }, "id", textobjs.diagnostic)
--- utils.map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
--- utils.map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
--- utils.map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
--- utils.map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
+map("n", "<space>d", vim.diagnostic.open_float)
+map({ "x", "o" }, "id", textobjs.diagnostic)
+-- map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
+-- map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
+-- map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
+-- map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
 
 
 -- indents, very useful for e.g. python
 -- skips lines with spaces and tries to generally be as simple to use as possible
 -- a includes one line above and below
-utils.map({ "x", "o" }, "ii", function() textobjs.indent(false) end)
-utils.map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
+map({ "x", "o" }, "ii", function() textobjs.indent(false) end)
+map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
 
 -- an arbitrary selection on the screen between two points using leap
 ---@TODO decided whether to remove this
-utils.map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
-utils.map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
+map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
+map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
 
 local operators = require("operators")
 
