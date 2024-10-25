@@ -62,6 +62,8 @@ map("i", "<S-Del>", "<esc>\"_cw")
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
+map({"x", "o"}, "ae", textobjs.entire_buffer)
+
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
 map({ "x", "o" }, "id", textobjs.diagnostic)
