@@ -8,7 +8,6 @@ fi
 # tools for working with temporary files and data
 
 # return fresh directories inside ~/Tmp
-# automagically create them when they do not exist yet
 function _tmp_directory_name {
     if [[ "$1" == "d" ]]; then
         local -a match
@@ -31,9 +30,6 @@ function _tmp_directory_name {
             reply=("$HOME/Tmp")
         else
             local dir="$HOME/Tmp/$rest"
-            if [[ ! -e "$dir" ]]; then
-                mkdir -p "$dir"
-            fi
             typeset -ga reply
             reply=("$dir")
         fi

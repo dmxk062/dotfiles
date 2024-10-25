@@ -5,7 +5,7 @@
 
 if [[ "$1" == "unload" ]]; then
 
-    unfunction rgf mkcd rp bn in \
+    unfunction rgf mcd rp bn in \
         rmi pwf \
         readfile readstream lr .. \
         root
@@ -21,7 +21,7 @@ zmodload zsh/mapfile
 
 alias md="mkdir -p"
 
-function mkcd {
+function mcd {
     if [[ -d "$1" ]] {
         cd "$1"
         return
@@ -29,6 +29,7 @@ function mkcd {
     mkdir -p "$1"
     cd "$1"
 }
+compdef mcd=mkdir
 
 
 alias ft="file --mime-type -F$'\t'"
