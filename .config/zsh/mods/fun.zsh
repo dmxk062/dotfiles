@@ -1,10 +1,20 @@
 #!/bin/false
 # vim: ft=zsh
 
-# function patterns in zsh
+# functional patterns in zsh
 
-if [[ "$1" == "load" ]] {
+if [[ "$1" == "unload" ]]; then
 
+    unfunction filter tfilter ffilter \
+        map cmap vmap cvmap fmap \
+        fold vfold afold \
+        interlace \
+        keys pairs \
+        getdef
+
+    unalias fn '\\' 'λ' ret yield
+    return
+fi
 
 # all of these work pretty much the same:
 # argv will be set based on an element in either an array or a line in stdin, split based on IFS
@@ -238,20 +248,4 @@ function pairs {
     for key value in "${(@kv)${(P)arrayname}}"; do
         print -- "$key$sep$value"
     done
-}
-
-
-
-
-} elif [[ "$1" == "unload" ]] {
-
-unfunction filter tfilter ffilter \
-    map cmap vmap cvmap fmap \
-    fold vfold afold \
-    interlace \
-    keys pairs \
-    getdef
-
-unalias fn '\\' 'λ' ret yield
-
 }

@@ -1,9 +1,13 @@
 #!/bin/false
 # vim: ft=zsh
 
-# process stuff
+if [[ "$1" == "unload" ]]; then
+    unfunction procmem proccmd jobinfo
 
-if [[ "$1" == "load" ]]; then
+    return
+fi
+
+# process stuff
 
 function procmem {
     local pid
@@ -69,10 +73,3 @@ Waits    %w
 Switches %c" 
     eval time "$@"
 }
-
-
-elif [[ "$1" == "unload" ]]; then
-
-unfunction procmem proccmd jobinfo
-
-fi

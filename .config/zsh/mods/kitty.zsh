@@ -1,8 +1,13 @@
 #!/bin/false
 # vim: ft=zsh
 
-if [[ "$1" == "load" ]] {
+if [[ "$1" == "unload" ]]; then
 
+    unfunction ktty
+
+    unalias -- "@w" "@W" "@t" "@o" "@we" "@We" "@te" "@oe"
+    return
+fi
 
 # manually activate shell integration for the parts i care about
 if [[ ! -n "$KITTY_SHELL_INTEGRATION_ENABLED" && -n "$KITTY_INSTALLATION_DIR" && "$TERM" == "xterm-kitty" ]] {
@@ -43,10 +48,3 @@ alias -- "@w"="ktty window" \
     "@te"="ktty tab $EDITOR" \
     "@oe"="ktty overlay $EDITOR"
 
-} elif [[ "$1" == "unload" ]] {
-
-unfunction ktty
-
-unalias -- "@w" "@W" "@t" "@o" "@we" "@We" "@te" "@oe"
-
-}

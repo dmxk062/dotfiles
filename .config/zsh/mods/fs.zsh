@@ -3,7 +3,19 @@
 
 # make filesystem naviation/file handling easier
 
-if [[ "$1" == "load" ]] {
+if [[ "$1" == "unload" ]]; then
+
+    unfunction rgf mkcd rp bn in \
+        rmi pwf \
+        readfile readstream lr .. \
+        root
+
+    unalias md ft bft
+
+    zmodload -u zsh/mapfile
+
+    return
+fi
 
 zmodload zsh/mapfile
 
@@ -37,63 +49,6 @@ function rgf {
     local flags="$@"
 
     rg --color=never --files-with-matches $flags "$search_term" "$search_path"
-}
-
-function tmp {
-    local tmpdir="$HOME/Tmp"
-    local mode
-    local files
-    local force=0
-    case "$1" in
-        rm|del)
-            mode=delete
-            shift
-            ;;
-        rmf)
-            mode=delete
-            force=1
-            shift
-            ;;
-        cp|copy)
-            mode=copy
-            shift
-            files=("${@:2}")
-            ;;
-        *)
-            mode=cd
-            ;;
-    esac
-    local target="${1}"
-
-    case $mode in 
-        cd)
-            if [[ -d "$tmpdir/$target" ]] {
-                cd "$tmpdir/$target"
-                return
-            } else {
-                mkdir -p "$tmpdir/$target"
-                cd "$tmpdir/$target"
-            }
-            ;;
-        delete)
-            if rmdir "$tmpdir/$target" &> /dev/null; then
-                return
-            elif [[ $force == 1 ]]; then
-                \rm -rf "$tmpdir/$target"
-                return
-            fi
-            print -P -- "%F{red}$target is not empty\nUse %B\`$0 rmf $target\`%f%b"
-            return 1
-            ;;
-        copy)
-            if ! [[ -d "$tmpdir/$target" ]] {
-                mkdir -p "$tmpdir/$target"
-            }
-            cp --target-directory="$tmpdir/$target" "${files[@]}"
-            return
-            ;;
-    esac
-
 }
 
 # better realpath
@@ -230,18 +185,4 @@ function root {
     else
         print "$cwd"
     fi
-}
-
-
-} elif [[ "$1" == "unload" ]] {
-
-unfunction rgf mkcd tmp rp bn in \
-    rmi pwf \
-    readfile readstream lr .. \
-    root
-
-unalias md ft bft
-
-zmodload -u zsh/mapfile
-
 }

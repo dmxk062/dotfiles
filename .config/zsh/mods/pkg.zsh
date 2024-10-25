@@ -1,8 +1,12 @@
 #!/bin/false
 # vim: ft=zsh
 
-if [[ "$1" == "load" ]]; then
 
+if [[ "$1" == "unload" ]]; then
+    unfunction which_pkg lspkg
+
+    return
+fi
 # check which package a file belongs to, first tries to find it in $PATH
 which_pkg(){
     local file progpath
@@ -68,12 +72,3 @@ lspkg(){
         esac
     done
 }
-
-
-
-elif [[ "$1" == "unload" ]]; then
-
-
-unfunction which_pkg lspkg
-
-fi

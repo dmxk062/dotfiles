@@ -3,7 +3,12 @@
 
 # tools for working with a gui session
 
-if [[ "$1" == "load" ]] {
+if [[ "$1" == "unload" ]]; then
+
+    unfunction wintype winsend
+
+    return
+fi
 
 # write text on stdin to window given on "$1" as hyprland pattern
 function wintype {
@@ -41,10 +46,4 @@ function winsend {
     # restore clipboard
     nohup wl-copy -n < "$old_sel" > /dev/null 2>/dev/null
     rm -f "$old_sel"
-}
-
-} elif [[ "$1" == "unload" ]] {
-
-unfunction wintype winsend
-
 }

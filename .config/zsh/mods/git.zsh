@@ -1,7 +1,13 @@
 #!/bin/false
 # vim: ft=zsh
 
-if [[ "$1" == "load" ]] {
+if [[ "$1" == "unload" ]]; then
+
+    unfunction lschg
+    unalias lgit sparse_clone
+
+    return
+fi
 
 function lschg {
     local all=0
@@ -55,12 +61,3 @@ function lschg {
 
 alias lgit="lsd -l --config-file $HOME/.config/lsd/brief.yaml" \
     sparse_clone="git clone --filter=blob:none --sparse"
-
-
-} elif [[ "$1" == "unload" ]] {
-
-unfunction lschg
-unalias lgit sparse_clone
-
-}
-

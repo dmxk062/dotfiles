@@ -117,18 +117,18 @@ function vipe {
 source $ZDOTDIR/handlers.zsh
 
 # load all the modules i always want
-source "$ZDOTDIR/mods/fun.zsh" load
-source "$ZDOTDIR/mods/pkg.zsh" load
-source "$ZDOTDIR/mods/proc.zsh" load
-source "$ZDOTDIR/mods/net.zsh" load
-source "$ZDOTDIR/mods/fs.zsh" load
-source "$ZDOTDIR/mods/structured_data.zsh" load
-source "$ZDOTDIR/mods/git.zsh" load
+source "$ZDOTDIR/mods/fun.zsh"
+source "$ZDOTDIR/mods/pkg.zsh"
+source "$ZDOTDIR/mods/proc.zsh"
+source "$ZDOTDIR/mods/net.zsh"
+source "$ZDOTDIR/mods/fs.zsh"
+source "$ZDOTDIR/mods/structured_data.zsh"
+source "$ZDOTDIR/mods/git.zsh"
 
 if [[ "$TERM" == "xterm-kitty" ]]; then
-    source "$ZDOTDIR/mods/kitty.zsh" load
+    source "$ZDOTDIR/mods/kitty.zsh"
 fi
 
 if [[ -n "$WAYLAND_DISPLAY" ]]; then
-    source "$ZDOTDIR/mods/gui.zsh" load
+    source "$ZDOTDIR/mods/gui.zsh"
 fi

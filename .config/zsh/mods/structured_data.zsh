@@ -1,14 +1,21 @@
 #!/bin/false
 # vim: ft=zsh
 
+if [[ "$1" == "unload" ]]; then
+    unfunction json2hash hash2json \
+        json2table table2json \
+        proplist2table \
+        filter_table
+
+    return
+fi
+
 # general purpose data transformation functions
 # formats:
 # table: a list of newline delimitted entries with fixed, delimiter based fields
 # hash: a built in zsh hashtable
 # json: arbitrary json arrays or maps
 # proplist: a series of "blocks", delimitted by blank lines. lines match a key: value pattern
-
-if [[ "$1" == "load" ]]; then
 
 # read the json map on stdin into a hashtable variable
 # dont expand child elements
@@ -139,10 +146,3 @@ function filter_table {
         print -- "${(pj[$sep])cur[@]}"
     done
 }
-
-elif [[ "$1" == "unload" ]]; then
-    unfunction json2hash hash2json \
-        json2table table2json \
-        proplist2table \
-        filter_table
-fi
