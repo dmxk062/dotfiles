@@ -346,6 +346,8 @@ add_with_prefix(colorscheme, "@", {
 
     ["lsp.type.macro"]            = { link = "@macro" },
     ["lsp.mod.deprecated"]        = { fg = col.bright_gray, italic = true, strikethrough = true },
+    -- so --HACK etc work
+    ["lsp.type.comment"]          = {},
 
     ["character.printf"]          = {},
     ["number.printf"]             = { fg = col.magenta, bg = pal.bg1 },
