@@ -18,7 +18,8 @@ function command_not_found_handler() {
 
 
 function __readnullcommand {
-    local realpath="/proc/self/fd/0"(:A)
+    local realpath="/proc/self/fd/0"
+    realpath="${realpath:A}"
     print "$realpath"
     if [[ -f "$realpath" ]] {
         command bat --color=always -Pp "$realpath"
@@ -103,6 +104,7 @@ function _clipboard_directory_name {
         fi
 
         _wanted dynamic-dirs expl 'clipboards' compadd -S\] -a compls
+        return
     fi
 }
 
