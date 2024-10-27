@@ -20,7 +20,6 @@ function command_not_found_handler() {
 function __readnullcommand {
     local realpath="/proc/self/fd/0"
     realpath="${realpath:A}"
-    print "$realpath"
     if [[ -f "$realpath" ]] {
         command bat --color=always -Pp "$realpath"
     } elif [[ -d "$realpath" ]] {
