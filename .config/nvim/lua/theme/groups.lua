@@ -331,7 +331,7 @@ add_with_prefix(colorscheme, "@", {
     ["markup.heading.7"]           = { fg = col.blue, bold = true },
     ["markup.heading.8"]           = { fg = col.blue, bold = true },
     ["markup.math"]                = { italic = true },
-    ["markup.raw.markdown_inline"] = { bg = pal.bg1 },
+    ["markup.raw"]                 = { bg = pal.bg1 },
     ["markup.link"]                = { fg = col.fg2, italic = true },
     ["markup.link.url"]            = { fg = col.blue, underline = true, italic = true },
     ["markup.link.label"]          = { fg = col.fg2, italic = true },
