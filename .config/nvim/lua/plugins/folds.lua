@@ -78,9 +78,19 @@ M.config = function(_, opts)
         else
             --HACK: no better way rn
             vim.wo[winid].list = false
+
+            --HACK: limit the width of the new limit to smth sane
+            local parent_width = vim.api.nvim_win_get_width(0)
+            local new_width
+            if parent_width < 90 then
+                new_width = parent_width - 10
+            else
+                new_width = 80
+            end
+            vim.api.nvim_win_set_width(winid, new_width)
         end
     end)
-    ---@HACK: reset colorscheme
+    --HACK: reset colorscheme
     vim.schedule(function()
         vim.cmd.colorscheme(vim.g.colors_name)
     end)
