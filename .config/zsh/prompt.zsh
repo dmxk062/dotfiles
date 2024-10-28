@@ -100,7 +100,7 @@ function _update_git_status {
 
 
 # left part of prompt, git part
-PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %3v%(11V. %F{green}+%11v.)%(12V. %F{red}-%12v.)%F{white}%(8V. %F{yellow}~%8v%(9V>.>).)%(4V. %F{yellow}~%4v%(5V>.>).)%(7V. %F{yellow}~%7v%(8V>.>).)%(10V. %F{magenta}->%10v.) .)"
+PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(11V.%F{green}+%11v .)%(12V.%F{red}-%12v .)%F{white}%3v%(8V. %F{yellow}~%8v%(9V>.>).)%(4V. %F{yellow}~%4v%(5V>.>).)%(7V. %F{yellow}~%7v%(8V>.>).)%(10V. %F{magenta}->%10v.) .)"
 # left part of prompt, current directory
 PROMPT+="%B%F{%2v}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 # right part of prompt, flags and previous command status
