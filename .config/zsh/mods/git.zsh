@@ -13,11 +13,12 @@ fi
 function lschg {
     local all=0
     local -a dirs
-    local ignored=no
+    local ignored=no untracked=no
     for arg in "$@"; do
         if [[ "$arg" == "-a" || "$arg" == "--all" ]]; then
             all=1
             ignored=traditional
+            untracked=yes
         else 
             dirs+=("$arg")
         fi
@@ -70,7 +71,7 @@ function lschg {
                 esac
             fi
             # HACK: cd so we can work with *any* git repo, not just the current
-        done < <(cd -- "$dir"; git status --porcelain=v2 --ignored="$ignored" ".")
+        done < <(cd -- "$dir"; git status --untracked-files=$untracked --porcelain=v2 --ignored=$ignored ".")
     }
 
     if (($#dirs == 0)); then
