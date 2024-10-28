@@ -12,16 +12,13 @@ psvar=(
     "cyan"        # 2 color of prompt
     ""            # 3 git branch
     ""            # 4 git modified
-    ""            # 5 git modified, staged?
-    ""            # 6 git deleted
-    ""            # 7 git deleted, staged?
-    ""            # 8 git added
-    ""            # 9 git added, staged?
-    ""            # 10 git renamed
-    ""            # 11 git ahead
-    ""            # 12 git behind
-    ""            # 13 python venv?
-    ""            # 14 current dir readable
+    ""            # 5 git deleted
+    ""            # 6 git added
+    ""            # 7 git renamed
+    ""            # 8 git ahead
+    ""            # 9 git behind
+    ""            # 10 python venv?
+    ""            # 11 current dir readable
 )
 
 # change the color of the prompt based on mode
@@ -70,9 +67,9 @@ function _update_git_status {
                         (.A) ((added++));;
                         (.D) ((deleted++));;
                         (.M) ((modified++));;
-                        (AA|A.) ((added++)); sadded=1;;
-                        (DD|D.) ((deleted++)); sdeleted=1;;
-                        (MM|M.) ((modified++)); smodified=1;;
+                        (AA|A.) ((added++)); sadded=.;;
+                        (DD|D.) ((deleted++)); sdeleted=.;;
+                        (MM|M.) ((modified++)); smodified=.;;
                     esac
                     ;;
                 (2)
@@ -84,15 +81,12 @@ function _update_git_status {
         done < <(git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null)
 
         psvar[3]="$branch"
-        psvar[4]="$modified"
-        psvar[5]="$smodified"
-        psvar[6]="$deleted"
-        psvar[7]="$sdeleted"
-        psvar[8]="$added"
-        psvar[9]="$sadded"
-        psvar[10]="$renamed"
-        psvar[11]="$ahead"
-        psvar[12]="$behind"
+        psvar[4]="$modified$smodified"
+        psvar[5]="$deleted$sdeleted"
+        psvar[6]="$added$sadded"
+        psvar[7]="$renamed"
+        psvar[8]="$ahead"
+        psvar[9]="$behind"
     else 
         psvar[3]=""
     fi
@@ -100,11 +94,11 @@ function _update_git_status {
 
 
 # left part of prompt, git part
-PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(11V.%F{green}+%11v .)%(12V.%F{red}-%12v .)%F{white}%3v%(8V. %F{yellow}~%8v%(9V>.>).)%(4V. %F{yellow}~%4v%(5V>.>).)%(7V. %F{yellow}~%7v%(8V>.>).)%(10V. %F{magenta}->%10v.) .)"
+PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
 # left part of prompt, current directory
 PROMPT+="%B%F{%2v}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 # right part of prompt, flags and previous command status
-RPROMPT="%(14V.%F{8}[ro] .)%(13V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%(?.12.%(130?.yellow.red))}%k%S%(?.󰄬 %?.%(130?.int.󰅖 %?))%s"
+RPROMPT="%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%(?.12.%(130?.yellow.red))}%k%S%(?.󰄬 %?.%(130?.int.󰅖 %?))%s"
 function precmd {
     # dont print a new time on every single <cr>, just if a command ran
     if (( _PROMPTTIMER)); then
@@ -123,14 +117,14 @@ function precmd {
     # set the title
     print -Pn "\e]0;zsh%(1j. %j&.): %~\a"
     if [[ -n "$VIRTUAL_ENV" ]]; then
-        psvar[13]=1
+        psvar[10]=1
     else
-        psvar[13]=""
+        psvar[10]=""
     fi
     if [[ ! -w "$PWD" ]]; then
-        psvar[14]=1
+        psvar[11]=1
     else
-        psvar[14]=""
+        psvar[11]=""
     fi
     _update_git_status
     _PROMPTTIMER=0
