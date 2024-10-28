@@ -12,6 +12,7 @@ declare -A _promptvars=(
     [vcs_modified]=0
     [vcs_deleted]=0
     [vcs_added]=0
+    [vcs_renamed]=0
     [vcs_smodified]=0
     [vcs_sdeleted]=0
     [vcs_sadded]=0
@@ -42,7 +43,7 @@ function _update_git_status {
     if (($? == 1)) {
         _promptvars[vcs_active]=1
         local type gstatus submod hname iname score file _
-        local modified=0 deleted=0 added=0 smodified=0 sdeleted=0 sadded=0 _branch branch="" remote="" ahead=0 behind=0
+        local modified=0 deleted=0 added=0 renamed=0 smodified=0 sdeleted=0 sadded=0 _branch branch="" remote="" ahead=0 behind=0
         while read -r type gstatus submod hname iname score file; do
             case "$type" in 
                 (\#) 
@@ -72,23 +73,27 @@ function _update_git_status {
                     esac
                     ;;
                 (2)
-                    # Nothing for moved/renamed for now
+                    case "$gstatus" in
+                        RM) ((renamed++));;
+                    esac
                     ;;
             esac
         done < <(git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null)
         _promptvars[vcs_branch]="$branch"
         _promptvars[vcs_remote]="$upstream"
 
-        _promptvars[vcs_modified]="$modified"
-        _promptvars[vcs_deleted]="$deleted"
-        _promptvars[vcs_added]="$added"
+        _promptvars[vcs_modified]=$modified
+        _promptvars[vcs_deleted]=$deleted
+        _promptvars[vcs_added]=$added
 
-        _promptvars[vcs_smodified]="$smodified"
-        _promptvars[vcs_sdeleted]="$sdeleted"
-        _promptvars[vcs_sadded]="$sadded"
+        _promptvars[vcs_smodified]=$smodified
+        _promptvars[vcs_sdeleted]=$sdeleted
+        _promptvars[vcs_sadded]=$sadded
 
-        _promptvars[vcs_ahead]="$ahead"
-        _promptvars[vcs_behind]="$behind"
+        _promptvars[vcs_renamed]=$renamed
+
+        _promptvars[vcs_ahead]=$ahead
+        _promptvars[vcs_behind]=$behind
     } else {
         _promptvars[vcs_active]=0
     }
@@ -101,7 +106,7 @@ function chpwd {
 function _update_prompt {
     PROMPT="%B%F{$_promptvars[color]}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
     if ((_promptvars[vcs_active])) {
-        local modified added deleted ahead behind staged
+        local modified added deleted renamed ahead behind
         if ((_promptvars[vcs_modified] > 0)); then
             modified+=" %F{yellow}~$_promptvars[vcs_modified]"
             if ((_promptvars[vcs_smodified])); then
@@ -120,13 +125,16 @@ function _update_prompt {
                 modified+="%B.%b"
             fi
         fi
+        if ((_promptvars[vcs_renamed] > 0)); then
+            renamed=" %F{magenta}->$_promptvars[vcs_renamed]"
+        fi
         if ((_promptvars[vcs_ahead] > 0)); then
             ahead="%F{green}+$_promptvars[vcs_ahead] "
         fi
         if ((_promptvars[vcs_behind] > 0)); then
             behind="%F{red}-$_promptvars[vcs_behind] "
         fi
-        PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${ahead}${behind}%F{white}${_promptvars[vcs_branch]}${added}${modified}${deleted}${ahead_behind}%K{8} $PROMPT"
+        PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${ahead}${behind}%F{white}${_promptvars[vcs_branch]}${added}${modified}${deleted}${renamed}%K{8} $PROMPT"
     }
 }
 

@@ -30,21 +30,42 @@ function lschg {
             return 1
         fi
 
-        local line mode file prefix head=""
+        local mode file old_perm new_perm prefix suffix head=""
+        local type line
         while read -r type line; do
             if [[ $type == 1 ]]; then
-                read -r mode _ _ _ _ _ _ file <<< "$line";
+                read -r mode _ _ old_perm new_perm _ _ file extra <<< "$line";
                 case $mode in 
                     M\.|MM) prefix="%B%F{yellow}";;
                     \.M) prefix="%F{yellow}";;
                     A\.|AA) prefix="%B%F{green}";;
-                    \.A) prefix="%F{greem}";;
+                    \.A) prefix="%F{green}";;
                     D\.|DD) prefix="%B%F{red}";;
                     \.D) prefix="%F{red}";;
                 esac
-                print -P -- "$prefix$mode%f%b $file"
+                suffix=""
+                if [[ "$old_perm" != "$new_perm" ]]; then
+                    local bits_old="${old_perm:2}"
+                    local bits_new="${new_perm:2}"
+                    suffix=" %F{red}$bits_old%f -> %F{green}$bits_new%f"
+                fi
+                print -P -- "$prefix$mode%f%b $file$suffix"
             elif [[ "$type" == '?' || "$type" == "!" ]] && ((all)); then
                 print -P -- "\e[90m$type  $line%f"
+            elif [[ "$type" == 2 ]]; then
+                local old_path new_path
+                read -r mode _ _ old_perm new_perm _ _ _ files <<< "$line"
+                IFS=$'\t' read -r new_path old_path <<< "$files"
+
+                suffix=""
+                if [[ "$old_perm" != "$new_perm" ]]; then
+                    local bits_old="${old_perm:2}"
+                    local bits_new="${new_perm:2}"
+                    suffix="; %F{red}$bits_old%f -> %F{green}$bits_new%f"
+                fi
+                if [[ "$mode" == "RM" ]]; then
+                    print -P -- "%B%F{red}R%F{yellow}M%b %F{red}$old_path%f -> %F{yellow}%f$new_path$suffix"
+                fi
             fi
             # HACK: cd so we can work with *any* git repo, not just the current
         done < <(cd -- "$dir"; git status --porcelain=v2 --ignored="$ignored" ".")
