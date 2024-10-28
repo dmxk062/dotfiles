@@ -6,11 +6,11 @@
 if [[ "$1" == "unload" ]]; then
 
     unfunction rgf mcd rp bn in \
-        pwf \
+        pwf del \
         readfile readstream lr .. \
         root
 
-    unalias md ft bft del
+    unalias md ft bft 
 
     zmodload -u zsh/mapfile
 
@@ -34,8 +34,16 @@ compdef mcd=mkdir
 
 alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
-alias del="rm -rI --"
 
+
+function del {
+    if (($# > 3)); then
+        print -n "Remove $# files?[yN] "
+        read -q||return 1
+    fi
+
+    rm -r -- "$@"
+}
 
 # ripgrep files
 function rgf {
