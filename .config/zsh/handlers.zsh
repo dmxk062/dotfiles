@@ -1,17 +1,23 @@
 function command_not_found_handler() {
-    printf 'zsh: command not found: %s\n' "$1" > /dev/stderr
     # early return if not in tty
-    if [[ ! -t 0 || ! -t 1 ]] && return 127
+    printf "zsh: command not found: '%s'" "$1" >&2
+    if [[ ! -t 0 || ! -t 1 ]]; then
+        print
+        return 127
+    fi
 
     local file="$1"
     local entries=(${(f)"$(pkgfile -b -- "$file")"})
     if (( ${#entries[@]} )); then
-        print "zsh: but it is available in the following package(s):"
+        print ", found in:"
         local entry
-        for entry in "${entries[@]}"; do
-            local fields=(${(s:/:)entry})
-            print -P "%B%F{magenta}${fields[1]}%f/${fields[2]}%b"
-        done
+        (for entry in "${entries[@]}"; do
+            (
+                local -a fields=(${(s:/:)entry})
+                local desc="$(expac -Ss '%d' -- "^${fields[2]}$")"
+                print -P "%B%F{magenta}${fields[1]}%f/${fields[2]}%b\t$desc"
+            )&
+        done; wait) | column -ts$'\t' >&2
     fi
     return 127
 }

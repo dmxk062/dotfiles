@@ -27,7 +27,7 @@ which_pkg(){
         fi
     done
     if ((${#paths} > 0)); then
-        pacman -Qo "${paths[@]}"
+        pacman -Qqo "${paths[@]}"
     else
         return 1
     fi
