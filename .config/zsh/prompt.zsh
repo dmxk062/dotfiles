@@ -42,9 +42,9 @@ function _update_git_status {
     git check-ignore . &> /dev/null
     # returns 0 if dir ignored and 1 if not but still git
     if (($? == 1)); then
-        local type gstatus submod hname iname score file _
+        local type gstatus submod file
         local modified="" deleted="" added="" renamed="" smodified="" sdeleted="" sadded="" _branch branch="" remote="" ahead="" behind=""
-        while read -r type gstatus submod hname iname score file; do
+        while read -r type gstatus submod _ _ _ file; do
             case "$type" in 
                 (\#) 
                     case "$gstatus" in 
@@ -104,7 +104,7 @@ PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(11V.%F{green}+%11v .)%(12V.%F{red}-%12
 # left part of prompt, current directory
 PROMPT+="%B%F{%2v}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 # right part of prompt, flags and previous command status
-RPROMPT="%(14V.%F{8}[ro] .)%(13V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{cyan}%j& %f.)%(?.%F{12}.%F{red})%k%S%(?.󰄬 %?.󰅖 %?) %s"
+RPROMPT="%(14V.%F{8}[ro] .)%(13V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%(?.12.%(130?.yellow.red))}%k%S%(?.󰄬 %?.%(130?.int.󰅖 %?))%s"
 function precmd {
     # dont print a new time on every single <cr>, just if a command ran
     if (( _PROMPTTIMER)); then
