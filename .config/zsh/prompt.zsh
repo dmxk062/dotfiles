@@ -108,7 +108,7 @@ function precmd {
             psvar[12]=12
             psvar[13]="󰄬 0"
             ;;
-        "148")
+        "148"|"147")
             psvar[12]=blue
             psvar[13]="stp"
             ;;
