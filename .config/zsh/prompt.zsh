@@ -74,7 +74,7 @@ function _update_git_status {
                     ;;
                 (2)
                     case "$gstatus" in
-                        RM) ((renamed++));;
+                        R.|RM) ((renamed++));;
                     esac
                     ;;
             esac

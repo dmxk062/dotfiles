@@ -4,7 +4,7 @@
 if [[ "$1" == "unload" ]]; then
 
     unfunction lschg
-    unalias lgit sparse_clone unstage
+    unalias sparse_clone unstage
 
     return
 fi
@@ -63,9 +63,11 @@ function lschg {
                     local bits_new="${new_perm:2}"
                     suffix="; %F{red}$bits_old%f -> %F{green}$bits_new%f"
                 fi
-                if [[ "$mode" == "RM" ]]; then
-                    print -P -- "%B%F{red}R%F{yellow}M%b %F{red}$old_path%f -> %F{yellow}$new_path%f$suffix"
-                fi
+                case "$mode" in
+                    R.|RM)
+                        print -P -- "%B%F{red}${mode:0:1}%F{yellow}${mode:1:2}%b %F{red}$old_path%f -> %F{yellow}$new_path%f$suffix"
+                        ;;
+                esac
             fi
             # HACK: cd so we can work with *any* git repo, not just the current
         done < <(cd -- "$dir"; git status --porcelain=v2 --ignored="$ignored" ".")
@@ -84,6 +86,5 @@ function lschg {
 
 }
 
-alias lgit="lsd -l --config-file $HOME/.config/lsd/brief.yaml" \
-    sparse_clone="git clone --filter=blob:none --sparse" \
+alias sparse_clone="git clone --filter=blob:none --sparse" \
     unstage="git restore --staged -- "
