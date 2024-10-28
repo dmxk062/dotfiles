@@ -64,7 +64,7 @@ function lschg {
                     suffix="; %F{red}$bits_old%f -> %F{green}$bits_new%f"
                 fi
                 if [[ "$mode" == "RM" ]]; then
-                    print -P -- "%B%F{red}R%F{yellow}M%b %F{red}$old_path%f -> %F{yellow}%f$new_path$suffix"
+                    print -P -- "%B%F{red}R%F{yellow}M%b %F{red}$old_path%f -> %F{yellow}$new_path%f$suffix"
                 fi
             fi
             # HACK: cd so we can work with *any* git repo, not just the current
