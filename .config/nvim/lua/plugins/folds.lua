@@ -48,13 +48,11 @@ M.opts = {
         win_config = {
             border = "rounded",
             winblend = 0,
-            list = false,
         },
         mappings = {
-            scrollU = "<C-k>",
-            scrollD = "<C-j>",
             jumpTop = "[",
-            jumpBot = "]"
+            jumpBot = "]",
+            switch = "K"
         }
     },
 }
@@ -71,6 +69,7 @@ M.config = function(_, opts)
 
     utils.map("n", "zO", ufo.openAllFolds)
     utils.map("n", "zC", ufo.closeAllFolds)
+
     utils.map("n", "<S-k>", function()
         local winid = ufo.peekFoldedLinesUnderCursor()
         if not winid then
@@ -78,14 +77,15 @@ M.config = function(_, opts)
         else
             --HACK: no better way rn
             vim.wo[winid].list = false
+            vim.wo[winid].wrap = true
 
-            --HACK: limit the width of the new limit to smth sane
+            --HACK: limit the width of the new window to smth sane
             local parent_width = vim.api.nvim_win_get_width(0)
             local new_width
             if parent_width < 90 then
                 new_width = parent_width - 10
             else
-                new_width = 80
+                new_width = 90
             end
             vim.api.nvim_win_set_width(winid, new_width)
         end

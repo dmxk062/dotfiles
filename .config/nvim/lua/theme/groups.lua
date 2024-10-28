@@ -41,6 +41,7 @@ local colorscheme = {
     Folded                      = { bg = blend(pal.bg1, pal.bg0, 0.4) },
     UfoFoldedFg                 = {},
     UfoFoldedBg                 = {},
+    UfoPreviewThumb              = {  },
     FoldNumber                  = { fg = col.magenta, italic = true },
     FoldColumn                  = { fg = pal.bg3 },
     SignColumn                  = { fg = pal.bg3 },
