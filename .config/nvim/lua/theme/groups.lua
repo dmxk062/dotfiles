@@ -54,8 +54,11 @@ local colorscheme = {
     Added                       = { fg = col.green },
     Deleted                     = { fg = col.red },
     Removed                     = { link = "Deleted" },
-    Changed                     = {},
-    DiffText                    = { fg = col.magenta, italic = true },
+    Changed                     = { },
+    DiffDelete                  = { fg = col.red, italic = true },
+    DiffChange                  = { },
+    DiffAdd                     = { fg = col.green, italic = true },
+    DiffText                    = { fg = col.yellow, italic = true },
 
     Question                    = { fg = col.bright_gray },
     Warnings                    = { fg = col.orange },
@@ -213,11 +216,11 @@ add_with_prefix(colorscheme, "Oil", {
     GitStatusWorkingTreeUntracked   = { link = "OilGitStatusIndexIgnored" },
     GitStatusIndexAdded             = { fg = col.green },
     GitStatusWorkingTreeAdded       = { link = "OilGitStatusIndexAdded" },
-    GitStatusIndexCopied            = { fg = col.yellow },
+    GitStatusIndexCopied            = { fg = col.green },
     GitStatusWorkingTreeCopied      = { link = "OilGitStatusIndexCopied" },
     GitStatusIndexDeleted           = { fg = col.red },
     GitStatusWorkingTreeDeleted     = { link = "OilGitStatusIndexDeleted" },
-    GitStatusIndexModified          = { fg = col.magenta },
+    GitStatusIndexModified          = { fg = col.yellow },
     GitStatusWorkingTreeModified    = { link = "OilGitStatusIndexModified" },
     GitStatusIndexRenamed           = { fg = col.light_blue },
     GitStatusWorkingTreeRenamed     = { link = "OilGitStatusIndexRenamed" },
@@ -316,8 +319,8 @@ add_with_prefix(colorscheme, "@", {
     ["text.title"]                 = { fg = col.blue },
     ["text.strong"]                = { fg = pal.fg0, bold = true },
 
-    ["diff.plus"]                  = { link = "Added" },
-    ["diff.minus"]                 = { link = "Delete" },
+    ["diff.plus"]                  = { link = "DiffAdd" },
+    ["diff.minus"]                 = { link = "DiffDelete" },
     ["diff.delta"]                 = { link = "Change" },
 
     ["tag"]                        = { link = "@keyword" },
@@ -419,7 +422,7 @@ add_with_prefix(colorscheme, "GitSigns", {
     Add                = { fg = pal.bg3 },
     AddNr              = { fg = pal.bg3 },
     AddLn              = { fg = pal.bg3 },
-    Change             = { fg = col.magenta },
+    Change             = { fg = col.yellow },
     ChangeNr           = { fg = pal.bg3 },
     ChangeLn           = { fg = pal.bg3 },
     Delete             = { fg = col.red },
@@ -430,10 +433,10 @@ add_with_prefix(colorscheme, "GitSigns", {
     DeleteInline       = { fg = col.red, italic = true },
     ChangeInline       = { italic = true, bold = true },
 
-    StagedAdd          = { fg = pal.bg3, bold = true },
+    StagedAdd          = { fg = col.green, bold = true },
     StagedDelete       = { fg = col.red, bold = true },
-    StagedChange       = { fg = col.magenta, bold = true },
-    StagedChangeDelete = { fg = col.magenta, bold = true },
+    StagedChange       = { fg = col.yellow, bold = true },
+    StagedChangeDelete = { fg = col.orange, bold = true },
 })
 
 add_with_prefix(colorscheme, "Telescope", {

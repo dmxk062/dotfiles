@@ -28,9 +28,9 @@ function lschg {
             if [[ $type == 1 ]]; then
                 read -r mode _ _ _ _ _ _ file <<< "$line";
                 case $mode in 
-                    \.M) prefix="%F{magenta}";;
-                    M\.) prefix="%B%F{magenta}";;
-                    MM)  prefix="%B%F{magenta}";;
+                    \.M) prefix="%F{yellow}";;
+                    M\.) prefix="%B%F{yellow}";;
+                    MM)  prefix="%B%F{yellow}";;
                     A\.) prefix="%B%F{green}";;
                     \.A) prefix="%F{greem}";;
                     AA) prefix="%B%F{green}";;
