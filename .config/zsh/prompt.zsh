@@ -19,6 +19,8 @@ psvar=(
     ""            # 9 git behind
     ""            # 10 python venv?
     ""            # 11 current dir readable
+    12            # 12 color based on return status
+    ""            # 13 symbol/text to be used for return status
 )
 
 # change the color of the prompt based on mode
@@ -98,8 +100,31 @@ PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)
 # left part of prompt, current directory
 PROMPT+="%B%F{%2v}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 # right part of prompt, flags and previous command status
-RPROMPT="%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%(?.12.%(130?.yellow.red))}%k%S%(?.󰄬 %?.%(130?.int.󰅖 %?))%s"
+RPROMPT="%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%12v}%k%S%13v%s"
 function precmd {
+    local exitc=$?
+    case $exitc in
+        "0") 
+            psvar[12]=12
+            psvar[13]="󰄬 0"
+            ;;
+        "148")
+            psvar[12]=blue
+            psvar[13]="stp"
+            ;;
+        "130") 
+            psvar[12]=yellow
+            psvar[13]="int"
+            ;;
+        "139")
+            psvar[12]=red
+            psvar[13]="seg"
+            ;;
+        *)
+            psvar[12]=red
+            psvar[13]="󰅖 $exitc"
+            ;;
+    esac
     # dont print a new time on every single <cr>, just if a command ran
     if (( _PROMPTTIMER)); then
         local elapsed_ms=$[ ( $EPOCHREALTIME-$_PROMPTTIMER )* 1000 ] elapsed
