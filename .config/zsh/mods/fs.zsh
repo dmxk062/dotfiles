@@ -6,11 +6,11 @@
 if [[ "$1" == "unload" ]]; then
 
     unfunction rgf mcd rp bn in \
-        rmi pwf \
+        pwf \
         readfile readstream lr .. \
         root
 
-    unalias md ft bft
+    unalias md ft bft del
 
     zmodload -u zsh/mapfile
 
@@ -34,6 +34,7 @@ compdef mcd=mkdir
 
 alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
+alias del="rm -rI --"
 
 
 # ripgrep files
@@ -80,64 +81,6 @@ function readstream {
     eval "${arrayname}=("\${buffer}")"
 }
 
-# rm wrapper
-function rmi {
-    if (($# < 1)) {
-        return 0
-    }
-
-    local -a files
-    local -a dirs
-    local -a links
-
-    local file
-    for file in "${@}"; do
-        if [[ -L "$file" ]] {
-            links+=("$file")
-        } elif [[ -f "$file" ]] {
-            files+=("$file")
-        } elif [[ -d "$file" ]] {
-            dirs+=("$file")
-        } else {
-            print -P "%F{red}Not a file, dir or symlink: $file%f" > /dev/stderr
-            return 1
-        }
-    done
-
-    local -a fmt=()
-    if (($#files > 0)) {
-        fmt+=("%F{magenta}󰈔 $#files file(s)%f")
-    }
-    if (($#dirs > 0)) {
-        fmt+=("%F{cyan}󰉋 $#dirs dir(s)%f")
-    }
-    if (($#links > 0)) {
-        fmt+=("%F{blue}󰌷 $#links link(s)%f")
-    }
-    print -Pn -- "%B${(j:\n:)fmt[@]}%b" "\n%B%F{red}%S󰩹 rm%s%f%b N[o]/y[es]/f[orce]/t[rash] "
-    read -r -k 1 answer
-    echo
-    case "$answer" in 
-        [tT])
-            gio trash -- "${files[@]}" "${dirs[@]}" "${links[@]}"
-            if (($? == 0)) {
-                print -P "%F{green}󰩹 Successfully trashed $[$#files + $#dirs + $#links] element(s)%f"
-            }
-            ;;
-        [yY])
-            \rm -rI -- "${files[@]}" "${dirs[@]}" "${links[@]}"
-            ;;
-        [fF])
-            \rm -rf -- "${files[@]}" "${dirs[@]}" "${links[@]}"
-            echo
-            ;;
-        *|[Nn]) 
-            echo
-            return 1
-            ;;
-    esac
-    echo
-}
 
 function lr {
     command lsd --tree --depth 3 --hyperlink=always "$@" | less -rFi
