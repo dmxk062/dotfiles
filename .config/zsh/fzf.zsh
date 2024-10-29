@@ -49,6 +49,25 @@ function nz {
     (cd "$parent"; nvim "$abs")
 }
 
+function _fzf_shell_hist {
+    local res="$(fc -n -l 1000|awk '!seen[$2]++'|fzf --height=18 --prompt="hist: " -q "^$BUFFER")"
+    BUFFER="${res}"
+    zle end-of-line
+    zle reset-prompt
+}
+
+function _fzf_insert_path {
+    local res="$(fd --type=file --type=directory --no-hidden --no-ignore | fzf --height=18 --prompt="file: " --preview='bat -p --color=always -- {}')"
+    BUFFER+="${res}"
+    CURSOR+="${#res}"
+    zle reset-prompt
+}
+
+zle -N fzf_shell_hist _fzf_shell_hist
+zle -N fzf_insert_path _fzf_insert_path
+bindkey '^[/' fzf_shell_hist
+bindkey '^[f' fzf_insert_path
+
 export FZF_DEFAULT_OPTS="$colors ${(j: :)fzf_opts}"
 export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS ${(j: :)zo_extra}"
 
