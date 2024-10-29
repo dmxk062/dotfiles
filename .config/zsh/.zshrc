@@ -1,6 +1,10 @@
+# load the initial time first so we can show it in the prompt
+zmodload zsh/datetime
+_PROMPTTIMER=$EPOCHREALTIME
+
 fpath+="$ZDOTDIR/comp"
+
 declare -A ZSH_COLORS_RGB=(
-    ["light-gray"]="#4c566a"
     ["orange"]="#d08770"
 )
 

@@ -1,7 +1,3 @@
-# we *need* EPOCHREALTIME for the prompt to be accurate
-zmodload zsh/datetime
-
-_PROMPTTIMER=0
 # directly set the hooks instead of just adding to the hook, so ours runs first
 function preexec {
     _PROMPTTIMER=$EPOCHREALTIME
@@ -38,12 +34,12 @@ function zvm_after_select_vi_mode {
 
 function _update_git_status {
     # only update if inside a git dir that isnt ignored
-    git check-ignore . &> /dev/null
+    git check-ignore -q . 2>/dev/null
     # returns 0 if dir ignored and 1 if not but still git
     if (($? == 1)); then
         local type gstatus submod file
         local modified="" deleted="" added="" renamed="" smodified="" sdeleted="" sadded="" _branch branch="" remote="" ahead="" behind=""
-        while read -r type gstatus submod _ _ _ file; do
+        git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null | while read -r type gstatus submod _ _ _ file; do
             case "$type" in 
                 (\#) 
                     case "$gstatus" in 
@@ -55,9 +51,7 @@ function _update_git_status {
                             behind="$hname"
                             ahead="${ahead#+}"
                             behind="${behind#-}"
-                            if [[ "$ahead" == -* ]] {
-                                behind="${ahead#-}"
-                            }
+                            [[ "$ahead" == -* ]]&& behind="${ahead#-}"
 
                             [[ "$ahead" == 0 ]]&&ahead=""
                             [[ "$behind" == 0 ]]&&behind=""
@@ -80,7 +74,7 @@ function _update_git_status {
                     esac
                     ;;
             esac
-        done < <(git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null)
+        done
 
         psvar[3]="$branch"
         psvar[4]="$modified$smodified"
@@ -137,7 +131,6 @@ function precmd {
             printf -v elapsed "%.2fms" $elapsed_ms
         }
         psvar[1]=$elapsed
-        # format: <elapsed time> <jobs? and if yes <count>&> <exit code with symbol> <time it took>
     fi
     # set the title
     print -Pn "\e]0;zsh%(1j. %j&.): %~\a"
