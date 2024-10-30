@@ -110,7 +110,7 @@ local colorscheme = {
     Special                     = { fg = pal.fg2 },
     SpecialChar                 = { fg = col.yellow },
     Tag                         = { fg = col.fg2 },
-    Delimiter                   = { fg = pal.fg0 },
+    Delimiter                   = { link = "@punctuation.delimiter" },
     Debug                       = { fg = col.red },
     Underlined                  = { fg = col.blue, underline = true },
     Ignore                      = { fg = pal.bg1 },
@@ -120,14 +120,14 @@ local colorscheme = {
     markdownH1Delimiter         = { fg = col.light_cyan },
     markdownH2Delimiter         = { fg = col.red },
     markdownH3Delimiter         = { fg = col.green },
-    htmlH1                      = { fg = col.light_cyan, bold = true },
-    htmlH2                      = { fg = col.red, bold = true },
-    htmlH3                      = { fg = col.green, bold = true },
-    htmlH4                      = { fg = col.magenta, bold = true },
-    htmlH5                      = { fg = col.light_blue, bold = true },
-    markdownH1                  = { fg = col.light_cyan, bold = true },
-    markdownH2                  = { fg = col.red, bold = true },
-    markdownH3                  = { fg = col.green, bold = true },
+    htmlH1                      = { link = "@markup.heading.1" },
+    htmlH2                      = { link = "@markup.heading.2" },
+    htmlH3                      = { link = "@markup.heading.3" },
+    htmlH4                      = { link = "@markup.heading.4" },
+    htmlH5                      = { link = "@markup.heading.5" },
+    markdownH1                  = { link = "@markup.heading.1"},
+    markdownH2                  = { link = "@markup.heading.2"},
+    markdownH3                  = { link = "@markup.heading.3"},
     Error                       = { fg = col.red, bold = true, underline = true },
     Conditional                 = { link = "@keyword.conditional" },
     Function                    = { link = "@keyword.function" },
@@ -140,7 +140,6 @@ local colorscheme = {
 
     LeapMatch                   = { underline = true, fg = col.yellow },
     LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
-    -- LeapLabelPrimary          = { fg = pal.inverted, bg = col.magenta, nocombine = true },
     IndentBlanklineChar         = { fg = pal.bg1 },
     IndentBlanklineCharActive   = { fg = pal.bg3 },
 
@@ -418,6 +417,10 @@ add_with_prefix(colorscheme, "Mason", {
     Muted                       = { fg = pal.bg3 },
     MutedBlock                  = { bg = pal.bg3 },
     MutedBlockBold              = { link = "MasonMutedBlock" },
+})
+
+add_with_prefix(colorscheme, "zsh", {
+    VariableDef = { link = "@variable" },
 })
 
 add_with_prefix(colorscheme, "GitSigns", {
