@@ -50,16 +50,20 @@ function nz {
 }
 
 function _fzf_shell_hist {
-    local res="$(fc -n -l 1000|awk '!seen[$2]++'|fzf --height=18 --prompt="hist: " -q "^$BUFFER")"
-    BUFFER="${res}"
-    zle end-of-line
+    local res="$(fc -n -l $HISTSIZE|awk '!seen[$2]++'|fzf --height=18 --prompt="hist: " -q "^$BUFFER")"
+    if [[ -n "$res" ]]; then
+        BUFFER="${res}"
+        zle end-of-line
+    fi
     zle reset-prompt
 }
 
 function _fzf_insert_path {
     local res="$(fd --type=file --type=directory --no-hidden --no-ignore | fzf --height=18 --prompt="file: " --preview='bat -p --color=always -- {}')"
-    BUFFER+="${res}"
-    CURSOR+="${#res}"
+    if [[ -n "$res" ]]; then
+        BUFFER+="${res}"
+        CURSOR+="${#res}"
+    fi
     zle reset-prompt
 }
 

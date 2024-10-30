@@ -58,12 +58,11 @@ bindkey '^Z' push-line
 if [[ -z "$LS_COLORS" ]]; then
     color_cache="$XDG_CACHE_HOME/zsh_theme_$KITTY_THEME"
     if [[ ! -f "$color_cache" ]]; then
-        print -n "LS_COLORS='" > "$color_cache"
+        print -n "export LS_COLORS='" > "$color_cache"
         vivid generate "$XDG_CONFIG_HOME/vivid/themes/${KITTY_THEME}nord.yaml" >> "$color_cache"
         print -n "'" >> "$color_cache"
     fi
     source "$color_cache"
-    export LS_COLORS
     unset color_cache
 fi
 
