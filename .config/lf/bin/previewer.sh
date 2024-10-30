@@ -29,8 +29,9 @@ function separator {
 function create_cache {
     local pathn="${1:h4}"
     local pathn="${pathn//\//.}"
-    local basen="${1:t}"
-    print -- "$CACHEDIR/${pathn:1}.$basen${2}"
+    local pathe="${1:t2}"
+    local pathe="${pathe//\//.}"
+    print -- "$CACHEDIR/${pathn:1}.${pathe}${2}"
 }
 
 
