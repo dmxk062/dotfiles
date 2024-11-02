@@ -67,8 +67,13 @@ if [[ -z "$LS_COLORS" ]]; then
 fi
 
 # does pretty much what it says
+# does not complete inside quotes (duh)
 function __complete_galias {
-    [[ -n "$PREFIX" ]] && compadd -- ${(M)${(k)galiases}:#$PREFIX*}
+    if [[ -n "$PREFIX" && -z "$QIPREFIX" ]]; then
+        local expl
+        _description aliases expl 'alias'
+        compadd "${expl[@]}" -- ${(M)${(k)galiases}:#$PREFIX*}
+    fi
     return 1
 }
 
