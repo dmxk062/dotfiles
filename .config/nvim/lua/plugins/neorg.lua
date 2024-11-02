@@ -207,17 +207,17 @@ M.config = function(_, opts)
     vim.api.nvim_create_autocmd("Filetype", {
         pattern = "norg",
         callback = function(args)
-            local utils = require("utils")
+            local map = require("utils").local_mapper(args.buf)
             for key, action in pairs(normal_mappings) do
-                utils.lmap(args.buf, "n", key, action)
+                map("n", key, action)
             end
             vim.wo[0].conceallevel = 2
-            utils.lmap(args.buf, "x", "<", "<Plug>(neorg.promo.demote.range)")
-            utils.lmap(args.buf, "x", ">", "<Plug>(neorg.promo.promote.range)")
-            utils.lmap(args.buf, { "x", "o" }, "ah", "<Plug>(neorg.text-objects.textobject.heading.outer)")
-            utils.lmap(args.buf, { "x", "o" }, "ih", "<Plug>(neorg.text-objects.textobject.heading.inner)")
-            utils.lmap(args.buf, { "x", "o" }, "at", "<Plug>(neorg.text-objects.textobject.tag.inner)")
-            utils.lmap(args.buf, { "x", "o" }, "it", "<Plug>(neorg.text-objects.textobject.tag.inner)")
+            map("x", "<", "<Plug>(neorg.promo.demote.range)")
+            map("x", ">", "<Plug>(neorg.promo.promote.range)")
+            map({ "x", "o" }, "ah", "<Plug>(neorg.text-objects.textobject.heading.outer)")
+            map({ "x", "o" }, "ih", "<Plug>(neorg.text-objects.textobject.heading.inner)")
+            map({ "x", "o" }, "at", "<Plug>(neorg.text-objects.textobject.tag.inner)")
+            map({ "x", "o" }, "it", "<Plug>(neorg.text-objects.textobject.tag.inner)")
         end
     })
 end
