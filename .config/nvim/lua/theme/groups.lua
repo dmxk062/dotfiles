@@ -114,7 +114,7 @@ local colorscheme = {
     Debug                       = { fg = col.red },
     Underlined                  = { fg = col.blue, underline = true },
     Ignore                      = { fg = pal.bg1 },
-    Todo                        = { fg = col.yellow, bold = true, italic = true },
+    Todo                        = { link = "@comment.todo" },
     Conceal                     = { bg = pal.bg0 },
     htmlLink                    = { fg = col.blue, italic = true, underline = true },
     markdownH1Delimiter         = { fg = col.light_cyan },
@@ -125,9 +125,9 @@ local colorscheme = {
     htmlH3                      = { link = "@markup.heading.3" },
     htmlH4                      = { link = "@markup.heading.4" },
     htmlH5                      = { link = "@markup.heading.5" },
-    markdownH1                  = { link = "@markup.heading.1"},
-    markdownH2                  = { link = "@markup.heading.2"},
-    markdownH3                  = { link = "@markup.heading.3"},
+    markdownH1                  = { link = "@markup.heading.1" },
+    markdownH2                  = { link = "@markup.heading.2" },
+    markdownH3                  = { link = "@markup.heading.3" },
     Error                       = { fg = col.red, bold = true, underline = true },
     Conditional                 = { link = "@keyword.conditional" },
     Function                    = { link = "@keyword.function" },
@@ -421,6 +421,9 @@ add_with_prefix(colorscheme, "Mason", {
 
 add_with_prefix(colorscheme, "zsh", {
     VariableDef = { link = "@variable" },
+    Function    = { link = "@function" },
+    KSHFunction = { link = "@function" },
+    Operator    = { link = "@operator" },
 })
 
 add_with_prefix(colorscheme, "GitSigns", {

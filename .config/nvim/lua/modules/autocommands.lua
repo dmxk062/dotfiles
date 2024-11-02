@@ -1,5 +1,7 @@
+local autocmd = vim.api.nvim_create_autocmd
+
 -- change the title in a more intelligent way
-vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
+autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
     callback = function(args)
         -- expand stuff similarly to my shell directory aliases
         local function format_path(name, user)
@@ -48,7 +50,7 @@ local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
 -- e.g. mappings using : instead of <cmd>
 local cmdline_debounce_timer
 
-vim.api.nvim_create_autocmd("CmdlineEnter", {
+autocmd("CmdlineEnter", {
     group = cmdline_group,
     callback = function()
         cmdline_debounce_timer = vim.uv.new_timer()
@@ -61,7 +63,7 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
     end
 })
 
-vim.api.nvim_create_autocmd("CmdlineLeave", {
+autocmd("CmdlineLeave", {
     group = cmdline_group,
     callback = function()
         if cmdline_debounce_timer then
@@ -76,7 +78,7 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 
 
 -- sane defaults for terminal mode
-vim.api.nvim_create_autocmd("TermOpen", {
+autocmd("TermOpen", {
     callback = function(ev)
         vim.wo[0].number = false
         vim.wo[0].relativenumber = false
@@ -89,7 +91,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 
 -- when opening a file, automatically tcd to its git repo ancestor
 -- if already in a repo, behave somewhat like autocd
-vim.api.nvim_create_autocmd("BufReadPost", {
+autocmd("BufReadPost", {
     callback = function(ev)
         local buffile = vim.api.nvim_buf_get_name(ev.buf)
         local git_root = vim.fs.root(buffile, ".git")
@@ -99,5 +101,13 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         else
             vim.cmd.lcd(vim.fn.expand("%:p:h"))
         end
+    end
+})
+
+-- auto resize on window resize
+-- TODO: add actual heuristics
+autocmd("WinResized", {
+    callback = function(ev)
+        vim.cmd.wincmd("=")
     end
 })
