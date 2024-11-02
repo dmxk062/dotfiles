@@ -1,4 +1,5 @@
 local utils = require("utils")
+local abbrev = utils.abbrev
 local map = utils.map
 
 -- less annoying way to exit terminal mode
@@ -36,12 +37,12 @@ map("n", "<space>q", "q")
 
 -- faster to exit
 map("n", "q", "<cmd>q<CR>")
-utils.abbrev("c", "Q", "q!")
+abbrev("c", "Q", "q!")
 
 -- shortcuts to enable/disable spelling
-utils.abbrev("c", "spen", "setlocal spell spelllang=en_us")
-utils.abbrev("c", "spde", "setlocal spell spelllang=de_at")
-utils.abbrev("c", "spoff", "setlocal spell& spelllang&")
+abbrev("c", "spen", "setlocal spell spelllang=en_us")
+abbrev("c", "spde", "setlocal spell spelllang=de_at")
+abbrev("c", "spoff", "setlocal spell& spelllang&")
 
 -- open a shell in a kitty window of some kind
 -- works even for remote oil buffers via ssh

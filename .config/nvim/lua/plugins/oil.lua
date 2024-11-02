@@ -203,7 +203,7 @@ M.opts = {
     view_options = {
         -- always show .. to go up so gg<cr> works
         is_hidden_file = function(name, bufnr)
-            return vim.startswith(name, ".") and not (name:sub(2, 2) == ".")
+            return name:sub(1, 1) == "." and not (name:sub(2, 2) == ".")
         end,
 
         is_always_hidden = function(name, bufnr)
@@ -265,7 +265,6 @@ M.opts = {
         -- only close oil buffer if it is the last one
         ["q"]   = function()
             for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                print(buf)
                 if vim.bo[buf].filetype ~= "oil" then
                     vim.api.nvim_win_set_buf(0, buf)
                     return
