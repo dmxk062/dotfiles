@@ -2,7 +2,7 @@ local M = {
     "nvim-telescope/telescope.nvim",
     keys = {
         { "<space>D",       function() require("telescope.builtin").diagnostics() end },
-        { "<space>g",       function() require("telescope.builtin").git_files() end },
+        { "<space>gf",      function() require("telescope.builtin").git_files() end },
         { "<space>F",       function() require("telescope.builtin").find_files() end },
         { "<space>h",       function() require("telescope.builtin").oldfiles() end },
         { "<space>H",       function() require("telescope.builtin").help_tags() end },
