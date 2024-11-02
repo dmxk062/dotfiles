@@ -5,6 +5,10 @@ local blend = theme.blend
 
 local function add_with_prefix(to_append, prefix, table)
     for k, v in pairs(table) do
+        -- expand * at the start to be a "relative" link
+        if v.link and v.link:sub(1,1) == "*" then
+            v.link = prefix .. v.link:sub(2)
+        end
         to_append[prefix .. k] = v
     end
 end
@@ -208,25 +212,28 @@ add_with_prefix(colorscheme, "Oil", {
     SizeMedium                      = { fg = col.yellow },
     SizeLarge                       = { fg = col.orange },
     SizeHuge                        = { fg = col.red },
+})
 
-    GitStatusIndexIgnored           = { fg = pal.bg3 },
-    GitStatusWorkingTreeIgnored     = { link = "OilGitStatusIndexIgnored" },
-    GitStatusIndexUntracked         = { link = "OilGitStatusIndexIgnored" },
-    GitStatusWorkingTreeUntracked   = { link = "OilGitStatusIndexIgnored" },
-    GitStatusIndexAdded             = { fg = col.green },
-    GitStatusWorkingTreeAdded       = { link = "OilGitStatusIndexAdded" },
-    GitStatusIndexCopied            = { fg = col.green },
-    GitStatusWorkingTreeCopied      = { link = "OilGitStatusIndexCopied" },
-    GitStatusIndexDeleted           = { fg = col.red },
-    GitStatusWorkingTreeDeleted     = { link = "OilGitStatusIndexDeleted" },
-    GitStatusIndexModified          = { fg = col.yellow },
-    GitStatusWorkingTreeModified    = { link = "OilGitStatusIndexModified" },
-    GitStatusIndexRenamed           = { fg = col.light_blue },
-    GitStatusWorkingTreeRenamed     = { link = "OilGitStatusIndexRenamed" },
-    GitStatusIndexTypeChanged       = { fg = col.orange },
-    GitStatusWorkingTreeTypeChanged = { link = "OilGitStatusIndexTypeChanged" },
-    GitStatusIndexUnmerged          = { fg = pal.fg0 },
-    GitStatusWorkingTreeUnmerged    = { link = "OilGitStatusIndexUnmerged" },
+add_with_prefix(colorscheme, "OilGitStatus", {
+    IndexIgnored           = { fg = pal.bg3 },
+    WorkingTreeIgnored     = { link = "*IndexIgnored" },
+    IndexUntracked         = { link = "*IndexIgnored" },
+    WorkingTreeUntracked   = { link = "*IndexIgnored" },
+    IndexAdded             = { fg = col.green },
+    WorkingTreeAdded       = { link = "*IndexAdded" },
+    IndexCopied            = { fg = col.green },
+    WorkingTreeCopied      = { link = "*IndexCopied" },
+    IndexDeleted           = { fg = col.red },
+    WorkingTreeDeleted     = { link = "*IndexDeleted" },
+    IndexModified          = { fg = col.yellow },
+    WorkingTreeModified    = { link = "*IndexModified" },
+    IndexRenamed           = { fg = col.light_blue },
+    WorkingTreeRenamed     = { link = "*IndexRenamed" },
+    IndexTypeChanged       = { fg = col.orange },
+    WorkingTreeTypeChanged = { link = "*IndexTypeChanged" },
+    IndexUnmerged          = { fg = pal.fg0 },
+    WorkingTreeUnmerged    = { link = "*IndexUnmerged" },
+
 })
 
 add_with_prefix(colorscheme, "CmpItem", {
@@ -240,8 +247,8 @@ add_with_prefix(colorscheme, "CmpItem", {
     KindField       = { fg = pal.fg0 },
     KindVariable    = { fg = pal.fg0 },
     KindInterface   = { fg = col.magenta },
-    KindStruct      = { link = "CmpItemKindInterface" },
-    KindClass       = { link = "CmpItemKindInterface" },
+    KindStruct      = { link = "*ItemKindInterface" },
+    KindClass       = { link = "*ItemKindInterface" },
     KindModule      = { fg = col.green },
     KindFile        = { fg = col.yellow },
     KindFolder      = { fg = col.light_blue },
@@ -373,34 +380,34 @@ add_with_prefix(colorscheme, "Lsp", {
 
 add_with_prefix(colorscheme, "Diagnostic", {
     Error            = { fg = col.red },
-    SignError        = { link = "DiagnosticError" },
+    SignError        = { link = "*Error" },
     UnderlineError   = { undercurl = true, sp = col.red },
     VirtualTextError = { fg = col.red, italic = true },
-    FloatingError    = { link = "DiagnosticError" },
+    FloatingError    = { link = "*Error" },
 
     Warn             = { fg = col.orange },
-    SignWarn         = { link = "DiagnosticWarn" },
+    SignWarn         = { link = "*Warn" },
     UnderlineWarn    = { undercurl = true, sp = col.orange },
     VirtualTextWarn  = { fg = col.orange, italic = true },
-    FloatingWarn     = { link = "DiagnosticWarn" },
+    FloatingWarn     = { link = "*Warn" },
 
     Info             = { fg = col.blue },
-    SignInfo         = { link = "DiagnosticInfo" },
+    SignInfo         = { link = "*Info" },
     UnderlineInfo    = { undercurl = true, sp = col.blue },
     VirtualTextInfo  = { fg = col.blue, italic = true },
-    FloatingInfo     = { link = "DiagnosticInfo" },
+    FloatingInfo     = { link = "*Info" },
 
     Hint             = { fg = col.light_blue },
-    SignHint         = { link = "DiagnosticHint" },
+    SignHint         = { link = "*Hint" },
     UnderlineHint    = { undercurl = true, sp = col.light_blue },
     VirtualTextHint  = { fg = col.light_blue, italic = true },
-    FloatingHint     = { link = "DiagnosticHint" },
+    FloatingHint     = { link = "*Hint" },
 
     Ok               = { fg = col.green },
-    SignOk           = { link = "DiagnosticOk" },
+    SignOk           = { link = "*Ok" },
     UnderlineOk      = { undercurl = true, sp = col.green },
     VirtualTextOk    = { fg = col.green, italic = true },
-    FloatingOk       = { link = "DiagnosticOk" },
+    FloatingOk       = { link = "*Ok" },
 
     Deprecated       = { link = "@lsp.mod.deprecated" },
 })
@@ -410,10 +417,10 @@ add_with_prefix(colorscheme, "Mason", {
     HeaderSecondary             = { fg = pal.bg0, bg = col.teal },
     Highlight                   = { fg = col.magenta },
     HighlightBlock              = { fg = pal.bg0, bg = col.teal },
-    HighlightBlockBold          = { link = "MasonHighlightBlock" },
-    HighlightSecondary          = { link = "MasonHighlight" },
-    HighlightSecondaryBlock     = { link = "MasonHighlightBlock" },
-    HighlightSecondaryBlockBold = { link = "MasonHighlightBlockBold" },
+    HighlightBlockBold          = { link = "*HighlightBlock" },
+    HighlightSecondary          = { link = "*Highlight" },
+    HighlightSecondaryBlock     = { link = "*HighlightBlock" },
+    HighlightSecondaryBlockBold = { link = "*HighlightBlockBold" },
     Muted                       = { fg = pal.bg3 },
     MutedBlock                  = { bg = pal.bg3 },
     MutedBlockBold              = { link = "MasonMutedBlock" },
@@ -433,6 +440,7 @@ add_with_prefix(colorscheme, "GitSigns", {
     Change             = { fg = col.yellow },
     ChangeNr           = { fg = pal.bg3 },
     ChangeLn           = { fg = pal.bg3 },
+    ChangeDelete       = { fg = col.orange },
     Delete             = { fg = col.red },
     DeleteNr           = { fg = pal.bg3 },
     DeleteLn           = { fg = pal.bg3 },
@@ -484,8 +492,8 @@ add_with_prefix(colorscheme, "@neorg.", {
     ["quote.4"]               = { italic = true, fg = blend(col.light_cyan, pal.fg0, 0.7) },
     ["quote.5"]               = { italic = true, fg = blend(col.light_blue, pal.fg0, 0.7) },
     ["quote.6"]               = { italic = true, fg = blend(col.blue, pal.fg0, 0.7) },
-    ["quote.7"]               = { link = "@neorg.quote.6" },
-    ["quote.8"]               = { link = "@neorg.quote.6" },
+    ["quote.7"]               = { link = "*quote.6" },
+    ["quote.8"]               = { link = "*quote.6" },
 })
 
 
