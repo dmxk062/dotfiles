@@ -261,6 +261,18 @@ M.opts = {
         ["g=t"] = function() set_sort("mtime") end,
         ["g=i"] = function() set_sort("invert") end,
         ["g=d"] = function() set_sort("default") end,
+
+        -- only close oil buffer if it is the last one
+        ["q"]   = function()
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                print(buf)
+                if vim.bo[buf].filetype ~= "oil" then
+                    vim.api.nvim_win_set_buf(0, buf)
+                    return
+                end
+            end
+            vim.cmd("quit")
+        end,
     },
 }
 
@@ -280,7 +292,6 @@ M.config = function(_, opts)
     })
 
     local prefix = "<space>f"
-    utils.map("n", prefix .. "F", require("oil").open_float)
     utils.map("n", prefix .. "f", require("oil").open)
 
     utils.map("n", prefix .. "t", function()
