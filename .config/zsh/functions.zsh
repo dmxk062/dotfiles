@@ -3,9 +3,16 @@ function c {
     print -n "[H[2J"
 }
 
-alias -- "@gtk_debug"="env GTK_DEBUG=interactive" \
-   "@gnome"="env XDG_CURRENT_DESKTOP=gnome"
+# run program in alternate screen
+function @alt {
+    if [[ -t 1 ]]; then
+        tput smcup
+        eval "$@"
+        tput rmcup
+    fi
+}
 
+compdef @alt=eval
 
 function chars2codes {
     local char
@@ -28,8 +35,12 @@ function lcd {
 # simple clone of the tool with the same name
 function vipe {
     local tmpfile="$(mktemp)"
-    cat > "$tmpfile"
-    $EDITOR "$tmpfile" > /dev/tty < /dev/tty
+    cat >> "$tmpfile"
+    if [[ -n "$1" && "$EDITOR" == *vim ]]; then
+        $EDITOR "$tmpfile" +"setf $1" > /dev/tty < /dev/tty
+    else
+        $EDITOR "$tmpfile" > /dev/tty < /dev/tty
+    fi
     cat "$tmpfile"
     command rm -rf "$tmpfile"
 }
