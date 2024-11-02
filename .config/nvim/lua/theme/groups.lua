@@ -6,7 +6,7 @@ local blend = theme.blend
 local function add_with_prefix(to_append, prefix, table)
     for k, v in pairs(table) do
         -- expand * at the start to be a "relative" link
-        if v.link and v.link:sub(1,1) == "*" then
+        if v.link and v.link:sub(1, 1) == "*" then
             v.link = prefix .. v.link:sub(2)
         end
         to_append[prefix .. k] = v

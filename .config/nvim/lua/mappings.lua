@@ -8,6 +8,9 @@ map("t", "<S-Esc>", "<C-\\><C-n>")
 map("i", "<M-k>", "<esc>k")
 map("i", "<M-j>", "<esc>j")
 
+map("n", "]q", "<cmd>cnext<cr>")
+map("n", "[q", "<cmd>cprev<cr>")
+
 local tableader = "\\"
 
 -- tabs 1 - 9
@@ -80,7 +83,7 @@ map({ "x", "o" }, "ii", function() textobjs.indent(false) end)
 map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
 
 -- an arbitrary selection on the screen between two points using leap
----@TODO decided whether to remove this
+-- TODO decide: whether to remove this
 map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
 map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
 
