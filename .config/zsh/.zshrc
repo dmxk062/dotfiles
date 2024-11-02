@@ -66,9 +66,14 @@ if [[ -z "$LS_COLORS" ]]; then
     unset color_cache
 fi
 
+# does pretty much what it says
+function __complete_global_alias {
+    [[ -n "$PREFIX" ]] && compadd -- ${(M)${(k)galiases}:#$PREFIX*}
+    return 1
+}
 
 #completion opts
-zstyle ':completion:*' completer _complete _expand _approximate
+zstyle ':completion:*' completer __complete_global_alias _complete _expand _approximate
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} "ma=;1"
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=-1
