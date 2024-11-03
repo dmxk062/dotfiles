@@ -114,3 +114,11 @@ function _clipboard_directory_name {
 }
 
 zsh_directory_name_functions+=(_clipboard_directory_name)
+
+# use bat as a pager for man
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANROFFOPT='-c'
+
+# show help with syntax highlighting
+alias \
+    -g -- @--help='--help 2>&1 | bat -l help -p' \

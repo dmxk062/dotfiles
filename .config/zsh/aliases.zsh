@@ -29,3 +29,14 @@ alias \
     -g "@out2err"=">&2" \
     -g '@noerr'="2>/dev/null" \
     -g "@noout"=">/dev/null"
+
+alias \
+    ':tab'="IFS=$'\t'" \
+    ':colon'="IFS=':'" \
+    ':semic'="IFS=';'" \
+    ':lf'="IFS=$'\n'" \
+    ':eq'="IFS='='"
+
+TAB=$'\t'
+FALSE=1
+TRUE=0

@@ -120,7 +120,6 @@ nameddirs=(
 source "$ZDOTDIR/autopair.zsh"
 
 # my own config
-source "$ZDOTDIR/variables.zsh"
 source "$ZDOTDIR/functions.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/prompt.zsh"
@@ -135,5 +134,3 @@ source "$ZDOTDIR/highlight.zsh"
 eval "$(zoxide init zsh)"
 
 export BAT_THEME="Nord"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export MANROFFOPT='-c'
