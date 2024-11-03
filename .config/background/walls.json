@@ -1,90 +1,94 @@
 [
     {
-        "path":"/home/dmx/.config/background/img/forrest_tower",
-        "name":"Forrest Tower"
+        "path": "/home/dmx/.config/background/img/forrest_tower",
+        "name": "Forrest Tower"
     },
     {
-        "path":"/home/dmx/.config/background/img/arch_landscape",
-        "name":"Arch Linux Sunset"
+        "path": "/home/dmx/.config/background/img/arch_landscape",
+        "name": "Arch Linux Sunset"
     },
     {
-        "path":"/home/dmx/.config/background/img/foggy_island-res",
-        "name":"Foggy Island"
+        "path": "/home/dmx/.config/background/img/foggy_island-res",
+        "name": "Foggy Island"
     },
     {
-        "path":"/home/dmx/.config/background/img/celeste",
-        "name":"Celeste"
+        "path": "/home/dmx/.config/background/img/flower",
+        "name": "Purple Flower"
     },
     {
-        "path":"/home/dmx/.config/background/img/shell",
-        "name":"Colorful Shell"
+        "path": "/home/dmx/.config/background/img/shell",
+        "name": "Colorful Shell"
     },
     {
-        "path":"/home/dmx/.config/background/img/dark_leaves",
-        "name":"Dark Leaves"
+        "path": "/home/dmx/.config/background/img/dark_leaves",
+        "name": "Dark Leaves"
     },
     {
-        "path":"/home/dmx/.config/background/img/purple_wave",
-        "name":"Purple Wave"
+        "path": "/home/dmx/.config/background/img/purple_wave",
+        "name": "Purple Wave"
     },
     {
-        "path":"/home/dmx/.config/background/img/leaves",
-        "name":"Leaves"
+        "path": "/home/dmx/.config/background/img/leaves",
+        "name": "Leaves"
     },
     {
-        "path":"/home/dmx/.config/background/img/forrest_mountains",
-        "name":"Forrest Mountains"
+        "path": "/home/dmx/.config/background/img/forrest_mountains",
+        "name": "Forrest Mountains"
     },
     {
-        "path":"/home/dmx/.config/background/img/osx",
-        "name":"MacOS"
+        "path": "/home/dmx/.config/background/img/osx",
+        "name": "MacOS"
     },
     {
-        "path":"/home/dmx/.config/background/img/rose",
-        "name":"Rose"
+        "path": "/home/dmx/.config/background/img/ukui",
+        "name": "UKUI"
     },
     {
-        "path":"/home/dmx/.config/background/img/ocean",
-        "name":"Ocean Wave"
+        "path": "/home/dmx/.config/background/img/rose",
+        "name": "Rose"
     },
     {
-        "path":"/home/dmx/.config/background/img/cutefish",
-        "name":"Cutefish"
+        "path": "/home/dmx/.config/background/img/ocean",
+        "name": "Ocean Wave"
     },
     {
-        "path":"/home/dmx/.config/background/img/evening",
-        "name":"Evening Forrest"
+        "path": "/home/dmx/.config/background/img/cutefish",
+        "name": "Cutefish"
     },
     {
-        "path":"/home/dmx/.config/background/img/lake_cozy",
-        "name":"Calm Lake"
+        "path": "/home/dmx/.config/background/img/evening",
+        "name": "Evening Forrest"
     },
     {
-        "path":"/home/dmx/.config/background/img/pink_blue",
-        "name":"Pink & Blue"
+        "path": "/home/dmx/.config/background/img/lake_cozy",
+        "name": "Calm Lake"
     },
     {
-        "path":"/home/dmx/.config/background/img/orange_green",
-        "name":"Orange & Green"
+        "path": "/home/dmx/.config/background/img/pink_blue",
+        "name": "Pink & Blue"
     },
     {
-        "path":"/home/dmx/.config/background/img/robot",
-        "name":"Trans²"
+        "path": "/home/dmx/.config/background/img/orange_green",
+        "name": "Orange & Green"
     },
     {
-        "path":"/home/dmx/.config/background/img/fire",
-        "name":"Fire"
+        "path": "/home/dmx/.config/background/img/robot",
+        "name": "Trans²"
     },
     {
-        "path":"/home/dmx/.config/background/img/blue_sky_pink_grass",
-        "name":"Fantasy Field"
+        "path": "/home/dmx/.config/background/img/fire",
+        "name": "Fire"
     },
     {
-        "path":"/home/dmx/.config/background/img/gay2",
-        "name":"Rainbow"
+        "path": "/home/dmx/.config/background/img/blue_sky_pink_grass",
+        "name": "Fantasy Field"
     },
     {
-        "path":"/home/dmx/.config/background/img/pink_blue_gradient",
-        "name":"Purple & Blue"
+        "path": "/home/dmx/.config/background/img/gay2",
+        "name": "Rainbow"
+    },
+    {
+        "path": "/home/dmx/.config/background/img/pink_blue_gradient",
+        "name": "Purple & Blue"
     }
 ]
