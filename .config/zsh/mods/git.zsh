@@ -45,7 +45,7 @@ function lschg {
                     \.D) prefix="%F{red}";;
                 esac
                 suffix=""
-                if [[ "$old_perm" != "$new_perm" ]]; then
+                if [[ "$old_perm" != "$new_perm" && "$new_perm" != "000000" ]]; then
                     local bits_old="${old_perm:2}"
                     local bits_new="${new_perm:2}"
                     suffix=" %F{red}$bits_old%f -> %F{green}$bits_new%f"
