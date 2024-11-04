@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function update(){
+function update() {
     eww -c "$HOME/.config/eww/shell/" update $@
 }
 
@@ -45,13 +45,13 @@ workspace_order='{
 "OVERVIEW":500
 }'
 
-function get_active_workspace_id(){
-    hyprctl activeworkspace -j|jq  '.id'
+function get_active_workspace_id() {
+    hyprctl activeworkspace -j | jq '.id'
 }
 
-function list_workspaces(){
-        active=$(get_active_workspace_id)
-        hyprctl workspaces -j|jq --argjson order "$workspace_order" --argjson activeid "$active" 'map({
+function list_workspaces() {
+    active=$(get_active_workspace_id)
+    hyprctl workspaces -j | jq --argjson order "$workspace_order" --argjson activeid "$active" 'map({
             id:.id,
             name:.name,
             display:.monitor,
@@ -61,90 +61,72 @@ function list_workspaces(){
             pos:$order[.name],
             special:(if .name | test("special:.*") then true else false end),
             active:(if .id == $activeid then true else false end)
-        })'|jq -Mc 'sort_by(.pos)'
+        })' | jq -Mc 'sort_by(.pos)'
 
 }
 
-function monitor_changes(){
+function monitor_changes() {
     update window="$(hyprctl activewindow -j)"
     update workspaces="$(list_workspaces)"
-    socat -u "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |while read -r line;
-    do
+    socat -u "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - | while read -r line; do
         case "$line" in
-            urgent*)
-                IFS=">" read -r _ _ addr <<< "$line"
-                hyprctl dispatch focuswindow "address:0x${addr}"
-                ;;
-            submap*)
-                IFS=">" read -r _ _ map <<< "$line"
-                update hypr_submap="$map"
-                # if [[ "$map" == "" ]]; then
-                    # NOTIFID=$(notify-send "Exited Submap" \
-                    #     -i "$SUBMAP_ICON" \
-                    #     --transient \
-                    #     -a "eww_submap" -r $NOTIFID -p "" -t 500)
-                # else
-                    # NOTIFID=$(notify-send "Entered Submap" \
-                    #     -i "$SUBMAP_ICON" \
-                    #     --transient \
-                    #     -a "eww_submap" -r $NOTIFID -p "$map")
-                # fi
-
-                ;;
-            'openlayer>>gtk-layer-shell') # this is for nwg-look
-                # old_layer_blur="$(hyprctl getoption decoration:blur:xray -j|jq '.set')"
-                hyprctl keyword decoration:blur:xray true
+        urgent*)
+            IFS=">" read -r _ _ addr <<<"$line"
+            hyprctl dispatch focuswindow "address:0x${addr}"
             ;;
-            'closelayer>>gtk-layer-shell')
-                hyprctl keyword decoration:blur:xray false
+        submap*)
+            IFS=">" read -r _ _ map <<<"$line"
+            update hypr_submap="$map"
             ;;
-            activewindowv2*|closelayer*|openlayer*|moveworkspacev2*|movewindowv2*|createWorkspacev2*|destroyWorkspacev2*|workspacev2*) # ignore stuff we dont really care about
-                continue;;
+        # 'openlayer>>gtk-layer-shell') # this is for nwg-look
+        #     hyprctl keyword decoration:blur:xray true
+        #     ;;
+        # 'closelayer>>gtk-layer-shell')
+        #     hyprctl keyword decoration:blur:xray false
+        #     ;;
+        activewindowv2* | closelayer* | openlayer* | moveworkspacev2* | movewindowv2* | createWorkspacev2* | destroyWorkspacev2* | workspacev2*) # ignore stuff we dont really care about
+            continue ;;
 
-            changefloatingmode*) # we dont care about workspaces here
-                update window="$(hyprctl activewindow -j)"
-                ;;
-            "renameworkspace"*"OVERVIEW")
-                IFS=">" read -r _ _ val <<< "$line"
-                IFS="," read -r overview_id _ <<< "$val"
-                eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=true
-                $XDG_CONFIG_HOME/hypr/plugins/overview.sh enter&
-                ;;
-            "renameworkspace>>$overview_id,"*)
-                eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=false
-                overview_id=""
-                $XDG_CONFIG_HOME/hypr/plugins/overview.sh off&
-                ;;
-            # openwindow*|closewindow*|movewindow*)
-            #     eww -c $XDG_CONFIG_HOME/eww/shell update windows="$(hyprctl -j clients|jq --argjson order "$workspace_order" 'map(. + {pos:$order[.workspace.name],})|sort_by(.pos)')"
-            #     ;&
-
-                
-            *)
-                eww -c $XDG_CONFIG_HOME/eww/shell update window="$(hyprctl activewindow -j)" workspaces="$(list_workspaces)"
+        changefloatingmode*) # we dont care about workspaces here
+            update window="$(hyprctl activewindow -j)"
+            ;;
+        # "renameworkspace"*"OVERVIEW")
+        #     IFS=">" read -r _ _ val <<<"$line"
+        #     IFS="," read -r overview_id _ <<<"$val"
+        #     eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=true
+        #     $XDG_CONFIG_HOME/hypr/plugins/overview.sh enter &
+        #     ;;
+        # "renameworkspace>>$overview_id,"*)
+        #     eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=false
+        #     overview_id=""
+        #     $XDG_CONFIG_HOME/hypr/plugins/overview.sh off &
+        #     ;;
+        *)
+            eww -c "$XDG_CONFIG_HOME"/eww/shell update window="$(hyprctl activewindow -j)" workspaces="$(list_workspaces)"
+            ;;
         esac
 
     done
 }
 
-function switch_to_workspace(){
+function switch_to_workspace() {
     id=$1
     name=$2
     workspaces="$(list_workspaces)"
-    if ! echo "$workspaces"|jq -e --argjson id "$id" '.[]|select(.id == $id)|.active'
-    then
+    if ! echo "$workspaces" | jq -e --argjson id "$id" '.[]|select(.id == $id)|.active'; then
         hyprctl dispatch workspace "$name"
     fi
 
 }
 
-
-case $1 in 
-    monitor)
-        monitor_changes;;
-    switch)
-        switch_to_workspace "$2" "$3";;
-    display)
-        display_changes;;
-
+case $1 in
+monitor)
+    monitor_changes
+    ;;
+switch)
+    switch_to_workspace "$2" "$3"
+    ;;
+display)
+    display_changes
+    ;;
 esac

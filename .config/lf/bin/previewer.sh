@@ -29,8 +29,9 @@ function separator {
 function create_cache {
     local pathn="${1:h4}"
     local pathn="${pathn//\//.}"
-    local basen="${1:t}"
-    print -- "$CACHEDIR/${pathn:1}.$basen${2}"
+    local pathe="${1:t2}"
+    local pathe="${pathe//\//.}"
+    print -- "$CACHEDIR/${pathn:1}.${pathe}${2}"
 }
 
 
@@ -179,7 +180,7 @@ case "$MIMETYPE" in
 
     *octet-stream)
         print -P "%SBinary\e[0m"
-        xxd -R always -c $[(COLUMNS / 6) + 1] -u -l $[( (COLUMNS / 6) + 1) * LINES] "$FILE"
+        xxd -a -R always -c $[(COLUMNS / 6) + 1] -u -l $[(( (COLUMNS / 6) + 1) * LINES) + 256 ] "$FILE"
         exit 1
         ;;
 

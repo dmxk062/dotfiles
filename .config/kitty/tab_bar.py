@@ -24,8 +24,6 @@ def _draw_bubble(screen: Screen, content: str, bg: int, fg: int, index, bold: bo
     if index != 1:
         screen.cursor.x += 1
 
-
-
     fg_i = screen.cursor.bg
     screen.cursor.fg = bg
     screen.cursor.bg = BG
@@ -56,8 +54,6 @@ def draw_tab(
     else:
         fmt = tab.title 
 
-
-
     if tab.is_active:
         fg = FG_ACTIVE
         bg = BG_ACTIVE
@@ -78,11 +74,4 @@ def draw_tab(
             fmt = str(index) + " " + fmt
 
     _draw_bubble(screen, fmt, bg, fg, index, bold )
-
-
-    if is_last:
-        screen.cursor.x = screen.columns - 10
-        current_time = datetime.datetime.now().strftime("%H:%M")
-        _draw_bubble(screen, f"󰥔 {current_time}", BG_INACTIVE, FG_INACTIVE, 2, False)
-
     return screen.cursor.x
