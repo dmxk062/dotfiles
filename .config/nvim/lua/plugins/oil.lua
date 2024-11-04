@@ -108,14 +108,6 @@ local function goto_git_ancestor()
     end
 end
 
-local function toggle_git_shown()
-    if vim.wo.signcolumn == "no" then
-        vim.wo.signcolumn = "auto"
-    else
-        vim.wo.signcolumn = "no"
-    end
-end
-
 local function open_external()
     local entry = require("oil").get_cursor_entry()
     local dir   = require("oil").get_current_dir()
@@ -211,7 +203,7 @@ M.opts = {
     view_options = {
         -- always show .. to go up so gg<cr> works
         is_hidden_file = function(name, bufnr)
-            return vim.startswith(name, ".") and not (name:sub(2, 2) == ".")
+            return name:sub(1, 1) == "." and not (name:sub(2, 2) == ".")
         end,
 
         is_always_hidden = function(name, bufnr)
@@ -256,7 +248,6 @@ M.opts = {
         -- toggle hidden
         ["gh"] = "actions.toggle_hidden",
         ["gH"] = "actions.toggle_hidden",
-        ["gS"] = toggle_git_shown,
         ["g<space>"] = open_cd,
 
         ["<space>sw"] = function() open_dir_shell("window") end,
@@ -270,6 +261,17 @@ M.opts = {
         ["g=t"] = function() set_sort("mtime") end,
         ["g=i"] = function() set_sort("invert") end,
         ["g=d"] = function() set_sort("default") end,
+
+        -- only close oil buffer if it is the last one
+        ["q"]   = function()
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                if vim.bo[buf].filetype ~= "oil" then
+                    vim.api.nvim_win_set_buf(0, buf)
+                    return
+                end
+            end
+            vim.cmd("quit")
+        end,
     },
 }
 
@@ -289,7 +291,6 @@ M.config = function(_, opts)
     })
 
     local prefix = "<space>f"
-    utils.map("n", prefix .. "F", require("oil").open_float)
     utils.map("n", prefix .. "f", require("oil").open)
 
     utils.map("n", prefix .. "t", function()

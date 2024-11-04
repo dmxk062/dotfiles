@@ -1,5 +1,23 @@
 local M = {
     "nvim-telescope/telescope.nvim",
+    keys = {
+        { "<space>D",       function() require("telescope.builtin").diagnostics() end },
+        { "<space>gf",      function() require("telescope.builtin").git_files() end },
+        { "<space>F",       function() require("telescope.builtin").find_files() end },
+        { "<space>h",       function() require("telescope.builtin").oldfiles() end },
+        { "<space>H",       function() require("telescope.builtin").help_tags() end },
+        { "<space>/",       function() require("telescope.builtin").live_grep() end },
+        { "<space>[",       function() require("telescope.builtin").lsp_document_symbols() end },
+        { "<space>]",       function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end },
+        { "<space>R",       function() require("telescope.builtin").registers() end },
+        { "<space><space>", function() require("telescope.builtin").buffers() end },
+        {
+            "z=",
+            mode = { "n", "x" },
+            function() require("telescope.builtin").spell_suggest() end
+        },
+    },
+    cmd = { "Telescope" },
     dependencies = {
         "nvim-lua/plenary.nvim",
         {
@@ -8,7 +26,7 @@ local M = {
         },
         {
             "jvgrootveld/telescope-zoxide",
-        }
+        },
     },
 }
 
@@ -127,7 +145,7 @@ M.opts.pickers = {
         }
     },
     buffers = {
-        sort_lastused = true,     -- so i can just <space><space><cr> to cycle
+        sort_lastused = true, -- so i can just <space><space><cr> to cycle
         theme = "dropdown",
         previewer = false,
         layout_config = {
@@ -210,13 +228,15 @@ M.opts.extensions = {
                 end
             },
         }
+    },
+    smart_open = {
+        prompt_title = "test",
     }
 }
 
 
 M.config = function(_, opts)
     local telescope = require("telescope")
-    local utils = require("utils")
 
     telescope.setup(opts)
     telescope.load_extension("fzf")
@@ -227,28 +247,6 @@ M.config = function(_, opts)
     telescope.extensions.zoxide.list = function(args)
         old_zoxide(vim.tbl_extend("force", default_config_tbl, args or {}))
     end
-
-    local builtin = require("telescope.builtin")
-    local _prefix = "<space>"
-
-    for _, map in ipairs({
-        { "D",       builtin.diagnostics },
-        { "g",       builtin.git_files },
-        { "F",       builtin.find_files },
-        { "h",       builtin.oldfiles },
-        { "H",       builtin.help_tags },
-        { "/",       builtin.live_grep },
-        { "[",       builtin.lsp_document_symbols },
-        { "]",       builtin.lsp_dynamic_workspace_symbols },
-        { "R",       builtin.registers },
-        { "<space>", builtin.buffers },
-
-    }) do
-        utils.map("n", _prefix .. map[1], map[2])
-    end
-
-    -- override the builtin full screen one
-    utils.map({"n", "x"}, "z=", builtin.spell_suggest)
 end
 
 return M

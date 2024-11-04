@@ -189,8 +189,13 @@ local function leap_selection(outer)
     end)
 end
 
+local function entire_buffer()
+    set_visual_selection({ 1, 1 }, { vim.api.nvim_buf_line_count(0), 1 }, true)
+end
+
 return {
     indent = indent,
     diagnostic = diagnostic,
     leap_selection = leap_selection,
+    entire_buffer = entire_buffer,
 }

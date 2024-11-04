@@ -1,36 +1,24 @@
 function command_not_found_handler() {
-    printf 'zsh: command not found: %s\n' "$1" > /dev/stderr
-    if [[ ! -t 0 ]]||[[ ! -t 1 ]] { # early return if we are not in a tty
+    # early return if not in tty
+    printf "zsh: command not found: '%s'" "$1" >&2
+    if [[ ! -t 0 || ! -t 1 ]]; then
+        print
         return 127
-    }
+    fi
+
     local file="$1"
-    if [[ -f "./$file" ]] { 
-        printf 'zsh: file %s found. Open it in %s? [y/N] ' "$file" "$EDITOR"
-        read -k 1 answer
-        if [[ "$answer" == "y" || "$answer" == "Y" ]] {
-            $EDITOR "$file"
-        }
-    } else {
-        local entries=(${(f)"$(/usr/bin/pacman -F --machinereadable -- "/usr/bin/$file")"})
-        if (( ${#entries[@]} )) {
-            print "zsh: but it is available in the following package(s):"
-            local pkg
-            for entry in "${entries[@]}"; do
-                local fields=(${(0)entry})
-                if [[ "$pkg" != "${fields[2]}" ]] {
-                    print -P "%B%F{magenta}${fields[1]}%f/${fields[2]}%b"
-                }
-                pkg="${fields[2]}"
-            done
-        } else {
-            printf "zsh: could not find a package that provides /usr/bin/%s in the repos. search the AUR? [y/N] " "$file"
-            read -k 1 answer
-            if [[ "$answer" == "y" || "$answer" == "Y" ]] {
-                printf "\n"
-                yay -Ssa "$file"
-            }
-        }
-    }
+    local entries=(${(f)"$(pkgfile -b -- "$file")"})
+    if (( ${#entries[@]} )); then
+        print ", found in:"
+        local entry
+        (for entry in "${entries[@]}"; do
+            (
+                local -a fields=(${(s:/:)entry})
+                IFS=$'\n' local -a desc=($(expac -Ss '%d' -- "^${fields[2]}$"))
+                print -P "%B%F{magenta}${fields[1]}%f/${fields[2]}%b\t${desc[1]}"
+            )&
+        done; wait) | column -ts$'\t' >&2
+    fi
     return 127
 }
 
@@ -39,14 +27,13 @@ function __readnullcommand {
     local realpath="/proc/self/fd/0"
     realpath="${realpath:A}"
     if [[ -f "$realpath" ]] {
-        \bat --color=always -Pp "$realpath"
+        command bat --color=always -Pp "$realpath"
     } elif [[ -d "$realpath" ]] {
-        \lsd "$realpath"
-    }
+    command lsd "$realpath"
+}
 }
 
 READNULLCMD=__readnullcommand
-
 
 # abuse for the clipboard, can contain any data, not just a dir
 function _clipboard_directory_name {
@@ -122,9 +109,16 @@ function _clipboard_directory_name {
         fi
 
         _wanted dynamic-dirs expl 'clipboards' compadd -S\] -a compls
+        return
     fi
-
-
 }
 
 zsh_directory_name_functions+=(_clipboard_directory_name)
+
+# use bat as a pager for man
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANROFFOPT='-c'
+
+# show help with syntax highlighting
+alias \
+    -g -- @--help='--help 2>&1 | bat -l help -p' \

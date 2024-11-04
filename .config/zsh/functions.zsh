@@ -3,87 +3,16 @@ function c {
     print -n "[H[2J"
 }
 
-alias -- "@gtk_debug"="env GTK_DEBUG=interactive" \
-   "@gnome"="env XDG_CURRENT_DESKTOP=gnome"
-
-# a better `watch`
-function @mon {
-    local interval="$1"
-    if [[ "$interval" =~ ^[+-]?[0-9]*\.?[0-9]+$ ]]; then
-        shift
-    else
-        interval=1
+# run program in alternate screen
+function @alt {
+    if [[ -t 1 ]]; then
+        tput smcup
+        eval "$@"
+        tput rmcup
     fi
-    local -a command=("${@}") unit 
-    if ((interval == 1)) {
-        unit=second
-    } else {
-        unit=seconds
-    }
-    local output
-    while true; do
-        IFS=$'\n' output=($(eval -- "${command[@]}"))
-        print -n "\e]0;$output[1]\a"
-        print -n "[H[2J"
-        print -n "Every $interval $unit: \`${command[@]}\`\n\n${output}"
-        # more accurate than calling out to non built in `sleep`
-        read -t "$interval" _ -n 0
-    done
-
 }
 
-
-# tell me when smth finished running
-function @alert {
-    local prog exitc start end time
-    prog=$@
-    start="$(date "+%s")"
-    eval "$prog"
-    exitc="$?"
-    end="$(date "+%s")"
-    time=$((end - start))
-    if (( exitc > 0)) {
-        notify-send -i "script-error" \
-            -a zsh \
-            "Program failed with code: ${exitc}" \
-            "\`${prog}\` failed after $(date -d @$time "+%M:%S")"
-
-    } else {
-        notify-send -i "terminal" \
-            -a zsh \
-            "Program finished" \
-            "\`${prog}\` took $(date -d @$time "+%M:%S")"
-
-    }
-
-}
-
-# run smth in the background
-function @bg {
-    local stderr exitc prog start end time
-    prog=$@
-    (start="$(date +%s)"
-    stderr="$(eval "$prog" 2>&1 >/dev/null)"
-    exitc="$?"
-    end="$(date +%s)"
-    time=$((end - start))
-    if ((exitc > 0)) {
-        if [[ "$stderr" == "" ]] {
-            stderr="Stderr was empty"
-        }
-        notify-send -i "script-error" \
-            -a zsh "Program failed with code: ${exitc}" \
-            "\`${prog}\` failed after $(date -d @$time "+%M:%S"):
-${stderr}"
-    } else {
-        notify-send -i "terminal" \
-            -a zsh \
-            "Program finished" \
-            "\`${prog}\` took $(date -d @$time "+%M:%S")"
-    }
-    )& disown
-    
-}
+compdef @alt=eval
 
 function chars2codes {
     local char
@@ -103,19 +32,37 @@ function lcd {
     cd "$(command lf -print-last-dir "$@")"
 }
 
+# simple clone of the tool with the same name
+function vipe {
+    local tmpfile="$(mktemp)"
+    cat >> "$tmpfile"
+    if [[ -n "$1" && "$EDITOR" == *vim ]]; then
+        $EDITOR "$tmpfile" +"setf $1" > /dev/tty < /dev/tty
+    else
+        $EDITOR "$tmpfile" > /dev/tty < /dev/tty
+    fi
+    cat "$tmpfile"
+    command rm -rf "$tmpfile"
+}
+
 
 
 source $ZDOTDIR/handlers.zsh
 
 # load all the modules i always want
-source "$ZDOTDIR/mods/fun.zsh" load
-source "$ZDOTDIR/mods/pkg.zsh" load
-source "$ZDOTDIR/mods/proc.zsh" load
-source "$ZDOTDIR/mods/net.zsh" load
-source "$ZDOTDIR/mods/fs.zsh" load
-source "$ZDOTDIR/mods/structured_data.zsh" load
-source "$ZDOTDIR/mods/git.zsh" load
+source "$ZDOTDIR/mods/fun.zsh"
+source "$ZDOTDIR/mods/pkg.zsh"
+source "$ZDOTDIR/mods/proc.zsh"
+source "$ZDOTDIR/mods/net.zsh"
+source "$ZDOTDIR/mods/fs.zsh"
+source "$ZDOTDIR/mods/structured_data.zsh"
+source "$ZDOTDIR/mods/git.zsh"
+source "$ZDOTDIR/mods/tmp.zsh"
 
-if [[ "$TERM" == "xterm-kitty" ]] {
-    source "$ZDOTDIR/mods/kitty.zsh" load
-}
+if [[ "$TERM" == "xterm-kitty" ]]; then
+    source "$ZDOTDIR/mods/kitty.zsh"
+fi
+
+if [[ -n "$WAYLAND_DISPLAY" ]]; then
+    source "$ZDOTDIR/mods/gui.zsh"
+fi

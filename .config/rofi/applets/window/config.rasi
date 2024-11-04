@@ -3,4 +3,6 @@ configuration {
     window-thumbnail: true;
     show-icons:     true;
     window-format: "{t}";
+    kb-row-down:"Down,Alt+j";
+    kb-row-up:"Up,Alt+k";
 }

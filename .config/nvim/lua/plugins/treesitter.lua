@@ -1,8 +1,5 @@
-local blocked_langs = {
-    -- "tex", "latex"
-}
-
 local M = {
+    event = { "BufReadPost", "BufNewFile", "FileType" },
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -28,27 +25,21 @@ textobjects.select = {
         -- read: inside/around argument
         ["ia"] = "@parameter.inner",
         ["aa"] = "@parameter.outer",
-        -- variables
         -- value
-        ["vv"] = "@assignment.rhs",
+        ["iv"] = "@assignment.rhs",
         -- name
-        ["vn"] = "@assignment.lhs",
+        ["iN"] = "@assignment.lhs",
         -- comment
         ["ic"] = "@comment.inner",
         ["ac"] = "@comment.outer",
         -- loops
-        ["iL"] = "@loop.inner",
-        ["aL"] = "@loop.outer",
+        ["il"] = "@loop.inner",
+        ["al"] = "@loop.outer",
         -- classes/structs
         ["iC"] = "@class.inner",
         ["aC"] = "@class.outer",
+        -- numbers
         ["in"] = "@number.inner",
-
-        ---@deprecated, gonna be more useful for indents
-        -- read: inner if
-        -- ["ii"] = "@conditional.inner",
-        -- ["ai"] = "@conditional.outer",
-
         -- return value
         ["ir"] = "@return.inner",
         ["ar"] = "@return.outer",
@@ -63,6 +54,8 @@ textobjects.move = {
         ["]c"] = "@comment.outer",
         ["]C"] = "@class.outer",
         ["]r"] = "@return.inner",
+        ["]v"] = "@assignment.lhs",
+        ["]l"] = "@loop.outer",
     },
     goto_previous_start = {
         ["[a"] = "@parameter.inner",
@@ -71,6 +64,8 @@ textobjects.move = {
         ["[c"] = "@comment.outer",
         ["[C"] = "@class.outer",
         ["[r"] = "@return.inner",
+        ["[v"] = "@assignment.lhs",
+        ["[l"] = "@loop.outer",
     },
 
     goto_next_end = {
@@ -126,12 +121,6 @@ M.config = function()
             enable = true,
 
             disable = function(lang, buf)
-                for _, l in ipairs(blocked_langs) do
-                    if l == lang then
-                        return true
-                    end
-                end
-
                 local max_filesize = 500 * 1024
                 local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
                 if ok and stats and stats.size > max_filesize then

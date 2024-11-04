@@ -1,22 +1,23 @@
-# we *need* EPOCHREALTIME for the prompt to be accurate
-zmodload zsh/datetime
-
-declare -A _promptvars=(
-    [color]="cyan"
-    [timer]=0
-    [vcs_branch]=""
-    [vcs_remote]=""
-    [vcs_ahead]=0
-    [vcs_behind]=0
-    [vcs_modified]=0
-    [vcs_deleted]=0
-    [vcs_added]=0
-    [vcs_active]=0
-)
 # directly set the hooks instead of just adding to the hook, so ours runs first
 function preexec {
-    _promptvars[timer]=$EPOCHREALTIME
+    _PROMPTTIMER=$EPOCHREALTIME
 }
+
+psvar=(
+    0ms           # 1 time of previous command
+    "cyan"        # 2 color of prompt
+    ""            # 3 git branch
+    ""            # 4 git modified
+    ""            # 5 git deleted
+    ""            # 6 git added
+    ""            # 7 git renamed
+    ""            # 8 git ahead
+    ""            # 9 git behind
+    ""            # 10 python venv?
+    ""            # 11 current dir readable
+    12            # 12 color based on return status
+    ""            # 13 symbol/text to be used for return status
+)
 
 # change the color of the prompt based on mode
 # PROMPT="%B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
@@ -28,19 +29,17 @@ function zvm_after_select_vi_mode {
         ["$ZVM_MODE_VISUAL_LINE"]="12"
         ["$ZVM_MODE_REPLACE"]="red"
     )
-    _promptvars[color]="$mode_colors[$ZVM_MODE]"
-    _update_prompt
+    psvar[2]="$mode_colors[$ZVM_MODE]"
 }
 
 function _update_git_status {
     # only update if inside a git dir that isnt ignored
-    git check-ignore . &> /dev/null
+    git check-ignore -q . 2>/dev/null
     # returns 0 if dir ignored and 1 if not but still git
-    if (($? == 1)) {
-        _promptvars[vcs_active]=1
-        local type gstatus submod hname iname score file _
-        local modified=0 deleted=0 added=0 _branch branch="" remote="" ahead=0 behind=0
-        while read -r type gstatus submod hname iname score file; do
+    if (($? == 1)); then
+        local type gstatus submod file
+        local modified="" deleted="" added="" renamed="" smodified="" sdeleted="" sadded="" _branch branch="" remote="" ahead="" behind=""
+        git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null | while read -r type gstatus submod _ _ _ file; do
             case "$type" in 
                 (\#) 
                     case "$gstatus" in 
@@ -52,68 +51,77 @@ function _update_git_status {
                             behind="$hname"
                             ahead="${ahead#+}"
                             behind="${behind#-}"
-                            if [[ "$ahead" == -* ]] {
-                                behind="${ahead#-}"
-                            }
+                            [[ "$ahead" == -* ]]&& behind="${ahead#-}"
+
+                            [[ "$ahead" == 0 ]]&&ahead=""
+                            [[ "$behind" == 0 ]]&&behind=""
                             ;;
                     esac
                     ;;
                 (1)
                     case "$gstatus" in 
-                        (*A*) ((added++));;
-                        (*D*) ((deleted++));;
-                        (*M*) ((modified++));;
+                        (.A) ((added++));;
+                        (.D) ((deleted++));;
+                        (.M) ((modified++));;
+                        (AA|A.) ((added++)); sadded=.;;
+                        (DD|D.) ((deleted++)); sdeleted=.;;
+                        (MM|M.) ((modified++)); smodified=.;;
                     esac
                     ;;
                 (2)
-                    # Nothing for moved/renamed for now
+                    case "$gstatus" in
+                        R.|RM) ((renamed++));;
+                    esac
                     ;;
             esac
-        done < <(git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null)
-        _promptvars[vcs_branch]="$branch"
-        _promptvars[vcs_remote]="$upstream"
-        _promptvars[vcs_modified]="$modified"
-        _promptvars[vcs_deleted]="$deleted"
-        _promptvars[vcs_added]="$added"
-        _promptvars[vcs_ahead]="$ahead"
-        _promptvars[vcs_behind]="$behind"
-    } else {
-        _promptvars[vcs_active]=0
-    }
-}
+        done
 
-function chpwd {
-    _update_git_status
-}
-
-function _update_prompt {
-    PROMPT="%B%F{$_promptvars[color]}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
-    if ((_promptvars[vcs_active])) {
-        local modified added deleted ahead behind
-        if ((_promptvars[vcs_modified] > 0)) {
-            modified=" %F{yellow}~$_promptvars[vcs_modified]"
-        }
-        if ((_promptvars[vcs_added] > 0)) {
-            added=" %F{green}+$_promptvars[vcs_added]"
-        }
-        if ((_promptvars[vcs_deleted] > 0)) {
-            deleted=" %F{red}-$_promptvars[vcs_deleted]"
-        }
-        if ((_promptvars[vcs_ahead] > 0)) {
-            ahead="%F{green}+$_promptvars[vcs_ahead] "
-        }
-        if ((_promptvars[vcs_behind] > 0)) {
-            ahead="%F{red}-$_promptvars[vcs_behind] "
-        }
-        PROMPT="%b%F{8}%K{8}%F{white}󰘬 ${ahead}${behind}%F{white}${_promptvars[vcs_branch]}${added}${modified}${deleted}${ahead_behind}%K{8} $PROMPT"
-    }
+        psvar[3]="$branch"
+        psvar[4]="$modified$smodified"
+        psvar[5]="$deleted$sdeleted"
+        psvar[6]="$added$sadded"
+        psvar[7]="$renamed"
+        psvar[8]="$ahead"
+        psvar[9]="$behind"
+    else 
+        psvar[3]=""
+    fi
 }
 
 
+# left part of prompt, git part
+PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
+# left part of prompt, current directory
+PROMPT+="%B%F{%2v}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+# right part of prompt, flags and previous command status
+RPROMPT="%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%12v}%k%S%13v%s"
 function precmd {
+    local exitc=$?
+    case $exitc in
+        "0") 
+            psvar[12]=12
+            psvar[13]="󰄬 0"
+            ;;
+        "148"|"147")
+            psvar[12]=blue
+            psvar[13]="stp"
+            ;;
+        "130") 
+            psvar[12]=yellow
+            psvar[13]="int"
+            ;;
+        "139")
+            psvar[12]=red
+            psvar[13]="seg"
+            ;;
+        *)
+            psvar[12]=red
+            psvar[13]="󰅖 $exitc"
+            ;;
+    esac
     # dont print a new time on every single <cr>, just if a command ran
-    if (( _promptvars[timer] > 0)); then
-        local elapsed_ms=$[ ( $EPOCHREALTIME-$_promptvars[timer] )* 1000 ] elapsed
+    if (( _PROMPTTIMER)); then
+        local elapsed_ms=$[ ( $EPOCHREALTIME-$_PROMPTTIMER )* 1000 ] elapsed
         if (( elapsed_ms > 60000 )) {
             # print everything over a minute as MM:SS
             printf -v elapsed "%02.0f:%02.0f" $[ ($elapsed_ms/1000.0) / 60 ] $[ ($elapsed_ms/1000.0) % 60 ]
@@ -122,17 +130,22 @@ function precmd {
         } else  {
             printf -v elapsed "%.2fms" $elapsed_ms
         }
-        # format: <elapsed time> <jobs? and if yes <count>&> <exit code with symbol> <time it took>
-        RPROMPT="%F{8}%K{8}%f󱎫 ${elapsed} %(1j.%F{cyan}%j& %f.)%(?.%F{green}.%F{red})%k%S%(?.󰄬 %?.󰅖 %?) %s"
+        psvar[1]=$elapsed
     fi
     # set the title
-    print -Pn "\e]0;zsh: %~\a"
-    if [[ -n "$VIRTUAL_ENV" ]] {
-        RPROMPT="%B%F{$ZSH_COLORS_RGB[orange]}%S venv%s%b%f ${RPROMPT}"
-    }
-    _promptvars[timer]=0
+    print -Pn "\e]0;zsh%(1j. %j&.): %~\a"
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        psvar[10]=1
+    else
+        psvar[10]=""
+    fi
+    if [[ ! -w "$PWD" ]]; then
+        psvar[11]=1
+    else
+        psvar[11]=""
+    fi
     _update_git_status
-    _update_prompt
+    _PROMPTTIMER=0
 }
 
 # Prompt for nested things:

@@ -1,4 +1,14 @@
-vim.cmd.colorschem "mynord"
+vim.cmd.colorscheme "mynord"
+local open_start_screen = (vim.fn.argc() == 0)
+
+vim.api.nvim_create_autocmd("StdinReadPre", {
+    once = true,
+    callback = function(ctx)
+        open_start_screen = false
+    end
+})
+
+
 vim.o.relativenumber = true
 vim.o.number = true
 vim.o.incsearch = true
@@ -6,12 +16,9 @@ vim.o.ignorecase = true
 vim.o.showmode = false
 vim.o.smartcase = true
 vim.o.expandtab = true
--- vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.hlsearch = true
-vim.o.termguicolors = true
--- vim.o.wildmenu = false
 vim.o.scrolloff = 1
 vim.o.undofile = true
 
@@ -49,9 +56,10 @@ vim.opt.listchars = {
 -- normal: blink
 vim.opt.guicursor = {
     "c-ci-cr:hor20",
-    "n-o-r-v-sm:block",
+    "n-o-v-sm:block",
+    "r:hor20",
     "i-ve:ver10",
-    "n-i-ve:blinkon1"
+    "r-n-i-ve:blinkon1",
 }
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
@@ -62,83 +70,6 @@ vim.o.title = true
 -- i use C more than C++
 vim.g.c_syntax_for_h = true
 
--- change the title in a more intelligent way
-vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
-    callback = function(args)
-        -- expand stuff similarly to my shell directory aliases
-        local function format_path(name, user)
-            local expanded = name:gsub("/tmp/workspaces_" .. user, "~tmp")
-                :gsub("/home/" .. user .. "/ws", "~ws")
-                :gsub("/home/" .. user .. "/.config", "~cfg")
-                :gsub("/home/" .. user, "~")
-            return expanded
-        end
-
-        local path     = ""
-        local buf      = vim.api.nvim_get_current_buf()
-        local bufname  = vim.api.nvim_buf_get_name(buf)
-        local filetype = vim.bo[buf]["ft"]
-
-        local user     = vim.env.USER
-
-        if filetype == "oil" then
-            if vim.startswith(bufname, "oil-ssh://") then
-                local remote_path = bufname:match("//.-(/.*)"):sub(2, -1) -- the path at the host
-                path = "ssh:" .. remote_path
-            else
-                path = format_path(bufname:sub(#"oil:///"), user)
-            end
-        elseif filetype == "help" then
-            path = "Help"
-        elseif filetype == "lazy" then
-            path = "Plugins"
-        elseif filetype == "alpha" then
-            path = "NeoVIM"
-        elseif bufname == "" then
-            return
-        else
-            path = format_path(bufname, user)
-        end
-
-        vim.o.titlestring = "nv: " .. path
-    end
-})
-
-vim.o.titlestring = "nv: NeoVIM" -- set initial
-
--- change line number based on mode:
--- for command mode: make it absolute for ranges etc
--- for normal mode: relative movements <3
-local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
-vim.api.nvim_create_autocmd("CmdlineEnter", {
-    group = cmdline_group,
-    callback = function()
-        if vim.o.number then
-            vim.o.relativenumber = false
-            vim.api.nvim__redraw({ statuscolumn = true })
-        end
-    end
-})
-
-vim.api.nvim_create_autocmd("CmdlineLeave", {
-    group = cmdline_group,
-    callback = function()
-        if vim.o.number then
-            vim.o.relativenumber = true
-        end
-    end
-})
-
-
--- sane defaults for terminal mode
-vim.api.nvim_create_autocmd("TermOpen", {
-    callback = function(ev)
-        vim.wo[0].number = false
-        vim.wo[0].relativenumber = false
-        -- immediately hand over control
-        vim.cmd.startinsert()
-    end
-})
 
 -- use lazy for the remaining config
 -- all the package definitions in ./lua/plugins/ will be loaded
@@ -161,6 +92,10 @@ require("lazy").setup("plugins", {
         path = "~/ws/nvim_plugins",
         patterns = { "dmxk062" },
         fallback = true,
+    },
+
+    install = {
+        colorscheme = { "mynord" },
     },
 
     -- just plain annoying with a simpler config
@@ -193,8 +128,20 @@ require("lazy").setup("plugins", {
     }
 })
 
+-- set various useful autocommands
+require("modules.autocommands")
+
 -- set all the mappings
 require("mappings")
 
 -- for some reason lazy deactivates that
 vim.o.modeline = true
+
+vim.api.nvim_create_autocmd("VimEnter", {
+    once = true,
+    callback = function(ctx)
+        if open_start_screen then
+            require("modules.startscreen").show_start_screen()
+        end
+    end
+})

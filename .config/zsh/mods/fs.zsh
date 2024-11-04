@@ -3,13 +3,25 @@
 
 # make filesystem naviation/file handling easier
 
-if [[ "$1" == "load" ]] {
+if [[ "$1" == "unload" ]]; then
+
+    unfunction rgf mcd rp bn in \
+        pwf del \
+        readfile readstream lr .. \
+        root
+
+    unalias md ft bft 
+
+    zmodload -u zsh/mapfile
+
+    return
+fi
 
 zmodload zsh/mapfile
 
 alias md="mkdir -p"
 
-function mkcd {
+function mcd {
     if [[ -d "$1" ]] {
         cd "$1"
         return
@@ -17,11 +29,21 @@ function mkcd {
     mkdir -p "$1"
     cd "$1"
 }
+compdef mcd=mkdir
 
 
 alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
 
+
+function del {
+    if (($# > 3)); then
+        print -n "Remove $# files?[yN] "
+        read -q||return 1
+    fi
+
+    rm -r -- "$@"
+}
 
 # ripgrep files
 function rgf {
@@ -37,63 +59,6 @@ function rgf {
     local flags="$@"
 
     rg --color=never --files-with-matches $flags "$search_term" "$search_path"
-}
-
-function tmp {
-    local tmpdir="$HOME/Tmp"
-    local mode
-    local files
-    local force=0
-    case "$1" in
-        rm|del)
-            mode=delete
-            shift
-            ;;
-        rmf)
-            mode=delete
-            force=1
-            shift
-            ;;
-        cp|copy)
-            mode=copy
-            shift
-            files=("${@:2}")
-            ;;
-        *)
-            mode=cd
-            ;;
-    esac
-    local target="${1}"
-
-    case $mode in 
-        cd)
-            if [[ -d "$tmpdir/$target" ]] {
-                cd "$tmpdir/$target"
-                return
-            } else {
-                mkdir -p "$tmpdir/$target"
-                cd "$tmpdir/$target"
-            }
-            ;;
-        delete)
-            if rmdir "$tmpdir/$target" &> /dev/null; then
-                return
-            elif [[ $force == 1 ]]; then
-                \rm -rf "$tmpdir/$target"
-                return
-            fi
-            print -P -- "%F{red}$target is not empty\nUse %B\`$0 rmf $target\`%f%b"
-            return 1
-            ;;
-        copy)
-            if ! [[ -d "$tmpdir/$target" ]] {
-                mkdir -p "$tmpdir/$target"
-            }
-            cp --target-directory="$tmpdir/$target" "${files[@]}"
-            return
-            ;;
-    esac
-
 }
 
 # better realpath
@@ -124,64 +89,6 @@ function readstream {
     eval "${arrayname}=("\${buffer}")"
 }
 
-# rm wrapper
-function rmi {
-    if (($# < 1)) {
-        return 0
-    }
-
-    local -a files
-    local -a dirs
-    local -a links
-
-    local file
-    for file in "${@}"; do
-        if [[ -L "$file" ]] {
-            links+=("$file")
-        } elif [[ -f "$file" ]] {
-            files+=("$file")
-        } elif [[ -d "$file" ]] {
-            dirs+=("$file")
-        } else {
-            print -P "%F{red}Not a file, dir or symlink: $file%f" > /dev/stderr
-            return 1
-        }
-    done
-
-    local -a fmt=()
-    if (($#files > 0)) {
-        fmt+=("%F{magenta}󰈔 $#files file(s)%f")
-    }
-    if (($#dirs > 0)) {
-        fmt+=("%F{cyan}󰉋 $#dirs dir(s)%f")
-    }
-    if (($#links > 0)) {
-        fmt+=("%F{blue}󰌷 $#links link(s)%f")
-    }
-    print -Pn -- "%B${(j:\n:)fmt[@]}%b" "\n%B%F{red}%S󰩹 rm%s%f%b N[o]/y[es]/f[orce]/t[rash] "
-    read -r -k 1 answer
-    echo
-    case "$answer" in 
-        [tT])
-            gio trash -- "${files[@]}" "${dirs[@]}" "${links[@]}"
-            if (($? == 0)) {
-                print -P "%F{green}󰩹 Successfully trashed $[$#files + $#dirs + $#links] element(s)%f"
-            }
-            ;;
-        [yY])
-            \rm -rI -- "${files[@]}" "${dirs[@]}" "${links[@]}"
-            ;;
-        [fF])
-            \rm -rf -- "${files[@]}" "${dirs[@]}" "${links[@]}"
-            echo
-            ;;
-        *|[Nn]) 
-            echo
-            return 1
-            ;;
-    esac
-    echo
-}
 
 function lr {
     command lsd --tree --depth 3 --hyperlink=always "$@" | less -rFi
@@ -211,15 +118,23 @@ function .. {
     }
 }
 
+# find the parent directory containing a file or dir
+# e.g. `root .git` or `root compile_commands.json`
+function root {
+    local pattern="$1"
+    local cwd="$PWD"
 
-} elif [[ "$1" == "unload" ]] {
+    while [[ "$cwd" != "" && ! -e "$cwd/$pattern" ]]; do
+        cwd="${cwd%/*}"
+    done
 
-unfunction rgf mkcd tmp rp bn in \
-    rmi pwf \
-    readfile readstream lr ..
-
-unalias md ft bft
-
-zmodload -u zsh/mapfile
-
+    if [[ "$cwd" == "" ]]; then
+        if [[ -e "/$pattern" ]]; then
+            print "/"
+        else
+            return 1
+        fi
+    else
+        print "$cwd"
+    fi
 }

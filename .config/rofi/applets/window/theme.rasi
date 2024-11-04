@@ -4,11 +4,11 @@
 window {
     location: center;
     anchor: center;
-    border-color: @bg3;
+    border-color: #00000010;
     background-color: @bg0;
     children: [mainbox];
     border-radius: 18px;
-    border: 2px;
+    border: 1px;
     width: 24em;
     height: 32em;
 }

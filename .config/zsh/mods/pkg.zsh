@@ -1,8 +1,12 @@
 #!/bin/false
 # vim: ft=zsh
 
-if [[ "$1" == "load" ]]; then
 
+if [[ "$1" == "unload" ]]; then
+    unfunction which_pkg lspkg
+
+    return
+fi
 # check which package a file belongs to, first tries to find it in $PATH
 which_pkg(){
     local file progpath
@@ -23,7 +27,7 @@ which_pkg(){
         fi
     done
     if ((${#paths} > 0)); then
-        pacman -Qo "${paths[@]}"
+        pacman -Qqo "${paths[@]}"
     else
         return 1
     fi
@@ -53,12 +57,12 @@ lspkg(){
     for file in $files; do
         case $searchtype in
             exe)
-                if [[ -x "$file" ]]&&[[ -f "$file" ]]; then
+                if [[ -x "$file" && -f "$file" ]]; then
                     print "$file"
                 fi
                 ;;
             man)
-                if [[ -f "$file" ]]&&[[ "$file" == "/usr/share/man/"* ]]; then
+                if [[ -f "$file" && "$file" == "/usr/share/man/"* ]]; then
                     print "$file"
                 fi
                 ;;
@@ -68,12 +72,3 @@ lspkg(){
         esac
     done
 }
-
-
-
-elif [[ "$1" == "unload" ]]; then
-
-
-unfunction which_pkg flat lspkg
-
-fi

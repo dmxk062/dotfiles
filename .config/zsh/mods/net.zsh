@@ -1,11 +1,24 @@
 #!/bin/false
 # vim: ft=zsh
 
+if [[ "$1" == "unload" ]]; then
+
+    unfunction fupload \
+        urlenc urldec \
+        makeqr \
+        deepl_request translate \
+        ncsend ncrecv ncsenddir ncrecvdir
+
+    unalias req 
+
+    zmodload -u zsh/net/socket
+
+    return
+fi
+
 NC_PORT=60246
 
 # a bunch of network dependant stuff, such as different network services
-
-if [[ "$1" == "load" ]]; then
 
 alias req="noglob curl -s"
 
@@ -77,22 +90,24 @@ function translate {
         request_body="{\"text\":[\"${(j:\n:)buffer[@]}\"],\"target_lang\":\"$target\"}"
     fi
     deepl_request "$request_body"|jq '.translations.[0].text' -r
-
-
 }
 
 autoload -Uz _translate
 compdef _translate translate
 
-elif [[ "$1" == "unload" ]]; then
+function ncsend {
+    cat | nc "$1" $NC_PORT
+}
 
-unfunction fupload \
-    urlenc urldec \
-    makeqr \
-    deepl_request translate 
+function ncrecv {
+    nc -d -q 1 -l -p $NC_PORT
+}
 
-unalias req 
+function ncsenddir {
+    tar cvf - "$2" | nc "$1" $NC_PORT
+}
 
-zmodload -u zsh/net/socket
-
-fi
+function ncrecvdir {
+    mkdir -p -- "$1"
+    nc -l -p $NC_PORT | tar xvf - -C "$1"
+}

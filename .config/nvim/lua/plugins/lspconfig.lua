@@ -22,7 +22,8 @@ local M = {
                 require("mason-lspconfig").setup {
                     ensure_installed = {
                         "ruff_lsp",
-                        "asm_lsp"
+                        "asm_lsp",
+                        "typos_lsp"
                     }
                 }
             end,
@@ -30,9 +31,9 @@ local M = {
             dependencies = {
                 "williamboman/mason-lspconfig.nvim",
             },
-        }
+        },
     },
-    event = { "BufReadPost" }
+    event = { "BufReadPost", "BufNewFile" }
 }
 
 
@@ -87,11 +88,12 @@ M.config = function()
         group = augroup,
         callback = function(opts)
             for mapping, mode in pairs {
-                ["<space>a"] = {"n", "v"},
-                ["gr"]  = "n",
-                ["gd"]  = "n",
-                ["gi"]  = "n",
-                ["<space>rn"]  = "n",
+                ["<space>a"]  = { "n", "v" },
+                ["gr"]        = "n",
+                ["gd"]        = "n",
+                ["<C-w>gd"]   = "n",
+                ["gi"]        = "n",
+                ["<space>rn"] = "n",
             } do
                 utils.lunmap(opts.buf, mode, mapping)
             end
@@ -118,7 +120,7 @@ M.config = function()
         "DiagnosticSignHint",
     }
     for _, sign in ipairs(signs) do
-        vim.fn.sign_define(sign, { texthl = sign, text = "", numhl = sign})
+        vim.fn.sign_define(sign, { texthl = sign, text = "", numhl = sign })
     end
 
     vim.diagnostic.config {
@@ -189,7 +191,7 @@ M.config = function()
 
     }
     -- dont need anything special from those *yet*
-    for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff_lsp", "taplo" }) do
+    for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff_lsp", "taplo", }) do
         lspconfig[lsp].setup {
             capabilities = capabilities
         }

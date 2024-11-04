@@ -1,83 +1,93 @@
 local utils = require("utils")
+local abbrev = utils.abbrev
+local map = utils.map
 
 -- less annoying way to exit terminal mode
-utils.map("t", "<S-Esc>", "<C-\\><C-n>")
+map("t", "<S-Esc>", "<C-\\><C-n>")
 
 -- for some reason smth else remaps those
-utils.map("i", "<M-k>", "<esc>k")
-utils.map("i", "<M-j>", "<esc>j")
+map("i", "<M-k>", "<esc>k")
+map("i", "<M-j>", "<esc>j")
+
+map("n", "]q", "<cmd>cnext<cr>")
+map("n", "[q", "<cmd>cprev<cr>")
 
 local tableader = "\\"
 
 -- tabs 1 - 9
 for i = 1, 9 do
-    utils.map("n", tableader .. i, i .. "gt", { silent = true })
+    map("n", tableader .. i, i .. "gt", { silent = true })
 end
 
-utils.map("n", tableader .. "h", "<cmd>tabprevious<cr>")
-utils.map("n", tableader .. "l", "<cmd>tabnext<cr>")
+map("n", tableader .. "h", "<cmd>tabprevious<cr>")
+map("n", tableader .. "l", "<cmd>tabnext<cr>")
 
-utils.map("n", tableader .. "t", ":tabnew ")
-utils.map("n", tableader .. "v", ":vsp ")
-utils.map("n", tableader .. "s", ":sp ")
+map("n", tableader .. "t", ":tabnew ")
+map("n", tableader .. "v", ":vsp ")
+map("n", tableader .. "s", ":sp ")
 
 -- stop {} from polluting the jumplist
-utils.map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
+map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
     { remap = false, expr = true })
-utils.map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
+map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
     { remap = false, expr = true })
 
--- use <space>@ for macros instead, i dont use them that often
-utils.map("n", "<space>@", "q")
+-- use <space>q for macros instead, i dont use them that often
+map("n", "<space>q", "q")
 
 -- faster to exit
-utils.map("n", "q", "<cmd>q<CR>")
-utils.abbrev("c", "Q", "q!")
+map("n", "q", "<cmd>q<CR>")
+abbrev("c", "Q", "q!")
 
 -- shortcuts to enable/disable spelling
-utils.abbrev("c", "spen", "setlocal spell spelllang=en_us")
-utils.abbrev("c", "spde", "setlocal spell spelllang=de_at")
-utils.abbrev("c", "spoff", "setlocal spell& spelllang&")
+abbrev("c", "spen", "setlocal spell spelllang=en_us")
+abbrev("c", "spde", "setlocal spell spelllang=de_at")
+abbrev("c", "spoff", "setlocal spell& spelllang&")
 
 -- open a shell in a kitty window of some kind
 -- works even for remote oil buffers via ssh
 local shellleader = "<space>s"
-utils.map("n", shellleader .. "w", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") end)
-utils.map("n", shellleader .. "v",
+map("n", shellleader .. "w", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") end)
+map("n", shellleader .. "v",
     function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "vsplit" }) end)
-utils.map("n", shellleader .. "s",
+map("n", shellleader .. "s",
     function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "hsplit" }) end)
-utils.map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") end)
-utils.map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
-utils.map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
+map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") end)
+map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
+map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
 
 -- exit terminal mode with a single chord instead of 2
-utils.map("t", "<C-Esc>", "<C-\\><C-n>")
+map("t", "<C-Esc>", "<C-\\><C-n>")
+
+-- useful in insert mode, especially with lshift and rshift as bs and del
+map("i", "<S-BS>", "<C-w>")
+map("i", "<S-Del>", "<esc>\"_cw")
 
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
+map({"x", "o"}, "ae", textobjs.entire_buffer)
+
 -- these work with all diagnostics
-utils.map("n", "<space>d", vim.diagnostic.open_float)
-utils.map({ "x", "o" }, "idd", textobjs.diagnostic)
-utils.map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
-utils.map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
-utils.map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
-utils.map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
+map("n", "<space>d", vim.diagnostic.open_float)
+map({ "x", "o" }, "id", textobjs.diagnostic)
+-- map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
+-- map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
+-- map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
+-- map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
 
 
 -- indents, very useful for e.g. python
 -- skips lines with spaces and tries to generally be as simple to use as possible
 -- a includes one line above and below
-utils.map({ "x", "o" }, "ii", function() textobjs.indent(false) end)
-utils.map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
+map({ "x", "o" }, "ii", function() textobjs.indent(false) end)
+map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
 
 -- an arbitrary selection on the screen between two points using leap
----@TODO decided whether to remove this
-utils.map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
-utils.map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
+-- TODO decide: whether to remove this
+map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
+map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
 
--- Custom Operators {{{
 local operators = require("operators")
 
 -- evaluate lua and insert result in buffer
@@ -130,7 +140,6 @@ local sort_functions = {
         -- sort pure text at the end of the list
         return (xnum or math.huge) < (ynum or math.huge)
     end,
-
     string = function(x, y)
         return x < y
     end
@@ -182,7 +191,7 @@ end)
 -- allows me to repeat commands like theyre regular mappings
 operators.map_function("g:", function(mode, region, extra, get)
     if extra.repeated then
-        vim.cmd(string.format(":%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
+        vim.cmd(string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
     else
         local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
         vim.api.nvim_feedkeys(cmdstr, "n", false)
@@ -201,4 +210,3 @@ operators.map_function("g:", function(mode, region, extra, get)
     end
     return nil
 end)
--- }}}

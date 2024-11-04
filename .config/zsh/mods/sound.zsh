@@ -1,9 +1,14 @@
 #!/bin/false
 # vim: ft=zsh
 
-# some common pulseaudio stuff
+if [[ "$1" == "unload" ]]; then
 
-if [[ "$1" == "load" ]] {
+    unfunction pagrep tmute
+
+    return
+fi
+
+# some common pulseaudio stuff
 
 # return a list of sink inputs that match a str
 function pagrep {
@@ -39,11 +44,4 @@ function tmute {
     for id in "${ids[@]}"; do
         pactl set-sink-input-mute "$id" toggle
     done
-}
-
-
-} elif [[ "$1" == "unload" ]] {
-
-    unfunction pagrep tmute
-
 }

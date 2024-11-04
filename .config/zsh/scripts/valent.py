@@ -217,7 +217,7 @@ def list_json(bus: dbus.Bus, id=None, name=None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", metavar="action", choices=[
+    parser.add_argument("action", choices=[
         "ls", "sms", "msg", "notify", "json", "send", "url", "file"
     ])
     parser.add_argument("-d" ,"--device", metavar="dev", help="Specify id")

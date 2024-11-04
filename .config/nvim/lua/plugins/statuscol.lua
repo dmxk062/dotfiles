@@ -4,11 +4,15 @@ local M = {
 
 M.config = function()
     require("statuscol").setup {
+        ft_ignore = {
+            "help"
+        },
+        relculright = true,
         segments = {
             {
                 text = {
                     require("statuscol.builtin").foldfunc,
-                    " "
+                    ""
                 },
                 click = "v:lua.ScFa"
             },
@@ -36,7 +40,7 @@ M.config = function()
                     maxwidth = 1,
                     auto = true
                 },
-            }
+            },
         },
     }
 end

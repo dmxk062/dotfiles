@@ -31,8 +31,8 @@ function M.config(_, opts)
         end)
     end)
 
-    utils.map({"x", "n"}, "<C-k>", mc.prevCursor)
-    utils.map({"x", "n"}, "<C-j>", mc.nextCursor)
+    -- utils.map({"x", "n"}, "<C-k>", mc.prevCursor)
+    -- utils.map({"x", "n"}, "<C-j>", mc.nextCursor)
 
     -- replace default I and A for visual mode
     utils.map("x", "I", mc.insertVisual)
