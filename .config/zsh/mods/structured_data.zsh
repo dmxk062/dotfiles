@@ -5,7 +5,8 @@ if [[ "$1" == "unload" ]]; then
     unfunction json2hash hash2json \
         json2table table2json \
         proplist2table table2proplist \
-        filter_table
+        filter_table \
+        hash2props
 
     return
 fi
@@ -197,5 +198,18 @@ function filter_table {
             cur+=("${line[$i]}")
         done
         print -- "${(pj[$sep])cur[@]}"
+    done
+}
+
+# convert a hashmap to a list of key: val lines
+# $1: name of hash
+# $2: output separator
+function hash2props {
+    local array_name="$1"
+    local outsep="${2:-": "}"
+
+    local k v
+    for k v in "${(@kv)${(P)array_name}}"; do
+        print -- "$k$outsep$v"
     done
 }

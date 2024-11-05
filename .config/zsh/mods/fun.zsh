@@ -9,7 +9,7 @@ if [[ "$1" == "unload" ]]; then
         map cmap vmap cvmap fmap \
         fold vfold afold \
         interlace \
-        keys pairs \
+        keys \
         getdef
 
     unalias fn '\\' 'λ' ret yield
@@ -226,6 +226,7 @@ alias yield="print -l --"
 # for functions and aliases, shows the definition
 # for builtins and programs, show the full invocation
 function getdef {
+    IFS=': ' read -r _ type < <(whence -w -- "$1")
     (
         whence -w -- "$@"|sed 's/^.*: \(.*\)/\1 /'|tr -d '\n'
         whence -f -x 4 -- "$@"
@@ -239,13 +240,4 @@ compdef getdef=whence
 function keys {
     local arrayname="${1}"
     print -l -- ${(@k)${(P)arrayname}}
-}
-
-function pairs {
-    local arrayname="$1"
-    local sep="${2:-": "}"
-    local key value
-    for key value in "${(@kv)${(P)arrayname}}"; do
-        print -- "$key$sep$value"
-    done
 }
