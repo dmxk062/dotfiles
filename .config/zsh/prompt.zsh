@@ -1,8 +1,3 @@
-# directly set the hooks instead of just adding to the hook, so ours runs first
-function preexec {
-    _PROMPTTIMER=$EPOCHREALTIME
-}
-
 psvar=(
     0ms           # 1 time of previous command
     "cyan"        # 2 color of prompt

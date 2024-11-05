@@ -1,3 +1,7 @@
+function preexec {
+    _PROMPTTIMER=$EPOCHREALTIME
+}
+
 function command_not_found_handler() {
     # early return if not in tty
     printf "zsh: command not found: '%s'" "$1" >&2
