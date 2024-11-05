@@ -50,7 +50,7 @@ function nz {
 }
 
 function _fzf_shell_hist {
-    local res="$(fc -n -l $HISTSIZE|awk '!seen[$2]++'|fzf --height=18 --prompt="hist: " -q "^$BUFFER")"
+    local res="$(fc -n -l $HISTSIZE|awk '!seen[$2]++'|fzf --no-sort --tac --height=18 --prompt="hist: " -q "^$BUFFER")"
     if [[ -n "$res" ]]; then
         BUFFER="${res}"
         zle end-of-line
