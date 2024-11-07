@@ -191,7 +191,7 @@ M.config = function()
 
     }
     -- dont need anything special from those *yet*
-    for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff_lsp", "taplo", }) do
+    for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff", "taplo", }) do
         lspconfig[lsp].setup {
             capabilities = capabilities
         }
