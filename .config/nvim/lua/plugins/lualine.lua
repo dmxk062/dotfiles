@@ -22,7 +22,7 @@ nord.insert = {
     a = { fg = pal.bg0, bg = pal.bg0 },
     b = { fg = pal.fg0, bg = pal.bg3 },
     y = { fg = pal.fg0, bg = pal.bg3 },
-    z = { fg = pal.fg0, bg = pal.bg3 },
+    z = { fg = pal.inverted, bg = pal.fg2 },
 }
 
 nord.visual = {
@@ -61,7 +61,7 @@ local rbubble = { right = "" }
 
 local modecolors = {
     n = { bg = col.teal, fg = pal.bg0 },
-    i = { bg = pal.bg3, fg = pal.fg0, gui = "italic" },
+    i = { bg = pal.fg2, fg = pal.inverted },
     c = { bg = col.magenta, fg = pal.bg0 },
     v = { bg = col.light_blue, fg = pal.bg0 },
     V = { bg = col.light_blue, fg = pal.bg0 },
