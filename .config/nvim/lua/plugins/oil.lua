@@ -99,8 +99,14 @@ local function goto_git_ancestor()
     if not path then
         return
     end
-    -- steal lspconfigs implementation
-    local git_ancestor = require("lspconfig.util").find_git_ancestor(path)
+
+    local git_ancestor = vim.fs.root(path, ".git")
+
+    -- avoid flicker
+    if git_ancestor == path or git_ancestor .. "/" == path then
+        return
+    end
+
     if git_ancestor then
         require("oil").open(git_ancestor)
     else
