@@ -92,8 +92,6 @@ local mode = {
 
 local lsp_infos = {
     function()
-        local icons = require("nvim-web-devicons")
-
         local buf = vim.api.nvim_get_current_buf()
         local clients = vim.lsp.get_clients { bufnr = buf }
         if #clients == 0 then
@@ -102,10 +100,14 @@ local lsp_infos = {
 
         local active_clients = {}
         for _, client in ipairs(clients) do
-            local lang = client.get_language_id(buf, vim.bo[buf].ft)
-            local icon = icons.get_icon_by_filetype(lang or "")
+            local name
+            if #client.name > 8 then
+                name = client.name:sub(1, 8) .. "…"
+            else
+                name = client.name
+            end
 
-            table.insert(active_clients, (icon and icon .. " " or "") .. client.name)
+            table.insert(active_clients, name)
         end
 
         return table.concat(active_clients, ", ")
