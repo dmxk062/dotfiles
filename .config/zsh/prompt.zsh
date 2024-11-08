@@ -163,4 +163,3 @@ Time   %E"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # explicitly update it on first run
-_update_git_status
