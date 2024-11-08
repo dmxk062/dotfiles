@@ -264,10 +264,12 @@ M.opts = {
 
         -- only close oil buffer if it is the last one
         ["q"]         = function()
-            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                if vim.bo[buf].filetype ~= "oil" then
-                    vim.api.nvim_win_set_buf(0, buf)
-                    return
+            if not (#vim.api.nvim_list_wins() > 1) then
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                    if vim.bo[buf].filetype ~= "oil" then
+                        vim.api.nvim_win_set_buf(0, buf)
+                        return
+                    end
                 end
             end
             vim.cmd("quit")
