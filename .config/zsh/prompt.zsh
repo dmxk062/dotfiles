@@ -102,7 +102,7 @@ declare -A _exitcolors=(
 function precmd {
     local exitc=$?
     local exittxt
-    if ((exitc > 128)); then
+    if ((exitc > 128 && exitc < 256)); then
         exittxt="${signals[exitc-127]:l}"
         psvar[13]="! $exittxt"
     else 
