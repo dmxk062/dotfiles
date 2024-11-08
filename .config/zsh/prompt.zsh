@@ -92,30 +92,33 @@ PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b
 # right part of prompt, flags and previous command status
 # HACK: draw right prompt one line higher
 RPROMPT="%{$(echotc UP 1)%}%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%12v}%k%S%13v%s%{$(echotc DO 1)%}"
+
+declare -A _exitcolors=(
+    [0]=12
+    [130]=yellow
+    [147]=blue
+    [148]=blue
+)
 function precmd {
     local exitc=$?
-    case $exitc in
-        "0") 
-            psvar[12]=12
-            psvar[13]="󰄬 0"
-            ;;
-        "148"|"147")
-            psvar[12]=blue
-            psvar[13]="stp"
-            ;;
-        "130") 
-            psvar[12]=yellow
-            psvar[13]="int"
-            ;;
-        "139")
-            psvar[12]=red
-            psvar[13]="seg"
-            ;;
-        *)
-            psvar[12]=red
-            psvar[13]="󰅖 $exitc"
-            ;;
-    esac
+    local exittxt
+    if ((exitc > 128)); then
+        exittxt="${signals[exitc-127]:l}"
+        psvar[13]="! $exittxt"
+    else 
+        case $exitc in 
+            0)
+                psvar[13]="󰄬 0"
+                ;;
+            *)
+                psvar[13]="󰅖 $exitc"
+        esac
+    fi
+    psvar[12]="${_exitcolors[$exitc]}"
+    if [[ -z "${psvar[12]}" ]]; then
+        psvar[12]=red
+    fi
+
     # dont print a new time on every single <cr>, just if a command ran
     if (( _PROMPTTIMER)); then
         local elapsed_ms=$[ ( $EPOCHREALTIME-$_PROMPTTIMER )* 1000 ] elapsed
