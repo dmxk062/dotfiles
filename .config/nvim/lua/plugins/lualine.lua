@@ -57,13 +57,6 @@ local bubble = { left = "", right = "" }
 local lbubble = { left = "" }
 local rbubble = { right = "" }
 
-local ignored_commands = {
-    ["j"] = true,
-    ["k"] = true,
-    ["h"] = true,
-    ["l"] = true,
-}
-
 local modecolors = {
     n = { bg = col.teal, fg = pal.bg0 },
     i = { bg = pal.fg2, fg = pal.inverted },
@@ -193,18 +186,15 @@ M.opts = {
                             return ""
                         end
 
-                        return [["]] .. last
+                        return '["' .. last .. ']'
                     end
-                    return [[recording -> "]] .. reg
+                    return '<"' .. reg .. '>'
                 end,
-                icon = { "󰌌", color = { fg = col.magenta, bold = true } }
+                color = { fg = col.bright_gray },
 
             },
             {
                 "%S",
-                fmt = function(str)
-                    return not ignored_commands[str] and str
-                end
             }
         },
         lualine_x = {
