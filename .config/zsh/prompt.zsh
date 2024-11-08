@@ -85,11 +85,12 @@ function _update_git_status {
 
 
 # left part of prompt, git part
-PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
+PROMPT="%F{8}╭%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
 # left part of prompt, current directory
-PROMPT+="%B%F{%2v}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b
+%F{8}╰╴%f "
 # right part of prompt, flags and previous command status
-RPROMPT="%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%12v}%k%S%13v%s"
+RPROMPT="%{$(echotc UP 1)%}%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%12v}%k%S%13v%s%{$(echotc DO 1)%}"
 function precmd {
     local exitc=$?
     case $exitc in
@@ -147,7 +148,8 @@ function precmd {
 PS2="%F{8}%K{8}%f󰅪 %_%k%F{8}%f "
 #
 # sudo prompt
-export SUDO_PROMPT="$(print -P "\n%B%F{red}%S sudo%s%f%b ")"
+print -P -v SUDO_PROMPT "\n%B%F{red}%S sudo%s%f%b "
+export SUDO_PROMPT
 
 # only the default, i have a couple more functions planed for this
 TIMEFMT="User   %U
