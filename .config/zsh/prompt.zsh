@@ -90,6 +90,7 @@ PROMPT="%F{8}╭%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red
 PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b
 %F{8}╰╴%f "
 # right part of prompt, flags and previous command status
+# HACK: draw right prompt one line higher
 RPROMPT="%{$(echotc UP 1)%}%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%12v}%k%S%13v%s%{$(echotc DO 1)%}"
 function precmd {
     local exitc=$?
