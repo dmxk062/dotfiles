@@ -57,7 +57,12 @@ local bubble = { left = "", right = "" }
 local lbubble = { left = "" }
 local rbubble = { right = "" }
 
-
+local ignored_commands = {
+    ["j"] = true,
+    ["k"] = true,
+    ["h"] = true,
+    ["l"] = true,
+}
 
 local modecolors = {
     n = { bg = col.teal, fg = pal.bg0 },
@@ -65,7 +70,7 @@ local modecolors = {
     c = { bg = col.magenta, fg = pal.bg0 },
     v = { bg = col.light_blue, fg = pal.bg0 },
     V = { bg = col.light_blue, fg = pal.bg0 },
-    [""] = { bg = col.light_blue, fg = pal.bg0 },
+    [""] = { bg = col.light_blue, fg = pal.bg0, gui = "bold" },
     R = { bg = col.red, fg = pal.bg0, gui = "bold" },
     no = { bg = col.teal, fg = pal.bg0, gui = "italic" },
     noV = { bg = col.teal, fg = pal.bg0, gui = "italic" },
@@ -77,7 +82,7 @@ local modecolors = {
 
 local modenames = {
     ["V-LINE"] = "V",
-    ["V-BLOCK"] = "^V"
+    ["V-BLOCK"] = "V"
 }
 
 local mode = {
@@ -194,6 +199,12 @@ M.opts = {
                 end,
                 icon = { "󰌌", color = { fg = col.magenta, bold = true } }
 
+            },
+            {
+                "%S",
+                fmt = function(str)
+                    return not ignored_commands[str] and str
+                end
             }
         },
         lualine_x = {
@@ -278,6 +289,7 @@ M.opts = {
 
 M.config = function(_, opts)
     require("lualine").setup(opts)
+    vim.o.showcmdloc = "statusline"
 
     -- refresh statusline on macro recording
     vim.api.nvim_create_autocmd("RecordingEnter", { callback = require("lualine").refresh })
