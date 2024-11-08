@@ -15,7 +15,6 @@ psvar=(
 )
 
 # change the color of the prompt based on mode
-# PROMPT="%B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 function zvm_after_select_vi_mode {
     local -A mode_colors=(
         ["$ZVM_MODE_NORMAL"]="cyan"
