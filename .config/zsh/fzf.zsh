@@ -20,7 +20,7 @@ local -A fzf_colors=(
 local colors="--color="
 local name
 for name in "${(k)fzf_colors[@]}"; do
-    colors="$colors$name:${fzf_colors[$name]},"
+    colors+="$name:${fzf_colors[$name]},"
 done
 colors="${colors::-1}"
 

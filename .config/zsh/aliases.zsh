@@ -31,6 +31,7 @@ alias \
     -g "@noout"=">/dev/null"
 
 alias \
+    '@raw'="noglob" \
     ':tab'="IFS=$'\t'" \
     ':colon'="IFS=':'" \
     ':semic'="IFS=';'" \
