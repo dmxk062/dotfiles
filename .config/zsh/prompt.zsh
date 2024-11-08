@@ -106,13 +106,11 @@ function precmd {
         exittxt="${signals[exitc-127]:l}"
         psvar[13]="! $exittxt"
     else 
-        case $exitc in 
-            0)
-                psvar[13]="󰄬 0"
-                ;;
-            *)
-                psvar[13]="󰅖 $exitc"
-        esac
+        if ((! exitc)); then
+            psvar[13]="󰄬 0"
+        else
+            psvar[13]="󰅖 $exitc"
+        fi
     fi
     psvar[12]="${_exitcolors[$exitc]}"
     if [[ -z "${psvar[12]}" ]]; then
@@ -152,7 +150,8 @@ function precmd {
 PS2="%F{8}%_ ╴%f "
 
 # sudo prompt
-print -P -v SUDO_PROMPT "%B%F{red}%S sudo%s%f%b "
+print -P -v SUDO_PROMPT "\n%F{8}╭%B%F{red}%S sudo%s%f%b
+%F{8}╰╴%f "
 export SUDO_PROMPT
 
 # only the default, i have a couple more functions planed for this
