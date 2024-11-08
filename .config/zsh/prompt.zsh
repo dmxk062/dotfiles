@@ -146,10 +146,10 @@ function precmd {
 }
 
 # Prompt for nested things:
-PS2="%F{8}%K{8}%f󰅪 %_%k%F{8}%f "
-#
+PS2="%F{8}%_ ╴%f "
+
 # sudo prompt
-print -P -v SUDO_PROMPT "\n%B%F{red}%S sudo%s%f%b "
+print -P -v SUDO_PROMPT "%B%F{red}%S sudo%s%f%b "
 export SUDO_PROMPT
 
 # only the default, i have a couple more functions planed for this
