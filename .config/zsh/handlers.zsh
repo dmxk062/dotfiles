@@ -28,13 +28,14 @@ function command_not_found_handler() {
 
 
 function __readnullcommand {
+    # HACK: look up related file to guess type correctly
     local realpath="/proc/self/fd/0"
     realpath="${realpath:A}"
-    if [[ -f "$realpath" ]] {
+    if [[ -f "$realpath" ]]; then
         command bat --color=always -Pp "$realpath"
-    } elif [[ -d "$realpath" ]] {
-    command lsd "$realpath"
-}
+    elif [[ -d "$realpath" ]]; then
+        command lsd "$realpath"
+    fi
 }
 
 READNULLCMD=__readnullcommand

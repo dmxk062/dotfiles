@@ -54,5 +54,5 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
     bracket-level-6 'fg=fg'
     cursor-matchingbracket "bold,bg=8,fg=magenta"
 )
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
