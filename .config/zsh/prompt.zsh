@@ -1,5 +1,5 @@
 psvar=(
-    0ms           # 1 time of previous command
+    0             # 1 time of previous command
     "cyan"        # 2 color of prompt
     ""            # 3 git branch
     ""            # 4 git modified
@@ -70,15 +70,10 @@ function _update_git_status {
             esac
         done
 
-        psvar[3]="$branch"
-        psvar[4]="$modified$smodified"
-        psvar[5]="$deleted$sdeleted"
-        psvar[6]="$added$sadded"
-        psvar[7]="$renamed"
-        psvar[8]="$ahead"
-        psvar[9]="$behind"
+        printf 'psvar[3]="%s";psvar[4]="%s";psvar[5]="%s";psvar[6]="%s";psvar[7]="%s";psvar[8]="%s";psvar[9]="%s"\n' \
+            "$branch" "$modified$smodified" "$deleted$sdeleted" "$added$sadded" "$renamed" "$ahead" "$behind"
     else 
-        psvar[3]=""
+        printf 'psvar[3]=""\n'
     fi
 }
 
@@ -99,12 +94,23 @@ declare -A _exitcolors=(
     [147]=blue
     [148]=blue
 )
+
+# run process for git status asynchronously
+_PROMPTPROC=0
 function precmd {
     local exitc=$?
-    local exittxt
+
+    if ((_PROMPTPROC != 0)); then
+        kill -s HUP $_PROMPTPROC >/dev/null 2>&1 || :
+    fi
+
+    ( _update_git_status > "$ZCACHEDIR/prompt_$$"
+        kill -s USR1 $$
+    ) &!
+    _PROMPTPROC=$!
+
     if ((exitc > 128 && exitc < 256)); then
-        exittxt="${signals[exitc-127]:l}"
-        psvar[13]="! $exittxt"
+        psvar[13]="! ${signals[exitc-127]:l}"
     else 
         if ((! exitc)); then
             psvar[13]="󰄬 0"
@@ -142,8 +148,14 @@ function precmd {
     else
         psvar[11]=""
     fi
-    _update_git_status
     _PROMPTTIMER=0
+}
+
+function TRAPUSR1 {
+    eval $(< "$ZCACHEDIR/prompt_$$")
+    _PROMPTPROC=0
+
+    zle -I
 }
 
 # Prompt for nested things:
