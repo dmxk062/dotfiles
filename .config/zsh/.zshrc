@@ -116,16 +116,12 @@ nameddirs=(
     ["games"]="$HOME/Games"
 )
 
-# autopairing for quotes, brackets etc
-source "$ZDOTDIR/autopair.zsh"
 
 # my own config
 source "$ZDOTDIR/functions.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/prompt.zsh"
 source "$ZDOTDIR/fzf.zsh"
-# init autopair after all of that
-autopair-init
 
 # syntax highlighting
 source "$ZDOTDIR/highlight.zsh"
@@ -134,3 +130,7 @@ source "$ZDOTDIR/highlight.zsh"
 eval "$(zoxide init zsh)"
 
 export BAT_THEME="Nord"
+
+function zvm_after_init {
+    source "$ZDOTDIR/pairs.zsh"
+}
