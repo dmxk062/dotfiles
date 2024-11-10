@@ -155,7 +155,7 @@ function TRAPUSR1 {
     eval $(< "$ZCACHEDIR/prompt_$$")
     _PROMPTPROC=0
 
-    zle -I
+    zle -I && zle reset-prompt
 }
 
 # Prompt for nested things:
