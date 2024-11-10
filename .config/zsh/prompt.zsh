@@ -110,7 +110,9 @@ function precmd {
     _PROMPTPROC=$!
 
     if ((exitc > 128 && exitc < 256)); then
-        psvar[13]="! ${signals[exitc-127]:l}"
+        local signame="${signals[exitc-127]:l}"
+        signame="${signame:-$exitc}"
+        psvar[13]="! $signame"
     else 
         if ((! exitc)); then
             psvar[13]="󰄬 0"
