@@ -23,10 +23,7 @@ function M.config(_, opts)
         mc.action(function(ctx)
             local maincol = ctx:mainCursor():getPos()[2]
             ctx:forEachCursor(function(cursor, i, all)
-                local pos = cursor:getPos()
-                if pos[2] ~= maincol then
-                    cursor:setPos({ pos[1], maincol })
-                end
+                cursor:feedkeys(maincol .. "|")
             end)
         end)
     end)
@@ -49,6 +46,7 @@ function M.config(_, opts)
                 for i = region[1][1] + 1, region[2][1] do
                     local cursor = ctx:addCursor()
                     cursor:setPos({ i, start_pos })
+                    cursor:feedkeys(start_pos .. "|")
                 end
             end)
         elseif mode == "char" then
