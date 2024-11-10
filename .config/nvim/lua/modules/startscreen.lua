@@ -260,8 +260,10 @@ local function draw_screen()
     vim.tbl_map(function(btn) button(size, btn) end, Buttons)
 
     state.last_editable = state.cur_row
-    print_padding_lines(rows - state.cur_row - 2)
-    centered_text(size, { text = M.texts[(vim.fn.rand() % #M.texts) + 1], hl = "Text" })
+    if rows > state.cur_row then
+        print_padding_lines(rows - state.cur_row - 2)
+        centered_text(size, { text = M.texts[(vim.fn.rand() % #M.texts) + 1], hl = "Text" })
+    end
     vim.bo[state.buf].modifiable = false
     vim.bo[state.buf].modified = false
 end
