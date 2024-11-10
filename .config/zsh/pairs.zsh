@@ -144,8 +144,12 @@ for pair match in "${(kv)AUTOPAIR_PAIRS[@]}"; do
         bindkey "$match" autopair-close-pair
     fi
 done
-bindkey "^H" autopair-del-char
-bindkey "^?" autopair-del-char
-bindkey "\e[3~" autopair-del-char-right
+bindkey -M viins "^H" autopair-del-char
+bindkey -M viins "^?" autopair-del-char
+bindkey -M command "^H" backward-delete-char
+bindkey -M command "^?" backward-delete-char
+
+bindkey -M viins "\e[3~" autopair-del-char-right
+bindkey -M command "\e[3~" backward-delete-char
 
 unset pair match
