@@ -28,34 +28,34 @@ M = {
 }
 
 local kind_symbols = {
-    Text = "󰉿 txt",
-    Method = "󰆧 method",
-    Function = "󰊕 func",
-    Constructor = " constructor",
-    Field = "󰽐 field",
-    Variable = "α var",
-    Class = "󰠱 class",
-    Interface = " type",
-    Module = " module",
-    Property = "󰜢 prop",
-    Unit = "󰑭 unit",
-    Value = "󰎠 val",
-    Enum = " enum",
-    Keyword = "󰌋 keywd",
-    Snippet = " snip",
-    Color = "󰏘 color",
-    File = "󰈙 file",
-    Reference = "󰈇 ref",
-    Folder = " dir",
-    EnumMember = " enum",
-    Constant = "󰏿 const",
-    Struct = "󰙅 struct",
-    Event = " event",
-    Operator = "󰆕 op",
+    Text          = "󰉿 txt",
+    Method        = "󰊕 method",
+    Function      = "󰊕 func",
+    Constructor   = "󰙴 init",
+    Field         = ". field",
+    Variable      = "α var",
+    Class         = "󰅩 class",
+    Interface     = " type",
+    Module        = " mod",
+    Property      = ". prop",
+    Unit          = "󰑭 unit",
+    Value         = "󰎠 val",
+    Enum          = " enum",
+    EnumMember    = " enum",
+    Keyword       = " keywd",
+    Snippet       = " snip",
+    Color         = "󰏘 color",
+    File          = "󰈙 file",
+    Reference     = "󰌷 ref",
+    Folder        = " dir",
+    Constant      = "π const",
+    Struct        = "󰅩 struct",
+    Event         = "! event",
+    Operator      = "± op",
     TypeParameter = " param",
-    Latex = " tex",
-    Neorg = "󱞁 norg",
-    Omnifunc = " omni",
+    Latex         = " tex",
+    Neorg         = "󱞁 norg",
+    Omnifunc      = " omni",
 }
 
 local hlleader = "CmpItemKind"
@@ -77,6 +77,25 @@ local function get_omni_kind(vitem)
     end
 end
 
+---@param text string
+---@param max integer?
+---@return string
+local function shorten_name(text, max)
+    max = max or 40
+    local length = vim.fn.strdisplaywidth(text)
+    if length <= max then
+        return text
+    end
+
+    local fn_name, fn_args, fn_suff = text:match("([%w_]+)%((.*)%)(.*)$")
+    -- try to simplify abbreviated functions
+    if fn_args then
+        return fn_name .. ("(%d …)"):format(#vim.split(fn_args, ",")) .. fn_suff
+    else
+        return text:sub(1, max - 1) .. "…"
+    end
+end
+
 ---@param entry table
 ---@param vitem vim_item
 local function format_entry(entry, vitem)
@@ -95,53 +114,56 @@ local function format_entry(entry, vitem)
             vitem.kind_hl_group = hl
         end
     end
-
-    vitem.kind = kind_symbols[kind] or kind_symbols["Text"]
+    vitem.abbr = shorten_name(vitem.abbr)
+    vitem.kind = kind_symbols[kind] or kind_symbols.Text
     return vitem
 end
-M.config = function()
-    local cmp = require("cmp")
 
-    cmp.setup({
-        performance = {
-            max_view_entries = 24,
+M.opts = {
+    performance = {
+        max_view_entries = 24,
+    },
+    snippet = {
+        expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+        end,
+    },
+    formatting = {
+        format = format_entry,
+    },
+    window = {
+        completion = {
+            border = "rounded",
+            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+            scrollbar = false,
         },
-        snippet = {
-            expand = function(args)
-                require("luasnip").lsp_expand(args.body)
-            end,
-        },
-        formatting = {
-            format = format_entry,
-        },
-        window = {
-            completion = {
-                border = "rounded",
-                winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
-                scrollbar = false,
-            },
-            documentation = {
-                border = "rounded",
-                winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:None",
-                scrollbar = false,
-            }
-        },
-        mapping = cmp.mapping.preset.insert({
-            ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-            ["<C-f>"] = cmp.mapping.scroll_docs(4),
-            ["<C-space>"] = cmp.mapping.complete(),
-            ["<C-e>"] = cmp.mapping.abort(),
-            ["<CR>"] = cmp.mapping.confirm({ select = true }),
-            ["<M-j>"] = cmp.mapping.select_next_item(),
-            ["<M-k>"] = cmp.mapping.select_prev_item(),
-        }),
-        sources = {
-            { name = "nvim_lsp" },
-            { name = "path" },
-            { name = "luasnip" },
-            { name = "buffer" },
+        documentation = {
+            border = "rounded",
+            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:None",
+            scrollbar = false,
         }
+    },
+    sources = {
+        { name = "nvim_lsp" },
+        { name = "path" },
+        { name = "luasnip" },
+        { name = "buffer" },
+    }
+
+}
+
+M.config = function(_, opts)
+    local cmp = require("cmp")
+    opts.mapping = cmp.mapping.preset.insert({
+        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-e>"] = cmp.mapping.abort(),
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<M-j>"] = cmp.mapping.select_next_item(),
+        ["<M-k>"] = cmp.mapping.select_prev_item(),
     })
+
+    cmp.setup(opts)
 
     cmp.setup.filetype("gitcommit", {
         sources = cmp.config.sources({
@@ -178,7 +200,8 @@ M.config = function()
 
     cmp.setup.cmdline({ ":" }, {
         mapping = cmp.mapping.preset.cmdline({}),
-        sources = cmp.config.sources({
+        sources = cmp.config.sources(
+            {
                 { name = "path" }
             },
             {
