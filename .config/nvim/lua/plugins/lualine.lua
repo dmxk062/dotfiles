@@ -22,7 +22,7 @@ nord.insert = {
     a = { fg = pal.bg0, bg = pal.bg0 },
     b = { fg = pal.fg0, bg = pal.bg3 },
     y = { fg = pal.fg0, bg = pal.bg3 },
-    z = { fg = pal.fg0, bg = pal.bg3 },
+    z = { fg = pal.inverted, bg = pal.fg2 },
 }
 
 nord.visual = {
@@ -57,15 +57,13 @@ local bubble = { left = "", right = "" }
 local lbubble = { left = "" }
 local rbubble = { right = "" }
 
-
-
 local modecolors = {
     n = { bg = col.teal, fg = pal.bg0 },
-    i = { bg = pal.bg3, fg = pal.fg0, gui = "italic" },
+    i = { bg = pal.fg2, fg = pal.inverted },
     c = { bg = col.magenta, fg = pal.bg0 },
     v = { bg = col.light_blue, fg = pal.bg0 },
     V = { bg = col.light_blue, fg = pal.bg0 },
-    [""] = { bg = col.light_blue, fg = pal.bg0 },
+    [""] = { bg = col.light_blue, fg = pal.bg0, gui = "bold" },
     R = { bg = col.red, fg = pal.bg0, gui = "bold" },
     no = { bg = col.teal, fg = pal.bg0, gui = "italic" },
     noV = { bg = col.teal, fg = pal.bg0, gui = "italic" },
@@ -77,7 +75,7 @@ local modecolors = {
 
 local modenames = {
     ["V-LINE"] = "V",
-    ["V-BLOCK"] = "^V"
+    ["V-BLOCK"] = "V"
 }
 
 local mode = {
@@ -94,8 +92,6 @@ local mode = {
 
 local lsp_infos = {
     function()
-        local icons = require("nvim-web-devicons")
-
         local buf = vim.api.nvim_get_current_buf()
         local clients = vim.lsp.get_clients { bufnr = buf }
         if #clients == 0 then
@@ -104,10 +100,14 @@ local lsp_infos = {
 
         local active_clients = {}
         for _, client in ipairs(clients) do
-            local lang = client.get_language_id(buf, vim.bo[buf].ft)
-            local icon = icons.get_icon_by_filetype(lang or "")
+            local name
+            if #client.name > 8 then
+                name = client.name:sub(1, 8) .. "…"
+            else
+                name = client.name
+            end
 
-            table.insert(active_clients, (icon and icon .. " " or "") .. client.name)
+            table.insert(active_clients, name)
         end
 
         return table.concat(active_clients, ", ")
@@ -124,7 +124,7 @@ M.opts = {
         always_divide_middle = true,
         globalstatus = true,
         refresh = {
-            statusline = 1000,
+            statusline = 100,
         },
         disabled_filetypes = {
             statusline = {
@@ -188,12 +188,15 @@ M.opts = {
                             return ""
                         end
 
-                        return [["]] .. last
+                        return '["' .. last .. ']'
                     end
-                    return [[recording -> "]] .. reg
+                    return '<"' .. reg .. '>'
                 end,
-                icon = { "󰌌", color = { fg = col.magenta, bold = true } }
+                color = { fg = col.bright_gray },
 
+            },
+            {
+                "%S",
             }
         },
         lualine_x = {
@@ -278,6 +281,7 @@ M.opts = {
 
 M.config = function(_, opts)
     require("lualine").setup(opts)
+    vim.o.showcmdloc = "statusline"
 
     -- refresh statusline on macro recording
     vim.api.nvim_create_autocmd("RecordingEnter", { callback = require("lualine").refresh })

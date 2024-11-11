@@ -105,7 +105,7 @@ autocmd("BufReadPost", {
 })
 -- auto resize on window resize
 -- TODO: add actual heuristics for what to do
-autocmd("WinResized", {
+autocmd("VimResized", {
     callback = function(ev)
         vim.cmd.wincmd("=")
     end

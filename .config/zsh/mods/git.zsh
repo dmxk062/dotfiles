@@ -51,8 +51,8 @@ function lschg {
                     suffix=" %F{red}$bits_old%f -> %F{green}$bits_new%f"
                 fi
                 print -P -- "$prefix$mode%f%b $file$suffix"
-            elif [[ "$type" == '?' || "$type" == "!" ]] && ((all)); then
-                print -P -- "\e[90m$type  $line%f"
+            elif ((all)) && [[ "$type" == "?" || "$type" == "!" ]]; then
+                print -P -- "%F{8}$type  $line%f"
             elif [[ "$type" == 2 ]]; then
                 local old_path new_path
                 read -r mode _ _ old_perm new_perm _ _ _ files <<< "$line"

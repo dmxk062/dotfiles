@@ -19,7 +19,7 @@ function M.config(_, opts)
     end)
 
     -- align cursors: all to same column
-    utils.map({"x", "n"}, "<space>Ca", function()
+    utils.map({ "x", "n" }, "<space>Ca", function()
         mc.action(function(ctx)
             local maincol = ctx:mainCursor():getPos()[2]
             ctx:forEachCursor(function(cursor, i, all)
@@ -66,7 +66,7 @@ function M.config(_, opts)
         local search_pattern = vim.fn.getreg("/")
         local main_pos = vim.api.nvim_win_get_cursor(0)
         local matches = {}
-        vim.api.nvim_win_set_cursor(0, {1, 1})
+        vim.api.nvim_win_set_cursor(0, { 1, 1 })
 
         local match = vim.fn.searchpos(search_pattern, "W")
         while match[1] ~= 0 do

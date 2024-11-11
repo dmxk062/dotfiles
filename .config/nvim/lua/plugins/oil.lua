@@ -56,28 +56,28 @@ local oil_columns = {
         format = "%H:%M %d-%m-%y"
     },
     size = {
-	"size",
-	highlight = function(str)
-	    local suffixes = {
-		k = 1024,
-		M = 1048576,
-		G = 1073741824,
-	    }
-	    local factor = suffixes[str:sub(-1, -1)] or 1
-	    local size = factor * tonumber(str:match("^%d+"))
+        "size",
+        highlight = function(str)
+            local suffixes = {
+                k = 1024,
+                M = 1048576,
+                G = 1073741824,
+            }
+            local factor = suffixes[str:sub(-1, -1)] or 1
+            local size = factor * tonumber(str:match("^%d+"))
 
-	    if size == 0 then
-		return "OilSizeNone"
-	    elseif size < 4096 then
-		return "OilSizeSmall"
-	    elseif size < 4194304 then
-		return "OilSizeMedium"
-	    elseif size < 134217728 then
-		return "OilSizeLarge"
-	    else
-		return "OilSizeHuge"
-	    end
-	end
+            if size == 0 then
+                return "OilSizeNone"
+            elseif size < 4096 then
+                return "OilSizeSmall"
+            elseif size < 4194304 then
+                return "OilSizeMedium"
+            elseif size < 134217728 then
+                return "OilSizeLarge"
+            else
+                return "OilSizeHuge"
+            end
+        end
     }
 }
 
@@ -99,8 +99,14 @@ local function goto_git_ancestor()
     if not path then
         return
     end
-    -- steal lspconfigs implementation
-    local git_ancestor = require("lspconfig.util").find_git_ancestor(path)
+
+    local git_ancestor = vim.fs.root(path, ".git")
+
+    -- avoid flicker
+    if git_ancestor == path or git_ancestor .. "/" == path then
+        return
+    end
+
     if git_ancestor then
         require("oil").open(git_ancestor)
     else
@@ -134,22 +140,22 @@ end
 
 
 local sort = {
-    {"type", "asc"},
-    {"name", "asc"},
+    { "type", "asc" },
+    { "name", "asc" },
 }
 
 local sort_types = {
     size = {
-        {"size", "desc"},
-        {"name", "asc"}
+        { "size", "desc" },
+        { "name", "asc" }
     },
     mtime = {
-        {"mtime", "desc"},
-        {"name", "asc"}
+        { "mtime", "desc" },
+        { "name",  "asc" }
     },
     default = {
-        {"type", "asc"},
-        {"name", "asc"}
+        { "type", "asc" },
+        { "name", "asc" }
     }
 }
 
@@ -214,41 +220,41 @@ M.opts = {
     },
 
     keymaps = {
-        ["!"] = function() open_cmd("!") end,
+        ["!"]         = function() open_cmd("!") end,
         ["<C-space>"] = "actions.refresh",
-        ["<CR>"] = "actions.select",
-        ["<S-CR>"] = "actions.select_tab",
-        ["<C-CR>"] = "actions.select_split",
-        ["<M-CR>"] = "actions.select_vsplit",
+        ["<CR>"]      = "actions.select",
+        ["<S-CR>"]    = "actions.select_tab",
+        ["<C-CR>"]    = "actions.select_split",
+        ["<M-CR>"]    = "actions.select_vsplit",
 
-        ["es"] = "actions.select_split",
-        ["et"] = "actions.select_tab",
-        ["ev"] = "actions.select_vsplit",
-        ["eo"] = open_external,
-        ["gx"] = open_external,
+        ["es"]        = "actions.select_split",
+        ["et"]        = "actions.select_tab",
+        ["ev"]        = "actions.select_vsplit",
+        ["eo"]        = open_external,
+        ["gx"]        = open_external,
 
         -- edit permissions
-        ["ep"] = function() open_cmd("silent !chmod") end,
+        ["ep"]        = function() open_cmd("silent !chmod") end,
 
         -- goto places
-        ["g~"] = function() goto_dir("~") end,
-        ["gr"] = function() require("oil").open("/") end,
-        ["g/"] = function() require("oil").open("/") end,
-        ["gp"] = "actions.parent",
-        ["g.."] = "actions.parent",
+        ["g~"]        = function() goto_dir("~") end,
+        ["gr"]        = function() require("oil").open("/") end,
+        ["g/"]        = function() require("oil").open("/") end,
+        ["gp"]        = "actions.parent",
+        ["g.."]       = "actions.parent",
 
         -- only applies to my machines
-        ["gw"] = function() goto_dir("~/ws") end,
-        ["gt"] = function() goto_dir("~/Tmp") end,
+        ["gw"]        = function() goto_dir("~/ws") end,
+        ["gt"]        = function() goto_dir("~/Tmp") end,
 
-        ["gP"] = goto_git_ancestor,
-        ["gG"] = goto_git_ancestor,
-        ["gz"] = function() require("telescope").extensions.zoxide.list() end,
+        ["gP"]        = goto_git_ancestor,
+        ["gG"]        = goto_git_ancestor,
+        ["gz"]        = function() require("telescope").extensions.zoxide.list() end,
 
         -- toggle hidden
-        ["gh"] = "actions.toggle_hidden",
-        ["gH"] = "actions.toggle_hidden",
-        ["g<space>"] = open_cd,
+        ["gh"]        = "actions.toggle_hidden",
+        ["gH"]        = "actions.toggle_hidden",
+        ["g<space>"]  = open_cd,
 
         ["<space>sw"] = function() open_dir_shell("window") end,
         ["<space>sv"] = function() open_dir_shell("window", "vsplit") end,
@@ -257,17 +263,19 @@ M.opts = {
         ["<space>so"] = function() open_dir_shell("overlay") end,
         ["<space>st"] = function() open_dir_shell("tab") end,
 
-        ["g=s"] = function() set_sort("size") end,
-        ["g=t"] = function() set_sort("mtime") end,
-        ["g=i"] = function() set_sort("invert") end,
-        ["g=d"] = function() set_sort("default") end,
+        ["g=s"]       = function() set_sort("size") end,
+        ["g=t"]       = function() set_sort("mtime") end,
+        ["g=i"]       = function() set_sort("invert") end,
+        ["g=d"]       = function() set_sort("default") end,
 
         -- only close oil buffer if it is the last one
-        ["q"]   = function()
-            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                if vim.bo[buf].filetype ~= "oil" then
-                    vim.api.nvim_win_set_buf(0, buf)
-                    return
+        ["q"]         = function()
+            if not (#vim.api.nvim_list_wins() > 1) then
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                    if vim.bo[buf].filetype ~= "oil" then
+                        vim.api.nvim_win_set_buf(0, buf)
+                        return
+                    end
                 end
             end
             vim.cmd("quit")

@@ -20,12 +20,17 @@ local colorscheme = {
     FloatBorder                 = { fg = pal.bg3 },
     WinSeparator                = { fg = pal.bg2 },
 
-    ColorColumn                 = { bg = pal.bg1, blend = 90 },
-
     Search                      = { bg = pal.bg1 },
     CurSearch                   = { bg = pal.bg3 },
     IncSearch                   = { bg = pal.bg3 },
     Substitute                  = { bg = col.yellow, fg = pal.inverted },
+    LeapMatch                   = { underline = true, fg = col.yellow },
+    LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
+
+    SpellBad                    = { sp = col.orange, undercurl = true },
+    SpellRare                   = { sp = col.magenta, underdotted = true },
+    SpellLocal                  = { sp = col.teal, underdotted = true },
+    SpellCap                    = { sp = col.teal, undercurl = true },
 
     LineNr                      = { fg = col.bright_gray },
     LineNrAbove                 = { fg = blend(col.magenta, pal.bg3, 0.5) },
@@ -34,14 +39,9 @@ local colorscheme = {
     Cursor                      = { reverse = true },
     CursorLine                  = { bg = pal.bg1 },
     CursorColumn                = { bg = pal.bg1 },
-
-    SpellBad                    = { sp = col.orange, undercurl = true },
-    SpellRare                   = { sp = col.magenta, underdotted = true },
-    SpellLocal                  = { sp = col.teal, underdotted = true },
-    SpellCap                    = { sp = col.teal, undercurl = true },
-
-    StatusLine                  = { bg = pal.bg0 },
+    ColorColumn                 = { bg = pal.bg1, blend = 90 },
     Tabline                     = { link = "StatusLine" },
+    StatusLine                  = { bg = pal.bg0 },
     Folded                      = { bg = blend(pal.bg1, pal.bg0, 0.4) },
     UfoFoldedFg                 = {},
     UfoFoldedBg                 = {},
@@ -49,7 +49,7 @@ local colorscheme = {
     FoldNumber                  = { fg = col.magenta, italic = true },
     FoldColumn                  = { fg = pal.bg3 },
     SignColumn                  = { fg = pal.bg3 },
-
+    EndOfBuffer                 = { fg = pal.bg1 },
     Visual                      = { bg = pal.bg1 },
     NonText                     = { fg = col.bright_gray },
     SpecialKey                  = { link = "NonText" },
@@ -69,17 +69,7 @@ local colorscheme = {
     ErrorMsg                    = { fg = col.red },
     MoreMSg                     = { fg = col.bright_gray },
     ModeMSg                     = { fg = col.bright_gray },
-
-    EndOfBuffer                 = { fg = pal.bg1 },
-
-    DiagnosticError             = { fg = col.red },
-    DiagnosticOk                = { fg = col.green },
-    DiagnosticWarning           = { fg = col.orange },
-
-    Title                       = { fg = col.teal, bold = true },
-
     QuickFixLine                = { fg = col.teal },
-    Directory                   = { fg = col.teal },
 
     Pmenu                       = { bg = pal.bg1, fg = pal.fg0 },
     PmenuSel                    = { bg = col.teal, fg = pal.inverted },
@@ -90,6 +80,7 @@ local colorscheme = {
     PmenuSbar                   = { fg = pal.fg2 },
     PmenuThumb                  = { fg = pal.fg0 },
 
+    Directory                   = { fg = col.teal },
     Type                        = { link = "@type" },
     StorageClass                = { fg = col.light_blue },
     Structure                   = { fg = col.magenta },
@@ -124,6 +115,7 @@ local colorscheme = {
     markdownH1Delimiter         = { fg = col.light_cyan },
     markdownH2Delimiter         = { fg = col.red },
     markdownH3Delimiter         = { fg = col.green },
+    Title                       = { fg = col.teal, bold = true },
     htmlH1                      = { link = "@markup.heading.1" },
     htmlH2                      = { link = "@markup.heading.2" },
     htmlH3                      = { link = "@markup.heading.3" },
@@ -142,15 +134,12 @@ local colorscheme = {
     CodeBlock                   = { bg = pal.bg1 },
     Dash                        = { fg = col.blue, bold = true },
 
-    LeapMatch                   = { underline = true, fg = col.yellow },
-    LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
     IndentBlanklineChar         = { fg = pal.bg1 },
     IndentBlanklineCharActive   = { fg = pal.bg3 },
 
     BinedCurrentLine            = { bg = pal.bg2 },
     TreesitterContext           = { bg = pal.bg2 },
     TreesitterContextLineNumber = { fg = col.purple },
-
     MultiCursorCursor           = { bg = pal.bg3 },
 
     UndotreeTimeStamp           = { fg = col.light_blue },
@@ -328,7 +317,7 @@ add_with_prefix(colorscheme, "@", {
 
     ["diff.plus"]                         = { link = "DiffAdd" },
     ["diff.minus"]                        = { link = "DiffDelete" },
-    ["diff.delta"]                        = { link = "Change" },
+    ["diff.delta"]                        = { link = "DiffChange" },
 
     ["tag"]                               = { link = "@keyword" },
     ["tag.attribute"]                     = { fg = pal.fg0 },

@@ -1,5 +1,5 @@
 psvar=(
-    0ms           # 1 time of previous command
+    0             # 1 time of previous command
     "cyan"        # 2 color of prompt
     ""            # 3 git branch
     ""            # 4 git modified
@@ -15,7 +15,6 @@ psvar=(
 )
 
 # change the color of the prompt based on mode
-# PROMPT="%B%F{cyan}%S󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
 function zvm_after_select_vi_mode {
     local -A mode_colors=(
         ["$ZVM_MODE_NORMAL"]="cyan"
@@ -71,49 +70,59 @@ function _update_git_status {
             esac
         done
 
-        psvar[3]="$branch"
-        psvar[4]="$modified$smodified"
-        psvar[5]="$deleted$sdeleted"
-        psvar[6]="$added$sadded"
-        psvar[7]="$renamed"
-        psvar[8]="$ahead"
-        psvar[9]="$behind"
+        printf 'psvar[3]="%s";psvar[4]="%s";psvar[5]="%s";psvar[6]="%s";psvar[7]="%s";psvar[8]="%s";psvar[9]="%s"\n' \
+            "$branch" "$modified$smodified" "$deleted$sdeleted" "$added$sadded" "$renamed" "$ahead" "$behind"
     else 
-        psvar[3]=""
+        printf 'psvar[3]=""\n'
     fi
 }
 
 
 # left part of prompt, git part
-PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
+PROMPT="%F{8}╭%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
 # left part of prompt, current directory
-PROMPT+="%B%F{%2v}%S%k󰉋 %(4~|%-1~/…/%24<..<%2~%<<|%4~)%s%f%b "
+PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b
+%F{8}╰╴%f "
+
 # right part of prompt, flags and previous command status
-RPROMPT="%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %(1j.%F{white}%j& %f.)%F{%12v}%k%S%13v%s"
+# HACK: draw right prompt one line higher
+RPROMPT="%{$(echotc UP 1)%}%(1j.%F{8}[& %j] %f.)%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %F{%12v}%k%S%13v%s%{$(echotc DO 1)%}"
+
+declare -A _exitcolors=(
+    [0]=12
+    [130]=yellow
+    [147]=blue
+    [148]=blue
+)
+
+# run process for git status asynchronously
+_PROMPTPROC=0
 function precmd {
     local exitc=$?
-    case $exitc in
-        "0") 
-            psvar[12]=12
+
+    if ((_PROMPTPROC != 0)); then
+        kill -s HUP $_PROMPTPROC >/dev/null 2>&1 || :
+    fi
+
+    ( _update_git_status > "$ZCACHEDIR/prompt_$$"
+        kill -s USR1 $$
+    ) &!
+    _PROMPTPROC=$!
+
+    if ((exitc > 128 && exitc < 256)); then
+        psvar[13]="! ${signals[exitc-127]:l}"
+    else 
+        if ((! exitc)); then
             psvar[13]="󰄬 0"
-            ;;
-        "148"|"147")
-            psvar[12]=blue
-            psvar[13]="stp"
-            ;;
-        "130") 
-            psvar[12]=yellow
-            psvar[13]="int"
-            ;;
-        "139")
-            psvar[12]=red
-            psvar[13]="seg"
-            ;;
-        *)
-            psvar[12]=red
+        else
             psvar[13]="󰅖 $exitc"
-            ;;
-    esac
+        fi
+    fi
+    psvar[12]="${_exitcolors[$exitc]}"
+    if [[ -z "${psvar[12]}" ]]; then
+        psvar[12]=red
+    fi
+
     # dont print a new time on every single <cr>, just if a command ran
     if (( _PROMPTTIMER)); then
         local elapsed_ms=$[ ( $EPOCHREALTIME-$_PROMPTTIMER )* 1000 ] elapsed
@@ -139,15 +148,23 @@ function precmd {
     else
         psvar[11]=""
     fi
-    _update_git_status
     _PROMPTTIMER=0
 }
 
+function TRAPUSR1 {
+    eval $(< "$ZCACHEDIR/prompt_$$")
+    _PROMPTPROC=0
+
+    zle -I
+}
+
 # Prompt for nested things:
-PS2="%F{8}%K{8}%f󰅪 %_%k%F{8}%f "
-#
+PS2="%F{8}%_ ╴%f "
+
 # sudo prompt
-export SUDO_PROMPT="$(print -P "\n%B%F{red}%S sudo%s%f%b ")"
+print -P -v SUDO_PROMPT "\n%F{8}╭%B%F{red}%S sudo%s%f%b
+%F{8}╰╴%f "
+export SUDO_PROMPT
 
 # only the default, i have a couple more functions planed for this
 TIMEFMT="User   %U
@@ -156,6 +173,3 @@ Time   %E"
 
 # disable python venv automatic prompt changing
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-
-# explicitly update it on first run
-_update_git_status

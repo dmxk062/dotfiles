@@ -15,26 +15,27 @@ function command_not_found_handler() {
     if (( ${#entries[@]} )); then
         print ", found in:"
         local entry
-        (for entry in "${entries[@]}"; do
+        {for entry in "${entries[@]}"; do
             (
                 local -a fields=(${(s:/:)entry})
                 IFS=$'\n' local -a desc=($(expac -Ss '%d' -- "^${fields[2]}$"))
                 print -P "%B%F{magenta}${fields[1]}%f/${fields[2]}%b\t${desc[1]}"
             )&
-        done; wait) | column -ts$'\t' >&2
+        done} | column -ts$'\t' >&2
     fi
     return 127
 }
 
 
 function __readnullcommand {
+    # HACK: look up related file to guess type correctly
     local realpath="/proc/self/fd/0"
     realpath="${realpath:A}"
-    if [[ -f "$realpath" ]] {
+    if [[ -f "$realpath" ]]; then
         command bat --color=always -Pp "$realpath"
-    } elif [[ -d "$realpath" ]] {
-    command lsd "$realpath"
-}
+    elif [[ -d "$realpath" ]]; then
+        command lsd "$realpath"
+    fi
 }
 
 READNULLCMD=__readnullcommand

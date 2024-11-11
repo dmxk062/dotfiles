@@ -9,8 +9,8 @@ map("t", "<S-Esc>", "<C-\\><C-n>")
 map("i", "<M-k>", "<esc>k")
 map("i", "<M-j>", "<esc>j")
 
-map("n", "]q", "<cmd>cnext<cr>")
-map("n", "[q", "<cmd>cprev<cr>")
+map({ "n", "x", "o" }, "]q", "<cmd>cnext<cr>")
+map({ "n", "x", "o" }, "[q", "<cmd>cprev<cr>")
 
 local tableader = "\\"
 
@@ -60,16 +60,18 @@ map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:
 map("t", "<C-Esc>", "<C-\\><C-n>")
 
 -- useful in insert mode, especially with lshift and rshift as bs and del
-map("i", "<S-BS>", "<C-w>")
-map("i", "<S-Del>", "<esc>\"_cw")
+map("i", "<C-BS>", "<C-w>")
+map("i", "<C-Del>", "<esc>\"_cw")
 
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
-map({"x", "o"}, "ae", textobjs.entire_buffer)
+map({ "x", "o" }, "ae", textobjs.entire_buffer)
 
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
+map("n", "<space>Dc", function() vim.diagnostic.setqflist() end)
+map("n", "<space>Dl", function() vim.diagnostic.setloclist() end)
 map({ "x", "o" }, "id", textobjs.diagnostic)
 -- map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
 -- map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)

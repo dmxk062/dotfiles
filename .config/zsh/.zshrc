@@ -1,6 +1,10 @@
 # load the initial time first so we can show it in the prompt
 zmodload zsh/datetime
 _PROMPTTIMER=$EPOCHREALTIME
+ZCACHEDIR="$XDG_CACHE_HOME/zsh-$ZSH_VERSION"
+if [[ ! -d "$ZCACHEDIR" ]]; then
+    mkdir -p "$ZCACHEDIR"
+fi
 
 fpath+=("$ZDOTDIR/comp")
 
@@ -56,7 +60,7 @@ bindkey '^Z' push-line
 
 # semi lazily generate and load colors for ls etc
 if [[ -z "$LS_COLORS" ]]; then
-    color_cache="$XDG_CACHE_HOME/zsh_theme_$KITTY_THEME"
+    color_cache="$ZCACHEDIR/${KITTY_THEME}_theme"
     if [[ ! -f "$color_cache" ]]; then
         print -n "export LS_COLORS='" > "$color_cache"
         vivid generate "$XDG_CONFIG_HOME/vivid/themes/${KITTY_THEME}nord.yaml" >> "$color_cache"
@@ -91,8 +95,15 @@ zstyle ':completion:*:manuals:*'  insert-sections   true
 
 autoload -Uz compinit
 # only reload comps after reboot effectively
-compinit -d "$XDG_CACHE_HOME/zcompdump-$ZSH_VERSION"
+# to reload after e.g. an update, delete the file
+if [[ -f "$ZCACHEDIR/compdump" ]]; then
+    compinit -C -d "$ZCACHEDIR/compdump"
+else
+    compinit -d "$ZCACHEDIR/compdump"
+    zcompile "$ZCACHEDIR/compdump"
+fi
 compdef _files '-redirect-' # for some reason wasnt default
+
 
 #history
 HISTFILE="$XDG_DATA_HOME/zsh/histfile"
@@ -116,21 +127,28 @@ nameddirs=(
     ["games"]="$HOME/Games"
 )
 
-# autopairing for quotes, brackets etc
-source "$ZDOTDIR/autopair.zsh"
 
 # my own config
 source "$ZDOTDIR/functions.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/prompt.zsh"
 source "$ZDOTDIR/fzf.zsh"
-# init autopair after all of that
-autopair-init
 
 # syntax highlighting
 source "$ZDOTDIR/highlight.zsh"
 
-# zoxide
-eval "$(zoxide init zsh)"
+# zoxide, cache since that saves a subshell
+if [[ ! -f "$ZCACHEDIR/zoxide_init.zsh" ]]; then
+    zoxide init zsh > "$ZCACHEDIR/zoxide_init.zsh"
+fi
+source "$ZCACHEDIR/zoxide_init.zsh"
 
 export BAT_THEME="Nord"
+
+function zvm_after_init {
+    source "$ZDOTDIR/pairs.zsh"
+}
+
+function TRAPEXIT {
+    command rm "$ZCACHEDIR/prompt_$$" 2>/dev/null
+}
