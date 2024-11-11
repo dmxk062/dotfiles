@@ -14,6 +14,7 @@ psvar=(
     ""            # 13 symbol/text to be used for return status
 )
 
+
 # change the color of the prompt based on mode
 function zvm_after_select_vi_mode {
     local -A mode_colors=(
@@ -97,6 +98,13 @@ declare -A _exitcolors=(
 
 # run process for git status asynchronously
 _PROMPTPROC=0
+
+# use a pseudo anonymous pipe
+# TODO: find a way to avoid non shell built ins
+mkfifo "$ZCACHEDIR/prompt_$$"
+exec {_PROMPTFD}<> "$ZCACHEDIR/prompt_$$"
+unlink "$ZCACHEDIR/prompt_$$" &!
+
 function precmd {
     local exitc=$?
 
@@ -104,8 +112,8 @@ function precmd {
         kill -s HUP $_PROMPTPROC >/dev/null 2>&1 || :
     fi
 
-    ( _update_git_status > "$ZCACHEDIR/prompt_$$"
-        kill -s USR1 $$
+    ( _update_git_status >&$_PROMPTFD
+        kill -s USR1 $$ >/dev/null 2>&1
     ) &!
     _PROMPTPROC=$!
 
@@ -154,7 +162,9 @@ function precmd {
 }
 
 function TRAPUSR1 {
-    eval $(< "$ZCACHEDIR/prompt_$$")
+    local expr
+    read -r expr <&$_PROMPTFD
+    eval "$expr"
     _PROMPTPROC=0
 
     zle -I && zle reset-prompt

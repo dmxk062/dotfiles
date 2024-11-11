@@ -148,7 +148,3 @@ export BAT_THEME="Nord"
 function zvm_after_init {
     source "$ZDOTDIR/pairs.zsh"
 }
-
-function TRAPEXIT {
-    command rm "$ZCACHEDIR/prompt_$$" 2>/dev/null
-}
