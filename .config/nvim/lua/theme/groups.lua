@@ -160,6 +160,8 @@ add_with_prefix(colorscheme, "Startscreen", {
     Title6  = { fg = col.light_blue },
     Title7  = { fg = col.blue },
 
+    Text    = {},
+
     Files   = { fg = col.teal },
     Journal = { fg = col.green },
     Search  = { fg = col.light_blue },
@@ -171,36 +173,36 @@ add_with_prefix(colorscheme, "Startscreen", {
 })
 
 add_with_prefix(colorscheme, "Oil", {
-    Link                            = { fg = col.blue, bold = true },
-    Dir                             = { fg = col.teal, bold = true },
-    LinkTarget                      = { fg = col.blue, italic = true },
-    Socket                          = { fg = col.magenta },
+    Link          = { fg = col.blue, bold = true },
+    Dir           = { fg = col.teal, bold = true },
+    LinkTarget    = { fg = col.blue, italic = true },
+    Socket        = { fg = col.magenta },
 
-    Read                            = { fg = col.yellow },
-    Write                           = { fg = col.orange },
-    Exec                            = { fg = col.green },
-    Setuid                          = { fg = col.red, bold = true },
-    Sticky                          = { fg = col.blue, bold = true },
-    NoPerm                          = { fg = pal.bg3 },
+    Read          = { fg = col.yellow },
+    Write         = { fg = col.orange },
+    Exec          = { fg = col.green },
+    Setuid        = { fg = col.red, bold = true },
+    Sticky        = { fg = col.blue, bold = true },
+    NoPerm        = { fg = pal.bg3 },
 
-    Delete                          = { fg = col.red, bold = true },
-    Create                          = { fg = col.green },
-    Move                            = { fg = col.orange },
-    Copy                            = { fg = col.yellow },
-    Change                          = { fg = col.magenta },
+    Delete        = { fg = col.red, bold = true },
+    Create        = { fg = col.green },
+    Move          = { fg = col.orange },
+    Copy          = { fg = col.yellow },
+    Change        = { fg = col.magenta },
 
-    TimeLastHour                    = { fg = col.green },
-    TimeLastDay                     = { fg = col.teal },
-    TimeLastWeek                    = { fg = col.light_blue },
-    TimeLastMonth                   = { fg = col.blue },
-    TimeLastYear                    = { fg = blend(col.blue, pal.bg3, 0.8) },
-    TimeSuperOld                    = { fg = pal.bg3 },
+    TimeLastHour  = { fg = col.green },
+    TimeLastDay   = { fg = col.teal },
+    TimeLastWeek  = { fg = col.light_blue },
+    TimeLastMonth = { fg = col.blue },
+    TimeLastYear  = { fg = blend(col.blue, pal.bg3, 0.8) },
+    TimeSuperOld  = { fg = pal.bg3 },
 
-    SizeNone                        = { fg = pal.bg3 },
-    SizeSmall                       = { fg = pal.fg0 },
-    SizeMedium                      = { fg = col.yellow },
-    SizeLarge                       = { fg = col.orange },
-    SizeHuge                        = { fg = col.red },
+    SizeNone      = { fg = pal.bg3 },
+    SizeSmall     = { fg = pal.fg0 },
+    SizeMedium    = { fg = col.yellow },
+    SizeLarge     = { fg = col.orange },
+    SizeHuge      = { fg = col.red },
 })
 
 add_with_prefix(colorscheme, "OilGitStatus", {

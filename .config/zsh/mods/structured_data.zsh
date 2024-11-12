@@ -6,7 +6,7 @@ if [[ "$1" == "unload" ]]; then
         json2table table2json \
         proplist2table table2proplist \
         filter_table \
-        hash2props
+        hash2props props2hash
 
     return
 fi
@@ -211,5 +211,18 @@ function hash2props {
     local k v
     for k v in "${(@kv)${(P)array_name}}"; do
         print -- "$k$outsep$v"
+    done
+}
+
+function props2hash {
+    local array_name="$1"
+    local sep="${2:-:}"
+    declare -gA "$array_name"
+
+    local key value
+    while IFS="$sep" read -r key val; do
+        if [[ -z "$fsep" ]]; then
+            eval "$array_name"'[$key]="$val"'
+        fi
     done
 }

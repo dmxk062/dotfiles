@@ -90,17 +90,17 @@ function monitor_changes() {
         changefloatingmode*) # we dont care about workspaces here
             update window="$(hyprctl activewindow -j)"
             ;;
-        # "renameworkspace"*"OVERVIEW")
-        #     IFS=">" read -r _ _ val <<<"$line"
-        #     IFS="," read -r overview_id _ <<<"$val"
-        #     eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=true
-        #     $XDG_CONFIG_HOME/hypr/plugins/overview.sh enter &
-        #     ;;
-        # "renameworkspace>>$overview_id,"*)
-        #     eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=false
-        #     overview_id=""
-        #     $XDG_CONFIG_HOME/hypr/plugins/overview.sh off &
-        #     ;;
+        "renameworkspace"*"OVERVIEW")
+            IFS=">" read -r _ _ val <<<"$line"
+            IFS="," read -r overview_id _ <<<"$val"
+            eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=true
+            $XDG_CONFIG_HOME/hypr/plugins/overview.sh enter &
+            ;;
+        "renameworkspace>>$overview_id,"*)
+            eww -c $XDG_CONFIG_HOME/eww/shell/ update overview=false
+            overview_id=""
+            $XDG_CONFIG_HOME/hypr/plugins/overview.sh off &
+            ;;
         *)
             eww -c "$XDG_CONFIG_HOME"/eww/shell update window="$(hyprctl activewindow -j)" workspaces="$(list_workspaces)"
             ;;

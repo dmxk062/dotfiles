@@ -8,6 +8,7 @@ local state = {
     ns = 0,
     augroup = 0,
     first_editable = 0,
+    last_editable = 0,
     was_newline = false,
     set_col = 0,
     saved = {
@@ -201,27 +202,35 @@ local function draw_logo(size)
 end
 
 local line_handlers = {}
+local target_widths = {
+    lim = 46,
+    lower = 40,
+    higher = 30
+}
 
 ---@param opts {text: string, hl: string, cb: function, map: string, icon: string}
 local function button(size, opts)
-    local target_width = size.cols > 46 and 40 or 30
-
-    local initial_padd = math.floor((size.cols - target_width) / 2)
-    state.set_col = initial_padd + 2
+    state.set_col = size.padd + 2
 
     line_handlers[state.cur_row + 1] = opts.cb
     local text = opts.icon .. " " .. opts.text
     local text_len = #opts.text + 2 -- assume icon always has length 1
-    print_hl_line(text, "Startscreen" .. opts.hl, initial_padd, false)
+    print_hl_line(text, "Startscreen" .. opts.hl, size.padd, false)
 
     local mapping = "<" .. opts.map .. ">"
-    local missing_padd = (target_width - (text_len))
+    local missing_padd = (size.target - (text_len))
 
     print_hl_line(mapping, "Startscreen" .. opts.hl, missing_padd, true)
 
     vim.keymap.set("n", opts.map, opts.cb, { buffer = state.buf })
 end
 
+---@param opts {text: string, hl: string}
+local function centered_text(size, opts)
+    local width = vim.fn.strdisplaywidth(opts.text)
+    local padd = math.floor((size.cols - width) / 2)
+    print_hl_line(opts.text, "Startscreen" .. opts.hl, padd)
+end
 
 local function draw_screen()
     vim.bo[state.buf].modifiable = true
@@ -232,9 +241,16 @@ local function draw_screen()
     state.was_newline = false
     line_handlers = {}
 
+    local cols = vim.api.nvim_win_get_width(state.win)
+    local rows = vim.api.nvim_win_get_height(state.win)
+    local target = cols > target_widths.lim and target_widths.higher or target_widths.lower
+    local padd = math.floor((cols - target) / 2)
+
     local size = {
-        cols = vim.api.nvim_win_get_width(state.win),
-        rows = vim.api.nvim_win_get_height(state.win),
+        cols = cols,
+        rows = rows,
+        target = target,
+        padd = padd
     }
 
     draw_logo(size)
@@ -243,7 +259,11 @@ local function draw_screen()
 
     vim.tbl_map(function(btn) button(size, btn) end, Buttons)
 
-
+    state.last_editable = state.cur_row
+    if rows > state.cur_row + 2 then
+        print_padding_lines(rows - state.cur_row - 2)
+        centered_text(size, { text = M.texts[(vim.fn.rand() % #M.texts) + 1], hl = "Text" })
+    end
     vim.bo[state.buf].modifiable = false
     vim.bo[state.buf].modified = false
 end
@@ -275,6 +295,8 @@ function M.show_start_screen()
             local row
             if pos[1] <= state.first_editable then
                 row = state.first_editable
+            elseif pos[1] >= state.last_editable then
+                row = state.last_editable
             else
                 row = pos[1]
             end
@@ -314,5 +336,16 @@ function M.show_start_screen()
 
     draw_screen()
 end
+
+M.texts = {
+    "Never :q me for emacs",
+    "Don't forget to take breaks when vimming",
+    "Prefer using :h text-objects over motions",
+    "Enjoy your day!",
+    ":3",
+    "Tired? Just <C-z>",
+    ":v == :g!",
+}
+
 
 return M
