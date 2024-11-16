@@ -5,7 +5,7 @@
 
 if [[ "$1" == "unload" ]]; then
 
-    unfunction rgf mcd rp bn \
+    unfunction rgf mcd rp bn rcd \
         pwf del \
         readfile readstream lr .. \
         root
@@ -139,6 +139,11 @@ function root {
     else
         print "$cwd"
     fi
+}
+
+# cd to a directory containing a file
+function rcd {
+    cd "$(root "$1")"
 }
 
 autoload -Uz zmv
