@@ -15,13 +15,16 @@ function lschg {
     local -a dirs
     local ignored=no untracked=no
     for arg in "$@"; do
-        if [[ "$arg" == "-a" || "$arg" == "--all" ]]; then
-            all=1
-            ignored=traditional
-            untracked=yes
-        else 
-            dirs+=("$arg")
-        fi
+        case "$arg" in
+            -a|--all)
+                all=1
+                ignored=traditional
+                untracked=yes
+                ;;
+            *)
+                dirs+=("$arg")
+                ;;
+        esac
     done
 
     function list_changes {
