@@ -5,14 +5,16 @@
 
 if [[ "$1" == "unload" ]]; then
 
-    unfunction rgf mcd rp bn in \
+    unfunction rgf mcd rp bn \
         pwf del \
         readfile readstream lr .. \
         root
 
-    unalias md ft bft 
+    unalias md ft bft zcp zln
 
     zmodload -u zsh/mapfile
+
+    unfunction zmv
 
     return
 fi
@@ -38,7 +40,7 @@ alias bft="file --brief --mime-type -N"
 
 function del {
     if (($# > 3)); then
-        print -n "Remove $# files?[yN] "
+        print -n "Remove $# files? [yN] "
         read -q||return 1
     fi
 
@@ -138,3 +140,6 @@ function root {
         print "$cwd"
     fi
 }
+
+autoload -Uz zmv
+alias zcp="zmv -C" zln="zmv -p 'ln -s'"
