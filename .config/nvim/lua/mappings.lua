@@ -18,6 +18,9 @@ map(mov, "[q", "<cmd>cprev<cr>")
 -- buffer mappings
 local bufleader = "\\"
 
+map("n", bufleader .. "l", "<cmd>bnext<cr>")
+map("n", bufleader .. "h", "<cmd>bprev<cr>")
+
 map("n", bufleader .. bufleader, function()
     local target = Bufs_for_idx[vim.v.count] or 0
     if target == 0 then
@@ -71,10 +74,8 @@ map("n", bufleader .. "f", function()
 end)
 
 -- stop {} from polluting the jumplist
-map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
-    { remap = false, expr = true })
-map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
-    { remap = false, expr = true })
+map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
+map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
 -- use <space>q for macros instead, i dont use them that often
 map("n", "<space>q", "q")
@@ -111,7 +112,7 @@ map("i", "<C-Del>", "<esc>\"_cw")
 local textobjs = require("textobjs")
 
 -- select the entire buffer
-map(obj, "ae", textobjs.entire_buffer)
+map(obj, "gG", textobjs.entire_buffer)
 
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
