@@ -66,22 +66,28 @@ map("i", "<C-Del>", "<esc>\"_cw")
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
+-- select the entire buffer
 map({ "x", "o" }, "ae", textobjs.entire_buffer)
 
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
 map("n", "<space>Dc", function() vim.diagnostic.setqflist() end)
 map("n", "<space>Dl", function() vim.diagnostic.setloclist() end)
+
+-- target the area of a diagnostic with a textobject
+-- <id> matches every type
 map({ "x", "o" }, "id", textobjs.diagnostic)
 map({ "x", "o" }, "iDe", textobjs.diagnostic_error)
 map({ "x", "o" }, "iDw", textobjs.diagnostic_warn)
 map({ "x", "o" }, "iDi", textobjs.diagnostic_info)
 map({ "x", "o" }, "iDh", textobjs.diagnostic_hint)
 
-
--- indents, very useful for e.g. python
--- skips lines with spaces and tries to generally be as simple to use as possible
--- a includes one line above and below
+-- indents, very useful for e.g. python or other indent based languages
+-- a includes one line above and below, 
+-- except for filetypes e.g. python where only the above line is included by default
+-- aI always includes the last line too, even for python
+-- v:count specifies the amount of indent levels around the one at the cursor to select
+-- this uses shiftwidth, so it's not 100% reliable
 map({ "x", "o" }, "ii", textobjs.indent_inner)
 map({ "x", "o" }, "ai", textobjs.indent_outer)
 map({ "x", "o" }, "aI", textobjs.indent_outer_with_last)
