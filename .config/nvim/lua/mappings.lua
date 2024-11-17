@@ -73,6 +73,11 @@ map("n", bufleader .. "f", function()
     })
 end)
 
+map("n", bufleader .. "d", function()
+    local target = Bufs_for_idx[vim.v.count] or 0
+    vim.api.nvim_buf_delete(target, {})
+end)
+
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
