@@ -2,6 +2,9 @@ local utils = require("utils")
 local abbrev = utils.abbrev
 local map = utils.map
 
+local obj = {"x", "o"}
+local mov = {"n", "x", "o"}
+
 -- less annoying way to exit terminal mode
 map("t", "<S-Esc>", "<C-\\><C-n>")
 
@@ -27,9 +30,9 @@ map("n", tableader .. "v", ":vsp ")
 map("n", tableader .. "s", ":sp ")
 
 -- stop {} from polluting the jumplist
-map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
+map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
     { remap = false, expr = true })
-map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
+map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
     { remap = false, expr = true })
 
 -- use <space>q for macros instead, i dont use them that often
@@ -67,7 +70,7 @@ map("i", "<C-Del>", "<esc>\"_cw")
 local textobjs = require("textobjs")
 
 -- select the entire buffer
-map({ "x", "o" }, "ae", textobjs.entire_buffer)
+map(obj, "ae", textobjs.entire_buffer)
 
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
@@ -76,11 +79,11 @@ map("n", "<space>Dl", function() vim.diagnostic.setloclist() end)
 
 -- target the area of a diagnostic with a textobject
 -- <id> matches every type
-map({ "x", "o" }, "id", textobjs.diagnostic)
-map({ "x", "o" }, "iDe", textobjs.diagnostic_error)
-map({ "x", "o" }, "iDw", textobjs.diagnostic_warn)
-map({ "x", "o" }, "iDi", textobjs.diagnostic_info)
-map({ "x", "o" }, "iDh", textobjs.diagnostic_hint)
+map(obj, "id", textobjs.diagnostic)
+map(obj, "iDe", textobjs.diagnostic_error)
+map(obj, "iDw", textobjs.diagnostic_warn)
+map(obj, "iDi", textobjs.diagnostic_info)
+map(obj, "iDh", textobjs.diagnostic_hint)
 
 -- indents, very useful for e.g. python or other indent based languages
 -- a includes one line above and below, 
@@ -88,9 +91,13 @@ map({ "x", "o" }, "iDh", textobjs.diagnostic_hint)
 -- aI always includes the last line too, even for python
 -- v:count specifies the amount of indent levels around the one at the cursor to select
 -- this uses shiftwidth, so it's not 100% reliable
-map({ "x", "o" }, "ii", textobjs.indent_inner)
-map({ "x", "o" }, "ai", textobjs.indent_outer)
-map({ "x", "o" }, "aI", textobjs.indent_outer_with_last)
+map(obj, "ii", textobjs.indent_inner)
+map(obj, "ai", textobjs.indent_outer)
+map(obj, "aI", textobjs.indent_outer_with_last)
+
+-- operand to arithmetic
+map(obj, "io", textobjs.create_pattern_obj("([-+*/%%]%s*)[%w_%.]+()"))
+map(obj, "ao", textobjs.create_pattern_obj("()[-+*/%%]%s*[%w_%.]+()"))
 
 local operators = require("operators")
 

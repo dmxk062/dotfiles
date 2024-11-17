@@ -7,7 +7,7 @@ local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
 ---@alias point [integer, integer]
 ---@alias region [point, point]
 ---@alias seltype "line"|"char"
----@alias textobj_function fun(pos: point, lcount: integer, outer:boolean, extra: any?): region|point?, seltype?
+---@alias textobj_function fun(pos: point, lcount: integer, opts: any?): region|point?, seltype?
 
 ---@param cmdstr string
 local function norm(cmdstr)
@@ -20,14 +20,17 @@ local function cancel_selection()
     end
 end
 
+local function getline(lnum)
+    return api.nvim_buf_get_lines(0, lnum - 1, lnum, true)[1]
+end
+
 ---@param fn textobj_function
----@param outer boolean
----@param extra any?
-function M.create_textobj(fn, outer, extra)
+---@param opts table<string, any>
+function M.create_textobj(fn, opts)
     return function()
         local curpos = api.nvim_win_get_cursor(0)
         local lcount = api.nvim_buf_line_count(0)
-        local sel, mode = fn(curpos, lcount, outer, extra)
+        local sel, mode = fn(curpos, lcount, opts)
         if (not sel) or (not mode) then
             cancel_selection()
             return
@@ -67,15 +70,15 @@ function M.create_textobj(fn, outer, extra)
 end
 
 ---@type textobj_function
-local function diagnostic(pos, lcount, outer, type)
-    local opts = {
+local function diagnostic(pos, lcount, opts)
+    local args = {
         wrap = false,
         cursor_position = pos,
     }
 
-    local prev_diag = vim.diagnostic.get_prev(opts)
+    local prev_diag = vim.diagnostic.get_prev(args)
     local on_prev = false
-    local next_diag = vim.diagnostic.get_next(opts)
+    local next_diag = vim.diagnostic.get_next(args)
 
     if prev_diag then
         local cur_after_prev_start = (pos[1] == prev_diag.lnum + 1 and pos[2] >= prev_diag.col) or
@@ -92,8 +95,8 @@ local function diagnostic(pos, lcount, outer, type)
     if target then
         if type ~= nil then
             local diagtype = target.severity
-            if diagtype ~= type then
-                return diagnostic({ target.end_lnum + 2, target.end_col + 2 }, lcount, outer, type)
+            if diagtype ~= opts.type then
+                return diagnostic({ target.end_lnum + 2, target.end_col + 2 }, lcount, opts)
             end
         end
         return { { target.lnum + 1, target.col }, { target.end_lnum + 1, target.end_col - 1 } }, "char"
@@ -102,14 +105,14 @@ local function diagnostic(pos, lcount, outer, type)
     return nil, nil
 end
 
-M.diagnostic = M.create_textobj(diagnostic, false, nil)
-M.diagnostic_error = M.create_textobj(diagnostic, false, vim.diagnostic.severity.ERROR)
-M.diagnostic_warn = M.create_textobj(diagnostic, false, vim.diagnostic.severity.WARN)
-M.diagnostic_info = M.create_textobj(diagnostic, false, vim.diagnostic.severity.INFO)
-M.diagnostic_hint = M.create_textobj(diagnostic, false, vim.diagnostic.severity.HINT)
+M.diagnostic = M.create_textobj(diagnostic, { type = nil })
+M.diagnostic_error = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.ERROR })
+M.diagnostic_warn = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.WARN })
+M.diagnostic_info = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.INFO })
+M.diagnostic_hint = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.HINT })
 
 local function line_is_blank(lnum)
-    local line = api.nvim_buf_get_lines(0, lnum - 1, lnum, true)[1]
+    local line = getline(lnum)
     return line:find("^%s*$") ~= nil
 end
 
@@ -129,7 +132,7 @@ M.indent_only_before = {
     python = true
 }
 
-local function indent(pos, lcount, outer, always_last_too)
+local function indent(pos, lcount, opts)
     local multiplier = vim.v.count > 1 and (vim.v.count - 1) or 0
     local around = vim.o.shiftwidth * multiplier
 
@@ -158,10 +161,10 @@ local function indent(pos, lcount, outer, always_last_too)
         nextl = nextl + 1
     end
 
-    if outer and not always_last_too and M.indent_only_before[vim.bo[0].ft] then
+    if opts.outer and not opts.always_last and M.indent_only_before[vim.bo[0].ft] then
         nextl = nextl - 1
     end
-    if not outer then
+    if not opts.outer then
         prevl = prevl + 1
         nextl = nextl - 1
     end
@@ -177,12 +180,60 @@ local function indent(pos, lcount, outer, always_last_too)
     return { { prevl, 1 }, { nextl, 1 } }, "line"
 end
 
-M.indent_inner = M.create_textobj(indent, false)
-M.indent_outer = M.create_textobj(indent, true)
-M.indent_outer_with_last = M.create_textobj(indent, true, true)
+M.indent_inner = M.create_textobj(indent, { outer = true })
+M.indent_outer = M.create_textobj(indent, { outer = true })
+M.indent_outer_with_last = M.create_textobj(indent, { outer = true, always_last = true })
 
 M.entire_buffer = M.create_textobj(function(pos, lcount, outer)
     return { { 1, 1 }, { lcount, 1 } }, "line"
-end, false)
+end, {})
+
+
+-- search for a pattern, use capture group to specify what to match
+-- two capture groups are necessary: an optional prefix and suffix
+-- if you don't need prefix and suffix, use ()
+local function pattern_obj(pos, lcount, opts)
+    local curline = pos[1]
+    local curcol = pos[2]
+
+    local line = getline(curline)
+
+    local startpos = 0 ---@type integer?
+    local endpos
+
+    local g1, g2
+
+    repeat
+        startpos = startpos + 1
+        startpos, endpos, g1, g2 = line:find(opts.pattern, startpos)
+    until not startpos or (endpos and endpos > curcol)
+
+    -- not found in first line
+    if not startpos then
+        while true do
+            if curline > lcount then
+                return
+            end
+            curline = curline + 1
+            line = getline(curline)
+            startpos, endpos, g1, g2 = line:find(opts.pattern)
+            if startpos then
+                break
+            end
+        end
+    end
+
+    if not startpos then
+        return
+    end
+
+    local obj_start = (type(g1) ~= "number" and #g1 or 0) + startpos
+    local obj_end = endpos - (type(g2) ~= "number" and #g2 or 0)
+    return { { curline, obj_start - 1 }, { curline, obj_end - 1 } }, "char"
+end
+
+function M.create_pattern_obj(pattern)
+    return M.create_textobj(pattern_obj, { pattern = pattern })
+end
 
 return M
