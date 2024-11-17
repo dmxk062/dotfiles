@@ -108,7 +108,7 @@ M.diagnostic_warn = M.create_textobj(diagnostic, false, vim.diagnostic.severity.
 M.diagnostic_info = M.create_textobj(diagnostic, false, vim.diagnostic.severity.INFO)
 M.diagnostic_hint = M.create_textobj(diagnostic, false, vim.diagnostic.severity.HINT)
 
-local function line_is_blank(lnum, lcount)
+local function line_is_blank(lnum)
     local line = api.nvim_buf_get_lines(0, lnum - 1, lnum, true)[1]
     return line:find("^%s*$") ~= nil
 end
