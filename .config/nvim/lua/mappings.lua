@@ -84,6 +84,7 @@ map({ "x", "o" }, "iDh", textobjs.diagnostic_hint)
 -- a includes one line above and below
 map({ "x", "o" }, "ii", textobjs.indent_inner)
 map({ "x", "o" }, "ai", textobjs.indent_outer)
+map({ "x", "o" }, "aI", textobjs.indent_outer_with_last)
 
 local operators = require("operators")
 

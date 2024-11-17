@@ -113,7 +113,23 @@ local function line_is_blank(lnum)
     return line:find("^%s*$") ~= nil
 end
 
-local function indent(pos, lcount, outer)
+-- filetypes for which outer indentation should only be applied to lines above
+-- this is only due to language syntax and might not 100% be reliable:
+-- ```python
+-- list = [
+--      1,
+--      2,
+--      3,
+-- ]
+-- ```
+-- here we would want both braces
+-- so in those cases provide an extra mapping, that always includes the last one too
+
+M.indent_only_before = {
+    python = true
+}
+
+local function indent(pos, lcount, outer, always_last_too)
     local multiplier = vim.v.count > 1 and (vim.v.count - 1) or 0
     local around = vim.o.shiftwidth * multiplier
 
@@ -142,10 +158,12 @@ local function indent(pos, lcount, outer)
         nextl = nextl + 1
     end
 
-
-    nextl = nextl - 1
+    if outer and not always_last_too and M.indent_only_before[vim.bo[0].ft] then
+        nextl = nextl - 1
+    end
     if not outer then
         prevl = prevl + 1
+        nextl = nextl - 1
     end
 
     if nextl > lcount then
@@ -161,6 +179,7 @@ end
 
 M.indent_inner = M.create_textobj(indent, false)
 M.indent_outer = M.create_textobj(indent, true)
+M.indent_outer_with_last = M.create_textobj(indent, true, true)
 
 M.entire_buffer = M.create_textobj(function(pos, lcount, outer)
     return { { 1, 1 }, { lcount, 1 } }, "line"
