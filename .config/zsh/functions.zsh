@@ -51,7 +51,6 @@ source $ZDOTDIR/handlers.zsh
 
 # load all the modules i always want
 source "$ZDOTDIR/mods/fun.zsh"
-source "$ZDOTDIR/mods/pkg.zsh"
 source "$ZDOTDIR/mods/proc.zsh"
 source "$ZDOTDIR/mods/net.zsh"
 source "$ZDOTDIR/mods/fs.zsh"
