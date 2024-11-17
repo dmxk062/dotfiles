@@ -73,22 +73,17 @@ map("n", "<space>d", vim.diagnostic.open_float)
 map("n", "<space>Dc", function() vim.diagnostic.setqflist() end)
 map("n", "<space>Dl", function() vim.diagnostic.setloclist() end)
 map({ "x", "o" }, "id", textobjs.diagnostic)
--- map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
--- map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
--- map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
--- map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
+map({ "x", "o" }, "iDe", textobjs.diagnostic_error)
+map({ "x", "o" }, "iDw", textobjs.diagnostic_warn)
+map({ "x", "o" }, "iDi", textobjs.diagnostic_info)
+map({ "x", "o" }, "iDh", textobjs.diagnostic_hint)
 
 
 -- indents, very useful for e.g. python
 -- skips lines with spaces and tries to generally be as simple to use as possible
 -- a includes one line above and below
-map({ "x", "o" }, "ii", function() textobjs.indent(false) end)
-map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
-
--- an arbitrary selection on the screen between two points using leap
--- TODO decide: whether to remove this
-map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
-map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
+map({ "x", "o" }, "ii", textobjs.indent_inner)
+map({ "x", "o" }, "ai", textobjs.indent_outer)
 
 local operators = require("operators")
 
