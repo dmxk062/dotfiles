@@ -26,10 +26,10 @@ function M.opfunc(mode)
     Ctx.funs[Ctx.cb](mode)
 end
 
----@alias op_point [integer, integer]
----@alias op_region [op_point, op_point]
+---@alias point [integer, integer]
+---@alias region [point, point]
 ---@alias op_extra {saved: table, repeated: boolean}
----@alias op_function fun(mode: string, region: op_region, extra: op_extra, get: fun(mode: string?): string[]): string[]?, op_point?, op_point?
+---@alias op_function fun(mode: string, region: region, extra: op_extra, get: fun(mode: string?): string[]): string[]?, point?, point?
 
 ---@param name string
 ---@param cb function
