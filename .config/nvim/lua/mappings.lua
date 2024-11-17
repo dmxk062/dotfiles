@@ -2,8 +2,8 @@ local utils = require("utils")
 local abbrev = utils.abbrev
 local map = utils.map
 
-local obj = {"x", "o"}
-local mov = {"n", "x", "o"}
+local obj = { "x", "o" }
+local mov = { "n", "x", "o" }
 
 -- less annoying way to exit terminal mode
 map("t", "<S-Esc>", "<C-\\><C-n>")
@@ -12,22 +12,67 @@ map("t", "<S-Esc>", "<C-\\><C-n>")
 map("i", "<M-k>", "<esc>k")
 map("i", "<M-j>", "<esc>j")
 
-map({ "n", "x", "o" }, "]q", "<cmd>cnext<cr>")
-map({ "n", "x", "o" }, "[q", "<cmd>cprev<cr>")
+map(mov, "]q", "<cmd>cnext<cr>")
+map(mov, "[q", "<cmd>cprev<cr>")
 
-local tableader = "\\"
+-- buffer mappings
+local bufleader = "\\"
 
--- tabs 1 - 9
-for i = 1, 9 do
-    map("n", tableader .. i, i .. "gt", { silent = true })
-end
+map("n", bufleader .. bufleader, function()
+    local target = Bufs_for_idx[vim.v.count] or 0
+    if target == 0 then
+        vim.cmd("wincmd ")
+        return
+    end
+    for i, win in pairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_get_buf(win) == target then
+            vim.api.nvim_set_current_win(win)
+            return
+        end
+    end
 
-map("n", tableader .. "h", "<cmd>tabprevious<cr>")
-map("n", tableader .. "l", "<cmd>tabnext<cr>")
+    local ok = pcall(vim.api.nvim_set_current_buf, target)
+    if not ok then
+        vim.cmd.bprevious()
+    end
+end)
 
-map("n", tableader .. "t", ":tabnew ")
-map("n", tableader .. "v", ":vsp ")
-map("n", tableader .. "s", ":sp ")
+-- open buffer in a thing
+-- vsplit, split or float
+map("n", bufleader .. "v", function()
+    local target = Bufs_for_idx[vim.v.count] or 0
+    if target == 0 then
+        return ":vsplit "
+    end
+
+    return "<cmd>vsplit|buffer " .. target .. "<cr>"
+end, { expr = true })
+
+map("n", bufleader .. "s", function()
+    local target = Bufs_for_idx[vim.v.count] or 0
+    if target == 0 then
+        return ":split "
+    end
+
+    return "<cmd>split|buffer " .. target .. "<cr>"
+end, { expr = true })
+
+map("n", bufleader .. "f", function()
+    local target = Bufs_for_idx[vim.v.count] or 0
+    local max_width = vim.api.nvim_win_get_width(0)
+    local max_height = vim.api.nvim_win_get_height(0)
+
+    local height = math.floor((max_height) * .8)
+    local width = math.floor((max_width) * .8)
+    vim.api.nvim_open_win(target, true, {
+        relative = "win",
+        row = math.floor((max_height - height) / 2),
+        col = math.floor((max_width - width) / 2),
+        width = width,
+        height = height,
+        border = "rounded",
+    })
+end)
 
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
@@ -86,7 +131,7 @@ map(obj, "iDi", textobjs.diagnostic_info)
 map(obj, "iDh", textobjs.diagnostic_hint)
 
 -- indents, very useful for e.g. python or other indent based languages
--- a includes one line above and below, 
+-- a includes one line above and below,
 -- except for filetypes e.g. python where only the above line is included by default
 -- aI always includes the last line too, even for python
 -- v:count specifies the amount of indent levels around the one at the cursor to select
