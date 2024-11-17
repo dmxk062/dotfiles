@@ -99,6 +99,10 @@ map(obj, "aI", textobjs.indent_outer_with_last)
 map(obj, "io", textobjs.create_pattern_obj("([-+*/%%]%s*)[%w_%.]+()"))
 map(obj, "ao", textobjs.create_pattern_obj("()[-+*/%%]%s*[%w_%.]+()"))
 
+-- snake_case or kebab-case word
+map(obj, "i_", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
+map(obj, "a_", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
+
 local operators = require("operators")
 
 -- evaluate lua and insert result in buffer

@@ -180,7 +180,7 @@ local function indent(pos, lcount, opts)
     return { { prevl, 1 }, { nextl, 1 } }, "line"
 end
 
-M.indent_inner = M.create_textobj(indent, { outer = true })
+M.indent_inner = M.create_textobj(indent, { outer = false })
 M.indent_outer = M.create_textobj(indent, { outer = true })
 M.indent_outer_with_last = M.create_textobj(indent, { outer = true, always_last = true })
 
