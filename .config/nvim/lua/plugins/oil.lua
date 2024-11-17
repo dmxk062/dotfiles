@@ -192,7 +192,6 @@ M.opts = {
         padding = 16,
         max_width = 80,
         max_height = 40,
-
     },
     preview = {
         max_width = 0.6,
@@ -300,6 +299,7 @@ M.config = function(_, opts)
 
     local prefix = "<space>f"
     utils.map("n", prefix .. "f", require("oil").open)
+    utils.map("n", prefix .. "F", require("oil").open_float)
 
     utils.map("n", prefix .. "t", function()
         vim.api.nvim_command("tabnew")

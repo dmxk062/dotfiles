@@ -38,24 +38,20 @@ map("n", bufleader .. bufleader, function()
 end)
 
 -- open buffer in a thing
--- vsplit, split or float
-map("n", bufleader .. "v", function()
-    local target = Bufs_for_idx[vim.v.count] or 0
-    if target == 0 then
-        return ":vsplit "
+-- vsplit, split, tab or float
+local function open_buf_in(cmd, fallback)
+    return function()
+        local target = Bufs_for_idx[vim.v.count] or 0
+        if target == 0 then
+            return ":" .. fallback .. " "
+        end
+        return "<cmd>" .. cmd .. " sbuffer " .. target .. "<cr>"
     end
+end
 
-    return "<cmd>vsplit|buffer " .. target .. "<cr>"
-end, { expr = true })
-
-map("n", bufleader .. "s", function()
-    local target = Bufs_for_idx[vim.v.count] or 0
-    if target == 0 then
-        return ":split "
-    end
-
-    return "<cmd>split|buffer " .. target .. "<cr>"
-end, { expr = true })
+map("n", bufleader .. "v", open_buf_in("vertical", "vsp"), { expr = true })
+map("n", bufleader .. "s", open_buf_in("horizontal", "sp"), { expr = true })
+map("n", bufleader .. "t", open_buf_in("tab", "tabn"), { expr = true })
 
 map("n", bufleader .. "f", function()
     local target = Bufs_for_idx[vim.v.count] or 0

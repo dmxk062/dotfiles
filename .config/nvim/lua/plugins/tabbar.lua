@@ -81,51 +81,73 @@ local delims = {
 }
 
 
-local function render_buffers(f)
+local function render_tabline(f)
     local wins = vim.api.nvim_list_wins()
 
-    local buf_counts = {}
+    local buf_wincounts = {}
     for _, win in pairs(wins) do
         local buf = vim.api.nvim_win_get_buf(win)
-        buf_counts[buf] = (buf_counts[buf] or 0) + 1
+        buf_wincounts[buf] = (buf_wincounts[buf] or 0) + 1
     end
 
     ---@param info bufinfo
     f.make_bufs(function(info)
         Bufs_for_idx[info.index] = info.buf_nr
         local index = info.current and "active" or "inactive"
+
         f.add(delims[index].l)
         f.set_colors(hl[index])
         if info.current then
             f.set_gui("bold")
         end
 
-
         local title, show_modified = get_buf_title(info.filename, info.buf_name, info.buf_nr)
-        if not buf_counts[info.buf_nr] then
+        if not buf_wincounts[info.buf_nr] then
             f.add(".")
         end
         f.add((info.current and "" or info.index) .. " " .. title)
-
 
         if show_modified and info.modified then
             f.add(" [+]")
         end
 
-
         f.add(delims[index].r)
         f.set_colors { fg = pal.bg0, bg = pal.bg0 }
         f.add(" ")
+    end)
+
+    f.add_spacer()
+
+    f.make_tabs(function(info)
+        -- don't show only tab
+        if info.first and info.last then
+            return
+        end
+        f.add(" ")
+        local index = info.current and "active" or "inactive"
+
+        f.add(delims[index].l)
+        f.set_colors(hl[index])
+        if info.current then
+            f.set_gui("bold")
+        end
+
+        f.add(info.current and "" or tostring(info.tab))
+
+        if info.modified then
+            f.add(" [+]")
+        end
+
+        f.add(delims[index].r)
+        f.set_colors { fg = pal.bg0, bg = pal.bg0 }
     end)
 end
 
 
 M.config = function()
     vim.o.showtabline = 2
-
-
     require("tabline_framework").setup {
-        render = render_buffers
+        render = render_tabline
     }
 end
 
