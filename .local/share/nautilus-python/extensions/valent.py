@@ -9,16 +9,18 @@ BUS_ROOT = "/ca/andyholmes/Valent"
 INTROSPECT = "org.freedesktop.DBus.Introspectable"
 ACTIONS = "org.gtk.Actions"
 
+
 class DeviceState(IntFlag):
     NONE = 0
     CONNECTED = 1 << 0
-    PAIRED    = 1 << 1
+    PAIRED = 1 << 1
     PAIR_INCOMING = 1 << 2
     PAIR_OUTGOING = 1 << 3
 
+
 class ValentDevice(object):
     name: str
-    id  : str
+    id: str
     state: int
 
     actionIface: dbus.Interface
@@ -42,6 +44,7 @@ class ValentDevice(object):
         # print(files)
         self.call_action("share.uris", [files], {})
 
+
 def get_devs(bus: dbus.Bus) -> list[ValentDevice]:
     nodes = []
 
@@ -56,7 +59,9 @@ def get_devs(bus: dbus.Bus) -> list[ValentDevice]:
 
     return nodes
 
+
 BUS = dbus.SessionBus()
+
 
 class ValentMenu(GObject.GObject, Nautilus.MenuProvider):
     def get_background_items(self, pwd: Nautilus.FileInfo) -> list[Nautilus.MenuItem]:
@@ -64,27 +69,28 @@ class ValentMenu(GObject.GObject, Nautilus.MenuProvider):
 
     def get_file_items(self, files: list[Nautilus.FileInfo]) -> list[Nautilus.MenuItem]:
         devs = get_devs(BUS)
-        devs = [dev for dev in devs if (dev.state & DeviceState.PAIRED) and (dev.state & DeviceState.CONNECTED)]
+        devs = [
+            dev
+            for dev in devs
+            if (dev.state & DeviceState.PAIRED) and (dev.state & DeviceState.CONNECTED)
+        ]
         if len(devs) == 0:
             return []
 
         menuitem = Nautilus.MenuItem(
-                name="Valent::main",
-                label="Send to Phone",
-                )
+            name="Valent::main",
+            label="Send to Phone",
+        )
 
         submenu = Nautilus.Menu()
 
         for dev in devs:
             submenu_item = Nautilus.MenuItem(
-                    name="Valent::dev::" + dev.id,
-                    label=dev.name
-                    )
+                name="Valent::dev::" + dev.id, label=dev.name
+            )
             submenu_item.connect("activate", dev.send_files, files)
             submenu.append_item(submenu_item)
 
         menuitem.set_submenu(submenu)
-
-
 
         return [menuitem]

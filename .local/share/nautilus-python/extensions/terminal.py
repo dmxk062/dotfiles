@@ -21,6 +21,7 @@ TEXT_TYPES = (
     "application/ecmascript",
 )
 
+
 def launch_term(command: list[str], pwd: str) -> None:
     subprocess.run(["kitty", "--detach", f"--directory={pwd}", "--"] + command)
 

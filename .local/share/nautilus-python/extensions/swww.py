@@ -50,7 +50,7 @@ def set_as_wall(ctx, file):
         os.unlink(WALLPAPER_PATH)
     except:
         pass
-    
+
     os.symlink(path, WALLPAPER_PATH)
 
     subprocess.run(
@@ -62,7 +62,7 @@ def set_as_wall(ctx, file):
             "--transition-pos=bottom",
             "--transition-duration=1.2",
             "--transition-fps=60",
-            WALLPAPER_PATH
+            WALLPAPER_PATH,
         ]
     )
 
