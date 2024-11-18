@@ -145,7 +145,7 @@ local function render_tabline(f)
             f.set_gui("bold")
         end
 
-        f.add(info.current and "" or tostring(info.tab))
+        f.add(tostring(info.tab))
         f.add(" {" .. tab_wincounts[info.tab] .. "}")
 
         if info.modified then
