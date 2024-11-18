@@ -2,6 +2,9 @@ local utils = require("utils")
 local abbrev = utils.abbrev
 local map = utils.map
 
+local obj = { "x", "o" }
+local mov = { "n", "x", "o" }
+
 -- less annoying way to exit terminal mode
 map("t", "<S-Esc>", "<C-\\><C-n>")
 
@@ -9,28 +12,75 @@ map("t", "<S-Esc>", "<C-\\><C-n>")
 map("i", "<M-k>", "<esc>k")
 map("i", "<M-j>", "<esc>j")
 
-map({ "n", "x", "o" }, "]q", "<cmd>cnext<cr>")
-map({ "n", "x", "o" }, "[q", "<cmd>cprev<cr>")
+map(mov, "]q", "<cmd>cnext<cr>")
+map(mov, "[q", "<cmd>cprev<cr>")
 
-local tableader = "\\"
+-- buffer mappings
+local bufleader = "\\"
 
--- tabs 1 - 9
-for i = 1, 9 do
-    map("n", tableader .. i, i .. "gt", { silent = true })
+map("n", bufleader .. "l", "<cmd>bnext<cr>")
+map("n", bufleader .. "h", "<cmd>bprev<cr>")
+
+map("n", bufleader .. bufleader, function()
+    local target = Bufs_for_idx[vim.v.count] or 0
+    if target == 0 then
+        vim.cmd("wincmd ")
+        return
+    end
+    for i, win in pairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_get_buf(win) == target then
+            vim.api.nvim_set_current_win(win)
+            return
+        end
+    end
+
+    local ok = pcall(vim.api.nvim_set_current_buf, target)
+    if not ok then
+        vim.cmd.bprevious()
+    end
+end)
+
+-- open buffer in a thing
+-- vsplit, split, tab or float
+local function open_buf_in(cmd, fallback)
+    return function()
+        local target = Bufs_for_idx[vim.v.count] or 0
+        if target == 0 then
+            return ":" .. fallback .. " "
+        end
+        return "<cmd>" .. cmd .. " sbuffer " .. target .. "<cr>"
+    end
 end
 
-map("n", tableader .. "h", "<cmd>tabprevious<cr>")
-map("n", tableader .. "l", "<cmd>tabnext<cr>")
+map("n", bufleader .. "v", open_buf_in("vertical", "vsp"), { expr = true })
+map("n", bufleader .. "s", open_buf_in("horizontal", "sp"), { expr = true })
+map("n", bufleader .. "t", open_buf_in("tab", "tabn"), { expr = true })
 
-map("n", tableader .. "t", ":tabnew ")
-map("n", tableader .. "v", ":vsp ")
-map("n", tableader .. "s", ":sp ")
+map("n", bufleader .. "f", function()
+    local target = Bufs_for_idx[vim.v.count] or 0
+    local max_width = vim.api.nvim_win_get_width(0)
+    local max_height = vim.api.nvim_win_get_height(0)
+
+    local height = math.floor((max_height) * .8)
+    local width = math.floor((max_width) * .8)
+    vim.api.nvim_open_win(target, true, {
+        relative = "win",
+        row = math.floor((max_height - height) / 2),
+        col = math.floor((max_width - width) / 2),
+        width = width,
+        height = height,
+        border = "rounded",
+    })
+end)
+
+map("n", bufleader .. "d", function()
+    local target = Bufs_for_idx[vim.v.count] or 0
+    vim.api.nvim_buf_delete(target, {})
+end)
 
 -- stop {} from polluting the jumplist
-map({ "x", "o", "n" }, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end,
-    { remap = false, expr = true })
-map({ "x", "o", "n" }, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end,
-    { remap = false, expr = true })
+map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
+map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
 -- use <space>q for macros instead, i dont use them that often
 map("n", "<space>q", "q")
@@ -66,29 +116,39 @@ map("i", "<C-Del>", "<esc>\"_cw")
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
-map({ "x", "o" }, "ae", textobjs.entire_buffer)
+-- select the entire buffer
+map(obj, "gG", textobjs.entire_buffer)
 
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
 map("n", "<space>Dc", function() vim.diagnostic.setqflist() end)
 map("n", "<space>Dl", function() vim.diagnostic.setloclist() end)
-map({ "x", "o" }, "id", textobjs.diagnostic)
--- map({ "x", "o" }, "ide", function() textobjs.diagnostic("error") end)
--- map({ "x", "o" }, "idw", function() textobjs.diagnostic("warn") end)
--- map({ "x", "o" }, "idi", function() textobjs.diagnostic("info") end)
--- map({ "x", "o" }, "idh", function() textobjs.diagnostic("hint") end)
 
+-- target the area of a diagnostic with a textobject
+-- <id> matches every type
+map(obj, "id", textobjs.diagnostic)
+map(obj, "iDe", textobjs.diagnostic_error)
+map(obj, "iDw", textobjs.diagnostic_warn)
+map(obj, "iDi", textobjs.diagnostic_info)
+map(obj, "iDh", textobjs.diagnostic_hint)
 
--- indents, very useful for e.g. python
--- skips lines with spaces and tries to generally be as simple to use as possible
--- a includes one line above and below
-map({ "x", "o" }, "ii", function() textobjs.indent(false) end)
-map({ "x", "o" }, "ai", function() textobjs.indent(true) end)
+-- indents, very useful for e.g. python or other indent based languages
+-- a includes one line above and below,
+-- except for filetypes e.g. python where only the above line is included by default
+-- aI always includes the last line too, even for python
+-- v:count specifies the amount of indent levels around the one at the cursor to select
+-- this uses shiftwidth, so it's not 100% reliable
+map(obj, "ii", textobjs.indent_inner)
+map(obj, "ai", textobjs.indent_outer)
+map(obj, "aI", textobjs.indent_outer_with_last)
 
--- an arbitrary selection on the screen between two points using leap
--- TODO decide: whether to remove this
-map({ "x", "o" }, "iS", function() textobjs.leap_selection(false) end)
-map({ "x", "o" }, "aS", function() textobjs.leap_selection(true) end)
+-- operand to arithmetic
+map(obj, "io", textobjs.create_pattern_obj("([-+*/%%]%s*)[%w_%.]+()"))
+map(obj, "ao", textobjs.create_pattern_obj("()[-+*/%%]%s*[%w_%.]+()"))
+
+-- snake_case or kebab-case word
+map(obj, "i_", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
+map(obj, "a_", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 
 local operators = require("operators")
 

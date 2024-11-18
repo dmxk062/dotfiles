@@ -1,201 +1,239 @@
 -- see https://github.com/chrisgrieser/nvim-various-textobjs
 -- nowhere near as complex, but i just want some framework for making my own
+local M = {}
+local api = vim.api
+local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
 
----@param linenum integer
-local function getline(linenum)
-    return vim.api.nvim_buf_get_lines(0, linenum - 1, linenum, true)[1]
-end
+---@alias point [integer, integer]
+---@alias region [point, point]
+---@alias seltype "line"|"char"
+---@alias textobj_function fun(pos: point, lcount: integer, opts: any?): region|point?, seltype?
 
 ---@param cmdstr string
-local function cmd(cmdstr)
+local function norm(cmdstr)
     vim.cmd.normal { cmdstr, bang = true }
 end
 
----@alias position {[1]: integer, [2]: integer}
-
----@param startpos position
----@param endpos position
-local function set_visual_selection(startpos, endpos, linewise)
-    cmd("m`") -- set mark
-    vim.api.nvim_win_set_cursor(0, startpos)
-
-    local mode = vim.fn.mode(0)
-    if mode:find("v") ~= nil then
-        if linewise then
-            if mode == "V" then
-                cmd("o")
-            else
-                cmd("V")
-                cmd("o")
-            end
-        else
-            cmd("o")
-        end
-    else
-        if linewise then
-            cmd("V")
-        else
-            cmd("v")
-        end
-    end
-    vim.api.nvim_win_set_cursor(0, endpos)
-end
-
 local function cancel_selection()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "n", false)
+    if api.nvim_get_mode().mode == "no" then
+        api.nvim_feedkeys(esc, "n", false)
+    end
 end
 
----@param _type "error"|"warn"|"info"|"hint"|nil
----@param pos position|nil
-local function diagnostic(_type, pos)
-    local types = {
-        error = 1,
-        warn = 2,
-        info = 3,
-        hint = 4,
+local function getline(lnum)
+    return api.nvim_buf_get_lines(0, lnum - 1, lnum, true)[1]
+end
+
+---@param fn textobj_function
+---@param opts table<string, any>
+function M.create_textobj(fn, opts)
+    return function()
+        local curpos = api.nvim_win_get_cursor(0)
+        local lcount = api.nvim_buf_line_count(0)
+        local sel, mode = fn(curpos, lcount, opts)
+        if (not sel) or (not mode) then
+            cancel_selection()
+            return
+        end
+
+        norm("m`")
+        ---@cast mode seltype
+        -- motion
+        if type(sel[1]) == "number" then
+            ---@cast sel point
+            api.nvim_win_set_cursor(0, sel)
+
+            -- textobj
+        else
+            ---@cast sel region
+            local vimode = api.nvim_get_mode().mode
+            api.nvim_win_set_cursor(0, sel[1])
+
+            local isvisreg = vimode:find("v")
+            local isvisline = vimode:find("V")
+            local isvis = isvisreg or isvisline
+            local linewise = mode == "line"
+
+            if isvisreg and linewise then
+                norm("V")
+            end
+
+            if isvis then
+                norm("o")
+            else
+                if linewise then norm("V") else norm("v") end
+            end
+
+            api.nvim_win_set_cursor(0, sel[2])
+        end
+    end
+end
+
+---@type textobj_function
+local function diagnostic(pos, lcount, opts)
+    local args = {
+        wrap = false,
+        cursor_position = pos,
     }
-    local type = types[_type]
-    local opts = { wrap = false, cursor_position = pos or vim.api.nvim_win_get_cursor(0) }
 
-    -- position is off by one
-    -- see https://github.com/chrisgrieser/nvim-various-textobjs/blob/main/lua/various-textobjs/charwise-textobjs.lua
-    cmd("l")
-    local previous_diag = vim.diagnostic.get_prev(opts)
-    cmd("h")
-
-    local next_diag = vim.diagnostic.get_next(opts)
+    local prev_diag = vim.diagnostic.get_prev(args)
     local on_prev = false
-    local cursor_row, cursor_col = unpack(opts.cursor_position)
+    local next_diag = vim.diagnostic.get_next(args)
 
-    if previous_diag then
-        local current_after_previous_start = (cursor_row == previous_diag.lnum + 1 and cursor_col >= previous_diag.col)
-            or (cursor_row > previous_diag.lnum + 1)
+    if prev_diag then
+        local cur_after_prev_start = (pos[1] == prev_diag.lnum + 1 and pos[2] >= prev_diag.col) or
+            (pos[1] > prev_diag.lnum + 1)
 
-        local current_before_previous_end = (cursor_row == previous_diag.end_lnum + 1 and cursor_col <= previous_diag.end_col - 1)
-            or (cursor_row < previous_diag.end_lnum)
+        local cur_befor_prev_end = (pos[1] == prev_diag.end_lnum + 1 and pos[1] <= prev_diag.end_col - 1) or
+            (pos[1] < prev_diag.end_lnum)
 
-        on_prev = current_after_previous_start and current_before_previous_end
+        on_prev = cur_after_prev_start and cur_befor_prev_end
     end
 
-    local target = on_prev and previous_diag or next_diag
+    local target = on_prev and prev_diag or next_diag
+
     if target then
         if type ~= nil then
             local diagtype = target.severity
-            if diagtype ~= type then
-                -- didnt find what we were looking for, goto next
-                return M.diagnostic(_type, { target.end_lnum + 2, target.end_col + 2 })
+            if diagtype ~= opts.type then
+                return diagnostic({ target.end_lnum + 2, target.end_col + 2 }, lcount, opts)
             end
         end
-        set_visual_selection({ target.lnum + 1, target.col }, { target.end_lnum + 1, target.end_col - 1 })
+        return { { target.lnum + 1, target.col }, { target.end_lnum + 1, target.end_col - 1 } }, "char"
+    end
+
+    return nil, nil
+end
+
+M.diagnostic = M.create_textobj(diagnostic, { type = nil })
+M.diagnostic_error = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.ERROR })
+M.diagnostic_warn = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.WARN })
+M.diagnostic_info = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.INFO })
+M.diagnostic_hint = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.HINT })
+
+local function line_is_blank(lnum)
+    local line = getline(lnum)
+    return line:find("^%s*$") ~= nil
+end
+
+-- filetypes for which outer indentation should only be applied to lines above
+-- this is only due to language syntax and might not 100% be reliable:
+-- ```python
+-- list = [
+--      1,
+--      2,
+--      3,
+-- ]
+-- ```
+-- here we would want both braces
+-- so in those cases provide an extra mapping, that always includes the last one too
+
+M.indent_only_before = {
+    python = true
+}
+
+local function indent(pos, lcount, opts)
+    local multiplier = vim.v.count > 1 and (vim.v.count - 1) or 0
+    local around = vim.o.shiftwidth * multiplier
+
+    local curl = pos[1]
+
+    while (line_is_blank(curl)) do
+        if curl == lcount then
+            return
+        end
+        curl = curl + 1
+    end
+
+    local start_indent = vim.fn.indent(curl) - around
+    if start_indent == 0 then
         return
     end
 
-    cancel_selection()
-    return false
-end
+    local prevl = curl - 1
+    local nextl = curl + 1
 
-
-local function line_is_empty(linenr)
-    local line = vim.api.nvim_buf_get_lines(0, linenr - 1, linenr, false)[1]
-    return (not line or line == "")
-end
-
----@param around boolean
-local function indent(around)
-    local startline = vim.api.nvim_win_get_cursor(0)[1]
-    if line_is_empty(startline) then
-        startline = startline + 1
+    while prevl > 0 and (line_is_blank(prevl) or vim.fn.indent(prevl) >= start_indent) do
+        prevl = prevl - 1
     end
 
-    local target_indent = vim.fn.indent(startline)
-    local linecount = vim.api.nvim_buf_line_count(0)
+    while nextl <= lcount and (line_is_blank(nextl) or vim.fn.indent(nextl) >= start_indent) do
+        nextl = nextl + 1
+    end
 
-    local endline = startline
-    local start_included, end_included
-    while true do
-        local level = vim.fn.indent(endline)
-        if endline == linecount then
-            if level >= target_indent then end_included = true end
-            break
-        end
+    if opts.outer and not opts.always_last and M.indent_only_before[vim.bo[0].ft] then
+        nextl = nextl - 1
+    end
+    if not opts.outer then
+        prevl = prevl + 1
+        nextl = nextl - 1
+    end
 
-        if level < target_indent then
-            if not (line_is_empty(endline) and vim.fn.indent(endline + 1) >= target_indent) then
+    if nextl > lcount then
+        nextl = lcount
+    end
+
+    while line_is_blank(nextl) do
+        nextl = nextl - 1
+    end
+
+    return { { prevl, 1 }, { nextl, 1 } }, "line"
+end
+
+M.indent_inner = M.create_textobj(indent, { outer = false })
+M.indent_outer = M.create_textobj(indent, { outer = true })
+M.indent_outer_with_last = M.create_textobj(indent, { outer = true, always_last = true })
+
+M.entire_buffer = M.create_textobj(function(pos, lcount, outer)
+    return { { 1, 1 }, { lcount, 1 } }, "line"
+end, {})
+
+
+-- search for a pattern, use capture group to specify what to match
+-- two capture groups are necessary: an optional prefix and suffix
+-- if you don't need prefix and suffix, use ()
+local function pattern_obj(pos, lcount, opts)
+    local curline = pos[1]
+    local curcol = pos[2]
+
+    local line = getline(curline)
+
+    local startpos = 0 ---@type integer?
+    local endpos
+
+    local g1, g2
+
+    repeat
+        startpos = startpos + 1
+        startpos, endpos, g1, g2 = line:find(opts.pattern, startpos)
+    until not startpos or (endpos and endpos > curcol)
+
+    -- not found in first line
+    if not startpos then
+        while true do
+            if curline > lcount then
+                return
+            end
+            curline = curline + 1
+            line = getline(curline)
+            startpos, endpos, g1, g2 = line:find(opts.pattern)
+            if startpos then
                 break
             end
         end
-
-        endline = endline + 1
     end
 
-    while true do
-        local level = vim.fn.indent(startline)
-        if startline == 1 then
-            if level >= target_indent then start_included = true end
-            break
-        end
-
-        if level < target_indent then
-            if not (line_is_empty(startline) and vim.fn.indent(startline - 1) >= target_indent) then
-                break
-            end
-        end
-
-        startline = startline - 1
+    if not startpos then
+        return
     end
 
-    if not around then
-        if not (startline == 1 and start_included) then
-            startline = startline + 1
-        end
-        if not end_included then
-            endline = endline - 1
-        end
-    end
-
-    set_visual_selection({ startline, 0 }, { endline, 0 }, true)
+    local obj_start = (type(g1) ~= "number" and #g1 or 0) + startpos
+    local obj_end = endpos - (type(g2) ~= "number" and #g2 or 0)
+    return { { curline, obj_start - 1 }, { curline, obj_end - 1 } }, "char"
 end
 
-
-local function leap_get_point(cb)
-    local curwin = vim.api.nvim_get_current_win()
-    require("leap").leap {
-        target_windows = { curwin },
-        action = function(target1)
-            require("leap").leap {
-                target_windows = { curwin },
-                action = function(target2)
-                    cb(target1, target2)
-                end
-            }
-        end
-    }
+function M.create_pattern_obj(pattern)
+    return M.create_textobj(pattern_obj, { pattern = pattern })
 end
 
---- Selects the region between two leap targets
---- Basically allows you to select any arbitrary region on the screen
-local function leap_selection(outer)
-    leap_get_point(function(t1, t2)
-        local pos1, pos2
-        -- coordinates given by leap are 0 indexed
-        if not outer then
-            pos1 = { t1.pos[1], t1.pos[2] }
-            pos2 = { t2.pos[1], t2.pos[2] - 2 }
-        else
-            pos1 = { t1.pos[1], t1.pos[2] - 1 }
-            pos2 = { t2.pos[1], t2.pos[2] - 1 }
-        end
-        set_visual_selection(pos1, pos2)
-    end)
-end
-
-local function entire_buffer()
-    set_visual_selection({ 1, 1 }, { vim.api.nvim_buf_line_count(0), 1 }, true)
-end
-
-return {
-    indent = indent,
-    diagnostic = diagnostic,
-    leap_selection = leap_selection,
-    entire_buffer = entire_buffer,
-}
+return M
