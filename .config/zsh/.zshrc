@@ -132,7 +132,6 @@ nameddirs=(
 source "$ZDOTDIR/functions.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/prompt.zsh"
-source "$ZDOTDIR/fzf.zsh"
 
 # syntax highlighting
 source "$ZDOTDIR/highlight.zsh"
