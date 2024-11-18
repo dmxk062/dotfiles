@@ -16,7 +16,7 @@
 (defwindow dock_window 
         :monitor 0
         :geometry (geometry :x 1
-                            :y 1
+                            :y 2
                             :width 0
                             :height 0
                             :anchor "bottom center"
