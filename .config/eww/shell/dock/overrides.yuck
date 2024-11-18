@@ -17,8 +17,9 @@
 "blueman-manager":"bluetooth",
 "vesktop":"discord",
 "timeshift-gtk":"timeshift",
-"com.transmissionbt.transmission_37_364746":"transmission",
+"com.transmissionbt.transmission_47_364746":"transmission",
 "Tor Browser":"torbrowser",
+"piper":"org.freedesktop.Piper",
 "lemonade-qt":"lemonade"
 }
 ')
@@ -26,8 +27,9 @@
 {
 "Celeste":"celeste",
 "No Man\'s Sky":"no_mans_sky",
-"Sid Meier\'s Civilization VI (DX11)":"civilization_vi",
-"Sid Meier\'s Civilization V (DX11)":"steam_icon_8930"
+"Sid Meier\'s Civilization VI (DX12)":"civilization_vi",
+"Sid Meier\'s Civilization V (DX11)":"steam_icon_8930",
+"Humankind":"steam_icon_1124300"
 }
 ')
 
