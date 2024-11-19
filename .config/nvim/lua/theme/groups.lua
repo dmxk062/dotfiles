@@ -115,7 +115,7 @@ local colorscheme = {
     markdownH1Delimiter         = { fg = col.light_cyan },
     markdownH2Delimiter         = { fg = col.red },
     markdownH3Delimiter         = { fg = col.green },
-    Title                       = { fg = col.teal, bold = true },
+    Title                       = { link = "@markup.heading" },
     htmlH1                      = { link = "@markup.heading.1" },
     htmlH2                      = { link = "@markup.heading.2" },
     htmlH3                      = { link = "@markup.heading.3" },
@@ -150,6 +150,119 @@ local colorscheme = {
     UndotreeSavedSmall          = { fg = col.green },
     UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
 }
+
+add_with_prefix(colorscheme, "@", {
+    number                         = { fg = col.magenta },
+    float                          = { fg = col.magenta },
+    macro                          = { fg = pal.fg0 },
+    character                      = { fg = col.green },
+    conditional                    = { fg = col.light_blue },
+    boolean                        = { fg = col.teal },
+    property                       = { fg = col.blue },
+    constructor                    = { link = "*function" },
+    operator                       = { fg = col.teal },
+    symbol                         = { fg = col.magenta },
+
+    ["comment"]                    = { fg = col.bright_gray, italic = true },
+    ["comment.todo"]               = { fg = col.yellow, italic = true, underline = true },
+    ["comment.error"]              = { fg = col.red, italic = true, underline = true },
+    ["comment.warning"]            = { fg = col.orange, italic = true, underline = true },
+    ["comment.note"]               = { fg = col.light_blue, italic = true, underline = true },
+
+    ["string"]                     = { fg = col.green },
+    ["string.documentation"]       = { link = "*comment" },
+    ["string.special.path"]        = { fg = col.teal },
+    ["string.regex"]               = { fg = col.orange },
+    ["string.escape"]              = { fg = col.yellow },
+
+    ["variable"]                   = { fg = pal.fg2 },
+    ["variable.member"]            = { link = "*property" },
+    ["variable.builtin"]           = { fg = pal.fg0, italic = true },
+    ["variable.parameter.builtin"] = { fg = col.light_blue, italic = true },
+
+    ["constant"]                   = { fg = col.yellow },
+    ["constant.builtin"]           = { fg = pal.fg2 },
+
+    ["type"]                       = { fg = col.magenta },
+    ["type.builtin"]               = { fg = col.purple },
+
+    ["function"]                   = { fg = col.light_blue },
+    ["function.builtin"]           = { fg = col.light_cyan },
+
+    ["punctuation.bracket"]        = { fg = col.bright_gray },
+    ["punctuation.special"]        = { fg = col.light_cyan },
+    ["punctuation.delimiter"]      = { fg = col.light_gray },
+
+    ["attribute"]                  = { fg = col.yellow },
+    ["attribute.builtin"]          = { fg = col.yellow },
+
+    ["keyword"]                    = { fg = col.light_blue },
+    ["keyword.return"]             = { fg = col.light_blue, italic = true },
+    ["keyword.repeat"]             = { fg = col.light_blue, italic = true },
+    ["keyword.conditional"]        = { fg = col.light_blue, italic = true },
+    ["keyword.import"]             = { fg = col.light_blue },
+    ["keyword.function"]           = { link = "*function" },
+    ["keyword.operator"]           = { link = "*operator" },
+
+    ["text"]                       = { fg = pal.fg2 },
+    ["text.reference"]             = { fg = col.magenta },
+    ["text.emphasis"]              = { fg = pal.fg0, italic = true },
+    ["text.underline"]             = { fg = pal.fg0, underline = true },
+    ["text.literal"]               = { fg = pal.fg2 },
+    ["text.uri"]                   = { fg = col.blue, italic = true },
+    ["text.strike"]                = { fg = pal.fg0, strikethrough = true },
+    ["text.title"]                 = { fg = col.blue },
+    ["text.strong"]                = { fg = pal.fg0, bold = true },
+
+    ["diff.plus"]                  = { link = "DiffAdd" },
+    ["diff.minus"]                 = { link = "DiffDelete" },
+    ["diff.delta"]                 = { link = "DiffChange" },
+
+    ["tag"]                        = { link = "*keyword" },
+    ["tag.attribute"]              = { fg = pal.fg0 },
+    ["tag.builtin"]                = { fg = col.light_blue },
+    ["tag.delimiter"]              = { fg = col.bright_gray },
+
+    ["markup.heading"]             = { fg = col.teal, bold = true },
+    ["markup.heading.1"]           = { fg = col.yellow, bold = true },
+    ["markup.heading.2"]           = { fg = col.green, bold = true },
+    ["markup.heading.3"]           = { fg = col.teal, bold = true },
+    ["markup.heading.4"]           = { fg = col.light_cyan, bold = true },
+    ["markup.heading.5"]           = { fg = col.light_blue, bold = true },
+    ["markup.heading.6"]           = { fg = col.blue, bold = true },
+    ["markup.heading.7"]           = { fg = col.blue, bold = true },
+    ["markup.heading.8"]           = { fg = col.blue, bold = true },
+    ["markup.math"]                = { italic = true },
+    ["markup.raw.markdown_inline"] = { bg = pal.bg1 },
+    ["markup.raw.block.markdown"]  = { bg = pal.bg0 },
+    ["markup.link"]                = { fg = col.fg2, italic = true },
+    ["markup.link.url"]            = { fg = col.blue, underline = true, italic = true },
+    ["markup.link.label"]          = { fg = col.fg2, italic = true },
+    ["markup.quote"]               = { fg = col.bright_gray, italic = true },
+    ["markup.list"]                = { fg = col.light_gray, bold = true },
+    ["markup.list.checked"]        = { fg = col.light_gray },
+    ["markup.list.unchecked"]      = { fg = col.yellow, bold = true },
+
+    ["character.printf"]           = {},
+    ["number.printf"]              = { fg = col.magenta, bg = pal.bg1 },
+    ["constant.printf"]            = { fg = col.yellow, bg = pal.bg1 },
+    ["float.printf"]               = { fg = col.magenta, bg = pal.bg1 },
+    ["symbol.printf"]              = { fg = col.light_blue, bg = pal.bg1 },
+    ["string.printf"]              = { fg = col.green, bg = pal.bg1 },
+})
+
+add_with_prefix(colorscheme, "@lsp.", {
+    ["type.macro"]                      = { link = "@macro" },
+    ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
+    ["typemod.function.defaultLibrary"] = { link = "@function.builtin" },
+    -- so --HACK etc work
+    ["type.comment"]                    = {},
+    ["typemod.keyword.documentation"]   = { fg = col.light_blue },
+
+    -- HACK: fix var:smth not highlighting :
+    ["type.variable.lua"]               = {},
+})
+
 add_with_prefix(colorscheme, "Startscreen", {
     Title0  = { fg = col.purple },
     Title1  = { fg = col.red },
@@ -224,7 +337,6 @@ add_with_prefix(colorscheme, "OilGitStatus", {
     WorkingTreeTypeChanged = { link = "*IndexTypeChanged" },
     IndexUnmerged          = { fg = pal.fg0 },
     WorkingTreeUnmerged    = { link = "*IndexUnmerged" },
-
 })
 
 add_with_prefix(colorscheme, "CmpItem", {
@@ -252,112 +364,6 @@ add_with_prefix(colorscheme, "CmpItem", {
     AbbrMatchFuzzy  = { fg = col.magenta, bold = true },
     Abbr            = { fg = pal.fg2 },
     Menu            = { fg = col.green },
-})
-
-add_with_prefix(colorscheme, "@", {
-    number                         = { fg = col.magenta },
-    float                          = { fg = col.magenta },
-    macro                          = { fg = pal.fg0 },
-    character                      = { fg = col.green },
-    conditional                    = { fg = col.light_blue },
-    boolean                        = { fg = col.teal },
-    property                       = { fg = col.blue },
-    constructor                    = { fg = col.light_blue },
-    operator                       = { fg = col.teal },
-    symbol                         = { fg = col.magenta },
-
-    ["comment"]                    = { fg = col.bright_gray, italic = true },
-    ["comment.todo"]               = { fg = col.yellow, italic = true },
-    ["comment.error"]              = { fg = col.red, italic = true },
-    ["comment.warning"]            = { fg = col.orange, italic = true },
-    ["comment.note"]               = { fg = col.light_blue, italic = true },
-
-    ["string"]                     = { fg = col.green },
-    ["string.documentation"]       = { link = "@comment" },
-    ["string.special.path"]        = { fg = col.teal },
-    ["string.regex"]               = { fg = col.orange },
-    ["string.escape"]              = { fg = col.yellow },
-
-    ["variable"]                   = { fg = col.light_blue },
-    ["variable.builtin"]           = { fg = pal.fg0, italic = true },
-    ["variable.typecast"]          = { fg = col.light_blue, italic = true },
-    ["variable.parameter.builtin"] = { fg = col.light_blue, italic = true },
-
-    ["constant"]                   = { fg = col.yellow },
-    ["constant.builtin"]           = { fg = pal.fg2 },
-
-    ["type"]                       = { fg = col.magenta },
-    ["type.typecast"]              = { fg = col.magenta, italic = true },
-    ["type.builtin"]               = { fg = col.light_blue },
-
-    ["function"]                   = { fg = col.light_cyan },
-    ["function.builtin"]           = { fg = col.light_cyan },
-
-    ["punctuation.bracket"]        = { fg = col.light_cyan },
-    ["punctuation.special"]        = { fg = col.light_cyan },
-    ["punctuation.delimiter"]      = { fg = col.light_gray },
-
-
-    ["attribute"]                         = { fg = col.yellow },
-    ["attribute.builtin"]                 = { fg = col.yellow },
-
-    ["keyword"]                           = { fg = col.light_blue },
-    ["keyword.return"]                    = { fg = col.light_blue },
-    ["keyword.import"]                    = { fg = col.light_blue },
-    ["keyword.function"]                  = { link = "@punctuation.bracket" },
-    ["keyword.operator"]                  = { fg = col.light_cyan },
-
-    ["text"]                              = { fg = pal.fg2 },
-    ["text.reference"]                    = { fg = col.magenta },
-    ["text.emphasis"]                     = { fg = pal.fg0, italic = true },
-    ["text.underline"]                    = { fg = pal.fg0, underline = true },
-    ["text.literal"]                      = { fg = pal.fg2 },
-    ["text.uri"]                          = { fg = col.blue, italic = true },
-    ["text.strike"]                       = { fg = pal.fg0, strikethrough = true },
-    ["text.title"]                        = { fg = col.blue },
-    ["text.strong"]                       = { fg = pal.fg0, bold = true },
-
-    ["diff.plus"]                         = { link = "DiffAdd" },
-    ["diff.minus"]                        = { link = "DiffDelete" },
-    ["diff.delta"]                        = { link = "DiffChange" },
-
-    ["tag"]                               = { link = "@keyword" },
-    ["tag.attribute"]                     = { fg = pal.fg0 },
-    ["tag.builtin"]                       = { fg = col.light_blue },
-    ["tag.delimiter"]                     = { fg = col.bright_gray },
-
-    ["markup.heading"]                    = { link = "Title" },
-    ["markup.heading.1"]                  = { fg = col.yellow, bold = true },
-    ["markup.heading.2"]                  = { fg = col.green, bold = true },
-    ["markup.heading.3"]                  = { fg = col.teal, bold = true },
-    ["markup.heading.4"]                  = { fg = col.light_cyan, bold = true },
-    ["markup.heading.5"]                  = { fg = col.light_blue, bold = true },
-    ["markup.heading.6"]                  = { fg = col.blue, bold = true },
-    ["markup.heading.7"]                  = { fg = col.blue, bold = true },
-    ["markup.heading.8"]                  = { fg = col.blue, bold = true },
-    ["markup.math"]                       = { italic = true },
-    ["markup.raw.markdown_inline"]        = { bg = pal.bg1 },
-    ["markup.raw.block.markdown"]         = { bg = pal.bg0 },
-    ["markup.link"]                       = { fg = col.fg2, italic = true },
-    ["markup.link.url"]                   = { fg = col.blue, underline = true, italic = true },
-    ["markup.link.label"]                 = { fg = col.fg2, italic = true },
-    ["markup.quote"]                      = { fg = col.bright_gray, italic = true },
-    ["markup.list"]                       = { fg = col.light_gray, bold = true },
-    ["markup.list.checked"]               = { fg = col.light_gray },
-    ["markup.list.unchecked"]             = { fg = col.yellow, bold = true },
-
-    ["lsp.type.macro"]                    = { link = "@macro" },
-    ["lsp.mod.deprecated"]                = { fg = col.bright_gray, italic = true, strikethrough = true },
-    -- so --HACK etc work
-    ["lsp.type.comment"]                  = {},
-    ["lsp.typemod.keyword.documentation"] = { fg = col.light_blue },
-
-    ["character.printf"]                  = {},
-    ["number.printf"]                     = { fg = col.magenta, bg = pal.bg1 },
-    ["constant.printf"]                   = { fg = col.yellow, bg = pal.bg1 },
-    ["float.printf"]                      = { fg = col.magenta, bg = pal.bg1 },
-    ["symbol.printf"]                     = { fg = col.light_blue, bg = pal.bg1 },
-    ["string.printf"]                     = { fg = col.green, bg = pal.bg1 },
 })
 
 add_with_prefix(colorscheme, "Lsp", {
