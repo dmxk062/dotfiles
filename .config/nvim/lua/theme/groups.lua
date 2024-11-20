@@ -259,9 +259,6 @@ add_with_prefix(colorscheme, "@lsp.", {
     ["type.comment"]                    = {},
     ["typemod.keyword.documentation"]   = { fg = col.light_blue },
 
-    -- HACK: fix var:smth not highlighting :
-    ["type.variable.lua"]               = {},
-
     -- remove unnecessary highlights
     ["type.class.markdown"]             = {},
 })
