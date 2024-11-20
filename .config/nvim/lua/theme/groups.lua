@@ -62,7 +62,7 @@ local colorscheme = {
     DiffDelete                  = { fg = col.red, italic = true },
     DiffChange                  = {},
     DiffAdd                     = { fg = col.green, italic = true },
-    DiffText                    = { fg = col.yellow, italic = true },
+    DiffText                    = { bg = pal.bg1, italic = true },
 
     Question                    = { fg = col.bright_gray },
     Warnings                    = { fg = col.orange },
@@ -240,8 +240,8 @@ add_with_prefix(colorscheme, "@", {
     ["markup.link.label"]          = { fg = col.fg2, italic = true },
     ["markup.quote"]               = { fg = col.bright_gray, italic = true },
     ["markup.list"]                = { fg = col.light_gray, bold = true },
-    ["markup.list.checked"]        = { fg = col.light_gray },
-    ["markup.list.unchecked"]      = { fg = col.yellow, bold = true },
+    ["markup.list.checked"]        = { fg = col.green },
+    ["markup.list.unchecked"]      = { fg = col.gray, undercurl = true },
 
     ["character.printf"]           = {},
     ["number.printf"]              = { fg = col.magenta, bg = pal.bg1 },
@@ -261,6 +261,9 @@ add_with_prefix(colorscheme, "@lsp.", {
 
     -- HACK: fix var:smth not highlighting :
     ["type.variable.lua"]               = {},
+
+    -- remove unnecessary highlights
+    ["type.class.markdown"]             = {},
 })
 
 add_with_prefix(colorscheme, "Startscreen", {
