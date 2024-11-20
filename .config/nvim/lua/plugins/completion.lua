@@ -148,20 +148,32 @@ M.opts = {
         { name = "path" },
         { name = "luasnip" },
         { name = "buffer" },
-    }
+    },
+    sorting = {}
 
 }
 
 M.config = function(_, opts)
     local cmp = require("cmp")
-    opts.mapping = cmp.mapping.preset.insert({
+    local compare = cmp.config.compare
+    opts.mapping = cmp.mapping.preset.insert {
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<CR>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
         ["<M-j>"] = cmp.mapping.select_next_item(),
         ["<M-k>"] = cmp.mapping.select_prev_item(),
-    })
+    }
+    opts.sorting.comparators = {
+        compare.offset,
+        compare.exact,
+        compare.scopes,
+        compare.score,
+        compare.recently_used,
+        compare.locality,
+        compare.kind,
+        compare.order,
+    }
 
     cmp.setup(opts)
 
