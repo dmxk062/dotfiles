@@ -55,6 +55,7 @@ end
 map("n", bufleader .. "v", open_buf_in("vertical", "vsp"), { expr = true })
 map("n", bufleader .. "s", open_buf_in("horizontal", "sp"), { expr = true })
 map("n", bufleader .. "t", open_buf_in("tab", "tabn"), { expr = true })
+map("n", bufleader .. "<cr>", "gt")
 
 map("n", bufleader .. "f", function()
     local target = Bufs_for_idx[vim.v.count] or 0

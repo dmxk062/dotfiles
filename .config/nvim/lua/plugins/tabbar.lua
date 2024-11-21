@@ -90,33 +90,46 @@ local function render_tabline(f)
         buf_wincounts[buf] = (buf_wincounts[buf] or 0) + 1
     end
 
+
     ---@param info bufinfo
     f.make_bufs(function(info)
-        Bufs_for_idx[info.index] = info.buf_nr
-        local index = info.current and "active" or "inactive"
+        local type = info.current and "active" or "inactive"
+        local bufnr = info.buf_nr
+        local wincount = buf_wincounts[bufnr] or 0
+        Bufs_for_idx[info.index] = bufnr
 
-        f.add(delims[index].l)
-        f.set_colors(hl[index])
+        f.add(delims[type].l)
+        f.set_colors(hl[type])
         if info.current then
             f.set_gui("bold")
         end
 
-        local title, show_modified = get_buf_title(info.filename, info.buf_name, info.buf_nr)
-        if not buf_wincounts[info.buf_nr] then
+        local title, show_modified = get_buf_title(info.filename, info.buf_name, bufnr)
+        if wincount == 0 then
             f.add(".")
         end
-        f.add((info.current and "" or info.index) .. " " .. title)
+
+        f.add(info.index .. " " .. title)
 
         if show_modified and info.modified then
             f.add(" [+]")
         end
 
-        f.add(delims[index].r)
+        if wincount > 1 then
+            f.add(" {" .. wincount .. "}")
+        end
+
+        f.add(delims[type].r)
         f.set_colors { fg = pal.bg0, bg = pal.bg0 }
         f.add(" ")
     end)
 
     f.add_spacer()
+
+    local tab_wincounts = {}
+    for _, page in pairs(vim.api.nvim_list_tabpages()) do
+        tab_wincounts[page] = #vim.api.nvim_tabpage_list_wins(page)
+    end
 
     f.make_tabs(function(info)
         -- don't show only tab
@@ -132,7 +145,8 @@ local function render_tabline(f)
             f.set_gui("bold")
         end
 
-        f.add(info.current and "" or tostring(info.tab))
+        f.add(tostring(info.tab))
+        f.add(" {" .. tab_wincounts[info.tab] .. "}")
 
         if info.modified then
             f.add(" [+]")

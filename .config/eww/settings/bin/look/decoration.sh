@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 eww="eww -c $HOME/.config/eww/settings"
-KITTY_OPACITY=0.9
+KITTY_OPACITY=0.8
 
 function hyprctl_keywd(){
     value="$(hyprctl -j getoption $1)"
@@ -54,12 +54,12 @@ border() {
 }   
 
 shadow() {
-    if [[ $(hyprctl_keywd "decoration:drop_shadow" int) == "0" ]]
+    if [[ $(hyprctl_keywd "decoration:shadow:enabled" int) == "0" ]]
     then
-        hyprctl keyword decoration:drop_shadow 1
+        hyprctl keyword decoration:shadow:enabled 1
         $eww update look_shadow=true
     else
-        hyprctl keyword decoration:drop_shadow 0
+        hyprctl keyword decoration:shadow:enabled 0
         $eww update look_shadow=false
     fi
 }   

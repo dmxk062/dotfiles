@@ -9,41 +9,43 @@ vim.api.nvim_create_autocmd("StdinReadPre", {
 })
 
 
-vim.o.relativenumber = true
-vim.o.number = true
-vim.o.incsearch = true
-vim.o.ignorecase = true
-vim.o.showmode = false
-vim.o.smartcase = true
-vim.o.expandtab = true
-vim.o.softtabstop = 4
-vim.o.shiftwidth = 4
-vim.o.hlsearch = true
-vim.o.scrolloff = 1
-vim.o.undofile = true
+local opt = vim.opt
+local o = vim.o
+o.relativenumber = true
+o.number = true
+o.incsearch = true
+o.ignorecase = true
+o.showmode = false
+o.smartcase = true
+o.expandtab = true
+o.softtabstop = 4
+o.shiftwidth = 4
+o.hlsearch = true
+o.scrolloff = 1
+o.undofile = true
 
 -- wrap at whitespace, indent wrapped lines and show an indicator
-vim.o.wrap = true
-vim.o.linebreak = true
-vim.o.breakindent = true
-vim.o.breakindentopt = "sbr"
-vim.o.showbreak = ""
+o.wrap = true
+o.linebreak = true
+o.breakindent = true
+o.breakindentopt = "sbr"
+o.showbreak = ""
 
 -- idk why that isn't the default, much more intuitive imo
-vim.o.splitright = true
-vim.o.splitbelow = true
+o.splitright = true
+o.splitbelow = true
 
-vim.opt.shortmess:append("S") -- hide search count
-vim.opt.shortmess:append("s") -- hide search hit x
-vim.opt.shortmess:append("q") -- hide macro
+opt.shortmess:append("S") -- hide search count
+opt.shortmess:append("s") -- hide search hit x
+opt.shortmess:append("q") -- hide macro
 
-vim.opt.fillchars = {
+opt.fillchars = {
     -- its visible from the gaps anyways
     diff = " ",
     lastline = "",
 }
 
-vim.opt.listchars = {
+opt.listchars = {
     eol = "",
     tab = "󰌒 ",
     space = "·",
@@ -54,18 +56,18 @@ vim.opt.listchars = {
 -- normal, visual etc: block
 -- insert: bar, blink
 -- normal: blink
-vim.opt.guicursor = {
+opt.guicursor = {
     "c-ci-cr:hor20",
     "n-o-v-sm:block",
     "r:hor20",
     "i-ve:ver10",
     "r-n-i-ve:blinkon1",
 }
-vim.o.cursorline = true
-vim.o.cursorlineopt = "number"
+o.cursorline = true
+o.cursorlineopt = "number"
 
 -- enable terminal title
-vim.o.title = true
+o.title = true
 
 -- i use C more than C++
 vim.g.c_syntax_for_h = true
@@ -85,7 +87,7 @@ if not vim.uv.fs_stat(lazypath) then
     })
 end
 
-vim.opt.rtp:prepend(lazypath)
+opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins", {
     -- so i can work on my own local plugins
     dev = {
@@ -135,7 +137,7 @@ require("modules.autocommands")
 require("mappings")
 
 -- for some reason lazy deactivates that
-vim.o.modeline = true
+o.modeline = true
 
 vim.api.nvim_create_autocmd("VimEnter", {
     once = true,

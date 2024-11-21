@@ -24,7 +24,7 @@ local neorg_tools = require("plugin_utils.neorg")
 
 local conceals = {
     ordered = {
-        render = neorg_tools.render_ordered {"numeric", "latin_lower", "greek_lower", "roman_lower"}
+        render = neorg_tools.render_ordered { "numeric", "latin_lower", "greek_lower", "roman_lower" }
     },
     code_block = {
         conceal = false,
