@@ -166,8 +166,10 @@ operators.map_function("<space>el", function(mode, region, extra, get)
         result = vim.split(vim.inspect(return_val), "\n")
     elseif type(return_val) == "nil" then
         result = {}
-    else
+    elseif type(return_val) == "string" then
         result = vim.split(return_val, "\n")
+    else
+        result = { tostring(return_val) }
     end
 
     return result, region[1], region[2]
