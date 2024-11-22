@@ -9,31 +9,21 @@ function M.config(_, opts)
     local mc = require("multicursor-nvim")
     mc.setup(opts)
 
-    local utils = require("utils")
+    local map = require("utils").map
     local operators = require("operators")
 
-    utils.map("n", "<esc>", function()
+    map("n", "<esc>", function()
         if mc.hasCursors() then
             mc.clearCursors()
         end
     end)
 
-    -- align cursors: all to same column
-    utils.map({ "x", "n" }, "<space>Ca", function()
-        mc.action(function(ctx)
-            local maincol = ctx:mainCursor():getPos()[2]
-            ctx:forEachCursor(function(cursor, i, all)
-                cursor:feedkeys(maincol .. "|")
-            end)
-        end)
-    end)
-
-    -- utils.map({"x", "n"}, "<C-k>", mc.prevCursor)
-    -- utils.map({"x", "n"}, "<C-j>", mc.nextCursor)
+    map({ "x", "n" }, "<space>k", mc.prevCursor)
+    map({ "x", "n" }, "<space>j", mc.nextCursor)
 
     -- replace default I and A for visual mode
-    utils.map("x", "I", mc.insertVisual)
-    utils.map("x", "A", mc.appendVisual)
+    map("x", "I", mc.insertVisual)
+    map("x", "A", mc.appendVisual)
 
     -- turns multiple cursors into another vim command more than a full mode
     -- for linewise mode or when spanning multiple lines: create one cursor for each line, at the same position as the original one
@@ -45,7 +35,7 @@ function M.config(_, opts)
                 local start_pos = region[1][2] + 1
                 for i = region[1][1] + 1, region[2][1] do
                     local cursor = ctx:addCursor()
-                    cursor:setPos({ i, start_pos })
+                    cursor:setPos({ i, 0 })
                     cursor:feedkeys(start_pos .. "|")
                 end
             end)
@@ -57,10 +47,11 @@ function M.config(_, opts)
         end
         return nil
     end, { normal_only = true })
-    utils.map("x", "<space>c", mc.visualToCursors)
+
+    map("x", "<space>c", mc.visualToCursors)
 
     -- put one cursor at each current search result
-    utils.map("n", "<space>C/", function()
+    map("n", "<space>C/", function()
         local search_pattern = vim.fn.getreg("/")
         local main_pos = vim.api.nvim_win_get_cursor(0)
         local matches = {}
@@ -80,6 +71,19 @@ function M.config(_, opts)
             end
         end)
     end)
+
+    -- align cursors: all to same column
+    map({ "x", "n" }, "<space>Ca", function()
+        mc.action(function(ctx)
+            local maincol = ctx:mainCursor():getPos()[2]
+            ctx:forEachCursor(function(cursor, i, all)
+                cursor:feedkeys(maincol .. "|")
+            end)
+        end)
+    end)
+
+    map({ "x" }, "<space>Cs", mc.splitCursors)
+    map({ "x" }, "<space>Cm", mc.matchCursors)
 end
 
 return M
