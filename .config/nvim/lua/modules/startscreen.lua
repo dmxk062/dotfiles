@@ -282,6 +282,9 @@ function M.show_start_screen()
         vim.wo[state.win][0][k] = v
     end
 
+    vim.bo[0].buftype = "nofile"
+    vim.bo[0].buflisted = false
+
     -- constrain cursor
     vim.api.nvim_create_autocmd("CursorMoved", {
         buffer = state.buf,
