@@ -149,6 +149,8 @@ local colorscheme = {
     UndotreeBranch              = { fg = col.magenta },
     UndotreeSavedSmall          = { fg = col.green },
     UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
+
+    Yanked                      = { bg = pal.bg1 },
 }
 
 add_with_prefix(colorscheme, "@", {
@@ -420,7 +422,7 @@ add_with_prefix(colorscheme, "Mason", {
     HighlightSecondaryBlockBold = { link = "*HighlightBlockBold" },
     Muted                       = { fg = pal.bg3 },
     MutedBlock                  = { bg = pal.bg3 },
-    MutedBlockBold              = { link = "MasonMutedBlock" },
+    MutedBlockBold              = { link = "*MutedBlock" },
 })
 
 add_with_prefix(colorscheme, "zsh", {

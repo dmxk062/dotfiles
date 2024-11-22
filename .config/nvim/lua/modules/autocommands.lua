@@ -1,5 +1,4 @@
 local autocmd = vim.api.nvim_create_autocmd
-
 -- change the title in a more intelligent way
 autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
     callback = function(args)
@@ -89,7 +88,7 @@ autocmd("TermOpen", {
     end
 })
 
--- when opening a file, automatically tcd to its git repo ancestor
+-- when opening a file, automatically lcd to its git repo ancestor
 -- if already in a repo, behave somewhat like autocd
 autocmd("BufReadPost", {
     callback = function(ev)
@@ -103,10 +102,17 @@ autocmd("BufReadPost", {
         end
     end
 })
+
 -- auto resize on window resize
 -- TODO: add actual heuristics for what to do
 autocmd("VimResized", {
     callback = function(ev)
         vim.cmd.wincmd("=")
+    end
+})
+
+autocmd("TextYankPost", {
+    callback = function(ev)
+        vim.highlight.on_yank { timeout = 120, higroup = "Yanked" }
     end
 })
