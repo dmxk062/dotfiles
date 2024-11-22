@@ -113,6 +113,6 @@ autocmd("VimResized", {
 
 autocmd("TextYankPost", {
     callback = function(ev)
-        vim.highlight.on_yank { timeout = 120, higroup = "Yanked" }
+        vim.highlight.on_yank { timeout = 120, higroup = "Yanked", on_visual = false }
     end
 })
