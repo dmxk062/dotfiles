@@ -11,9 +11,6 @@ local state = {
     last_editable = 0,
     was_newline = false,
     set_col = 0,
-    saved = {
-
-    }
 }
 
 local function print_hl_line(string, hlgroup, offset, do_newline)
@@ -282,8 +279,7 @@ function M.show_start_screen()
     state.augroup = vim.api.nvim_create_augroup("Startscreen", {})
 
     for k, v in pairs(saved_opts) do
-        state.saved[k] = vim.wo[state.win][k]
-        vim.wo[state.win][k] = v
+        vim.wo[state.win][0][k] = v
     end
 
     -- constrain cursor
@@ -315,12 +311,6 @@ function M.show_start_screen()
         group = state.augroup,
         callback = function(ctx)
             vim.api.nvim_del_augroup_by_id(state.augroup)
-
-            for k, v in pairs(state.saved) do
-                vim.wo[state.win][k] = v
-                vim.wo[0][k] = v
-            end
-
             vim.defer_fn(function()
                 vim.api.nvim_buf_delete(state.buf, { force = true })
             end, 10)
