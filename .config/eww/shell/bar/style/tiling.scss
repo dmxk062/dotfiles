@@ -1,6 +1,7 @@
-.tiling_master, .tiling_dwindle {
+.tiling_master, .tiling_dwindle, .tiling_master-full, .tiling_dwindle-full {
     @extend .sbutton;
 }
+
 .tiling_master {
     background-color: $lblue;
     color: $inverted;
@@ -8,7 +9,8 @@
         background-color: fade($lblue);
     }
 }
-.tiling_dwindle {
+
+.tiling_dwindle{
     background-color: $special;
     color: $inverted;
     &:hover {

@@ -12,7 +12,7 @@
         :onclick "${EWW_CMD} update window_controls=${!window_controls}"
         ;; :onrightclick "desktop/bin/open_rc_menu.sh window"
         :onmiddleclick "hyprctl dispatch killactive" 
-            (label :text "${window.xwayland?: false ? "    " : ""}${window.title ?: "No Window Selected"}" :limit-width {vertical ? 8 : (window_controls ? 48 : 24)}  )
+            (label :text "${window.xwayland?: false ? "    " : ""}${window.title ?: "No Window"}" :limit-width {vertical ? 8 : (window_controls ? 48 : 24)}  )
         )
         (revealer :reveal window_controls :transition "slideright" :duration "200ms"
             (box :class "sbutton" :space-evenly false
@@ -44,66 +44,3 @@
         )
     )
 )
-
-;; (defwindow window_list 
-;;         :monitor 0
-;;         :geometry (geometry :x 0
-;;                             :y 0
-;;                             :width 0
-;;                             :height 0
-;;                             :anchor "top center"
-;;                     )
-;;         :stacking "overlay"
-;;         :namespace "eww_popup"
-;;     (window_list)
-;; )
-;; (defwidget window_list []
-;;     (box :space-evenly false :halign "center" :valign "start"  
-;;         (box :orientation "v" :class "popup_box" :space-evenly false
-;;             (box :class "padded_box"
-;;                 (scroll :vscroll true :class "scroll"
-;;                     (box :orientation "v" :space-evenly false
-;;                         (for win in windows
-;;                             (box :space-evenly false :visible "${show_hidden_windows ? true : (win.title != "")}"
-;;                             (box :halign "start" :space-evenly false
-;;                                 (button :class "list_button" :onclick "hyprctl dispatch closewindow address:${win.address}&&sleep 0.1&&bin/open_window_list.sh upd" :timeout "16s" "󰅖")
-;;                             )
-;;                                 (button :class "list_item${win.address == window.address ? "-active" : ""}" 
-;;                                 :onclick "${matches(win.workspace.name,"special:.*") ? 
-;;                                 "hyprctl dispatch togglespecialworkspace ${replace(win.workspace.name,"special:","")}" : "hyprctl dispatch focuswindow address:${win.address}"}&&${EWW_CMD} close window_list" 
-;;                                 :timeout "16s" 
-;;                                 :hexpand true :tooltip "${win.title ?: "No title"}
-;; App: ${win.class ?: "No Class"}
-;; Running under: ${win.xwayland ? "XWayland" : "Native Wayland"}
-;; Address: ${win.address}
-;; Process: ${win.pid?: "No Program"}
-;; In Workspace: ${win.workspace.name?: win.workspace.id}
-;; Size: ${win.size[0]}x${win.size[1]}
-;; Position: ${win.at[0]}x${win.at[1]}"
-;;                                 (box :space-evenly false :hexpand true
-;;                                     (box :space-evenly false :hexpand true
-;;                                         (label :text "${win.title ?: win.class ?: "No class or title"}" :limit-width 30 :class "list_l")
-;;                                     )
-;;                                     (label :text "${ws_icons[win.workspace.name]?: win.workspace.name?: "id: ${win.workspace.id}"}" :class "list_r")
-;;                                 )
-;;                             )
-;;                         )
-;;                         )
-;;                     )
-;;                 )
-;;             )
-;;             (box :orientation "v" :space-evenly false :class "popup_footer"
-;;                 ;; (box :space-evenly false :halign "center"
-;;                 ;;     (button :class "button${window.floating?: false ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch togglefloating" "Float")
-;;                 ;;     (button :class "button${window.fullscreen?: false ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch fullscreen 0" "Fullscreen")
-;;                 ;;     (button :class "button${window.fullscreen?: false ? "-active" : ""}" :timeout "16s" :onclick "hyprctl dispatch fullscreen 1" "Maximize") 
-;;                 ;;     (button :class "button${window.pinned?: false ? "-active" : (window.floating?: false ? "" : "-inactive")}" :timeout "16s" :onclick "hyprctl dispatch pin" "Pin") 
-;;                 ;; )
-;;                 (box :space-evenly false :halign "center"
-;;                     (button :class "button${show_hidden_windows ? "-active" : ""}" :onclick "${EWW_CMD} update show_hidden_windows=${!show_hidden_windows}" "Show Unnamed")
-;;                     (button :class "button" :timeout "16s" :onclick "bin/open_window_list.sh upd" :timeout "16s" "Reload")
-;;                 )
-;;             )
-;;         )
-;;     )
-;; )
