@@ -128,7 +128,7 @@ declare -a HIST_IGNORE_CMDS=("x" "q" "c" "z" "l")
 function _hist_ignore_short_commands {
     local cmd="${1%%$'\n'}"
     cmd="${cmd%%[[:space:]]#}"
-    if ((HIST_IGNORE_CMDS[(I)$cmd])); then
+    if ((#cmd < 3 && HIST_IGNORE_CMDS[(I)$cmd])); then
         return 2
     fi
 }
