@@ -129,7 +129,7 @@ local colorscheme = {
     Function                    = { link = "@keyword.function" },
     Identifier                  = { fg = col.light_blue },
     Keyword                     = { link = "@keyword" },
-    Repeat                      = { fg = col.light_blue },
+    Repeat                      = { link = "@keyword.repeat" },
     Quote                       = { fg = pal.bg2 },
     CodeBlock                   = { bg = pal.bg1 },
     Dash                        = { fg = col.blue, bold = true },
