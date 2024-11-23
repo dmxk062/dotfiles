@@ -65,7 +65,7 @@ function json.hash {
 
     jq -rMc 'to_entries|map("\(.key)\t\(.value)")|.[]'\
         | while IFS=$'\t' read -r key value; do
-            eval "$array_name"'[$key]="$value"'
+            eval "$array_name"'[${(q)key}]="${(q)value}"'
         done
 }
 
@@ -287,12 +287,16 @@ function props.filter {
     done
 }
 
+# index props
+# if $2 is not given, only the single element in $1 is output
+# if $1 is not given either, print the entire list
 # $1: start index
 # $2: end index
 function props.slice {
     local insep=":" outsep=":	"
     local num_read=1
-    local start=${1:-0} end=${2:--1}
+    local start=${1:-0} 
+    local end=${2:-$1}
 
     while getopts "i:s:" flag; do
         case "$flag" in
@@ -309,7 +313,6 @@ function props.slice {
             if ((num_read <= end && num_read >= start)); then
                 print -l -- "${cur[@]}" ""
             fi
-            obj=()
             cur=()
             ((num_read++))
             continue
