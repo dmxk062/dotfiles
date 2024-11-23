@@ -426,6 +426,7 @@ add_with_prefix(colorscheme, "Mason", {
 })
 
 add_with_prefix(colorscheme, "zsh", {
+    Deref       = { link = "@variable" },
     VariableDef = { link = "@variable" },
     Function    = { link = "@function" },
     KSHFunction = { link = "@function" },
