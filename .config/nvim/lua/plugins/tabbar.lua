@@ -4,7 +4,12 @@ local M = {
 
 local user = os.getenv("USER")
 
+-- mapping of buffer indices in the buffer line to buffer numbers
+---@type table<integer, integer>
 _G.Bufs_for_idx = {}
+-- mapping of tab indices in the buffer line to tab ids
+---@type table<integer, integer>
+_G.Tabs_for_idx = {}
 
 ---@param fname string?
 ---@param bname string
@@ -132,6 +137,7 @@ local function render_tabline(f)
     end
 
     f.make_tabs(function(info)
+        Tabs_for_idx[info.index] = info.tab
         -- don't show only tab
         if info.first and info.last then
             return
@@ -145,7 +151,7 @@ local function render_tabline(f)
             f.set_gui("bold")
         end
 
-        f.add(tostring(info.tab))
+        f.add(tostring(info.index))
         f.add(" {" .. tab_wincounts[info.tab] .. "}")
 
         if info.modified then
