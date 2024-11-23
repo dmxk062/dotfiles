@@ -121,14 +121,11 @@ function _clipboard_directory_name {
 zsh_directory_name_functions+=(_clipboard_directory_name)
 
 
-# ignore those commands
-# especially short ones
-# they're still available in the current session, just not saved
-declare -a HIST_IGNORE_CMDS=("x" "q" "c" "z" "l")
+# ignore short commands
 function _hist_ignore_short_commands {
     local cmd="${1%%$'\n'}"
     cmd="${cmd%%[[:space:]]#}"
-    if ((#cmd < 3 && HIST_IGNORE_CMDS[(I)$cmd])); then
+    if [[ ${#cmd} -lt 4 ]]; then
         return 2
     fi
 }
