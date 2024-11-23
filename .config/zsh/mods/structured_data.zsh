@@ -2,11 +2,19 @@
 # vim: ft=zsh
 
 if [[ "$1" == "unload" ]]; then
-    unfunction json2hash hash2json \
-        json2table table2json \
-        proplist2table table2proplist \
-        filter_table \
-        hash2props props2hash
+    unfunction \
+        json.hash \
+        hash.json \
+        json.table \
+        table.json \
+        props.table \
+        table.props \
+        hash.props \
+        props.hash \
+        table.select \
+        props.select \
+        props.filter \
+        props.slice
 
     return
 fi
@@ -37,18 +45,20 @@ fi
 # json: 
 #   arbitrary json arrays or maps. json is mainly used for maps however
 #
-# proplist: 
-#   a series of "blocks", delimitted by blank lines. lines match a key: value pattern
+# props: 
+#   a series of "blocks" or a single "block", delimitted by blank lines. lines match a key: value pattern
 #   the delimiter is ":" by default, but may be anything in reality
 #   this format is comparable to a table, however fields can contain ordered sub fields using a second delimiter
 #   e.g. /proc/cpuinfo
 
 
+# JSON
+
 # read the json map on stdin into a hash variable
 # don't expand child elements
 # $1: tablename
 # e.g. `curl ipinfo.io | json2hash val; print $val[ip]`
-function json2hash {
+function json.hash {
     local array_name="$1"
     declare -gA "$array_name"
     local json_object key value
@@ -59,45 +69,9 @@ function json2hash {
         done
 }
 
-# print json representation of hash
-# $1: tablename
-function hash2json {
-    local array_name="$1" key value
-    for key value in "${(@kv)${(P)array_name}}"; do
-        printf "%s\t%s\n" "$key" "$value"
-    done | jq -RMs 'split("\n")[:-1]|map(split("\t"))|map({(.[0]): .[1]})|add'
-}
-
-# read a table, with or without header into json
-# $1: separator, empty string for IFS
-# $@:2: names for columns, if not given first row of stream will be used
-function table2json {
-    local sep="${1:-"	"}"
-    local separate=0
-    shift
-
-    if [[ "$sep" != "" ]]; then
-        separate=1
-    fi
-
-    local -a columns
-
-    if (($# <= 1)); then
-        IFS="$sep" read -rA columns
-    else 
-        columns=("$@")
-    fi
-
-    if ((separate)); then
-        column -tJ --table-columns="${(j:,:)columns}" -s "$sep"|jq -cM '.table'
-    else
-        column -tJ|jq -cM '.table'
-    fi
-}
-
 # convert json into a table, no expansion of sub-elements
 # $1: output separator
-function json2table {
+function json.table {
     local line
     local sep="${1:-"	"}"
 
@@ -113,40 +87,12 @@ function json2table {
     print -- "$jsonObj"|jq --arg sep "$sep" -r '.[]|[.[]]|join($sep)'
 }
 
-# convert a property list into table
-# $1: key-value separator
-# $2: output separator
-function proplist2table {
-    local insep="${1:-":"}"
-    local outsep="${2:-"	"}"
-    local -a keys current
-    local had_keys=0
 
-    local line key rest value=""
-    while IFS="$insep" read -r key rest; do 
-        if [[ "$key" == "" ]]; then
-            if ((!had_keys)); then
-                print -- "${(pj[$outsep])keys}"
-            fi
-            print -- "${(pj[$outsep])current}"
-            current=()
-            had_keys=1
-            continue
-        fi
-        if ((!had_keys)); then
-            key=${key%"${key##*[![:space:]]}"}
-            keys+=("$key")
-        fi
-
-        value=${rest#"${rest%%[![:space:]]*}"}
-        value=${value%"${value##*[![:space:]]}"}
-        current+=("$value")
-    done
-}
+# TABLE
 
 # convert a table into a property list
 # $1: output separator
-function table2proplist {
+function table.props {
     local outsep="${1:=": "}"
     read -rA header
     
@@ -163,16 +109,17 @@ function table2proplist {
 # columns not in the table are silently ignored
 # $@: columns to index
 # -s: output separator
-function filter_table {
+function table.select {
     local -a indices columns to_get=("$@")
     read -rA columns
     local sep=$'\t'
+    local flag
 
-    if [[ "$1" == "-s" ]]; then
-        sep="$2"
-    elif [[ "$1" == "-s"* ]]; then
-        sep="${1:2}"
-    fi
+    while getopts "s:" flag; do
+        case "$flag" in
+            s) sep="$OPTARG";;
+        esac
+    done
 
 
     local field col i
@@ -201,28 +148,200 @@ function filter_table {
     done
 }
 
+# read a table, with or without header into json
+# $1: separator, empty string for IFS
+# $@:2: names for columns, if not given first row of stream will be used
+function table.json {
+    local sep="${1:-"	"}"
+    local separate=0
+    shift
+
+    if [[ "$sep" != "" ]]; then
+        separate=1
+    fi
+
+    local -a columns
+
+    if (($# <= 1)); then
+        IFS="$sep" read -rA columns
+    else 
+        columns=("$@")
+    fi
+
+    if ((separate)); then
+        column -tJ --table-columns="${(j:,:)columns}" -s "$sep"|jq -cM '.table'
+    else
+        column -tJ|jq -cM '.table'
+    fi
+}
+
+# PROPS
+
+# convert a property list into table
+# $1: key-value separator
+# $2: output separator
+function props.table {
+    local insep="${1:-":"}"
+    local outsep="${2:-"	"}"
+    local -a keys current
+    local had_keys=0
+
+    local line key rest value=""
+    while IFS="$insep" read -r key rest; do 
+        key=${key%"${key##*[![:space:]]}"}
+        if [[ "$key" == "" ]]; then
+            if ((!had_keys)); then
+                print -- "${(pj[$outsep])keys}"
+            fi
+            print -- "${(pj[$outsep])current}"
+            current=()
+            had_keys=1
+            continue
+        fi
+        if ((!had_keys)); then
+            keys+=("$key")
+        fi
+
+        value=${rest#"${rest%%[![:space:]]*}"}
+        value=${value%"${value##*[![:space:]]}"}
+        current+=("$value")
+    done
+}
+
+function props.hash {
+    local array_name="$1"
+    local sep="${2:-:}"
+    declare -gA "$array_name"
+
+    local key val
+    while IFS="$sep" read -r key val; do
+        if [[ -z "$key" ]]; then
+            continue
+        fi
+        key=${key%"${key##*[![:space:]]}"}
+        val=${val#"${val%%[![:space:]]*}"}
+        val=${val%"${val##*[![:space:]]}"}
+        eval "$array_name"'[$key]="$val"'
+    done
+}
+
+# select fields from props to keep
+function props.select {
+    local insep=":" outsep=":	"
+    local key rest value
+
+    while getopts "i:s:" flag; do
+        case "$flag" in
+            i) insep="$OPTARG";;
+            s) outsep="$OPTARG";;
+        esac
+    done
+
+    local -a keys=("$@")
+
+    while IFS="$insep" read -r key rest; do
+        key=${key%"${key##*[![:space:]]}"}
+        if [[ "$key" == "" ]]; then
+            print
+        elif (($keys[(I)$key])); then
+            value=${rest#"${rest%%[![:space:]]*}"}
+            value=${value%"${value##*[![:space:]]}"}
+            print "$key$outsep$value"
+        fi
+    done
+}
+
+# select objects from a props based on expressions evaluated on their values
+# $1: expression to be evaluated, $obj will be set to fields in object
+# not required for tables because there just plain 'filter' can be used
+function props.filter {
+    local insep=":" outsep=":	"
+    local -A obj
+    local -a cur
+    local key rest value
+    local had_keys=0
+
+    while getopts "i:s:" flag; do
+        case "$flag" in
+            i) insep="$OPTARG";;
+            s) outsep="$OPTARG";;
+        esac
+    done
+
+
+    while IFS="$insep" read -r key rest; do 
+        if [[ "$key" == "" ]]; then
+            if eval "$1"; then
+                print -l -- "${cur[@]}" ""
+            fi
+            obj=()
+            cur=()
+            had_keys=1
+            continue
+        fi
+
+        value=${rest#"${rest%%[![:space:]]*}"}
+        value=${value%"${value##*[![:space:]]}"}
+        obj[$key]+="${value}"
+        cur+=("$key$outsep$value")
+    done
+}
+
+# $1: start index
+# $2: end index
+function props.slice {
+    local insep=":" outsep=":	"
+    local num_read=1
+    local start=${1:-0} end=${2:--1}
+
+    while getopts "i:s:" flag; do
+        case "$flag" in
+            i) insep="$OPTARG";;
+            s) outsep="$OPTARG";;
+        esac
+    done
+
+    local -a cur
+    local key rest value
+    while IFS="$insep" read -r key rest; do 
+        key=${key%"${key##*[![:space:]]}"}
+        if [[ "$key" == "" ]]; then
+            if ((num_read <= end && num_read >= start)); then
+                print -l -- "${cur[@]}" ""
+            fi
+            obj=()
+            cur=()
+            ((num_read++))
+            continue
+        fi
+
+        value=${rest#"${rest%%[![:space:]]*}"}
+        value=${value%"${value##*[![:space:]]}"}
+        cur+=("$key$outsep$value")
+    done
+}
+
+
+# HASH
+
+# print json representation of hash
+# $1: tablename
+function hash.json {
+    local array_name="$1" key value
+    for key value in "${(@kv)${(P)array_name}}"; do
+        printf "%s\t%s\n" "$key" "$value"
+    done | jq -RMs 'split("\n")[:-1]|map(split("\t"))|map({(.[0]): .[1]})|add'
+}
+
 # convert a hashmap to a list of key: val lines
 # $1: name of hash
 # $2: output separator
-function hash2props {
+function hash.props {
     local array_name="$1"
     local outsep="${2:-": "}"
 
     local k v
     for k v in "${(@kv)${(P)array_name}}"; do
         print -- "$k$outsep$v"
-    done
-}
-
-function props2hash {
-    local array_name="$1"
-    local sep="${2:-:}"
-    declare -gA "$array_name"
-
-    local key value
-    while IFS="$sep" read -r key val; do
-        if [[ -z "$fsep" ]]; then
-            eval "$array_name"'[$key]="$val"'
-        fi
     done
 }
