@@ -169,6 +169,24 @@ local function set_sort(action)
     require("oil").set_sort(sort)
 end
 
+local function get_perm_string(mode)
+    local perms = {
+        "r", "w", "x",
+        "r", "w", "x",
+        "r", "w", "x",
+    }
+
+    local res = ""
+    for i = 1, 9 do
+        if bit.band(mode, bit.lshift(1, 9 - i)) ~= 0 then
+            res = res .. perms[i]
+        else
+            res = res .. "-"
+        end
+    end
+
+    return res
+end
 
 M.opts = {
     default_file_explorer = true,
@@ -232,9 +250,6 @@ M.opts = {
         ["eo"]        = open_external,
         ["gx"]        = open_external,
 
-        -- edit permissions
-        ["ep"]        = function() open_cmd("silent !chmod") end,
-
         -- goto places
         ["g~"]        = function() goto_dir("~") end,
         ["gr"]        = function() require("oil").open("/") end,
@@ -283,7 +298,7 @@ M.opts = {
 }
 
 M.config = function(_, opts)
-    local utils = require("utils")
+    local map = require("utils").map
     require("oil").setup(opts)
 
     -- change directory if not ssh, only for current window
@@ -298,18 +313,18 @@ M.config = function(_, opts)
     })
 
     local prefix = "<space>f"
-    utils.map("n", prefix .. "f", require("oil").open)
-    utils.map("n", prefix .. "F", require("oil").open_float)
+    map("n", prefix .. "f", require("oil").open)
+    map("n", prefix .. "F", require("oil").open_float)
 
-    utils.map("n", prefix .. "t", function()
+    map("n", prefix .. "t", function()
         vim.api.nvim_command("tabnew")
         require("oil").open()
     end)
-    utils.map("n", prefix .. "s", function()
+    map("n", prefix .. "s", function()
         vim.api.nvim_command("split")
         require("oil").open()
     end)
-    utils.map("n", prefix .. "v", function()
+    map("n", prefix .. "v", function()
         vim.api.nvim_command("vsplit")
         require("oil").open()
     end)
