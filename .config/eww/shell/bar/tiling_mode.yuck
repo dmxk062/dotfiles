@@ -1,4 +1,4 @@
-(defvar tiling_layout "master")
+(defvar tiling_layout "dwindle")
 (defvar tiling_settings false)
 (defvar tiling_master_factor 30) ;; 70%
 (defvar tiling_master_orientation "top")
