@@ -4,17 +4,18 @@
 if [[ "$1" == "unload" ]]; then
     unfunction \
         json.hash \
-        hash.json \
         json.table \
-        table.json \
-        props.table \
         table.props \
-        hash.props \
-        props.hash \
+        table.json \
         table.select \
+        props.table \
+        props.hash \
         props.select \
         props.filter \
-        props.slice
+        props.slice \
+        props.map \
+        hash.json \
+        hash.props
 
     return
 fi
@@ -26,7 +27,7 @@ fi
 # 
 # compared to other data format handling in e.g. fancy object oriented shells,
 # this keeps with the *stream* as the primary datatype of a shell.
-# fields in that format are newline or delimiter separated, not adhering to some standard
+# fields in that format are newline or delimiter separated, not following to some syntax tree
 # this means that regular shell utilities (grep, awk, sed, cut) can still be used with them
 #
 # formats:
@@ -105,6 +106,33 @@ function table.props {
     done
 }
 
+# read a table, with or without header into json
+# $1: separator, empty string for IFS
+# $@:2: names for columns, if not given first row of stream will be used
+function table.json {
+    local sep="${1:-"	"}"
+    local separate=0
+    shift
+
+    if [[ "$sep" != "" ]]; then
+        separate=1
+    fi
+
+    local -a columns
+
+    if (($# <= 1)); then
+        IFS="$sep" read -rA columns
+    else 
+        columns=("$@")
+    fi
+
+    if ((separate)); then
+        column -tJ --table-columns="${(j:,:)columns}" -s "$sep"|jq -cM '.table'
+    else
+        column -tJ|jq -cM '.table'
+    fi
+}
+
 # index the named columns of a table, the first line is assumed to be the header, separated by IFS
 # columns not in the table are silently ignored
 # $@: columns to index
@@ -148,32 +176,6 @@ function table.select {
     done
 }
 
-# read a table, with or without header into json
-# $1: separator, empty string for IFS
-# $@:2: names for columns, if not given first row of stream will be used
-function table.json {
-    local sep="${1:-"	"}"
-    local separate=0
-    shift
-
-    if [[ "$sep" != "" ]]; then
-        separate=1
-    fi
-
-    local -a columns
-
-    if (($# <= 1)); then
-        IFS="$sep" read -rA columns
-    else 
-        columns=("$@")
-    fi
-
-    if ((separate)); then
-        column -tJ --table-columns="${(j:,:)columns}" -s "$sep"|jq -cM '.table'
-    else
-        column -tJ|jq -cM '.table'
-    fi
-}
 
 # PROPS
 
@@ -320,6 +322,37 @@ function props.slice {
 
         value=${rest#"${rest%%[![:space:]]*}"}
         value=${value%"${value##*[![:space:]]}"}
+        cur+=("$key$outsep$value")
+    done
+}
+
+function props.map {
+    local insep=":" outsep=":	"
+    local -A obj
+    local -a cur
+    local key rest value
+    local had_keys=0
+
+    while getopts "i:s:" flag; do
+        case "$flag" in
+            i) insep="$OPTARG";;
+            s) outsep="$OPTARG";;
+        esac
+    done
+
+
+    while IFS="$insep" read -r key rest; do 
+        if [[ "$key" == "" ]]; then
+            eval "$1"
+            obj=()
+            cur=()
+            had_keys=1
+            continue
+        fi
+
+        value=${rest#"${rest%%[![:space:]]*}"}
+        value=${value%"${value##*[![:space:]]}"}
+        obj[$key]+="${value}"
         cur+=("$key$outsep$value")
     done
 }
