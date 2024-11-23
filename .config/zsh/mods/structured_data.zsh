@@ -221,7 +221,7 @@ function props.hash {
         key=${key%"${key##*[![:space:]]}"}
         val=${val#"${val%%[![:space:]]*}"}
         val=${val%"${val##*[![:space:]]}"}
-        eval "$array_name"'[$key]="$val"'
+        eval "$array_name"'[${(q)key}]="${(q)val}"'
     done
 }
 
