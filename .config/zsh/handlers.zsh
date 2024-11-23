@@ -120,6 +120,22 @@ function _clipboard_directory_name {
 
 zsh_directory_name_functions+=(_clipboard_directory_name)
 
+
+# ignore those commands
+# especially short ones
+# they're still available in the current session, just not saved
+declare -a HIST_IGNORE_CMDS=("x" "q" "c" "z" "l")
+function _hist_ignore_short_commands {
+    local cmd="${1%%$'\n'}"
+    cmd="${cmd%%[[:space:]]#}"
+    if ((HIST_IGNORE_CMDS[(I)$cmd])); then
+        return 2
+    fi
+}
+
+zshaddhistory_functions+=(_hist_ignore_short_commands)
+
+
 # use bat as a pager for man
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT='-c'
