@@ -59,7 +59,7 @@ local function render_buf(state)
         state.found_old_marks[name] = false
 
         local path = vim.fn.fnamemodify(mark[4]:gsub("oil://", ""), ":~:.")
-        local pos = string.format("%02d:%02d", mark[1], mark[2])
+        local pos = string.format("%3d:%2d", mark[1], mark[2])
         local line = name .. " " .. pos .. " " .. path
         state.prev_lines[i] = line
 
@@ -69,7 +69,7 @@ local function render_buf(state)
         if mark[3] == 0 then
             api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkUnloaded", i, 3 + #pos, -1)
         end
-        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkName", i, 0, 1)
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkGlobal", i, 0, 1)
 
         api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", i, 2, 2 + #pos)
 
@@ -80,20 +80,22 @@ local function render_buf(state)
         state.marks_for_lines[i] = name
         state.found_old_marks[name] = false
 
-        local line = string.format("%s %02d:%02d", name, mark[1], mark[2])
+        local line = string.format("%s %3d:%2d", name, mark[1], mark[2])
 
         state.prev_lines[i] = line
         api.nvim_buf_set_lines(state.render_buf, i, i, false, { line })
 
-        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkName", i, 0, 1)
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkLocal", i, 0, 1)
         api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", i, 2, -1)
 
         -- show a preview of the line
         api.nvim_buf_set_extmark(state.render_buf, state.ns, i, #line, {
             virt_text = {
                 {
-                    api.nvim_buf_get_text(state.target_buf, mark[1] - 1, mark[2], mark[1] - 1, -1, {})[1],
-                    "Comment"
+                    (mark[2] ~= 0 and "..." or "" ) .. api.nvim_buf_get_text(
+                        state.target_buf, mark[1] - 1, mark[2], mark[1] - 1, -1, {}
+                    )[1]:gsub("^%s*", ""),
+                    "MarkPreview"
                 }
             }
         })
@@ -129,7 +131,7 @@ local function parse_buffer(state)
         local rest = line:sub(rend + 1, -1)
 
         if isglobal then
-            local _, _, frow, fcolumn, file = rest:find("^(%d*):?(%d*)%s*(%S+)")
+            local _, _, frow, fcolumn, file = rest:find("^(%d*)%s*:?%s*(%d*)%s*(%S+)")
             if file then
                 local column, row = 1, 1
                 if frow and fcolumn then
@@ -144,7 +146,7 @@ local function parse_buffer(state)
                 return false
             end
         else
-            local _, _, frow, fcolumn = rest:find("(%d*):(%d*)")
+            local _, _, frow, fcolumn = rest:find("(%d*)%s*:%s*(%d*)")
             if frow then
                 local column, row = 1, 1
                 if frow or fcolumn then
@@ -229,7 +231,7 @@ function M.marks_popup()
             return
         end
         api.nvim_win_close(win, true)
-        vim.cmd((precmd and precmd .. "|" or "") .. "normal! '" .. mark)
+        vim.cmd((precmd and precmd .. "|" or "") .. "'" .. mark)
     end
 
     local map = require("utils").local_mapper(buf)
