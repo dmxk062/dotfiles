@@ -54,27 +54,6 @@ local function render_buf(state)
     state.lmarks = lmarks
 
     local i = 0
-    for name, mark in pairs(gmarks) do
-        state.marks_for_lines[i] = name
-        state.found_old_marks[name] = false
-
-        local path = vim.fn.fnamemodify(mark[4]:gsub("oil://", ""), ":~:.")
-        local pos = string.format("%3d:%2d", mark[1], mark[2])
-        local line = name .. " " .. pos .. " " .. path
-        state.prev_lines[i] = line
-
-        api.nvim_buf_set_lines(state.render_buf, i, i, false, { line })
-
-        -- grey out unloaded buffers
-        if mark[3] == 0 then
-            api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkUnloaded", i, 3 + #pos, -1)
-        end
-        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkGlobal", i, 0, 1)
-
-        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", i, 2, 2 + #pos)
-
-        i = i + 1
-    end
 
     for name, mark in pairs(lmarks) do
         state.marks_for_lines[i] = name
@@ -99,6 +78,32 @@ local function render_buf(state)
                 }
             }
         })
+
+        i = i + 1
+    end
+
+    for name, mark in pairs(gmarks) do
+        state.marks_for_lines[i] = name
+        state.found_old_marks[name] = false
+
+        local path = vim.fn.fnamemodify(mark[4]:gsub("oil://", ""), ":~:.")
+        -- if inside a dir
+        if path == "" then
+            path = "./"
+        end
+        local pos = string.format("%3d:%2d", mark[1], mark[2])
+        local line = name .. " " .. pos .. " " .. path
+        state.prev_lines[i] = line
+
+        api.nvim_buf_set_lines(state.render_buf, i, i, false, { line })
+
+        -- grey out unloaded buffers
+        if mark[3] == 0 then
+            api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkUnloaded", i, 3 + #pos, -1)
+        end
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkGlobal", i, 0, 1)
+
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", i, 2, 2 + #pos)
 
         i = i + 1
     end
