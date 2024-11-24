@@ -151,6 +151,10 @@ local colorscheme = {
     UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
 
     Yanked                      = { bg = pal.bg1 },
+
+    MarkName                    = { link = "Identifier" },
+    MarkPosition                = { link = "Number" },
+    MarkUnloaded                = { fg = col.bright_gray },
 }
 
 add_with_prefix(colorscheme, "@", {

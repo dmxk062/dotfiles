@@ -18,9 +18,6 @@ function M.config(_, opts)
         end
     end)
 
-    map({ "x", "n" }, "<space>k", mc.prevCursor)
-    map({ "x", "n" }, "<space>j", mc.nextCursor)
-
     -- replace default I and A for visual mode
     map("x", "I", mc.insertVisual)
     map("x", "A", mc.appendVisual)
