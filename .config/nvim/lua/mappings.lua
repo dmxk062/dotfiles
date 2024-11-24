@@ -99,6 +99,13 @@ map("n", "gt", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
 
+
+-- my own mark handling
+local marks = require("modules.marks")
+map("n", "<space>k", marks.marks_popup)
+map("n", "<space>j", marks.set_first_avail_lmark)
+map("n", "<space>J", marks.set_first_avail_gmark)
+
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })

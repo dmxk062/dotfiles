@@ -14,6 +14,8 @@
 local M = {}
 local api = vim.api
 
+local popup_is_open = false
+
 local lowercase = {}
 for i = 97, 122 do
     table.insert(lowercase, string.char(i))
@@ -86,10 +88,21 @@ local function render_buf(state)
         api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkName", i, 0, 1)
         api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", i, 2, -1)
 
+        -- show a preview of the line
+        api.nvim_buf_set_extmark(state.render_buf, state.ns, i, #line, {
+            virt_text = {
+                {
+                    api.nvim_buf_get_text(state.target_buf, mark[1] - 1, mark[2], mark[1] - 1, -1, {})[1],
+                    "Comment"
+                }
+            }
+        })
+
         i = i + 1
     end
 
     api.nvim_win_set_cursor(state.render_win, { 1, 0 })
+    vim.bo[state.render_buf].modified = false
 end
 
 ---@param state marks_bufstate
@@ -166,6 +179,11 @@ local function parse_buffer(state)
 end
 
 function M.marks_popup()
+    if popup_is_open then
+        return
+    end
+    popup_is_open = true
+
     local curbuf = api.nvim_get_current_buf()
     local buf = api.nvim_create_buf(false, true)
 
@@ -181,6 +199,7 @@ function M.marks_popup()
         border = "rounded",
         relative = "win",
         title = "Marks",
+        title_pos = "center",
         width = width,
         height = height,
         row = target_row,
@@ -188,6 +207,7 @@ function M.marks_popup()
     })
 
     vim.bo[buf].buftype = "acwrite"
+    vim.bo[buf].bufhidden = "hide"
     vim.wo[win][0].wrap = false
     api.nvim_buf_set_name(buf, "marks")
 
@@ -220,7 +240,7 @@ function M.marks_popup()
 
     for i = 1, 9 do
         map("n", tostring(i), function()
-            api.nvim_win_set_cursor(win, {i, 0})
+            pcall(api.nvim_win_set_cursor, win, { i, 0 })
         end)
     end
 
@@ -231,7 +251,6 @@ function M.marks_popup()
         callback = function(ctx)
             if parse_buffer(state) then
                 render_buf(state)
-                vim.bo[buf].modified = false
             end
         end
     })
@@ -242,10 +261,33 @@ function M.marks_popup()
         callback = function(ctx)
             api.nvim_buf_delete(buf, { force = true })
             api.nvim_del_augroup_by_id(augroup)
+            popup_is_open = false
         end
     })
 
     render_buf(state)
+end
+
+function M.set_first_avail_gmark()
+    for _, mark in pairs(uppercase) do
+        local res = api.nvim_buf_get_mark(0, mark)
+        if res[1] == 0 then
+            vim.cmd("normal! m" .. mark)
+            print(mark)
+            return
+        end
+    end
+end
+
+function M.set_first_avail_lmark()
+    for _, mark in pairs(lowercase) do
+        local res = api.nvim_buf_get_mark(0, mark)
+        if res[1] == 0 then
+            vim.cmd("normal! m" .. mark)
+            print(mark)
+            return
+        end
+    end
 end
 
 return M
