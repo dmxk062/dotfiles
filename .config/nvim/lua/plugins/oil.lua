@@ -375,7 +375,7 @@ M.opts = {
         ["q"]         = function()
             if not (#vim.api.nvim_list_wins() > 1) then
                 for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                    if vim.bo[buf].filetype ~= "oil" then
+                    if vim.bo[buf].filetype ~= "oil" and vim.bo[buf].buflisted then
                         vim.api.nvim_win_set_buf(0, buf)
                         return
                     end
