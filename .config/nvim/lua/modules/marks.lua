@@ -291,3 +291,5 @@ function M.set_first_avail_lmark()
         end
     end
 end
+
+return M
