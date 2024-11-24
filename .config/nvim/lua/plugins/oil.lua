@@ -188,6 +188,60 @@ local function get_perm_string(mode)
     return res
 end
 
+local extension_highlights = {
+    ["a"]       = "Bin",
+    ["c"]       = "Source",
+    ["cfg"]     = "Config",
+    ["conf"]    = "Config",
+    ["cpp"]     = "Source",
+    ["css"]     = "Style",
+    ["desktop"] = "Config",
+    ["gz"]      = "Archive",
+    ["h"]       = "Code",
+    ["html"]    = "Markup",
+    ["ini"]     = "Config",
+    ["jar"]     = "Archive",
+    ["json"]    = "Markup",
+    ["log"]     = "Info",
+    ["lua"]     = "Source",
+    ["md"]      = "Text",
+    ["mk"]      = "Build",
+    ["o"]       = "Bin",
+    ["py"]      = "Script",
+    ["pyc"]     = "Bin",
+    ["rc"]      = "Config",
+    ["scss"]    = "Style",
+    ["sh"]      = "Script",
+    ["so"]      = "Bin",
+    ["tar"]     = "Archive",
+    ["tex"]     = "Markup",
+    ["toml"]    = "Config",
+    ["txt"]     = "Text",
+    ["xhtml"]   = "Markup",
+    ["xml"]     = "Markup",
+    ["xz"]      = "Archive",
+    ["yaml"]    = "Config",
+    ["zip"]     = "Archive",
+}
+
+-- case insensitive
+local name_highlights = {
+    [".clang-format"] = "Meta",
+    [".clangd"]       = "Meta",
+    [".config/"]      = "Config",
+    [".git/"]         = "Meta",
+    [".gitconfig"]    = "Meta",
+    [".gitignore"]    = "Meta",
+    ["license"]       = "Readme",
+    ["license.md"]    = "Readme",
+    ["license.txt"]   = "Readme",
+    ["makefile"]      = "Build",
+    ["readme"]        = "Readme",
+    ["readme.md"]     = "Readme",
+    ["readme.txt"]    = "Readme",
+    ["todo.md"]       = "Readme",
+}
+
 M.opts = {
     default_file_explorer = true,
     win_options = {
@@ -198,7 +252,7 @@ M.opts = {
         buflisted = true
     },
     columns = {
-        oil_columns.icon,
+        -- oil_columns.icon,
         -- oil_columns.size,
         oil_columns.time,
         oil_columns.permissions,
@@ -234,6 +288,41 @@ M.opts = {
         end,
         natural_order = true,
         sort = sort,
+        highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan)
+            -- fixed names take priority
+            local name = entry.name:lower() .. (entry.type == "directory" and "/" or "")
+            if name_highlights[name] then
+                return "Oil" .. name_highlights[name]
+            end
+
+            -- dont try to override directories or links, oil handles them well
+            if entry.type == "directory" or entry.type == "link" then
+                return
+            elseif entry.type == "char" then
+                return "OilCharDev"
+            elseif entry.type == "block" then
+                return "OilBlockDev"
+            elseif entry.type == "socket" then
+                return "OilSocket"
+            end
+
+            local mode = entry.meta.stat.mode
+            if bit.band(mode, 0x49) ~= 0 then
+                return "OilExecutable"
+            end
+
+
+            local ext = entry.name:match("%.(%w+)$")
+            if ext and extension_highlights[ext] then
+                return "Oil" .. extension_highlights[ext]
+            end
+
+            if is_hidden then
+                return "OilHidden"
+            end
+
+            return "OilFile"
+        end
     },
 
     keymaps = {
