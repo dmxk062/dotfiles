@@ -4,7 +4,6 @@ local M = {
         { "<space>D",       function() require("telescope.builtin").diagnostics() end },
         { "<space>gf",      function() require("telescope.builtin").git_files() end },
         { "<space>F",       function() require("telescope.builtin").find_files() end },
-        { "<space>h",       function() require("telescope.builtin").oldfiles() end },
         { "<space>/",       function() require("telescope.builtin").live_grep() end },
         { "<space>[",       function() require("telescope.builtin").lsp_document_symbols() end },
         { "<space>]",       function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end },
