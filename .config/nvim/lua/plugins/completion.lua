@@ -145,7 +145,7 @@ M.config = function(_, opts)
     local cmp = require("cmp")
     local compare = cmp.config.compare
     opts.mapping = {
-        ["<ESC>"] = function(fallback)
+        ["<C-e>"] = function(fallback)
             if cmp.visible() then
                 cmp.abort()
             else
