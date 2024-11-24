@@ -272,8 +272,8 @@ end
 
 function M.set_first_avail_gmark()
     for _, mark in pairs(uppercase) do
-        local res = api.nvim_buf_get_mark(0, mark)
-        if res[1] == 0 then
+        local mark_res = api.nvim_buf_get_mark(0, mark)
+        if mark_res[1] == 0 then
             vim.cmd("normal! m" .. mark)
             print(mark)
             return
@@ -283,13 +283,11 @@ end
 
 function M.set_first_avail_lmark()
     for _, mark in pairs(lowercase) do
-        local res = api.nvim_buf_get_mark(0, mark)
-        if res[1] == 0 then
+        local mark_res = api.nvim_buf_get_mark(0, mark)
+        if mark_res[1] == 0 then
             vim.cmd("normal! m" .. mark)
             print(mark)
             return
         end
     end
 end
-
-return M
