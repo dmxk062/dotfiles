@@ -236,7 +236,7 @@ function M.marks_popup()
             return
         end
         api.nvim_win_close(win, true)
-        vim.cmd((precmd and precmd .. "|" or "") .. "'" .. mark)
+        vim.cmd((precmd and precmd .. "|" or "") .. "normal! `" .. mark)
     end
 
     local map = require("utils").local_mapper(buf)
@@ -244,12 +244,6 @@ function M.marks_popup()
     map("n", "v", function() open_mark("vsplit") end)
     map("n", "s", function() open_mark("split") end)
     map("n", "t", function() open_mark("tabnew") end)
-
-    for i = 1, 9 do
-        map("n", tostring(i), function()
-            pcall(api.nvim_win_set_cursor, win, { i, 0 })
-        end)
-    end
 
     local augroup = api.nvim_create_augroup("markeditor", { clear = true })
     api.nvim_create_autocmd("BufWriteCmd", {
