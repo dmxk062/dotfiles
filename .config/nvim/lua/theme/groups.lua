@@ -152,9 +152,11 @@ local colorscheme = {
 
     Yanked                      = { bg = pal.bg1 },
 
-    MarkName                    = { link = "Identifier" },
+    MarkGlobal                  = { fg = col.yellow, bold = true },
+    MarkLocal                   = { fg = col.light_blue },
     MarkPosition                = { link = "Number" },
     MarkUnloaded                = { fg = col.bright_gray },
+    MarkPreview                 = { italic = true, fg = col.bright_gray },
 }
 
 add_with_prefix(colorscheme, "@", {
