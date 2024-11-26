@@ -295,6 +295,7 @@ add_with_prefix(colorscheme, "Startscreen", {
 
 add_with_prefix(colorscheme, "Oil", {
     Link             = { fg = col.blue, bold = true },
+    OrphanLink       = { fg = col.blue },
     Dir              = { fg = col.teal, bold = true },
     Hidden           = { fg = col.bright_gray },
     DirHidden        = { link = "*Hidden" },
