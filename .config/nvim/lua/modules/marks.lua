@@ -68,16 +68,17 @@ local function render_buf(state)
         api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", i, 2, -1)
 
         -- show a preview of the line
-        api.nvim_buf_set_extmark(state.render_buf, state.ns, i, #line, {
-            virt_text = {
-                {
-                    (mark[2] ~= 0 and "..." or "" ) .. api.nvim_buf_get_text(
-                        state.target_buf, mark[1] - 1, mark[2], mark[1] - 1, -1, {}
-                    )[1]:gsub("^%s*", ""),
-                    "MarkPreview"
+        local ok, text = pcall(api.nvim_buf_get_text, state.target_buf, mark[1] - 1, mark[2], mark[1] - 1, -1, {})
+        if ok then
+            api.nvim_buf_set_extmark(state.render_buf, state.ns, i, #line, {
+                virt_text = {
+                    {
+                        (mark[2] ~= 0 and "..." or "") .. text[1]:gsub("^%s*", ""),
+                        "MarkPreview"
+                    }
                 }
-            }
-        })
+            })
+        end
 
         i = i + 1
     end
