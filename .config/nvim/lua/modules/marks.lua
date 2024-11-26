@@ -14,7 +14,7 @@
 local M = {}
 local api = vim.api
 
-local popup_is_open = false
+local popup_win = nil
 
 local lowercase = {}
 for i = 97, 122 do
@@ -187,10 +187,10 @@ local function parse_buffer(state)
 end
 
 function M.marks_popup()
-    if popup_is_open then
+    if popup_win then
+        vim.fn.win_gotoid(popup_win)
         return
     end
-    popup_is_open = true
 
     local curbuf = api.nvim_get_current_buf()
     local buf = api.nvim_create_buf(false, true)
@@ -213,6 +213,7 @@ function M.marks_popup()
         row = target_row,
         col = target_col,
     })
+    popup_win = win
 
     vim.bo[buf].buftype = "acwrite"
     vim.bo[buf].bufhidden = "hide"
@@ -263,32 +264,40 @@ function M.marks_popup()
         callback = function(ctx)
             api.nvim_buf_delete(buf, { force = true })
             api.nvim_del_augroup_by_id(augroup)
-            popup_is_open = false
+            popup_win = nil
         end
     })
 
     render_buf(state)
 end
 
-function M.set_first_avail_gmark()
-    for _, mark in pairs(uppercase) do
-        local mark_res = api.nvim_buf_get_mark(0, mark)
-        if mark_res[1] == 0 then
-            vim.cmd("normal! m" .. mark)
-            print(mark)
-            return
+local function find_fist_avail_mark(buf, letters)
+    for _, mark in pairs(letters) do
+        local res = api.nvim_buf_get_mark(buf, mark)
+        if res[1] == 0 then
+            return mark
         end
+    end
+    return nil
+end
+
+function M.set_first_avail_gmark()
+    local mark = find_fist_avail_mark(0, uppercase)
+    if mark then
+        vim.cmd("normal! m" .. mark)
+        print(mark)
+    else
+        vim.notify("All marks used", vim.log.levels.ERROR)
     end
 end
 
 function M.set_first_avail_lmark()
-    for _, mark in pairs(lowercase) do
-        local mark_res = api.nvim_buf_get_mark(0, mark)
-        if mark_res[1] == 0 then
-            vim.cmd("normal! m" .. mark)
-            print(mark)
-            return
-        end
+    local mark = find_fist_avail_mark(0, lowercase)
+    if mark then
+        vim.cmd("normal! m" .. mark)
+        print(mark)
+    else
+        vim.notify("All marks used", vim.log.levels.ERROR)
     end
 end
 
