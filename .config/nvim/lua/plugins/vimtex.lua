@@ -3,7 +3,9 @@ return {
     ft = { "latex", "tex" },
     config = function()
         vim.g.vimtex_view_method = "zathura"
-        -- vim.g.vimtex_compiler_latexmk_engines = {_ = "-luatex"}
+        vim.g.vimtex_compiler_latexmk_engines = {
+            _ = "-lualatex"
+        }
         vim.g.vimtex_compiler_latexmk = {
             aux_dir = ".aux",
             out_dir = "build",
