@@ -63,10 +63,10 @@ local modecolors = {
     c = { bg = col.magenta, fg = pal.bg0 },
     v = { bg = col.light_blue, fg = pal.bg0 },
     V = { bg = col.light_blue, fg = pal.bg0 },
-    [""] = { bg = col.light_blue, fg = pal.bg0, gui = "bold" },
-    R = { bg = col.red, fg = pal.bg0, gui = "bold" },
-    no = { bg = col.teal, fg = pal.bg0, gui = "italic" },
-    noV = { bg = col.teal, fg = pal.bg0, gui = "italic" },
+    [""] = { bg = col.light_blue, fg = pal.bg0 },
+    R = { bg = col.red, fg = pal.bg0 },
+    no = { bg = col.teal, fg = pal.bg0 },
+    noV = { bg = col.teal, fg = pal.bg0 },
     ["!"] = { bg = col.teal, fg = pal.bg0 },
     t = { bg = col.teal, fg = pal.bg0 },
     nt = { bg = col.teal, fg = pal.bg0 },
@@ -75,7 +75,8 @@ local modecolors = {
 
 local modenames = {
     ["V-LINE"] = "V",
-    ["V-BLOCK"] = "V"
+    ["V-BLOCK"] = "^V",
+    ["REPLACE"] = "R",
 }
 
 local mode = {
