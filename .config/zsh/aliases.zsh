@@ -20,7 +20,9 @@ alias \
     grep='grep --color=auto' \
     fdd="fd -t d" \
     fdf="fd -t f" \
-    g="git"
+    g="git" \
+
+alias '#'="noglob qalc" # do math directly on the cmdline
 
 # nice to have redirections
 alias \
