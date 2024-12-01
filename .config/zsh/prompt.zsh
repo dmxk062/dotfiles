@@ -171,7 +171,7 @@ function TRAPUSR1 {
 }
 
 # Prompt for nested things:
-PS2="%F{8}%_ ╴%f "
+PS2="%F{8}%_ │%f "
 
 # sudo prompt
 print -P -v SUDO_PROMPT "\n%F{8}╭%B%F{red}%S sudo%s%f%b
