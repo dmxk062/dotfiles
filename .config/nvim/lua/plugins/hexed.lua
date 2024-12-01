@@ -1,4 +1,4 @@
 return {
-    "dmxk062/bined.nvim",
+    "dmxk062/hexed.nvim",
     opts = {}
 }
