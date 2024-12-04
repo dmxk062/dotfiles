@@ -69,7 +69,6 @@ local colorscheme = {
     ErrorMsg                    = { fg = col.red },
     MoreMSg                     = { fg = col.bright_gray },
     ModeMSg                     = { fg = col.bright_gray },
-    QuickFixLine                = { fg = col.teal },
 
     Pmenu                       = { bg = pal.bg1, fg = pal.fg0 },
     PmenuSel                    = { bg = col.teal, fg = pal.inverted },
@@ -79,6 +78,11 @@ local colorscheme = {
     PmenuExtraSel               = { fg = pal.bg3 },
     PmenuSbar                   = { fg = pal.fg2 },
     PmenuThumb                  = { fg = pal.fg0 },
+
+    qfFileName                  = { fg = col.light_blue },
+    qfLineNr                    = { fg = col.magenta },
+    qfSeparator                 = { link = "@punctuation.delimiter" },
+    QuickFixLine                = { bg = pal.bg1 },
 
     Directory                   = { fg = col.teal },
     Type                        = { link = "@type" },
