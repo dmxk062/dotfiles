@@ -37,9 +37,10 @@ M.config = function(_, opts)
 
         map("n", prefix .. "t", gitsigns.toggle_signs)
         map("n", prefix .. "p", gitsigns.preview_hunk)
+
         -- use fugitive cause its just better :(
-        map("n", prefix .. "d", "<cmd>Gvdiffsplit<cr>")
-        map("n", prefix .. "D", "<cmd>Gvdiffsplit !^<cr>")
+        map("n", prefix .. "d", "<cmd>rightbelow Gvdiffsplit<cr>")
+        map("n", prefix .. "D", "<cmd>rightbelow Gvdiffsplit !<cr>")
         map("n", prefix .. "b", gitsigns.blame_line)
         map("n", prefix .. "B", gitsigns.blame)
         map("n", prefix .. "c", gitsigns.setqflist)

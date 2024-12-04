@@ -22,9 +22,6 @@ local function get_buf_title(fname, bname, id)
         return term_title, false
     end
 
-    if fname then
-        return fname, true
-    end
 
     local ft = vim.bo[id].filetype
     if ft == "oil" then
@@ -45,6 +42,17 @@ local function get_buf_title(fname, bname, id)
         end
     elseif ft == "qf" then
         return "[qf]", false
+    elseif vim.b[id].fugitive_type then
+        local fugitive_type = vim.b[id].fugitive_type
+        if fugitive_type == "index" then
+            return "[git]", false
+        else
+            return fname .. ":git", true
+        end
+    end
+
+    if fname then
+        return fname, true
     end
 
     if bname == "" then
