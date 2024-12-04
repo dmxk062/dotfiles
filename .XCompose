@@ -4,6 +4,5 @@ include "%L" # locale specific config
 include "%H/.config/XCompose/greek"
 include "%H/.config/XCompose/germanic"
 include "%H/.config/XCompose/symbols"
-include "%H/.config/XCompose/old_english"
 include "%H/.config/XCompose/ipa"
 include "%H/.config/XCompose/cyrillic"
