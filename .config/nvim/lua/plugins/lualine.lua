@@ -43,7 +43,7 @@ nord.command = {
     a = { fg = pal.bg0, bg = pal.bg0 },
     b = { fg = pal.fg0, bg = pal.bg3 },
     y = { fg = pal.fg0, bg = pal.bg3 },
-    z = { fg = pal.bg0, bg = col.magenta },
+    z = { fg = pal.bg0, bg = col.green },
 }
 
 nord.inactive = {
@@ -60,7 +60,7 @@ local rbubble = { right = "" }
 local modecolors = {
     n = { bg = col.teal, fg = pal.bg0 },
     i = { bg = pal.fg2, fg = pal.inverted },
-    c = { bg = col.magenta, fg = pal.bg0 },
+    c = { bg = col.green, fg = pal.bg0 },
     v = { bg = col.light_blue, fg = pal.bg0 },
     V = { bg = col.light_blue, fg = pal.bg0 },
     [""] = { bg = col.light_blue, fg = pal.bg0 },
@@ -269,7 +269,7 @@ M.opts = {
                 function()
                     local wc = vim.fn.wordcount()
                     if wc.visual_words then -- text is selected in visual mode
-                        return wc.visual_words .. "w/" .. wc.visual_chars .. "c"
+                        return wc.visual_words .. "w:" .. wc.visual_chars .. "c"
                     else
                         return wc.words .. "w"
                     end
