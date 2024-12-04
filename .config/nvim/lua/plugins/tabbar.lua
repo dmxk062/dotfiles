@@ -43,6 +43,8 @@ local function get_buf_title(fname, bname, id)
                 return n, true
             end
         end
+    elseif ft == "qf" then
+        return "[qf]", false
     end
 
     if bname == "" then
