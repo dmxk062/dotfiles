@@ -147,3 +147,5 @@ vim.api.nvim_create_autocmd("VimEnter", {
         end
     end
 })
+
+require("modules.statusline")
