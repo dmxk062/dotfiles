@@ -1,4 +1,4 @@
-(defvar tiling_layout "master")
+(defvar tiling_layout "dwindle")
 (defvar tiling_settings false)
 (defvar tiling_master_factor 30) ;; 70%
 (defvar tiling_master_orientation "top")
@@ -12,7 +12,7 @@ Arrange windows in a two column layout" : "Dwindle Layout
 Arrange windows to best fit the screen"}
             :onclick "bin/tiling_layout.sh& ${EWW_CMD} update tiling_settings=false"
             :onrightclick "${EWW_CMD} update tiling_settings=${!tiling_settings}"
-            {tiling_layout == "master" ? "󰯌" : "󰕮"}
+            {window.fullscreen == 1 ? "[ ${tiling_layout == "master" ? "󰯌" : "󰕮"} ]" : (tiling_layout == "master" ? "󰯌" : "󰕮")}
             )
 
             (overlay
@@ -30,9 +30,6 @@ fi")
                         :onclick "bin/tiling_layout.sh orientation"
                     "󰑧")
                 ))
-                ;; (revealer :reveal {tiling_layout == "dwindle" && tiling_settings} :transition "slideright" :duration "200ms" (box :class "sbutton" :space-evenly false
-                ;; ))
-
             )
         )
     )

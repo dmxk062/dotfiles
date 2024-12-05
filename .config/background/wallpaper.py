@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
-import os
 import subprocess
-import json
-import argparse
 import sys
 import shutil
 
@@ -23,7 +20,7 @@ class Swww:
             self.status = subprocess.check_output(["swww","query"])
             self.running = True
             self.parse_status()
-        except:
+        except Exception as e:
             self.status = None
             self.running = False
     def parse_status(self):
