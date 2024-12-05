@@ -4,7 +4,12 @@ local M = {
 
 local user = os.getenv("USER")
 
+-- mapping of buffer indices in the buffer line to buffer numbers
+---@type table<integer, integer>
 _G.Bufs_for_idx = {}
+-- mapping of tab indices in the buffer line to tab ids
+---@type table<integer, integer>
+_G.Tabs_for_idx = {}
 
 ---@param fname string?
 ---@param bname string
@@ -17,9 +22,6 @@ local function get_buf_title(fname, bname, id)
         return term_title, false
     end
 
-    if fname then
-        return fname, true
-    end
 
     local ft = vim.bo[id].filetype
     if ft == "oil" then
@@ -38,6 +40,19 @@ local function get_buf_title(fname, bname, id)
                 return n, true
             end
         end
+    elseif ft == "qf" then
+        return "[qf]", false
+    elseif vim.b[id].fugitive_type then
+        local fugitive_type = vim.b[id].fugitive_type
+        if fugitive_type == "index" then
+            return "[git]", false
+        else
+            return fname .. ":git", true
+        end
+    end
+
+    if fname then
+        return fname, true
     end
 
     if bname == "" then
@@ -132,6 +147,7 @@ local function render_tabline(f)
     end
 
     f.make_tabs(function(info)
+        Tabs_for_idx[info.index] = info.tab
         -- don't show only tab
         if info.first and info.last then
             return
@@ -145,7 +161,7 @@ local function render_tabline(f)
             f.set_gui("bold")
         end
 
-        f.add(tostring(info.tab))
+        f.add(tostring(info.index))
         f.add(" {" .. tab_wincounts[info.tab] .. "}")
 
         if info.modified then

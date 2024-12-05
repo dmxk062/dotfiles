@@ -1,6 +1,6 @@
 local M = {}
 
-Ctx = {
+local Ctx = {
     funs = { },
     extra_data = {},
     was_repeat = {},

@@ -42,21 +42,36 @@ end)
 
 -- open buffer in a thing
 -- vsplit, split, tab or float
-local function open_buf_in(cmd, fallback)
-    return function()
-        local target = Bufs_for_idx[vim.v.count] or 0
-        if target == 0 then
-            return ":" .. fallback .. " "
-        end
-        return "<cmd>" .. cmd .. " sbuffer " .. target .. "<cr>"
+local function open_buf_in(cmd)
+    local target
+    local count = vim.v.count
+    if count == 0 then
+        target = vim.api.nvim_get_current_buf()
+    else
+        target = Bufs_for_idx[count]
     end
+    if not target then
+        target = vim.api.nvim_get_current_buf()
+    end
+    vim.cmd(cmd .. " sbuffer " .. target)
 end
 
-map("n", bufleader .. "v", open_buf_in("vertical", "vsp"), { expr = true })
-map("n", bufleader .. "s", open_buf_in("horizontal", "sp"), { expr = true })
-map("n", bufleader .. "t", open_buf_in("tab", "tabn"), { expr = true })
-map("n", bufleader .. "<cr>", "gt")
+---run cmd with the effective tab target as an argument
+local function indexed_tab_command(cmd)
+    local target
+    local count = vim.v.count
+    if count == 0 then
+        target = ""
+    else
+        target = Tabs_for_idx[count]
+    end
 
+    vim.cmd(cmd .. " " .. target)
+end
+
+map("n", bufleader .. "v", function() open_buf_in("vert") end)
+map("n", bufleader .. "s", function() open_buf_in("hor") end)
+map("n", bufleader .. "t", function() open_buf_in("tab") end)
 map("n", bufleader .. "f", function()
     local target = Bufs_for_idx[vim.v.count] or 0
     local max_width = vim.api.nvim_win_get_width(0)
@@ -77,7 +92,19 @@ end)
 map("n", bufleader .. "d", function()
     local target = Bufs_for_idx[vim.v.count] or 0
     vim.api.nvim_buf_delete(target, {})
+    vim.api.nvim__redraw { tabline = true }
 end)
+
+map("n", "gt", function() indexed_tab_command("norm! gt") end)
+map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
+map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
+
+
+-- my own mark handling
+local marks = require("modules.marks")
+map("n", "<space>m", marks.marks_popup)
+map("n", "m<space>", marks.set_first_avail_lmark)
+map("n", "m_", marks.set_first_avail_gmark)
 
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
@@ -166,8 +193,10 @@ operators.map_function("<space>el", function(mode, region, extra, get)
         result = vim.split(vim.inspect(return_val), "\n")
     elseif type(return_val) == "nil" then
         result = {}
-    else
+    elseif type(return_val) == "string" then
         result = vim.split(return_val, "\n")
+    else
+        result = { tostring(return_val) }
     end
 
     return result, region[1], region[2]

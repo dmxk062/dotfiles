@@ -43,7 +43,7 @@ nord.command = {
     a = { fg = pal.bg0, bg = pal.bg0 },
     b = { fg = pal.fg0, bg = pal.bg3 },
     y = { fg = pal.fg0, bg = pal.bg3 },
-    z = { fg = pal.bg0, bg = col.magenta },
+    z = { fg = pal.bg0, bg = col.green },
 }
 
 nord.inactive = {
@@ -60,31 +60,40 @@ local rbubble = { right = "" }
 local modecolors = {
     n = { bg = col.teal, fg = pal.bg0 },
     i = { bg = pal.fg2, fg = pal.inverted },
-    c = { bg = col.magenta, fg = pal.bg0 },
+    c = { bg = col.green, fg = pal.bg0 },
     v = { bg = col.light_blue, fg = pal.bg0 },
     V = { bg = col.light_blue, fg = pal.bg0 },
-    [""] = { bg = col.light_blue, fg = pal.bg0, gui = "bold" },
-    R = { bg = col.red, fg = pal.bg0, gui = "bold" },
-    no = { bg = col.teal, fg = pal.bg0, gui = "italic" },
-    noV = { bg = col.teal, fg = pal.bg0, gui = "italic" },
+    [""] = { bg = col.light_blue, fg = pal.bg0 },
+    R = { bg = col.red, fg = pal.bg0 },
+    no = { bg = col.teal, fg = pal.bg0 },
+    noV = { bg = col.teal, fg = pal.bg0 },
     ["!"] = { bg = col.teal, fg = pal.bg0 },
     t = { bg = col.teal, fg = pal.bg0 },
     nt = { bg = col.teal, fg = pal.bg0 },
-    s = { bg = col.teal, fg = pal.bg0, gui = "italic" },
+    s = { bg = col.light_blue, fg = pal.bg0, gui = "italic" },
 }
 
 local modenames = {
-    ["V-LINE"] = "V",
-    ["V-BLOCK"] = "V"
+    [""]   = "^V",
+    ["no"] = "^O",
+    ["noV"] = "O",
+    ["no"]  = "o",
+    ["R"]   = "r",
 }
 
 local mode = {
     "mode",
+    padding = 0,
     fmt = function(str)
-        return modenames[str] or str:lower():sub(1, 1)
+        local mode = modenames[vim.api.nvim_get_mode().mode] or str:sub(1, 1):lower()
+        if #mode == 1 then
+            return " " .. mode .. " "
+        else
+            return mode .. " "
+        end
     end,
     color = function()
-        return modecolors[vim.fn.mode(1)] or modecolors.n
+        return modecolors[vim.api.nvim_get_mode().mode] or modecolors.n
     end,
     separator = bubble,
 }
@@ -171,7 +180,7 @@ M.opts = {
                     info  = { fg = col.blue },
                     hint  = { fg = col.teal },
                 },
-                symbols = { error = "󰅖 ", warn = " ", info = " ", hint = "󰟶 " },
+                symbols = { error = "e:", warn = "w:", info = "i:", hint = "h:" },
                 colored = true,
                 update_in_insert = false,
                 always_visible = false,
@@ -200,6 +209,9 @@ M.opts = {
             }
         },
         lualine_x = {
+            {
+                "%l:%c",
+            },
             {
                 "diff",
                 color = { bg = pal.bg1 },
@@ -234,6 +246,7 @@ M.opts = {
                     end
                 end,
                 colored = false,
+                icons_enabled = false,
                 separator = lbubble,
             },
             {
@@ -242,38 +255,20 @@ M.opts = {
                     unix = "\\n",
                     dos = "\\r\\n",
                     mac = "\\r",
-                }
+                },
             },
         },
         lualine_z = {
             {
-                "progress",
-                separator = lbubble,
-            },
-            {
-                function()
-                    if vim.v.hlsearch == 0 then
-                        return ""
-                    end
-
-                    local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 500 })
-                    if not ok or next(res) == nil then
-                        return ""
-                    end
-                    local found = math.min(res.total, res.maxcount)
-                    return string.format("%d/%d", res.current, found)
-                end,
-            },
-            {
                 function()
                     local wc = vim.fn.wordcount()
                     if wc.visual_words then -- text is selected in visual mode
-                        return wc.visual_words .. "w/" .. wc.visual_chars .. "c"
+                        return wc.visual_words .. "w:" .. wc.visual_chars .. "c"
                     else
                         return wc.words .. "w"
                     end
                 end,
-                separator = rbubble,
+                separator = bubble,
             },
         },
     }

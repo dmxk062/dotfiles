@@ -1,20 +1,18 @@
 local M = {
     "nvim-telescope/telescope.nvim",
     keys = {
-        { "<space>D",       function() require("telescope.builtin").diagnostics() end },
-        { "<space>gf",      function() require("telescope.builtin").git_files() end },
-        { "<space>F",       function() require("telescope.builtin").find_files() end },
-        { "<space>h",       function() require("telescope.builtin").oldfiles() end },
-        { "<space>H",       function() require("telescope.builtin").help_tags() end },
-        { "<space>/",       function() require("telescope.builtin").live_grep() end },
-        { "<space>[",       function() require("telescope.builtin").lsp_document_symbols() end },
-        { "<space>]",       function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end },
-        { "<space>R",       function() require("telescope.builtin").registers() end },
-        { "<space><space>", function() require("telescope.builtin").buffers() end },
+        "<space>D",
+        "<space>gf",
+        "<space>F",
+        "<space>o",
+        "<space>/",
+        "<space>[",
+        "<space>]",
+        "<space>R",
+        "<space><space>",
         {
             "z=",
             mode = { "n", "x" },
-            function() require("telescope.builtin").spell_suggest() end
         },
     },
     cmd = { "Telescope" },
@@ -97,21 +95,21 @@ M.opts.defaults = {
 }
 M.opts.pickers = {
     lsp_definitions = default_config {
-        jump_type = "tab drop",
+        jump_type = "drop",
         reuse_win = true,
         layout_config = {
             preview_width = 0.8,
         }
     },
     lsp_references = default_config {
-        jump_type = "tab drop",
+        jump_type = "drop",
         reuse_win = true,
         layout_config = {
             preview_width = 0.8,
         }
     },
     lsp_dynamic_workspace_symbols = default_config {
-        jump_type = "tab drop",
+        jump_type = "drop",
         prompt_title = "Symbols",
         reuse_win = true,
         layout_config = {
@@ -120,7 +118,7 @@ M.opts.pickers = {
 
     },
     lsp_document_symbols = default_config {
-        jump_type = "tab drop",
+        jump_type = "drop",
         prompt_title = "Symbols",
         reuse_win = true,
         layout_config = {
@@ -247,6 +245,24 @@ M.config = function(_, opts)
     telescope.extensions.zoxide.list = function(args)
         old_zoxide(vim.tbl_extend("force", default_config_tbl, args or {}))
     end
+
+    local maps = {
+        diagnostics = "<space>D",
+        git_files = "<space>gf",
+        find_files = "<space>F",
+        oldfiles = "<space>o",
+        live_grep = "<space>/",
+        lsp_document_symbols = "<space>[",
+        lsp_dynamic_workspace_symbols = "<space>]",
+        registers = "<space>R",
+        buffers = "<space><space>",
+    }
+
+    local builtin = require("telescope.builtin")
+    for picker, keys in pairs(maps) do
+        vim.keymap.set("n", keys, builtin[picker])
+    end
+    vim.keymap.set({ "x", "n" }, "z=", builtin.spell_suggest)
 end
 
 return M

@@ -116,20 +116,17 @@ local function line_is_blank(lnum)
     return line:find("^%s*$") ~= nil
 end
 
--- filetypes for which outer indentation should only be applied to lines above
--- this is only due to language syntax and might not 100% be reliable:
--- ```python
--- list = [
---      1,
---      2,
---      3,
--- ]
--- ```
--- here we would want both braces
--- so in those cases provide an extra mapping, that always includes the last one too
-
+-- filetypes for which outer indentation should only be applied to lines above by default
+-- this is only due to language syntax and might not 100% be reliable
+-- e.g. multiline lists/maps in python
+--
+-- to force both, use `aI`(current mapping), this also works in other filetypes,
+-- so use that for macros to force that behavior
 M.indent_only_before = {
-    python = true
+    python   = true,
+    norg     = true,
+    markdown = true,
+    asm      = true,
 }
 
 local function indent(pos, lcount, opts)

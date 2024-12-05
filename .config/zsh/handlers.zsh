@@ -120,6 +120,19 @@ function _clipboard_directory_name {
 
 zsh_directory_name_functions+=(_clipboard_directory_name)
 
+
+# ignore short commands
+function _hist_ignore_short_commands {
+    local cmd="${1%%$'\n'}"
+    cmd="${cmd%%[[:space:]]#}"
+    if [[ ${#cmd} -lt 4 ]]; then
+        return 2
+    fi
+}
+
+zshaddhistory_functions+=(_hist_ignore_short_commands)
+
+
 # use bat as a pager for man
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT='-c'

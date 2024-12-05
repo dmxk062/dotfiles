@@ -1,5 +1,23 @@
 # vim: ft=xcompose
 
+# some tweaks/additions to the regular german
+# why tf is it only " usually?, also for the non german ones
+<Multi_key> <colon> <a> : "ä"
+<Multi_key> <colon> <e> : "ë"
+<Multi_key> <colon> <i> : "ï"
+<Multi_key> <colon> <o> : "ö"
+<Multi_key> <colon> <u> : "ü"
+<Multi_key> <colon> <y> : "ÿ"
+
+<Multi_key> <colon> <A> : "Ä"
+<Multi_key> <colon> <E> : "Ë"
+<Multi_key> <colon> <I> : "Ï"
+<Multi_key> <colon> <O> : "Ö"
+<Multi_key> <colon> <U> : "Ü"
+<Multi_key> <colon> <Y> : "Ÿ"
+
+# old english
+
 # idk why there is no other way to type long ǣsċ
 <Multi_key> <a> <minus> <e> : "ǣ"
 <Multi_key> <A> <minus> <e> : "Ǣ"
@@ -39,8 +57,8 @@
 # þū / thou
 <Multi_key> <t> <u> : "þͧ"
 
-# runes, starting with *
-# I use the latin order I know.....
+# old english runes, starting with *
+# I use the latin order here I know.....
 <Multi_key> <asterisk> <a> : "ᚪ" # āc       -> Oak
 <Multi_key> <asterisk> <A> : "ᚫ" # æsċ      -> Ash (tree)
 <Multi_key> <asterisk> <b> : "ᛒ" # beorċ    -> Birch
@@ -73,3 +91,36 @@
 <Multi_key> <asterisk> <w> : "ᚹ" # wynn     -> Joy
 <Multi_key> <asterisk> <x> : "ᛉ" # eolh/ilx -> Elk?
 <Multi_key> <asterisk> <y> : "ᚣ" # ȳr       -> Yew bow
+
+# gothic, using & as leader
+<Multi_key> <ampersand> <a> : "𐌰"   # asks
+<Multi_key> <ampersand> <b> : "𐌱"   # bairkan
+<Multi_key> <ampersand> <g> : "𐌲"   # giba
+<Multi_key> <ampersand> <d> : "𐌳"   # dags
+<Multi_key> <ampersand> <e> : "𐌴"   # aihws
+<Multi_key> <ampersand> <q> : "𐌵"   # qairþra
+<Multi_key> <ampersand> <z> : "𐌶"   # ezek?
+<Multi_key> <ampersand> <h> : "𐌷"   # hagal
+<Multi_key> <ampersand> <y> : "𐌸"   # þaurnus, same logic as for θ, borrowing from þorn in print
+<Multi_key> <ampersand> <i> : "𐌹"   # eis
+<Multi_key> <ampersand> <k> : "𐌺"   # kusma
+<Multi_key> <ampersand> <l> : "𐌻"   # lagus
+<Multi_key> <ampersand> <m> : "𐌼"   # manna
+<Multi_key> <ampersand> <n> : "𐌽"   # nauþs
+<Multi_key> <ampersand> <j> : "𐌾"   # jēr
+<Multi_key> <ampersand> <u> : "𐌿"   # ūrus
+<Multi_key> <ampersand> <p> : "𐍀"   # pairþra
+<Multi_key> <ampersand> <Q> : "𐍁"   # qoppa derivative, only used as a number just here for completeness
+<Multi_key> <ampersand> <r> : "𐍂"   # raida
+<Multi_key> <ampersand> <s> : "𐍃"   # sauil
+<Multi_key> <ampersand> <t> : "𐍄"   # tius
+<Multi_key> <ampersand> <w> : "𐍅"   # winja
+<Multi_key> <ampersand> <f> : "𐍆"   # faihu
+<Multi_key> <ampersand> <x> : "𐍇"   # inggus / chi transliteration
+<Multi_key> <ampersand> <W> : "𐍈"   # hwair
+<Multi_key> <ampersand> <o> : "𐍉"   # ōþal
+<Multi_key> <ampersand> <T> : "𐍊"   # sampi derivative, only used for numbers
+
+# latin hwair for transliteration
+<Multi_key> <h> <w> : "ƕ"
+<Multi_key> <H> <w> : "ƕ"

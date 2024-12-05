@@ -169,6 +169,84 @@ local function set_sort(action)
     require("oil").set_sort(sort)
 end
 
+local function get_perm_string(mode)
+    local perms = {
+        "r", "w", "x",
+        "r", "w", "x",
+        "r", "w", "x",
+    }
+
+    local res = ""
+    for i = 1, 9 do
+        if bit.band(mode, bit.lshift(1, 9 - i)) ~= 0 then
+            res = res .. perms[i]
+        else
+            res = res .. "-"
+        end
+    end
+
+    return res
+end
+
+local extension_highlights = {
+    ["a"]       = "Bin",
+    ["c"]       = "Source",
+    ["cfg"]     = "Config",
+    ["conf"]    = "Config",
+    ["cpp"]     = "Source",
+    ["css"]     = "Style",
+    ["desktop"] = "Config",
+    ["go"]      = "Source",
+    ["gz"]      = "Archive",
+    ["h"]       = "Code",
+    ["html"]    = "Markup",
+    ["ini"]     = "Config",
+    ["jar"]     = "Archive",
+    ["js"]      = "Code",
+    ["json"]    = "Markup",
+    ["log"]     = "Info",
+    ["lua"]     = "Source",
+    ["md"]      = "Text",
+    ["mk"]      = "Build",
+    ["o"]       = "Bin",
+    ["py"]      = "Script",
+    ["pyc"]     = "Bin",
+    ["rc"]      = "Config",
+    ["rs"]      = "Source",
+    ["scss"]    = "Style",
+    ["sh"]      = "Script",
+    ["so"]      = "Bin",
+    ["tar"]     = "Archive",
+    ["tex"]     = "Markup",
+    ["toml"]    = "Config",
+    ["ts"]      = "Code",
+    ["txt"]     = "Text",
+    ["xhtml"]   = "Markup",
+    ["xml"]     = "Markup",
+    ["xz"]      = "Archive",
+    ["yaml"]    = "Config",
+    ["zip"]     = "Archive",
+}
+
+-- case insensitive
+local name_highlights = {
+    [".clang-format"] = "Meta",
+    [".clangd"]       = "Meta",
+    [".config/"]      = "Config",
+    [".git/"]         = "Meta",
+    [".gitconfig"]    = "Meta",
+    [".gitignore"]    = "Meta",
+    ["changelog.md"]  = "Readme",
+    ["go.mod"]        = "Build",
+    ["license"]       = "Readme",
+    ["license.md"]    = "Readme",
+    ["license.txt"]   = "Readme",
+    ["makefile"]      = "Build",
+    ["readme"]        = "Readme",
+    ["readme.md"]     = "Readme",
+    ["readme.txt"]    = "Readme",
+    ["todo.md"]       = "Readme",
+}
 
 M.opts = {
     default_file_explorer = true,
@@ -180,7 +258,7 @@ M.opts = {
         buflisted = true
     },
     columns = {
-        oil_columns.icon,
+        -- oil_columns.icon,
         -- oil_columns.size,
         oil_columns.time,
         oil_columns.permissions,
@@ -216,6 +294,41 @@ M.opts = {
         end,
         natural_order = true,
         sort = sort,
+        highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan)
+            -- fixed names take priority
+            local name = entry.name:lower() .. (entry.type == "directory" and "/" or "")
+            if name_highlights[name] then
+                return "Oil" .. name_highlights[name]
+            end
+
+            -- dont try to override directories or links, oil handles them well
+            if entry.type == "directory" or entry.type == "link" then
+                return
+            elseif entry.type == "char" then
+                return "OilCharDev"
+            elseif entry.type == "block" then
+                return "OilBlockDev"
+            elseif entry.type == "socket" then
+                return "OilSocket"
+            end
+
+            local mode = entry.meta.stat.mode
+            if bit.band(mode, 0x49) ~= 0 then
+                return "OilExecutable"
+            end
+
+
+            local ext = entry.name:match("%.(%w+)$")
+            if ext and extension_highlights[ext] then
+                return "Oil" .. extension_highlights[ext]
+            end
+
+            if is_hidden then
+                return "OilHidden"
+            end
+
+            return "OilFile"
+        end
     },
 
     keymaps = {
@@ -231,9 +344,6 @@ M.opts = {
         ["ev"]        = "actions.select_vsplit",
         ["eo"]        = open_external,
         ["gx"]        = open_external,
-
-        -- edit permissions
-        ["ep"]        = function() open_cmd("silent !chmod") end,
 
         -- goto places
         ["g~"]        = function() goto_dir("~") end,
@@ -271,7 +381,7 @@ M.opts = {
         ["q"]         = function()
             if not (#vim.api.nvim_list_wins() > 1) then
                 for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                    if vim.bo[buf].filetype ~= "oil" then
+                    if vim.bo[buf].filetype ~= "oil" and vim.bo[buf].buflisted then
                         vim.api.nvim_win_set_buf(0, buf)
                         return
                     end
@@ -283,7 +393,7 @@ M.opts = {
 }
 
 M.config = function(_, opts)
-    local utils = require("utils")
+    local map = require("utils").map
     require("oil").setup(opts)
 
     -- change directory if not ssh, only for current window
@@ -298,18 +408,18 @@ M.config = function(_, opts)
     })
 
     local prefix = "<space>f"
-    utils.map("n", prefix .. "f", require("oil").open)
-    utils.map("n", prefix .. "F", require("oil").open_float)
+    map("n", prefix .. "f", require("oil").open)
+    map("n", prefix .. "F", require("oil").open_float)
 
-    utils.map("n", prefix .. "t", function()
+    map("n", prefix .. "t", function()
         vim.api.nvim_command("tabnew")
         require("oil").open()
     end)
-    utils.map("n", prefix .. "s", function()
+    map("n", prefix .. "s", function()
         vim.api.nvim_command("split")
         require("oil").open()
     end)
-    utils.map("n", prefix .. "v", function()
+    map("n", prefix .. "v", function()
         vim.api.nvim_command("vsplit")
         require("oil").open()
     end)

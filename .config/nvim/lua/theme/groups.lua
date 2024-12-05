@@ -69,7 +69,6 @@ local colorscheme = {
     ErrorMsg                    = { fg = col.red },
     MoreMSg                     = { fg = col.bright_gray },
     ModeMSg                     = { fg = col.bright_gray },
-    QuickFixLine                = { fg = col.teal },
 
     Pmenu                       = { bg = pal.bg1, fg = pal.fg0 },
     PmenuSel                    = { bg = col.teal, fg = pal.inverted },
@@ -79,6 +78,11 @@ local colorscheme = {
     PmenuExtraSel               = { fg = pal.bg3 },
     PmenuSbar                   = { fg = pal.fg2 },
     PmenuThumb                  = { fg = pal.fg0 },
+
+    qfFileName                  = { fg = col.light_blue },
+    qfLineNr                    = { fg = col.magenta },
+    qfSeparator                 = { link = "@punctuation.delimiter" },
+    QuickFixLine                = { bg = pal.bg1 },
 
     Directory                   = { fg = col.teal },
     Type                        = { link = "@type" },
@@ -129,7 +133,7 @@ local colorscheme = {
     Function                    = { link = "@keyword.function" },
     Identifier                  = { fg = col.light_blue },
     Keyword                     = { link = "@keyword" },
-    Repeat                      = { fg = col.light_blue },
+    Repeat                      = { link = "@keyword.repeat" },
     Quote                       = { fg = pal.bg2 },
     CodeBlock                   = { bg = pal.bg1 },
     Dash                        = { fg = col.blue, bold = true },
@@ -149,6 +153,14 @@ local colorscheme = {
     UndotreeBranch              = { fg = col.magenta },
     UndotreeSavedSmall          = { fg = col.green },
     UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
+
+    Yanked                      = { bg = pal.bg1 },
+
+    MarkGlobal                  = { fg = col.yellow, bold = true },
+    MarkLocal                   = { fg = col.light_blue },
+    MarkPosition                = { link = "Number" },
+    MarkUnloaded                = { fg = col.bright_gray },
+    MarkPreview                 = { italic = true, fg = col.bright_gray },
 }
 
 add_with_prefix(colorscheme, "@", {
@@ -286,36 +298,56 @@ add_with_prefix(colorscheme, "Startscreen", {
 })
 
 add_with_prefix(colorscheme, "Oil", {
-    Link          = { fg = col.blue, bold = true },
-    Dir           = { fg = col.teal, bold = true },
-    LinkTarget    = { fg = col.blue, italic = true },
-    Socket        = { fg = col.magenta },
+    Link             = { fg = col.blue, bold = true },
+    OrphanLink       = { fg = col.blue },
+    Dir              = { fg = col.teal, bold = true },
+    Hidden           = { fg = col.bright_gray },
+    DirHidden        = { link = "*Hidden" },
+    LinkTarget       = { fg = col.blue, italic = true },
+    OrphanLinkTarget = { fg = col.red, italic = true },
+    Socket           = { fg = col.magenta },
+    BlockDev         = { fg = col.yellow, bg = pal.bg1 },
+    CharDev          = { fg = col.green, bg = pal.bg1 },
 
-    Read          = { fg = col.yellow },
-    Write         = { fg = col.orange },
-    Exec          = { fg = col.green },
-    Setuid        = { fg = col.red, bold = true },
-    Sticky        = { fg = col.blue, bold = true },
-    NoPerm        = { fg = pal.bg3 },
+    Executable       = { fg = col.green, bold = true },
+    Code             = { fg = col.green },
+    Script           = { link = "*Code" },
+    Markup           = { fg = col.magenta },
+    Text             = { fg = pal.fg2 },
+    Source           = { fg = col.light_blue },
+    Bin              = { fg = col.orange },
+    Archive          = { fg = col.orange, bg = pal.bg1 },
+    Config           = { fg = col.purple },
+    Meta             = { fg = col.light_blue, italic = true },
+    Build            = { fg = col.green },
+    Readme           = { fg = col.magenta },
+    Style            = { link = "*Config" },
 
-    Delete        = { fg = col.red, bold = true },
-    Create        = { fg = col.green },
-    Move          = { fg = col.orange },
-    Copy          = { fg = col.yellow },
-    Change        = { fg = col.magenta },
+    Read             = { fg = col.yellow },
+    Write            = { fg = col.orange },
+    Exec             = { fg = col.green },
+    Setuid           = { fg = col.red, bold = true },
+    Sticky           = { fg = col.blue, bold = true },
+    NoPerm           = { fg = pal.bg3 },
 
-    TimeLastHour  = { fg = col.green },
-    TimeLastDay   = { fg = col.teal },
-    TimeLastWeek  = { fg = col.light_blue },
-    TimeLastMonth = { fg = col.blue },
-    TimeLastYear  = { fg = blend(col.blue, pal.bg3, 0.8) },
-    TimeSuperOld  = { fg = pal.bg3 },
+    Delete           = { fg = col.red, bold = true },
+    Create           = { fg = col.green },
+    Move             = { fg = col.orange },
+    Copy             = { fg = col.yellow },
+    Change           = { fg = col.magenta },
 
-    SizeNone      = { fg = pal.bg3 },
-    SizeSmall     = { fg = pal.fg0 },
-    SizeMedium    = { fg = col.yellow },
-    SizeLarge     = { fg = col.orange },
-    SizeHuge      = { fg = col.red },
+    TimeLastHour     = { fg = col.green },
+    TimeLastDay      = { fg = col.teal },
+    TimeLastWeek     = { fg = col.light_blue },
+    TimeLastMonth    = { fg = col.blue },
+    TimeLastYear     = { fg = blend(col.blue, pal.bg3, 0.8) },
+    TimeSuperOld     = { fg = pal.bg3 },
+
+    SizeNone         = { fg = pal.bg3 },
+    SizeSmall        = { fg = pal.fg0 },
+    SizeMedium       = { fg = col.yellow },
+    SizeLarge        = { fg = col.orange },
+    SizeHuge         = { fg = col.red },
 })
 
 add_with_prefix(colorscheme, "OilGitStatus", {
@@ -420,10 +452,11 @@ add_with_prefix(colorscheme, "Mason", {
     HighlightSecondaryBlockBold = { link = "*HighlightBlockBold" },
     Muted                       = { fg = pal.bg3 },
     MutedBlock                  = { bg = pal.bg3 },
-    MutedBlockBold              = { link = "MasonMutedBlock" },
+    MutedBlockBold              = { link = "*MutedBlock" },
 })
 
 add_with_prefix(colorscheme, "zsh", {
+    Deref       = { link = "@variable" },
     VariableDef = { link = "@variable" },
     Function    = { link = "@function" },
     KSHFunction = { link = "@function" },

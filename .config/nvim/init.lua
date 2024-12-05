@@ -11,6 +11,7 @@ vim.api.nvim_create_autocmd("StdinReadPre", {
 
 local opt = vim.opt
 local o = vim.o
+
 o.relativenumber = true
 o.number = true
 o.incsearch = true
@@ -52,16 +53,15 @@ opt.listchars = {
     multispace = " · ",
 }
 
--- command mode: underline
--- normal, visual etc: block
--- insert: bar, blink
--- normal: blink
+-- normal, o-pending, visual: block
+-- insert, command: bar, blink
+-- replace: underscore
+-- all except o-pending: blink
 opt.guicursor = {
-    "c-ci-cr:hor20",
-    "n-o-v-sm:block",
+    "n-o-v:block",
     "r:hor20",
-    "i-ve:ver10",
-    "r-n-i-ve:blinkon1",
+    "i-c-ci-cr:ver10",
+    "n-c-ci-cr-r-v:blinkon1",
 }
 o.cursorline = true
 o.cursorlineopt = "number"

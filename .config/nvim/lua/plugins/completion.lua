@@ -1,4 +1,4 @@
-M = {
+local M = {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
@@ -9,21 +9,6 @@ M = {
         "hrsh7th/cmp-omni",
         "saadparwaiz1/cmp_luasnip",
         "f3fora/cmp-spell",
-        {
-            "L3MON4D3/LuaSnip",
-            build = "make install_jsregexp",
-            dependencies = { "rafamadriz/friendly-snippets" },
-            config = function()
-                local ls = require("luasnip")
-                local lsvs = require("luasnip.loaders.from_vscode")
-
-                lsvs.lazy_load({ exclude = { "markdown", "all" } })
-                lsvs.lazy_load({ paths = { vim.fn.stdpath "config" .. "/snippets/" } })
-
-                vim.keymap.set({ "i", "s" }, "<S-Tab>", function() ls.jump(1) end, { silent = true })
-                vim.keymap.set({ "i", "s" }, "<C-S-Tab", function() ls.jump(-1) end, { silent = true })
-            end
-        },
     }
 }
 
@@ -149,20 +134,39 @@ M.opts = {
         { name = "luasnip" },
         { name = "buffer" },
     },
-    sorting = {}
+    sorting = {},
+    experimental = {
+        -- ghost_text = true,
+    }
 
 }
 
 M.config = function(_, opts)
     local cmp = require("cmp")
     local compare = cmp.config.compare
-    opts.mapping = cmp.mapping.preset.insert {
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
-        ["<M-j>"] = cmp.mapping.select_next_item(),
-        ["<M-k>"] = cmp.mapping.select_prev_item(),
+    opts.mapping = {
+        ["<C-e>"] = function(fallback)
+            if cmp.visible() then
+                cmp.abort()
+            else
+                fallback()
+            end
+        end,
+        ["<C-n>"] = function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            else
+                cmp.complete()
+            end
+        end,
+        ["<C-p>"] = function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            else
+                cmp.complete()
+            end
+        end,
+        ["<CR>"] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace },
     }
     opts.sorting.comparators = {
         compare.offset,
