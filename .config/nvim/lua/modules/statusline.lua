@@ -223,8 +223,16 @@ end
 local function update_progress()
     local progress = (api.nvim_win_get_cursor(0)[1] / api.nvim_buf_line_count(0))
     local as_int = math.floor(progress * 10)
+    local text
+    if as_int == 0 then
+        text = "Top"
+    elseif as_int == 10 then
+        text = "End"
+    else
+        text = string.format("%02d%%%%", progress * 100)
+    end
     local hl = "Progress" .. as_int
-    return " " .. left_sep(hl) .. string.format("%%#Status%s#%02d%%%%", hl, progress * 100) .. right_sep(hl)
+    return " " .. left_sep(hl) .. string.format("%%#Status%s#%s", hl, text) .. right_sep(hl)
 end
 
 local sections = {}
