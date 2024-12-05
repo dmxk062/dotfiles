@@ -201,7 +201,6 @@ local function update_wordcount()
     end
 end
 
-local progress_hls = {}
 local theme = require("theme.colors")
 for i = 0, 10 do
     local bg = theme.blend(theme.colors.green, theme.palettes.dark.bg2, (i / 10))
@@ -268,9 +267,13 @@ api.nvim_create_autocmd({ "LspAttach", "LspDetach" }, {
     end
 })
 
-api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+api.nvim_create_autocmd({ "BufEnter", "FileType", "BufLeave" }, {
     group = augroup,
     callback = function()
+        -- prevent completion etc
+        if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
+            return
+        end
         sections[9] = update_filetype()
         redraw()
     end
