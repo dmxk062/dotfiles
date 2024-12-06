@@ -2,11 +2,37 @@ local M = {}
 local api = vim.api
 local augroup = api.nvim_create_augroup("statusline", { clear = true })
 
+-- my own statusline
+-- this should be faster than lualine
+-- generally, only redraw things using autocmds unless there isnt a good one for the event
+
 local function left_sep(hl)
     return "%#StatusLInv" .. hl .. "#"
 end
 local function right_sep(hl)
     return "%#StatusRInv" .. hl .. "#"
+end
+
+local function padd(str, len)
+    local strlen = #str
+    if strlen >= len then
+        return str
+    else
+        local diff = len - strlen
+        if diff > 1 then
+            return (" "):rep(math.floor(len / 2)) .. str .. (" "):rep(math.floor(len / 2))
+        else
+            return str .. " "
+        end
+    end
+end
+
+local user = vim.env.USER
+local function expand_home(path)
+    return vim.fn.pathshorten(path:gsub("/tmp/workspaces_" .. user, "~tmp")
+        :gsub("/home/" .. user .. "/ws", "~ws")
+        :gsub("/home/" .. user .. "/.config", "~cfg")
+        :gsub("/home/" .. user, "~"), 6)
 end
 
 local mode_to_hl_group = {
@@ -39,13 +65,13 @@ local mode_to_name = {
     ---@format enabled
 }
 
-local user = vim.env.USER
-local function expand_home(path)
-    return vim.fn.pathshorten(path:gsub("/tmp/workspaces_" .. user, "~tmp")
-        :gsub("/home/" .. user .. "/ws", "~ws")
-        :gsub("/home/" .. user .. "/.config", "~cfg")
-        :gsub("/home/" .. user, "~"), 6)
+local function update_mode()
+    local mode = api.nvim_get_mode().mode
+    local short = mode:sub(1, 1)
+    local hl = mode_to_hl_group[short]
+    return left_sep(hl) .. "%#Status" .. hl .. "#" .. padd(mode_to_name[mode] or short, 3) .. right_sep(hl)
 end
+
 
 local function get_buf_name(buf)
     local name = api.nvim_buf_get_name(buf)
@@ -88,26 +114,7 @@ local function get_buf_name(buf)
     return (readonly and "[ro]" or ((changed and normal_buf) and "[~]" or "[-]"))
 end
 
-local function padd(str, len)
-    local strlen = #str
-    if strlen >= len then
-        return str
-    else
-        local diff = len - strlen
-        if diff > 1 then
-            return (" "):rep(math.floor(len / 2)) .. str .. (" "):rep(math.floor(len / 2))
-        else
-            return str .. " "
-        end
-    end
-end
 
-local function update_mode()
-    local mode = api.nvim_get_mode().mode
-    local short = mode:sub(1, 1)
-    local hl = mode_to_hl_group[short]
-    return left_sep(hl) .. "%#Status" .. hl .. "#" .. padd(mode_to_name[mode] or short, 3) .. right_sep(hl)
-end
 
 local function update_title()
     local name = get_buf_name(0)
@@ -201,10 +208,11 @@ local function update_wordcount()
     end
 end
 
+-- set up the gradient
 local theme = require("theme.colors")
 for i = 0, 10 do
-    local bg = theme.blend(theme.colors.green, theme.palettes.dark.bg2, (i / 10))
-    local fg = i <= 6 and theme.palettes.dark.fg2 or theme.palettes.dark.inverted
+    local bg = theme.blend(theme.colors.green, theme.colors.teal, (i / 10))
+    local fg = theme.palettes.dark.inverted
     vim.api.nvim_set_hl(0, "StatusProgress" .. i, {
         bg = bg,
         fg = fg,
@@ -300,7 +308,8 @@ end)
 
 
 
--- only autocmd / static
+-- prefill the line
+-- some will be static, some only updated via autocmd, some via timer
 sections[1]  = update_mode()
 sections[2]  = update_title()
 sections[3]  = ""
