@@ -275,6 +275,50 @@ add_with_prefix(colorscheme, "@lsp.", {
     ["type.class.markdown"]             = {},
 })
 
+add_with_prefix(colorscheme, "Status", {
+    Normal       = { bg = col.teal, fg = pal.inverted },
+    LInvNormal   = { fg = col.teal, bg = pal.bg0 },
+    RInvNormal   = { fg = col.teal, bg = pal.bg2 },
+
+    Insert       = { bg = col.white, fg = pal.inverted },
+    LInvInsert   = { fg = col.white, bg = pal.bg0 },
+    RInvInsert   = { fg = col.white, bg = pal.bg2 },
+
+    Command      = { bg = col.green, fg = pal.inverted },
+    LInvCommand  = { fg = col.green, bg = pal.bg0 },
+    RInvCommand  = { fg = col.green, bg = pal.bg2 },
+
+    Visual       = { bg = col.light_blue, fg = pal.inverted },
+    LInvVisual   = { fg = col.light_blue, bg = pal.bg0 },
+    RInvVisual   = { fg = col.light_blue, bg = pal.bg2 },
+
+    Replace      = { bg = col.red, fg = pal.inverted },
+    LInvReplace  = { fg = col.red, bg = pal.bg0 },
+    RInvReplace  = { fg = col.red, bg = pal.bg2 },
+
+    Section1     = { bg = pal.bg2, fg = pal.fg2 },
+    LInvSection1 = { fg = pal.bg2, bg = pal.bg1 },
+    RInvSection1 = { fg = pal.bg2, bg = pal.bg1 },
+
+    Section2     = { bg = pal.bg1, fg = pal.fg2 },
+    LInvSection2 = { fg = pal.bg1, bg = pal.bg0 },
+    RInvSection2 = { fg = pal.bg1, bg = pal.bg0 },
+
+    Error        = { fg = col.red, bg = pal.bg1 },
+    Warning      = { fg = col.orange, bg = pal.bg1 },
+    Hint         = { fg = col.blue, bg = pal.bg1 },
+    Info         = { fg = col.light_blue, bg = pal.bg1 },
+
+    Center       = { bg = pal.bg0, fg = pal.fg0 },
+
+    DiffAdded    = { fg = col.green, bg = pal.bg1 },
+    DiffChanged  = { fg = col.yellow, bg = pal.bg1 },
+    DiffRemoved  = { fg = col.red, bg = pal.bg1 },
+
+    RInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
+    LInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
+})
+
 add_with_prefix(colorscheme, "Startscreen", {
     Title0  = { fg = col.purple },
     Title1  = { fg = col.red },
