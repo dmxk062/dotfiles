@@ -97,10 +97,11 @@ local function get_buf_name(buf)
     local normal_buf = vim.bo[buf].buftype == ""
     if unnamed and name and name ~= "" and normal_buf then
         unnamed = false
-        elems[1] = expand_home(name)
-    elseif unnamed and name then
-        unnamed = false
-        elems[1] = vim.fn.fnamemodify(name, ":t")
+        if normal_buf then
+            elems[1] = expand_home(name)
+        else
+            elems[1] = vim.fn.fnamemodify(name, ":t")
+        end
     end
 
     if not unnamed then
