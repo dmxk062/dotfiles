@@ -36,17 +36,19 @@ local function expand_home(path)
 end
 
 local mode_to_hl_group = {
-    n     = "Normal",
-    i     = "Insert",
-    c     = "Command",
-    v     = "Visual",
-    V     = "Visual",
+    ---@format disable
+    n      = "Normal",
+    i      = "Insert",
+    c      = "Command",
+    v      = "Visual",
+    V      = "Visual",
     [""] = "Visual",
-    s     = "Visual",
-    t     = "Normal",
-    R     = "Replace",
-    r     = "Command",
-    ["!"] = "Command",
+    s      = "Visual",
+    t      = "Normal",
+    R      = "Replace",
+    r      = "Command",
+    ["!"]  = "Command",
+    ---@format enabled
 }
 
 local mode_to_name = {
@@ -161,6 +163,20 @@ local function update_diagnostics()
     return table.concat(res)
 end
 
+local function update_macro(ev)
+    if ev == "RecordingLeave" then
+        local last = vim.fn.reg_recording()
+        if last == "" then
+            return ""
+        end
+
+        return '%#StatusRegister#"' .. last .. "%#StatusCenter#"
+    else
+        local reg = vim.fn.reg_recording()
+        return '%#StatusRegister#"' .. reg .. "%#StatusCenter# <-"
+    end
+end
+
 local function update_lsp_names()
     local clients = vim.lsp.get_clients { bufnr = 0 }
     if #clients == "" then
@@ -247,7 +263,7 @@ local function update_progress()
     return " " .. left_sep(hl) .. string.format("%%#Status%s#%s", hl, text) .. right_sep(hl)
 end
 
-local sections = {}
+local sections
 local redraw = function()
     vim.o.statusline = table.concat(sections)
 end
@@ -283,15 +299,23 @@ api.nvim_create_autocmd({ "BufEnter", "FileType", "BufLeave" }, {
         if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
             return
         end
-        sections[9] = update_filetype()
+        sections[11] = update_filetype()
+        redraw()
+    end
+})
+
+api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+    group = augroup,
+    callback = function(ev)
+        sections[6] = update_macro(ev.event)
         redraw()
     end
 })
 
 local always_timer = vim.uv.new_timer()
 always_timer:start(0, 100, vim.schedule_wrap(function()
-    sections[10] = update_wordcount()
-    sections[11] = update_progress()
+    sections[12] = update_wordcount()
+    sections[13] = update_progress()
     redraw()
 end))
 
@@ -302,7 +326,7 @@ normal_timer:start(0, 100, vim.schedule_wrap(function()
         return
     end
     sections[4] = update_diagnostics()
-    sections[7] = update_diffs()
+    sections[9] = update_diffs()
     redraw()
 end)
 )
@@ -311,17 +335,21 @@ end)
 
 -- prefill the line
 -- some will be static, some only updated via autocmd, some via timer
-sections[1]  = update_mode()
-sections[2]  = update_title()
-sections[3]  = ""
-sections[4]  = ""
-sections[5]  = "%#StatusCenter# %S%= %l:%c "
-sections[6]  = left_sep("Section2") .. "%#StatusSection2# "
-sections[7]  = ""
-sections[8]  = left_sep("Section1") .. "%#StatusSection1# "
-sections[9]  = ""
-sections[10] = ""
-sections[11] = update_progress()
+sections = {
+    update_mode(),      -- mode
+    update_title(),     -- title of buf with modified etc
+    "",                 -- lsp name
+    "",                 -- lsp warnings erorrs etc
+    "%#StatusCenter# ", -- keys
+    "",                 -- macro
+    " %S%= %l:%c ",     -- right align and position
+    left_sep("Section2") .. "%#StatusSection2# ",
+    "",                 -- diff
+    left_sep("Section1") .. "%#StatusSection1# ",
+    "",                 -- filetype
+    "",                 -- wordcount
+    update_progress(),  -- % in file
+}
 
 redraw()
 

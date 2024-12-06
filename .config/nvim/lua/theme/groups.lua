@@ -304,6 +304,7 @@ add_with_prefix(colorscheme, "Status", {
     LInvSection2 = { fg = pal.bg1, bg = pal.bg0 },
     RInvSection2 = { fg = pal.bg1, bg = pal.bg0 },
 
+    Register     = { fg = col.yellow },
     Error        = { fg = col.red, bg = pal.bg1 },
     Warning      = { fg = col.orange, bg = pal.bg1 },
     Hint         = { fg = col.blue, bg = pal.bg1 },
