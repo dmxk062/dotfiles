@@ -284,7 +284,7 @@ api.nvim_create_autocmd({ "BufEnter", "BufModifiedSet", "FileChangedRO" }, {
     end
 })
 
-api.nvim_create_autocmd({ "LspAttach", "LspDetach" }, {
+api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufEnter", "BufLeave" }, {
     group = augroup,
     callback = function()
         sections[3] = update_lsp_names()
