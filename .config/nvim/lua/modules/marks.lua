@@ -301,4 +301,46 @@ function M.set_first_avail_lmark()
     end
 end
 
+function M.jump_first_set_mark()
+    local code = vim.fn.getchar()
+    local char = string.char(code)
+
+    if char:upper() == char then
+        vim.cmd("normal! `" .. char)
+        return
+    end
+
+    if code < 97 or code > 122 then
+        vim.notify("Invalid mark: " .. char, vim.log.levels.ERROR)
+        return
+    end
+
+    local curbuf = api.nvim_get_current_buf()
+    local lmark = api.nvim_buf_get_mark(curbuf, char)
+    if lmark[1] ~= 0 then
+        vim.cmd("normal! `" .. char)
+        return
+    end
+
+    for _, buf in pairs(api.nvim_list_bufs()) do
+        if buf == curbuf then
+            goto continue
+        end
+        local mark = api.nvim_buf_get_mark(buf, char)
+        if mark[1] ~= 0 then
+            local win = vim.fn.bufwinid(buf)
+            if win == -1 then
+                api.nvim_set_current_buf(buf)
+            else
+                api.nvim_set_current_win(win)
+            end
+
+            vim.cmd("normal! `" .. char)
+            return
+        end
+
+        ::continue::
+    end
+end
+
 return M

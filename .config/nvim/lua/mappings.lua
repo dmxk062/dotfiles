@@ -2,7 +2,9 @@ local utils = require("utils")
 local abbrev = utils.abbrev
 local map = utils.map
 
+-- textobjects
 local obj = { "x", "o" }
+-- motion
 local mov = { "n", "x", "o" }
 
 -- less annoying way to exit terminal mode
@@ -27,7 +29,7 @@ map("n", bufleader .. bufleader, function()
         vim.cmd("wincmd ")
         return
     end
-    for i, win in pairs(vim.api.nvim_list_wins()) do
+    for _, win in pairs(vim.api.nvim_list_wins()) do
         if vim.api.nvim_win_get_buf(win) == target then
             vim.api.nvim_set_current_win(win)
             return
@@ -105,6 +107,8 @@ local marks = require("modules.marks")
 map("n", "<space>m", marks.marks_popup)
 map("n", "m<space>", marks.set_first_avail_lmark)
 map("n", "m_", marks.set_first_avail_gmark)
+-- make mark work across all open buffers
+map("n", "'", marks.jump_first_set_mark)
 
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
