@@ -276,12 +276,12 @@ api.nvim_create_autocmd({ "ModeChanged" }, {
     end
 })
 
-api.nvim_create_autocmd({ "BufEnter", "BufModifiedSet", "FileChangedRO" }, {
+api.nvim_create_autocmd({ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", "FileChangedRO" }, {
     group = augroup,
-    callback = function()
+    callback = vim.schedule_wrap(function()
         sections[2] = update_title()
         redraw()
-    end
+    end)
 })
 
 api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufEnter", "BufLeave" }, {
@@ -294,14 +294,14 @@ api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufEnter", "BufLeave" }, {
 
 api.nvim_create_autocmd({ "BufEnter", "FileType", "BufLeave" }, {
     group = augroup,
-    callback = function()
+    callback = vim.schedule_wrap(function()
         -- prevent completion etc
         if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
             return
         end
         sections[11] = update_filetype()
         redraw()
-    end
+    end)
 })
 
 api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
