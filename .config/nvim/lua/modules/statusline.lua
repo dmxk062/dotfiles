@@ -75,11 +75,11 @@ local function update_mode()
 end
 
 
-local function get_buf_name(buf)
-    local name = api.nvim_buf_get_name(buf)
-    local ft = vim.bo[buf].filetype
-    local changed = vim.bo[buf].modified
-    local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
+local function update_title()
+    local name = api.nvim_buf_get_name(0)
+    local ft = vim.bo[0].filetype
+    local changed = vim.bo[0].modified
+    local readonly = vim.bo[0].readonly or not vim.bo[0].modifiable
 
     local unnamed = true
     local elems = {}
@@ -96,12 +96,13 @@ local function get_buf_name(buf)
         return "[git]"
     end
 
-    local normal_buf = vim.bo[buf].buftype == ""
-    if unnamed and name and name ~= "" and normal_buf then
+    local normal_buf = vim.bo[0].buftype == ""
+    if unnamed and name and name ~= "" then
         unnamed = false
         if normal_buf then
             elems[1] = expand_home(name)
         else
+            -- try to get smth reasonable for plugin provided buffers
             elems[1] = vim.fn.fnamemodify(name, ":t")
         end
     end
@@ -117,12 +118,6 @@ local function get_buf_name(buf)
     return (readonly and "[ro]" or ((changed and normal_buf) and "[~]" or "[-]"))
 end
 
-
-
-local function update_title()
-    local name = get_buf_name(0)
-    return " %#StatusSection1#" .. name .. " " .. right_sep("Section1")
-end
 
 local function update_diagnostics()
     local err, warn, hint, info = 0, 0, 0, 0
@@ -158,7 +153,6 @@ local function update_diagnostics()
     if info > 0 then
         table.insert(res, string.format("%%#StatusInfo#i:%d ", info))
     end
-    res[#res + 1] = right_sep("Section2")
 
     return table.concat(res)
 end
@@ -180,11 +174,11 @@ end
 local function update_lsp_names()
     local clients = vim.lsp.get_clients { bufnr = 0 }
     if #clients == "" then
-        return "%#StatusSection2# "
+        return ""
     end
 
     local names = vim.tbl_map(function(lsp) return lsp.name end, clients)
-    return "%#StatusSection2# " .. table.concat(names, ", ")
+    return table.concat(names, ", ")
 end
 
 local function update_diffs()
@@ -210,9 +204,9 @@ end
 local function update_filetype()
     local ft = vim.bo[0].filetype
     if ft and ft ~= "" then
-        return "%#StatusSection1#" .. ft
+        return ft
     else
-        return "%#StatusSection1#[noft]"
+        return "[noft]"
     end
 end
 
@@ -268,10 +262,22 @@ local redraw = function()
     vim.o.statusline = table.concat(sections)
 end
 
+local indices = {
+    mode = 1,
+    title = 3,
+    lsp = 5,
+    diagnostics = 6,
+    macro = 9,
+    diffs = 12,
+    filetype = 14,
+    wordcount = 15,
+    progress = 16,
+}
+
 api.nvim_create_autocmd({ "ModeChanged" }, {
     group = augroup,
     callback = function()
-        sections[1] = update_mode()
+        sections[indices.mode] = update_mode()
         redraw()
     end
 })
@@ -279,7 +285,7 @@ api.nvim_create_autocmd({ "ModeChanged" }, {
 api.nvim_create_autocmd({ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", "FileChangedRO" }, {
     group = augroup,
     callback = vim.schedule_wrap(function()
-        sections[2] = update_title()
+        sections[indices.title] = update_title()
         redraw()
     end)
 })
@@ -287,7 +293,7 @@ api.nvim_create_autocmd({ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", 
 api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufEnter", "BufLeave" }, {
     group = augroup,
     callback = function()
-        sections[3] = update_lsp_names()
+        sections[indices.lsp] = update_lsp_names()
         redraw()
     end
 })
@@ -299,7 +305,7 @@ api.nvim_create_autocmd({ "BufEnter", "FileType", "BufLeave" }, {
         if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
             return
         end
-        sections[11] = update_filetype()
+        sections[indices.filetype] = update_filetype()
         redraw()
     end)
 })
@@ -307,15 +313,15 @@ api.nvim_create_autocmd({ "BufEnter", "FileType", "BufLeave" }, {
 api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
     group = augroup,
     callback = function(ev)
-        sections[6] = update_macro(ev.event)
+        sections[indices.macro] = update_macro(ev.event)
         redraw()
     end
 })
 
 local always_timer = vim.uv.new_timer()
 always_timer:start(0, 100, vim.schedule_wrap(function()
-    sections[12] = update_wordcount()
-    sections[13] = update_progress()
+    sections[indices.wordcount] = update_wordcount()
+    sections[indices.progress] = update_progress()
     redraw()
 end))
 
@@ -325,8 +331,8 @@ normal_timer:start(0, 100, vim.schedule_wrap(function()
     if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
         return
     end
-    sections[4] = update_diagnostics()
-    sections[9] = update_diffs()
+    sections[indices.diagnostics] = update_diagnostics()
+    sections[indices.diffs] = update_diffs()
     redraw()
 end)
 )
@@ -337,12 +343,15 @@ end)
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
     update_mode(),      -- mode
+    " %#StatusSection1#",
     update_title(),     -- title of buf with modified etc
+    " " .. right_sep("Section1") .. "%#StatusSection2# ",
     "",                 -- lsp name
     "",                 -- lsp warnings erorrs etc
-    "%#StatusCenter# ", -- keys
+    right_sep("Section2"),
+    "%#StatusCenter# ", --
     "",                 -- macro
-    " %S%= %l:%c ",     -- right align and position
+    " %S%= %l:%c ",     -- keys, right align and position
     left_sep("Section2") .. "%#StatusSection2# ",
     "",                 -- diff
     left_sep("Section1") .. "%#StatusSection1# ",
