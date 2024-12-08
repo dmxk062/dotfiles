@@ -21,10 +21,12 @@ function M.format_buf_name(buf, short)
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
 
     local unnamed = true
+    local do_modify = true
     local elems = {}
 
     if ft == "oil" then
         unnamed = false
+        do_modify = false
         if vim.startswith(name, "oil-ssh://") then
             local _, _, host, path = name:find("//([^/]+)/(.*)")
             elems[1] = host .. ":" .. path
@@ -54,7 +56,7 @@ function M.format_buf_name(buf, short)
         if changed then table.insert(elems, "[+]") end
         if readonly then table.insert(elems, "[ro]") end
 
-        if short then
+        if short and do_modify then
             elems[1] = vim.fn.fnamemodify(elems[1], ":t")
         end
 
