@@ -8,7 +8,6 @@ local M = {
         "<space>/",
         "<space>[",
         "<space>]",
-        "<space>R",
         "<space><space>",
         {
             "z=",
@@ -17,7 +16,6 @@ local M = {
     },
     cmd = { "Telescope" },
     dependencies = {
-        "nvim-lua/plenary.nvim",
         {
             "nvim-telescope/telescope-fzf-native.nvim",
             build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
@@ -25,21 +23,6 @@ local M = {
         {
             "jvgrootveld/telescope-zoxide",
         },
-    },
-}
-
-local buffer_on_enter = {
-    n = {
-        ["<enter>"] = "select_drop",
-        ["<S-enter>"] = "select_tab_drop",
-        ["<M-j>"] = "move_selection_next",
-        ["<M-k>"] = "move_selection_previous",
-    },
-    i = {
-        ["<enter>"] = "select_drop",
-        ["<S-enter>"] = "select_tab_drop",
-        ["<M-j>"] = "move_selection_next",
-        ["<M-k>"] = "move_selection_previous",
     },
 }
 
@@ -64,7 +47,6 @@ local default_config_tbl = {
         preview_cutoff = 1,
         prompt_position = "bottom",
     },
-    mappings = buffer_on_enter,
     borderchars = {
         prompt = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
         results = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
@@ -78,70 +60,63 @@ end
 
 M.opts = {}
 M.opts.defaults = {
-    mappings = {
+    default_mappings = {
         n = {
-            ["t"] = "select_tab",
-            ["e"] = "file_edit",
-            ["s"] = "select_horizontal",
-            ["v"] = "select_vertical",
-            ["<M-j>"] = "move_selection_next",
-            ["<M-k>"] = "move_selection_previous",
+            ["<cr>"]     = "select_drop",
+            ["t"]        = "select_tab",
+            ["e"]        = "file_edit",
+            ["s"]        = "select_horizontal",
+            ["v"]        = "select_vertical",
+
+            ["j"]        = "move_selection_next",
+            ["k"]        = "move_selection_previous",
+            ["gg"]       = "move_to_top",
+            ["G"]        = "move_to_bottom",
+
+            ["L"]        = "move_to_bottom",
+            ["M"]        = "move_to_middle",
+            ["H"]        = "move_to_top",
+
+            ["<space>c"] = "send_to_qflist",
+
+            ["<esc>"]    = "close",
+            ["q"]        = "close",
         },
+        i = {
+            ["<cr>"]    = "select_drop",
+            ["<M-j>"]  = "move_selection_next",
+            ["<M-k>"]  = "move_selection_previous",
+            ["<Down>"] = "move_selection_next",
+            ["<Up>"]   = "move_selection_previous",
+        }
     },
     dynamic_preview_title = true,
     results_title = false,
-    selection_caret = "> ",
+    selection_caret = "",
+    entry_prefix = "",
+    multi_icon = "",
     prompt_prefix = " ed: ",
+    path_display = {
+        shorten = 8,
+    },
+}
+
+local lsp_config = default_config {
+    jump_type = "drop",
+    reuse_win = true,
+    layout_config = {
+        preview_width = 0.6,
+    }
 }
 M.opts.pickers = {
-    lsp_definitions = default_config {
-        jump_type = "drop",
-        reuse_win = true,
-        layout_config = {
-            preview_width = 0.8,
-        }
-    },
-    lsp_references = default_config {
-        jump_type = "drop",
-        reuse_win = true,
-        layout_config = {
-            preview_width = 0.8,
-        }
-    },
-    lsp_dynamic_workspace_symbols = default_config {
-        jump_type = "drop",
-        prompt_title = "Symbols",
-        reuse_win = true,
-        layout_config = {
-            preview_width = 0.6,
-        }
-
-    },
-    lsp_document_symbols = default_config {
-        jump_type = "drop",
-        prompt_title = "Symbols",
-        reuse_win = true,
-        layout_config = {
-            preview_width = 0.6,
-        }
-
-    },
-    diagnostics = default_config {
-        layout_config = {
-            preview_width = 0.5,
-        }
-    },
-    git_files = default_config { prompt_title = "Files in Git" },
-    live_grep = default_config(),
-    oldfiles = default_config { prompt_title = "History" },
-    registers = {
-        theme = "cursor",
-        mappings = {
-            n = {
-                ["e"] = "edit_register"
-            }
-        }
-    },
+    lsp_definitions = lsp_config,
+    lsp_references = lsp_config,
+    lsp_dynamic_workspace_symbols = lsp_config,
+    lsp_document_symbols = lsp_config,
+    diagnostics = default_config_tbl,
+    git_files = default_config_tbl,
+    live_grep = default_config_tbl,
+    oldfiles = default_config_tbl,
     buffers = {
         sort_lastused = true, -- so i can just <space><space><cr> to cycle
         theme = "dropdown",
@@ -158,17 +133,6 @@ M.opts.pickers = {
         mappings = {
             n = {
                 ["dd"] = "delete_buffer",
-                ["t"] = "select_tab_drop",
-                ["s"] = "select_horizontal",
-                ["v"] = "select_vertical",
-                ["<enter>"] = "select_drop",
-                ["<S-enter>"] = "select_default"
-            },
-            i = {
-                ["<enter>"] = "select_drop",
-                ["<S-enter>"] = "select_default",
-                ["<M-j>"] = "move_selection_next",
-                ["<M-k>"] = "move_selection_previous",
             },
         }
     },
@@ -193,19 +157,7 @@ M.opts.pickers = {
     find_files = default_config {
         hidden = true,
     },
-    help_tags = default_config {
-        mappings = {
-            n = {
-                ["<CR>"] = "select_default",
-                ["v"] = "select_vertical",
-                ["s"] = "select_horizontal",
-                ["t"] = "select_tab"
-            },
-            i = {
-                ["<CR>"] = "select_default",
-            }
-        }
-    },
+    help_tags = default_config_tbl,
 }
 M.opts.extensions = {
     fzf = {
@@ -226,9 +178,6 @@ M.opts.extensions = {
                 end
             },
         }
-    },
-    smart_open = {
-        prompt_title = "test",
     }
 }
 
@@ -247,14 +196,13 @@ M.config = function(_, opts)
     end
 
     local maps = {
-        diagnostics = "<space>D",
+        diagnostics = "<space>Df",
         git_files = "<space>gf",
         find_files = "<space>F",
         oldfiles = "<space>o",
         live_grep = "<space>/",
-        lsp_document_symbols = "<space>[",
-        lsp_dynamic_workspace_symbols = "<space>]",
-        registers = "<space>R",
+        lsp_document_symbols = "<space>v",
+        lsp_dynamic_workspace_symbols = "<space>V",
         buffers = "<space><space>",
     }
 
