@@ -11,57 +11,6 @@ _G.Bufs_for_idx = {}
 ---@type table<integer, integer>
 _G.Tabs_for_idx = {}
 
----@param fname string?
----@param bname string
----@param id integer
----@return string
----@return boolean
-local function get_buf_title(fname, bname, id)
-    local term_title = vim.b[id].term_title
-    if term_title then
-        return term_title, false
-    end
-
-
-    local ft = vim.bo[id].filetype
-    if ft == "oil" then
-        if vim.startswith(bname, "oil-ssh://") then
-            local _, _, host, path = bname:find("//([^/]+)/(.*)")
-            return host .. ":" .. path, true
-        else
-            local n = bname:sub(#"oil://" + 1)
-                :gsub("/tmp/workspaces_" .. user, "~tmp")
-                :gsub("/home/" .. user .. "/ws", "~ws")
-                :gsub("/home/" .. user .. "/.config", "~cfg")
-                :gsub("/home/" .. user, "~")
-            if #n > 1 then
-                return n:sub(1, -2), true
-            else
-                return n, true
-            end
-        end
-    elseif ft == "qf" then
-        return "[qf]", false
-    elseif vim.b[id].fugitive_type then
-        local fugitive_type = vim.b[id].fugitive_type
-        if fugitive_type == "index" then
-            return "[git]", false
-        else
-            return fname .. ":git", true
-        end
-    end
-
-    if fname then
-        return fname, true
-    end
-
-    if bname == "" then
-        return "[-]", true
-    end
-
-    return bname, true
-end
-
 ---@class bufinfo
 ---@field index integer
 ---@field buf integer
@@ -119,7 +68,7 @@ local function render_tabline(f)
             f.set_gui("bold")
         end
 
-        local title, show_modified = get_buf_title(info.filename, info.buf_name, bufnr)
+        local title, show_modified = require("plugin_utils.bufs").format_buf_name(info.buf, true)
         if wincount == 0 then
             f.add(".")
         end

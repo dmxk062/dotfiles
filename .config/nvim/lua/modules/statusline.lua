@@ -27,13 +27,6 @@ local function padd(str, len)
     end
 end
 
-local user = vim.env.USER
-local function expand_home(path)
-    return vim.fn.pathshorten(path:gsub("/tmp/workspaces_" .. user, "~tmp")
-        :gsub("/home/" .. user .. "/ws", "~ws")
-        :gsub("/home/" .. user .. "/.config", "~cfg")
-        :gsub("/home/" .. user, "~"), 6)
-end
 
 local mode_to_hl_group = {
     ---@format disable
@@ -76,46 +69,7 @@ end
 
 
 local function update_title()
-    local name = api.nvim_buf_get_name(0)
-    local ft = vim.bo[0].filetype
-    local changed = vim.bo[0].modified
-    local readonly = vim.bo[0].readonly or not vim.bo[0].modifiable
-
-    local unnamed = true
-    local elems = {}
-
-    if ft == "oil" then
-        unnamed = false
-        if vim.startswith(name, "oil-ssh://") then
-            local _, _, host, path = name:find("//([^/]+)/(.*)")
-            elems[1] = host .. ":" .. path
-        else
-            elems[1] = expand_home(name:sub(#"oil://" + 1, -2)) .. "/"
-        end
-    elseif ft == "fugitive" then
-        return "[git]"
-    end
-
-    local normal_buf = vim.bo[0].buftype == ""
-    if unnamed and name and name ~= "" then
-        unnamed = false
-        if normal_buf then
-            elems[1] = expand_home(name)
-        else
-            -- try to get smth reasonable for plugin provided buffers
-            elems[1] = vim.fn.fnamemodify(name, ":t")
-        end
-    end
-
-    if not unnamed then
-        if changed then table.insert(elems, "[+]") end
-        if readonly then table.insert(elems, "[ro]") end
-
-        return table.concat(elems, " ")
-    end
-
-
-    return (readonly and "[ro]" or ((changed and normal_buf) and "[~]" or "[-]"))
+    return require("plugin_utils.bufs").format_buf_name(0)
 end
 
 
@@ -276,7 +230,11 @@ local indices = {
 
 api.nvim_create_autocmd({ "ModeChanged" }, {
     group = augroup,
-    callback = function()
+    callback = function(ev)
+        -- stop flickering
+        if vim.bo[ev.buf].filetype == "TelescopePrompt" then
+            return
+        end
         sections[indices.mode] = update_mode()
         redraw()
     end
@@ -360,9 +318,10 @@ sections = {
     update_progress(),  -- % in file
 }
 
-redraw()
-
 vim.o.laststatus = 3
 vim.o.showcmdloc = "statusline"
+
+redraw()
+
 
 return M
