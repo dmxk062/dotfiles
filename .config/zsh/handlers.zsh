@@ -1,5 +1,8 @@
 function preexec {
     _PROMPTTIMER=$EPOCHREALTIME
+    # show current cmd in title
+    local cmd=(${(z)1})
+    print -Pn "\e]0;[%~] ${1:t} ${cmd[3,-1]}\a"
 }
 
 function command_not_found_handler() {
