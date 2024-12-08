@@ -87,7 +87,8 @@ local colorscheme = {
     Directory                   = { fg = col.teal },
     Type                        = { link = "@type" },
     StorageClass                = { fg = col.light_blue },
-    Structure                   = { fg = col.magenta },
+    Structure                   = { link = "@type" },
+    Struct                      = { link = "@type" },
     Statement                   = { fg = col.light_blue },
     Character                   = { link = "@character" },
     String                      = { link = "@string" },
@@ -320,6 +321,10 @@ add_with_prefix(colorscheme, "Status", {
     LInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
 })
 
+add_with_prefix(colorscheme, "fugitive", {
+    UntrackedSection = { fg = col.light_gray },
+})
+
 add_with_prefix(colorscheme, "Startscreen", {
     Title0  = { fg = col.purple },
     Title1  = { fg = col.red },
@@ -535,10 +540,10 @@ add_with_prefix(colorscheme, "Telescope", {
     PromptTitle    = { fg = col.teal },
     ResultsBorder  = { fg = pal.bg3 },
     PreviewBorder  = { fg = pal.bg3 },
-    Selection      = { fg = col.teal, bold = true },
+    Selection      = { bg = pal.bg1 },
     PromptPrefix   = { fg = col.teal, bold = true },
     SelectionCaret = {},
-    Matching       = { fg = col.teal },
+    Matching       = { bg = pal.bg1 },
 
     PreviewExecute = { link = "OilExec" },
     PreviewRead    = { link = "OilRead" },
