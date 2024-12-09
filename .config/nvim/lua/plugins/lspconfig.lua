@@ -190,6 +190,11 @@ M.config = function()
     lspconfig.marksman.setup {
 
     }
+
+    lspconfig.hls.setup {
+        capabilities = capabilities,
+        filetypes = { 'haskell', 'lhaskell', 'cabal' },
+    }
     -- dont need anything special from those *yet*
     for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff", "taplo", }) do
         lspconfig[lsp].setup {
