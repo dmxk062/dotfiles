@@ -1,7 +1,6 @@
 local M = {
     "stevearc/oil.nvim",
     dependencies = {
-        "nvim-tree/nvim-web-devicons",
         "refractalize/oil-git-status.nvim"
     },
 }
@@ -102,16 +101,17 @@ local function goto_git_ancestor()
 
     local git_ancestor = vim.fs.root(path, ".git")
 
+    if not git_ancestor then
+        vim.notify("oil: Not in a git repo", vim.log.levels.WARN)
+        return
+    end
+
     -- avoid flicker
     if git_ancestor == path or git_ancestor .. "/" == path then
         return
     end
 
-    if git_ancestor then
-        require("oil").open(git_ancestor)
-    else
-        vim.notify("oil: Not in a git repo", vim.log.levels.WARN)
-    end
+    require("oil").open(git_ancestor)
 end
 
 local function open_external()
@@ -199,6 +199,7 @@ local extension_highlights = {
     ["go"]      = "Source",
     ["gz"]      = "Archive",
     ["h"]       = "Code",
+    ["hs"]      = "Source",
     ["html"]    = "Markup",
     ["ini"]     = "Config",
     ["jar"]     = "Archive",
