@@ -13,7 +13,7 @@
 <Multi_key> <equal> <G> : "Г"
 <Multi_key> <equal> <g> : "г"
 <Multi_key> <equal> <D> : "Д"
-<Multi_key> <equal> <g> : "д"
+<Multi_key> <equal> <d> : "д"
 <Multi_key> <equal> <E> : "Е"
 <Multi_key> <equal> <e> : "е"
 <Multi_key> <equal> <quotedbl> <E> : "Ё"
