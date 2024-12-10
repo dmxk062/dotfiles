@@ -16,6 +16,8 @@ map("i", "<M-j>", "<esc>j")
 
 map(mov, "]q", "<cmd>cnext<cr>")
 map(mov, "[q", "<cmd>cprev<cr>")
+map(mov, "]L", "<cmd>lnext<cr>")
+map(mov, "[L", "<cmd>lprev<cr>")
 
 -- buffer mappings
 local bufleader = "\\"
