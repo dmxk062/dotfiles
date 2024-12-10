@@ -308,8 +308,8 @@ add_with_prefix(colorscheme, "Status", {
     Register     = { fg = col.yellow },
     Error        = { fg = col.red, bg = pal.bg1 },
     Warning      = { fg = col.orange, bg = pal.bg1 },
-    Hint         = { fg = col.blue, bg = pal.bg1 },
-    Info         = { fg = col.light_blue, bg = pal.bg1 },
+    Info         = { fg = col.blue, bg = pal.bg1 },
+    Hint         = { fg = col.light_blue, bg = pal.bg1 },
 
     Center       = { bg = pal.bg0, fg = pal.fg0 },
 

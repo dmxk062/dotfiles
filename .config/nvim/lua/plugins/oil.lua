@@ -169,24 +169,6 @@ local function set_sort(action)
     require("oil").set_sort(sort)
 end
 
-local function get_perm_string(mode)
-    local perms = {
-        "r", "w", "x",
-        "r", "w", "x",
-        "r", "w", "x",
-    }
-
-    local res = ""
-    for i = 1, 9 do
-        if bit.band(mode, bit.lshift(1, 9 - i)) ~= 0 then
-            res = res .. perms[i]
-        else
-            res = res .. "-"
-        end
-    end
-
-    return res
-end
 
 local extension_highlights = {
     ["a"]       = "Bin",
