@@ -14,10 +14,13 @@ map("t", "<S-Esc>", "<C-\\><C-n>")
 map("i", "<M-k>", "<esc>k")
 map("i", "<M-j>", "<esc>j")
 
-map(mov, "]q", "<cmd>cnext<cr>")
-map(mov, "[q", "<cmd>cprev<cr>")
-map(mov, "]L", "<cmd>lnext<cr>")
-map(mov, "[L", "<cmd>lprev<cr>")
+map(mov, "<space>j", "<cmd>cnext<cr>")
+map(mov, "<space>k", "<cmd>cprev<cr>")
+map(mov, "<space>n", "<cmd>lnext<cr>")
+map(mov, "<space>N", "<cmd>lprev<cr>")
+
+map("n", "<space>q", "<cmd>cwindow<cr>")
+map("n", "<space>l", "<cmd>lwindow<cr>")
 
 -- buffer mappings
 local bufleader = "\\"
@@ -116,11 +119,17 @@ map("n", "'", marks.jump_first_set_mark)
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
--- use <space>q for macros instead, i dont use them that often
-map("n", "<space>q", "q")
+-- use <space>Q for macros instead, i dont use them that often
+map("n", "<space>Q", "q")
 
--- faster to exit
-map("n", "q", "<cmd>q<CR>")
+-- faster to close windows and cycle
+map("n", "q", function()
+    if #vim.api.nvim_list_wins() > 1 then
+        vim.cmd.quit()
+    else
+        vim.cmd.bnext()
+    end
+end)
 abbrev("c", "Q", "q!")
 
 -- shortcuts to enable/disable spelling
@@ -155,7 +164,7 @@ map(obj, "gG", textobjs.entire_buffer)
 
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
-map("n", "<space>Dc", function() vim.diagnostic.setqflist() end)
+map("n", "<space>Dq", function() vim.diagnostic.setqflist() end)
 map("n", "<space>Dl", function() vim.diagnostic.setloclist() end)
 
 -- target the area of a diagnostic with a textobject
