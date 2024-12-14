@@ -151,6 +151,7 @@ M.opts.pickers = {
         mappings = {
             i = {
                 ["<esc>"] = "close",
+                ["<cr>"] = "select_default",
             }
         }
     },
