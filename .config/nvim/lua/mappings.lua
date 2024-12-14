@@ -120,7 +120,15 @@ map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" 
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
 -- use <space>Q for macros instead, i dont use them that often
-map("n", "<space>Q", "q")
+-- use reg, defaulting to "q
+map("n", "<space>Q", function()
+    if vim.fn.reg_recording() ~= "" then
+        return "q"
+    else
+        local reg = vim.v.register
+        return "q" .. (reg ~= '"' and reg or "q")
+    end
+end, {expr = true})
 
 -- faster to close windows and cycle
 map("n", "q", function()
