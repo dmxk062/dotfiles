@@ -10,10 +10,6 @@ local mov = { "n", "x", "o" }
 -- less annoying way to exit terminal mode
 map("t", "<S-Esc>", "<C-\\><C-n>")
 
--- for some reason smth else remaps those
-map("i", "<M-k>", "<esc>k")
-map("i", "<M-j>", "<esc>j")
-
 map(mov, "<space>j", "<cmd>cnext<cr>")
 map(mov, "<space>k", "<cmd>cprev<cr>")
 map(mov, "<space>n", "<cmd>lnext<cr>")
