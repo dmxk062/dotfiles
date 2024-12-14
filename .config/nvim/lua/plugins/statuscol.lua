@@ -41,6 +41,12 @@ M.config = function()
                     auto = true
                 },
             },
+            {
+                sign = {
+                    namespace = { "quicker.*" },
+                    auto = true,
+                }
+            }
         },
     }
 end

@@ -83,6 +83,8 @@ local colorscheme = {
     qfLineNr                    = { fg = col.magenta },
     qfSeparator                 = { link = "@punctuation.delimiter" },
     QuickFixLine                = { bg = pal.bg1 },
+    QuickFixLineNr              = { fg = col.purple },
+    QuickFixFilename            = { link = "Identifier" },
 
     Directory                   = { fg = col.teal },
     Type                        = { link = "@type" },
