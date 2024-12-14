@@ -101,6 +101,14 @@ end)
 map("n", "gt", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
+-- clear hidden buffers
+map("n", bufleader .. "C", function()
+    for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.bo[b].buflisted and vim.bo[b].buftype == "" and vim.fn.bufwinid(b) == - 1 then
+            vim.api.nvim_buf_delete(b, {})
+        end
+    end
+end)
 
 
 -- my own mark handling
@@ -124,7 +132,7 @@ map("n", "<space>Q", function()
         local reg = vim.v.register
         return "q" .. (reg ~= '"' and reg or "q")
     end
-end, {expr = true})
+end, { expr = true })
 
 -- faster to close windows and cycle
 map("n", "q", function()
