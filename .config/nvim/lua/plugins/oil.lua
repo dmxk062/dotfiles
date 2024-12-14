@@ -359,19 +359,6 @@ M.opts = {
         ["g=t"]       = function() set_sort("mtime") end,
         ["g=i"]       = function() set_sort("invert") end,
         ["g=d"]       = function() set_sort("default") end,
-
-        -- only close oil buffer if it is the last one
-        ["q"]         = function()
-            if not (#vim.api.nvim_list_wins() > 1) then
-                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                    if vim.bo[buf].filetype ~= "oil" and vim.bo[buf].buflisted then
-                        vim.api.nvim_win_set_buf(0, buf)
-                        return
-                    end
-                end
-            end
-            vim.cmd("quit")
-        end,
     },
 }
 
