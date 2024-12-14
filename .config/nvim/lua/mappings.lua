@@ -19,8 +19,8 @@ map(mov, "<space>k", "<cmd>cprev<cr>")
 map(mov, "<space>n", "<cmd>lnext<cr>")
 map(mov, "<space>N", "<cmd>lprev<cr>")
 
-map("n", "<space>q", "<cmd>cwindow<cr>")
-map("n", "<space>l", "<cmd>lwindow<cr>")
+map("n", "<space>q", function() require("quicker").toggle() end)
+map("n", "<space>l", function() require("quicker").toggle { loclist = true } end)
 
 -- buffer mappings
 local bufleader = "\\"
