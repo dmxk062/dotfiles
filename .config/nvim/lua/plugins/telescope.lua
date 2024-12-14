@@ -1,7 +1,7 @@
 local M = {
     "nvim-telescope/telescope.nvim",
     keys = {
-        "<space>D",
+        "<space>Df",
         "<space>gf",
         "<space>F",
         "<space>o",
