@@ -64,15 +64,21 @@ function M.lmap(bufnr, mode, keys, action, opts)
 end
 
 ---@param bufnr integer
-function M.local_mapper(bufnr)
-    ---@param mode nvim_mode
-    ---@param keys string
-    ---@param action string|function
-    ---@param opts vim.keymap.set.Opts|nil
-    return function(mode, keys, action, opts)
-        opts = opts or {}
-        opts.buffer = bufnr
-        vim.keymap.set(mode, keys, action, opts)
+---@param prefix string?
+---@return fun(mode: nvim_mode, keys: string, action: string|function, opts: vim.keymap.set.Opts?)
+function M.local_mapper(bufnr, prefix)
+    if prefix then
+        return function(mode, keys, action, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, prefix .. keys, action, opts)
+        end
+    else
+        return function(mode, keys, action, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, keys, action, opts)
+        end
     end
 end
 
