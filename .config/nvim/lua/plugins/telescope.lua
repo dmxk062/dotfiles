@@ -6,8 +6,8 @@ local M = {
         "<space>F",
         "<space>o",
         "<space>/",
-        "<space>[",
-        "<space>]",
+        "<space>v",
+        "<space>V",
         "<space><space>",
         {
             "z=",
