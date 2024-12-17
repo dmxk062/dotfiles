@@ -14,14 +14,14 @@ local M = {}
 ---@type table<string, Snippets>
 local snippets_for_ft = {
     _ = {
-        EPOCH = {
+        ["EPOCH"] = {
             desc = "Current UNIX time stamp",
-            body = function () return vim.fn.strftime("%s") end,
+            body = function() return vim.fn.strftime("%s") end,
             no_hl = true,
-        }
+        },
     },
     c = {
-        main = {
+        ["main"] = {
             desc = "Program entry point",
             body = {
                 "int main(int argc, char* argv[]) {",
@@ -29,15 +29,49 @@ local snippets_for_ft = {
                 "\treturn EXIT_SUCCESS;",
                 "}"
             },
-        }
+        },
+        ["#guard"] = {
+            desc = "Guard current file with #define",
+            body = function()
+                local default = "_" .. vim.fn.expand("%:t"):gsub("[%./]", "_"):upper()
+
+                return string.format("#ifndef ${1:%s}\n#define ${1}\n\n$0\n\n#endif", default)
+            end
+        },
+    },
+    python = {
+        ["main"] = {
+            body = {
+                "def main():",
+                "\t${0}\n\n",
+                "if __name__ == \"__main__\":",
+                "\tmain()"
+            }
+        },
+        ["__"] = {
+            body = "__${1:init}__"
+        },
+    },
+    lua = {
+        ["req"] = {
+            body = "require(\"${1}\")"
+        },
+        ["lreq"] = {
+            body = "local ${1:mod} = require(\"${1}\")"
+        },
     },
     markdown = {
-        superscript = {
+        ["superscript"] = {
             body = "<sup>$1</sup>",
         },
-        subscript = {
+        ["subscript"] = {
             body = "<supb$1</sub>",
         }
+    },
+    oil = {
+        [".c,.h"] = {
+            body = "${1:name}.c\n${1}.h"
+        },
     }
 }
 
@@ -82,7 +116,7 @@ local Cmp_source = {
 
     ---@param cb function
     complete = function(_, _, cb)
-        local ft = vim.bo[0].ft
+        local ft = vim.bo.filetype
 
         local snips = snippets_for_ft[ft]
 
