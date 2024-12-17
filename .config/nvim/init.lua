@@ -54,8 +54,8 @@ opt.listchars = {
 }
 
 -- normal, o-pending, visual: block
--- insert, command: bar, blink
 -- replace: underscore
+-- insert, command: bar
 -- all except o-pending: blink
 opt.guicursor = {
     "n-o-v:block",
