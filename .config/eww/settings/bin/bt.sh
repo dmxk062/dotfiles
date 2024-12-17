@@ -75,7 +75,7 @@ function list_devices(){
         echo "$info"|grep -q "Trusted: yes"&&trusted=true||trusted=false
         echo "$info"|grep -q "Blocked: yes"&&blocked=true||blocked=false
         echo "$info"|grep -q "Battery"&&battery_present=true||battery_present=false
-        if $battery_present; then
+        if ((battery_present && connected)); then
             battery_level="$(echo "$info"|grep "Battery Percentage" | cut -d ' ' -f 4-| sed 's/(\|)//g')"
         else
             battery_level="null"
