@@ -14,10 +14,16 @@ local M = {}
 ---@type table<string, Snippets>
 local snippets_for_ft = {
     _ = {
-        ["EPOCH"] = {
-            desc = "Current UNIX time stamp",
-            body = function() return vim.fn.strftime("%s") end,
+        ["date-epoch"] = {
+            body = function() return os.date("%s") end,
             no_hl = true,
+        },
+        ["date-dir"] = {
+            body = function() return os.date("%Y/%m/%d") end,
+            no_hl = true,
+        },
+        ["date-iso"] = {
+            body = function() return os.date("%Y-%m-%dT%M:%S") end
         },
     },
     c = {
@@ -37,6 +43,9 @@ local snippets_for_ft = {
 
                 return string.format("#ifndef ${1:%s}\n#define ${1}\n\n$0\n\n#endif", default)
             end
+        },
+        ["attr_packed"] = {
+            body = "__attribute__((packed))"
         },
     },
     python = {
@@ -65,7 +74,7 @@ local snippets_for_ft = {
             body = "<sup>$1</sup>",
         },
         ["subscript"] = {
-            body = "<supb$1</sub>",
+            body = "<sup>$1</sub>",
         }
     },
     oil = {
