@@ -1,7 +1,0 @@
-{
-    "Filter": {
-        "prefix": ["filter", "select"],
-        "body": ["select(.${1:property} ${2:==} ${3:value})"],
-        "description": "Filter list"
-    }
-}
