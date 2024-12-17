@@ -18,6 +18,9 @@ map(mov, "<space>N", "<cmd>lprev<cr>")
 map("n", "<space>q", function() require("quicker").toggle() end)
 map("n", "<space>l", function() require("quicker").toggle { loclist = true } end)
 
+map({ "n", "s" }, "<M-space>", function() vim.snippet.jump(1) end)
+map({ "n", "s" }, "<C-space>", function() vim.snippet.jump(-1) end)
+
 -- buffer mappings
 local bufleader = "\\"
 
@@ -104,7 +107,7 @@ map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
     for _, b in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.bo[b].buflisted and vim.bo[b].buftype == "" and vim.fn.bufwinid(b) == - 1 then
+        if vim.bo[b].buflisted and vim.bo[b].buftype == "" and vim.fn.bufwinid(b) == -1 then
             vim.api.nvim_buf_delete(b, {})
         end
     end

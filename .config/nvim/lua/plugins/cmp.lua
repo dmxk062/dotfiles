@@ -1,4 +1,5 @@
 local M = {
+    -- enabled = false,
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
@@ -7,7 +8,6 @@ local M = {
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-omni",
-        "saadparwaiz1/cmp_luasnip",
         "f3fora/cmp-spell",
     }
 }
@@ -110,7 +110,7 @@ M.opts = {
     },
     snippet = {
         expand = function(args)
-            require("luasnip").lsp_expand(args.body)
+            vim.snippet.expand(args.body)
         end,
     },
     formatting = {
