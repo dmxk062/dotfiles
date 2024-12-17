@@ -3,19 +3,25 @@
 local M = {}
 
 ---@class Snippet
----@field name string
 ---@field body string[]|string|fun(): (string|string[])?
----@field do_hl boolean
+---@field no_hl boolean?
 ---@field desc string?
+
+---@alias Snippets table<string, Snippet>
 
 --- ft = ...
 --- _ : global snippets
----@type table<string, Snippet[]>
+---@type table<string, Snippets>
 local snippets_for_ft = {
-    _ = {},
+    _ = {
+        EPOCH = {
+            desc = "Current UNIX time stamp",
+            body = function () return vim.fn.strftime("%s") end,
+            no_hl = true,
+        }
+    },
     c = {
-        {
-            name = "main",
+        main = {
             desc = "Program entry point",
             body = {
                 "int main(int argc, char* argv[]) {",
@@ -23,15 +29,22 @@ local snippets_for_ft = {
                 "\treturn EXIT_SUCCESS;",
                 "}"
             },
-            do_hl = true
+        }
+    },
+    markdown = {
+        superscript = {
+            body = "<sup>$1</sup>",
+        },
+        subscript = {
+            body = "<supb$1</sub>",
         }
     }
 }
 
 ---@param dest lsp.CompletionItem[]
----@param snips Snippet[]
+---@param snips Snippets
 local function do_snippets(dest, snips)
-    for _, s in ipairs(snips) do
+    for name, s in pairs(snips) do
         local body = s.body
         if type(body) == "function" then
             body = body()
@@ -46,15 +59,15 @@ local function do_snippets(dest, snips)
 
         ---@type lsp.CompletionItem
         local r = {
-            label = s.name,
+            label = name,
             insertText = body,
             insertTextMode = 2,   -- adjust indentation
             kind = 15,            -- snippet
             insertTextFormat = 2, -- as snippet
             data = {
-                prefix = s.name,
+                prefix = name,
                 body = body,
-                highlight = s.do_hl,
+                highlight = not s.no_hl,
                 description = s.desc,
             }
         }

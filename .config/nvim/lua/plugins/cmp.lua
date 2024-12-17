@@ -183,7 +183,7 @@ M.config = function(_, opts)
 
     cmp.setup.filetype("gitcommit", {
         sources = cmp.config.sources({
-            { name = "luasnip" },
+            { name = "snippet" },
             { name = "buffer" },
         })
     })
@@ -191,7 +191,7 @@ M.config = function(_, opts)
 
     cmp.setup.filetype("markdown", {
         sources = cmp.config.sources({
-            { name = "luasnip" },
+            { name = "snippet" },
             { name = "path" },
             { name = "buffer" },
             { name = "nvim_lsp" },
@@ -201,7 +201,7 @@ M.config = function(_, opts)
     cmp.setup.filetype("norg", {
         sources = cmp.config.sources({
             { name = "neorg" },
-            { name = "luasnip" },
+            { name = "snippet" },
             { name = "path" },
             { name = "buffer" },
             { name = "spell" } -- move spell to the bottom so it doesnt slow it down that much
@@ -247,7 +247,7 @@ M.config = function(_, opts)
                     end
                 }
             },
-            { name = "luasnip" },
+            { name = "snippet" },
             { name = "buffer" },
             { name = "nvim_lsp" },
         })

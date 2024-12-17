@@ -20,7 +20,7 @@ return {
         cmp.setup.filetype("tex", {
             sources = cmp.config.sources({
                 { name = "vimtex" },
-                { name = "luasnip" },
+                { name = "snippet" },
                 { name = "path" },
                 { name = "buffer" },
                 { name = "nvim_lsp" },
