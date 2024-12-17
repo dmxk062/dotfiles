@@ -131,7 +131,7 @@ M.opts = {
     sources = {
         { name = "nvim_lsp" },
         { name = "path" },
-        { name = "luasnip" },
+        { name = "snippet" },
         { name = "buffer" },
     },
     sorting = {},
@@ -252,6 +252,8 @@ M.config = function(_, opts)
             { name = "nvim_lsp" },
         })
     })
+
+    require("modules.snippets").setup()
 end
 
 return M
