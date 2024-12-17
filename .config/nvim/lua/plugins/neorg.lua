@@ -1,4 +1,5 @@
 local M = {
+    enabled = false,
     "nvim-neorg/neorg",
     cmd          = { "Neorg" },
     ft           = { "norg" },
