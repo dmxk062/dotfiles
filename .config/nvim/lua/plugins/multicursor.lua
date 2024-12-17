@@ -16,6 +16,10 @@ function M.config(_, opts)
         if mc.hasCursors() then
             mc.clearCursors()
         end
+
+        if vim.snippet.active() then
+            vim.snippet.stop()
+        end
     end)
 
     -- replace default I and A for visual mode
