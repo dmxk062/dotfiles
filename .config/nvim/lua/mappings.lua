@@ -107,7 +107,7 @@ map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
     for _, b in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.bo[b].buflisted and vim.bo[b].buftype == "" and vim.fn.bufwinid(b) == -1 then
+        if vim.bo[b].buflisted and vim.fn.bufwinid(b) == -1 then
             vim.api.nvim_buf_delete(b, {})
         end
     end
