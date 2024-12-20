@@ -2,8 +2,6 @@ local M = {
     "rafcamlet/tabline-framework.nvim",
 }
 
-local user = os.getenv("USER")
-
 -- mapping of buffer indices in the buffer line to buffer numbers
 ---@type table<integer, integer>
 _G.Bufs_for_idx = {}
