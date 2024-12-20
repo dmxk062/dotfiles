@@ -21,7 +21,7 @@ local M = {
 
                 require("mason-lspconfig").setup {
                     ensure_installed = {
-                        "ruff_lsp",
+                        "ruff",
                         "asm_lsp",
                         "typos_lsp"
                     }
