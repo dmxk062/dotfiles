@@ -10,14 +10,17 @@ local mov = { "n", "x", "o" }
 -- less annoying way to exit terminal mode
 map("t", "<S-Esc>", "<C-\\><C-n>")
 
+-- quickly navigate qflist and loclist
 map(mov, "<space>j", "<cmd>cnext<cr>")
 map(mov, "<space>k", "<cmd>cprev<cr>")
 map(mov, "<space>n", "<cmd>lnext<cr>")
 map(mov, "<space>N", "<cmd>lprev<cr>")
 
+-- toggle them
 map("n", "<space>q", function() require("quicker").toggle() end)
 map("n", "<space>l", function() require("quicker").toggle { loclist = true } end)
 
+-- move between snippet fields
 map({ "n", "s" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s" }, "<C-space>", function() vim.snippet.jump(-1) end)
 
@@ -27,6 +30,7 @@ local bufleader = "\\"
 map("n", bufleader .. "l", "<cmd>bnext<cr>")
 map("n", bufleader .. "h", "<cmd>bprev<cr>")
 
+-- go to the buffer given in count
 map("n", bufleader .. bufleader, function()
     local target = Bufs_for_idx[vim.v.count] or 0
     if target == 0 then
@@ -117,8 +121,11 @@ end)
 -- my own mark handling
 local marks = require("modules.marks")
 map("n", "<space>m", marks.marks_popup)
+
+-- automatically generate mark name
 map("n", "m<space>", marks.set_first_avail_lmark)
 map("n", "m_", marks.set_first_avail_gmark)
+
 -- make mark work across all open buffers
 map("n", "'", marks.jump_first_set_mark)
 
@@ -145,6 +152,8 @@ map("n", "q", function()
         vim.cmd.bnext()
     end
 end)
+
+-- force quit
 abbrev("c", "Q", "q!")
 
 -- shortcuts to enable/disable spelling
