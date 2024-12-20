@@ -226,12 +226,23 @@ operators.map_function("<space>el", function(mode, region, extra, get)
         code[#code] = "return " .. code[#code]
     end
     local exprs = table.concat(code, "\n") .. "\n"
-    local return_val = loadstring(exprs)()
+    local func, err = loadstring(exprs)
+    if not func then
+        vim.notify(err, vim.log.levels.ERROR)
+        return
+    end
+
+    local ok, return_val = pcall(func)
     local result
+    if not ok then
+        vim.notify(return_val, vim.log.levels.ERROR)
+        return
+    end
+
     if type(return_val) == "table" or type(return_val) == "userdata" then
-        result = vim.split(vim.inspect(return_val), "\n")
+        result = {table.concat(table, "\n")}
     elseif type(return_val) == "nil" then
-        result = {}
+        return
     elseif type(return_val) == "string" then
         result = vim.split(return_val, "\n")
     else
