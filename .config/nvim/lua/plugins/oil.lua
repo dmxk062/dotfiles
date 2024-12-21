@@ -250,7 +250,7 @@ M.opts = {
     skip_confirm_for_simple_edits = true,
 
     float = {
-        padding = 16,
+        padding = 8,
         max_width = 80,
         max_height = 40,
     },
