@@ -169,7 +169,7 @@ local colorscheme = {
 add_with_prefix(colorscheme, "@", {
     number                           = { fg = col.magenta },
     float                            = { fg = col.magenta },
-    macro                            = { fg = pal.fg0 },
+    macro                            = {},
     character                        = { fg = col.green },
     conditional                      = { fg = col.light_blue },
     boolean                          = { fg = col.teal },
