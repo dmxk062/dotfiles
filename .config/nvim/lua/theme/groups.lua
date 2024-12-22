@@ -14,6 +14,7 @@ local function add_with_prefix(to_append, prefix, table)
 end
 
 
+-- Basics {{{
 local colorscheme = {
     Normal                      = { fg = pal.fg0, bg = pal.bg0 },
     NormalFloat                 = { fg = pal.fg0, bg = pal.bg0 },
@@ -44,6 +45,7 @@ local colorscheme = {
     StatusLine                  = { bg = pal.bg0 },
     Folded                      = { bg = blend(pal.bg1, pal.bg0, 0.4) },
     UfoFoldedFg                 = {},
+    UfoFoldTitle                = { fg = col.teal, italic = true },
     UfoFoldedBg                 = {},
     UfoPreviewThumb             = {},
     FoldNumber                  = { fg = col.magenta, italic = true },
@@ -164,8 +166,13 @@ local colorscheme = {
     MarkPosition                = { link = "Number" },
     MarkUnloaded                = { fg = col.bright_gray },
     MarkPreview                 = { italic = true, fg = col.bright_gray },
-}
 
+    -- don't show those in italic
+    helpExample                 = {},
+}
+-- }}}
+
+-- Treesitter {{{
 add_with_prefix(colorscheme, "@", {
     number                           = { fg = col.magenta },
     float                            = { fg = col.magenta },
@@ -185,6 +192,9 @@ add_with_prefix(colorscheme, "@", {
     ["comment.note"]                 = { fg = col.light_blue, italic = true, underline = true },
 
     ["string"]                       = { fg = col.green },
+    ["string.csv"]                   = { link = "Normal" },
+    ["string.psv"]                   = { link = "Normal" },
+    ["string.tsv"]                   = { link = "Normal" },
     ["string.documentation"]         = { link = "*comment" },
     ["string.special.path"]          = { fg = col.teal },
     ["string.regex"]                 = { fg = col.orange },
@@ -251,7 +261,7 @@ add_with_prefix(colorscheme, "@", {
     ["markup.math"]                  = { italic = true },
     ["markup.raw.markdown_inline"]   = { bg = pal.bg1 },
     ["markup.raw.block.markdown"]    = { bg = pal.bg0 },
-    ["markup.link"]                  = { fg = col.fg2 },
+    ["markup.link"]                  = { fg = col.blue },
     ["markup.link.url"]              = { fg = col.blue, italic = true },
     ["markup.link.label"]            = { fg = col.blue },
     ["markup.quote"]                 = { italic = true },
@@ -266,7 +276,9 @@ add_with_prefix(colorscheme, "@", {
     ["symbol.printf"]                = { fg = col.light_blue, bg = pal.bg1 },
     ["string.printf"]                = { fg = col.green, bg = pal.bg1 },
 })
+-- }}}
 
+-- LSP overrides {{{
 add_with_prefix(colorscheme, "@lsp.", {
     ["type.macro"]                      = { link = "@macro" },
     ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
@@ -280,7 +292,9 @@ add_with_prefix(colorscheme, "@lsp.", {
     -- tags in zettelkasten
     ["type.enumMember.markdown"]        = { fg = col.teal, bg = pal.bg1 },
 })
+-- }}}
 
+-- Statusline {{{
 add_with_prefix(colorscheme, "Status", {
     Normal       = { bg = col.teal, fg = pal.inverted },
     LInvNormal   = { fg = col.teal, bg = pal.bg0 },
@@ -325,11 +339,9 @@ add_with_prefix(colorscheme, "Status", {
     RInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
     LInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
 })
+-- }}}
 
-add_with_prefix(colorscheme, "fugitive", {
-    UntrackedSection = { fg = col.light_gray },
-})
-
+-- Startscreen {{{
 add_with_prefix(colorscheme, "Startscreen", {
     Title0  = { fg = col.purple },
     Title1  = { fg = col.red },
@@ -351,7 +363,9 @@ add_with_prefix(colorscheme, "Startscreen", {
     Quit    = { fg = col.red },
     New     = { fg = col.purple },
 })
+-- }}}
 
+-- Oil {{{
 add_with_prefix(colorscheme, "Oil", {
     Link             = { fg = col.blue, bold = true },
     OrphanLink       = { fg = col.blue },
@@ -405,6 +419,7 @@ add_with_prefix(colorscheme, "Oil", {
     SizeHuge         = { fg = col.red },
 })
 
+
 add_with_prefix(colorscheme, "OilGitStatus", {
     IndexIgnored           = { fg = pal.bg3 },
     WorkingTreeIgnored     = { link = "*IndexIgnored" },
@@ -426,6 +441,9 @@ add_with_prefix(colorscheme, "OilGitStatus", {
     WorkingTreeUnmerged    = { link = "*IndexUnmerged" },
 })
 
+-- }}}
+
+-- nvim-cmp {{{
 add_with_prefix(colorscheme, "CmpItem", {
     Kind            = { fg = col.yellow },
     KindText        = { fg = pal.bg3 },
@@ -453,6 +471,9 @@ add_with_prefix(colorscheme, "CmpItem", {
     Menu            = { fg = col.green },
 })
 
+-- }}}
+
+-- LSP & Diagnostics {{{
 add_with_prefix(colorscheme, "Lsp", {
     InlayHint      = { fg = col.bright_gray, italic = true },
     InfoBorder     = { fg = pal.bg3 },
@@ -495,7 +516,9 @@ add_with_prefix(colorscheme, "Diagnostic", {
 
     Deprecated       = { link = "@lsp.mod.deprecated" },
 })
+-- }}}
 
+-- Mason {{{
 add_with_prefix(colorscheme, "Mason", {
     Header                      = { fg = pal.bg0, bg = col.teal },
     HeaderSecondary             = { fg = pal.bg0, bg = col.teal },
@@ -509,7 +532,9 @@ add_with_prefix(colorscheme, "Mason", {
     MutedBlock                  = { bg = pal.bg3 },
     MutedBlockBold              = { link = "*MutedBlock" },
 })
+-- }}}
 
+-- Overrides for vim syntax {{{
 add_with_prefix(colorscheme, "zsh", {
     Deref       = { link = "@variable" },
     VariableDef = { link = "@variable" },
@@ -517,7 +542,9 @@ add_with_prefix(colorscheme, "zsh", {
     KSHFunction = { link = "@function" },
     Operator    = { link = "@operator" },
 })
+-- }}}
 
+-- git: gitsigns and fugitive {{{
 add_with_prefix(colorscheme, "GitSigns", {
     Add                = { fg = pal.bg3 },
     AddNr              = { fg = pal.bg3 },
@@ -540,6 +567,12 @@ add_with_prefix(colorscheme, "GitSigns", {
     StagedChangeDelete = { fg = col.orange, bold = true },
 })
 
+add_with_prefix(colorscheme, "fugitive", {
+    UntrackedSection = { fg = col.light_gray },
+})
+-- }}
+
+-- Telescope {{{
 add_with_prefix(colorscheme, "Telescope", {
     PromptBorder   = { fg = pal.bg3 },
     PromptTitle    = { fg = col.teal },
@@ -558,28 +591,6 @@ add_with_prefix(colorscheme, "Telescope", {
     PreviewHyphen  = { link = "OilNoPerm" },
     PreviewDate    = { fg = col.cyan },
 })
+-- }}}
 
--- add_with_prefix(colorscheme, "@neorg.", {
---     ["code_block"]            = { link = "CodeBlock" },
---     ["markup.verbatim.norg"]  = { link = "@markup.raw.markdown_inline" },
---     undone                    = { fg = pal.bg3 },
---     cancelled                 = { fg = pal.bg3 },
---     done                      = { fg = col.green },
---     pending                   = { fg = col.magenta },
---     urgent                    = { fg = col.red },
---     recurring                 = { fg = col.teal },
---     uncertain                 = { fg = col.light_cyan, },
---     on_hold                   = { fg = col.light_blue },
---     ["modifiers.escape.norg"] = {},
---     ["quote.1"]               = { italic = true, fg = blend(col.yellow, pal.fg0, 0.7) },
---     ["quote.2"]               = { italic = true, fg = blend(col.green, pal.fg0, 0.7) },
---     ["quote.3"]               = { italic = true, fg = blend(col.teal, pal.fg0, 0.7) },
---     ["quote.4"]               = { italic = true, fg = blend(col.light_cyan, pal.fg0, 0.7) },
---     ["quote.5"]               = { italic = true, fg = blend(col.light_blue, pal.fg0, 0.7) },
---     ["quote.6"]               = { italic = true, fg = blend(col.blue, pal.fg0, 0.7) },
---     ["quote.7"]               = { link = "*quote.6" },
---     ["quote.8"]               = { link = "*quote.6" },
--- })
---
---
 return colorscheme

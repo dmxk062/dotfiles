@@ -1,3 +1,7 @@
+-- {{{ test
+-- }}}
+
+
 local M = {
     "kevinhwang91/nvim-ufo",
     dependencies = {
@@ -6,43 +10,76 @@ local M = {
     event = { "BufRead" },
 }
 
+local function merged_provider(providers)
+    return function(bufnr)
+        local all = {}
 
-local function fold_formatter(virtText, lnum, endLnum, width, truncate)
-    local ret = {}
-    local suffix = ("  %d lines..."):format(endLnum - lnum)
-    local suff_width = vim.fn.strdisplaywidth(suffix)
-    local target_width = width - suff_width
-    local cur_width = 0
-    for _, chunk in ipairs(virtText) do
-        local chunktext = chunk[1]
-        local hlgroup = chunk[2]
-        local chunkWidth = vim.fn.strdisplaywidth(chunktext)
-        if target_width > cur_width + chunkWidth then
-            table.insert(ret, chunk)
-        else
-            chunktext = truncate(chunktext, target_width - cur_width)
-            table.insert(ret, { chunktext, hlgroup })
-            chunkWidth = vim.fn.strdisplaywidth(chunktext)
-            -- str width returned from truncate() may less than 2nd argument, need padding
-            if cur_width + chunkWidth < target_width then
-                suffix = suffix .. (" "):rep(target_width - cur_width - chunkWidth)
-            end
-            break
+        for _, provider in ipairs(providers) do
+            local ok, folds = pcall(require("ufo").getFolds, bufnr, provider)
+            vim.list_extend(all, folds or {})
         end
-        cur_width = cur_width + chunkWidth
+
+        return #all > 0 and all or nil
     end
-    table.insert(ret, { suffix, "Comment" })
-    return ret
+end
+
+local marker_start = function()
+    return vim.split(vim.wo[0].foldmarker, ",")[1]
+end
+
+local commentstr = function()
+    return vim.bo[0].commentstring:gsub("%%s", "")
+end
+
+local function fold_formatter(virt_text, row, end_row, width, truncate)
+    local new_text = {}
+
+    local first_line = virt_text[1][1]
+
+    local potential_foldstart = first_line:gsub("^" .. commentstr(), "")
+    local has_comment = #potential_foldstart ~= #first_line
+    local _, _, title, marker, level = potential_foldstart:find("(.-)(" .. marker_start() .. ")(%d*)")
+
+    local suffix = (" -> %d lines"):format(end_row - row)
+
+    if marker and title then
+        title = title:gsub("%s*$", "")
+        if has_comment then
+            table.insert(new_text, { string.format(vim.bo[0].commentstring, ""), "Comment" })
+        end
+        table.insert(new_text, { "# " .. title, "UfoFoldTitle" })
+        if #level > 0 then
+            table.insert(new_text, { " :" .. level, "Number" })
+        end
+    else
+        local suff_width = vim.fn.strdisplaywidth(suffix)
+        local target_width = width - suff_width
+        local cur_width = 0
+        for _, chunk in ipairs(virt_text) do
+            local text = chunk[1]
+            local text_width = vim.fn.strdisplaywidth(text)
+            if target_width > cur_width + text_width then
+                table.insert(new_text, chunk)
+            else
+                text = truncate(text, target_width - cur_width)
+                table.insert(new_text, { text, chunk[2] })
+                break
+            end
+            cur_width = cur_width + text_width
+        end
+    end
+    table.insert(new_text, { suffix, "Comment" })
+    return new_text
 end
 
 M.opts = {
     open_fold_hl_timeout = 0,
     fold_virt_text_handler = fold_formatter,
     close_fold_kinds_for_ft = {
-        default = { "imports" },
+        default = { "imports", "marker" },
     },
     provider_selector = function(bufnr, ft, bft)
-        return { "lsp", "indent" }
+        return { merged_provider({ "treesitter", "marker", "indent" }), function() return nil end }
     end,
     preview = {
         win_config = {
@@ -94,7 +131,6 @@ M.config = function(_, opts)
     vim.schedule(function()
         vim.cmd.colorscheme(vim.g.colors_name)
     end)
-
 end
 
 return M
