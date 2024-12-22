@@ -31,7 +31,7 @@ local function get_marker_pattern()
     if not cached_patterns[ft] then
         local commentstr = vim.bo[0].commentstring
         if commentstr then
-            commentstr = commentstr:gsub("%*", "%%%%*"):gsub("%[", "%%%%[")
+            commentstr = commentstr:gsub("%*", "%%%%*"):gsub("%[", "%%%%["):gsub("%-", "%%%%-")
         else
             commentstr = "%s"
         end
