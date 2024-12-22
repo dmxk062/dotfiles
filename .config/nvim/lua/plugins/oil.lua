@@ -295,8 +295,7 @@ M.opts = {
                 return "OilSocket"
             end
 
-            local mode = entry.meta.stat.mode
-            if bit.band(mode, 0x49) ~= 0 then
+            if entry.meta.stat and bit.band(entry.meta.stat.mode, 0x49) ~= 0 then
                 return "OilExecutable"
             end
 
