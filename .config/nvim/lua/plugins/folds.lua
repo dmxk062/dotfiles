@@ -31,7 +31,8 @@ local function get_marker_pattern()
     if not cached_patterns[ft] then
         local commentstr = vim.bo[0].commentstring
         if commentstr then
-            commentstr = commentstr:gsub("%*", "%%%%*"):gsub("%[", "%%%%["):gsub("%-", "%%%%-")
+            -- remove the end of the commentstring, since in *most* languages that can span the whole line
+            commentstr = commentstr:gsub("([%*%-%+%?%[%]%.])", "%%%%%1"):gsub("%%s.*$", "%%s")
         else
             commentstr = "%s"
         end
@@ -83,7 +84,7 @@ M.opts = {
         default = { "imports", "marker" },
     },
     provider_selector = function(bufnr, ft, bft)
-        return { merged_provider { "treesitter", "marker" } }
+        return { merged_provider { "treesitter", "marker" }, "indent" }
     end,
     preview = {
         win_config = {
