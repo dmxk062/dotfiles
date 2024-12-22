@@ -1,30 +1,44 @@
 local utils = require("utils")
 local abbrev = utils.abbrev
 local map = utils.map
-
+local api = vim.api
 -- textobjects
 local obj = { "x", "o" }
 -- motion
 local mov = { "n", "x", "o" }
 
--- less annoying way to exit terminal mode
-map("t", "<S-Esc>", "<C-\\><C-n>")
-
+-- qflist {{{
 -- quickly navigate qflist and loclist
 map(mov, "<space>j", "<cmd>cnext<cr>")
 map(mov, "<space>k", "<cmd>cprev<cr>")
 map(mov, "<space>n", "<cmd>lnext<cr>")
 map(mov, "<space>N", "<cmd>lprev<cr>")
 
+-- add items to qflist and loclist easily
+map("n", "+q", function()
+    local bufnr = api.nvim_get_current_buf()
+    local cursor = api.nvim_win_get_cursor(0)
+    local text = api.nvim_buf_get_lines(bufnr, cursor[1] - 1, cursor[1], false)[1]
+    vim.fn.setqflist({}, "a", { items = {{
+        bufnr = bufnr,
+        lnum = cursor[1],
+        text = text,
+        valid = true,
+    } }})
+end)
+-- }}}
+
 -- toggle them
 map("n", "<space>q", function() require("quicker").toggle() end)
 map("n", "<space>l", function() require("quicker").toggle { loclist = true } end)
 
+-- snippets {{{
 -- move between snippet fields
 map({ "n", "s" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s" }, "<C-space>", function() vim.snippet.jump(-1) end)
+-- }}}
 
--- buffer mappings
+-- buffers & windows {{{
 local bufleader = "\\"
 
 map("n", bufleader .. "l", "<cmd>bnext<cr>")
@@ -37,14 +51,14 @@ map("n", bufleader .. bufleader, function()
         vim.cmd("wincmd ")
         return
     end
-    for _, win in pairs(vim.api.nvim_list_wins()) do
-        if vim.api.nvim_win_get_buf(win) == target then
-            vim.api.nvim_set_current_win(win)
+    for _, win in pairs(api.nvim_list_wins()) do
+        if api.nvim_win_get_buf(win) == target then
+            api.nvim_set_current_win(win)
             return
         end
     end
 
-    local ok = pcall(vim.api.nvim_set_current_buf, target)
+    local ok = pcall(api.nvim_set_current_buf, target)
     if not ok then
         vim.cmd.bprevious()
     end
@@ -56,12 +70,12 @@ local function open_buf_in(cmd)
     local target
     local count = vim.v.count
     if count == 0 then
-        target = vim.api.nvim_get_current_buf()
+        target = api.nvim_get_current_buf()
     else
         target = Bufs_for_idx[count]
     end
     if not target then
-        target = vim.api.nvim_get_current_buf()
+        target = api.nvim_get_current_buf()
     end
     vim.cmd(cmd .. " sbuffer " .. target)
 end
@@ -84,12 +98,12 @@ map("n", bufleader .. "s", function() open_buf_in("hor") end)
 map("n", bufleader .. "t", function() open_buf_in("tab") end)
 map("n", bufleader .. "f", function()
     local target = Bufs_for_idx[vim.v.count] or 0
-    local max_width = vim.api.nvim_win_get_width(0)
-    local max_height = vim.api.nvim_win_get_height(0)
+    local max_width = api.nvim_win_get_width(0)
+    local max_height = api.nvim_win_get_height(0)
 
     local height = math.floor((max_height) * .8)
     local width = math.floor((max_width) * .8)
-    vim.api.nvim_open_win(target, true, {
+    api.nvim_open_win(target, true, {
         relative = "win",
         row = math.floor((max_height - height) / 2),
         col = math.floor((max_width - width) / 2),
@@ -101,8 +115,8 @@ end)
 
 map("n", bufleader .. "d", function()
     local target = Bufs_for_idx[vim.v.count] or 0
-    vim.api.nvim_buf_delete(target, {})
-    vim.api.nvim__redraw { tabline = true }
+    api.nvim_buf_delete(target, {})
+    api.nvim__redraw { tabline = true }
 end)
 
 map("n", "gt", function() indexed_tab_command("norm! gt") end)
@@ -110,15 +124,15 @@ map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
-    for _, b in ipairs(vim.api.nvim_list_bufs()) do
+    for _, b in ipairs(api.nvim_list_bufs()) do
         if vim.bo[b].buflisted and vim.fn.bufwinid(b) == -1 then
-            vim.api.nvim_buf_delete(b, {})
+            api.nvim_buf_delete(b, {})
         end
     end
 end)
+-- }}}
 
-
--- my own mark handling
+-- marks {{{
 local marks = require("modules.marks")
 map("n", "<space>m", marks.marks_popup)
 
@@ -128,6 +142,7 @@ map("n", "m_", marks.set_first_avail_gmark)
 
 -- make mark work across all open buffers
 map("n", "'", marks.jump_first_set_mark)
+-- }}}
 
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
@@ -146,23 +161,23 @@ end, { expr = true })
 
 -- faster to close windows and cycle
 map("n", "q", function()
-    if #vim.api.nvim_list_wins() > 1 then
+    if #api.nvim_list_wins() > 1 then
         vim.cmd.quit()
     else
         vim.cmd.bnext()
     end
 end)
 
+-- abbrevs {{{
 -- force quit
 abbrev("c", "Q", "q!")
-
 -- shortcuts to enable/disable spelling
 abbrev("c", "spen", "setlocal spell spelllang=en_us")
 abbrev("c", "spde", "setlocal spell spelllang=de_at")
 abbrev("c", "spoff", "setlocal spell& spelllang&")
+-- }}}
 
--- open a shell in a kitty window of some kind
--- works even for remote oil buffers via ssh
+-- kitty shells {{{
 local shellleader = "<space>s"
 map("n", shellleader .. "w", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") end)
 map("n", shellleader .. "v",
@@ -172,20 +187,21 @@ map("n", shellleader .. "s",
 map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") end)
 map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
 map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
+-- }}}
 
 -- exit terminal mode with a single chord instead of 2
 map("t", "<C-Esc>", "<C-\\><C-n>")
 
+-- insert mode {{{
 -- useful in insert mode, especially with lshift and rshift as bs and del
 map("i", "<C-BS>", "<C-w>")
 map("i", "<C-Del>", "<esc>\"_cw")
+-- }}}
 
 -- my own custom textobjects
 local textobjs = require("textobjs")
 
--- select the entire buffer
-map(obj, "gG", textobjs.entire_buffer)
-
+-- diagnostics {{{
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
 map("n", "<space>Dq", function() vim.diagnostic.setqflist() end)
@@ -198,7 +214,9 @@ map(obj, "iDe", textobjs.diagnostic_error)
 map(obj, "iDw", textobjs.diagnostic_warn)
 map(obj, "iDi", textobjs.diagnostic_info)
 map(obj, "iDh", textobjs.diagnostic_hint)
+-- }}}
 
+-- additional textobjects {{{
 -- indents, very useful for e.g. python or other indent based languages
 -- a includes one line above and below,
 -- except for filetypes e.g. python where only the above line is included by default
@@ -217,6 +235,12 @@ map(obj, "ao", textobjs.create_pattern_obj("()[-+*/%%]%s*[%w_%.]+()"))
 map(obj, "i_", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
 map(obj, "a_", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 
+-- select the entire buffer
+map(obj, "gG", textobjs.entire_buffer)
+-- }}}
+
+
+-- operators {{{
 local operators = require("operators")
 
 -- evaluate lua and insert result in buffer
@@ -240,7 +264,7 @@ operators.map_function("<space>el", function(mode, region, extra, get)
     end
 
     if type(return_val) == "table" or type(return_val) == "userdata" then
-        result = {table.concat(table, "\n")}
+        result = { table.concat(table, "\n") }
     elseif type(return_val) == "nil" then
         return
     elseif type(return_val) == "string" then
@@ -336,9 +360,9 @@ operators.map_function("g:", function(mode, region, extra, get)
         vim.cmd(string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
     else
         local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
-        vim.api.nvim_feedkeys(cmdstr, "n", false)
+        api.nvim_feedkeys(cmdstr, "n", false)
 
-        vim.api.nvim_create_autocmd("CmdlineLeave", {
+        api.nvim_create_autocmd("CmdlineLeave", {
             once = true,
             callback = function()
                 local command_line = vim.fn.getcmdline()
@@ -352,3 +376,4 @@ operators.map_function("g:", function(mode, region, extra, get)
     end
     return nil
 end)
+-- }}}
