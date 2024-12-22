@@ -234,7 +234,7 @@ local name_highlights = {
 M.opts = {
     default_file_explorer = true,
     win_options = {
-        cursorlineopt = "line,number",
+        cursorlineopt = "number",
         signcolumn    = "auto"
     },
     buf_options = {
