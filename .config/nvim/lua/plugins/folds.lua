@@ -25,8 +25,19 @@ local marker_start = function()
     return vim.split(vim.wo[0].foldmarker, ",")[1]
 end
 
-local commentstr = function()
-    return vim.bo[0].commentstring:gsub("%%s", "")
+local cached_patterns = {}
+local function get_marker_pattern()
+    local ft = vim.bo.filetype
+    if not cached_patterns[ft] then
+        local commentstr = vim.bo[0].commentstring
+        if commentstr then
+            commentstr = commentstr:gsub("%*", "%%%%*"):gsub("%[", "%%%%[")
+        else
+            commentstr = "%s"
+        end
+        cached_patterns[ft] = commentstr:format("%s*(.-)(" .. marker_start() .. ")(%d*)%s*")
+    end
+    return cached_patterns[ft]
 end
 
 local function fold_formatter(virt_text, row, end_row, width, truncate)
@@ -34,17 +45,12 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
 
     local first_line = virt_text[1][1]
 
-    local potential_foldstart = first_line:gsub("^" .. commentstr(), "")
-    local has_comment = #potential_foldstart ~= #first_line
-    local _, _, title, marker, level = potential_foldstart:find("(.-)(" .. marker_start() .. ")(%d*)")
+    local _, _, title, marker, level = first_line:find(get_marker_pattern())
 
     local suffix = (" -> %d lines"):format(end_row - row)
 
     if marker and title then
         title = title:gsub("%s*$", "")
-        if has_comment then
-            table.insert(new_text, { string.format(vim.bo[0].commentstring, ""), "Comment" })
-        end
         table.insert(new_text, { "# " .. title, "UfoFoldTitle" })
         if #level > 0 then
             table.insert(new_text, { " :" .. level, "Number" })
