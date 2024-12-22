@@ -1,7 +1,3 @@
--- {{{ test
--- }}}
-
-
 local M = {
     "kevinhwang91/nvim-ufo",
     dependencies = {
@@ -16,7 +12,9 @@ local function merged_provider(providers)
 
         for _, provider in ipairs(providers) do
             local ok, folds = pcall(require("ufo").getFolds, bufnr, provider)
-            vim.list_extend(all, folds or {})
+            if ok then
+                vim.list_extend(all, folds or {})
+            end
         end
 
         return #all > 0 and all or nil
@@ -79,7 +77,7 @@ M.opts = {
         default = { "imports", "marker" },
     },
     provider_selector = function(bufnr, ft, bft)
-        return { merged_provider({ "treesitter", "marker", "indent" }), function() return nil end }
+        return { merged_provider { "treesitter", "marker" } }
     end,
     preview = {
         win_config = {
