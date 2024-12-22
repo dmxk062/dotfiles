@@ -80,13 +80,13 @@ local oil_columns = {
     }
 }
 
-local function open_cmd(cmd)
-    require("oil.actions").open_cmdline.callback()
-    vim.api.nvim_input(cmd .. " ")
-end
-
 local function goto_dir(path)
     require("oil").open(vim.fn.expand(path))
+end
+
+local function open_cmd(cmd)
+    require("oil.actions").open_cmdline.callback()
+    vim.api.nvim_input(cmd)
 end
 
 local function open_cd()
@@ -114,30 +114,9 @@ local function goto_git_ancestor()
     require("oil").open(git_ancestor)
 end
 
-local function open_external()
-    local entry = require("oil").get_cursor_entry()
-    local dir   = require("oil").get_current_dir()
-    if not dir then
-        -- ssh, we hope that the application uses gio or whatever and can use sftp:// uris
-        -- if that doesnt work, try
-        -- `xdg-mime default <application>.desktop x-scheme-handler/sftp`
-        -- where application is an app that can talk sftp
-        -- org.gnome.Nautilus works for instance
-        -- TODO: write some hacky handler myself that uses gio to then open that
-        local bufname = vim.api.nvim_buf_get_name(0)
-        local addr = bufname:match("//(.-)/")
-        local remote_path = bufname:match("//.-(/.*)"):sub(2, -1)
-        local uri = "sftp://" .. addr .. remote_path .. require("oil").get_cursor_entry().name
-        vim.ui.open(uri)
-    else
-        vim.ui.open(dir .. "/" .. entry.name)
-    end
-end
-
 local function open_dir_shell(type, where)
     require("utils").kitty_shell_in(require("oil").get_current_dir() or vim.api.nvim_buf_get_name(0), type, where)
 end
-
 
 local sort = {
     { "type", "asc" },
@@ -261,7 +240,7 @@ M.opts = {
         min_height = 0.6,
 
     },
-    use_default_keymaps = true,
+    use_default_keymaps = false,
     cleanup_delay_ms = 5000,
     extra_scp_args = { "-O" }, -- use scp instead of sftp
     watch_for_changes = true,
@@ -324,8 +303,8 @@ M.opts = {
         ["es"]        = "actions.select_split",
         ["et"]        = "actions.select_tab",
         ["ev"]        = "actions.select_vsplit",
-        ["eo"]        = open_external,
-        ["gx"]        = open_external,
+        ["eo"]        = "actions.open_external",
+        ["gx"]        = "actions.open_external",
 
         -- goto places
         ["g~"]        = function() goto_dir("~") end,
@@ -338,8 +317,8 @@ M.opts = {
         ["gw"]        = function() goto_dir("~/ws") end,
         ["gt"]        = function() goto_dir("~/Tmp") end,
 
-        ["gP"]        = goto_git_ancestor,
-        ["gG"]        = goto_git_ancestor,
+        ["gP"]        = { goto_git_ancestor, mode = "n" },
+        ["gG"]        = { goto_git_ancestor, mode = "n" },
         ["gz"]        = function() require("telescope").extensions.zoxide.list() end,
 
         -- toggle hidden
