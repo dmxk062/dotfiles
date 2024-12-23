@@ -26,16 +26,16 @@ map("n", "+q", function()
         valid = true,
     } }})
 end)
--- }}}
 
 -- toggle them
 map("n", "<space>q", function() require("quicker").toggle() end)
 map("n", "<space>l", function() require("quicker").toggle { loclist = true } end)
+-- }}}
 
 -- snippets {{{
 -- move between snippet fields
-map({ "n", "s" }, "<M-space>", function() vim.snippet.jump(1) end)
-map({ "n", "s" }, "<C-space>", function() vim.snippet.jump(-1) end)
+map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
+map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 
 -- buffers & windows {{{
