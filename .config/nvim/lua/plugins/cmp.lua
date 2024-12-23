@@ -95,11 +95,6 @@ local function format_entry(entry, vitem)
         vitem.kind_hl_group = hlleader .. "Neorg"
     elseif entry.source.name == "cmdline" then
         kind = "Cmd"
-        local infered_kind, hl = get_omni_kind(vitem)
-        if infered_kind and hl then
-            kind = infered_kind
-            vitem.kind_hl_group = hl
-        end
     elseif entry.source.name == "omni" then
         kind = "Omnifunc"
         local infered_kind, hl = get_omni_kind(vitem)
