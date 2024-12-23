@@ -54,8 +54,9 @@ local hlleader = "CmpItemKind"
 ---@return string|nil
 local function get_omni_kind(vitem)
     -- *might* also just be a string with that content, but i rarely use cmp for that sort of thing anyways
-    if vim.uv.fs_stat(vim.fn.expand(vitem.word)) then
-        if vitem.word:sub(-1) == "/" then
+    local st = vim.uv.fs_stat(vim.fn.expand(vitem.word))
+    if st then
+        if st.type == "directory" then
             return "Folder", hlleader .. "Folder"
         else
             return "File", hlleader .. "File"
@@ -94,6 +95,11 @@ local function format_entry(entry, vitem)
         vitem.kind_hl_group = hlleader .. "Neorg"
     elseif entry.source.name == "cmdline" then
         kind = "Cmd"
+        local infered_kind, hl = get_omni_kind(vitem)
+        if infered_kind and hl then
+            kind = infered_kind
+            vitem.kind_hl_group = hl
+        end
     elseif entry.source.name == "omni" then
         kind = "Omnifunc"
         local infered_kind, hl = get_omni_kind(vitem)
