@@ -41,6 +41,7 @@ local kind_symbols = {
     Latex         = " tex",
     Neorg         = "󱞁 norg",
     Omnifunc      = " omni",
+    Cmd           = "",
 }
 
 local hlleader = "CmpItemKind"
@@ -91,6 +92,8 @@ local function format_entry(entry, vitem)
     elseif entry.source.name == "neorg" then
         kind = "Neorg"
         vitem.kind_hl_group = hlleader .. "Neorg"
+    elseif entry.source.name == "cmdline" then
+        kind = "Cmd"
     elseif entry.source.name == "omni" then
         kind = "Omnifunc"
         local infered_kind, hl = get_omni_kind(vitem)
