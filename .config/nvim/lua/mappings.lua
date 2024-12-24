@@ -144,10 +144,16 @@ map("n", "m_", marks.set_first_avail_gmark)
 map("n", "'", marks.jump_first_set_mark)
 -- }}}
 
+-- fix builtin mappings {{{
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
+-- exit terminal mode with a single chord instead of 2
+map("t", "<C-Esc>", "<C-\\><C-n>")
+-- }}}
+
+-- q to close windows {{{
 -- use <space>Q for macros instead, i dont use them that often
 -- use reg, defaulting to "q
 map("n", "<space>Q", function()
@@ -167,6 +173,7 @@ map("n", "q", function()
         vim.cmd.bnext()
     end
 end)
+-- }}}
 
 -- abbrevs {{{
 -- force quit
@@ -188,9 +195,6 @@ map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:
 map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
 map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
 -- }}}
-
--- exit terminal mode with a single chord instead of 2
-map("t", "<C-Esc>", "<C-\\><C-n>")
 
 -- insert mode {{{
 -- useful in insert mode, especially with lshift and rshift as bs and del
