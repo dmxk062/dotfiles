@@ -58,7 +58,7 @@ M.config = function()
         callback = function(opts)
             local map = utils.local_mapper(opts.buf)
             map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
-            map("n", "<space>rn", vim.lsp.buf.rename)
+            map("n", "<space>r", vim.lsp.buf.rename)
 
             map("n", "gr", require("telescope.builtin").lsp_references)
             map("n", "gd", require("telescope.builtin").lsp_definitions)
