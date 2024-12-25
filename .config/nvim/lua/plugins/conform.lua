@@ -4,7 +4,7 @@ local M = {
     cmd = { "ConformInfo" },
     keys = {
         {
-            "<space>fm",
+            "<space>p",
             function()
                 require("conform").format { async = true }
             end,
