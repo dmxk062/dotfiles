@@ -39,7 +39,7 @@ function M.make_operator(name, cb)
         if mode == nil then
             Ctx.cb = name
             Ctx.was_repeat[name] = false
-            vim.o.operatorfunc = "v:lua.require'operators'.opfunc"
+            vim.o.operatorfunc = "v:lua.require'config.operators'.opfunc"
             return "g@"
         elseif not Ctx.was_repeat[name] then
             Ctx.was_repeat[name] = true
