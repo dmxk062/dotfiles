@@ -319,7 +319,6 @@ M.opts = {
 
         ["gP"]        = { goto_git_ancestor, mode = "n" },
         ["gG"]        = { goto_git_ancestor, mode = "n" },
-        ["gz"]        = function() require("telescope").extensions.zoxide.list() end,
 
         -- toggle hidden
         ["gh"]        = "actions.toggle_hidden",
