@@ -35,7 +35,7 @@ function lschg {
         fi
 
         local mode file old_perm new_perm prefix suffix head=""
-        local type line
+        local type line old_path new_path bits_old bits_new
         while read -r type line; do
             if [[ $type == 1 ]]; then
                 read -r mode _ _ old_perm new_perm _ _ file extra <<< "$line";
@@ -57,14 +57,13 @@ function lschg {
             elif ((all)) && [[ "$type" == "?" || "$type" == "!" ]]; then
                 print -P -- "%F{8}$type  $line%f"
             elif [[ "$type" == 2 ]]; then
-                local old_path new_path
                 read -r mode _ _ old_perm new_perm _ _ _ files <<< "$line"
                 IFS=$'\t' read -r new_path old_path <<< "$files"
 
                 suffix=""
                 if [[ "$old_perm" != "$new_perm" ]]; then
-                    local bits_old="${old_perm:2}"
-                    local bits_new="${new_perm:2}"
+                    bits_old="${old_perm:2}"
+                    bits_new="${new_perm:2}"
                     suffix="; %F{red}$bits_old%f -> %F{green}$bits_new%f"
                 fi
                 case "$mode" in
