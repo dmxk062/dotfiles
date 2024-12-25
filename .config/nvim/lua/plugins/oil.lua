@@ -5,6 +5,7 @@ local M = {
     },
 }
 
+-- Columns {{{
 local perms_hlgroups = {
     ["-"] = "OilNoPerm",
     ["r"] = "OilRead",
@@ -80,6 +81,9 @@ local oil_columns = {
     }
 }
 
+-- }}}
+
+-- Custom actions essentially {{{
 local function goto_dir(path)
     require("oil").open(vim.fn.expand(path))
 end
@@ -148,7 +152,47 @@ local function set_sort(action)
     require("oil").set_sort(sort)
 end
 
+local function default_is_hidden(name, bufnr)
+    if name then
+        return name:sub(1, 1) == "." and not (name:sub(2, 2) == ".")
+    else
+        return false
+    end
+end
 
+local cur_filter_pattern
+
+local function filter_items()
+    local function set_filter(filter)
+        require("oil").set_is_hidden_file(function(fname)
+            local ok, res = pcall(string.match, fname, filter)
+            if not ok then
+                return default_is_hidden()
+            end
+            return not res or default_is_hidden(fname)
+        end)
+    end
+    vim.ui.input({
+        default = cur_filter_pattern,
+        prompt = "Enter filter pattern (lua)",
+        -- abuse it to update continously
+        highlight = function(pattern)
+            set_filter(pattern)
+            return {}
+        end
+    }, function(reply)
+        if not reply or reply == "" then
+            require("oil").set_is_hidden_file(default_is_hidden)
+        else
+            set_filter(reply)
+            cur_filter_pattern = reply
+        end
+    end)
+end
+
+-- }}}
+
+-- Highlights for file extensions {{{
 local extension_highlights = {
     ["a"]       = "Bin",
     ["c"]       = "Source",
@@ -208,8 +252,9 @@ local name_highlights = {
     ["readme.md"]     = "Readme",
     ["readme.txt"]    = "Readme",
     ["todo.md"]       = "Readme",
-}
+} -- }}}
 
+-- Options {{{
 M.opts = {
     default_file_explorer = true,
     win_options = {
@@ -247,9 +292,7 @@ M.opts = {
 
     view_options = {
         -- always show .. to go up so gg<cr> works
-        is_hidden_file = function(name, bufnr)
-            return name:sub(1, 1) == "." and not (name:sub(2, 2) == ".")
-        end,
+        is_hidden_file = default_is_hidden,
 
         is_always_hidden = function(name, bufnr)
             return name == "."
@@ -332,12 +375,14 @@ M.opts = {
         ["<space>so"] = function() open_dir_shell("overlay") end,
         ["<space>st"] = function() open_dir_shell("tab") end,
 
+        ["gf"]        = filter_items,
         ["g=s"]       = function() set_sort("size") end,
         ["g=t"]       = function() set_sort("mtime") end,
         ["g=i"]       = function() set_sort("invert") end,
         ["g=d"]       = function() set_sort("default") end,
     },
 }
+-- }}}
 
 M.config = function(_, opts)
     local map = require("utils").map
