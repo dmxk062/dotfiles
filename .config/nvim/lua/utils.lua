@@ -12,7 +12,7 @@ function M.kitty_shell_in(uri, type, opts)
 
     local cmd = { "kitty", "@", "launch", "--type=" .. type, "--location=" .. location }
 
-    if uri:sub(1, #"oil-ssh://") == "oil-ssh://" then -- we're connected via ssh
+    if vim.startswith(uri, "oil-ssh://") then -- we're connected via ssh
         local addr = uri:match("//(.-)/")
         local remote_path = uri:match("//.-(/.*)"):sub(2, -1)
 
