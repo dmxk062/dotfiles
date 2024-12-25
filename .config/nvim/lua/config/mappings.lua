@@ -19,12 +19,14 @@ map("n", "+q", function()
     local bufnr = api.nvim_get_current_buf()
     local cursor = api.nvim_win_get_cursor(0)
     local text = api.nvim_buf_get_lines(bufnr, cursor[1] - 1, cursor[1], false)[1]
-    vim.fn.setqflist({}, "a", { items = {{
-        bufnr = bufnr,
-        lnum = cursor[1],
-        text = text,
-        valid = true,
-    } }})
+    vim.fn.setqflist({}, "a", {
+        items = { {
+            bufnr = bufnr,
+            lnum = cursor[1],
+            text = text,
+            valid = true,
+        } }
+    })
 end)
 
 -- toggle them
@@ -267,8 +269,14 @@ operators.map_function("<space>el", function(mode, region, extra, get)
         return
     end
 
-    if type(return_val) == "table" or type(return_val) == "userdata" then
-        result = { table.concat(table, "\n") }
+    print(type(return_val))
+    if type(return_val) == "table" then
+        local concat = table.concat(return_val, "\n")
+        if #concat == 0 then
+            result = vim.split(vim.inspect(return_val), "\n")
+        else
+            result = return_val
+        end
     elseif type(return_val) == "nil" then
         return
     elseif type(return_val) == "string" then
@@ -281,7 +289,7 @@ operators.map_function("<space>el", function(mode, region, extra, get)
 end)
 
 -- evalute qalculate expression/math and insert result in buffer
-operators.map_function("<space>eq", function(mode, region, extra, get)
+operators.map_function("<space>em", function(mode, region, extra, get)
     local expressions = get()
     local result = vim.system({ "qalc", "-t", "-f", "-" }, { stdin = expressions }):wait().stdout
     if not result then
