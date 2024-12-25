@@ -20,38 +20,29 @@ local M = {
             "nvim-telescope/telescope-fzf-native.nvim",
             build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
         },
-        {
-            "jvgrootveld/telescope-zoxide",
-        },
     },
 }
 
 local default_config_tbl = {
     layout_config = {
         height = function()
-            local lines = vim.o.lines
-            if lines > 40 then
-                return math.floor(lines * 0.9)
+            local height = vim.api.nvim_win_get_height(0)
+            local percentage = math.floor(0.3 * height)
+            if percentage > 30 then
+                return 30
+            elseif percentage < 8 then
+                return 4
             end
-
-            return lines
+            return percentage
         end,
-        width = function()
-            local cols = vim.o.columns
-            if cols > 80 then
-                return math.floor(cols * 0.9)
-            end
-
-            return cols
-        end,
-        preview_cutoff = 1,
         prompt_position = "bottom",
+
     },
+    theme = "ivy",
     borderchars = {
-        prompt = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-        results = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-        preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    }
+        prompt = { " ", " ", " ", " ", " ", " ", " ", " " }
+    },
+    prompt_title = false,
 }
 
 local function default_config(extra)
@@ -83,7 +74,7 @@ M.opts.defaults = {
             ["q"]        = "close",
         },
         i = {
-            ["<cr>"]    = "select_drop",
+            ["<cr>"]   = "select_drop",
             ["<M-j>"]  = "move_selection_next",
             ["<M-k>"]  = "move_selection_previous",
             ["<Down>"] = "move_selection_next",
@@ -117,19 +108,9 @@ M.opts.pickers = {
     git_files = default_config_tbl,
     live_grep = default_config_tbl,
     oldfiles = default_config_tbl,
-    buffers = {
+    buffers = default_config {
         sort_lastused = true, -- so i can just <space><space><cr> to cycle
-        theme = "dropdown",
         previewer = false,
-        layout_config = {
-            height = function()
-                local nh = math.floor(vim.o.lines * .1)
-                return nh >= 8 and nh or 8
-            end,
-            width = function()
-                return math.min(vim.o.columns - 4, 64)
-            end
-        },
         mappings = {
             n = {
                 ["dd"] = "delete_buffer",
@@ -155,9 +136,7 @@ M.opts.pickers = {
             }
         }
     },
-    find_files = default_config {
-        hidden = true,
-    },
+    find_files = default_config_tbl,
     help_tags = default_config_tbl,
 }
 M.opts.extensions = {
@@ -166,19 +145,6 @@ M.opts.extensions = {
         override_generic_sorter = true,
         override_file_sorter = true,
         case_mode = "smart_case"
-    },
-    zoxide = {
-        prompt_title = "Zoxide",
-        mappings = {
-            -- cd/edit instead of anything else
-            default = {
-                action = function(selection)
-                    vim.cmd.edit(selection.path)
-                end,
-                after_action = function(selection)
-                end
-            },
-        }
     }
 }
 
@@ -188,13 +154,6 @@ M.config = function(_, opts)
 
     telescope.setup(opts)
     telescope.load_extension("fzf")
-    telescope.load_extension("zoxide")
-
-    -- fix it not using my settings xD
-    local old_zoxide = telescope.extensions.zoxide.list
-    telescope.extensions.zoxide.list = function(args)
-        old_zoxide(vim.tbl_extend("force", default_config_tbl, args or {}))
-    end
 
     local maps = {
         diagnostics = "<space>Df",
