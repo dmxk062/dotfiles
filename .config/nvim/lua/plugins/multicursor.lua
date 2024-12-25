@@ -10,7 +10,7 @@ function M.config(_, opts)
     mc.setup(opts)
 
     local map = require("utils").map
-    local operators = require("operators")
+    local operators = require("config.operators")
 
     map("n", "<esc>", function()
         if mc.hasCursors() then

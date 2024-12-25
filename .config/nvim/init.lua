@@ -134,7 +134,7 @@ require("lazy").setup("plugins", {
 require("modules.autocommands")
 
 -- set all the mappings
-require("mappings")
+require("config.mappings")
 
 -- for some reason lazy deactivates that
 o.modeline = true

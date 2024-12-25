@@ -203,7 +203,7 @@ map("i", "<C-Del>", "<esc>\"_cw")
 -- }}}
 
 -- my own custom textobjects
-local textobjs = require("textobjs")
+local textobjs = require("config.textobjs")
 
 -- diagnostics {{{
 -- these work with all diagnostics
@@ -245,7 +245,7 @@ map(obj, "gG", textobjs.entire_buffer)
 
 
 -- operators {{{
-local operators = require("operators")
+local operators = require("config.operators")
 
 -- evaluate lua and insert result in buffer
 operators.map_function("<space>el", function(mode, region, extra, get)
