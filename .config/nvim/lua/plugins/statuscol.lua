@@ -3,6 +3,7 @@ local M = {
 }
 
 M.config = function()
+    local builtin = require("statuscol.builtin")
     require("statuscol").setup {
         ft_ignore = {
             "help"
@@ -11,7 +12,7 @@ M.config = function()
         segments = {
             {
                 text = {
-                    require("statuscol.builtin").foldfunc,
+                    builtin.foldfunc,
                     ""
                 },
                 click = "v:lua.ScFa"
@@ -25,11 +26,11 @@ M.config = function()
             },
             {
                 text = {
-                    require("statuscol.builtin").lnumfunc,
+                    builtin.lnumfunc,
                     " "
                 },
                 condition = {
-                    require("statuscol.builtin").not_empty
+                    builtin.not_empty
                 },
                 click = "v:lua.ScLa",
             },
@@ -42,6 +43,7 @@ M.config = function()
                 },
             },
             {
+                -- for qf list
                 sign = {
                     namespace = { "quicker.*" },
                     auto = true,

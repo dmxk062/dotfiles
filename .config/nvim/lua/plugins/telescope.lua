@@ -159,7 +159,7 @@ M.opts.defaults = {
     prompt_prefix = " ed: ",
     path_display = function(opts, path)
         local tail = vim.fn.fnamemodify(path, ":t")
-        local parendir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":.:h"), 4)
+        local parendir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":.:h"), 6)
         local namelen = #tail
         local dirlen = #parendir
 

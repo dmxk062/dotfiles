@@ -92,8 +92,11 @@ autocmd("TermOpen", {
 -- if already in a repo, behave somewhat like autocd
 autocmd("BufReadPost", {
     callback = function(ev)
-        local buffile = vim.api.nvim_buf_get_name(ev.buf)
-        local git_root = vim.fs.root(buffile, ".git")
+        if vim.bo[ev.buf].filetype == "help" then
+            return
+        end
+        local path = vim.api.nvim_buf_get_name(ev.buf)
+        local git_root = vim.fs.root(path, ".git")
         local pwd = vim.fn.getcwd()
         if not git_root or not vim.startswith(pwd, git_root) then
             vim.cmd.lcd(git_root)

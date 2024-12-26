@@ -282,7 +282,8 @@ M.opts = {
         ["<space>sW"] = function() open_dir_shell("os-window") end,
         ["<space>so"] = function() open_dir_shell("overlay") end,
         ["<space>st"] = function() open_dir_shell("tab") end,
-
+        ["<space>:"]  = "actions.open_terminal",
+            
         ["gf"]        = filter_items,
         ["g=s"]       = function() set_sort("size") end,
         ["g=t"]       = function() set_sort("mtime") end,
