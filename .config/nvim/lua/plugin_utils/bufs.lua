@@ -29,7 +29,7 @@ function M.format_buf_name(buf, short)
         do_modify = false
         if vim.startswith(name, "oil-ssh://") then
             local _, _, host, path = name:find("//([^/]+)/(.*)")
-            elems[1] = host .. ":" .. path
+            elems[1] = "@" .. host .. ":" .. path
         else
             elems[1] = expand_home(name:sub(#"oil://" + 1, -2)) .. "/"
         end
@@ -47,8 +47,13 @@ function M.format_buf_name(buf, short)
         if normal_buf then
             elems[1] = expand_home(name)
         else
-            -- try to get smth reasonable for plugin provided buffers
-            elems[1] = vim.fn.fnamemodify(name, ":t")
+            if vim.startswith(name, "oil-ssh://") then
+                local _, _, host, path = name:find("//([^/]+)/(.*)")
+                elems[1] = "@" .. host .. ":" .. vim.fn.fnamemodify(path, ":t")
+            else
+                -- try to get smth reasonable for plugin provided buffers
+                elems[1] = vim.fn.fnamemodify(name, ":t")
+            end
         end
     end
 
