@@ -24,6 +24,7 @@ o.shiftwidth = 4
 o.hlsearch = true
 o.scrolloff = 1
 o.undofile = true
+o.numberwidth = 2
 
 -- wrap at whitespace, indent wrapped lines and show an indicator
 o.wrap = true
