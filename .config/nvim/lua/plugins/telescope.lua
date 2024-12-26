@@ -9,10 +9,6 @@ local M = {
         "<space>v",
         "<space>V",
         "<space><space>",
-        {
-            "z=",
-            mode = { "n", "x" },
-        },
     },
     cmd = { "Telescope" },
     dependencies = {
@@ -24,26 +20,99 @@ local M = {
 }
 
 local default_config_tbl = {
-    layout_config = {
-        height = function()
-            local height = vim.api.nvim_win_get_height(0)
-            local percentage = math.floor(0.3 * height)
-            if percentage > 30 then
-                return 30
-            elseif percentage < 8 then
-                return 4
-            end
-            return percentage
-        end,
-        prompt_position = "bottom",
-
-    },
-    theme = "ivy",
-    borderchars = {
-        prompt = { " ", " ", " ", " ", " ", " ", " ", " " }
-    },
-    prompt_title = false,
+    disable_devicons = true,
 }
+
+local function create_layout(picker)
+    local Layout = require("telescope.pickers.layout")
+    ---@param enter boolean
+    ---@param opts vim.api.keyset.win_config
+    local function create_win(enter, opts)
+        local buf = vim.api.nvim_create_buf(false, true)
+        local winopts = vim.tbl_extend("force", {
+            style = "minimal",
+            relative = "editor",
+        }, opts)
+        local win = vim.api.nvim_open_win(buf, enter, winopts)
+
+        return Layout.Window {
+            bufnr = buf,
+            winid = win,
+        }
+    end
+
+    local function destroy_win(win)
+        if win then
+            if vim.api.nvim_win_is_valid(win.winid) then
+                vim.api.nvim_win_close(win.winid, true)
+            end
+            if vim.api.nvim_buf_is_valid(win.bufnr) then
+                vim.api.nvim_buf_delete(win.bufnr, { force = true })
+            end
+        end
+    end
+
+    local layout = Layout {
+        picker = picker,
+        mount = function(self)
+            local width = vim.o.columns
+            local factor = 0.5
+            local fhalf = math.floor(width * (factor))
+            local shalf = math.floor(width * (1 - factor))
+            local height = vim.o.lines
+            local height_override = self.picker.layout_config.height
+            local view_height
+
+            if height_override then
+                if type(height_override) == "function" then
+                    view_height = height_override()
+                else
+                    view_height = height_override
+                end
+            else
+                view_height = math.floor(0.3 * (height - 4))
+                if view_height > 30 then
+                    view_height = 30
+                elseif view_height < 8 then
+                    view_height = 8
+                end
+            end
+
+            local row = height - view_height - 4
+
+            self.results = create_win(false, {
+                row = row,
+                col = 0,
+                width = fhalf,
+                height = view_height,
+                border = { "─", "─", "─", " ", "", "", "", "" },
+            })
+            self.preview = create_win(false, {
+                row = row,
+                col = fhalf + 2,
+                width = shalf - 2,
+                height = view_height,
+                border = { "┬", "─", "─", "", "", "", "", "│" },
+            })
+            self.prompt = create_win(true, {
+                width = width,
+                height = 1,
+                row = height - 3,
+                col = 0,
+            })
+        end,
+        unmount = function(self)
+            destroy_win(self.results)
+            destroy_win(self.preview)
+            destroy_win(self.prompt)
+        end,
+        update = function(self)
+
+        end
+    }
+
+    return layout
+end
 
 local function default_config(extra)
     return vim.tbl_deep_extend("force", default_config_tbl, extra or {})
@@ -51,6 +120,7 @@ end
 
 M.opts = {}
 M.opts.defaults = {
+    create_layout = create_layout,
     default_mappings = {
         n = {
             ["<cr>"]     = "select_drop",
@@ -87,9 +157,31 @@ M.opts.defaults = {
     entry_prefix = "",
     multi_icon = "",
     prompt_prefix = " ed: ",
-    path_display = {
-        shorten = 8,
-    },
+    path_display = function(opts, path)
+        local tail = vim.fn.fnamemodify(path, ":t")
+        local parendir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":.:h"), 4)
+        local namelen = #tail
+        local dirlen = #parendir
+
+        local hls = {
+            {
+                {
+                    0,
+                    namelen,
+                },
+                require("plugin_utils.fnamehighlight").highlight_fname(path)
+            },
+            {
+                {
+                    namelen + 1,
+                    namelen + dirlen + 2,
+                },
+                "OilDir"
+            }
+        }
+
+        return string.format("%s %s/", tail, parendir), hls
+    end,
 }
 
 local lsp_config = default_config {
@@ -104,7 +196,9 @@ M.opts.pickers = {
     lsp_references = lsp_config,
     lsp_dynamic_workspace_symbols = lsp_config,
     lsp_document_symbols = lsp_config,
-    diagnostics = default_config_tbl,
+    diagnostics = default_config {
+        disable_coordinates = true,
+    },
     git_files = default_config_tbl,
     live_grep = default_config_tbl,
     oldfiles = default_config_tbl,
@@ -115,25 +209,12 @@ M.opts.pickers = {
             n = {
                 ["dd"] = "delete_buffer",
             },
-        }
-    },
-    spell_suggest = {
-        theme = "cursor",
-        prompt_title = "Spell",
-        prompt_prefix = "󰓆 fix: ",
+        },
         layout_config = {
             height = function()
-                return math.floor(vim.o.lines / 4)
-            end,
-            width = function()
-                return math.floor(vim.o.columns / 4)
-            end,
-        },
-        mappings = {
-            i = {
-                ["<esc>"] = "close",
-                ["<cr>"] = "select_default",
-            }
+                local ln = vim.o.lines
+                return math.min(math.max(ln * 0.1, 8), 4)
+            end
         }
     },
     find_files = default_config_tbl,
@@ -170,7 +251,6 @@ M.config = function(_, opts)
     for picker, keys in pairs(maps) do
         vim.keymap.set("n", keys, builtin[picker])
     end
-    vim.keymap.set({ "x", "n" }, "z=", builtin.spell_suggest)
 end
 
 return M
