@@ -21,7 +21,7 @@
 <Multi_key> <backslash> <C> : "ç" # == <comp>,c
 <Multi_key> <backslash> <D> : "ð" # == <comp>dh
 <Multi_key> <backslash> <E> : "ε" # == <comp>@e
-<Multi_key> <backslash> <F> : "F"
+<Multi_key> <backslash> <F> : "ɱ"
 <Multi_key> <backslash> <G> : "ɣ"
 <Multi_key> <backslash> <backslash> <G> : "ɢ"
 <Multi_key> <backslash> <H> : "ɥ"
