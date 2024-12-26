@@ -53,6 +53,15 @@ opt.listchars = {
     multispace = " · ",
 }
 
+-- current directory, children and parent
+-- this can be **super** slow in large directories, just don't use it then :)
+opt.path = {
+    ".",
+    "**",
+    "../",
+    "../*"
+}
+
 -- normal, o-pending, visual: block
 -- replace: underscore
 -- insert, command: bar
