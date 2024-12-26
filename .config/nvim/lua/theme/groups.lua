@@ -355,7 +355,7 @@ add_with_prefix(colorscheme, "Startscreen", {
     Text    = {},
 
     Files   = { fg = col.teal },
-    Journal = { fg = col.green },
+    Git = { fg = col.green },
     Search  = { fg = col.light_blue },
     History = { fg = col.blue },
     Lazy    = { fg = col.yellow },
