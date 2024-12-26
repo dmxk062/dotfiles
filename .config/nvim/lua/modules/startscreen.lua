@@ -334,12 +334,14 @@ end
 
 M.texts = {
     "Never :q me for emacs",
-    "Don't forget to take breaks when vimming",
     "Prefer using :h text-objects over motions",
     "Enjoy your day!",
-    ":3",
+    ":3 is a valid ex command, and you're valid too",
     "Tired? Just <C-z>",
     ":v == :g!",
+    ":f is often faster than :e",
+    "All your issues are in the :cwindow",
+    "g:<textobj>",
 }
 
 
