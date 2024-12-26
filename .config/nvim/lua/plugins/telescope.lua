@@ -138,7 +138,7 @@ M.opts.defaults = {
             ["M"]        = "move_to_middle",
             ["H"]        = "move_to_top",
 
-            ["<space>c"] = "send_to_qflist",
+            ["<space>q"] = "send_to_qflist",
 
             ["<esc>"]    = "close",
             ["q"]        = "close",
