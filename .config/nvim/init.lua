@@ -145,6 +145,8 @@ require("modules.autocommands")
 
 -- set all the mappings
 require("config.mappings")
+-- custom commands for all buffers
+require("config.commands")
 
 -- for some reason lazy deactivates that
 o.modeline = true
