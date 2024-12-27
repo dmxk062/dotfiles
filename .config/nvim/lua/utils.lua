@@ -19,7 +19,11 @@ function M.kitty_shell_in(opts)
     elseif vim.startswith(bname, "oil://") then
         vim.list_extend(cmd, { "--cwd", require("oil").get_current_dir() })
     else
-        vim.list_extend(cmd, { "--cwd", vim.fn.fnamemodify(bname, ":p:h") })
+        local bpath = vim.fn.fnamemodify(bname, ":p:h")
+        if not vim.uv.fs_stat(bpath) then
+            bpath = vim.fn.getcwd()
+        end
+        vim.list_extend(cmd, { "--cwd", bpath })
     end
     vim.system(cmd, { detach = true })
 end
@@ -38,7 +42,10 @@ function M.nvim_term_in(opts)
         cwd = require("oil").get_current_dir()
     else
         cmd = { vim.o.shell }
-        cwd = vim.fn.fnamemodify(":p:h", bname)
+        cwd = vim.fn.fnamemodify(bname, ":p:h")
+        if not vim.uv.fs_stat(cwd) then
+            cwd = vim.fn.getcwd()
+        end
     end
 
 
