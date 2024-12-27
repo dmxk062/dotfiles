@@ -118,10 +118,6 @@ local function goto_git_ancestor()
     require("oil").open(git_ancestor)
 end
 
-local function open_dir_shell(type, where)
-    require("utils").kitty_shell_in(require("oil").get_current_dir() or vim.api.nvim_buf_get_name(0), type, where)
-end
-
 local sort = {
     { "type", "asc" },
     { "name", "asc" },
@@ -276,14 +272,6 @@ M.opts = {
         ["gH"]        = "actions.toggle_hidden",
         ["g<space>"]  = open_cd,
 
-        ["<space>sw"] = function() open_dir_shell("window") end,
-        ["<space>sv"] = function() open_dir_shell("window", "vsplit") end,
-        ["<space>ss"] = function() open_dir_shell("window", "hsplit") end,
-        ["<space>sW"] = function() open_dir_shell("os-window") end,
-        ["<space>so"] = function() open_dir_shell("overlay") end,
-        ["<space>st"] = function() open_dir_shell("tab") end,
-        ["<space>:"]  = "actions.open_terminal",
-            
         ["gf"]        = filter_items,
         ["g=s"]       = function() set_sort("size") end,
         ["g=t"]       = function() set_sort("mtime") end,

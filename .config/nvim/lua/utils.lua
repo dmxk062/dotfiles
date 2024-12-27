@@ -3,26 +3,47 @@ local M = {}
 
 
 --- tries to open a shell in the correct directory that the current file is in
----@param uri string
----@param type? "window"|"os-window"|"tab"|"overlay"
----@param opts {location: "split"|"hsplit"|"vsplit"} | nil
-function M.kitty_shell_in(uri, type, opts)
+---@param opts {location: "split"|"hsplit"|"vsplit", what: "window"|"os-window"|"tab"|"overlay"} | nil
+function M.kitty_shell_in(opts)
+    local bname = vim.api.nvim_buf_get_name(0)
     opts = opts or {}
     local location = opts.location or "split"
+    local what = opts.what or "window"
 
-    local cmd = { "kitty", "@", "launch", "--type=" .. type, "--location=" .. location }
+    local cmd = { "kitty", "@", "launch", "--type=" .. what, "--location=" .. location }
 
-    if vim.startswith(uri, "oil-ssh://") then -- we're connected via ssh
-        local addr = uri:match("//(.-)/")
-        local remote_path = uri:match("//.-(/.*)"):sub(2, -1)
-
-        -- assumes a POSIX-ish shell to be present, realistically we just need it to be able to cd and exec
-        -- ssh -t makes sure we get a vtty even though it looks like we're "just" running a command
+    if vim.startswith(bname, "oil-ssh://") then
+        local addr = bname:match("//(.-)/")
+        local remote_path = bname:match("//.-(/.*)"):sub(2, -1)
         vim.list_extend(cmd, { "--", "ssh", "-t", addr, "--", "cd", remote_path, ";", "exec", "${SHELL:-/bin/sh}" })
+    elseif vim.startswith(bname, "oil://") then
+        vim.list_extend(cmd, { "--cwd", require("oil").get_current_dir() })
     else
-        vim.list_extend(cmd, { "--cwd", uri })
+        vim.list_extend(cmd, { "--cwd", vim.fn.fnamemodify(bname, ":p:h") })
     end
     vim.system(cmd, { detach = true })
+end
+
+---@param opts {location: "horizontal"|"vertical"|"tab"} | nil
+function M.nvim_term_in(opts)
+    local bname = vim.api.nvim_buf_get_name(0)
+    opts = opts or {}
+    local cmd
+    local cwd = ""
+    if vim.startswith(bname, "oil-ssh://") then
+        local addr, remote_path = bname:match("//(.-)(/.*)")
+        cmd = { "ssh", "-t", addr, "--", "cd", remote_path, ";", "exec", "${SHELL:-/bin/sh}" }
+    elseif vim.startswith(bname, "oil://") then
+        cmd = { vim.o.shell }
+        cwd = require("oil").get_current_dir()
+    else
+        cmd = { vim.o.shell }
+        cwd = vim.fn.fnamemodify(":p:h", bname)
+    end
+
+
+    vim.cmd((opts.location or "") .. " new")
+    vim.fn.termopen(cmd, { cwd = cwd })
 end
 
 ---@alias nvim_mode "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"|{}

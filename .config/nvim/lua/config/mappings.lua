@@ -186,16 +186,21 @@ abbrev("c", "spde", "setlocal spell spelllang=de_at")
 abbrev("c", "spoff", "setlocal spell& spelllang&")
 -- }}}
 
--- kitty shells {{{
-local shellleader = "<space>s"
-map("n", shellleader .. "w", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window") end)
-map("n", shellleader .. "v",
-    function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "vsplit" }) end)
-map("n", shellleader .. "s",
-    function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "window", { location = "hsplit" }) end)
-map("n", shellleader .. "W", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "os-window") end)
-map("n", shellleader .. "t", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "tab") end)
-map("n", shellleader .. "o", function() utils.kitty_shell_in(vim.fn.expand("%:p:h"), "overlay") end)
+-- shells {{{
+local kitty_leader = "<space>S"
+map("n", kitty_leader .. "w", function() utils.kitty_shell_in { what = "window" } end)
+map("n", kitty_leader .. "v", function() utils.kitty_shell_in { what = "window", location = "vsplit" } end)
+map("n", kitty_leader .. "s", function() utils.kitty_shell_in { what = "window", location = "hsplit" } end)
+map("n", kitty_leader .. "W", function() utils.kitty_shell_in { what = "os-window" } end)
+map("n", kitty_leader .. "t", function() utils.kitty_shell_in { what = "tab" } end)
+map("n", kitty_leader .. "o", function() utils.kitty_shell_in { what = "overlay" } end)
+
+local shell_leader = "<space>s"
+map("n", shell_leader .. "s", function() utils.nvim_term_in() end)
+map("n", shell_leader .. "v", function() utils.nvim_term_in { location = "vertical" } end)
+map("n", shell_leader .. "x", function() utils.nvim_term_in { location = "horizontal" } end)
+map("n", shell_leader .. "t", function() utils.nvim_term_in { location = "tab" } end)
+
 -- }}}
 
 -- insert mode {{{
