@@ -22,14 +22,10 @@ function M.config(_, opts)
         end
     end)
 
-    -- replace default I and A for visual mode
-    map("x", "I", mc.insertVisual)
-    map("x", "A", mc.appendVisual)
-
     -- turns multiple cursors into another vim command more than a full mode
     -- for linewise mode or when spanning multiple lines: create one cursor for each line, at the same position as the original one
     -- for charwise mode on a single line: create a single cursor at the destination of the motion
-    operators.map_function("<space>c", function(mode, region, extra, get)
+    operators.map_function("<M-c>", function(mode, region, extra, get)
         if mode == "line" or region[2][1] ~= region[1][1] then
             mc.action(function(ctx)
                 -- selection may start before actual cursor pos in case of textobject
@@ -37,7 +33,6 @@ function M.config(_, opts)
                 for i = region[1][1] + 1, region[2][1] do
                     local cursor = ctx:addCursor()
                     cursor:setPos({ i, 0 })
-                    cursor:feedkeys(start_pos .. "|")
                 end
             end)
         elseif mode == "char" then
@@ -49,10 +44,10 @@ function M.config(_, opts)
         return nil
     end, { normal_only = true })
 
-    map("x", "<space>c", mc.visualToCursors)
+    map("x", "<M-c>", mc.visualToCursors)
 
     -- put one cursor at each current search result
-    map("n", "<space>C/", function()
+    map("n", "<C-c>/", function()
         local search_pattern = vim.fn.getreg("/")
         local main_pos = vim.api.nvim_win_get_cursor(0)
         local matches = {}
@@ -74,7 +69,7 @@ function M.config(_, opts)
     end)
 
     -- align cursors: all to same column
-    map({ "x", "n" }, "<space>Ca", function()
+    map({ "x", "n" }, "<C-c>a", function()
         mc.action(function(ctx)
             local maincol = ctx:mainCursor():getPos()[2]
             ctx:forEachCursor(function(cursor, i, all)
@@ -83,8 +78,25 @@ function M.config(_, opts)
         end)
     end)
 
-    map({ "x" }, "<space>Cs", mc.splitCursors)
-    map({ "x" }, "<space>Cm", mc.matchCursors)
+    local vinorm = {"n", "x"}
+
+    map(vinorm, "<C-c>j", mc.nextCursor)
+    map(vinorm, "<C-c>k", mc.prevCursor)
+    map(vinorm, "<C-c>$", mc.lastCursor)
+    map(vinorm, "<C-c>0", mc.firstCursor)
+
+    map(vinorm, "<C-c>u", mc.restoreCursors)
+    map(vinorm, "<C-c>t", mc.toggleCursor)
+    map(vinorm, "<C-c>*", mc.matchAllAddCursors)
+
+    map({ "x" }, "<C-c>s", mc.splitCursors)
+    map({ "x" }, "<C-c>m", mc.matchCursors)
+    map(vinorm, "<C-c>x", mc.deleteCursor)
+    map(vinorm, "<C-c>A", mc.alignCursors)
+
+    -- replace default I and A for visual mode
+    map("x", "I", mc.insertVisual)
+    map("x", "A", mc.appendVisual)
 end
 
 return M
