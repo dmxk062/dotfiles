@@ -32,7 +32,7 @@ function M.nvim_term_in(opts)
     local cwd = ""
     if vim.startswith(bname, "oil-ssh://") then
         local addr, remote_path = bname:match("//(.-)(/.*)")
-        cmd = { "ssh", "-t", addr, "--", "cd", remote_path, ";", "exec", "${SHELL:-/bin/sh}" }
+        cmd = { "ssh", "-t", addr, "--", "cd", remote_path:sub(2, -1), ";", "exec", "${SHELL:-/bin/sh}" }
     elseif vim.startswith(bname, "oil://") then
         cmd = { vim.o.shell }
         cwd = require("oil").get_current_dir()
