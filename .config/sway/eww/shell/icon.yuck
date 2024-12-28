@@ -1,0 +1,4 @@
+(defwidget themed-icon [name ?class ?width ?height ?theme]
+    (box :width {width?:32} :height {height?:32} 
+        :class "styled-icon ${class?:""}"
+        :style "background-image: -gtk-icontheme('${name}'); background-size: ${width?:32}px ${height?:32}px;"))
