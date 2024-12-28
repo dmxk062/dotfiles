@@ -1,0 +1,26 @@
+(defpoll service-blueman :interval "20m" "pgrep blueman-applet >/dev/null && echo true || echo false")
+(defpoll service-swayidle :interval "20m" "pgrep swayidle >/dev/null && echo true || echo false")
+(defpoll service-networkmanager :interval "20m" "pgrep nm-applet >/dev/null && echo true || echo false")
+(defpoll service-vesktop :interval "20m" "pgrep vesktop >/dev/null && echo true || echo false")
+
+
+(defwidget process-panel [] 
+    (box :space-evenly false :orientation "vertical"
+        (label :class "title" :text "Processes")
+        (box
+            (button :class "cbutton${service-blueman ? "-active" : ""}"
+                :onclick "killall blueman-applet && ${EWW_CMD} update service-blueman=false || { ${EWW_CMD} update service-blueman=true; blueman-applet& }"
+                "${service-blueman ? "" : ""}   Blueman Applet")
+
+            (button :class "cbutton${service-networkmanager ? "-active" : ""}"
+                :onclick "killall nm-applet && ${EWW_CMD} update service-networkmanager=false || { ${EWW_CMD} update service-networkmanager=true; nm-applet& }"
+                "${service-networkmanager ? "" : ""}   NM Applet"))
+        (box
+            (button :class "cbutton${service-swayidle ? "-active" : ""}"
+                :onclick "killall swayidle && ${EWW_CMD} update service-swayidle=false || { ${EWW_CMD} update service-swayidle=true; swayidle -w& }"
+                "${service-swayidle ? "󰒲" : "󰒳"}   Swayidle")
+
+            (button :class "cbutton${service-vesktop ? "-active" : ""}"
+                :onclick "killall vesktop && ${EWW_CMD} update service-vesktop=false || { ${EWW_CMD} update service-vesktop=true; vesktop --start-minimized& }"
+                "${service-vesktop ? "" : ""}   Vesktop")
+            )))

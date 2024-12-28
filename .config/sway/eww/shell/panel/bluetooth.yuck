@@ -1,0 +1,77 @@
+(include "icon.yuck")
+
+(defpoll bt-devices :interval "16s" "./panel/bin/bluetooth.sh poll")
+(defpoll bt-meta :interval "16s" "./panel/bin/bluetooth.sh poll-meta")
+(defvar bt-sync "./panel/bin/bluetooth.sh sync")
+(defvar bt-msync "./panel/bin/bluetooth.sh sync-meta")
+(defvar bt-syncall "./panel/bin/bluetooth.sh sync-all")
+
+(defvar bt-icons '{
+    "audio-headset":"audio-headphones",
+    "phone":"phone",
+    "audio-card":"audio-speakers",
+    "computer":"computer",
+    "input-gaming":"input-gaming",
+    "input-keyboard":"input-keyboard",
+    "input-mouse":input-mouse",
+    "fallback":"bluetooth"
+}')
+
+(defvar bt-battery-icons '[
+"󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
+]' )
+
+(defwidget bluetooth-panel []
+    (box :space-evenly false
+        (box :orientation "vertical" :space-evenly false :valign "center"
+            (button :tooltip "Power"    :class "button${bt-meta.powered ? "-active" : ""}" 
+                :onclick "bluetoothctl power ${bt-meta.powered ? "off" : "on"}; ${bt-syncall}"
+                "")
+            (button :tooltip "Visible"  :class "button${bt-meta.visible ? "-active" : ""}"
+                :onclick "bluetoothctl discoverable ${bt-meta.visible ? "off" : "on"}; ${bt-syncall}"
+                "󰈈")
+            (button :tooltip "Pairable" :class "button${bt-meta.pairable ? "-active" : ""}" 
+                :onclick "bluetoothctl pairable ${bt-meta.pairable ? "off" : "on"}; ${bt-syncall}"
+                "󰌹")
+            (button :tooltip "Scanning" :class "button${bt-meta.scanning ? "-active" : ""}"
+                :onclick "bluetoothctl scan ${bt-meta.scanning ? "off" : "on"}; ${bt-syncall}"
+                "󰐷")
+        )
+        (scroll :style "min-height: 30rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true
+            (for dev in bt-devices 
+                (box :hexpand true :space-evenly false :halign "end"
+                    (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"
+                        (box :space-evenly false
+                            (box :hexpand true :halign "start"
+                                (themed-icon :name {dev.icon?:"bluetooth"} :width 48 :height 48)
+                                (circular-progress :visible {(dev.battery?:-1) > 0} :thickness 6 :value {dev.battery?:0}
+                                    :class "battery-circle-${dev.battery < 20 ? "critical" 
+                                    : (dev.battery < 40 ? "low" 
+                                    : (dev.battery < 80 ? "medium" : "high"))}"
+                                    (label :text "${bt-battery-icons[(dev.battery - dev.battery % 10) / 10]}"))
+                                )
+                            (box :orientation "vertical"
+                                (label :class "title" :text "${dev.alias}" :limit-width 16)
+                                (label :text "${dev.mac}"))
+                        )
+                        (box :space-evenly false :halign "end"
+                                (button :visible {dev.connected} :class "button" :timeout "256s" 
+                                    :onclick "blueman-sendto -d ${dev.mac}&"
+                                    :tooltip "Send files to device"
+                                    "")
+                                (button :tooltip "Trust" :class "button${dev.trusted ? "-active" : ""}"
+                                    :onclick "bluetoothctl ${dev.trusted ? "un" : ""}trust ${dev.mac}; ${bt-sync}"
+                                    "󰒘")
+                                (button :tooltip "Pair" :class "button${dev.paired ? "-active" : ""}"
+                                    :onclick "bluetoothctl ${dev.paired ? "remove" : "pair"} ${dev.mac}; ${bt-sync}"
+                                    "󰌹")
+                                (button :tooltip "Connect" :class "button${dev.connected ? "-active" : ""}"
+                                    :onclick "bluetoothctl ${dev.connected ? "disconnect" : "connect"} ${dev.mac}&& ${bt-sync}"
+                                    :timeout "16s"
+                                    "󰂯")
+                                (button :tooltip "Block" :class "button${dev.blocked ? "-alert" : ""}"
+                                    :onclick "bluetoothctl ${dev.blocked ? "un" : ""}block ${dev.mac}; ${bt-sync}"
+                                    "󰂭")
+                                (button :tooltip "Remove" :class "button-alert" 
+                                    :onclick "bluetoothctl remove ${dev.mac}; ${bt-sync}"
+                                    "󰩹")))))))))

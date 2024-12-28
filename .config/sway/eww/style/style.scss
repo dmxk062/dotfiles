@@ -19,6 +19,11 @@
     }
 }
 
+.cbutton {
+    @extend .button;
+    min-height: 2.5rem;
+}
+
 .button-active {
     color: $bg0;
     background-color: $accent;
@@ -27,7 +32,13 @@
     }
 }
 
+.cbutton-active {
+    @extend .button-active;
+    min-height: 2.5rem;
+}
+
 .button-alert {
+    color: $bg0;
     background-color: $error;
     &:hover {
         background-color: fade($error);
@@ -38,8 +49,48 @@
     background-color: $bg0;
 }
 
+.title {
+    margin-top: .8em;
+    font-size: 1.2em;
+}
+
+.styled-icon{
+    color: $fg0;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 1rem;
+    min-width: 1rem;
+}
+
+tooltip{
+    background-color: $bg2;
+    border-radius: 12px;
+    padding: 1rem;
+    color: $fg0;
+    label{
+        color: $fg0;
+        font-size: 1rem;
+        margin: .2rem;
+    }
+    decoration {
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
+        margin: 1rem;
+        background-clip: padding-box;
+        border-radius: 12px;
+    }
+}
+
+.card {
+    background-color: $bg0;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
+    border-radius: 12px;
+    padding: 0.2rem;
+    margin: 0.4rem;
+}
+
 @import "./modes.scss";
 @import "./tray.scss";
 @import "./weather.scss";
 @import "./performance.scss";
 @import "./mpris.scss";
+@import "./panel.scss";

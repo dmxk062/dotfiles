@@ -16,12 +16,12 @@
                     :class "perf-net"
                     :text "recv: ${perf-net.received}/s,  send: ${perf-net.sent}/s") 
                 (label 
-                    :class "perf-${perf-gpu.temp < 40 ? "cool" : (perf-gpu.temp < 60 ? "warm" : "hot")}"
+                    :class "perf-${perf-gpu.temp < 50 ? "cool" : (perf-gpu.temp < 60 ? "warm" : "hot")}"
                     :text "gpu: ${perf-gpu.mem_used} / ${perf-gpu.mem_total} [${perf-gpu.usage}% @ ${perf-gpu.temp}°C]")
             )
         )
         (button 
-            :class "perf-${cpu-temp < 40 ? "cool" : (cpu-temp < 60 ? "warm" : "hot")}"
+            :class "perf-${cpu-temp < 50 ? "cool" : (cpu-temp < 60 ? "warm" : "hot")}"
             :onclick "${EWW_CMD} update perf-show=${!perf-show}"
             "${perf-net.raw_received > 1 ? "r" : ""}${perf-net.raw_sent > 1 ? "s" : ""}  ${perf-mem.mem.nice.used} / ${perf-mem.mem.nice.total} [${round(perf-cpu, 1)}% @ ${cpu-temp}°C]")
     )
