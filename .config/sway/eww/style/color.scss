@@ -1,0 +1,41 @@
+$polar0: #2E3440;
+$polar1: #3B4251;
+$polar2: #434C5E;
+$polar3: #4C566A;
+$polar4: #616E88;
+
+$snow0: #eceff4;
+$snow1: #e4e9f0;
+$snow2: #d8dee9;
+
+$teal: #8FBCBB;
+$cyan: #88C0D0;
+$lblue: #81A1C1;
+$dblue: #5E81AC;
+
+$magenta: #B48EAD;
+$pink: mix($magenta, $snow2);
+$purple: mix($magenta, $dblue);
+$red: #BF616A;
+$orange: #D08770;
+$yellow: #EBCB8B;
+$green: #A3BE8C;
+
+$bg0: $polar0;
+$bg1: $polar1;
+$bg2: $polar2;
+$bg3: $polar3;
+
+$fg0: $snow0;
+$fg1: $snow1;
+$fg2: $snow2;
+
+$accent: $teal;
+$error: $red;
+$warn: $orange;
+$good: $green;
+$special: $pink;
+
+@function fade($color) {
+    @return mix($color, $polar3, 70)
+}

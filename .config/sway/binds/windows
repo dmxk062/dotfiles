@@ -1,0 +1,25 @@
+# vim: ft=swayconfig
+bindsym $mod+Q kill
+
+# [D]etach
+bindsym $mod+D floating toggle
+
+bindsym $mod+H focus left
+bindsym $mod+J focus down
+bindsym $mod+K focus up
+bindsym $mod+L focus right
+
+bindsym $mod+Shift+H move left
+bindsym $mod+Shift+J move down
+bindsym $mod+Shift+K move up
+bindsym $mod+Shift+L move right
+
+bindsym $mod+S splith
+bindsym $mod+V splitv
+
+bindsym $mod+F fullscreen
+
+bindsym $mod+Ctrl+H resize shrink width 64px
+bindsym $mod+Ctrl+J resize grow height 64px
+bindsym $mod+Ctrl+K resize shrink height 64px
+bindsym $mod+Ctrl+L resize grow width 64px

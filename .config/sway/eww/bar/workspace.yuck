@@ -1,0 +1,9 @@
+(deflisten workspaces :initial "[]" "./bin/workspace.sh")
+
+(defwidget workspace-list []
+    (box :space-evenly false 
+        (for ws in workspaces
+            (button 
+                :class "button${ws.focused ? "-active" : ""}"
+                :onclick "swaymsg -q workspace ${ws.name}"
+            "${ws.name}"))))

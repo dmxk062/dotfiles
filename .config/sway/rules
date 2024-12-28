@@ -1,0 +1,3 @@
+# vim: ft=swayconfig
+
+for_window [class="gamescope"] move window to workspace games

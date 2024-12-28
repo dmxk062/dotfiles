@@ -1,0 +1,10 @@
+(deflisten notifs :initial '{ "count": 0, "dnd": false, "visible": false, "inhibited": false }' "swaync-client -s")
+
+(defwidget notifications []
+    (box :space-evenly false
+        (button 
+            :onclick "swaync-client -t"
+            :onrightclick "swaync-client -d"
+            :onmiddleclick "swaync-client -C"
+            :class "button${notifs.count > 0 ? "-active" : ""}"
+            "${notifs.count > 0 ? "󰍢" : (notifs.dnd ? "󰍡" : "󱙍")}    ${notifs.count}")))

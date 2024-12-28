@@ -1,0 +1,11 @@
+.mpris-playing, .mpris-paused, .mpris-stopped {
+    @extend .button;
+}
+
+.mpris-playing {
+    color: $bg0;
+    background-color: $pink;
+    &:hover {
+        background-color: fade($pink);
+    }
+}

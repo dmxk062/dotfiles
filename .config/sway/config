@@ -1,0 +1,38 @@
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+set $term kitty
+# scripts
+set $sc ~/.config/sway/scripts/
+set $mainS DP-1
+set $leftS DP-3
+
+
+corner_radius 12
+shadows enable
+shadow_color #00000040
+shadow_blur_radius 10
+
+default_orientation auto
+floating_modifier $mod
+
+gaps inner 4
+gaps outer 8
+default_border none
+
+include ./displays
+include ./rules
+include ./workspaces
+include ./binds/binds
+
+client.focused #8fbcbb #2e3440 #eceff4 #8fbcbb #4c566a
+
+input * {
+    xkb_options compose:ralt
+}
+
+exec systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME
+exec swayidle -w
+exec playerctld
+exec nm-applet
+exec blueman-applet
+exec ~/.config/background/wallpaper.sh set

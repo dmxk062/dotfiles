@@ -1,0 +1,14 @@
+.perf-net {
+    @extend .button;
+}
+
+.perf-cool, .perf-warm, .perf-hot {
+    @extend .button;
+}
+
+.perf-hot {
+    color: $orange;
+}
+.perf-warm {
+    color: $yellow;
+}

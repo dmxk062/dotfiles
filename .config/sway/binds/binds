@@ -1,0 +1,7 @@
+# vim: ft=swayconfig
+
+include ./exec
+include ./media
+include ./windows
+include ./workspaces
+include ./screenshot

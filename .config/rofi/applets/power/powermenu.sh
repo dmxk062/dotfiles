@@ -79,7 +79,11 @@ $NO
                     systemctl suspend
                     ;;
                 logout)
-                    hyprctl dispatch exit 1
+                    if [[ -n "$SWAYSOCK" ]]; then
+                        swaymsg exit
+                    else
+                        hyprctl dispatch exit 1
+                    fi
                     ;;
                 reboot)
                     systemctl reboot

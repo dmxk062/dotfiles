@@ -1,0 +1,18 @@
+.weather-temp-burning, .weather-temp-hot, .weather-temp-warm, .weather-temp-cool, .weather-temp-cold {
+    @extend .button;
+}
+
+.weather-temp-burning { color: $orange; }
+.weather-temp-hot { color: $yellow; }
+.weather-temp-warm { color: $green; }
+.weather-temp-cool { color: $teal; }
+.weather-temp-cold { color: $lblue; }
+
+.weather-wind {
+    @extend .button;
+}
+
+.weather-humidity {
+    @extend .button;
+    color: $teal;
+}

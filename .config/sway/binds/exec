@@ -1,0 +1,10 @@
+# vim: ft=swayconfig
+
+bindsym $mod+Return       exec $term
+bindsym $mod+Shift+Return splitv;exec $term
+bindsym $mod+Ctrl+Return  splith;exec $term
+bindsym $mod+W      exec firefox
+bindsym $mod+E      exec nautilus
+bindsym $mod+Space  exec killall wofi || wofi --show drun
+bindsym $mod+Shift+Semicolon exec killall rofi || ~/.config/rofi/applets/power/run.sh
+bindsym $mod+Semicolon exec swaylock

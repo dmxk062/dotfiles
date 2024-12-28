@@ -1,0 +1,38 @@
+.mode {
+    @extend .button;
+    padding: 0.07rem 0.85rem 0.07rem 0.85rem;
+}
+
+.mode-default { @extend .mode; }
+
+.mode-media {
+    @extend .mode;
+    background-color: $purple;
+    &:hover { background-color: fade($purple); }
+}
+
+.mode-workspace {
+    @extend .mode;
+    color: $bg0;
+    background-color: $green;
+    &:hover { background-color: fade($green); }
+}
+
+.mode-screenshot {
+    @extend .mode;
+    background-color: $dblue;
+    &:hover { background-color: fade($dblue); }
+}
+
+.mode-keys {
+    color: $lblue;
+    /* font-style: italic; */
+    margin-right: .6rem;
+}
+
+.mode-box {
+    background-color: $bg2;
+    padding: 0.07rem 1.15rem 0.07rem 0.85rem;
+    margin: 0.4rem;
+    border-radius: 12px;
+}

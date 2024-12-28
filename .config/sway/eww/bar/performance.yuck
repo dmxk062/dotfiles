@@ -1,0 +1,28 @@
+(defvar perf-show false)
+(defpoll perf-mem :interval "8s" "./bin/mem.awk /proc/meminfo")
+(deflisten perf-net "./bin/net.sh")
+(deflisten perf-cpu 'mpstat 6 | gawk \'$3 == "all" { print 100-$NF; fflush() }\'')
+(deflisten perf-gpu "./bin/gpu.sh")
+(defpoll cpu-temp :interval "6s" "t=$(cat /sys/devices/platform/asus-ec-sensors/hwmon/*/temp2_input); echo \${t::-3}")
+
+(defwidget performance []
+    (box :space-evenly false
+        (revealer 
+            :reveal perf-show
+            :transition "slideright"
+            :duration "200ms"
+            (box :space-evenly false
+                (label 
+                    :class "perf-net"
+                    :text "recv: ${perf-net.received}/s,  send: ${perf-net.sent}/s") 
+                (label 
+                    :class "perf-${perf-gpu.temp < 40 ? "cool" : (perf-gpu.temp < 60 ? "warm" : "hot")}"
+                    :text "gpu: ${perf-gpu.mem_used} / ${perf-gpu.mem_total} [${perf-gpu.usage}% @ ${perf-gpu.temp}°C]")
+            )
+        )
+        (button 
+            :class "perf-${cpu-temp < 40 ? "cool" : (cpu-temp < 60 ? "warm" : "hot")}"
+            :onclick "${EWW_CMD} update perf-show=${!perf-show}"
+            "${perf-net.raw_received > 1 ? "r" : ""}${perf-net.raw_sent > 1 ? "s" : ""}  ${perf-mem.mem.nice.used} / ${perf-mem.mem.nice.total} [${round(perf-cpu, 1)}% @ ${cpu-temp}°C]")
+    )
+)

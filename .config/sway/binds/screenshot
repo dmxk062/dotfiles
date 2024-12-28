@@ -1,0 +1,17 @@
+# vim: ft=swayconfig
+
+mode "screenshot" {
+    bindsym Escape mode "default"
+    bindsym S exec $sc/screenshot.sh screen tmp clip; mode "default"
+    bindsym Ctrl+S exec $sc/screenshot.sh screen save; mode "default"
+    bindsym V exec $sc/screenshot.sh region tmp clip; mode "default"
+    bindsym Ctrl+V exec $sc/screenshot.sh region save; mode "default"
+    bindsym W exec $sc/screenshot.sh window tmp clip; mode "default"
+    bindsym Ctrl+W exec $sc/screenshot.sh window save; mode "default"
+}
+
+bindsym Shift+Print exec $sc/screenshot.sh region tmp clip
+bindsym Ctrl+Print exec $sc/screenshot.sh screen tmp clip
+bindsym Mod1+Print exec $sc/screenshot.sh window tmp clip
+bindsym $mod+Print mode "screenshot"
+bindsym $mod+P mode "screenshot"

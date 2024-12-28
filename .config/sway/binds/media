@@ -1,0 +1,100 @@
+# vim: ft=swayconfig
+
+# output
+bindsym --locked XF86AudioRaiseVolume        exec $sc/audio_popup.sh DEFAULT_SINK raise 3
+bindsym --locked XF86AudioLowerVolume        exec $sc/audio_popup.sh DEFAULT_SINK lower 3
+bindsym --locked Ctrl+XF86AudioRaiseVolume   exec $sc/audio_popup.sh DEFAULT_SINK raise 10
+bindsym --locked Ctrl+XF86AudioLowerVolume   exec $sc/audio_popup.sh DEFAULT_SINK lower 10
+bindsym --locked XF86AudioMute               exec $sc/audio_popup.sh DEFAULT_SINK mute
+
+# input
+bindsym --locked Mod1+XF86AudioRaiseVolume      exec $sc/audio_popup.sh DEFAULT_SOURCE raise 3
+bindsym --locked Mod1+XF86AudioLowerVolume      exec $sc/audio_popup.sh DEFAULT_SOURCE lower 3
+bindsym --locked Mod1+Ctrl+XF86AudioRaiseVolume exec $sc/audio_popup.sh DEFAULT_SOURCE raise 10
+bindsym --locked Mod1+Ctrl+XF86AudioLowerVolume exec $sc/audio_popup.sh DEFAULT_SOURCE lower 10
+bindsym --locked Mod1+XF86AudioMute             exec $sc/audio_popup.sh DEFAULT_SOURCE mute
+
+# screen brightness
+bindsym --locked XF86MonBrightnessUp     exec $sc/bright_popup.sh raise 20
+bindsym --locked XF86MonBrightnessDown   exec $sc/bright_popup.sh lower 20
+bindsym --locked Ctrl+XF86MonBrightnessUp     exec $sc/bright_popup.sh raise 50
+bindsym --locked Ctrl+XF86MonBrightnessDown   exec $sc/bright_popup.sh lower 50
+bindsym --locked Mod4+XF86MonBrightnessUp     exec $sc/bright_popup.sh raise 100
+bindsym --locked Mod4+XF86MonBrightnessDown   exec $sc/bright_popup.sh lower 100
+
+# media players
+bindsym --locked XF86AudioPlay exec playerctl play-pause
+bindsym --locked XF86AudioNext exec playerctl next
+bindsym --locked XF86AudioPrev exec playerctl prev
+bindsym --locked Shift+XF86AudioPlay exec playerctld shift
+bindsym --locked Shift+XF86AudioNext exec playerctl position 5+
+bindsym --locked Shift+XF86AudioPrev exec playerctl position 5-
+
+mode "media" {
+    bindsym Escape mode "default" 
+    bindsym Space exec playerctl play-pause
+
+    bindsym K exec $sc/audio_popup.sh DEFAULT_SINK raise 3
+    bindsym J exec $sc/audio_popup.sh DEFAULT_SINK lower 3
+    bindsym N       exec $sc/pulse_cycle.sh sink next
+    bindsym Shift+N exec $sc/pulse_cycle.sh sink prev
+    bindsym M       exec $sc/audio_popup.sh DEFAULT_SINK mute
+
+    bindsym Mod1+K exec $sc/audio_popup.sh DEFAULT_SOURCE raise 3
+    bindsym Mod1+J exec $sc/audio_popup.sh DEFAULT_SOURCE lower 3
+    bindsym Mod1+N       exec $sc/pulse_cycle.sh source next
+    bindsym Mod1+Shift+N exec $sc/pulse_cycle.sh source prev
+    bindsym I       exec $sc/audio_popup.sh DEFAULT_SOURCE mute
+
+    bindsym Return  exec pavucontrol; mode "default"
+
+    # Mappings for number keys {{{
+    bindsym 1 exec $sc/audio_popup.sh DEFAULT_SINK set 0.1
+    bindsym 2 exec $sc/audio_popup.sh DEFAULT_SINK set 0.2
+    bindsym 3 exec $sc/audio_popup.sh DEFAULT_SINK set 0.3
+    bindsym 4 exec $sc/audio_popup.sh DEFAULT_SINK set 0.4
+    bindsym 5 exec $sc/audio_popup.sh DEFAULT_SINK set 0.5
+    bindsym 6 exec $sc/audio_popup.sh DEFAULT_SINK set 0.6
+    bindsym 7 exec $sc/audio_popup.sh DEFAULT_SINK set 0.7
+    bindsym 8 exec $sc/audio_popup.sh DEFAULT_SINK set 0.8
+    bindsym 9 exec $sc/audio_popup.sh DEFAULT_SINK set 0.9
+    bindsym 0 exec $sc/audio_popup.sh DEFAULT_SINK set 0
+
+    bindsym KP_1 exec $sc/audio_popup.sh DEFAULT_SINK set 0.1
+    bindsym KP_2 exec $sc/audio_popup.sh DEFAULT_SINK set 0.2
+    bindsym KP_3 exec $sc/audio_popup.sh DEFAULT_SINK set 0.3
+    bindsym KP_4 exec $sc/audio_popup.sh DEFAULT_SINK set 0.4
+    bindsym KP_5 exec $sc/audio_popup.sh DEFAULT_SINK set 0.5
+    bindsym KP_6 exec $sc/audio_popup.sh DEFAULT_SINK set 0.6
+    bindsym KP_7 exec $sc/audio_popup.sh DEFAULT_SINK set 0.7
+    bindsym KP_8 exec $sc/audio_popup.sh DEFAULT_SINK set 0.8
+    bindsym KP_9 exec $sc/audio_popup.sh DEFAULT_SINK set 0.9
+    bindsym KP_0 exec $sc/audio_popup.sh DEFAULT_SINK set 0
+
+    # Input
+    bindsym Mod1+1 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.1
+    bindsym Mod1+2 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.2
+    bindsym Mod1+3 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.3
+    bindsym Mod1+4 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.4
+    bindsym Mod1+5 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.5
+    bindsym Mod1+6 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.6
+    bindsym Mod1+7 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.7
+    bindsym Mod1+8 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.8
+    bindsym Mod1+9 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.9
+    bindsym Mod1+0 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0
+
+    bindsym Mod1+KP_1 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.1
+    bindsym Mod1+KP_2 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.2
+    bindsym Mod1+KP_3 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.3
+    bindsym Mod1+KP_4 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.4
+    bindsym Mod1+KP_5 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.5
+    bindsym Mod1+KP_6 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.6
+    bindsym Mod1+KP_7 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.7
+    bindsym Mod1+KP_8 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.8
+    bindsym Mod1+KP_9 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0.9
+    bindsym Mod1+KP_0 exec $sc/audio_popup.sh DEFAULT_SOURCE set 0
+    # }}}
+}
+
+bindsym $mod+M mode "media"
+

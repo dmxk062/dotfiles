@@ -1,0 +1,25 @@
+# vim: ft=swayconfig
+
+workspace 1 output $mainS
+workspace 2 output $mainS
+workspace 3 output $mainS
+workspace 4 output $mainS
+workspace 5 output $mainS
+workspace 6 output $mainS
+workspace 7 output $mainS
+workspace 8 output $mainS
+workspace 9 output $mainS
+workspace 10 output $mainS
+
+workspace s1 output $leftS
+workspace s2 output $leftS
+workspace s3 output $leftS
+workspace s4 output $leftS
+workspace s5 output $leftS
+workspace s6 output $leftS
+workspace s7 output $leftS
+workspace s8 output $leftS
+workspace s9 output $leftS
+workspace s10 output $leftS
+
+workspace games output $mainS

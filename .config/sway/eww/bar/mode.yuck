@@ -1,0 +1,39 @@
+(defvar mode-names '{
+"default": "normal",
+"workspace": "workspace",
+"media": "media",
+"screenshot": "print"
+}')
+
+(defvar mode-descs '{
+"default": [ ],
+"media": [
+    {"keys": "[jk]", "action": "Change volume"},
+    {"keys": "[0-9]", "action": "Set volume" },
+    {"keys": "[nN]", "action": "Cycle device"},
+    {"keys": "<M-*", "action": "On Microphone"},
+    {"keys": "<Space>", "action": "Play / Pause"},
+    {"keys": "[mI]", "action": "Mute / Unmute"}
+],
+"screenshot": [
+    {"keys": "s", "action": "Current Screen" },
+    {"keys": "v", "action": "Visual Selection" },
+    {"keys": "w", "action": "Current window" },
+    {"keys": "<C-*", "action": "To disk" }
+]
+}')
+
+(deflisten mode 
+    :initial '{"change": "default"}'
+    'swaymsg -t subscribe \'["mode"]\' -m')
+
+(defwidget mode-symbol []
+    (box :space-evenly false
+        (label 
+            :class "mode-${mode.change}"
+            :text "${mode-names[mode.change]}")
+        (box :space-evenly false 
+            (for desc in {mode-descs[mode.change]}
+                (box :space-evenly false :class "mode-box"
+                (label :text "${desc.keys}" :class "mode-keys")
+                (label :text "${desc.action}" :class "mode-action"))))))
