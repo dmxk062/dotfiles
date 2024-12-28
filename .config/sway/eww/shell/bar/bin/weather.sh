@@ -4,7 +4,7 @@ CITY="graz"
 KEY=$(< "$XDG_DATA_HOME/keys/openweather")
 
 upd() {
-    eww -c "$XDG_CONFIG_HOME/sway/eww/bar/" update "$@"
+    eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" update "$@"
 }
 
 if (($1 > 300 )); then
