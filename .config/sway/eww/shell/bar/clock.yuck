@@ -25,6 +25,6 @@
                 :class "weather-humidity"
                 :text "󰖌  ${weather.main.humidity}%")))
         (button 
-            :onclick "./bin/weather.sh ${EWW_TIME - weather-last}&& ${EWW_CMD} update weather-open=${!weather-open}"
+            :onclick "./bar/bin/weather.sh ${EWW_TIME - weather-last}&& ${EWW_CMD} update weather-open=${!weather-open}"
             :class "button"
             "${formattime(EWW_TIME, "%m/%d %H:%M")}")))

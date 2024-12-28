@@ -1,4 +1,4 @@
-(deflisten workspaces :initial "[]" "./bin/workspace.sh")
+(deflisten workspaces :initial "[]" "./bar/bin/workspace.sh")
 
 (defwidget workspace-list []
     (box :space-evenly false 

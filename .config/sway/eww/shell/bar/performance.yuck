@@ -1,8 +1,8 @@
 (defvar perf-show false)
-(defpoll perf-mem :interval "8s" "./bin/mem.awk /proc/meminfo")
-(deflisten perf-net "./bin/net.sh")
+(defpoll perf-mem :interval "8s" "./bar/bin/mem.awk /proc/meminfo")
+(deflisten perf-net "./bar/bin/net.sh")
 (deflisten perf-cpu 'mpstat 6 | gawk \'$3 == "all" { print 100-$NF; fflush() }\'')
-(deflisten perf-gpu "./bin/gpu.sh")
+(deflisten perf-gpu "./bar/bin/gpu.sh")
 (defpoll cpu-temp :interval "6s" "t=$(cat /sys/devices/platform/asus-ec-sensors/hwmon/*/temp2_input); echo \${t::-3}")
 
 (defwidget performance []
