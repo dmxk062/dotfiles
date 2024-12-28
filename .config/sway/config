@@ -36,3 +36,4 @@ exec playerctld
 exec nm-applet
 exec blueman-applet
 exec ~/.config/background/wallpaper.sh set
+exec ~/.config/sway/eww/eww.sh
