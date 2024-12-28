@@ -10,5 +10,5 @@ sed --unbuffered -e \'s/&quot;/\\\\"/g\' -e "s/&apos;/\\\\\'/g" -e \'s/&amp;/&/g
             :class "mpris-${mpris.status}"
             :onclick "playerctl play-pause"
             (label 
-                :text "${mpris.title}${mpris-loop == "Track" ? "[t]" : (mpris-loop == "Playlist" ? "[l]" : "")}"
+                :text "${mpris.title?: "No Player"}${mpris-loop == "Track" ? "[t]" : (mpris-loop == "Playlist" ? "[l]" : "")}"
                 :limit-width 24))))
