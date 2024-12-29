@@ -24,6 +24,13 @@
     &:hover { background-color: fade($dblue); }
 }
 
+.mode-config {
+    @extend .mode;
+    color: $inv;
+    background-color: $orange;
+    &:hover { background-color: fade($orange); }
+}
+
 .mode-keys {
     color: $lblue;
     /* font-style: italic; */
