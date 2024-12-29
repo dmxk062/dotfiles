@@ -25,7 +25,7 @@
 "config": [
     {"keys": "w", "action": "Wallpaper"},
     {"keys": "n", "action": "Nighlight"},
-    {"keys": "t", "action": "Theme"},
+    {"keys": "t", "action": "Theme"}
 ]
 }')
 
