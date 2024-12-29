@@ -1,0 +1,7 @@
+// vim: ft=rasi
+configuration {
+    window-thumbnail: true;
+    show-icons:     true;
+    kb-row-down:"Down,Alt+j";
+    kb-row-up:"Up,Alt+k";
+}
