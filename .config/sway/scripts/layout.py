@@ -6,7 +6,7 @@ SPLIT_RATIO = 1.61
 
 def switch_split_direction(i3: i3ipc.Connection, e):
     win = i3.get_tree().find_focused()
-    if win.type == "floating_con":
+    if not win or win.type == "floating_con":
         return
 
     if win.fullscreen_mode == 1:
