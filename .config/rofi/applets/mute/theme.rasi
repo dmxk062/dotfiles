@@ -65,18 +65,23 @@ element{
     orientation: horizontal;
     highlight: bold underline;
 }
-element selected.normal,element selected.active{
-    padding: 8px;
-    border-radius: 12px;
+
+element normal.active, element alternate.active, element selected.active {
+    text-color: @bg3;
+}
+
+element selected.active {
+    background-color: @bg3;
+    color: @fg0;
+}
+element selected.normal {
     background-color: @accent;
     color: @invert;
     text-color: @invert;
     highlight: bold underline;
 }
-element normal.active{
-    background-color: @bg2;
-    text-color: @fg0;
-}
+
+
 element-text, element-icon {
     background-color: inherit;
     text-color:       inherit;
