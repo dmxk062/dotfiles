@@ -30,6 +30,8 @@ bindsym --locked Shift+XF86AudioPlay exec playerctld shift
 bindsym --locked Shift+XF86AudioNext exec playerctl position 5+
 bindsym --locked Shift+XF86AudioPrev exec playerctl position 5-
 
+bindsym $mod+XF86AudioMute exec ~/.config/rofi/applets/mute/run.sh
+
 mode "media" {
     bindsym Escape mode "default" 
     bindsym Space exec playerctl play-pause
@@ -45,6 +47,8 @@ mode "media" {
     bindsym Mod1+N       exec $sc/pulse_cycle.sh source next
     bindsym Mod1+Shift+N exec $sc/pulse_cycle.sh source prev
     bindsym I       exec $sc/audio_popup.sh DEFAULT_SOURCE mute
+
+    bindsym Shift+M exec ~/.config/rofi/applets/mute/run.sh; mode "default"
 
     bindsym Return  exec pavucontrol; mode "default"
 
