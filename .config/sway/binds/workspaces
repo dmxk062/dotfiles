@@ -1,7 +1,5 @@
 # vim: ft=swayconfig
 
-
-
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
 bindsym $mod+3 workspace number 3
@@ -23,6 +21,9 @@ bindsym $mod+KP_7 workspace number 7
 bindsym $mod+KP_8 workspace number 8
 bindsym $mod+KP_9 workspace number 9
 bindsym $mod+KP_0 workspace number 10
+
+bindsym $mod+Grave scratchpad show
+bindsym $mod+Shift+Grave move window to scratchpad
 
 bindsym $mod+Shift+1 move window to workspace number 1
 bindsym $mod+Shift+2 move window to workspace number 2
@@ -87,6 +88,9 @@ mode "workspace" {
 
     bindsym Bracketright exec $sc/in_order.sh next
     bindsym Bracketleft  exec $sc/in_order.sh prev
+
+    bindsym Grave scratchpad show
+    bindsym Shift+Grave move window to scratchpad
 }
 
 bindsym $mod+Tab mode "workspace"
