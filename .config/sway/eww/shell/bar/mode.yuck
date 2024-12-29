@@ -20,7 +20,9 @@
     {"keys": "s", "action": "Current Screen" },
     {"keys": "v", "action": "Visual Selection" },
     {"keys": "w", "action": "Current Window" },
-    {"keys": "<C-*", "action": "To Disk" }
+    {"keys": "<C-*", "action": "To Disk" },
+    {"keys": "r", "action": "Record Screen"},
+    {"keys": "c", "action": "Capture Region"}
 ],
 "config": [
     {"keys": "w", "action": "Wallpaper"},

@@ -8,8 +8,8 @@ mode "screenshot" {
     bindsym Ctrl+V exec $sc/screenshot.sh region save; mode "default"
     bindsym W exec $sc/screenshot.sh window tmp clip; mode "default"
     bindsym Ctrl+W exec $sc/screenshot.sh window save; mode "default"
-    bindsym R exec $sc/record.sh start
-    bindsym C exec $sc/record.sh start select
+    bindsym R exec $sc/record.sh start; mode "default"
+    bindsym C exec $sc/record.sh start select; mode "default"
 }
 
 bindsym Shift+Print exec $sc/screenshot.sh region tmp clip
