@@ -5,6 +5,7 @@ bindsym {
     $mod+Shift+Return   splitv;exec $term
     $mod+Ctrl+Return    splith;exec $term
     $mod+W              exec firefox
+    $mod+Shift+W        exec firefox --private-window
     $mod+E              exec nautilus
     $mod+Space          exec killall wofi || wofi --show drun
     $mod+Shift+Semicolon exec killall rofi || ~/.config/rofi/applets/power/run.sh
