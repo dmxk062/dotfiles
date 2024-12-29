@@ -56,3 +56,16 @@ $no_shadows: headerbar, sidebar, secondary_sidebar, popover;
 @define-color card_shade_color #{$bg1};
 
 @define-color scrollbar_outline_color #{rgba($bg1, 0.7)};
+
+:root {
+    // override all accents
+    --accent-blue: #{$accent};
+    --accent-teal: #{$accent};
+    --accent-green: #{$accent};
+    --accent-yellow: #{$accent};
+    --accent-orange: #{$accent};
+    --accent-red: #{$accent};
+    --accent-pink: #{$accent};
+    --accent-purple: #{$accent};
+    --accent-slate: #{$accent};
+}

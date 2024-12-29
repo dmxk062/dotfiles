@@ -1,3 +1,4 @@
+/* @import "./dark.scss"; */
 @define-color blue_1 #96b1cb;
 @define-color blue_2 #81a1c1;
 @define-color blue_3 #7091b7;
@@ -87,6 +88,17 @@
 @define-color shade_color rgba(216, 222, 233, 0.2);
 @define-color card_shade_color #d8dee9;
 @define-color scrollbar_outline_color rgba(216, 222, 233, 0.7);
+:root {
+  --accent-blue: #8fbcbb;
+  --accent-teal: #8fbcbb;
+  --accent-green: #8fbcbb;
+  --accent-yellow: #8fbcbb;
+  --accent-orange: #8fbcbb;
+  --accent-red: #8fbcbb;
+  --accent-pink: #8fbcbb;
+  --accent-purple: #8fbcbb;
+  --accent-slate: #8fbcbb; }
+
 tooltip {
   background-color: #d8dee9; }
 
