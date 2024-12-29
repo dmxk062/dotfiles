@@ -14,7 +14,7 @@ corner_radius 12
 shadows enable
 shadows_on_csd enable
 shadow_color #00000040
-shadow_blur_radius 10
+shadow_blur_radius 14
 
 floating_modifier $mod
 
@@ -46,5 +46,8 @@ exec ~/.config/background/wallpaper.sh set
 exec ~/.config/sway/eww/eww.sh
 
 exec persway daemon -d spiral
+
+# handle effects for rofi in the compositor, much nicer and more consistent
+layer_effects "rofi" shadows enable; corner_radius 18
 
 include /etc/sway/config.d/*

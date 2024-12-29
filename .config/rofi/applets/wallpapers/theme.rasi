@@ -7,7 +7,6 @@ window {
     border-color: #00000010;
     background-color: @bg0;
     children: [mainbox];
-    border-radius: 18px;
     border: 1px;
     width: 48em;
     height: 22em;
@@ -16,7 +15,6 @@ window {
 mainbox {
     spacing: 10px;
     padding: 10px;
-    border-radius: 18px;
     children: [imagebox, listbox];
     orientation: horizontal;
     background-color: @bg0;
