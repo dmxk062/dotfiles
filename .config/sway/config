@@ -45,9 +45,10 @@ exec blueman-applet
 exec ~/.config/background/wallpaper.sh set
 exec ~/.config/sway/eww/eww.sh
 
-exec persway daemon -d spiral
+# autotiling layout
+exec ~/.config/sway/scripts/layout.py
 
 # handle effects for rofi in the compositor, much nicer and more consistent
-layer_effects "rofi" shadows enable; corner_radius 18
+layer_effects "rofi" shadows enable; corner_radius 18; blur disable
 
 include /etc/sway/config.d/*
