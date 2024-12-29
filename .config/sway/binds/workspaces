@@ -46,8 +46,10 @@ bindsym $mod+Shift+Down move window to workspace s2
 bindsym $mod+Shift+Right move window to workspace s3
 bindsym $mod+Shift+Up move window to workspace s4
 
-bindsym $mod+Bracketright exec $sc/in_order.sh next
-bindsym $mod+Bracketleft  exec $sc/in_order.sh prev
+bindsym $mod+Bracketright exec $sc/in_order.sh go next
+bindsym $mod+Bracketleft  exec $sc/in_order.sh go prev
+bindsym $mod+Shift+Bracketright exec $sc/in_order.sh move next
+bindsym $mod+Shift+Bracketleft  exec $sc/in_order.sh move prev
 bindsym $mod+Escape workspace number 1
 
 mode "workspace" {
@@ -86,8 +88,10 @@ mode "workspace" {
     bindsym Shift+Right move window to workspace s3
     bindsym Shift+Up move window to workspace s4
 
-    bindsym Bracketright exec $sc/in_order.sh next
-    bindsym Bracketleft  exec $sc/in_order.sh prev
+    bindsym Bracketright exec $sc/in_order.sh go next
+    bindsym Bracketleft  exec $sc/in_order.sh go prev
+    bindsym Shift+Bracketright exec $sc/in_order.sh move next
+    bindsym Shift+Bracketleft  exec $sc/in_order.sh move prev
 
     bindsym Grave scratchpad show
     bindsym Shift+Grave move window to scratchpad
