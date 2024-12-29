@@ -1,4 +1,4 @@
-@import "../eww/style/color.scss";
+@import "../sway/eww/style/color.scss";
 
 * {
     font-family: "Torus Pro", "Torus", "Cantarell";
@@ -25,7 +25,7 @@ window {
 .close-button{
     all: unset;
     background: $bg2;
-    color: $fg;
+    color: $fg0;
     border-radius: 100%;
     margin: 5px;
     min-width: 24px;
@@ -49,12 +49,12 @@ window {
     border-radius: $radius;
     transition: $trans;
     background-color: $bg0;
-    color: $fg;
+    color: $fg0;
 }
 
 .notification-default-action {
     all: unset;
-    color: $fg;
+    color: $fg0;
     border-radius: $radius;
     padding: 8px;
     &:hover{
@@ -67,7 +67,7 @@ window {
 }
 
 .notification-content{
-    color: $fg;
+    color: $fg0;
     background-color: transparent;
     border-radius: $radius;
     margin: 8px;
@@ -75,16 +75,16 @@ window {
     .image {
         border-radius: $radius;
         margin-right: .6rem;
-        color: $fg;
+        color: $fg0;
     }
     .app-icon{
         -gtk-icon-effect: none;
         -gtk-icon-shadow: 0 1px 4px black;
         margin: .4rem;
-        color: $fg;
+        color: $fg0;
     }
     .summary{
-        color: $fg;
+        color: $fg0;
         font-weight: bold;
         font-size: 1.2rem;
         margin-bottom: .2rem;
@@ -94,7 +94,7 @@ window {
         color: $fg2;
     }
     .body{
-        color: $fg;
+        color: $fg0;
 
     }
 
@@ -104,9 +104,9 @@ window {
         
     }
     .body-image {
-        color: $fg;
+        color: $fg0;
         margin-top: .3rem;
-        background-color: $bg;
+        background-color: $bg0;
         border-radius: $radius;
     }
     #inline-reply-box{
@@ -120,26 +120,26 @@ window {
             border-radius: 12px;
             min-height: 2.85rem;
             background-color: $bg1;
-            color: $fg;
-            caret-color: $fg;
+            color: $fg0;
+            caret-color: $fg0;
             border: 2px solid $bg3;
             padding:  .07rem 1.15rem .07rem .85rem;
             &:focused{
                 border: 2px solid fade($accent);
             }
             selection{
-                color: $inverted;
+                color: $inv;
                 background-color: $accent;
             }
             label {
-                color: $fg;
+                color: $fg0;
             }
         }
         .inline-reply-button {
             all: unset;
             padding:  .07rem 1.15rem .07rem .85rem;
             border-radius: 12px;
-            color: $inverted;
+            color: $inv;
             margin-left: 1rem;
             background-color: $accent;
             transition:  $trans;
@@ -148,7 +148,7 @@ window {
             }
             &:disabled{
                 background-color: initial;
-                color: $fg;
+                color: $fg0;
             }
         }
     }
@@ -160,7 +160,7 @@ window {
     margin: 0;
     background-color: transparent;
     padding: 1rem;
-    background-color: $bg;
+    background-color: $bg0;
     border-radius: 0;
     border-top: 1px solid $bg2;
     border-right: 1px solid $bg2;
@@ -174,18 +174,18 @@ window {
     &:hover{
         background-color: $bg2;
     }
-    color: $fg;
+    color: $fg0;
 
 }
 
 .control-center {
     box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
-    background-color: $bg;
+    background-color: $bg0;
     margin: unset;
     margin: 1rem;
     margin-right: 0;
     border-radius: $radius 0 0 $radius;
-    color: $fg;
+    color: $fg0;
         .notification {
             &:focus{
                 all: unset;
@@ -205,18 +205,18 @@ window {
 .notification-group-headers {
     margin: 0 1.2rem;
     .notification-group-icon {
-        color: $fg;
-        background-color: $bg;
+        color: $fg0;
+        background-color: $bg0;
     }
     .notification-group-header {
-        color: $fg;
-        background-color: $bg;
+        color: $fg0;
+        background-color: $bg0;
     }
 }
 .notification-group-buttons > button {
     min-height: 1.5rem;
     background-color: $bg2;
-    color: $fg;
+    color: $fg0;
     transition: $trans;
 }
 .notification-group-collapse-button {
@@ -228,7 +228,7 @@ window {
     &:hover {
         background-color: unset;
         background-color: $red;
-        color: $inverted;
+        color: $inv;
     }
 }
 
@@ -241,7 +241,7 @@ window {
 
 
 .widget-dnd{
-    color: $fg;
+    color: $fg0;
     label {font-size: 1.5rem;}
     margin: .5rem;
     > switch {
@@ -274,12 +274,12 @@ window {
     }
 
     button {
-        color: $fg;
+        color: $fg0;
         &:hover {
             background-color: #{rgba($bg0, 0.6)};
         }
         &:disabled{
-            color: $fg3;
+            color: $fg2;
         }
     }
 
@@ -293,14 +293,14 @@ window {
 }
 
 .widget-title {
-    color: $fg;
+    color: $fg0;
     label{
         font-size: 1.5rem; 
         font-weight: bold;
     }
     > button {
         all: unset;
-        color: $fg;
+        color: $fg0;
         background-color: $bg2;
         transition: $trans;
         padding: 0.07rem 1.15rem 0.07rem 0.85rem;
@@ -308,7 +308,7 @@ window {
 
         &:hover {
             background-color: fade($error);
-            color: $inverted;
+            color: $inv;
         }
 
     }
@@ -317,7 +317,7 @@ window {
 }
 
 .widget-volume {
-    background-color: $bg;
+    background-color: $bg0;
     box-shadow: $popup_shadow; 
     > box > button {
         transition: $trans;

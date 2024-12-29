@@ -21,14 +21,7 @@ $orange: #D08770;
 $yellow: #EBCB8B;
 $green: #A3BE8C;
 
-$bg0: $polar0;
-$bg1: $polar1;
-$bg2: $polar2;
-$bg3: $polar3;
-
-$fg0: $snow0;
-$fg1: $snow1;
-$fg2: $snow2;
+@import "./light.scss";
 
 $accent: $teal;
 $error: $red;

@@ -13,7 +13,7 @@
 
 .mode-workspace {
     @extend .mode;
-    color: $bg0;
+    color: $inv;
     background-color: $green;
     &:hover { background-color: fade($green); }
 }
@@ -30,8 +30,12 @@
     margin-right: .6rem;
 }
 
+.mode-action {
+    @extend .text;
+}
+
 .mode-box {
-    background-color: $bg2;
+    background-color: $bg1;
     padding: 0.07rem 1.15rem 0.07rem 0.85rem;
     margin: 0.4rem;
     border-radius: 12px;

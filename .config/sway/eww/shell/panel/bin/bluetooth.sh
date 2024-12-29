@@ -2,7 +2,7 @@
 
 function list_devices {
     buffer=""
-    while read -r _ mac dname; do
+    { while read -r _ mac dname; do
         battery=""
         if [[ -z "$buffer" ]]; then
             buffer="["
@@ -36,6 +36,7 @@ function list_devices {
             "$buffer" "$mac" "$name" "$alias" "$icon" $connected $paired $trusted $blocked $battery
     done < <(bluetoothctl devices)
     echo "$buffer]"
+}| jq 'sort_by(.connected | not)'
 }
 
 function get_meta {
@@ -58,7 +59,7 @@ function get_meta {
 
 case $1 in
     poll)
-        list_devices
+        list_devices 
         ;;
     sync)
         eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" update "bt-devices"="$(list_devices)"

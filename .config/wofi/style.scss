@@ -1,4 +1,4 @@
-@import "../eww/style/color.scss";
+@import "../sway/eww/style/color.scss";
 
 * {
     all: unset;
@@ -9,7 +9,7 @@
 
 #outer-box {
     padding: .5rem;
-    background-color: $bg;
+    background-color: $bg0;
     border-radius: 1.5rem;
     box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
     background-clip: padding-box;
@@ -21,20 +21,20 @@
     border: 2px solid $bg3;
     border-radius: 1rem;
     font-size: 1.2rem;
-    color: $fg;
+    color: $fg0;
     padding: .5rem;
-    caret-color: $fg;
+    caret-color: $fg0;
 
     &:focus {
         border: 2px solid $accent;
     }
     selection {
-        color: $inverted;
+        color: $inv;
         background-color: $accent;
     }
 
     label {
-        color: $fg;
+        color: $fg0;
     }
 
     image {
@@ -49,16 +49,16 @@
         expander, > .entry {
             border-radius: 1rem;
             padding: .5rem;
-            background-color: $bg;
+            background-color: $bg0;
             border-radius: .8rem;
-            #text { color: $fg; }
+            #text { color: $fg0; }
             #img {
                 margin-right: .6rem;
             }
         }
         expander {
             arrow {
-                color: $fg;
+                color: $fg0;
                 background-image: -gtk-icontheme("go-next-symbolic");
                 margin-right: .2rem;
                 &:checked {
@@ -75,8 +75,8 @@
        &:selected {
           expander, > .entry {
               background-color: $accent;
-              #text { color: $inverted; }
-              arrow { color: $inverted; }
+              #text { color: $inv; }
+              arrow { color: $inv; }
           }
        }
 

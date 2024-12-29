@@ -37,7 +37,7 @@
                 :onclick "bluetoothctl scan ${bt-meta.scanning ? "off" : "on"}; ${bt-syncall}"
                 "󰐷")
         )
-        (scroll :style "min-height: 30rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true
+        (scroll :style "min-height: 30rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true :space-evenly false
             (for dev in bt-devices 
                 (box :hexpand true :space-evenly false :halign "end"
                     (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"
@@ -52,23 +52,23 @@
                                 )
                             (box :orientation "vertical"
                                 (label :class "title" :text "${dev.alias}" :limit-width 16)
-                                (label :text "${dev.mac}"))
+                                (label :class "text" :text "${dev.mac}"))
                         )
                         (box :space-evenly false :halign "end"
                                 (button :visible {dev.connected} :class "button" :timeout "256s" 
                                     :onclick "blueman-sendto -d ${dev.mac}&"
                                     :tooltip "Send files to device"
                                     "")
+                                (button :tooltip "Connect" :class "button${dev.connected ? "-active" : ""}"
+                                    :onclick "bluetoothctl ${dev.connected ? "disconnect" : "connect"} ${dev.mac}&& ${bt-sync}"
+                                    :timeout "16s"
+                                    "󰂯")
                                 (button :tooltip "Trust" :class "button${dev.trusted ? "-active" : ""}"
                                     :onclick "bluetoothctl ${dev.trusted ? "un" : ""}trust ${dev.mac}; ${bt-sync}"
                                     "󰒘")
                                 (button :tooltip "Pair" :class "button${dev.paired ? "-active" : ""}"
                                     :onclick "bluetoothctl ${dev.paired ? "remove" : "pair"} ${dev.mac}; ${bt-sync}"
                                     "󰌹")
-                                (button :tooltip "Connect" :class "button${dev.connected ? "-active" : ""}"
-                                    :onclick "bluetoothctl ${dev.connected ? "disconnect" : "connect"} ${dev.mac}&& ${bt-sync}"
-                                    :timeout "16s"
-                                    "󰂯")
                                 (button :tooltip "Block" :class "button${dev.blocked ? "-alert" : ""}"
                                     :onclick "bluetoothctl ${dev.blocked ? "un" : ""}block ${dev.mac}; ${bt-sync}"
                                     "󰂭")

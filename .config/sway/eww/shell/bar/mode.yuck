@@ -27,13 +27,15 @@
     :initial '{"change": "default"}'
     'swaymsg -t subscribe \'["mode"]\' -m')
 
-(defwidget mode-symbol []
-    (box :space-evenly false
-        (label 
-            :class "mode-${mode.change}"
-            :text "${mode-names[mode.change]}")
+(defwidget mode-hints []
         (box :space-evenly false 
             (for desc in {mode-descs[mode.change]}
                 (box :space-evenly false :class "mode-box"
                 (label :text "${desc.keys}" :class "mode-keys")
-                (label :text "${desc.action}" :class "mode-action"))))))
+                (label :text "${desc.action}" :class "mode-action")))))
+
+(defwidget mode-symbol []
+    (box :space-evenly false
+        (label 
+            :class "mode-${mode.change}"
+            :text "${mode-names[mode.change]}")))

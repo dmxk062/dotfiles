@@ -14,9 +14,14 @@
     margin: 0.4rem;
     min-height: 1.85rem;
     background-color: $bg1;
+    color: $fg0;
     &:hover {
         background-color: $bg2;
     }
+}
+
+.text {
+    color: $fg0;
 }
 
 .cbutton {
@@ -25,7 +30,7 @@
 }
 
 .button-active {
-    color: $bg0;
+    color: $inv;
     background-color: $accent;
     &:hover {
         background-color: fade($accent);
@@ -38,7 +43,7 @@
 }
 
 .button-alert {
-    color: $bg0;
+    color: $inv;
     background-color: $error;
     &:hover {
         background-color: fade($error);
@@ -50,6 +55,7 @@
 }
 
 .title {
+    @extend .text;
     margin-top: .8em;
     font-size: 1.2em;
 }
@@ -87,6 +93,7 @@ tooltip{
     padding: 0.2rem;
     margin: 0.4rem;
 }
+
 
 @import "./modes.scss";
 @import "./tray.scss";

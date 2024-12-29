@@ -11,19 +11,16 @@
     (systray :class "tray-box")
     (notifications)
     (performance)
-    (clock)
-    (button 
-	:class "button" 
-	:onclick "${EWW_CMD} open --toggle panel"
-	"${user}"))
-)
+    (clock)))
 
 (defwidget top-bar []
     (centerbox :class "top-bar"
-    (workspace-list)
+    (box :space-evenly false
+        (workspace-list))
     (box :space-evenly false
         (mpris)
-        (mode-symbol))
+        (mode-symbol)
+        (mode-hints))
     (right-box)))
 
 (defwindow bar

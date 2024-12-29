@@ -1,30 +1,7 @@
-(defvar weather-city "Graz")
-(defvar weather '{}')
-(defvar weather-last 0)
-(defvar weather-open false)
-
-
 (defwidget clock []
     (box :space-evenly false
-        (revealer 
-            :reveal weather-open
-            :transition "slideright"
-            :duration "200ms"
-        (box :space-evenly false 
-            (label 
-                :class "weather-temp-${weather.main.temp > 30 ? "burning" 
-                : (weather.main.temp > 20 ? "hot" 
-                : (weather.main.temp > 10 ? "warm"
-                : (weather.main.temp > 5 ? "cool"
-                : "cold")))}"
-                :text "󰔏  ${weather.main.temp}°C")
-            (label
-                :class "weather-wind"
-                :text "  ${round(weather.wind.speed / 3.6, 1)}km/h")
-            (label 
-                :class "weather-humidity"
-                :text "󰖌  ${weather.main.humidity}%")))
         (button 
-            :onclick "./bar/bin/weather.sh ${EWW_TIME - weather-last}&& ${EWW_CMD} update weather-open=${!weather-open}"
+            :onclick "${EWW_CMD} open --toggle panel; ./panel/bin/weather.sh ${EWW_TIME - weather-last}"
+            :timeout "16s"
             :class "button"
             "${formattime(EWW_TIME, "%m/%d %H:%M")}")))
