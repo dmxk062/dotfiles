@@ -26,6 +26,12 @@
     {"keys": "w", "action": "Wallpaper"},
     {"keys": "n", "action": "Nighlight"},
     {"keys": "t", "action": "Theme"}
+],
+"workspace": [
+    {"keys": "[0-9]", "action": "Go to Workspace"},
+    {"keys": "][", "action": "Prev / Next"},
+    {"keys": "<lrud>", "action": "Second Monitor" },
+    {"keys": "<S-*", "action": "Move to Workspace"}
 ]
 }')
 

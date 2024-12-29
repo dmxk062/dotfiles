@@ -86,7 +86,7 @@ mode "workspace" {
     bindsym Shift+Up move window to workspace s4
 
     bindsym Bracketright exec $sc/in_order.sh next
-    bindsym Bracketleft  exec $sc/in_order.sh next
+    bindsym Bracketleft  exec $sc/in_order.sh prev
 }
 
 bindsym $mod+Tab mode "workspace"
