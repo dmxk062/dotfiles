@@ -1,3 +1,7 @@
 # vim: ft=swayconfig
 
-for_window [class="gamescope"] move window to workspace games
+for_window [app_id="gamescope"] move window to workspace games
+for_window [title="Minecraft.*"] move window to workspace number 10
+
+for_window [app_id=".*blueman.*"] floating enable
+for_window [app_id="pavucontrol"] floating enable

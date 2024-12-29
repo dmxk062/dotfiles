@@ -6,25 +6,33 @@ set $sc ~/.config/sway/scripts/
 set $mainS DP-1
 set $leftS DP-3
 
+# emulate spiral layout
+for_window [app_id=".*"] split toggle
+default_orientation vertical
 
 corner_radius 12
 shadows enable
+shadows_on_csd enable
 shadow_color #00000040
 shadow_blur_radius 10
 
-default_orientation auto
 floating_modifier $mod
 
 gaps inner 4
 gaps outer 8
 default_border none
+titlebar_separator disable
 
 include ./displays
 include ./rules
 include ./workspaces
 include ./binds/binds
 
-client.focused #8fbcbb #2e3440 #eceff4 #8fbcbb #4c566a
+titlebar_border_thickness 2
+default_floating_border pixel 2
+client.focused   #4c566a #2e3440 #eceff4 #8fbcbb #4c566a
+client.unfocused #2e3440 #2e3440 #eceff4 #8fbcbb #2e3440
+font Torus Pro 10
 
 input * {
     xkb_options compose:ralt

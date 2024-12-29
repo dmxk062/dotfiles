@@ -41,6 +41,9 @@ bindsym $mod+Shift+Left move window to workspace s1
 bindsym $mod+Shift+Down move window to workspace s2
 bindsym $mod+Shift+Right move window to workspace s3
 
+bindsym $mod+Bracketright workspace next
+bindsym $mod+Bracketleft workspace prev
+
 mode "workspace" {
     bindsym Escape mode "default"
 }
