@@ -1,8 +1,7 @@
 (deflisten mpris-loop :initial "None" "playerctl -F loop")
 (deflisten mpris 
     :initial '{"player": "", "status":"paused", "title":"No Player"}' 
-    'playerctl -F metadata -f \
-\'{"player":"{{playerName}}", "artist":"{{markup_escape(artist)}}", "status":"{{lc(status)}}", "title":"{{markup_escape(title)}}", "pos":{{position}}, "len":{{mpris:length}}}\' |
+    'playerctl -F metadata -f \'{"player":"{{playerName}}", "artist":"{{markup_escape(artist)}}", "status":"{{lc(status)}}", "title":"{{markup_escape(title)}}", "pos":{{position}}, "len":{{mpris:length}}}\' |
 sed --unbuffered -e \'s/&quot;/\\\\"/g\' -e "s/&apos;/\\\\\'/g" -e \'s/&amp;/&/g\'')
 
 (defwidget mpris []
@@ -10,7 +9,8 @@ sed --unbuffered -e \'s/&quot;/\\\\"/g\' -e "s/&apos;/\\\\\'/g" -e \'s/&amp;/&/g
         (button 
             :class "mpris-${mpris.status}"
             :onclick "playerctl play-pause"
-            (label 
-                :text "[${round((mpris.pos / mpris.len) * 100, 0)}%] ${("${mpris.artist}" == "null") ? "" : "${mpris.artist} - "} ${mpris.title?: "No Player"}${
-                mpris-loop == "Track" ? "[t]" : (mpris-loop == "Playlist" ? "[l]" : "")}"
-                :limit-width 48))))
+            (box :space-evenly false
+                (label :text "[${round((mpris.pos / mpris.len) * 100, 1)}%] " :visible {(mpris.pos?:0) > 0 && (mpris.len?:0) > 0 && (mpris.pos?:0) < (mpris.len?:0)})
+                (label :limit-width 48
+                    :text "${("${mpris.artist}" == "null") ? "" : "${mpris.artist} - "} ${mpris.title?: "No Player"}${ mpris-loop == "Track" ? "[t]" : (mpris-loop == "Playlist" ? "[l]" : "")}")
+                ))))
