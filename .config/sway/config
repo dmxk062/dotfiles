@@ -42,6 +42,7 @@ exec swayidle -w
 exec playerctld
 exec nm-applet
 exec blueman-applet
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec ~/.config/background/wallpaper.sh set
 exec ~/.config/sway/eww/eww.sh
 
