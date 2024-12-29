@@ -29,6 +29,11 @@ case $1 in
         set_as_wall "$2"
         set
         ;;
+    both)
+        set_as_wall "$2"
+        set_as_lock "$2"
+        set
+        ;;
     set)
         set
         ;;
