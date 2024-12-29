@@ -2,15 +2,16 @@
 "default": "normal",
 "workspace": "workspace",
 "media": "media",
-"screenshot": "print"
+"screenshot": "print",
+"config":"config"
 }')
 
 (defvar mode-descs '{
 "default": [ ],
 "media": [
-    {"keys": "[jk]", "action": "Change volume"},
-    {"keys": "[0-9]", "action": "Set volume" },
-    {"keys": "[nN]", "action": "Cycle device"},
+    {"keys": "[jk]", "action": "Change Volume"},
+    {"keys": "[0-9]", "action": "Set Volume" },
+    {"keys": "[nN]", "action": "Cycle Device"},
     {"keys": "<M-*", "action": "On Microphone"},
     {"keys": "<Space>", "action": "Play / Pause"},
     {"keys": "[mI]", "action": "Mute / Unmute"}
@@ -18,8 +19,13 @@
 "screenshot": [
     {"keys": "s", "action": "Current Screen" },
     {"keys": "v", "action": "Visual Selection" },
-    {"keys": "w", "action": "Current window" },
-    {"keys": "<C-*", "action": "To disk" }
+    {"keys": "w", "action": "Current Window" },
+    {"keys": "<C-*", "action": "To Disk" }
+],
+"config": [
+    {"keys": "w", "action": "Wallpaper"},
+    {"keys": "n", "action": "Nighlight"},
+    {"keys": "t", "action": "Theme"},
 ]
 }')
 
