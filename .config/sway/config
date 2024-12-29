@@ -35,6 +35,7 @@ font Torus Pro 10
 
 input * {
     xkb_options compose:ralt
+    xkb_numlock enabled
 }
 
 exec swayidle -w

@@ -1,5 +1,7 @@
 # vim: ft=swayconfig
 
+
+
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
 bindsym $mod+3 workspace number 3
@@ -36,16 +38,55 @@ bindsym $mod+Shift+0 move window to workspace number 10
 bindsym $mod+Left workspace s1
 bindsym $mod+Down workspace s2
 bindsym $mod+Right workspace s3
+bindsym $mod+Up workspace s4
 
 bindsym $mod+Shift+Left move window to workspace s1
 bindsym $mod+Shift+Down move window to workspace s2
 bindsym $mod+Shift+Right move window to workspace s3
+bindsym $mod+Shift+Up move window to workspace s4
 
-bindsym $mod+Bracketright workspace next
-bindsym $mod+Bracketleft workspace prev
+bindsym $mod+Bracketright exec $sc/in_order.sh next
+bindsym $mod+Bracketleft  exec $sc/in_order.sh prev
+bindsym $mod+Escape workspace number 1
 
 mode "workspace" {
     bindsym Escape mode "default"
+
+    bindsym 1 workspace number 1
+    bindsym 2 workspace number 2
+    bindsym 3 workspace number 3
+    bindsym 4 workspace number 4
+    bindsym 5 workspace number 5
+    bindsym 6 workspace number 6
+    bindsym 7 workspace number 7
+    bindsym 8 workspace number 8
+    bindsym 9 workspace number 9
+    bindsym 0 workspace number 10
+
+    bindsym Shift+1 move window to workspace number 1
+    bindsym Shift+2 move window to workspace number 2
+
+    bindsym Shift+3 move window to workspace number 3
+    bindsym Shift+4 move window to workspace number 4
+    bindsym Shift+5 move window to workspace number 5
+    bindsym Shift+6 move window to workspace number 6
+    bindsym Shift+7 move window to workspace number 7
+    bindsym Shift+8 move window to workspace number 8
+    bindsym Shift+9 move window to workspace number 9
+    bindsym Shift+0 move window to workspace number 10
+
+    bindsym Left workspace s1
+    bindsym Down workspace s2
+    bindsym Right workspace s3
+    bindsym Up workspace s4
+
+    bindsym Shift+Left move window to workspace s1
+    bindsym Shift+Down move window to workspace s2
+    bindsym Shift+Right move window to workspace s3
+    bindsym Shift+Up move window to workspace s4
+
+    bindsym Bracketright exec $sc/in_order.sh next
+    bindsym Bracketleft  exec $sc/in_order.sh next
 }
 
 bindsym $mod+Tab mode "workspace"
