@@ -7,8 +7,8 @@ set $mainS DP-1
 set $leftS DP-3
 
 # emulate spiral layout
-for_window [app_id=".*"] split toggle
-default_orientation vertical
+# for_window [app_id=".*"] split toggle
+# default_orientation vertical
 
 corner_radius 12
 shadows enable
@@ -23,25 +23,27 @@ gaps outer 8
 default_border none
 titlebar_separator disable
 
+include ./color
 include ./displays
 include ./rules
 include ./workspaces
 include ./binds/binds
 
-titlebar_border_thickness 2
-default_floating_border pixel 2
-client.focused   #4c566a #2e3440 #eceff4 #8fbcbb #4c566a
-client.unfocused #2e3440 #2e3440 #eceff4 #8fbcbb #2e3440
+xwayland enable
+
 font Torus Pro 10
 
 input * {
     xkb_options compose:ralt
 }
 
-exec systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME
 exec swayidle -w
 exec playerctld
 exec nm-applet
 exec blueman-applet
 exec ~/.config/background/wallpaper.sh set
 exec ~/.config/sway/eww/eww.sh
+
+exec persway daemon -d spiral
+
+include /etc/sway/config.d/*
