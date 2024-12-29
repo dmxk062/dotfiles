@@ -52,3 +52,4 @@ exec_always ~/.config/sway/scripts/layout.py
 layer_effects "rofi" shadows enable; corner_radius 18; blur disable
 
 include /etc/sway/config.d/*
+exec dbus-update-activation-environment XDG_SESSION_TYPE
