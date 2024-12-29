@@ -7,4 +7,4 @@ mode "config" {
     bindsym T exec ~/.config/sway/eww/shell/panel/bin/color.sh; "default"
 }
 
-bindsym $mod+Ctrl+Delete mode "config"
+bindsym $mod+Delete mode "config"

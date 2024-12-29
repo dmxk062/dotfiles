@@ -2,7 +2,7 @@
 bindsym $mod+Q kill
 
 # [D]etach
-bindsym $mod+D floating toggle
+bindsym $mod+D floating toggle; resize shrink width 800 height 600
 
 bindsym $mod+H focus left
 bindsym $mod+J focus down
