@@ -62,7 +62,3 @@ source "$ZDOTDIR/mods/fzf.zsh"
 if [[ "$TERM" == "xterm-kitty" ]]; then
     source "$ZDOTDIR/mods/kitty.zsh"
 fi
-
-if [[ -n "$WAYLAND_DISPLAY" ]]; then
-    source "$ZDOTDIR/mods/gui.zsh"
-fi
