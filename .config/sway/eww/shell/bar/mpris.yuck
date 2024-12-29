@@ -1,5 +1,7 @@
 (deflisten mpris-loop :initial "None" "playerctl -F loop")
-(deflisten mpris 'playerctl -F metadata -f \
+(deflisten mpris 
+    :initial '{"player": "", "status":"paused", "title":"No Player"}' 
+    'playerctl -F metadata -f \
 \'{"player":"{{playerName}}", "status":"{{lc(status)}}", "title":"{{markup_escape(title)}}"}\' |
 sed --unbuffered -e \'s/&quot;/\\\\"/g\' -e "s/&apos;/\\\\\'/g" -e \'s/&amp;/&/g\'')
 
