@@ -2,7 +2,7 @@
 (defpoll service-swayidle :interval "20m" "pgrep swayidle >/dev/null && echo true || echo false")
 (defpoll service-networkmanager :interval "20m" "pgrep nm-applet >/dev/null && echo true || echo false")
 (defpoll service-vesktop :interval "20m" "pgrep vesktop >/dev/null && echo true || echo false")
-
+(defpoll service-fcitx5 :interval "20m" "pgrep fcitx5 >/dev/null && echo true || echo false")
 
 (defwidget process-panel [] 
     (box :space-evenly false :orientation "vertical"
@@ -23,4 +23,13 @@
             (button :class "cbutton${service-vesktop ? "-active" : ""}"
                 :onclick "killall vesktop && ${EWW_CMD} update service-vesktop=false || { ${EWW_CMD} update service-vesktop=true; vesktop --start-minimized& }"
                 "${service-vesktop ? "" : ""}   Vesktop")
+            )
+        (box
+            (button :class "cbutton${service-fcitx5 ? "-active" : ""}"
+                :onclick "killall fcitx5 && ${EWW_CMD} update service-fcitx5=false || { ${EWW_CMD} update service-fcitx5=true; fcitx5& }"
+                "${service-fcitx5 ? "" : ""}   fcitx5 IME")
+            (button :class "cbutton"
+                :onclick "kitty btm& ${EWW_CMD} close panel"
+                "󰨇   Process Monitor"
+                )
             )))
