@@ -5,10 +5,9 @@
 .perf-cool, .perf-warm, .perf-hot {
     @extend .button;
 }
-
-.perf-hot {
+.perf-warm {
     color: $orange;
 }
-.perf-warm {
-    color: mix($yellow, $fg0);
+.perf-hot {
+    color: $red;
 }

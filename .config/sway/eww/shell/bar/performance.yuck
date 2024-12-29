@@ -1,9 +1,10 @@
 (defvar perf-show false)
-(defpoll perf-mem :interval "8s" "./bar/bin/mem.awk /proc/meminfo")
+(defpoll perf-mem :interval "8s" "./bar/bin/mem.awk /proc/meminfo") ; easier for formatting than the builtin
 (deflisten perf-net "./bar/bin/net.sh")
-(deflisten perf-cpu 'mpstat 6 | gawk \'$3 == "all" { print 100-$NF; fflush() }\'')
 (deflisten perf-gpu "./bar/bin/gpu.sh")
-(defpoll cpu-temp :interval "6s" "t=$(cat /sys/devices/platform/asus-ec-sensors/hwmon/*/temp2_input); echo \${t::-3}")
+
+(defvar gpu-sensor "AMDGPU_JUNCTION")
+(defvar cpu-sensor "ASUSEC_CPU")
 
 (defwidget performance []
     (box :space-evenly false
@@ -14,15 +15,14 @@
             (box :space-evenly false
                 (label 
                     :class "perf-net"
-                    :text "recv: ${perf-net.received}/s,  send: ${perf-net.sent}/s") 
+                    :text "recv: ${perf-net.received}B/s,  send: ${perf-net.sent}B/s") 
                 (label 
-                    :class "perf-${perf-gpu.temp < 50 ? "cool" : (perf-gpu.temp < 60 ? "warm" : "hot")}"
-                    :text "gpu: ${perf-gpu.mem_used} / ${perf-gpu.mem_total} [${perf-gpu.usage}% @ ${perf-gpu.temp}°C]")
-            )
-        )
+                    :class "perf-${EWW_TEMPS[gpu-sensor] < 50 ? "cool" : (EWW_TEMPS[gpu-sensor] < 60 ? "warm" : "hot")}"
+                    :text "gpu: ${perf-gpu.mem_used} / ${perf-gpu.mem_total} [${perf-gpu.usage}% @ ${EWW_TEMPS[gpu-sensor]}°C]")
+                (label 
+                    :class "perf-${EWW_TEMPS[cpu-sensor] < 50 ? "cool" : (EWW_TEMPS[cpu-sensor] < 60 ? "warm" : "hot")}"
+                    :text "cpu: ${perf-mem.used} / ${perf-mem.total} [${round(EWW_CPU.avg, 1)}% @ ${EWW_TEMPS[cpu-sensor]}°C]")))
         (button 
-            :class "perf-${cpu-temp < 50 ? "cool" : (cpu-temp < 60 ? "warm" : "hot")}"
+            :class "button"
             :onclick "${EWW_CMD} update perf-show=${!perf-show}"
-            "${perf-net.raw_received > 1 ? "r" : ""}${perf-net.raw_sent > 1 ? "s" : ""}  ${perf-mem.mem.nice.used} / ${perf-mem.mem.nice.total} [${round(perf-cpu, 1)}% @ ${cpu-temp}°C]")
-    )
-)
+            "${(perf-net.raw_sent?:0) > 0 ? "s" : ""}${(perf-net.raw_received?:0) > 0 ? "r" : ""}  ${round(EWW_RAM.used_mem_perc, 1)}% mem")))
