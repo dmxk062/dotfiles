@@ -32,7 +32,7 @@ function M.config(_, opts)
                 local start_pos = region[1][2] + 1
                 for i = region[1][1] + 1, region[2][1] do
                     local cursor = ctx:addCursor()
-                    cursor:setPos({ i, 0 })
+                    cursor:setPos({ i, 1 })
                 end
             end)
         elseif mode == "char" then
