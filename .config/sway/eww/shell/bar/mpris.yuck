@@ -1,14 +1,16 @@
 (deflisten mpris "./bar/bin/mpris.py")
+(defvar mpris-expanded false)
 
 (defwidget mpris []
     (box :space-evenly false
         (eventbox
             :onscroll `[[ {} == up ]] && playerctl position 5+ || playerctl position 5-`
-            (button :visible {mpris.has_player && mpris.has_progress}
+            (button :visible {mpris.has_player}
                 :class "mpris-${mpris.playing ? "playing" : "paused"}"
                 :onclick "playerctl play-pause"
-                "${mpris.nice_time} - ${mpris.nice_progress}"))
-        (box :space-evenly false
+                {mpris.has_progress ? "[${mpris.player}] ${mpris.nice_time} - ${mpris.nice_progress}" : "${mpris.player}"}))
+        (button
             :class "mpris-name"
-            (label :limit-width 48 
+            :onclick "${EWW_CMD} update mpris-expanded=${!mpris-expanded}"
+            (label :limit-width {mpris-expanded ? 60 : 30}
                 :text {mpris.has_player ? "${mpris.artist}, ${mpris.album} - ${mpris.title}" : "No Player"}))))
