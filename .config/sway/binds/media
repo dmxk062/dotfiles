@@ -51,6 +51,8 @@ mode "media" {
 
     H exec playerctl position 5-
     L exec playerctl position 5+
+    Shift+H exec playerctl previous
+    Shift+L exec playerctl next
 
     Shift+M exec ~/.config/rofi/applets/mute/run.sh; mode "default"
 
