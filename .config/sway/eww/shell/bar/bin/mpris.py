@@ -10,6 +10,9 @@ from gi.repository import GLib, Playerctl
 
 PLAYER_POSITIONS = {}
 
+def get_timestamp(mseconds):
+    minutes, seconds = divmod(mseconds / 1000000, 60)
+    return f"{minutes:.0f}:{seconds:02.0f}"
 
 def do_meta(pl, meta, *_):
     out = {}
@@ -18,12 +21,18 @@ def do_meta(pl, meta, *_):
     out["has_player"] = True
     out["player"] = name or None
     out["playing"] = pl.props.status == "Playing"
-    out["position"] = PLAYER_POSITIONS.get(pl, 0)
-    out["length"] = meta["mpris:length"]
-    out["has_progress"] = bool(out["length"] and out["position"])
-    if out["has_progress"]:
-        out["progress"] = out["position"] / out["length"]
-        out["nice_progress"] = f"{out["progress"] * 100:.1f}%"
+    position = PLAYER_POSITIONS.get(pl, 0)
+    out["position"] = position
+    length = meta["mpris:length"]
+    out["length"] = length
+    if (length and position):
+        out["has_progress"] = True
+        progress = position / length
+        out["progress"] = progress
+        out["nice_progress"] = f"{progress * 100:.1f}%"
+        out["nice_time"] = get_timestamp(position) + "/" + get_timestamp(length) 
+    else:
+        out["has_progress"] = False
 
     artists = meta["xesam:artist"]
     num_artists = len(artists)
