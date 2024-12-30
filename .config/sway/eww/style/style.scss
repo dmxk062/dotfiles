@@ -24,6 +24,12 @@
     color: $fg0;
 }
 
+.bar-text {
+    @extend .text;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
 .cbutton {
     @extend .button;
     min-height: 2.5rem;

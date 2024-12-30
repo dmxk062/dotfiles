@@ -1,5 +1,5 @@
 (defvar recording false)
-(defvar recording-info '{}')
+(defvar recording-info '{"start": 0, "pid": 0, "path": ""}')
 
 
 (defwidget recording-indicator []

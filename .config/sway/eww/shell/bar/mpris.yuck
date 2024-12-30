@@ -3,10 +3,10 @@
 (defwidget mpris []
     (box :space-evenly false
         (button 
-            :class "mpris-${(mpris.playing?:false) ? "playing" : "paused"}"
+            :class "mpris-${mpris.playing ? "playing" : "paused"}"
             :onclick "playerctl play-pause"
             (box :space-evenly false
-                (label :text "[${round((mpris.progress?:0) * 100, 1)}%] " :visible {mpris.has_player && mpris.has_progress})
+                (label :text "[${mpris.nice_progress}] " :visible {mpris.has_player && mpris.has_progress})
                 (label :limit-width 48 :visible {mpris.has_player}
                     :text "${mpris.artist}, ${mpris.album} - ${mpris.title?: "No Player"}")
                 (label :visible {!mpris.has_player} :text "No Player")))))

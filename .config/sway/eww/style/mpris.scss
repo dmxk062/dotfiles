@@ -3,8 +3,8 @@
 }
 
 .mpris-playing {
-    color: $inv;
     background-color: $pink;
+    color: $inv;
     &:hover {
         background-color: fade($pink);
     }

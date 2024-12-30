@@ -23,6 +23,7 @@ def do_meta(pl, meta, *_):
     out["has_progress"] = bool(out["length"] and out["position"])
     if out["has_progress"]:
         out["progress"] = out["position"] / out["length"]
+        out["nice_progress"] = f"{out["progress"] * 100:.1f}%"
 
     artists = meta["xesam:artist"]
     num_artists = len(artists)
@@ -46,7 +47,7 @@ def on_play_pause(player, *_):
 
 def assert_not_none(man):
     if not len(man.props.player_names):
-        sys.stdout.write(json.dumps({"has_player": False}) + "\n")
+        sys.stdout.write(json.dumps({"has_player": False, "playing": False}) + "\n")
         sys.stdout.flush()
         return False
     return True

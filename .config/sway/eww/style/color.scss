@@ -32,3 +32,22 @@ $special: $pink;
 @function fade($color) {
     @return mix($color, $polar3, 70)
 }
+
+@define-color bg0 #{$bg0};
+@define-color bg1 #{$bg1};
+@define-color bg2 #{$bg2};
+@define-color bg3 #{$bg3};
+@define-color fg0 #{$fg0};
+@define-color fg1 #{$fg1};
+@define-color fg2 #{$fg2};
+@define-color teal #{$teal};
+@define-color cyan #{$cyan};
+@define-color lblue #{$lblue};
+@define-color dblue #{$dblue};
+@define-color magenta #{$magenta};
+@define-color purple #{$purple};
+@define-color pink #{$pink};
+@define-color red #{$red};
+@define-color orange #{$orange};
+@define-color yellow #{$yellow};
+@define-color green #{$green};
