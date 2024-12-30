@@ -10,6 +10,7 @@
 "default": [ ],
 "media": [
     {"keys": "[jk]", "action": "Change Volume"},
+    {"keys": "[hl]", "action": "Seek"},
     {"keys": "[0-9]", "action": "Set Volume" },
     {"keys": "[nN]", "action": "Cycle Device"},
     {"keys": "<M-*", "action": "On Microphone"},
