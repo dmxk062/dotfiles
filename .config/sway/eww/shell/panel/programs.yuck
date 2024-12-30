@@ -30,6 +30,4 @@
                 "${service-fcitx5 ? "" : ""}   fcitx5 IME")
             (button :class "cbutton"
                 :onclick "kitty btm& ${EWW_CMD} close panel"
-                "󰨇   Process Monitor"
-                )
-            )))
+                "󰨇   Process Monitor"))))

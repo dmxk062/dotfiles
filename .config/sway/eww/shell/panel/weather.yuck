@@ -2,9 +2,6 @@
 (defvar weather '{}')
 (defvar weather-last 0)
 
-(defpoll username :interval "200m" "echo $USER")
-(defpoll hostname :interval "200m" "hostname")
-(defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
 
 (defvar weather-icons '{
 "01d": "weather-clear",
@@ -33,13 +30,6 @@
             :name {weather-icons[weather.weather[0].icon]}
             :width 64
             :height 64)
-
-        (box :space-evenly false :orientation "vertical" :valign "end" :halign "center" :hexpand true
-            (label :class "text" :text "${username}@${hostname}")
-            (label :class "text" :text "for ${formattime(EWW_TIME - boottime, "%H:%M")}")
-            (label :class "text" :text {formattime(EWW_TIME, "%Y/%m/%d")})
-            (label :class "text" :text {formattime(EWW_TIME, "%H:%M:%S")})
-        )
 
         (box :orientation "vertical" :space-evenly false :halign "end" :hexpand true
             (label :class "weather-${weather.main.temp > 30 ? "hot" 

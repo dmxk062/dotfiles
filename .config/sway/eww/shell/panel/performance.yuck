@@ -1,0 +1,44 @@
+(deflisten perf-net "./panel/bin/net.sh")
+(deflisten perf-gpu "./panel/bin/gpu.sh")
+
+(defvar gpu-sensor "AMDGPU_JUNCTION")
+(defvar cpu-sensor "ASUSEC_CPU")
+
+(defpoll username :interval "200m" "echo $USER")
+(defpoll hostname :interval "200m" "hostname")
+(defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
+
+(defwidget colored-scale [value text ?temp ?class ?min ?max]
+    (box :space-evenly false :orientation "v" 
+        (scale 
+            :min {min?:0}
+            :max {max?:100}
+            :active false
+            :flipped true
+            :orientation "vertical"
+            :value {value}
+            :tooltip {"${class}" == "" ? "${temp}°C" : "${text}"}
+            :class "perf-scale-${class?: (temp > 70 ? "critical" 
+                : (temp > 60 ? "hot" 
+                : (temp > 50 ? "warm" 
+                : (temp > 40 ? "normal" 
+                : "cool"))))}")
+        (label 
+            :text {text}
+            :class "perf-icon-${class?: (temp > 70 ? "critical" 
+                : (temp > 60 ? "hot" 
+                : (temp > 50 ? "warm" 
+                : (temp > 40 ? "normal" 
+                : "cool"))))}")))
+
+(defwidget performance-panel []
+    (box :orientation "vertical" :class "weather-card" :hexpand true :space-evenly false
+        (box 
+            (colored-scale :text "C: ${round(EWW_CPU.avg, 1)}%" :temp {EWW_TEMPS[cpu-sensor]} :value {EWW_CPU.avg})
+            (colored-scale :text "G: ${perf-gpu.usage}%" :temp {EWW_TEMPS[gpu-sensor]} :value {perf-gpu.usage})
+            (colored-scale :text "M: ${round(EWW_RAM.used_mem_perc, 1)}%" :class "mem" :value {EWW_RAM.used_mem_perc})
+
+            ; very subjective idea of network "fastness"
+            (colored-scale :text "${perf-net.sent}B/s" :class "net-up" :value {perf-net.raw_sent / 1024 / 1024} :min 0 :max 20)
+            (colored-scale :text "${perf-net.received}B/s" :class "net-down" :value {perf-net.raw_received / 1024 / 1024} :min 0 :max 30))
+        (label :class "title" :text "${username}@${hostname} - up for ${formattime(EWW_TIME - boottime, "%H:%M", "UTC")}")))

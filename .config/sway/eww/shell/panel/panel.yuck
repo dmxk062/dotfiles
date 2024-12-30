@@ -2,6 +2,7 @@
 (include "./panel/programs.yuck")
 (include "./panel/bluetooth.yuck")
 (include "./panel/weather.yuck")
+(include "./panel/performance.yuck")
 
 (defwidget panel []
     (box 
@@ -14,4 +15,5 @@
                 (bluetooth-panel)
             )
             (box :vexpand true :valign "end" :space-evenly false :orientation "vertical"
-            (weather-panel)))))
+                (performance-panel)
+                (weather-panel)))))

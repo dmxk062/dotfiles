@@ -1,13 +1,49 @@
-.perf-net {
-    @extend .button;
+.perf-scale {
+    trough {
+        all: unset;
+        min-height: 12rem;
+        margin-left: .5rem;
+        margin-right: .5rem;
+        border-radius: 12px;
+        background-color: $bg3;
+        min-width: .5rem;
+        highlight {
+            border-radius: 12px;
+            background-color: $accent;
+        }
+    }
 }
 
-.perf-cool, .perf-warm, .perf-hot {
-    @extend .button;
+.perf-scale-critical, .perf-scale-hot, .perf-scale-warm, .perf-scale-normal, .perf-scale-cool, .perf-scale-mem, {
+    @extend .perf-scale;
 }
-.perf-warm {
-    color: $orange;
+
+.perf-scale-critical trough highlight { background-color: $red; }
+.perf-scale-hot trough highlight { background-color: $orange; }
+.perf-scale-warm trough highlight { background-color: $yellow; }
+.perf-scale-normal trough highlight { background-color: $green; }
+.perf-scale-cool trough highlight { background-color: $teal; }
+
+.perf-scale-net-up {
+    @extend .perf-scale;
+    trough highlight {
+        background-color: $dblue;
+    }
 }
-.perf-hot {
-    color: $red;
+
+.perf-scale-net-down {
+    @extend .perf-scale;
+    trough highlight {
+        background-color: $lblue;
+    }
 }
+
+.perf-icon-critical, .perf-icon-hot, .perf-icon-warm, .perf-icon-normal, .perf-icon-cool, .perf-icon-mem, .perf-icon-net-up, .perf-icon-net-down {
+    margin-top: 4px;
+}
+
+.perf-icon-critical{ color: $red; }
+.perf-icon-hot{ color: $orange; }
+.perf-icon-warm{ color: $yellow; }
+.perf-icon-normal{ color: $green; }
+.perf-icon-cool{ color: $teal; }

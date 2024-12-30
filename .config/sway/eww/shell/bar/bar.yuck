@@ -1,0 +1,25 @@
+(include "./bar/workspace.yuck")
+(include "./bar/mpris.yuck")
+(include "./bar/mode.yuck")
+(include "./bar/recording.yuck")
+(include "./bar/notifications.yuck")
+(include "./bar/clock.yuck")
+
+
+(defwidget right-box []
+    (box :space-evenly false :halign "end"
+    (systray :class "tray-box")
+    (recording-indicator)
+    (notifications)
+    (clock)))
+
+(defwidget top-bar []
+    (centerbox :class "top-bar"
+    (box :space-evenly false
+        (workspace-list))
+    (box :space-evenly false
+        (mpris)
+        (mode-symbol)
+        (mode-hints))
+    (right-box)))
+
