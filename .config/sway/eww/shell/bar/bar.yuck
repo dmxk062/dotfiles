@@ -10,16 +10,16 @@
     (box :space-evenly false :halign "end"
     (systray :class "tray-box")
     (recording-indicator)
+    (mpris)
     (notifications)
     (clock)))
 
 (defwidget top-bar []
     (centerbox :class "top-bar"
     (box :space-evenly false
-        (workspace-list))
-    (box :space-evenly false
-        (mpris)
         (mode-symbol)
         (mode-hints))
+    (box :space-evenly false
+        (workspace-list))
     (right-box)))
 

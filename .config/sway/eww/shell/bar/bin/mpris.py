@@ -22,14 +22,9 @@ def do_meta(pl, meta, *_):
     out["player"] = name or None
     out["playing"] = pl.props.status == "Playing"
     position = PLAYER_POSITIONS.get(pl, 0)
-    out["position"] = position
     length = meta["mpris:length"]
-    out["length"] = length
     if (length and position):
         out["has_progress"] = True
-        progress = position / length
-        out["progress"] = progress
-        out["nice_progress"] = f"{progress * 100:.1f}%"
         out["nice_time"] = get_timestamp(position) + "/" + get_timestamp(length) 
     else:
         out["has_progress"] = False
@@ -37,15 +32,26 @@ def do_meta(pl, meta, *_):
     artists = meta["xesam:artist"]
     num_artists = len(artists)
     if num_artists == 0:
-        out["artist"] = None
+        artist = None
     elif num_artists == 1:
-        out["artist"] = artists[0]
+        artist = artists[0]
     elif num_artists == 2:
-        out["artist"] = "&".join(artists)
+        artist = "&".join(artists)
     else:
-        out["artist"] = "&".join([",".join(artists[:-1]), artists[-1]])
+        artist = "&".join([",".join(artists[:-1]), artists[-1]])
+    out["artist"] = artist
     out["album"] = meta["xesam:album"]
     out["title"] = meta["xesam:title"]
+
+    nice_title = ""
+    if artist and artist != "":
+        nice_title += artist
+    if out["album"]:
+        nice_title += ", " + out["album"]
+    if out["title"]:
+        nice_title += " - " + out["title"]
+
+    out["nice_title"] = nice_title
 
     sys.stdout.write(json.dumps(out) + "\n")
     sys.stdout.flush()
