@@ -1,6 +1,6 @@
-(defpoll perf-mem :interval "8s" "./bar/bin/mem.awk /proc/meminfo") ; easier for formatting than the builtin
-(deflisten perf-net "./bar/bin/net.sh")
-(deflisten perf-gpu "./bar/bin/gpu.sh")
+(defpoll perf-mem :interval "8s" "./bin/mem.awk /proc/meminfo") ; easier for formatting than the builtin
+(deflisten perf-net "./bin/net.sh")
+(deflisten perf-gpu "./bin/gpu.sh")
 
 (defvar gpu-sensor "AMDGPU_JUNCTION")
 (defvar cpu-sensor "ASUSEC_CPU")

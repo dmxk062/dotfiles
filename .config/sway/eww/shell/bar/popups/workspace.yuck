@@ -1,5 +1,5 @@
 (defvar ws-overview-reveal false)
-(deflisten overview-workspaces "./bar/bin/overview_win.py 2>/dev/null")
+(deflisten overview-workspaces "./bin/overview_win.py 2>/dev/null")
 (defvar overview-cut-win 0)
 
 
@@ -10,7 +10,7 @@
             margin-right: -${round((win.rect.x + win.rect.width)/10, 0)}px;
             margin-bottom: -${round((win.rect.y + win.rect.height)/10, 0)}px;
             " 
-            :class "overview-window${win.focused ? "-active" : ""} ${win.float ? "float" : ""} ${overview-cut-win == win.id ? "cut" : ""}"
+            :class "overview-window${win.focused ? "active" : ""} ${win.float ? "float" : ""} ${overview-cut-win == win.id ? "cut" : ""}"
             :hexpand false
             :vexpand false
             :halign "start"
@@ -39,7 +39,7 @@
 
 (defwidget ws-overview [] 
     (eventbox 
-        :onhoverlost "./bar/bin/popup.sh ws-overview-win ws-overview-reveal close&"
+        :onhoverlost "./bin/popup.sh ws-overview-win ws-overview-reveal close&"
         (revealer 
             :reveal {ws-overview-reveal}
             :transition "slidedown"

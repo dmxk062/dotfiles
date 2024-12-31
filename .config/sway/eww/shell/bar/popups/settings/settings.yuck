@@ -1,0 +1,43 @@
+(include "./bar/popups/settings/appearance.yuck")
+(include "./bar/popups/settings/programs.yuck")
+(include "./bar/popups/settings/bluetooth.yuck")
+(include "./bar/popups/settings/weather.yuck")
+(include "./bar/popups/settings/performance.yuck")
+
+(defvar settings-panel-shown false)
+;; (defvar settings-section 0)
+(defvar bt-revealed false)
+
+(defwidget panel [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
+    (revealer 
+        :reveal {settings-panel-shown}
+        :transition "slidedown"
+        (box (box :class "popup-win" 
+            :orientation "v" 
+            :space-evenly false
+            (appearance-panel)
+            (process-panel)
+            (box 
+                (box :class "cbutton ${bt-meta.powered ? "active" : ""}" :space-evenly false
+                    (button :hexpand true 
+                        :onclick "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${bt-syncall}"
+                        :timeout "16s"
+                        "${bt-meta.powered ? "󰂯" : "󰂲"}   Bluetooth")
+                    (button 
+                        :onclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
+                        {bt-revealed ? "" : "" }))
+                (box))
+            (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
+            )))))
+
+(defwindow settings-panel 
+    :monitor 0
+    :geometry (geometry 
+        :x 0
+        :y -50
+        :width 0
+        :height 0
+        :anchor "top right")
+    :stacking "overlay"
+    :exclusive true
+    (panel))

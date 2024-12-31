@@ -1,4 +1,4 @@
-(deflisten mpris "./bar/bin/mpris.py")
+(deflisten mpris "./bin/mpris.py")
 
 (defwidget mpris []
         (eventbox

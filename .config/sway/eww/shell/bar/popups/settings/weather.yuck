@@ -1,0 +1,47 @@
+(defvar weather-city "Graz")
+(defvar weather '{}')
+(defvar weather-last 0)
+
+
+(defvar weather-icons '{
+"01d": "weather-clear",
+"01n": "weather-clear-night",
+"02d": "weather-few-clouds",
+"02n": "weather-few-clouds-night",
+"03d": "weather-clouds",
+"03n": "weather-clouds-night",
+"04d": "weather-clouds",
+"04n": "weather-clouds-night",
+"09d": "weather-showers",
+"09n": "weather-showers-night",
+"10d": "weather-showers-scattered",
+"10n": "weather-showers-scattered-night",
+"11d": "weather-storm",
+"11n": "weather-storm-night",
+"13d": "weather-snow",
+"13n": "weather-snow-night",
+"50d": "weather-mist",
+"50n": "weather-mist"
+}')
+
+(defwidget weather-panel []
+    (box :space-evenly false :orientation "vertical"
+        (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
+        (box :space-evenly false
+            (themed-icon 
+                :name {weather-icons[weather.weather[0].icon]}
+                :width 64
+                :height 64)
+
+            (box :orientation "vertical" :space-evenly false :halign "end" :hexpand true
+                (label :class "weather-${weather.main.temp > 30 ? "hot" 
+                    : (weather.main.temp > 20 ? "warm" 
+                    : (weather.main.temp > 10 ? "temperate" 
+                    : (weather.main.temp > 5 ? "cool"
+                    : "cold")))}" 
+                    :text "󰔏   ${weather.main.temp}°C")
+                (label :class "weather-wind" 
+                    :text "   ${round(weather.wind.speed / 3.6, 1)}km/h")
+                (label :class "weather-description" 
+                    :text "󰋽   ${weather.weather[0].description}")))))
+

@@ -1,16 +1,16 @@
 (defpoll look-nightlight :interval "10m" "pgrep gammastep >/dev/null && echo true || echo false")
 (defvar nightlight-strengh 3000)
-(defpoll look-islight :interval "10m" "./panel/bin/color.sh get")
+(defpoll look-islight :interval "10m" "./bin/color.sh get")
 
-(defwidget display-panel []
+(defwidget appearance-panel []
     (box :space-evenly false :orientation "vertical"
         (box
-            (button :class "cbutton${look-nightlight ? "-active" : ""}"
+            (button :class "cbutton ${look-nightlight ? "active" : ""}"
                 :onclick "killall gammastep && ${EWW_CMD} update look-nightlight=false || { ${EWW_CMD} update look-nightlight=true; gammastep -O ${nightlight-strengh}& }"
                 "${look-nightlight ? "󰖔" : ""}   Nightlight")
 
             (button :class "cbutton"
-                :onclick "./panel/bin/color.sh"
+                :onclick "./bin/color.sh"
                 :timeout "128s"
                 "${look-islight ? "" : "󰖔"}   Colorscheme")
             )))

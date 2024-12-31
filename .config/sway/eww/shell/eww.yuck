@@ -13,17 +13,3 @@
     :hexpand false
     :vexpand false
     (top-bar))
-
-(include "./panel/panel.yuck")
-(defwindow panel
-    :monitor 0
-    :geometry (geometry
-        :x "0px"
-        :y "0px"
-        :width "14%"
-        :height "98%"
-        :anchor "right center")
-    :stacking "fg"
-    :namespace "eww_panel"
-    :hexpand false
-    (box :vexpand true (panel)))

@@ -1,7 +1,9 @@
+(include "./bar/popups/settings/settings.yuck")
+
 (defwidget clock []
     (box :space-evenly false
         (button 
-            :onclick "${EWW_CMD} open --toggle panel; ./panel/bin/weather.sh ${EWW_TIME - weather-last}"
+            :onclick "bin/popup.sh settings-panel settings-panel-shown open & ./bin/weather.sh ${EWW_TIME - weather-last}"
             :timeout "16s"
             :class "button"
             "${formattime(EWW_TIME, "%m/%d %H:%M")}")))
