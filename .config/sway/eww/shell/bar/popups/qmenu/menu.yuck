@@ -9,7 +9,7 @@
 (defvar bt-revealed false)
 (defvar wifi-revealed false)
 
-(defwidget panel [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
+(defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
     (revealer 
         :reveal {settings-panel-shown}
         :transition "slidedown"
@@ -55,4 +55,4 @@
         :anchor "top right")
     :stacking "overlay"
     :exclusive true
-    (panel))
+    (qmenu))
