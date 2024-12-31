@@ -1,9 +1,13 @@
 (deflisten workspaces :initial "[]" "./bar/bin/workspace.sh")
 
+(include "./bar/popups/workspace.yuck")
+
 (defwidget workspace-list []
-    (box :space-evenly false 
-        (for ws in workspaces
-            (button 
-                :class "button${ws.focused ? "-active" : ""}"
-                :onclick "swaymsg -q workspace ${ws.name}"
-            "${ws.name}"))))
+    (eventbox 
+        :onhover "./bar/bin/popup.sh ws-overview-win ws-overview-reveal open&" 
+        (box :space-evenly false 
+            (for ws in workspaces
+                (button 
+                    :class "button${ws.focused ? "-active" : ""}"
+                    :onclick "swaymsg -q workspace ${ws.name}"
+                "${ws.name}")))))

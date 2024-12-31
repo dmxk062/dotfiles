@@ -1,0 +1,32 @@
+.workspace {
+    background-color: $bg1;
+    border-radius: 12px;
+    padding: .4rem;
+    margin: .4rem;
+    min-width: 193px;
+    min-height: 109px;
+}
+
+
+.workspace-name {
+    @extend .text-tiny;
+    margin-left: 4px;
+}
+
+.overview-window, .overview-window-active {
+    background-color: $bg2;
+    border-radius: 6px;
+    border: 2px solid $bg1;
+    &.float {
+        border: none;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px;
+    }
+    &.cut {
+        border-color: $red;
+    }
+}
+
+.overview-window-active {
+    background-color: $bg3;
+    border-color: $bg3;
+}
