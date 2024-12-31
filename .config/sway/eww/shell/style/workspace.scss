@@ -13,7 +13,7 @@
     margin-left: 4px;
 }
 
-.overview-window, .overview-window-active {
+.overview-window {
     background-color: $bg2;
     border-radius: 6px;
     border: 2px solid $bg1;
@@ -24,8 +24,7 @@
     &.cut {
         border-color: $red;
     }
-}
-
-.overview-window-active {
-    background-color: $bg3;
+    &.active {
+        background-color: $bg3;
+    }
 }

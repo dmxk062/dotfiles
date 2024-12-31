@@ -7,6 +7,7 @@
 }
 
 .weather-hot, .weather-warm, .weather-temperate, .weather-cool, .weather-cold, .weather-description, .weather-wind {
+    @extend .text;
     font-size: 1.2rem;
     margin-right: 1rem;
 }

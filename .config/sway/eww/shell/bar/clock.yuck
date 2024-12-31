@@ -1,5 +1,3 @@
-(include "./bar/popups/settings/settings.yuck")
-
 (defwidget clock []
     (box :space-evenly false
         (button 

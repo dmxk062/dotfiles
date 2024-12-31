@@ -30,7 +30,7 @@
     (box :space-evenly false :orientation "vertical" :class "section"
         (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
         (label :class "text" :text "up for ${formattime(EWW_TIME - boottime, "%H hours, %M minutes")}")
-        (box :height 20)
+        (box :height 20) ; padd
         (box :space-evenly false
             (themed-icon 
                 :name {weather-icons[weather.weather[0].icon]}
