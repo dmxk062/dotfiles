@@ -19,10 +19,13 @@ def do_meta(pl, meta, *_):
 
     name = pl.props.player_name
     out["has_player"] = True
-    out["player"] = name or None
+    out["player"] = name
     out["playing"] = pl.props.status == "Playing"
     position = PLAYER_POSITIONS.get(pl, 0)
-    length = meta["mpris:length"]
+    try:
+        length = meta["mpris:length"]
+    except KeyError:
+        length = None
     if (length and position):
         out["has_progress"] = True
         out["nice_time"] = get_timestamp(position) + "/" + get_timestamp(length) 
