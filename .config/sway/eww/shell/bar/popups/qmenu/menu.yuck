@@ -1,8 +1,8 @@
-(include "./bar/popups/settings/toggles.yuck")
-(include "./bar/popups/settings/bluetooth.yuck")
-(include "./bar/popups/settings/wifi.yuck")
-(include "./bar/popups/settings/status.yuck")
-(include "./bar/popups/settings/performance.yuck")
+(include "./bar/popups/qmenu/toggles.yuck")
+(include "./bar/popups/qmenu/bluetooth.yuck")
+(include "./bar/popups/qmenu/wifi.yuck")
+(include "./bar/popups/qmenu/status.yuck")
+(include "./bar/popups/qmenu/performance.yuck")
 
 (defvar settings-panel-shown false)
 ;; (defvar settings-section 0)

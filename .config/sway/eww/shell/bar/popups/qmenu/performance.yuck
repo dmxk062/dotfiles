@@ -4,9 +4,6 @@
 (defvar gpu-sensor "AMDGPU_JUNCTION")
 (defvar cpu-sensor "ASUSEC_CPU")
 
-(defpoll username :interval "200m" "echo $USER")
-(defpoll hostname :interval "200m" "hostname")
-
 (defwidget colored-scale [value text ?temp ?class ?min ?max]
     (box :space-evenly false :orientation "v" 
         (scale 
@@ -39,5 +36,4 @@
 
             ; very subjective idea of network "fastness"
             (colored-scale :text "${perf-net.sent}B/s" :class "net-up" :value {perf-net.raw_sent / 1024 / 1024} :min 0 :max 20)
-            (colored-scale :text "${perf-net.received}B/s" :class "net-down" :value {perf-net.raw_received / 1024 / 1024} :min 0 :max 30))
-        (label :class "title" :text "${username}@${hostname} - up for ${formattime(EWW_TIME - boottime, "%H:%M", "UTC")}")))
+            (colored-scale :text "${perf-net.received}B/s" :class "net-down" :value {perf-net.raw_received / 1024 / 1024} :min 0 :max 30))))

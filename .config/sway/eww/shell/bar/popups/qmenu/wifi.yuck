@@ -1,4 +1,4 @@
-(deflisten wifi "./bin/wifi.sh listen")
+(deflisten wifi :initial '{"powered":false, "connected":false,"ssid":"","security":"","signal":0}' "./bin/wifi.sh listen")
 (defvar wifi-searching false)
 (defvar wifi-connecting false)
 (defpoll wifis :interval "8s" "./bin/wifi.sh list")
