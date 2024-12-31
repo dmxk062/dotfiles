@@ -39,4 +39,9 @@
             (button :class "cbutton ${service-fcitx5 ? "active" : ""}"
                 :onclick "killall fcitx5 && ${EWW_CMD} update service-fcitx5=false || { ${EWW_CMD} update service-fcitx5=true; fcitx5& }"
                 "${service-fcitx5 ? "" : ""}   fcitx5 IME")
-            (box))))
+            (button :class "cbutton${perf-revealed ? " active" : ""}"
+                    :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
+                    :timeout "16s"
+                    (box :space-evenly false
+                        (box :halign "center" :hexpand true (label :text "System Stats")) 
+                        (label :text {perf-revealed ? "" : "" }))))))

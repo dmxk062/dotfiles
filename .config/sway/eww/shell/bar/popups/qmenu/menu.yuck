@@ -8,42 +8,44 @@
 ;; (defvar settings-section 0)
 (defvar bt-revealed false)
 (defvar wifi-revealed false)
+(defvar perf-revealed false)
 
 (defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
     (revealer 
         :reveal {settings-panel-shown}
         :transition "slidedown"
         (box (box :class "popup-win" 
-            :orientation "v" 
+            :orientation "h" 
             :space-evenly false
-            (status-panel)
-            (toggle-panel)
-            (box 
-                (box :class "cbutton${bt-meta.powered ? " active" : ""}" :space-evenly false
-                    (button :hexpand true 
-                        :onclick "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${bt-syncall}"
-                        :timeout "16s"
-                        "${bt-meta.powered ? "󰂯" : "󰂲"}   Bluetooth")
-                    (button 
-                        :onclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
-                        {bt-revealed ? "" : "" }))
-                (box :class "cbutton${(wifi?.powered?:false) ? " active" : ""}" :space-evenly false
-                    (button :hexpand true 
-                        :onclick "nmcli radio wifi ${wifi.powered ? "off" : "on"}"
-                        :timeout "16s"
-                        (box :halign "center" (box :space-evenly false
-                            (wifi-icon 
-                                :active {(wifi?.powered?:false) && (wifi?.connected?:false)} 
-                                :signal {wifi?.signal?:0} 
-                                :security {wifi?.security?:""}
-                                :text "   ${(wifi.powered && wifi.connected)? wifi.ssid : "WiFi"}"
-                                :width 12))))
-                    (button 
-                        :onclick "${EWW_CMD} update wifi-revealed=${!wifi-revealed}" 
-                        {wifi-revealed ? "" : "" })))
-            (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
-            (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
-            )))))
+            (box :orientation "v" :space-evenly false
+                (status-panel)
+                (toggle-panel)
+                (box 
+                    (box :class "cbutton${bt-meta.powered ? " active" : ""}" :space-evenly false
+                        (button :hexpand true 
+                            :onclick "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${bt-syncall}"
+                            :timeout "16s"
+                            "${bt-meta.powered ? "󰂯" : "󰂲"}   Bluetooth")
+                        (button 
+                            :onclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
+                            {bt-revealed ? "" : "" }))
+                    (box :class "cbutton${(wifi?.powered?:false) ? " active" : ""}" :space-evenly false
+                        (button :hexpand true 
+                            :onclick "nmcli radio wifi ${wifi.powered ? "off" : "on"}"
+                            :timeout "16s"
+                            (box :halign "center" (box :space-evenly false
+                                (wifi-icon 
+                                    :active {(wifi?.powered?:false) && (wifi?.connected?:false)} 
+                                    :signal {wifi?.signal?:0} 
+                                    :security {wifi?.security?:""}
+                                    :text "   ${(wifi.powered && wifi.connected)? wifi.ssid : "WiFi"}"
+                                    :width 12))))
+                        (button 
+                            :onclick "${EWW_CMD} update wifi-revealed=${!wifi-revealed}" 
+                            {wifi-revealed ? "" : "" })))
+                (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
+                (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
+                (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))))))))
 
 (defwindow settings-panel 
     :monitor 0
