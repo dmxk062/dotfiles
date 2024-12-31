@@ -43,5 +43,5 @@
                     :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
                     :timeout "16s"
                     (box :space-evenly false
-                        (box :halign "center" :hexpand true (label :text "System Stats")) 
+                        (box :halign "center" :hexpand true (label :text "󰨇   System Stats")) 
                         (label :text {perf-revealed ? "" : "" }))))))

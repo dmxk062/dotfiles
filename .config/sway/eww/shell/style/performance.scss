@@ -1,17 +1,24 @@
 .perf-scale {
     trough {
         all: unset;
-        min-height: 12rem;
-        margin-left: .5rem;
-        margin-right: .5rem;
+        min-height: .5rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        margin-bottom: .4rem;
         border-radius: 12px;
         background-color: $bg3;
-        min-width: .5rem;
+        min-width: 12rem;
         highlight {
             border-radius: 12px;
             background-color: $accent;
         }
     }
+}
+
+.perf-label {
+    @extend .text;
+    margin-top: .6rem;
+    margin-left: 2.2rem;
 }
 
 .perf-scale-critical, .perf-scale-hot, .perf-scale-warm, .perf-scale-normal, .perf-scale-cool, .perf-scale-mem, {

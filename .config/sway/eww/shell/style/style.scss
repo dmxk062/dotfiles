@@ -149,6 +149,16 @@ tooltip{
     }
 }
 
+.side-button {
+    background-color: $fg0;
+    min-height: 4rem;
+    min-width: 4px;
+    border-radius: 12px;
+    &:hover {
+        background-color: $fg2;
+    }
+}
+
 @import "./modes.scss";
 @import "./tray.scss";
 @import "./weather.scss";

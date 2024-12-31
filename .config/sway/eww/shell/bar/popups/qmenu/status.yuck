@@ -29,7 +29,7 @@
 (defwidget status-panel []
     (box :space-evenly false :orientation "vertical" :class "section"
         (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
-        (label :class "text" :text "up for ${formattime(EWW_TIME - boottime, "%H hours, %M minutes")}")
+        (label :class "text" :text "up for ${formattime(EWW_TIME - boottime, "%H hours, %M minutes", "UTC")}")
         (box :height 20) ; padd
         (box :space-evenly false
             (themed-icon 
