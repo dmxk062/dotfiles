@@ -1,11 +1,3 @@
-.weather-card {
-    background-color: $bg1;
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 12px;
-    color: $fg0;
-}
-
 .weather-hot, .weather-warm, .weather-temperate, .weather-cool, .weather-cold, .weather-description, .weather-wind {
     @extend .text;
     font-size: 1.2rem;

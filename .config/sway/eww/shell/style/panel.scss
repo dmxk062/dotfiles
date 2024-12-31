@@ -5,20 +5,6 @@
     margin: 8px 0px 8px 20px;
 }
 
-.circle {
-    border-radius: 50%;
-    background-color: $bg2;
-    margin-left: 0.8rem;
-    box {
-        margin: 5rem 5rem 3.4rem 5rem;
-    }
-    label {
-        margin: 1.2rem 1.2rem 1.6rem 1.4rem;
-        font-size: 1.5rem;
-    }
-
-}
-
 .battery-circle-critical { @extend .circle; color: $red; }
 .battery-circle-low { @extend .circle; color: $orange; }
 .battery-circle-medium { @extend .circle; color: $yellow; }
