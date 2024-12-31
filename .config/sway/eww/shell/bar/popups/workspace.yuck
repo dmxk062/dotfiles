@@ -1,5 +1,5 @@
 (defvar ws-overview-reveal false)
-(deflisten overview-workspaces "./bar/bin/overview_win.py")
+(deflisten overview-workspaces "./bar/bin/overview_win.py 2>/dev/null")
 (defvar overview-cut-win 0)
 
 
@@ -29,13 +29,13 @@
 
 (defwidget ws-box [ws]
     (box :class "workspace"
-            (eventbox
-                :onmiddleclick "swaymsg [con_id=${overview-cut-win}] move to workspace ${ws.ws} >/dev/null; ${EWW_CMD} update overview-cut-win=0"
-                :onclick "swaymsg workspace ${ws.ws} >/dev/null"
-                (box :orientation "vertical" :space-evenly false
-                    (box :space-evenly false :vexpand true (for win in {ws.wins} (ws-win :win win :ws {ws.ws})))
-                    (box :halign "start" :valign "end"
-                        (label :class "workspace-name" :text {ws.ws}))))))
+        (eventbox
+            :onmiddleclick "swaymsg [con_id=${overview-cut-win}] move to workspace ${ws.ws} >/dev/null; ${EWW_CMD} update overview-cut-win=0"
+            :onclick "swaymsg workspace ${ws.ws} >/dev/null"
+            (box :orientation "vertical" :space-evenly false
+                (box :space-evenly false :vexpand true (for win in {ws.wins} (ws-win :win win :ws {ws.ws})))
+                (box :halign "start" :valign "end"
+                    (label :class "workspace-name" :text {ws.ws}))))))
 
 (defwidget ws-overview [] 
     (eventbox 
