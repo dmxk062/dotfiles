@@ -13,7 +13,7 @@ if [[ "$1" == "get" ]]; then
 fi
 
 if [[ "$colorscheme" == *dark* ]]; then
-    sed -i 's/dark.scss/light.scss/' "$XDG_CONFIG_HOME"/sway/eww/style/color.scss
+    sed -i 's/dark.scss/light.scss/' "$XDG_CONFIG_HOME"/sway/eww/shell/style/color.scss
     sed -i 's/dark/light/' "$XDG_CONFIG_HOME"/rofi/style/color.rasi
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
     unlink "$XDG_CONFIG_HOME"/swaylock/config
@@ -23,7 +23,7 @@ if [[ "$colorscheme" == *dark* ]]; then
     unlink "$XDG_CONFIG_HOME"/gtk-4.0/gtk.css
     ln -s "$XDG_CONFIG_HOME"/gtkcss/4.0/gtk-light.css "$XDG_CONFIG_HOME"/gtk-4.0/gtk.css
 else
-    sed -i 's/light.scss/dark.scss/' "$XDG_CONFIG_HOME"/sway/eww/style/color.scss
+    sed -i 's/light.scss/dark.scss/' "$XDG_CONFIG_HOME"/sway/eww/shell/style/color.scss
     sed -i 's/light/dark/' "$XDG_CONFIG_HOME"/rofi/style/color.rasi
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     unlink "$XDG_CONFIG_HOME"/swaylock/config
