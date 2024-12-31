@@ -6,7 +6,6 @@
 
 (defwidget process-panel [] 
     (box :space-evenly false :orientation "vertical"
-        (label :class "title" :text "Processes")
         (box
             (button :class "cbutton${service-blueman ? "-active" : ""}"
                 :onclick "killall blueman-applet && ${EWW_CMD} update service-blueman=false || { ${EWW_CMD} update service-blueman=true; blueman-applet& }"

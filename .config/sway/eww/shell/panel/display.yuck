@@ -4,7 +4,6 @@
 
 (defwidget display-panel []
     (box :space-evenly false :orientation "vertical"
-        (label :class "title" :text "Appearance")
         (box
             (button :class "cbutton${look-nightlight ? "-active" : ""}"
                 :onclick "killall gammastep && ${EWW_CMD} update look-nightlight=false || { ${EWW_CMD} update look-nightlight=true; gammastep -O ${nightlight-strengh}& }"
