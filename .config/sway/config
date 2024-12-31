@@ -47,7 +47,8 @@ exec ~/.config/background/wallpaper.sh set
 exec ~/.config/sway/eww/eww.sh
 
 # autotiling layout
-exec_always pkill -f "python.*layout.py"&&~/.config/sway/scripts/layout.py
+exec_always pkill -f "python.*layout.py"
+exec_always ~/.config/sway/scripts/layout.py
 
 # handle effects for rofi in the compositor, much nicer and more consistent
 layer_effects "rofi" shadows enable; corner_radius 18; blur disable
