@@ -11,7 +11,13 @@ from gi.repository import Gtk
 
 REGEX_NAMES = [
     ("^Minecraft.*", "minecraft"),
+    ("^nv:.*", "neovim"),
 ]
+
+CLASS_OVERRIDES = {
+    "zenity": "dialog-info",
+    "nm-connection-editor": "networkmanager",
+}
 
 def get_icon(icon_name, size=48, fallback="window-manager"):
     if not icon_name:
@@ -29,12 +35,12 @@ def get_for_ws(workspace: i3ipc.Con, output):
         if not w.pid:
             continue
         app_id = (w.app_id or w.window_class or None)
+        app_id = CLASS_OVERRIDES.get(app_id, app_id)
 
-        # where the title is the only good indication
-        if not app_id:
-            for fallback in REGEX_NAMES:
-                if re.match(fallback[0], w.name):
-                    app_id = fallback[1]
+        # overrides
+        for override in REGEX_NAMES:
+            if re.match(override[0], w.name):
+                app_id = override[1]
 
         # past this point, we have no clue
         # give smth that at least helps us a bit
