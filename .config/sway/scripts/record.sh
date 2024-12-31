@@ -9,6 +9,9 @@ function create_file {
 }
 
 if [[ "$1" == "start" ]]; then
+    if pkill wf-recorder; then
+        exit
+    fi
     screen="$(swaymsg -t get_outputs | jq -r '.[]|select(.focused).name')"
     if [[ "$2" == "select" ]]; then
         region="$(slurp -w 0 -b '#4c566acc' -s '#ffffff00')"
