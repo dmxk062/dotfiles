@@ -72,12 +72,19 @@ def update(i3, e):
             workspaces.append({
                     "wins": get_for_ws(workspace, output),
                     "focused": workspace.focused,
+                    "wsnum": workspace.num,
                     "ws": workspace.name
             })
 
     sorted_ws = sorted(workspaces, key=sort_by_name)
-    for i in range(0, len(sorted_ws)):
-        sorted_ws[i]["i"] = i
+
+    if len(sorted_ws[-1]["wins"]) != 0:
+        sorted_ws.append({
+            "wins": [],
+            "focused": False,
+            "wsnum": sorted_ws[-1]["wsnum"]+1,
+            "ws": str(sorted_ws[-1]["wsnum"]+1),
+        })
 
     print(json.dumps(sorted_ws), flush=True)
 
