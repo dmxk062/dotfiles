@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import i3ipc
 import json
 
@@ -8,22 +9,40 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-def get_icon(icon_name, size=48, fallback="default-application"):
+REGEX_NAMES = [
+    ("^Minecraft.*", "minecraft"),
+]
+
+def get_icon(icon_name, size=48, fallback="window-manager"):
     if not icon_name:
-        return fallback
+        icon_name = fallback
     icon_theme = Gtk.IconTheme.get_default()
     icon = icon_theme.lookup_icon(icon_name, size, 0)
     if icon:
         return icon.get_filename()
     else:
-        return fallback
+        return get_icon(None)
 
 def get_for_ws(workspace: i3ipc.Con, output):
     on_ws = []
     for w in workspace.descendants():
-        if not w.pid or not (w.app_id or w.window_class):
+        if not w.pid:
             continue
-        app_id = (w.app_id or w.window_class)
+        app_id = (w.app_id or w.window_class or None)
+
+        # where the title is the only good indication
+        if not app_id:
+            for fallback in REGEX_NAMES:
+                if re.match(fallback[0], w.name):
+                    app_id = fallback[1]
+
+        # past this point, we have no clue
+        # give smth that at least helps us a bit
+        if not app_id:
+            if w.window_instance:
+                app_id = "xorg"
+            else:
+                app_id = "wayland"
 
         rect = {
             "x": 0,
@@ -49,7 +68,7 @@ def get_for_ws(workspace: i3ipc.Con, output):
             "pid": w.pid,
             "focused": w.focused,
             "rect": rect,
-            "icon": get_icon(app_id,)
+            "icon": get_icon(app_id)
         })
     return sorted(on_ws, key=lambda w: w["float"])
 
