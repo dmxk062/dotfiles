@@ -40,8 +40,8 @@
             (colored-scale 
                 :text "Send: ${perf-net.sent}B/s"
                 :class "net-up"
-                :value {perf-net.raw_sent / 1024 / 1024} :min 0 :max 20)
+                :value {perf-net.raw_sent / 1024 } :min 0 :max 20)
             (colored-scale 
                 :text "Recv: ${perf-net.received}B/s" 
                 :class "net-down" 
-                :value {perf-net.raw_received / 1024 / 1024} :min 0 :max 30))))
+                :value {perf-net.raw_received / 1024 } :min 0 :max 30))))

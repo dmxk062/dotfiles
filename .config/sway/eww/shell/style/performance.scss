@@ -45,10 +45,6 @@
     }
 }
 
-.perf-icon-critical, .perf-icon-hot, .perf-icon-warm, .perf-icon-normal, .perf-icon-cool, .perf-icon-mem, .perf-icon-net-up, .perf-icon-net-down {
-    margin-top: 4px;
-}
-
 .perf-icon-critical{ color: $red; }
 .perf-icon-hot{ color: $orange; }
 .perf-icon-warm{ color: $yellow; }
