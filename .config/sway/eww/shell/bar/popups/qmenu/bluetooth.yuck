@@ -17,9 +17,24 @@
     "fallback":"bluetooth"
 }')
 
+(defwidget _bt-toggle-button [num-connected]
+(box :class "cbutton${bt-meta.powered ? " active" : ""}" :space-evenly false
+    (button :hexpand true 
+        :onclick "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${bt-syncall}"
+        :timeout "16s"
+        "${bt-meta.powered ? "󰂯" : "󰂲"}   ${num-connected == 1 ? bt-devices[0].alias 
+            : (num-connected == 0 ? "Bluetooth" : "${bt-devices[0].alias}...")}")
+    (button 
+        :onclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
+        {bt-revealed ? "" : "" })))
+
+(defwidget bt-toggle-button [] 
+    (_bt-toggle-button :num-connected {jq(bt-devices, "map(select(.connected))|length")}))
+
 (defvar bt-battery-icons '[
 "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
 ]' )
+
 
 (defwidget bluetooth-panel []
     (box :space-evenly false :class "section" :orientation "vertical"

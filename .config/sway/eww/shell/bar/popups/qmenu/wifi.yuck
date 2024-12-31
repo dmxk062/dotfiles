@@ -14,6 +14,22 @@
                 : (signal > 40 ? "󰤢"
                 : (signal > 20 ? "󰤟" : "󰤯")))))}${text?:""}"))
 
+(defwidget wifi-toggle-button []
+    (box :class "cbutton${(wifi?.powered?:false) ? " active" : ""}" :space-evenly false
+        (button :hexpand true 
+            :onclick "nmcli radio wifi ${wifi.powered ? "off" : "on"}"
+            :timeout "16s"
+            (box :halign "center" (box :space-evenly false
+                (wifi-icon 
+                    :active {(wifi?.powered?:false) && (wifi?.connected?:false)} 
+                    :signal {wifi?.signal?:0} 
+                    :security {wifi?.security?:""}
+                    :text "   ${(wifi.powered && wifi.connected)? wifi.ssid : "WiFi"}"
+                    :width 12))))
+        (button 
+            :onclick "${EWW_CMD} update wifi-revealed=${!wifi-revealed}" 
+            {wifi-revealed ? "" : "" })))
+
 (defwidget wifi-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
         (box :space-evenly false
