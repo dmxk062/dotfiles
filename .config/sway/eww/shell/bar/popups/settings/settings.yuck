@@ -1,12 +1,13 @@
-(include "./bar/popups/settings/appearance.yuck")
-(include "./bar/popups/settings/programs.yuck")
+(include "./bar/popups/settings/toggles.yuck")
 (include "./bar/popups/settings/bluetooth.yuck")
-(include "./bar/popups/settings/weather.yuck")
+(include "./bar/popups/settings/wifi.yuck")
+(include "./bar/popups/settings/status.yuck")
 (include "./bar/popups/settings/performance.yuck")
 
 (defvar settings-panel-shown false)
 ;; (defvar settings-section 0)
 (defvar bt-revealed false)
+(defvar wifi-revealed false)
 
 (defwidget panel [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
     (revealer 
@@ -15,10 +16,10 @@
         (box (box :class "popup-win" 
             :orientation "v" 
             :space-evenly false
-            (appearance-panel)
-            (process-panel)
+            (status-panel)
+            (toggle-panel)
             (box 
-                (box :class "cbutton ${bt-meta.powered ? "active" : ""}" :space-evenly false
+                (box :class "cbutton${bt-meta.powered ? " active" : ""}" :space-evenly false
                     (button :hexpand true 
                         :onclick "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${bt-syncall}"
                         :timeout "16s"
@@ -26,8 +27,22 @@
                     (button 
                         :onclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
                         {bt-revealed ? "" : "" }))
-                (box))
+                (box :class "cbutton${(wifi?.powered?:false) ? " active" : ""}" :space-evenly false
+                    (button :hexpand true 
+                        :onclick "nmcli radio wifi ${wifi.powered ? "off" : "on"}"
+                        :timeout "16s"
+                        (box :halign "center" (box :space-evenly false
+                            (wifi-icon 
+                                :active {(wifi?.powered?:false) && (wifi?.connected?:false)} 
+                                :signal {wifi?.signal?:0} 
+                                :security {wifi?.security?:""}
+                                :text "   ${(wifi.powered && wifi.connected)? wifi.ssid : "WiFi"}"
+                                :width 12))))
+                    (button 
+                        :onclick "${EWW_CMD} update wifi-revealed=${!wifi-revealed}" 
+                        {wifi-revealed ? "" : "" })))
             (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
+            (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
             )))))
 
 (defwindow settings-panel 

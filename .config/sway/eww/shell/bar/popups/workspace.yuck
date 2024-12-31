@@ -10,7 +10,7 @@
             margin-right: -${round((win.rect.x + win.rect.width)/10, 0)}px;
             margin-bottom: -${round((win.rect.y + win.rect.height)/10, 0)}px;
             " 
-            :class "overview-window${win.focused ? "active" : ""} ${win.float ? "float" : ""} ${overview-cut-win == win.id ? "cut" : ""}"
+            :class "overview-window${win.focused ? " active" : ""} ${win.float ? "float" : ""} ${overview-cut-win == win.id ? "cut" : ""}"
             :hexpand false
             :vexpand false
             :halign "start"

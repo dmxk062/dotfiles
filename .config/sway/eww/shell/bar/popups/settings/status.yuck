@@ -2,6 +2,8 @@
 (defvar weather '{}')
 (defvar weather-last 0)
 
+(defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
+
 
 (defvar weather-icons '{
 "01d": "weather-clear",
@@ -24,9 +26,11 @@
 "50n": "weather-mist"
 }')
 
-(defwidget weather-panel []
-    (box :space-evenly false :orientation "vertical"
+(defwidget status-panel []
+    (box :space-evenly false :orientation "vertical" :class "section"
         (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
+        (label :class "text" :text "up for ${formattime(EWW_TIME - boottime, "%H hours, %M minutes")}")
+        (box :height 20)
         (box :space-evenly false
             (themed-icon 
                 :name {weather-icons[weather.weather[0].icon]}

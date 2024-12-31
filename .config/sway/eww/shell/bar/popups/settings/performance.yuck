@@ -6,7 +6,6 @@
 
 (defpoll username :interval "200m" "echo $USER")
 (defpoll hostname :interval "200m" "hostname")
-(defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
 
 (defwidget colored-scale [value text ?temp ?class ?min ?max]
     (box :space-evenly false :orientation "v" 
