@@ -5,7 +5,7 @@
 (defwidget recording-indicator []
     (revealer :reveal recording :transition "slideright"
         (box :space-evenly false
-            (button :class "button-alert"
+            (button :class "button alert"
                 :onclick "kill ${recording-info.pid}"
                 :tooltip "Recording to ${recording-info.path}"
                 "${formattime(EWW_TIME - recording-info.start, "%M:%S")}"
