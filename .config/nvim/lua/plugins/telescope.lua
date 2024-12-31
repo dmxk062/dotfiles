@@ -106,9 +106,7 @@ local function create_layout(picker)
             destroy_win(self.preview)
             destroy_win(self.prompt)
         end,
-        update = function(self)
-
-        end
+        update = function(self) end
     }
 
     return layout

@@ -28,8 +28,6 @@ function M.config(_, opts)
     operators.map_function("<M-c>", function(mode, region, extra, get)
         if mode == "line" or region[2][1] ~= region[1][1] then
             mc.action(function(ctx)
-                -- selection may start before actual cursor pos in case of textobject
-                local start_pos = region[1][2] + 1
                 for i = region[1][1] + 1, region[2][1] do
                     local cursor = ctx:addCursor()
                     cursor:setPos({ i, 1 })

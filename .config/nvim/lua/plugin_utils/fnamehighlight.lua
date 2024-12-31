@@ -26,6 +26,7 @@ local extension_highlights = {
     ["pyc"]     = "Bin",
     ["rc"]      = "Config",
     ["rs"]      = "Source",
+    ["yuck"]      = "Source",
     ["scss"]    = "Style",
     ["sh"]      = "Script",
     ["so"]      = "Bin",
