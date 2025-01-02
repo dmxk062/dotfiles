@@ -1,5 +1,6 @@
 (deflisten perf-net "./bin/net.sh")
 (deflisten perf-gpu "./bin/gpu.sh")
+(defpoll perf-pcount :run-while perf-revealed :interval "4s" "pgrep --count .")
 
 (defvar gpu-sensor "AMDGPU_JUNCTION")
 (defvar cpu-sensor "ASUSEC_CPU")
@@ -24,6 +25,7 @@
     (box :hexpand true :space-evenly false :orientation "v"
         (tray-processes)
         (box :orientation "v" :hexpand true :class "section"
+            (label :class "text" :text "${perf-pcount} Processes")
             (colored-scale 
                 :text "CPU: ${round(EWW_CPU.avg, 1)}% at ${EWW_TEMPS[cpu-sensor]}°C"
                 :temp {EWW_TEMPS[cpu-sensor]}

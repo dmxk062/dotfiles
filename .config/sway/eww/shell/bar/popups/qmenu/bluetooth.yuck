@@ -1,7 +1,7 @@
 (include "icon.yuck")
 
-(defpoll bt-devices :interval "8s" "./bin/bluetooth.sh poll")
-(defpoll bt-meta :interval "8s" "./bin/bluetooth.sh poll-meta")
+(defpoll bt-devices :run-while bt-revealed :interval "8s" "./bin/bluetooth.sh poll")
+(defpoll bt-meta  :run-while bt-revealed :interval "8s" "./bin/bluetooth.sh poll-meta")
 (defvar bt-sync "./bin/bluetooth.sh sync")
 (defvar bt-msync "./bin/bluetooth.sh sync-meta")
 (defvar bt-syncall "./bin/bluetooth.sh sync-all")

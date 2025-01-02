@@ -1,8 +1,8 @@
 (deflisten vpn "./bin/vpn.sh listen")
 (defvar default-vpn "France")
-(defpoll vpns :interval "16s" "./bin/vpn.sh list")
-(defpoll current-ip :interval "16s" "curl -s ipinfo.io")
-(defpoll local-ips :interval "16s" `ip route | jq -sR 'split("\\n")|map(split(" ")|select(.[0] == "default")|{ip: .[8], dev: .[4], gateway: .[2]})'`)
+(defpoll vpns :run-while vpn-revealed :interval "16s" "./bin/vpn.sh list")
+(defpoll current-ip :run-while vpn-revealed :interval "16s" "curl -s ipinfo.io")
+(defpoll local-ips :run-while vpn-revealed :interval "16s" `ip route | jq -sR 'split("\\n")|map(split(" ")|select(.[0] == "default")|{ip: .[8], dev: .[4], gateway: .[2]})'`)
 
 (defwidget vpn-toggle-button []
     (box :class "cbutton${vpn.active ? " active" : ""}" :space-evenly false
