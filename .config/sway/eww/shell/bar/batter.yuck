@@ -1,9 +1,0 @@
-(defvar bat-discharging '[ "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" ]' )
-(defvar bat-charging '[ "󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅" ]' )
-
-
-
-(defwidget battery-icon []
-    (button 
-        :class "button${EWW_BATTERY["BAT0"].capacity < 20 ? "alert" : ""}"
-        "${EWW_BATTERY["BAT0"].status == "Discharging" ? (bat-discharging[(EWW_BATTERY["BAT0"].capacity - EWW_BATTERY["BAT0"].capacity % 10)/10]) : (bat-charging[(EWW_BATTERY["BAT0"].capacity - EWW_BATTERY["BAT0"].capacity % 10)/10])}   ${EWW_EWW_BATTERY["BAT0"]["BAT0"].capacity}%"))
