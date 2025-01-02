@@ -24,14 +24,9 @@ while True:
     diff_sent = net_stats_2[0] - net_stats_1[0]
     diff_recv = net_stats_2[1] - net_stats_1[1]
     out = {
-        "total_sent": net_stats_2[0],
         "total_sent_pretty": format_size(net_stats_2[0]),
-        "total_recv": net_stats_2[1],
         "total_recv_pretty": format_size(net_stats_2[1]),
-        "sent_per_sec": diff_sent,
-        "sent": diff_sent,
         "sent_pretty": format_size(diff_sent),
-        "recv": diff_recv,
         "recv_pretty": format_size(diff_recv),
         "sent_rel": (diff_sent / UPPER_SENT) * 100,
         "recv_rel": (diff_recv / UPPER_RECV) * 100,
