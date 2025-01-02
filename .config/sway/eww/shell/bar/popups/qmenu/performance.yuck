@@ -1,4 +1,4 @@
-(deflisten perf-net "./bin/net.sh")
+(deflisten perf-net "./bin/netspeed.py")
 (deflisten perf-gpu "./bin/gpu.sh")
 (defpoll perf-pcount :run-while perf-revealed :interval "4s" "pgrep --count .")
 
@@ -24,7 +24,7 @@
 (defwidget performance-panel []
     (box :hexpand true :space-evenly false :orientation "v"
         (tray-processes)
-        (box :orientation "v" :hexpand true :class "section"
+        (box :orientation "v" :hexpand true :class "section" :space-evenly false
             (label :class "text" :text "${perf-pcount} Processes")
             (colored-scale 
                 :text "CPU: ${round(EWW_CPU.avg, 1)}% at ${EWW_TEMPS[cpu-sensor]}°C"
@@ -39,12 +39,11 @@
                 :class "mem" 
                 :value {EWW_RAM.used_mem_perc})
 
-            ; very subjective idea of network "fastness"
             (colored-scale 
-                :text "Send: ${perf-net.sent}B/s"
+                :text "Send: ${perf-net.sent_pretty}/s"
                 :class "net-up"
-                :value {perf-net.raw_sent / 1024 } :min 0 :max 20)
+                :value {perf-net.sent_rel})
             (colored-scale 
-                :text "Recv: ${perf-net.received}B/s" 
+                :text "Recv: ${perf-net.recv_pretty}/s" 
                 :class "net-down" 
-                :value {perf-net.raw_received / 1024 } :min 0 :max 30))))
+                :value {perf-net.recv_rel}))))
