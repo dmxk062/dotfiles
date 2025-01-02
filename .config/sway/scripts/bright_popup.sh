@@ -2,6 +2,12 @@
 
 POPUP_ID=1766
 ID_FILE="/run/user/1000/.popup"
+if [[ -f "$ID_FILE" ]]; then
+    read -r id <"$ID_FILE"
+    rm "$ID_FILE"
+fi
+id=${id:-$POPUP_ID}
+
 
 if command -v light; then
     if [[ "$1" == "raise" ]]; then
@@ -21,12 +27,6 @@ else
     fi
     new_bright=$((cur_bright + change))
     new_bright=$((new_bright >= 100 ? 100 : (new_bright <= 0 ? 0 : new_bright)))
-
-    if [[ -f "$ID_FILE" ]]; then
-        read -r id <"$ID_FILE"
-        rm "$ID_FILE"
-    fi
-    id=${id:-$POPUP_ID}
 
     notify-send -r "$id" --transient --print-id -t 1000 \
         "Display Brightness: $new_bright%" "May take some time to apply" -i "display" --hint=int:value:$new_bright >"$ID_FILE"
