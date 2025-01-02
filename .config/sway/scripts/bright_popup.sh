@@ -17,7 +17,7 @@ if command -v light; then
     fi
     new_bright="$(light -G)"
     notify-send -r "$id" --transient --print-id -t 1000 \
-        "Display Brightness: $new_bright%" "" -i "display" --hint=int:value:$new_bright >"$ID_FILE"
+        "Display Brightness" "$new_bright%" -i "display" --hint=int:value:$new_bright >"$ID_FILE"
 else
     read -r _ _ _ cur_bright _ < <(ddcutil -d 1 getvcp 10 -t --lazy-sleep --disable-dynamic-sleep --sleep-multiplier 0.1)
     if [[ "$1" == "raise" ]]; then
