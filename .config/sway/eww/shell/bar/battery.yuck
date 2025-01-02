@@ -1,0 +1,4 @@
+(defwidget battery-icon []
+    (button 
+        :class "button${EWW_BATTERY["BAT0"].capacity < 20 ? "alert" : ""}"
+        "${EWW_BATTERY["BAT0"].capacity}%"))
