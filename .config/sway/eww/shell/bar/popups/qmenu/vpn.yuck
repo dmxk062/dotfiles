@@ -2,6 +2,7 @@
 (defvar default-vpn "France")
 (defpoll vpns :interval "16s" "./bin/vpn.sh list")
 (defpoll current-ip :interval "16s" "curl -s ipinfo.io")
+(defpoll local-ips :interval "16s" `ip route | jq -sR 'split("\\n")|map(split(" ")|select(.[0] == "default")|{ip: .[8], dev: .[4], gateway: .[2]})'`)
 
 (defwidget vpn-toggle-button []
     (box :class "cbutton${vpn.active ? " active" : ""}" :space-evenly false
@@ -17,12 +18,16 @@
 (defwidget vpn-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
         (box :space-evenly false :orientation "v" :style "padding: .8rem;"
-            (button :class "sbutton" 
+            (box :orientation "v" (for dev in local-ips 
+                (box :halign "start" :hexpand true (button :class "sbutton"
+                    :onclick "wl-copy '${dev.ip}'&"
+                     
+                    "󰆏   ${dev.dev}: ${dev.ip} via ${dev.gateway}"))))
+            (box :halign "start" :hexpand true (button :class "sbutton" 
                 :onclick "wl-copy '${current-ip.ip}'&"
-                "󰆏   ${current-ip.ip}")
+                "󰆏   Public: ${current-ip.ip}"))
             (box :hexpand true :halign "start" (label :class "text" :text "Location: ${current-ip.city}, ${current-ip.region}, ${current-ip.country}"))
-            (box :hexpand true :halign "start" (label :class "text" :text "Provider: ${current-ip.org}"))
-        )
+            (box :hexpand true :halign "start" (label :class "text" :text "Provider: ${current-ip.org}")))
         (scroll :style "min-height: 20rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
             (for vpn in vpns 
                 (box :hexpand true :space-evenly false :halign "center"
