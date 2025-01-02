@@ -22,16 +22,16 @@
             (box :orientation "v" :space-evenly false
                 (status-panel)
                 (toggle-panel)
+                (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))
                 (box 
                     (bt-toggle-button) 
                     (wifi-toggle-button))
+                (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
+                (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
                 (box
                     (vpn-toggle-button)
                     (box))
-                (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
-                (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
-                (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))
-                (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))))))))
+                (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))))))))
 
 (defwindow settings-panel 
     :monitor 0
@@ -44,3 +44,16 @@
     :stacking "overlay"
     :exclusive true
     (qmenu))
+
+(defwindow qmenu-edge
+    :monitor 0
+    :geometry (geometry 
+        :x 0
+        :y 0
+        :width 8
+        :height "30%"
+        :anchor "top right")
+    :stacking "fg"
+    :exclusive false
+    (eventbox 
+        :onhover "./bin/popup.sh settings-panel settings-panel-shown open& ./bin/weather.sh ${EWW_TIME - weather-last}"))
