@@ -15,7 +15,7 @@
 (defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
     (revealer 
         :reveal {settings-panel-shown}
-        :transition "slidedown"
+        :transition "slideleft"
         (box (box :class "popup-win" 
             :orientation "h" 
             :space-evenly false
