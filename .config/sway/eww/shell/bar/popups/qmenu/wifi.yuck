@@ -18,6 +18,7 @@
     (box :class "cbutton${(wifi?.powered?:false) ? " active" : ""}" :space-evenly false
         (button :hexpand true 
             :onclick "nmcli radio wifi ${wifi.powered ? "off" : "on"}"
+            :onrightclick "${EWW_CMD} update wifi-revealed=${!wifi-revealed}" 
             :timeout "16s"
             (box :halign "center" (box :space-evenly false
                 (wifi-icon 

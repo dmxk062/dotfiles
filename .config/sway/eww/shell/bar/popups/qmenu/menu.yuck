@@ -1,6 +1,7 @@
 (include "./bar/popups/qmenu/toggles.yuck")
 (include "./bar/popups/qmenu/bluetooth.yuck")
 (include "./bar/popups/qmenu/wifi.yuck")
+(include "./bar/popups/qmenu/vpn.yuck")
 (include "./bar/popups/qmenu/status.yuck")
 (include "./bar/popups/qmenu/performance.yuck")
 
@@ -9,6 +10,7 @@
 (defvar bt-revealed false)
 (defvar wifi-revealed false)
 (defvar perf-revealed false)
+(defvar vpn-revealed false)
 
 (defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
     (revealer 
@@ -23,8 +25,12 @@
                 (box 
                     (bt-toggle-button) 
                     (wifi-toggle-button))
+                (box
+                    (vpn-toggle-button)
+                    (box))
                 (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
                 (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
+                (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))
                 (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))))))))
 
 (defwindow settings-panel 

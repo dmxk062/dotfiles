@@ -21,6 +21,7 @@
 (box :class "cbutton${bt-meta.powered ? " active" : ""}" :space-evenly false
     (button :hexpand true 
         :onclick "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${bt-syncall}"
+        :onrightclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
         :timeout "16s"
         "${bt-meta.powered ? "󰂯" : "󰂲"}   ${num-connected == 1 ? bt-devices[0].alias 
             : (num-connected == 0 ? "Bluetooth" : "${bt-devices[0].alias}...")}")
@@ -53,7 +54,7 @@
                 "󰐷   Scanning")
         )
         ; comfortably fits 3 devices without scrolling
-        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true :space-evenly false
+        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
             (for dev in bt-devices 
                 (box :hexpand true :space-evenly false :halign "center"
                     (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"

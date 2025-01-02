@@ -118,6 +118,14 @@ tooltip{
     margin: 0.4rem;
 }
 
+.row {
+    background-color: $bg0;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
+    border-radius: 6px;
+    padding: 0.2rem;
+    margin: 0.4rem;
+}
+
 .popup-win {
     background-color: $bg0;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
@@ -144,7 +152,7 @@ tooltip{
         margin: 5rem 5rem 3.4rem 5rem;
     }
     label {
-        margin: 1.2rem 1.2rem 1.6rem 1.4rem;
+        margin: 1.2rem 1.2rem 1.2rem 1.4rem;
         font-size: 1.5rem;
     }
 }
