@@ -1,9 +1,4 @@
-(defpoll service-blueman :interval "20m" "pgrep blueman-applet >/dev/null && echo true || echo false")
 (defpoll service-swayidle :interval "20m" "pgrep swayidle >/dev/null && echo true || echo false")
-(defpoll service-networkmanager :interval "20m" "pgrep nm-applet >/dev/null && echo true || echo false")
-(defpoll service-vesktop :interval "20m" "pgrep vesktop >/dev/null && echo true || echo false")
-(defpoll service-fcitx5 :interval "20m" "pgrep fcitx5 >/dev/null && echo true || echo false")
-
 (defpoll look-nightlight :interval "10m" "pgrep gammastep >/dev/null && echo true || echo false")
 (defvar nightlight-strengh 3000)
 (defpoll look-islight :interval "10m" "./bin/color.sh get")
@@ -31,6 +26,11 @@
                     (box :space-evenly false
                         (box :halign "center" :hexpand true (label :text "󰨇   System")) 
                         (label :text {perf-revealed ? "" : "" }))))))
+
+(defpoll service-blueman :run-while perf-revealed :interval "20m" "pgrep blueman-applet >/dev/null && echo true || echo false")
+(defpoll service-networkmanager :run-while perf-revealed :interval "20m" "pgrep nm-applet >/dev/null && echo true || echo false")
+(defpoll service-vesktop :run-while perf-revealed :interval "20m" "pgrep vesktop >/dev/null && echo true || echo false")
+(defpoll service-fcitx5 :run-while perf-revealed :interval "20m" "pgrep fcitx5 >/dev/null && echo true || echo false")
 
 (defwidget tray-processes []
     (box :space-evenly false :orientation "vertical"
