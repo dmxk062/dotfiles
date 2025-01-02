@@ -10,7 +10,7 @@
             :onclick `nmcli connection ${vpn.active ? "down" : "up"} '${vpn.active ? vpn.name : default-vpn}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
             :onrightclick "${EWW_CMD} update vpn-revealed=${!vpn-revealed}"
             :timeout "16s"
-            "${vpn.active ? "󰒄" : "󰛵"}   ${vpn.active ? vpn.name : "No VPN"}")
+            "${vpn.active ? "󰒄" : "󰲝"}   ${vpn.active ? vpn.name : "No VPN"}")
         (button 
             :onclick "${EWW_CMD} update vpn-revealed=${!vpn-revealed}"
             {vpn-revealed ? "" : "" })))

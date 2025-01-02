@@ -21,8 +21,9 @@
                 : "cool"))))}")))
 
 (defwidget performance-panel []
-    (box :class "section" :hexpand true :space-evenly false
-        (box :orientation "v" :hexpand true
+    (box :hexpand true :space-evenly false :orientation "v"
+        (tray-processes)
+        (box :orientation "v" :hexpand true :class "section"
             (colored-scale 
                 :text "CPU: ${round(EWW_CPU.avg, 1)}% at ${EWW_TEMPS[cpu-sensor]}°C"
                 :temp {EWW_TEMPS[cpu-sensor]}
