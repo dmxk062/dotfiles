@@ -5,11 +5,16 @@
 (defvar gpu-sensor "AMDGPU_JUNCTION")
 (defvar cpu-sensor "ASUSEC_CPU")
 
-(defwidget colored-scale [value text ?temp ?class ?min ?max]
+(defvar mem-kb 1024)
+(defvar mem-mb 1048576)
+(defvar mem-gb 1073741824)
+
+(defwidget colored-scale [value left right ?temp ?class ?min ?max]
     (box :space-evenly false :orientation "v"
-        (box :halign "start" (label 
-            :text {text}
-            :class "perf-label"))
+        (box :space-evenly false 
+            (box :halign "start" :hexpand true 
+                (label :class "perf-label" :text left))
+            (label :class "perf-label-right" :text right))
         (scale 
             :min {min?:0}
             :max {max?:100}
@@ -21,29 +26,34 @@
                 : (temp > 40 ? "normal" 
                 : "cool"))))}")))
 
+
 (defwidget performance-panel []
     (box :hexpand true :space-evenly false :orientation "v"
         (tray-processes)
         (box :orientation "v" :hexpand true :class "section" :space-evenly false
             (label :class "text" :text "${perf-pcount} Processes")
             (colored-scale 
-                :text "CPU: ${round(EWW_CPU.avg, 1)}% at ${EWW_TEMPS[cpu-sensor]}°C"
                 :temp {EWW_TEMPS[cpu-sensor]}
-                :value {EWW_CPU.avg})
+                :value {EWW_CPU.avg}
+                :left "CPU: ${round(EWW_CPU.avg, 1)}%"
+                :right "${EWW_TEMPS[cpu-sensor]}°C")
             (colored-scale
-                :text "GPU: ${perf-gpu.usage}% at ${EWW_TEMPS[gpu-sensor]}°C"
                 :temp {EWW_TEMPS[gpu-sensor]} 
-                :value {perf-gpu.usage})
+                :value {perf-gpu.usage}
+                :left "GPU: ${perf-gpu.usage}%"
+                :right "${EWW_TEMPS[gpu-sensor]}°C")
             (colored-scale 
-                :text "RAM: ${round(EWW_RAM.used_mem_perc, 1)}%"
                 :class "mem" 
-                :value {EWW_RAM.used_mem_perc})
-
+                :value {EWW_RAM.used_mem_perc}
+                :left "RAM: ${round(EWW_RAM.used_mem_perc, 1)}%"
+                :right "${round(EWW_RAM.used_mem / mem-gb, 1)}GB / ${round(EWW_RAM.total_mem / mem-gb, 1)}GB")
             (colored-scale 
-                :text "Send: ${perf-net.sent_pretty}/s"
                 :class "net-up"
-                :value {perf-net.sent_rel})
+                :value {perf-net.sent_rel}
+                :left "Send: ${perf-net.sent_pretty}/s"
+                :right "Total: ${perf-net.total_sent_pretty}")
             (colored-scale 
-                :text "Recv: ${perf-net.recv_pretty}/s" 
                 :class "net-down" 
-                :value {perf-net.recv_rel}))))
+                :value {perf-net.recv_rel}
+                :left "Recv: ${perf-net.recv_pretty}/s"
+                :right "Total: ${perf-net.total_recv_pretty}"))))

@@ -20,6 +20,11 @@
     margin-top: .6rem;
     margin-left: 2.2rem;
 }
+.perf-label-right {
+    @extend .text;
+    margin-top: .6rem;
+    margin-right: 2.2rem;
+}
 
 .perf-scale-critical, .perf-scale-hot, .perf-scale-warm, .perf-scale-normal, .perf-scale-cool, .perf-scale-mem, {
     @extend .perf-scale;
@@ -44,9 +49,3 @@
         background-color: $lblue;
     }
 }
-
-.perf-icon-critical{ color: $red; }
-.perf-icon-hot{ color: $orange; }
-.perf-icon-warm{ color: $yellow; }
-.perf-icon-normal{ color: $green; }
-.perf-icon-cool{ color: $teal; }
