@@ -74,6 +74,42 @@
     min-height: 2.5rem;
 }
 
+.dual-cbutton {
+    > button {
+        transition: background-color 0.3s ease, color 0.3s ease;
+        min-height: 2.5rem;
+        color: $fg0;
+        background-color: $bg1;
+        &:hover {
+            background-color: $bg2;
+        }
+    }
+    &.active {
+        > button {
+            color: $inv;
+            background-color: $accent;
+            &:hover {
+                background-color: fade($accent);
+            }
+        }
+        all: unset;
+    }
+    > :first-child {
+        border-radius: 12px 0px 0px 12px;
+        margin: 0.4rem 0rem 0.4rem 0.4rem;
+        padding: 0.07rem 0.8rem 0.07rem 0.85rem;
+    }
+    > :last-child {
+        border-left: 0.6px solid $bg3;
+        &.active {
+            border-color: mix($bg3, $accent);
+        }
+        border-radius: 0px 12px 12px 0px;
+        margin: 0.4rem 0.4rem 0.4rem 0rem;
+        padding: 0.07rem 1.15rem 0.07rem 0.85rem;
+    }
+}
+
 .top-bar {
     background-color: $bg0;
 }

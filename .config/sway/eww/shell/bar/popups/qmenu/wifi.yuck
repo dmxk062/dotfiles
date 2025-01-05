@@ -15,7 +15,7 @@
                 : (signal > 20 ? "󰤟" : "󰤯")))))}${text?:""}"))
 
 (defwidget wifi-toggle-button []
-    (box :class "cbutton${(wifi?.powered?:false) ? " active" : ""}" :space-evenly false
+    (box :class "dual-cbutton${(wifi?.powered?:false) ? " active" : ""}" :space-evenly false
         (button :hexpand true 
             :onclick "nmcli radio wifi ${wifi.powered ? "off" : "on"}"
             :onrightclick "${EWW_CMD} update wifi-revealed=${!wifi-revealed}" 

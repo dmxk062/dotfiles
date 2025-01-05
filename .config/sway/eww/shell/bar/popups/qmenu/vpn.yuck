@@ -5,7 +5,7 @@
 (defpoll local-ips :run-while vpn-revealed :interval "16s" `ip route | jq -sR 'split("\\n")|map(split(" ")|select(.[0] == "default")|{ip: .[8], dev: .[4], gateway: .[2]})'`)
 
 (defwidget vpn-toggle-button []
-    (box :class "cbutton${vpn.active ? " active" : ""}" :space-evenly false
+    (box :class "dual-cbutton${vpn.active ? " active" : ""}" :space-evenly false
         (button :hexpand true
             :onclick `nmcli connection ${vpn.active ? "down" : "up"} '${vpn.active ? vpn.name : default-vpn}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
             :onrightclick "${EWW_CMD} update vpn-revealed=${!vpn-revealed}"

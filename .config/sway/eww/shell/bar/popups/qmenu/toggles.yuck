@@ -20,12 +20,15 @@
                 "${service-swayidle ? "󰒲" : "󰒳"}   Swayidle")
 
             
-            (button :class "cbutton${perf-revealed ? " active" : ""}"
-                    :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
+            (box :class "dual-cbutton${perf-revealed ? " active" : ""}" :space-evenly false
+                (button :hexpand true
+                    :onclick ""
+                    :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
                     :timeout "16s"
-                    (box :space-evenly false
-                        (box :halign "center" :hexpand true (label :text "󰨇   System")) 
-                        (label :text {perf-revealed ? "" : "" }))))))
+                    "󰨇   System")
+                (button 
+                    :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
+                    {perf-revealed ? "" : "" })))))
 
 (defpoll service-blueman :run-while perf-revealed :interval "20m" "pgrep blueman-applet >/dev/null && echo true || echo false")
 (defpoll service-networkmanager :run-while perf-revealed :interval "20m" "pgrep nm-applet >/dev/null && echo true || echo false")
