@@ -36,4 +36,4 @@
                             :onclick `nmcli connection ${vpn.active ? "down" : "up"} '${vpn.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
                             :timeout "16s"
                             "${vpn.active ? "Disconnect" : "Connect"}")
-                        (box :hexpand true :halign "end" (label :class "titel" :text {vpn.name} :style "margin-right: 1rem;")))))))))
+                        (box :hexpand true :halign "end" (label :class "text" :text {vpn.name} :style "margin-right: 1rem;")))))))))
