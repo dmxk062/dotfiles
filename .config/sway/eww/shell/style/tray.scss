@@ -10,17 +10,6 @@
     }
 }
 
-check {
-    border-radius: 12;
-    min-width: 1rem;
-    min-height: 1rem;
-    background-color: $bg3;
-    margin-right: .5rem;
-
-    &:checked{
-        background-color: $accent;
-    }
-}
 window {
     decoration {
         box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
@@ -66,7 +55,10 @@ menu {
             background-color: $bg1;
         }
     }
-
+    check {
+        min-height: 1.2rem;
+        min-width: 1.2rem;
+    }
 }
 
 

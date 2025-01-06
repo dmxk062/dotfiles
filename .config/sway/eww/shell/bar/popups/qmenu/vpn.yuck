@@ -28,12 +28,13 @@
                 "󰆏   Public: ${current-ip.ip}"))
             (box :hexpand true :halign "start" (label :class "text" :text "Location: ${current-ip.city}, ${current-ip.region}, ${current-ip.country}"))
             (box :hexpand true :halign "start" (label :class "text" :text "Provider: ${current-ip.org}")))
-        (scroll :style "min-height: 20rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
+        (scroll :style "min-height: 10rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
             (for vpn in vpns 
-                (box :hexpand true :space-evenly false :halign "center"
-                    (box :space-evenly false :class "card" :style "min-width: 20rem;"
-                        (button :class "button${vpn.active ? " alert" : ""}" 
-                            :onclick `nmcli connection ${vpn.active ? "down" : "up"} '${vpn.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
-                            :timeout "16s"
-                            "${vpn.active ? "Disconnect" : "Connect"}")
-                        (box :hexpand true :halign "end" (label :class "text" :text {vpn.name} :style "margin-right: 1rem;")))))))))
+                (box :hexpand true :space-evenly false :halign "start"
+                        (box :space-evenly false :style "margin-left: 1rem; padding: .2rem;"
+                            (checkbox :checked {vpn.active} 
+                                :class "square-check"
+                                :timeout "16s"
+                                :onchecked `nmcli connection up '${vpn.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
+                                :onunchecked `nmcli connection down '${vpn.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`)
+                            (label :class "text" :text {vpn.name}))))))))

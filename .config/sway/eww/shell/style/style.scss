@@ -28,6 +28,12 @@
     }
 }
 
+.rbutton {
+    @extend .button;
+    border-radius: 50%;
+    padding: 6px 14px;
+}
+
 .tiny-button {
     color: $fg0;
     border-radius: 50%;
@@ -210,3 +216,26 @@ tooltip{
 @import "./mpris.scss";
 @import "./panel.scss";
 @import "./workspace.scss";
+
+check {
+    all: unset;
+
+    border-radius: 4px;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    background-color: $bg2;
+    margin-right: .6rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    &:hover {
+        background-color: $bg3;
+    }
+
+    &:checked {
+        background-color: $accent;
+        color: $inv;
+        -gtk-icon-source: -gtk-icontheme('object-select-symbolic');
+        &:hover {
+            background-color: fade($accent);
+        }
+    }
+}
