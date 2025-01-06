@@ -1,4 +1,4 @@
-(deflisten workspaces :initial "[]" "./bin/workspace.sh")
+(deflisten workspaces :initial "[]" "./bin/workspaces.py 2>/dev/null")
 
 (include "./bar/popups/workspace.yuck")
 
@@ -9,5 +9,5 @@
             (for ws in workspaces
                 (button 
                     :class "button ${ws.focused ? "active" : ""}"
-                    :onclick "swaymsg -q workspace ${ws.name}"
-                "${ws.name}")))))
+                    :onclick "swaymsg -q workspace ${ws.ws}"
+                "${ws.is_virtual ? "." : ""}${ws.ws}")))))

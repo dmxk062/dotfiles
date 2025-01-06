@@ -1,5 +1,4 @@
 (defvar ws-overview-reveal false)
-(deflisten overview-workspaces "./bin/overview_win.py 2>/dev/null")
 (defvar overview-cut-win 0)
 
 
@@ -44,7 +43,7 @@
             :reveal {ws-overview-reveal}
             :transition "slidedown"
             (box (box :class "popup-win"
-                (for ws in overview-workspaces
+                (for ws in workspaces
                     (ws-box :ws {ws})))))))
 
 (defwindow ws-overview-win 

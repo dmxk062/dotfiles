@@ -16,8 +16,10 @@ REGEX_NAMES = [
 
 CLASS_OVERRIDES = {
     "zenity": "dialog-info",
+    "vesktop": "discord",
     "nm-connection-editor": "networkmanager",
 }
+
 
 def get_icon(icon_name, size=48, fallback="window-manager"):
     if not icon_name:
@@ -29,8 +31,11 @@ def get_icon(icon_name, size=48, fallback="window-manager"):
     else:
         return get_icon(None)
 
+
 def get_for_ws(workspace: i3ipc.Con, output):
     on_ws = []
+    active = None
+    is_active = False
     for w in workspace.descendants():
         if not w.pid:
             continue
@@ -66,7 +71,7 @@ def get_for_ws(workspace: i3ipc.Con, output):
         rect["width"] = w.rect.width * width_scale
         rect["height"] = w.rect.height * height_scale
 
-        on_ws.append({
+        win = {
             "float": w.type == "floating_con",
             "app_id": app_id,
             "id": w.id,
@@ -75,8 +80,12 @@ def get_for_ws(workspace: i3ipc.Con, output):
             "focused": w.focused,
             "rect": rect,
             "icon": get_icon(app_id)
-        })
-    return sorted(on_ws, key=lambda w: w["float"])
+        }
+        if w.focused:
+            is_active = True
+
+        on_ws.append(win)
+    return sorted(on_ws, key=lambda w: w["float"]), is_active
 
 def sort_by_name(ws):
     name = ws["ws"]
@@ -94,11 +103,13 @@ def update(i3, e):
             continue
 
         for workspace in output.nodes:
+            windows, is_active = get_for_ws(workspace, output)
             workspaces.append({
-                    "wins": get_for_ws(workspace, output),
-                    "focused": workspace.focused,
+                    "wins": windows,
+                    "focused": workspace.focused or is_active,
                     "wsnum": workspace.num,
-                    "ws": workspace.name
+                    "ws": workspace.name,
+                    "is_virtual": False
             })
 
     sorted_ws = sorted(workspaces, key=sort_by_name)
@@ -109,6 +120,7 @@ def update(i3, e):
             "focused": False,
             "wsnum": sorted_ws[-1]["wsnum"]+1,
             "ws": str(sorted_ws[-1]["wsnum"]+1),
+            "is_virtual": True
         })
 
     print(json.dumps(sorted_ws), flush=True)

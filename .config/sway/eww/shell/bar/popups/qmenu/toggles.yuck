@@ -6,7 +6,7 @@
 (defpoll cpu-governor :interval "20m" "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor")
 
 (defvar cpu-governor-names '{
-"performance": "󰓅   Power",
+"performance": "󰓅   Performance",
 "powersave": "󰾆   Efficiency"
 }')
 
