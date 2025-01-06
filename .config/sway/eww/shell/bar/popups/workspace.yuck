@@ -27,7 +27,7 @@
 
 
 (defwidget ws-box [ws]
-    (box :class "workspace"
+    (box :class "workspace ${ws.focused ? "active" : ""}"
         (eventbox
             :onmiddleclick "swaymsg [con_id=${overview-cut-win}] move to workspace ${ws.ws} >/dev/null; ${EWW_CMD} update overview-cut-win=0"
             :onclick "swaymsg workspace ${ws.ws} >/dev/null"

@@ -5,6 +5,11 @@
     margin: .4rem;
     min-width: 193px;
     min-height: 109px;
+    border: 2px solid $bg1;
+
+    &.active {
+        border-color: $accent;
+    }
 }
 
 
@@ -19,12 +24,12 @@
     border: 2px solid $bg1;
     &.float {
         border: none;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 3px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
     }
     &.cut {
         border-color: $red;
     }
     &.active {
-        background-color: $bg3;
+        background-color: mix($bg2, $accent, 80%);
     }
 }
