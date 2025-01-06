@@ -7,7 +7,7 @@
         :onhover "./bin/popup.sh ws-overview-win ws-overview-reveal open&" 
         (box :space-evenly false 
             (for ws in workspaces
-                (button 
+                (button :visible {!ws.is_virtual}
                     :class "button ${ws.focused ? "active" : ""}"
                     :onclick "swaymsg -q workspace ${ws.ws}"
-                "${ws.is_virtual ? "." : ""}${ws.ws}")))))
+                "${ws.ws}")))))
