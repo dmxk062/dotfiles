@@ -52,8 +52,7 @@
             (button :tooltip "Scanning" :class "sbutton ${bt-meta.scanning ? "active" : ""}"
                 :onclick "bluetoothctl scan ${bt-meta.scanning ? "off" : "on"}; ${bt-syncall}"
                 :timeout "16s"
-                "󰐷   Scanning")
-        )
+                "󰐷   Scanning"))
         ; comfortably fits 3 devices without scrolling
         (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
             (for dev in bt-devices 
