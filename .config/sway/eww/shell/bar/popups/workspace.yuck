@@ -3,21 +3,21 @@
 
 
 (defwidget ws-win [win ws]
-        (box :style "
-            margin-left: ${round(win.rect.x/10, 0)}px;
-            margin-top: ${round(win.rect.y/10, 0)}px;
-            margin-right: -${round((win.rect.x + win.rect.width)/10, 0)}px;
-            margin-bottom: -${round((win.rect.y + win.rect.height)/10, 0)}px;
-            " 
-            :class "overview-window${win.focused ? " active" : ""} ${win.float ? "float" : ""} ${overview-cut-win == win.id ? "cut" : ""}"
-            :hexpand false
-            :vexpand false
-            :halign "start"
-            :valign "start"
-            (eventbox 
-                :onclick "swaymsg [con_id=${win.id}] focus >/dev/null&"
-                :onrightclick "${EWW_CMD} update overview-cut-win=${win.id == overview-cut-win ? 0 : win.id}"
-                :onmiddleclick "swaymsg [con_id=${overview-cut-win}] move to workspace ${ws}; ${EWW_CMD} update overview-cut-win=0"
+    (box :style "
+        margin-left: ${round(win.rect.x/10, 0)}px;
+        margin-top: ${round(win.rect.y/10, 0)}px;
+        margin-right: -${round((win.rect.x + win.rect.width)/10, 0)}px;
+        margin-bottom: -${round((win.rect.y + win.rect.height)/10, 0)}px;
+        "
+        :class "overview-window${win.focused ? " active" : ""} ${win.float ? "float" : ""} ${overview-cut-win == win.id ? "cut" : ""}"
+        :hexpand false
+        :vexpand false
+        :halign "start"
+        :valign "start"
+        (eventbox
+            :onclick "swaymsg [con_id=${win.id}] focus >/dev/null&"
+            :onrightclick "${EWW_CMD} update overview-cut-win=${win.id == overview-cut-win ? 0 : win.id}"
+            :onmiddleclick "swaymsg [con_id=${overview-cut-win}] move to workspace ${ws}; ${EWW_CMD} update overview-cut-win=0"
                 (image
                     :path {win.icon}
                     :valign "center"
@@ -36,19 +36,19 @@
                 (box :halign "start" :valign "end"
                     (label :class "workspace-name" :text {ws.ws}))))))
 
-(defwidget ws-overview [] 
-    (eventbox 
+(defwidget ws-overview []
+    (eventbox
         :onhoverlost "./bin/popup.sh ws-overview-win ws-overview-reveal close&"
-        (revealer 
+        (revealer
             :reveal {ws-overview-reveal}
             :transition "slidedown"
             (box (box :class "popup-win"
                 (for ws in workspaces
                     (ws-box :ws {ws})))))))
 
-(defwindow ws-overview-win 
+(defwindow ws-overview-win
     :monitor 0
-    :geometry (geometry 
+    :geometry (geometry
         :x 0
         :y -50
         :width 0
