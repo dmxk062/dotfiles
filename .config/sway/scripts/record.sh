@@ -32,11 +32,16 @@ if [[ "$1" == "start" ]]; then
 
     wait $pid
     eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" update recording=false recording-info='{}'
+
+    CACHEFILE="$XDG_CACHE_HOME/.thumb_$EPOCHSECONDS"
+    ffmpegthumbnailer -m -i "$path" -o "$CACHEFILE"
     reply="$(notify-send "Finished recording video" "$path"\
+        -i "$CACHEFILE" \
         --action=open="Open"\
         --action=del="Delete"\
         --action=copy="Copy"\
     )"
+    unlink "$CACHEFILE"
     case "$reply" in 
         open) xdg-open "$path";;
         del) rm "$path";;

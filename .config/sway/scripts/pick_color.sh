@@ -22,5 +22,6 @@ case "$reply" in
     rgb) wl-copy "rgb($r, $g, $b)";;
     hex) wl-copy "#$hex";;
 esac
+unlink "$CACHEFILE"
 
 wl-copy -p "#$hex"
