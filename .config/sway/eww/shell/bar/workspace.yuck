@@ -10,4 +10,4 @@
                 (button :visible {!ws.is_virtual}
                     :class "button ${ws.focused ? "active" : ""}"
                     :onclick "swaymsg -q workspace ${ws.ws}"
-                "${ws.ws}")))))
+                    "${ws.ws}")))))
