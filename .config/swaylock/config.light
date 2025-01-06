@@ -1,5 +1,5 @@
 # vim: ft=ini
-image="/home/dmx/.config/background/lock"
+image=".config/background/lock"
 font=TorusPro
 
 indicator-idle-visible
