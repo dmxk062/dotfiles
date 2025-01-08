@@ -423,8 +423,8 @@ add_with_prefix(colorscheme, "Oil", {
 add_with_prefix(colorscheme, "OilGitStatus", {
     IndexIgnored           = { fg = pal.bg3 },
     WorkingTreeIgnored     = { link = "*IndexIgnored" },
-    IndexUntracked         = { link = "*IndexIgnored" },
-    WorkingTreeUntracked   = { link = "*IndexIgnored" },
+    IndexUntracked         = { fg = pal.fg2 },
+    WorkingTreeUntracked   = { link = "*IndexUntracked" },
     IndexAdded             = { fg = col.green },
     WorkingTreeAdded       = { link = "*IndexAdded" },
     IndexCopied            = { fg = col.green },
