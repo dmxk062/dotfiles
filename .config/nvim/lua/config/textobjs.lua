@@ -127,6 +127,8 @@ M.indent_only_before = {
     norg     = true,
     markdown = true,
     asm      = true,
+    lisp     = true,
+    yuck     = true,
 }
 
 local function indent(pos, lcount, opts)
