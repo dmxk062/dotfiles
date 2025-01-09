@@ -29,7 +29,8 @@
 "config": [
     {"keys": "w", "action": "Wallpaper"},
     {"keys": "n", "action": "Nighlight"},
-    {"keys": "t", "action": "Theme"}
+    {"keys": "t", "action": "Theme"},
+    {"keys": "m", "action": "Mirror Screen"}
 ],
 "workspace": [
     {"keys": "[0-9]", "action": "Go to Workspace"},

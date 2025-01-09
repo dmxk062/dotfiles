@@ -5,6 +5,7 @@ mode "config" {
     bindsym W exec ~/.config/rofi/applets/wallpapers/run.sh; mode "default"
     bindsym N exec killall gammastep || gammastep -O 3000; mode "default"
     bindsym T exec ~/.config/sway/eww/shell/panel/bin/color.sh; "default"
+    bindsym M exec $sc/mirror.sh; "default"
 }
 
 bindsym $mod+Delete mode "config"
