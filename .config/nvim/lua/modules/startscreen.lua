@@ -342,6 +342,7 @@ M.texts = {
     ":f is often faster than :e",
     "All your issues are in the :cwindow",
     "g:<textobj>",
+    "Þæs ofereode, þisses swā mæġ",
 }
 
 
