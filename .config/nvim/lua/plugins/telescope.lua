@@ -172,13 +172,13 @@ M.opts.defaults = {
             {
                 {
                     namelen + 1,
-                    namelen + dirlen + 2,
+                    namelen + dirlen + 1,
                 },
                 "OilDir"
             }
         }
 
-        return string.format("%s %s/", tail, parendir), hls
+        return string.format("%s %s", tail, parendir), hls
     end,
 }
 
