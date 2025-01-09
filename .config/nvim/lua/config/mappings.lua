@@ -300,7 +300,17 @@ end)
 -- evalute qalculate expression/math and insert result in buffer
 operators.map_function("<space>em", function(mode, region, extra, get)
     local expressions = get()
-    local result = vim.system({ "qalc", "-t", "-f", "-" }, { stdin = expressions }):wait().stdout
+    local last_expr = expressions[#expressions]
+
+    -- convert to decimals by default, unless specified otherwise
+    -- makes it nicer for programming languages that probably dont want fractions
+    if not last_expr:match("to fraction") then
+        expressions[#expressions] = last_expr .. " to decimals"
+    end
+
+    local result = vim.system({ "qalc", "-t", "-f", "-" }, {
+        stdin = expressions
+    }):wait().stdout
     if not result then
         return nil
     end
