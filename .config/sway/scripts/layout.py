@@ -22,7 +22,7 @@ def switch_split_direction(i3: i3ipc.Connection, e):
 
 def main():
     i3 = i3ipc.Connection()
-    i3.on(i3ipc.Event["WINDOW"], switch_split_direction)
+    i3.on(i3ipc.Event.WINDOW, switch_split_direction)
     i3.main()
 
 
