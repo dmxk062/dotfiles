@@ -339,7 +339,7 @@ M.texts = {
     ":3 is a valid ex command, and you're valid too",
     "Tired? Just <C-z>",
     ":v == :g!",
-    ":f is often faster than :e",
+    ":find is often faster than :e",
     "All your issues are in the :cwindow",
     "g:<textobj>",
     "Þæs ofereode, þisses swā mæġ",
