@@ -95,7 +95,7 @@ M.config = function()
                 ["gi"]        = "n",
                 ["<space>rn"] = "n",
             } do
-                utils.lunmap(opts.buf, mode, mapping)
+                pcall(utils.lunmap, opts.buf, mode, mapping)
             end
 
             vim.api.nvim_buf_del_user_command(opts.buf, "InlayHint")
