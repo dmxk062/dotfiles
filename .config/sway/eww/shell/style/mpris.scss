@@ -9,3 +9,18 @@
         background-color: fade($pink);
     }
 }
+
+.mpris-seek-bar {
+    trough {
+        all: unset;
+        min-height: .5rem;
+        margin: .8rem;
+        border-radius: 12px;
+        background-color: $bg3;
+        min-width: 10rem;
+        highlight {
+            border-radius: 12px;
+            background-color: $accent;
+        }
+    }
+}

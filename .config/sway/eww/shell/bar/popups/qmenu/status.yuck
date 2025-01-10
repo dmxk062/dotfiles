@@ -26,26 +26,53 @@
 "50n": "weather-mist"
 }')
 
+(defwidget status-mpris []
+    (revealer :reveal {mpris.has_player} :transition "slidedown"
+    (box :space-evenly false :class "section"
+        (box :orientation "vertical" :space-evenly false :valign "center"
+            (image :path {mpris.art} :image-width 96 :image-height 96 :style "margin: .8rem;"))
+        (box :orientation "vertical" :space-evenly false :hexpand true
+            (label :class "title"
+                :text "${mpris.title}" 
+                :limit-width 16)
+            (label :class "text"
+                :text "${mpris.artist}${mpris.album != "" ? " - ${mpris.album}" : ""}" 
+                :limit-width 16)
+            (centerbox
+                (button :class "button" :onclick "playerctl previous" "")
+                (button :class "button ${mpris.playing ? "active" : ""}" 
+                    :onclick "playerctl play-pause" 
+                    "${mpris.playing ? "    Pause" : "   Play"}")
+                (button :class "button" :onclick "playerctl next" ""))
+            (revealer :reveal {mpris.has_progress} :transition "slidedown" (box
+                (scale 
+                    :onchange `playerctl position $(echo 'scale=0;({}*${mpris.length})/100'|bc)`
+                    :timeout "300s"
+                    :tooltip "${formattime(mpris.position, "%M:%S", "UTC")} / ${formattime(mpris.length, "%M:%S", "UTC")}"
+                    :class "mpris-seek-bar" 
+                    :value {mpris.progress * 100} :min 0 :max 100)))))))
+
 (defwidget status-panel []
-    (box :space-evenly false :orientation "vertical" :class "section"
-        (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
-        (label :class "text" :text "up for ${formattime(EWW_TIME - boottime, "%H hours, %M minutes", "UTC")}")
-        (box :height 20) ; padd
-        (box :space-evenly false
-            (themed-icon 
-                :name {weather-icons[weather.weather[0].icon]}
-                :width 64
-                :height 64)
+    (box :space-evenly false :orientation "vertical" 
+        (box :space-evenly false :orientation "vertical" :class "section"
+            (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
+            (label :class "text" :text "up for ${formattime(EWW_TIME - boottime, "%H hours, %M minutes", "UTC")}")
+            (box :height 20) ; padd
+            (box :space-evenly false
+                (themed-icon 
+                    :name {weather-icons[weather.weather[0].icon]}
+                    :width 64
+                    :height 64)
 
-            (box :orientation "vertical" :space-evenly false :halign "end" :hexpand true
-                (label :class "weather-${weather.main.temp > 30 ? "hot" 
-                    : (weather.main.temp > 20 ? "warm" 
-                    : (weather.main.temp > 10 ? "temperate" 
-                    : (weather.main.temp > 5 ? "cool"
-                    : "cold")))}" 
-                    :text "󰔏   ${weather.main.temp}°C")
-                (label :class "weather-wind" 
-                    :text "   ${round(weather.wind.speed / 3.6, 1)}km/h")
-                (label :class "weather-description" 
-                    :text "󰋽   ${weather.weather[0].description}")))))
-
+                (box :orientation "vertical" :space-evenly false :halign "end" :hexpand true
+                    (label :class "weather-${weather.main.temp > 30 ? "hot" 
+                        : (weather.main.temp > 20 ? "warm" 
+                        : (weather.main.temp > 10 ? "temperate" 
+                        : (weather.main.temp > 5 ? "cool"
+                        : "cold")))}" 
+                        :text "󰔏   ${weather.main.temp}°C")
+                    (label :class "weather-wind" 
+                        :text "   ${round(weather.wind.speed / 3.6, 1)}km/h")
+                    (label :class "weather-description" 
+                        :text "󰋽   ${weather.weather[0].description}"))))
+    (status-mpris)))

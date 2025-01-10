@@ -1,34 +1,69 @@
 #!/usr/bin/env python
 import json
 import sys
+from urllib.parse import urlparse, unquote
 
 import gi
 
 gi.require_version("Playerctl", "2.0")
+gi.require_version("Gtk", "3.0")
 
-from gi.repository import GLib, Playerctl
+from gi.repository import GLib, Playerctl, Gtk
 
 PLAYER_POSITIONS = {}
 
-def get_timestamp(mseconds):
-    minutes, seconds = divmod(mseconds / 1000000, 60)
-    return f"{minutes:.0f}:{seconds:02.0f}"
+NAME_OVERRIDES = {
+    "gapless": "com.github.neithern.g4music"
+}
 
-def do_meta(pl, meta, *_):
+def get_icon(icon_name, size=48, fallback="multimedia-video-player"):
+    if not icon_name:
+        icon_name = fallback
+    icon_theme = Gtk.IconTheme.get_default()
+    icon = icon_theme.lookup_icon(icon_name, size, 0)
+    if icon:
+        return icon.get_filename()
+    else:
+        return get_icon(None)
+
+def get_art(player):
+    try:
+        art_url = player.props.metadata["mpris:artUrl"]
+        if art_url.startswith("file://"):
+            art_path = unquote(urlparse(art_url).path)
+    except KeyError:
+        art_path = None
+
+    if not art_path:
+        plname = player.props.player_name.lower()
+        art_path = get_icon(NAME_OVERRIDES.get(plname, plname))
+
+    return art_path
+
+def do_meta(pl, *_):
     out = {}
-
-    name = pl.props.player_name
+    
+    props = pl.props
+    meta = props.metadata
+    name = props.player_name
     out["has_player"] = True
     out["player"] = name
-    out["playing"] = pl.props.status == "Playing"
+    out["playing"] = props.status == "Playing"
     position = PLAYER_POSITIONS.get(pl, 0)
+
     try:
         length = meta["mpris:length"]
     except KeyError:
         length = None
+
+    out["art"] = get_art(pl)
+
+
     if (length and position):
         out["has_progress"] = True
-        out["nice_time"] = get_timestamp(position) + "/" + get_timestamp(length) 
+        out["length"] = int(length / 1000000)
+        out["position"] = int(position / 1000000)
+        out["progress"] = position / length
     else:
         out["has_progress"] = False
 
@@ -61,7 +96,7 @@ def do_meta(pl, meta, *_):
 
 
 def on_play_pause(player, *_):
-    do_meta(player, player.props.metadata)
+    do_meta(player)
 
 def assert_not_none(man):
     if not len(man.props.player_names):
@@ -79,7 +114,7 @@ def poll_position():
     for pl in manager.props.players:
         if pl.props.playback_status == Playerctl.PlaybackStatus.PLAYING:
             PLAYER_POSITIONS[pl] = pl.get_position()
-            do_meta(pl, pl.props.metadata)
+            do_meta(pl)
     return True
 
 
@@ -100,7 +135,7 @@ if __name__ == "__main__":
 
     if assert_not_none(manager):
         player = Playerctl.Player()
-        do_meta(player, player.props.metadata)
+        do_meta(player)
 
     GLib.timeout_add_seconds(1.5, poll_position)
     try:

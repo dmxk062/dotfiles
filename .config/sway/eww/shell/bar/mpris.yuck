@@ -8,5 +8,5 @@
                 :onclick "playerctl play-pause"
                 (label :limit-width 32 
                     :text {mpris.has_player ?
-                    "${mpris.has_progress ? "[${mpris.nice_time}] " : ""} ${mpris.nice_title}"
+                    "${mpris.has_progress ? "[${formattime(mpris.position, "%M:%S", "UTC")} / ${formattime(mpris.length, "%M:%S", "UTC")}] " : ""} ${mpris.nice_title}"
                     : "No Player"}))))
