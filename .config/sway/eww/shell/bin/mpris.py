@@ -81,16 +81,6 @@ def do_meta(pl, *_):
     out["album"] = meta["xesam:album"]
     out["title"] = meta["xesam:title"]
 
-    nice_title = ""
-    if artist and artist != "":
-        nice_title += artist
-    if out["album"]:
-        nice_title += ", " + out["album"]
-    if out["title"]:
-        nice_title += " - " + out["title"]
-
-    out["nice_title"] = nice_title
-
     sys.stdout.write(json.dumps(out) + "\n")
     sys.stdout.flush()
 
