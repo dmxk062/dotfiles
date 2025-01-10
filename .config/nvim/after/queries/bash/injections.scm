@@ -1,31 +1,52 @@
 ; extends
 
+; Inject jq code
 (command
-   name: (command_name) @_command
-   argument : [
-               (string 
-                 (string_content) @injection.content)
-               (concatenation 
-                 (string
-                   (string_content) @injection.content))
-               (raw_string) @injection.content
-               (concatenation 
-                 (raw_string) @injection.content)
-               ]
- (#eq? @_command "jq")
- (#set! injection.language "jq"))
+  name: (command_name) @_command
+  argument: [
+    (string
+      (string_content) @injection.content)
+    (concatenation
+      (string
+        (string_content) @injection.content))
+    (raw_string) @injection.content
+    (concatenation
+      (raw_string) @injection.content)
+  ]
+  (#eq? @_command "jq")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.language "jq"))
 
+; Basically the same for awk, but also do it for all forms of awk
 (command
-   name: (command_name) @_command
-   argument : [
-               (string 
-                 (string_content) @injection.content)
-               (concatenation 
-                 (string
-                   (string_content) @injection.content))
-               (raw_string) @injection.content
-               (concatenation 
-                 (raw_string) @injection.content)
-               ]
- (#eq? @_command "awk")
- (#set! injection.language "awk"))
+  name: (command_name) @_command
+  argument: [
+    (string
+      (string_content) @injection.content)
+    (concatenation
+      (string
+        (string_content) @injection.content))
+    (raw_string) @injection.content
+    (concatenation
+      (raw_string) @injection.content)
+  ]
+  (#any-of? @_command "awk" "gawk" "nawk")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.language "awk"))
+
+; Languages that take a -c argument
+((command
+  name: (command_name) @_command @injection.language
+  argument: (word) @_arg
+  argument: [
+    (string) @injection.content
+    (concatenation
+      (string) @injection.content)
+    (raw_string) @injection.content
+    (concatenation
+      (raw_string) @injection.content)
+  ])
+  (#any-of? @_command "sh" "bash" "python")
+  (#eq? @_arg "-c")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children))
