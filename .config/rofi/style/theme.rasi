@@ -90,7 +90,7 @@ entry {
     text-color:                  inherit;
     cursor:                      text;
     placeholder:                 "search";
-    placeholder-color:           @bg3;
+    placeholder-color:           @fg3;
     border-radius: 16px;
     padding: 12px;
 } 

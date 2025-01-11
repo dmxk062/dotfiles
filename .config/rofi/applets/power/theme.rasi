@@ -109,7 +109,7 @@ entry {
     background-color:            @bg2;
     text-color:                  @fg0;
     placeholder:                 "Power";
-    placeholder-color:           @bg3;
+    placeholder-color:           @fg3;
     horizontal-align: 0.5;
     vertical-align: 0.5;
     expand: true;

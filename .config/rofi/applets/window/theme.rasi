@@ -100,5 +100,5 @@ entry {
     text-color:                  inherit;
     cursor:                      text;
     placeholder:                 "Search Windows...";
-    placeholder-color:           @bg3;
+    placeholder-color:           @fg3;
 } 
