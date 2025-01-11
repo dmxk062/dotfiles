@@ -24,3 +24,9 @@ bindsym $mod+A resize grow width 64px
 bindsym $mod+X resize shrink width 64px
 bindsym $mod+Shift+A resize grow height 64px
 bindsym $mod+Shift+X resize shrink height 64px
+
+# Much smarter resize
+bindsym $mod+Ctrl+H nop resize left 32
+bindsym $mod+Ctrl+J nop resize down 32
+bindsym $mod+Ctrl+K nop resize up 32
+bindsym $mod+Ctrl+L nop resize right 32
