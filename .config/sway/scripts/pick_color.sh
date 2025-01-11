@@ -1,11 +1,27 @@
 #!/usr/bin/bash
 
-
 CACHEFILE="$XDG_CACHE_HOME/.color_$EPOCHSECONDS.png"
 
-read -r r g b < <(hyprpicker -r -f rgb)
-if [[ -z "$r" ]]; then
-    exit
+if hash hyprpicker; then
+    read -r r g b < <(hyprpicker -r -f rgb)
+    if [[ -z "$r" ]]; then
+        exit
+    fi
+else
+    # fallback to grim otherwise
+    region="$(slurp -b '#00000000' -p)"
+    if [[ -z "$region" ]]; then
+        exit
+    fi
+    mapfile ppm < <(grim -g "$region" -t ppm -)
+
+    function byte2int {
+        printf -v "$1" "%d" "'$2"
+    }
+
+    byte2int r "'${ppm[3]:0:1}"
+    byte2int g "'${ppm[3]:1:1}"
+    byte2int b "'${ppm[3]:2:1}"
 fi
 
 printf -v hex "%02x%02x%02x" $r $g $b
