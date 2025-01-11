@@ -5,6 +5,7 @@ set $term kitty
 set $sc ~/.config/sway/scripts/
 set $mainS DP-1
 set $leftS DP-3
+set $eww ~/.config/sway/eww
 
 # emulate spiral layout
 # for_window [app_id=".*"] split toggle
@@ -43,7 +44,7 @@ exec playerctld
 exec nm-applet
 exec blueman-applet
 exec ~/.config/background/wallpaper.sh set
-exec ~/.config/sway/eww/eww.sh
+exec $eww/eww.sh
 # dbus secrets agent
 exec gnome-keyring-daemon
 # polkit
