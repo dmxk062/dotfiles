@@ -27,10 +27,12 @@ function M.config(_, opts)
     -- for charwise mode on a single line: create a single cursor at the destination of the motion
     operators.map_function("<M-c>", function(mode, region, extra, get)
         if mode == "line" or region[2][1] ~= region[1][1] then
+            local original_column = vim.fn.virtcol(".")
             mc.action(function(ctx)
                 for i = region[1][1] + 1, region[2][1] do
                     local cursor = ctx:addCursor()
                     cursor:setPos({ i, 1 })
+                    cursor:feedkeys(original_column .. "|")
                 end
             end)
         elseif mode == "char" then
