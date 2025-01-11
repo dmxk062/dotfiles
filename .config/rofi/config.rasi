@@ -16,9 +16,9 @@ configuration {
     kb-row-down:"Down,Alt+j";
     kb-row-up:"Up,Alt+k";
     line-margin: 10;
-    modes: [drun];
+    modes: [drun, window];
     display-drun:   "Run";
-    display-window: "Switch";
+    display-window: "Win";
     window {
         fallback-icon: "desktop";
         hide-active-window: true;

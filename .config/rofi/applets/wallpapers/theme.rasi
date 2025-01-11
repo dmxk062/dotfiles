@@ -4,10 +4,8 @@
 window {
     location: center;
     anchor: center;
-    border-color: #00000010;
     background-color: @bg0;
     children: [mainbox];
-    border: 1px;
     width: 48em;
     height: 35em;
 }

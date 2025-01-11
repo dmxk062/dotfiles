@@ -6,8 +6,8 @@ window {
     anchor: center;
     background-color: @bg0;
     children: [mainbox];
-    width: 32em;
-    height: 28em;
+    width: 22em;
+    height: 32em;
 }
 
 mainbox {
@@ -16,24 +16,24 @@ mainbox {
     background-color: @bg0;
     orientation: vertical;
 }
-listbox{
+listbox {
     children: [listview, mode-switcher];
     background-color: transparent;
 }
-mode-switcher{
+mode-switcher {
     background-color: transparent;
     background-color: @bg0;
     border-radius: 12px;
 }
 button {
     background-color: @bg0;
-    border-radius: 12px;
+    border-radius: 18px;
     padding: 0.5em 0.9em 0.5em 0.6em;
     text-color: @fg0;
     width: 5em;
 }
-button selected{
-    background-color: @bg2;
+button selected {
+    background-color: @bg1;
 }
 
 listview {
@@ -42,13 +42,10 @@ listview {
     background-color: transparent;
     dynamic: true;
     fixed-columns: true;
-    fixed-height: true;
-    columns: 4;
-    lines: 3;
-    flow: horizontal;
+    columns: 1;
 }
 
-element{
+element {
     padding: 8px;
     border-radius: 12px;
     margin: 4px;
@@ -56,15 +53,14 @@ element{
     color: @fg0;
     text-color: @fg0;
     highlight: bold underline;
-    orientation: vertical;
 }
-element selected.normal,element selected.active{
+element selected.normal,element selected.active {
     background-color: @accent;
     color: @invert;
     text-color: @invert;
     highlight: bold underline;
 }
-element normal.active{
+element normal.active {
     background-color: @bg2;
     text-color: @fg0;
 }
@@ -72,11 +68,12 @@ element-text, element-icon {
     background-color: inherit;
     text-color:       inherit;
 }
-element-icon{
-    size: 2.5em;
+element-icon {
+    size: 32px;
 }
-element-text{
-    horizontal-align: 0.5;
+
+element-text {
+    padding: 0 0 0 1em;
 }
 inputbar {
     color: @fg0;
@@ -91,13 +88,12 @@ entry {
     cursor:                      text;
     placeholder:                 "search";
     placeholder-color:           @fg3;
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 12px;
 } 
 
-top-box{
+top-box {
     background-image: url("~/.config/background/wall", width);
     expand: true;
     children: [inputbar];
-
 }
