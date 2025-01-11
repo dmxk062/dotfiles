@@ -22,8 +22,8 @@ No"|rofi -dmenu \
 }
 if [[ $ROFI_RETV -eq 0 ]]
 then
-    uptime="`uptime -p | sed -e 's/up //g'`"
-    host=`< /etc/hostname`
+    uptime="$(uptime -p | sed -e 's/up //g')"
+    host=$(< /etc/hostname)
     echo -en "${PROMPT}${uptime} ${USER}@${host}
 ${LOCK}${META}lock
 ${SUSPEND}${META}suspend sleep

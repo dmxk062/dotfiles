@@ -30,7 +30,7 @@ inputbox {
 }
 promptbox{
     background-color: transparent;
-    children: [entry, prompt, dummy];
+    children: [entry, prompt];
     orientation: horizontal;
     expand: false;
 }
@@ -117,6 +117,3 @@ entry {
     padding: 1em;
     margin: 1em;
 } 
-dummy {
-background-color: transparent;
-}
