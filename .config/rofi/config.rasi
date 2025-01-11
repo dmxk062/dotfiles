@@ -16,9 +16,10 @@ configuration {
     kb-row-down:"Down,Alt+j";
     kb-row-up:"Up,Alt+k";
     line-margin: 10;
-    modes: [drun, window];
+    modes: [drun, emoji, window];
     display-drun:   "Run";
     display-window: "Win";
+    display-emoji: "Emoji";
     window {
         fallback-icon: "desktop";
         hide-active-window: true;
