@@ -19,6 +19,8 @@ fi
 
 if [[ "$1" == "go" ]]; then
     swaymsg workspace "$prefix$target"
+elif [[ "$1" == "push" ]]; then
+    swaymsg move window to workspace "$prefix$target", workspace "$prefix$target"
 else
     swaymsg move window to workspace "$prefix$target"
 fi
