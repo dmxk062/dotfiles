@@ -32,12 +32,14 @@
         (box :orientation "vertical" :space-evenly false :valign "center"
             (image :path {mpris.art} :image-width 96 :image-height 96 :style "margin: .8rem;"))
         (box :orientation "vertical" :space-evenly false :hexpand true
-            (label :class "title"
-                :text "${mpris.title}" 
-                :limit-width 16)
-            (label :class "text"
-                :text "${mpris.artist}${mpris.album != "" ? " - ${mpris.album}" : ""}" 
-                :limit-width 16)
+            (box :orientation "vertical" :space-evenly false 
+                :tooltip "${mpris.artist}${mpris.album != "" ? ", ${mpris.album}" : ""} - ${mpris.title}"
+                (label :class "title"
+                    :text "${mpris.title}" 
+                    :limit-width 16)
+                (label :class "text"
+                    :text "${mpris.artist}${mpris.album != "" ? " - ${mpris.album}" : ""}" 
+                    :limit-width 16))
             (centerbox
                 (button :class "button" :onclick "playerctl previous" "")
                 (button :class "button ${mpris.playing ? "active" : ""}" 
