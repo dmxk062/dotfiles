@@ -43,6 +43,7 @@ exec swayidle -w
 exec playerctld
 exec nm-applet
 exec blueman-applet
+exec ydotoold
 exec ~/.config/background/wallpaper.sh set
 exec $eww/eww.sh
 # dbus secrets agent
