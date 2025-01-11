@@ -54,6 +54,10 @@ M.buttons = {
     Control = 29,
     Alt = 56,
     Super = 125,
+    Escape = 1,
+    Enter = 28,
+    Space = 57,
+    Compose = 100,
 
     MouseLeft = 0x110,
     MouseRight = 0x111,
@@ -69,6 +73,7 @@ M.buttons = {
     MediaPrev = 165,
     VolumeDown = 114,
     VolumeUp = 115,
+    VolumeMute = 113,
 }
 
 M.pressed = {}

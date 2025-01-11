@@ -38,11 +38,15 @@ local mappings = {
         buttons = {
             ["X"] = { "press", "MouseLeft" },
             ["Y"] = { "press", "MouseRight" },
+            ["A"] = { "press", "Enter" },
+            ["B"] = { "press", "Escape" },
             ["L"] = { "press", "KeyLeft" },
             ["D"] = { "press", "KeyDown" },
             ["U"] = { "press", "KeyUp" },
             ["R"] = { "press", "KeyRight" },
+            ["BR"] = { "press", "Super" },
             ["RStick"] = { "press", "MouseMiddle" },
+            ["-"] = { "system", "wofi", { "--show", "drun" } },
         },
 
         chords = {
@@ -59,13 +63,17 @@ local mappings = {
         leds = { false, true, false, false },
         buttons = {
             ["Home"] = { "mode", "default" },
+            ["X"] = { "press", "VolumeMute" },
             ["L"] = { "press", "MediaPrev" },
             ["R"] = { "press", "MediaNext" },
             ["U"] = { "press", "VolumeUp" },
             ["D"] = { "press", "VolumeDown" },
             ["+"] = { "press", "MediaPlay" },
+            ["-"] = { "sh", "~/.config/rofi/applets/mute/run.sh" },
             ["SL"] = { "press", { "Shift", "MediaPrev" } },
             ["SR"] = { "press", { "Shift", "MediaNext" } },
+            ["BR"] = { "sh", "~/.config/sway/scripts/pulse_cycle.sh sink next" },
+            ["BL"] = { "sh", "~/.config/sway/scripts/pulse_cycle.sh sink prev" },
         },
 
         chords = {}
@@ -104,6 +112,20 @@ local actions = {
     end,
     func = function(cfg, con, state)
         cfg[2](cfg, con, state)
+    end,
+    system = function(cfg, con, state)
+        if state then
+            uv.spawn(cfg[2], {
+                args = cfg[3],
+            })
+        end
+    end,
+    sh = function(cfg, con, state)
+        if state then
+            uv.spawn("sh", {
+                args = { "-c", cfg[2] }
+            })
+        end
     end
 }
 
@@ -121,20 +143,19 @@ controller.leds:set(mappings[mode].leds)
 
 controller:start_listen(function(con, event, info)
     if event == "button" then
-        if con.num_pressed < 2 then
-            local press_map = mappings[mode].buttons[info[1]]
-            if press_map then
-                actions[press_map[1]](press_map, con, info[2])
-                goto done
-            end
-        end
-
         if info[2] then
             for chord, mapping in pairs(mappings[mode].chords) do
                 if chord_is_pressed(chord, con.pressed) then
                     actions[mapping[1]](mapping, con, info[2])
+                    goto done
                 end
             end
+        end
+
+        local press_map = mappings[mode].buttons[info[1]]
+        if press_map then
+            actions[press_map[1]](press_map, con, info[2])
+            goto done
         end
     end
 
