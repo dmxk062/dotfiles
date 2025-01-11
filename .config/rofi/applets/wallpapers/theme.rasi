@@ -9,7 +9,7 @@ window {
     children: [mainbox];
     border: 1px;
     width: 48em;
-    height: 36em;
+    height: 35em;
 }
 
 mainbox {
