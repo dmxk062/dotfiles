@@ -121,7 +121,7 @@ controller.leds:set(mappings[mode].leds)
 
 controller:start_listen(function(con, event, info)
     if event == "button" then
-        if con.num_pressed == 1 then
+        if con.num_pressed < 2 then
             local press_map = mappings[mode].buttons[info[1]]
             if press_map then
                 actions[press_map[1]](press_map, con, info[2])
