@@ -32,7 +32,7 @@ end
 
 local mode = "raw"
 
-local mappings = {
+local modes = {
     default = {
         leds = { true, false, false, true },
         buttons = {
@@ -107,7 +107,7 @@ local actions = {
     mode = function(cfg, con, state)
         if state then
             mode = cfg[2]
-            con.leds:set(mappings[mode].leds)
+            con.leds:set(modes[mode].leds)
         end
     end,
     func = function(cfg, con, state)
@@ -139,12 +139,12 @@ local function chord_is_pressed(chord, pressed)
     return true
 end
 
-controller.leds:set(mappings[mode].leds)
+controller.leds:set(modes[mode].leds)
 
 controller:start_listen(function(con, event, info)
     if event == "button" then
         if info[2] then
-            for chord, mapping in pairs(mappings[mode].chords) do
+            for chord, mapping in pairs(modes[mode].chords) do
                 if chord_is_pressed(chord, con.pressed) then
                     actions[mapping[1]](mapping, con, info[2])
                     goto done
@@ -152,7 +152,7 @@ controller:start_listen(function(con, event, info)
             end
         end
 
-        local press_map = mappings[mode].buttons[info[1]]
+        local press_map = modes[mode].buttons[info[1]]
         if press_map then
             actions[press_map[1]](press_map, con, info[2])
             goto done
@@ -179,7 +179,7 @@ uv.timer_start(mouse_timer, 100, 3, function()
         ydotool.emit_event(2, 1, scale_mouse(laxis[2]), true)
     end
 
-    if mcounter % 3 == 0 then
+    if mcounter % 4 == 0 then
         if raxis[1] ~= 0 then
             ydotool.emit_event(2, 6, scale_mouse(raxis[1]), true)
         end
