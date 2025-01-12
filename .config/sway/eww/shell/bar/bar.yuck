@@ -12,7 +12,6 @@
     (systray :class "tray-box")
     (recording-indicator)
     (mpris)
-    (notifications)
     (clock)))
 
 (defwidget top-bar []
@@ -21,6 +20,7 @@
         (mode-symbol)
         (mode-hints))
     (box :space-evenly false
-        (workspace-list))
+        (workspace-list)
+        (notifications))
     (right-box)))
 

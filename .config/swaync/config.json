@@ -2,7 +2,7 @@
     "$schema": "/etc/xdg/swaync/configSchema.json",
     "positionX": "center",
     "positionY": "top",
-    "control-center-positionX": "right",
+    "control-center-positionX": "center",
     "control-center-positionY": "top",
     "control-center-margin-top": 8,
     "control-center-margin-bottom": 8,
@@ -25,19 +25,13 @@
     "transition-time": 200,
     "hide-on-clear": true,
     "script-fail-notify": true,
-    "control-center-height" : 800,
-    "control-center-width": 300,
+    "control-center-height" : 500,
+    "control-center-width": 400,
     "fit-to-screen": false,
     "widgets": [
-        "notifications",
-        "mpris"
+        "notifications"
     ],
     "widget-config": {
-        "title": {
-            "text": "Notification Center",
-            "clear-all-button": true,
-            "button-text": "Dismiss All"
-        },
         "menubar": {
             "menu#control_buttons": {
                 "label": "",

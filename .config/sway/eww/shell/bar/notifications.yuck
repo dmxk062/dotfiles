@@ -6,5 +6,5 @@
             :onclick "swaync-client -t"
             :onrightclick "swaync-client -d"
             :onmiddleclick "swaync-client -C"
-            :class "button ${notifs.count > 0 ? "active" : ""}"
+            :class "button ${notifs.visible ? "active" : ""}"
             "${notifs.count > 0 ? "󱥁    ${notifs.count}" : (notifs.dnd ? "󱙍" : "󰍥")}")))

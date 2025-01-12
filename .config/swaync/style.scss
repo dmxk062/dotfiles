@@ -22,7 +22,7 @@ window {
 
     }
 }
-.close-button{
+.close-button {
     all: unset;
     background: $bg2;
     color: $fg0;
@@ -38,7 +38,7 @@ window {
         background-color: $red;
     }
 }
-.notification-background{
+.notification-background {
     all: unset;
 }
 
@@ -52,21 +52,33 @@ window {
     color: $fg0;
 }
 
+.notification.normal {
+    /* border-left: 2px solid $bg0; */
+}
+
+.notification.critical {
+    border-left: 2px solid $red;
+}
+.notification.low {
+    border-left: 2px solid $bg3;
+}
+
 .notification-default-action {
     all: unset;
     color: $fg0;
     border-radius: $radius;
     padding: 8px;
-    &:hover{
+    &:hover {
         background-color: $bg1;
     }
     &:not(:only-child) {
         border-radius: $radius $radius 0 0;
     }
 
+
 }
 
-.notification-content{
+.notification-content {
     color: $fg0;
     background-color: transparent;
     border-radius: $radius;
@@ -77,23 +89,23 @@ window {
         margin-right: .6rem;
         color: $fg0;
     }
-    .app-icon{
+    .app-icon {
         -gtk-icon-effect: none;
         -gtk-icon-shadow: 0 1px 4px black;
         margin: .4rem;
         color: $fg0;
     }
-    .summary{
+    .summary {
         color: $fg0;
         font-weight: bold;
         font-size: 1.2rem;
         margin-bottom: .2rem;
     }
-    .time{
+    .time {
         margin-right: 30px;
         color: $fg2;
     }
-    .body{
+    .body {
         color: $fg0;
 
     }
@@ -109,13 +121,13 @@ window {
         background-color: $bg0;
         border-radius: $radius;
     }
-    #inline-reply-box{
+    #inline-reply-box {
         background-color: $red;
     }
     .inline-reply {
         all: unset;
         margin-top: .5rem;
-        .inline-reply-entry{
+        .inline-reply-entry {
             all: unset;
             border-radius: 12px;
             min-height: 2.85rem;
@@ -124,10 +136,10 @@ window {
             caret-color: $fg0;
             border: 2px solid $bg3;
             padding:  .07rem 1.15rem .07rem .85rem;
-            &:focused{
+            &:focused {
                 border: 2px solid fade($accent);
             }
-            selection{
+            selection {
                 color: $inv;
                 background-color: $accent;
             }
@@ -143,10 +155,10 @@ window {
             margin-left: 1rem;
             background-color: $accent;
             transition:  $trans;
-            &:hover{
+            &:hover {
                 background-color: fade($accent);
             }
-            &:disabled{
+            &:disabled {
                 background-color: initial;
                 color: $fg0;
             }
@@ -171,7 +183,7 @@ window {
         border-bottom-right-radius: $radius;
         border-right: none;
     }
-    &:hover{
+    &:hover {
         background-color: $bg2;
     }
     color: $fg0;
@@ -181,13 +193,12 @@ window {
 .control-center {
     box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
     background-color: $bg0;
-    margin: unset;
-    margin: 1rem;
-    margin-right: 0;
+    margin: .5rem;
+    margin-top: unset;
     border-radius: $radius;
     color: $fg0;
         .notification {
-            &:focus{
+            &:focus {
                 all: unset;
             }
         }
@@ -197,7 +208,7 @@ window {
     }
 }
 
-.notification-row{
+.notification-row {
     background-color: unset;
 }
 .notification-group {
@@ -233,33 +244,13 @@ window {
 }
 
 .activatable {
-    &:focus{
+    &:focus {
         background-color: rgba($accent, 0.2);
     }
 }
 
 
-
-.widget-dnd{
-    color: $fg0;
-    label {font-size: 1.5rem;}
-    margin: .5rem;
-    > switch {
-        border-radius: $radius;
-        background-color: $bg2;
-        border: 1px solid $bg3;
-        slider {
-            background-color: $snow0;
-            border-radius: $radius;
-
-        }
-        &:checked {
-            background-color: $accent;
-        }
-    }
-}
-
-.widget-mpris{
+.widget-mpris {
     .widget-mpris-player {
         padding: .5rem;
         padding: 1rem;
@@ -278,55 +269,19 @@ window {
         &:hover {
             background-color: #{rgba($bg0, 0.6)};
         }
-        &:disabled{
+        &:disabled {
             color: $fg2;
         }
     }
 
-    .widget-mpris-title{
+    .widget-mpris-title {
         font-weight: bold;
         font-size: 1.5rem;
     }
-    .widget-mpris-subtitle{
+    .widget-mpris-subtitle {
         font-size: 1.1rem;
     }
 }
-
-.widget-title {
-    color: $fg0;
-    label{
-        font-size: 1.5rem; 
-        font-weight: bold;
-    }
-    > button {
-        all: unset;
-        color: $fg0;
-        background-color: $bg2;
-        transition: $trans;
-        padding: 0.07rem 1.15rem 0.07rem 0.85rem;
-        border-radius: $radius;
-
-        &:hover {
-            background-color: fade($error);
-            color: $inv;
-        }
-
-    }
-
-
-}
-
-.widget-volume {
-    background-color: $bg0;
-    box-shadow: $popup_shadow; 
-    > box > button {
-        transition: $trans;
-        &:hover {
-            background-color: $bg1;
-        }
-    }
-}
-
 
 .floating-notifications {
     background: transparent;
@@ -335,12 +290,11 @@ window {
         slider {all: unset;}
 
     }
-
     .notification {
     }
 }
 
-.blank-window{
+.blank-window {
     all: unset;
     background: transparent;
 }
