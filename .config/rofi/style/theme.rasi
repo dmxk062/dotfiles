@@ -48,16 +48,16 @@ listview {
 
 element {
     padding: 8px;
-    border-radius: 12px;
+    border-radius: 14px;
     background-color: @bg0;
     color: @fg0;
     text-color: @fg0;
     highlight: bold underline;
 }
 element selected.normal,element selected.active {
-    background-color: @accent;
-    color: @invert;
-    text-color: @invert;
+    background-color: @bg1;
+    color: @fg0;
+    text-color: @fg0;
     highlight: bold underline;
 }
 element normal.active {
@@ -95,5 +95,6 @@ top-box {
 
 imagebox {
     background-image: url("~/.config/background/wall", height);
+    background-color: @bg0;
     border-radius: 12px;
 }
