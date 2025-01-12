@@ -1,3 +1,7 @@
+-- HACK/ERROR : work around https://github.com/neovim/neovim/issues/31675
+-- make :Inspect work
+vim.hl = vim.highlight
+
 vim.cmd.colorscheme "mynord"
 local open_start_screen = (vim.fn.argc() == 0)
 
