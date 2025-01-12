@@ -14,7 +14,7 @@ set $eww ~/.config/sway/eww
 corner_radius 12
 shadows enable
 shadows_on_csd enable
-shadow_color #00000040
+shadow_color #00000080
 shadow_blur_radius 14
 
 floating_modifier $mod
