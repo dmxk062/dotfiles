@@ -69,7 +69,7 @@ element-text, element-icon {
     text-color: inherit;
 }
 element-icon {
-    size: 32px;
+    size: 2em;
 }
 
 element-text {

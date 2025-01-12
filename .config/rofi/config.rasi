@@ -16,14 +16,13 @@ configuration {
     kb-row-down: "Down,Alt+j";
     kb-row-up: "Up,Alt+k";
     line-margin: 10;
-    modes: [drun, emoji, window];
+    modes: [drun, window];
     display-drun: "run";
     display-window: "win";
-    display-emoji: "emoji";
+    // display-emoji: "emoji";
     window {
-        fallback-icon: "desktop";
-        hide-active-window: true;
+        fallback-icon: "wayland";
     }
-    window-format: "{t}";
+    window-format: "{t}\n{c}";
 }
 @theme "~/.config/rofi/style/theme.rasi"
