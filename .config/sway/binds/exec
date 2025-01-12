@@ -7,7 +7,7 @@ bindsym {
     $mod+Shift+W        exec firefox --private-window
     $mod+E              exec nautilus -w
     $mod+Shift+E        exec $sc/exec_with class org.gnome.Nautilus "nautilus -w" "floating enable, resize set width 800 height 600"
-    $mod+Space          exec killall wofi || wofi --show drun
+    $mod+Space          exec killall rofi || rofi -show drun
     $mod+Shift+Semicolon exec killall rofi || ~/.config/rofi/applets/power/run.sh
     $mod+Semicolon      exec swaylock
     $mod+Period         exec swaync-client --close-latest
