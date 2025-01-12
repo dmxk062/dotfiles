@@ -84,10 +84,11 @@ window {
     background-color: transparent;
     border-radius: $radius;
     margin: 8px;
+    padding: 6px;
 
     .image {
         border-radius: $radius;
-        margin-right: .6rem;
+        margin-right: .9rem;
         color: $fg0;
     }
     .app-icon {
@@ -112,6 +113,7 @@ window {
     }
 
     progressbar {
+        margin-top: 0.5rem;
         margin-left: 1rem;
         margin-right: 1rem;
         
