@@ -3,11 +3,12 @@
 * {
     font-family: "Torus Pro", "Torus", "Cantarell";
     font-weight: 600;
+    margin: unset;
     font-size: 14px;
 }
 
 button {
-    min-height: 1rem;
+    min-height: 1rem
 }
 
 $trans: background-color 0.3s ease, color 0.3s ease;
@@ -16,12 +17,12 @@ $popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
 
 window {
     decoration {
-        // box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
         background-clip: padding-box;
         border-radius: $radius;
-
     }
 }
+
 .close-button {
     all: unset;
     background: $bg2;
@@ -31,7 +32,7 @@ window {
     min-width: 24px;
     min-height: 24px;
     transition: $trans;
-    margin-right: 1.2rem;
+    margin-right: 1rem;
     margin-top: 1.2rem;
 
     &:hover {
@@ -44,7 +45,7 @@ window {
 
 .notification {
     border: unset;
-    margin: .8rem;
+    margin: .6rem;
     box-shadow: $popup_shadow;
     border-radius: $radius;
     transition: $trans;
@@ -226,6 +227,7 @@ window {
 }
 .notification-group-buttons > button {
     min-height: 1.5rem;
+    min-width: 2rem;
     background-color: $bg2;
     color: $fg0;
     transition: $trans;
@@ -246,40 +248,6 @@ window {
 .activatable {
     &:focus {
         background-color: rgba($accent, 0.2);
-    }
-}
-
-
-.widget-mpris {
-    .widget-mpris-player {
-        padding: .5rem;
-        padding: 1rem;
-        margin: 1rem 1.5rem;
-        background-color: rgba($bg0, 0.7);
-        border-radius: $radius;
-        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
-    }
-    .widget-mpris-album-art {
-        box-shadow: unset;
-        border: 2px $bg2;
-    }
-
-    button {
-        color: $fg0;
-        &:hover {
-            background-color: #{rgba($bg0, 0.6)};
-        }
-        &:disabled {
-            color: $fg2;
-        }
-    }
-
-    .widget-mpris-title {
-        font-weight: bold;
-        font-size: 1.5rem;
-    }
-    .widget-mpris-subtitle {
-        font-size: 1.1rem;
     }
 }
 
