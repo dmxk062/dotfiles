@@ -64,15 +64,5 @@
             "expand-button-label": "󰞙",
             "collapse-button-label": "󰞖"
         }
-    },
-    "scripts": {
-        "urgent-sound": {
-            "urgency": "Critical",
-            "exec": "sh -c 'paplay ~/.config/swaync/sounds/alert.ogg'"
-        },
-        "incoming-call": {
-            "body": "Incoming call",
-            "exec": "sh -c 'paplay ~/.config/swaync/sounds/phone-incoming.ogg'"
-        }
     }
 }
