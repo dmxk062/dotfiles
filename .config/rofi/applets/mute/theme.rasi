@@ -6,44 +6,35 @@ window {
     anchor: center;
     background-color: @bg0;
     children: [mainbox];
-    width: 24em;
-    height: 32em;
+    width: 36em;
+    height: 23em;
 }
 
 mainbox {
     spacing: 10px;
-    padding: 10px;
-    border-radius: 18px;
-    children: [listbox, inputbar];
+    children: [top-box, listbox];
     background-color: @bg0;
-    orientation: vertical;
+    orientation: horizontal;
 }
-listbox{
-    children: [listview];
+listbox {
+    children: [listview, entry];
     expand: true;
     background-color: transparent;
 }
-rightbox {
-    children: [mode-switcher, imagebox];
-    expand: true;
+mode-switcher {
     background-color: transparent;
+    background-color: @bg0;
     border-radius: 12px;
 }
 button {
-    background-color: @bg2;
-    border-radius: 12px;
+    background-color: @bg0;
+    border-radius: 18px;
     padding: 0.5em 0.9em 0.5em 0.6em;
     text-color: @fg0;
     width: 5em;
 }
-button selected{
-    background-color: @accent;
-    text-color: @invert;
-}
-imagebox{
-    border-radius: 12px;
-    background-color: @bg2;
-    background-image: url("~/.config/background/wall", height);
+button selected {
+    background-color: @bg1;
 }
 
 listview {
@@ -52,55 +43,62 @@ listview {
     background-color: transparent;
     dynamic: true;
     expand: true;
-    cycle: true;
+    columns: 1;
 }
 
-element{
+element {
     padding: 8px;
-    border-radius: 12px;
+    border-radius: 14px;
     background-color: @bg0;
     color: @fg0;
     text-color: @fg0;
-    children: [element-icon, element-text];
-    orientation: horizontal;
     highlight: bold underline;
 }
-
-element normal.active, element alternate.active, element selected.active {
-    text-color: @bg3;
-}
-
-element selected.active {
-    background-color: @bg3;
+element selected.normal, element selected.active {
+    background-color: @bg1;
     color: @fg0;
-}
-element selected.normal {
-    background-color: @accent;
-    color: @invert;
-    text-color: @invert;
+    text-color: @fg0;
     highlight: bold underline;
 }
-
-
+element normal.active, element alternate.active {
+    text-color: @fg3;
+}
+element selected.active {
+    text-color: @fg3;
+}
 element-text, element-icon {
     background-color: inherit;
-    text-color:       inherit;
+    text-color: inherit;
 }
 element-icon {
     size: 2em;
     padding: 0em 0.5em 0em 0em;
 }
-inputbar {
-    color: @fg0;
-    padding: 12px;
-    background-color: inherit;
-    border-color: @accent;
-    children:   [entry];
+
+element-text {
+    padding: 0 0 0 1em;
 }
 entry {
-    background-color:            @bg0;
-    text-color:                  inherit;
-    cursor:                      text;
-    placeholder:                 "Mute Applications...";
-    placeholder-color:           @bg3;
+    expand: false;
+    background-color: @bg1;
+    text-color: @fg0;
+    cursor: text;
+    placeholder: "mute";
+    placeholder-color: @fg3;
+    padding: 12px;
+    margin: 24px;
+    border-radius: 12px;
 } 
+
+top-box {
+    padding: 12px;
+    border-radius: 12px;
+    background-color: @bg0;
+    children: [imagebox];
+}
+
+imagebox {
+    background-image: url("~/.config/background/wall", height);
+    background-color: @bg0;
+    border-radius: 12px;
+}
