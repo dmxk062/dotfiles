@@ -28,7 +28,7 @@ function list_devices {
         [[ "$trusted" == "yes" ]]&&trusted=true||trusted=false
         [[ "$blocked" == "yes" ]]&&blocked=true||blocked=false
 
-        if [[ -z "$battery" && "$connected" == false ]]; then
+        if [[ -z "$battery" || "$connected" == false ]]; then
             battery=null
         fi
 
