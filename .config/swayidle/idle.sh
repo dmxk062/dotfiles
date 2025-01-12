@@ -1,26 +1,24 @@
 #!/usr/bin/env bash
-LOCK_CMD="swaylock --grace=6 --fade-in=5 --grace-no-mouse"
-LOCK_PRE_SUSPEND_CMD="swaylock"
+LOCK_CMD="swaylock"
 SLEEP_CMD="systemctl suspend"
-# ICON="preferences-desktop-screensaver"
 ICON="system-lock-screen"
 PIDFILE=/tmp/.swayidle_timeout_pid
 
 
 function notify_loop() {
     echo $BASHPID > $PIDFILE
-    i=30
+    i=20
     id=$(notify-send "Power Management" \
                 -a "swayidle" \
                 --print-id \
                 -i "$ICON" \
                 --transient \
-                -t 3100 \
-                --hint=int:value:$((i*100 / 30 )) \
-                "Locking the session in 30 seconds")
-    sleep 3
-    while ((i >= 3)); do
-        ((i-=3))
+                -t 1100 \
+                --hint=int:value:$((i*100 / 20 )) \
+                "Locking the session in 20 seconds")
+    sleep 1
+    while ((i >= 1)); do
+        ((i-=1))
         if [[ $i == 0 ]]; then
             msg="Locking the session now"
         else
@@ -31,10 +29,10 @@ function notify_loop() {
                     -r $id \
                     -i "$ICON" \
                     --transient \
-                    -t 3100 \
-                    --hint=int:value:$((i*100 / 30 )) \
+                    -t 1100 \
+                    --hint=int:value:$((i*100 / 20 )) \
                     "$msg"
-        ((i>=0))&&sleep 3
+        ((i>=0))&&sleep 1
     done
     rm $PIDFILE
 }
