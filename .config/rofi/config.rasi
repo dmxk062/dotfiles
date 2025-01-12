@@ -8,18 +8,18 @@ configuration {
     cycle: false;
     scroll-method: 1;
     window-thumbnail: true;
-    steal-focus:false;
+    steal-focus: false;
     drun-use-desktop-cache: true;
     drun-reload-desktop-cache: true;
     kb-mode-next: "Tab";
     kb-element-next: "";
-    kb-row-down:"Down,Alt+j";
-    kb-row-up:"Up,Alt+k";
+    kb-row-down: "Down,Alt+j";
+    kb-row-up: "Up,Alt+k";
     line-margin: 10;
     modes: [drun, emoji, window];
-    display-drun:   "Run";
-    display-window: "Win";
-    display-emoji: "Emoji";
+    display-drun: "run";
+    display-window: "win";
+    display-emoji: "emoji";
     window {
         fallback-icon: "desktop";
         hide-active-window: true;
