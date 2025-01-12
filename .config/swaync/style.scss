@@ -236,10 +236,12 @@ window {
 }
 .notification-group-collapse-button {
     &:hover {
-        background-color: $bg3;
+        background-color: $lblue;
+        color: $inv;
     }
 }
 .notification-group-close-all-button {
+    margin-right: 1rem;
     &:hover {
         background-color: unset;
         background-color: $red;
