@@ -30,7 +30,7 @@
     (revealer :reveal {mpris.has_player} :transition "slidedown"
     (box :space-evenly false :class "section"
         (box :orientation "vertical" :space-evenly false :valign "center"
-            (image :path {mpris.art} :image-width 96 :image-height 96 :style "margin: .8rem;"))
+            (image :path {matches(mpris.title, "^Netflix") ? "assets/netflix.svg" : mpris.art} :image-width 96 :image-height 96 :style "margin: .8rem;"))
         (box :orientation "vertical" :space-evenly false :hexpand true
             (box :orientation "vertical" :space-evenly false 
                 :tooltip "${mpris.artist}${mpris.album != "" ? ", ${mpris.album}" : ""} - ${mpris.title}"
