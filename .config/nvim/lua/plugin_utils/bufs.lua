@@ -37,6 +37,8 @@ function M.format_buf_name(buf, short)
         return "[qf]"
     elseif ft == "help" then
         return ":h " .. vim.fn.fnamemodify(name, ":t"):gsub("%.txt$", "")
+    elseif ft == "undotree" then
+        return "[undo]"
     elseif ft == "fugitive" then
         return "[git]"
     end

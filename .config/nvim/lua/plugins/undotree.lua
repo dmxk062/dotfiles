@@ -20,6 +20,18 @@ M.config = function()
 
     _Undotree_on_win_enter = function()
         vim.wo[0][0].cursorlineopt = "both"
+        local buf = vim.api.nvim_get_current_buf()
+
+        -- nicer to switch to
+        vim.bo[buf].buflisted = true
+
+        local map = utils.local_mapper(buf)
+
+        map("n", "K", "<plug>UndotreeNextState")
+        map("n", "J", "<plug>UndotreePreviousState")
+
+        map("n", "<C-k>", "<plug>UndotreeNextSavedState")
+        map("n", "<C-j>", "<plug>UndotreePreviousSavedState")
     end
 
     -- HACK: I couldnt figure out how to get a funcref from a v:lua call
