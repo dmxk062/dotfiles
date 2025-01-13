@@ -2,7 +2,7 @@
 set $mod Mod4
 set $term kitty
 # scripts
-set $sc ~/.config/sway/scripts/
+set $sc ~/.config/sway/scripts
 set $mainS DP-1
 set $leftS DP-3
 set $eww ~/.config/sway/eww

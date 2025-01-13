@@ -37,10 +37,14 @@
                     :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
                     {perf-revealed ? "" : "" })))))
 
-(defpoll service-blueman :run-while perf-revealed :interval "20m" "pgrep blueman-applet >/dev/null && echo true || echo false")
-(defpoll service-networkmanager :run-while perf-revealed :interval "20m" "pgrep nm-applet >/dev/null && echo true || echo false")
-(defpoll service-vesktop :run-while perf-revealed :interval "20m" "pgrep vesktop >/dev/null && echo true || echo false")
-(defpoll service-fcitx5 :run-while perf-revealed :interval "20m" "pgrep fcitx5 >/dev/null && echo true || echo false")
+(defpoll service-blueman :run-while perf-revealed :interval "20m"
+    "pgrep blueman-applet >/dev/null && echo true || echo false")
+(defpoll service-networkmanager :run-while perf-revealed :interval "20m"
+    "pgrep nm-applet >/dev/null && echo true || echo false")
+(defpoll service-fcitx5 :run-while perf-revealed :interval "20m"
+    "pgrep fcitx5 >/dev/null && echo true || echo false")
+(defpoll service-autotile :run-while perf-revealed :interval "20m"
+    `pgrep -f 'python.*layout.py' -d " "`)
 
 (defwidget tray-processes []
     (box :space-evenly false :orientation "vertical"
@@ -55,6 +59,7 @@
             (button :class "cbutton ${service-fcitx5 ? "active" : ""}"
                 :onclick "killall fcitx5 && ${EWW_CMD} update service-fcitx5=false || { ${EWW_CMD} update service-fcitx5=true; fcitx5& }"
                 "${service-fcitx5 ? "" : ""}   fcitx5 IME")
-            (button :class "cbutton ${service-vesktop ? "active" : ""}"
-                :onclick "killall vesktop && ${EWW_CMD} update service-vesktop=false || { ${EWW_CMD} update service-vesktop=true; vesktop --start-minimized& }"
-                "${service-vesktop ? "" : ""}   Vesktop"))))
+            (button :class "cbutton ${service-autotile != "" ? "active" : ""}"
+                :timeout "128s"
+                :onclick `kill ${service-autotile} && ${EWW_CMD} update service-autotile="" || { ~/.config/sway/scripts/layout.py& ${EWW_CMD} update service-autotile=$!; }`
+                {service-autotile != "" ? "󰙀    Autotiling" : "󰆾    Manual Tiling"}))))
