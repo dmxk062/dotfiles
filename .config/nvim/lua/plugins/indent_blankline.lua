@@ -23,13 +23,13 @@ M.config = function()
                     },
                 }
             }
+        },
+        exclude = {
+            filetypes = {
+                "undotree",
+            }
         }
     }
-
-    ---@Hack, should be replaced by a better solution at some point
-    -- for i=1, 5 do
-    --     vim.api.nvim_set_hl(0, "@ibl.scope.underline." .. tostring(i), {link = "TreesitterContext"})
-    -- end
 end
 
 return M
