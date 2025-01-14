@@ -1,7 +1,0 @@
-(defwidget desktop-clock []
-    (box :space-evenly false :halign "center" :valign "center"
-        (box :class "desktop-clock" 
-            (label :text {formattime(EWW_TIME, "%H:%M")})
-        )
-    )
-)

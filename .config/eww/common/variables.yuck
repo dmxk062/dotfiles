@@ -1,2 +1,0 @@
-(defvar icon_theme "/usr/share/icons/Tela")
-(defvar icon_size '[64, 64]')

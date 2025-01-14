@@ -1,7 +1,0 @@
-(defvar overview false)
-
-(defwidget overview_button []
-    (button :class "sbutton${overview ? "-active" : ""}" :timeout "128s"
-    :onclick "sleep 0.1; ~/.config/hypr/plugins/overview.sh"
-    "")
-)
