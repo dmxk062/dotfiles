@@ -14,8 +14,8 @@ bindsym $mod+Shift+J move down
 bindsym $mod+Shift+K move up
 bindsym $mod+Shift+L move right
 
-bindsym $mod+S splith
-bindsym $mod+V splitv
+bindsym $mod+S splitv
+bindsym $mod+V splith
 
 bindsym $mod+F fullscreen
 
