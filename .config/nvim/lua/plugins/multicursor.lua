@@ -15,6 +15,7 @@ function M.config(_, opts)
     map("n", "<esc>", function()
         if mc.hasCursors() then
             mc.clearCursors()
+            vim.api.nvim_exec_autocmds("ModeChanged", {})
         end
 
         if vim.snippet.active() then

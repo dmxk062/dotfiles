@@ -61,10 +61,13 @@ local mode_to_name = {
 }
 
 local function update_mode()
+    local has_multicursor = require("multicursor-nvim").hasCursors()
     local mode = api.nvim_get_mode().mode
     local short = mode:sub(1, 1)
     local hl = mode_to_hl_group[short]
-    return left_sep(hl) .. "%#Status" .. hl .. "#" .. padd(mode_to_name[mode] or short, 3) .. right_sep(hl)
+    return left_sep(hl) .. "%#Status" .. hl .. "#" 
+        .. padd((has_multicursor and "C-" or "") .. (mode_to_name[mode] or short), 3)
+        .. right_sep(hl)
 end
 
 
