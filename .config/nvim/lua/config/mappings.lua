@@ -267,7 +267,7 @@ local operators = require("config.operators")
 -- evaluate lua and insert result in buffer
 operators.map_function("<space>el", function(mode, region, extra, get)
     local code = get()
-    if not code[#code]:match(".*return%s+%S+") then
+    if not code[#code]:match("^%s*return%s+%S+") then
         code[#code] = "return " .. code[#code]
     end
     local exprs = table.concat(code, "\n") .. "\n"
