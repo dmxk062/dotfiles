@@ -13,8 +13,7 @@ local M = {
     cmd = { "Telescope" },
     dependencies = {
         {
-            "nvim-telescope/telescope-fzf-native.nvim",
-            build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
+            "natecraddock/telescope-zf-native.nvim"
         },
     },
 }
@@ -219,12 +218,7 @@ M.opts.pickers = {
     help_tags = default_config_tbl,
 }
 M.opts.extensions = {
-    fzf = {
-        fuzzy = true,
-        override_generic_sorter = true,
-        override_file_sorter = true,
-        case_mode = "smart_case"
-    }
+    ["zf-native"] = { }
 }
 
 
@@ -232,7 +226,7 @@ M.config = function(_, opts)
     local telescope = require("telescope")
 
     telescope.setup(opts)
-    telescope.load_extension("fzf")
+    telescope.load_extension("zf-native")
 
     local maps = {
         diagnostics = "<space>Df",
