@@ -16,8 +16,3 @@
 <Multi_key> <ampersand> <7> : "⁊"
 
 <Multi_key> <ampersand> <ampersand> : "🙵" # fancy ampersand
-
-<Multi_key> <leftarrow> <quotedbl> : "„"
-<Multi_key> <rightarrow> <quotedbl> : "“"
-<Multi_key> <leftarrow> <quotedbl> : "‚"
-<Multi_key> <rightarrow> <quotedbl> : "‘"
