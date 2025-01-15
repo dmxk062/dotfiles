@@ -93,7 +93,7 @@ local function diagnostic(pos, lcount, opts)
     local target = on_prev and prev_diag or next_diag
 
     if target then
-        if type ~= nil then
+        if opts.type then
             local diagtype = target.severity
             if diagtype ~= opts.type then
                 return diagnostic({ target.end_lnum + 2, target.end_col + 2 }, lcount, opts)
