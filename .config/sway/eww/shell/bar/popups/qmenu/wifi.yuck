@@ -33,23 +33,23 @@
 
 (defwidget wifi-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
-        (box :space-evenly false :halign "center"
+        (box :space-evenly false
             (button 
                 :class "sbutton${wifi-searching ? " active" : ""}" 
                 :onclick "bin/wifi.sh upd&"
                 {wifi-searching ? "   Searching..." : "󰐷   Search"}))
-    (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true :space-evenly false
-        (for net in wifis
-            (box :hexpand true :space-evenly false :halign "center"
-                (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"
-                    (box :space-evenly false
-                        (box :hexpand true :halign "start" :valign "center" (wifi-icon :class "ticon large" :signal {net.signal} :security {net.security} :active true))
-                        (box :orientation "vertical" :style "margin-right: 1rem;"
-                            (label :class "title" :text {net.ssid} :limit-width 16)
-                            (label :class "text" :text {net.security} :limit-width 16)))
-                    (box :space-evenly false :halign "start"
-                        (button 
-                            :class "button${net.ssid == wifi.ssid ? " alert" : ""}" 
-                            :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; bin/wifi.sh upd"
-                            :timeout "128s"
-                            {net.ssid == wifi.ssid ? "󰤭    Disconnect" : "󰤨    Connect"})))))))))
+        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true :space-evenly false
+            (for net in wifis
+                (box :hexpand true :space-evenly false :halign "center"
+                    (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"
+                        (box :space-evenly false
+                            (box :hexpand true :halign "start" :valign "center" (wifi-icon :class "ticon large" :signal {net.signal} :security {net.security} :active true))
+                            (box :orientation "vertical" :style "margin-right: 1rem;"
+                                (label :class "title" :text {net.ssid} :limit-width 16)
+                                (label :class "text" :text {net.security} :limit-width 16)))
+                        (box :space-evenly false :halign "start"
+                            (button 
+                                :class "button${net.ssid == wifi.ssid ? " alert" : ""}" 
+                                :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; bin/wifi.sh upd"
+                                :timeout "128s"
+                                {net.ssid == wifi.ssid ? "󰤭    Disconnect" : "󰤨    Connect"})))))))))
