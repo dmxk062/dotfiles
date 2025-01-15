@@ -43,6 +43,7 @@
         :anchor "top right")
     :stacking "overlay"
     :exclusive true
+    :focusable "ondemand"
     (qmenu))
 
 (defwindow qmenu-edge

@@ -33,7 +33,7 @@
 
 (defwidget wifi-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
-        (box :space-evenly false
+        (box :space-evenly false :halign "center"
             (button 
                 :class "sbutton${wifi-searching ? " active" : ""}" 
                 :onclick "bin/wifi.sh upd&"
@@ -49,7 +49,7 @@
                             (label :class "text" :text {net.security} :limit-width 16)))
                     (box :space-evenly false :halign "start"
                         (button 
-                            :class "sbutton${net.ssid == wifi.ssid ? " alert" : ""}" 
+                            :class "button${net.ssid == wifi.ssid ? " alert" : ""}" 
                             :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; bin/wifi.sh upd"
                             :timeout "128s"
                             {net.ssid == wifi.ssid ? "󰤭    Disconnect" : "󰤨    Connect"})))))))))
