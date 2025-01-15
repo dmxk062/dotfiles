@@ -232,6 +232,13 @@ map(obj, "iDh", textobjs.diagnostic_hint)
 -- }}}
 
 -- additional textobjects {{{
+
+-- less annoying to type
+map(obj, "iq", [[i"]])
+map(obj, "aq", [[a"]])
+map(obj, "iQ", [[i']])
+map(obj, "aQ", [[a']])
+
 -- indents, very useful for e.g. python or other indent based languages
 -- a includes one line above and below,
 -- except for filetypes e.g. python where only the above line is included by default
@@ -253,7 +260,6 @@ map(obj, "a_", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 -- select the entire buffer
 map(obj, "gG", textobjs.entire_buffer)
 -- }}}
-
 
 -- operators {{{
 local operators = require("config.operators")
