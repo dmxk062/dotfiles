@@ -3,8 +3,8 @@
 (defvar wifi-connecting false)
 (defpoll wifis :run-while wifi-revealed :interval "8s" "./bin/wifi.sh list")
 
-(defwidget wifi-icon [signal security active ?text ?width]
-    (label :limit-width {width?:100} :text "${!active ? "󰤭" 
+(defwidget wifi-icon [signal security active ?text ?width ?class]
+    (label :class {class?: ""} :limit-width {width?:100} :text "${!active ? "󰤭"
             : (security != "" ? (signal > 80 ? "󱛎"
                 : (signal > 60 ? "󱛍"
                 : (signal > 40 ? "󱛌" 
@@ -43,14 +43,13 @@
             (box :hexpand true :space-evenly false :halign "center"
                 (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"
                     (box :space-evenly false
-                        (box :hexpand true :halign "start" (circular-progress :thickness 6 :value {net.signal} :class "wifi-circle"
-                            (wifi-icon :signal {net.signal} :security {net.security} :active true)))
+                        (box :hexpand true :halign "start" :valign "center" (wifi-icon :class "ticon large" :signal {net.signal} :security {net.security} :active true))
                         (box :orientation "vertical" :style "margin-right: 1rem;"
                             (label :class "title" :text {net.ssid} :limit-width 16)
                             (label :class "text" :text {net.security} :limit-width 16)))
-                    (box :space-evenly false :halign "end"
+                    (box :space-evenly false :halign "start"
                         (button 
                             :class "sbutton${net.ssid == wifi.ssid ? " alert" : ""}" 
                             :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; bin/wifi.sh upd"
                             :timeout "128s"
-                            {net.ssid == wifi.ssid ? "Disconnect" : "Connect"})))))))))
+                            {net.ssid == wifi.ssid ? "󰤭    Disconnect" : "󰤨    Connect"})))))))))

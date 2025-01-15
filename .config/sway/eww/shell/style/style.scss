@@ -209,6 +209,13 @@ tooltip{
     }
 }
 
+.ticon {
+    padding: 1.6rem 1.6rem 1.3rem 1.1rem;
+    &.large {
+        font-size: 2.4rem;
+    }
+}
+
 @import "./modes.scss";
 @import "./tray.scss";
 @import "./weather.scss";
