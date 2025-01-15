@@ -5,6 +5,19 @@
 <Multi_key> <dollar> <y> : "¥"
 <Multi_key> <dollar> <l> : "£"
 <Multi_key> <dollar> <r> : "₽"
+<Multi_key> <dollar> <h> : "₴"
+<Multi_key> <dollar> <d> : "₫"
+<Multi_key> <dollar> <i> : "₹"
+<Multi_key> <dollar> <w> : "₩"
 
-# punctuation
-<Multi_key> <ampersand> <t> : "⁊" # tironian et
+# punctuation 
+# tironian et
+<Multi_key> <ampersand> <t> : "⁊"
+<Multi_key> <ampersand> <7> : "⁊"
+
+<Multi_key> <ampersand> <ampersand> : "🙵" # fancy ampersand
+
+<Multi_key> <leftarrow> <quotedbl> : "„"
+<Multi_key> <rightarrow> <quotedbl> : "“"
+<Multi_key> <leftarrow> <quotedbl> : "‚"
+<Multi_key> <rightarrow> <quotedbl> : "‘"
