@@ -36,6 +36,8 @@ local mode_to_hl_group = {
     v      = "Visual",
     V      = "Visual",
     [""] = "Visual",
+    [""] = "Visual",
+    ["S"]  = "Visual",
     s      = "Visual",
     t      = "Normal",
     R      = "Replace",
@@ -55,6 +57,7 @@ local mode_to_name = {
     ["v"]    = "v",
     ["V"]    = "V",
     [""]   = "^V",
+    [""]   = "^S",
 
     ["R"]    = "r",
     ---@format enabled
