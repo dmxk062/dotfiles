@@ -3,5 +3,5 @@
 
 \e{lightmagenta}\U\e{reset} logged in
 IPv4: \e{green}\4\e{reset}, IPv6: \e{lightblue}\6\e{reset}
-TTY: \e{lightcyan}\l\e{reset}, log in at \e{lightcyan}tty1\e{reset} for a graphical session
+TTY: \e{cyan}\l\e{reset}, log in at \e{cyan}tty1\e{reset} for a graphical session
 
