@@ -180,18 +180,18 @@ end
 local theme = require("theme.colors")
 for i = 0, 10 do
     local bg = theme.blend(theme.colors.green, theme.colors.teal, (i / 10))
-    local fg = theme.palettes.dark.inverted
+    local fg = theme.palettes.default.inverted
     vim.api.nvim_set_hl(0, "StatusProgress" .. i, {
         bg = bg,
         fg = fg,
     })
     vim.api.nvim_set_hl(0, "StatusLInvProgress" .. i, {
         fg = bg,
-        bg = theme.palettes.dark.bg2,
+        bg = theme.palettes.default.bg2,
     })
     vim.api.nvim_set_hl(0, "StatusRInvProgress" .. i, {
         fg = bg,
-        bg = theme.palettes.dark.bg0,
+        bg = theme.palettes.default.bg0,
     })
 end
 

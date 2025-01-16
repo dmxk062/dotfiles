@@ -1,6 +1,6 @@
 local theme = require("theme.colors")
 local col = theme.colors
-local pal = theme.palettes.dark
+local pal = theme.palettes.default
 local blend = theme.blend
 
 local function add_with_prefix(to_append, prefix, table)

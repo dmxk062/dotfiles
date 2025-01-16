@@ -24,7 +24,7 @@ _G.Tabs_for_idx = {}
 
 local theme = require("theme.colors")
 local col = theme.colors
-local pal = theme.palettes.dark
+local pal = theme.palettes.default
 
 local hl = {
     inactive = { bg = pal.bg1, fg = pal.fg2 },

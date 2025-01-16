@@ -49,7 +49,8 @@ local dark_palette = {
 return {
     colors = named_colors,
     palettes = {
-        dark = dark_palette
+        dark = dark_palette,
+        default = dark_palette,
     },
     blend = blend,
 }
