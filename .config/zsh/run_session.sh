@@ -11,7 +11,6 @@ then
     else
         if command -v sway
         then
-            print -P "%F{green}Handing off control to sway now%f"
             XDG_CURRENT_DESKTOP=sway
             export XDG_CURRENT_DESKTOP
             exec dbus-run-session sway
@@ -21,6 +20,5 @@ then
         fi
     fi
 else 
-    print -P "You logged in at %B${TTY}%b\nTo get a graphical environment with sway, please log in at %B/dev/tty1%b (press %B<C-M-F1>%b to get there)\nDropping you to a shell (${SHELL}).\n\n"
     exec $SHELL
 fi
