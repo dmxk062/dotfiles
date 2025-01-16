@@ -46,10 +46,24 @@ local dark_palette = {
     inverted = named_colors.black,
 }
 
+local light_palette = {
+    bg0 = named_colors.white,
+    bg1 = named_colors.darker_white,
+    bg2 = named_colors.darkest_white,
+    bg3 = blend(named_colors.bright_gray, named_colors.darkest_white, 0.2),
+
+    fg0 = named_colors.black,
+    fg1 = named_colors.dark_gray,
+    fg2 = named_colors.bright_gray,
+
+    inverted = named_colors.black,
+}
+
 return {
     colors = named_colors,
     palettes = {
         dark = dark_palette,
+        light = light_palette,
         default = dark_palette,
     },
     blend = blend,
