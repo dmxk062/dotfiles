@@ -241,6 +241,8 @@ M.opts = {
 
     keymaps = {
         ["!"]         = function() open_cmd("!") end,
+        ["cm"]        = function() open_cmd("!chmod ") end,
+        ["co"]        = function() open_cmd("!chown ") end,
         ["<C-space>"] = "actions.refresh",
         ["<CR>"]      = "actions.select",
         ["<S-CR>"]    = "actions.select_tab",
@@ -269,7 +271,6 @@ M.opts = {
 
         -- toggle hidden
         ["gh"]        = "actions.toggle_hidden",
-        ["gH"]        = "actions.toggle_hidden",
         ["g<space>"]  = open_cd,
 
         ["gf"]        = filter_items,
