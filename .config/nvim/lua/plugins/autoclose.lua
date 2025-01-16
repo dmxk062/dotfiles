@@ -7,10 +7,13 @@ return {
                 ["("]   = { escape = false, close = true, pair = "()" },
                 ["["]   = { escape = false, close = true, pair = "[]" },
                 ["{"]   = { escape = false, close = true, pair = "{}" },
+                ["<"]   = { escape = false, close = true, pair = "<>" },
 
                 [")"]   = { escape = true, close = false, pair = "()" },
                 ["]"]   = { escape = true, close = false, pair = "[]" },
                 ["}"]   = { escape = true, close = false, pair = "{}" },
+                [">"]   = { escape = true, close = false, pair = "<>" },
+
                 ['"']   = { escape = true, close = true, pair = '""' },
                 -- don't mess up my apostrophes
                 ["'"]   = { escape = true, close = true, pair = "''", disabled_filetypes = { "text", "markdown" } },
