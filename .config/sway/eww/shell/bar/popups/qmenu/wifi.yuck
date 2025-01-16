@@ -17,15 +17,17 @@
 (defwidget wifi-toggle-button []
     (box :class "dual-cbutton${(wifi?.powered?:false) ? " active" : ""}" :space-evenly false
         (button :hexpand true 
-            :onclick "nmcli radio wifi ${wifi.powered ? "off" : "on"}"
+            :onclick {rfkill.wlan ? "rfkill unblock wlan" 
+                : "nmcli radio wifi ${wifi.powered ? "off" : "on"}"}
             :onrightclick "${EWW_CMD} update wifi-revealed=${!wifi-revealed}" 
+            :onmiddleclick "rfkill block wlan"
             :timeout "16s"
             (box :halign "center" (box :space-evenly false
                 (wifi-icon 
                     :active {(wifi?.powered?:false) && (wifi?.connected?:false)} 
                     :signal {wifi?.signal?:0} 
                     :security {wifi?.security?:""}
-                    :text "   ${(wifi.powered && wifi.connected)? wifi.ssid : "WiFi"}"
+                    :text "   ${rfkill.wlan ? "Blocked" : ((wifi.powered && wifi.connected)? wifi.ssid : "WiFi")}"
                     :width 12))))
         (button 
             :onclick "${EWW_CMD} update wifi-revealed=${!wifi-revealed}" 
