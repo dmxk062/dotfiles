@@ -3,7 +3,6 @@
 * {
     font-family: "Torus Pro", "Torus", "Cantarell";
     font-weight: 600;
-    margin: unset;
     font-size: 14px;
 }
 
@@ -60,9 +59,6 @@ window {
 .notification.critical {
     border-left: 2px solid $red;
 }
-.notification.low {
-    border-left: 2px solid $bg3;
-}
 
 .notification-default-action {
     all: unset;
@@ -75,8 +71,6 @@ window {
     &:not(:only-child) {
         border-radius: $radius $radius 0 0;
     }
-
-
 }
 
 .notification-content {
@@ -109,7 +103,6 @@ window {
     }
     .body {
         color: $fg0;
-
     }
 
     progressbar {
@@ -172,7 +165,6 @@ window {
 .notification-action {
     all: unset;
     transition: $trans;
-    margin: 0;
     background-color: transparent;
     padding: 1rem;
     background-color: $bg0;
@@ -190,7 +182,6 @@ window {
         background-color: $bg2;
     }
     color: $fg0;
-
 }
 
 .control-center {
@@ -214,8 +205,10 @@ window {
 .notification-row {
     background-color: unset;
 }
+
 .notification-group {
 }
+
 .notification-group-headers {
     margin: 0 1.2rem;
     .notification-group-icon {
@@ -227,6 +220,7 @@ window {
         background-color: $bg0;
     }
 }
+
 .notification-group-buttons > button {
     min-height: 1.5rem;
     min-width: 2rem;
@@ -234,12 +228,14 @@ window {
     color: $fg0;
     transition: $trans;
 }
+
 .notification-group-collapse-button {
     &:hover {
         background-color: $lblue;
         color: $inv;
     }
 }
+
 .notification-group-close-all-button {
     margin-right: 1rem;
     &:hover {
