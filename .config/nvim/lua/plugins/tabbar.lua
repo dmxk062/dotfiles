@@ -126,6 +126,12 @@ M.config = function()
     require("tabline_framework").setup {
         render = render_tabline
     }
+
+    vim.api.nvim_create_autocmd("TermRequest", {
+        callback = function(ev)
+            vim.api.nvim__redraw { tabline = true }
+        end
+    })
 end
 
 return M

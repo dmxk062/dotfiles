@@ -246,7 +246,7 @@ api.nvim_create_autocmd({ "ModeChanged" }, {
     end
 })
 
-api.nvim_create_autocmd({ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", "FileChangedRO" }, {
+api.nvim_create_autocmd({ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", "FileChangedRO", "TermRequest" }, {
     group = augroup,
     callback = vim.schedule_wrap(function()
         sections[indices.title] = update_title()

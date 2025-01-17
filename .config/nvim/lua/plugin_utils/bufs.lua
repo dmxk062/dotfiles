@@ -12,7 +12,7 @@ end
 function M.format_buf_name(buf, short)
     local term_title = vim.b[buf].term_title
     if term_title then
-        return term_title
+        return "!" .. term_title
     end
 
     local name = api.nvim_buf_get_name(buf)
