@@ -153,6 +153,7 @@ map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" 
 
 -- exit terminal mode with a single chord instead of 2
 map("t", "<C-Esc>", "<C-\\><C-n>")
+map("t", "<C-w>", "<C-\\><C-n><C-w>")
 -- }}}
 
 -- q to close windows {{{

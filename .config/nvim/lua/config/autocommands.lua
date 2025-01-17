@@ -114,8 +114,18 @@ autocmd("VimResized", {
     end
 })
 
+-- highlight yanked text
 autocmd("TextYankPost", {
     callback = function(ev)
         vim.highlight.on_yank { timeout = 120, higroup = "Yanked" }
+    end
+})
+
+-- treat terminal buffers as terminals by default
+autocmd("WinEnter", {
+    callback = function(ev)
+        if vim.bo[ev.buf].buftype == "terminal" then
+            vim.cmd.startinsert()
+        end
     end
 })

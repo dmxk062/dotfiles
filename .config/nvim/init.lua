@@ -145,7 +145,7 @@ require("lazy").setup("plugins", {
 })
 
 -- set various useful autocommands
-require("modules.autocommands")
+require("config.autocommands")
 
 -- set all the mappings
 require("config.mappings")
