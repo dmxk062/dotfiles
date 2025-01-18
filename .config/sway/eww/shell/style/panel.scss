@@ -17,3 +17,9 @@
         font-size: 1.6rem;
     }
 }
+
+.right-panel {
+    @extend .popup-win;
+    margin-top: 2rem;
+    border-radius: 18px;
+}

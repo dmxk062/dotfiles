@@ -59,21 +59,20 @@
         ; comfortably fits 3 devices without scrolling
         (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
             (for dev in bt-devices 
-                (box :hexpand true :space-evenly false :halign "center"
-                    (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"
-                        (box :space-evenly false
-                            (box :hexpand true :halign "start"
-                                (themed-icon :name {dev.icon?:"bluetooth"} :width 48 :height 48)
-                                (circular-progress :visible {(dev.battery?:-1) > 0} :thickness 6 :value {dev.battery?:0}
-                                    :class "battery-circle-${dev.battery < 20 ? "critical" 
-                                    : (dev.battery < 40 ? "low" 
-                                    : (dev.battery < 80 ? "medium" : "high"))}"
-                                    (label :text "${bt-battery-icons[(dev.battery - dev.battery % 10) / 10]}"))
-                                )
-                            (box :orientation "vertical" :style "margin-right: 1rem;"
-                                (label :class "title" :text "${dev.alias}" :limit-width 16)
-                                (label :class "text" :text "${dev.mac}"))
-                        )
+                (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"
+                    (box :space-evenly false
+                        (box :hexpand true :halign "start"
+                            (themed-icon :name {dev.icon?:"bluetooth"} :width 48 :height 48)
+                            (circular-progress :visible {(dev.battery?:-1) > 0} :thickness 6 :value {dev.battery?:0}
+                                :class "battery-circle-${dev.battery < 20 ? "critical" 
+                                : (dev.battery < 40 ? "low" 
+                                : (dev.battery < 80 ? "medium" : "high"))}"
+                                (label :text "${bt-battery-icons[(dev.battery - dev.battery % 10) / 10]}"))
+                            )
+                        (box :orientation "vertical" :style "margin-right: 1rem;"
+                            (label :class "title" :text "${dev.alias}" :limit-width 16)
+                            (label :class "text" :text "${dev.mac}")))
+
                         (box :space-evenly false :hexpand true
                             (box :hexpand true :space-evenly false (button :class "button ${dev.connected ? "alert" : ""}"
                                 :onclick "bluetoothctl ${dev.connected ? "disconnect" : "connect"} ${dev.mac}&& ${bt-sync}"
@@ -91,4 +90,4 @@
                             (button :tooltip "Remove" :class "button alert" 
                                 :onclick "bluetoothctl remove ${dev.mac}; ${bt-sync}"
                                 :timeout "16s"
-                                "󰩹")))))))))
+                                "󰩹"))))))))

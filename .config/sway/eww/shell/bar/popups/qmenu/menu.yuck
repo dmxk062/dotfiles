@@ -17,7 +17,7 @@
     (revealer 
         :reveal {settings-panel-shown}
         :transition "slideleft"
-        (box (box :class "popup-win" 
+        (box (box :class "right-panel" 
             :orientation "h" 
             :space-evenly false
             (box :orientation "v" :space-evenly false
@@ -39,7 +39,7 @@
     :monitor 0
     :geometry (geometry 
         :x 0
-        :y -50
+        :y -20
         :width 0
         :height 0
         :anchor "top right")
