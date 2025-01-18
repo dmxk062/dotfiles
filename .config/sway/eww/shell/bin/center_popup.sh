@@ -12,7 +12,7 @@ if [[ -f "$PIDFILE" ]]; then
     kill "$(< $PIDFILE)"
     rm "$PIDFILE"
 else
-    eww -c "$EWW" open center-popup
+    eww -c "$EWW" open center-popup --screen "$(swaymsg -t get_outputs |jq -r '.[]|select(.focused).name')"
 fi
 echo $$ > "$PIDFILE"
 sleep 1
