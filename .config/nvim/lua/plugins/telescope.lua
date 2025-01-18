@@ -58,6 +58,10 @@ local function create_layout(picker)
             local factor = 0.5
             local fhalf = math.floor(width * (factor))
             local shalf = math.floor(width * (1 - factor))
+
+            if (fhalf + shalf) ~= width then
+                fhalf = fhalf + 1
+            end
             local height = vim.o.lines
             local height_override = self.picker.layout_config.height
             local view_height
