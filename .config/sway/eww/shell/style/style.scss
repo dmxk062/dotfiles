@@ -248,6 +248,13 @@ tooltip{
     }
 }
 
+.bordered {
+    padding: .2rem;
+    margin: .5rem 1rem;
+    border: 2px solid $bg3;
+    border-radius: 12px;
+}
+
 @import "./modes.scss";
 @import "./tray.scss";
 @import "./weather.scss";

@@ -2,9 +2,11 @@
 
 (defvar audio-out-revealed false)
 (defpoll audio-sinks :interval "16s" :run-while audio-out-revealed "./bin/audio_list.sh sinks")
+(defpoll audio-streams :interval "2s" :run-while audio-out-revealed "bin/audio_players.sh")
 
 (defvar audio-in-revealed false)
 (defpoll audio-sources :interval "16s" :run-while audio-in-revealed "./bin/audio_list.sh sources")
+
 
 (defwidget audio-device-selector [devices type] 
     (box :space-evenly false :orientation "v"
@@ -37,7 +39,23 @@
                 {audio-out-revealed ? "" : ""}))
 
         (revealer :reveal audio-out-revealed :transition "slidedown" 
-            (audio-device-selector :devices {audio-sinks} :type "sink"))
+            (box :orientation "v" :space-evenly false
+                (box :orientation "v" (for stream in audio-streams 
+                    (box :space-evenly false :orientation "v" :class "bordered"
+                        (box :space-evenly false
+                            (box :halign "start" :hexpand true :space-evenly false (label :style "margin-left: 1rem;" :class "text" 
+                                :text {stream.name} :limit-width 26 :tooltip {stream.name}))
+                            (themed-icon :name {stream.icon}))
+                        (box :space-evenly false :halign "center"
+                            (button :class "sbutton ${!stream.mute ? "active" : ""}"
+                                :onclick `pactl set-sink-input-mute ${stream.id} toggle; ${EWW_CMD} update audio-streams="$(bin/audio_players.sh)"`
+                                "${stream.mute ? "󰸈" : (stream.volume > 70 ? "󰕾" 
+                                    : (stream.volume > 30 ? "󰖀" : "󰕿"))}    ${stream.volume}%")
+                            (scale :hexpand true :class "slider" :value {stream.volume}
+                                :onchange "pactl set-sink-input-volume ${stream.id} {}%")))))
+
+                (audio-device-selector :devices {audio-sinks} :type "sink")))
+
         (box :space-evenly false 
             (button  :style "min-width: 3.8rem;"
                 :class "sbutton ${!audio.in.mute ? "active" : ""}"
