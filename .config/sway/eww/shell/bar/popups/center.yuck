@@ -1,0 +1,50 @@
+(defvar center-popup-reveal false)
+(defvar center-popup-layer 0)
+
+(defvar audio-popup-kind "out")
+
+(defvar audio-icons '{
+"out": {
+"headset": "audio-headset",
+"audio-headset": "audio-headset",
+"audio-headset-bluetooth": "audio-headphones",
+"audio-card-analog-pci": "audio-card",
+"audio-headset-analog-usb": "audio-headset",
+"speaker": "audio-speakers",
+"microphone": "audio-input-microphone"
+},
+"in": {
+"headset": "audio-headset",
+"audio-headset": "audio-headset",
+"audio-headset-bluetooth": "audio-headphones",
+"audio-card-analog-pci": "audio-card",
+"audio-headset-analog-usb": "audio-headset",
+"speaker": "audio-input-microphone",
+"microphone": "audio-input-microphone"
+}
+}')
+
+(defwidget center-popup-content [] (revealer :reveal center-popup-reveal :transition "slidedown"
+    (box (box :class "center-popup-box" :space-evenly false
+        (themed-icon 
+            :width 48 :height 48
+            :name {audio-icons[audio-popup-kind][audio[audio-popup-kind].icon]})
+        
+            (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
+                (box :halign "start" :hexpand true :space-evenly false (label :class "text" 
+                    :style "font-size: 1.2rem; font-weight: bold;"
+                    :text "Audio ${audio-popup-kind == "out" ? "Output" : "Input"}: ${audio[audio-popup-kind].vol}%"))
+                (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+                    :text "${audio[audio-popup-kind].name}${audio[audio-popup-kind].mute ? " - muted" : ""}" :limit-width 28))
+            (scale :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}" :value {audio[audio-popup-kind].vol} :hexpand true))))))
+
+(defwindow center-popup 
+    :monitor 0
+    :geometry (geometry
+        :x 0
+        :width "16%"
+        :y -50
+        :anchor "top center")
+    :stacking "overlay"
+    :exclusive false
+    (center-popup-content))

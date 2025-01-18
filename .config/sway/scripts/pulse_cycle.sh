@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-POPUP_ID=1766
-ID_FILE="/run/user/1000/.popup"
-
 what="$1"
 cmd="$2"
 
@@ -33,27 +30,7 @@ done
 pactl set-default-"$what" "$dev"
 
 if [[ "$what" == "sink" ]]; then
-    icon="audio-headphones"
-    name="Output"
-    devname="$(pactl --format=json list sinks|jq --arg active "$dev" '.[]|select(.name == $active)|.properties."device.description"' -r)"
-    volume="$(pamixer --get-volume)"
+    ~/.config/sway/eww/shell/bin/center_popup.sh audio out
 else
-    icon="audio-input-microphone"
-    name="Input"
-    devname="$(pactl --format=json list sources|jq --arg active "$dev" '.[]|select(.name == $active)|.properties."device.description"' -r)"
-    volume="$(pamixer --get-volume --default-source)"
-    muted="$(pamixer --get-mute --default-source)"
+    ~/.config/sway/eww/shell/bin/center_popup.sh audio in
 fi
-
-if [[ -f "$ID_FILE" ]]; then
-    read -r id <"$ID_FILE"
-    rm "$ID_FILE"
-fi
-
-id=${id:-$POPUP_ID}
-display_volume="$volume"
-if [[ "$muted" == "true" ]]; then
-    volume="0"
-fi
-notify-send -r "$id" --transient --print-id -t 1000 \
-    "Audio $name: $display_volume%" "$devname" -i "$icon" --hint=int:value:"$volume" > "$ID_FILE"

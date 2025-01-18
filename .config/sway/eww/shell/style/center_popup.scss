@@ -1,0 +1,28 @@
+.center-popup-box {
+    @extend .popup-win;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.popup-slider {
+    trough {
+        all: unset;
+        min-height: .6rem;
+        border-radius: 12px;
+        background-color: $bg3;
+        min-width: 16rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        margin-right: 1rem;
+        highlight {
+            border-radius: 12px;
+            background-color: $accent;
+        }
+    }
+
+    &.muted {
+        trough highlight {
+            background-color: mix($fg2, $bg3, 20%);
+        }
+    }
+}

@@ -25,7 +25,7 @@ bindsym --locked Mod4+XF86MonBrightnessDown   exec $sc/bright_popup.sh lower 100
 # media players
 bindsym --locked XF86AudioPlay exec playerctl play-pause
 bindsym --locked Shift+XF86AudioNext exec playerctl next
-bindsym --locked Shift+XF86AudioPrev exec playerctl previous
+bindsym --locked Shift+XF86AudioPrev exec playerctl prev
 bindsym --locked Shift+XF86AudioPlay exec playerctld shift
 bindsym --locked XF86AudioNext exec playerctl position 5+
 bindsym --locked XF86AudioPrev exec playerctl position 5-

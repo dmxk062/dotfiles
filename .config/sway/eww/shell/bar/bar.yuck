@@ -1,3 +1,5 @@
+(include "./bar/popups/center.yuck")
+
 (include "./bar/popups/qmenu/menu.yuck")
 (include "./bar/workspace.yuck")
 (include "./bar/mpris.yuck")
