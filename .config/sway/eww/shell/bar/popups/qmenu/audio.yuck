@@ -1,0 +1,52 @@
+(deflisten audio "./bin/volume.sh")
+
+(defvar audio-out-revealed false)
+(defpoll audio-sinks :interval "16s" :run-while audio-out-revealed "./bin/audio_list.sh sinks")
+
+(defvar audio-in-revealed false)
+(defpoll audio-sources :interval "16s" :run-while audio-in-revealed "./bin/audio_list.sh sources")
+
+(defwidget audio-device-selector [devices type] 
+    (box :space-evenly false :orientation "v"
+        (for dev in devices
+            (box :space-evenly false :style "margin-left: 1rem; margin-bottom: .5rem; padding: .2rem;" :orientation "v"
+                (box :space-evenly false (checkbox :checked {dev.index == audio[type == "sink" ? "out" : "in"].id}
+                    :class "square-check"
+                    :timeout "16s"
+                    :onchecked `pactl set-default-${type} ${dev.id}; ${EWW_CMD} update audio-${type}s="$(bin/audio_list.sh ${type}s)"`)
+                (label :class "text" :text {dev.name} :limit-width 26 :tooltip {dev.name}))
+                (box :space-evenly false :visible {arraylength(dev.ports) > 1} :halign "end" :style "margin-bottom: .4rem;"
+                    (for port in {dev.ports}
+                        (button 
+                            :class "sbutton ${port.id == dev.port ? "active" : ""}" 
+                            :onclick `pactl set-${type}-port ${dev.id} ${port.id}; ${EWW_CMD} update audio-${type}s="$(bin/audio_list.sh ${type}s)"`
+                            (label :text {port.name} :limit-width 12))))))))
+
+(defwidget audio-panel []
+    (box :space-evenly false :class "section" :orientation "v"
+        (box :space-evenly false 
+            (button :style "min-width: 3.8rem;"
+                :class "sbutton ${!audio.out.mute ? "active" : ""}"
+                :onclick "pamixer --toggle-mute"
+                "${audio.out.mute ? "󰸈" : (audio.out.vol > 70 ? "󰕾" 
+                    : (audio.out.vol > 30 ? "󰖀" : "󰕿"))}    ${audio.out.vol}%")
+            (scale 
+                :class "slider" :hexpand true :value {audio.out.vol}
+                :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")
+            (button :class "button simple" :onclick "${EWW_CMD} update audio-out-revealed=${!audio-out-revealed}"
+                {audio-out-revealed ? "" : ""}))
+
+        (revealer :reveal audio-out-revealed :transition "slidedown" 
+            (audio-device-selector :devices {audio-sinks} :type "sink"))
+        (box :space-evenly false 
+            (button  :style "min-width: 3.8rem;"
+                :class "sbutton ${!audio.in.mute ? "active" : ""}"
+                :onclick "pamixer --default-source --toggle-mute"
+                "${audio.in.mute ? "󰍭" : "󰍬"}    ${audio.in.vol}%")
+            (scale 
+                :class "slider" :hexpand true :value {audio.in.vol}
+                :onchange "pactl set-source-volume @DEFAULT_SOURCE@ {}%")
+           (button :class "button simple" :onclick "${EWW_CMD} update audio-in-revealed=${!audio-in-revealed}"
+                {audio-in-revealed ? "" : ""}))
+        (revealer :reveal audio-in-revealed :transition "slidedown" 
+            (audio-device-selector :devices {audio-sources} :type "source"))))

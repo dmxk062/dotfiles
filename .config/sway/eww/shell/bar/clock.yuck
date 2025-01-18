@@ -4,4 +4,4 @@
             :onclick "bin/popup.sh settings-panel settings-panel-shown open & ./bin/weather.sh ${EWW_TIME - weather-last}"
             :timeout "16s"
             :class "button"
-            "${formattime(EWW_TIME, "%m/%d %H:%M")}")))
+            "${audio.in.mute ? "󰍭" : "󰍬"} ${audio.out.mute ? "󰸈" : "󰕾"}   ${formattime(EWW_TIME, "%m/%d %H:%M")}")))

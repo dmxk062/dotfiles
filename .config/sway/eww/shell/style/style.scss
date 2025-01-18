@@ -18,6 +18,15 @@
     &:hover {
         background-color: $bg2;
     }
+
+    &.simple {
+        padding: unset;
+        margin-right: .9rem;
+        &:hover {
+            background-color: unset;
+            color: $bg3;
+        }
+    }
 }
 
 .sbutton {
@@ -51,6 +60,10 @@
     &:hover {
         background-color: fade($accent);
     }
+}
+
+.inactive {
+    color: $bg3;
 }
 
 .alert {
@@ -210,9 +223,28 @@ tooltip{
 }
 
 .ticon {
-    padding: 1.6rem 1.6rem 1.3rem 1.1rem;
     &.large {
+        padding: 1.6rem 1.6rem 1.3rem 1.1rem;
         font-size: 2.4rem;
+    }
+    &.medium {
+        padding: 1.0rem 1.0rem 0.8rem 0.7rem;
+        font-size: 1.3rem;
+    }
+}
+
+.slider {
+    trough {
+        all: unset;
+        min-height: .5rem;
+        margin: 1rem;
+        border-radius: 12px;
+        background-color: $bg3;
+        min-width: 12rem;
+        highlight {
+            border-radius: 12px;
+            background-color: $accent;
+        }
     }
 }
 

@@ -3,6 +3,7 @@
 (include "./bar/popups/qmenu/wifi.yuck")
 (include "./bar/popups/qmenu/vpn.yuck")
 (include "./bar/popups/qmenu/status.yuck")
+(include "./bar/popups/qmenu/audio.yuck")
 (include "./bar/popups/qmenu/performance.yuck")
 
 (defvar settings-panel-shown false)
@@ -21,6 +22,7 @@
             :space-evenly false
             (box :orientation "v" :space-evenly false
                 (status-panel)
+                (audio-panel)
                 (toggle-panel)
                 (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))
                 (box 
