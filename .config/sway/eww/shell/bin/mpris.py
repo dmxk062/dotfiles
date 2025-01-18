@@ -67,18 +67,24 @@ def do_meta(pl, *_):
     else:
         out["has_progress"] = False
 
-    artists = meta["xesam:artist"]
-    num_artists = len(artists)
-    if num_artists == 0:
-        artist = None
-    elif num_artists == 1:
-        artist = artists[0]
-    elif num_artists == 2:
-        artist = "&".join(artists)
-    else:
-        artist = "&".join([",".join(artists[:-1]), artists[-1]])
-    out["artist"] = artist
-    out["album"] = meta["xesam:album"]
+    try:
+        artists = meta["xesam:artist"]
+        num_artists = len(artists)
+        if num_artists == 0:
+            artist = None
+        elif num_artists == 1:
+            artist = artists[0]
+        elif num_artists == 2:
+            artist = "&".join(artists)
+        else:
+            artist = "&".join([",".join(artists[:-1]), artists[-1]])
+        out["artist"] = artist
+    except KeyError:
+        out["artist"] = ""
+    try:
+        out["album"] = meta["xesam:album"]
+    except KeyError:
+        out["album"] = ""
     out["title"] = meta["xesam:title"]
 
     sys.stdout.write(json.dumps(out) + "\n")
