@@ -62,7 +62,7 @@ opt.listchars = {
 -- this can be **super** slow in large directories, just don't use it then :)
 opt.path = {
     ".",
-    "**",
+    "*",
     "../",
     "../*"
 }
