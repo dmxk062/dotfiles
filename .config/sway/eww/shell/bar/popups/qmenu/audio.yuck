@@ -44,7 +44,7 @@
                     (box :space-evenly false :orientation "v" :class "bordered"
                         (box :space-evenly false
                             (box :halign "start" :hexpand true :space-evenly false (label :style "margin-left: 1rem;" :class "text" 
-                                :text {stream.name} :limit-width 26 :tooltip {stream.name}))
+                                :text "${stream.name} - ${stream.app_name}" :limit-width 28 :tooltip "${stream.name} in ${stream.app_name}"))
                             (themed-icon :name {stream.icon}))
                         (box :space-evenly false :halign "center"
                             (button :class "sbutton ${!stream.mute ? "active" : ""}"
