@@ -22,6 +22,8 @@ local default_config_tbl = {
     disable_devicons = true,
 }
 
+local cur_max_length = 0
+
 local function create_layout(picker)
     local Layout = require("telescope.pickers.layout")
     ---@param enter boolean
@@ -62,6 +64,8 @@ local function create_layout(picker)
             if (fhalf + shalf) ~= width then
                 fhalf = fhalf + 1
             end
+            cur_max_length = fhalf
+
             local height = vim.o.lines
             local height_override = self.picker.layout_config.height
             local view_height
@@ -161,8 +165,17 @@ M.opts.defaults = {
     path_display = function(opts, path)
         local tail = vim.fn.fnamemodify(path, ":t")
         local parendir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":.:h"), 6)
+
+        local namewidth = vim.fn.strdisplaywidth(tail)
         local namelen = #tail
+
+        local dirwidth = vim.fn.strdisplaywidth(parendir)
         local dirlen = #parendir
+
+        local padding_width = cur_max_length - (namewidth + dirwidth)
+        if padding_width < 0 then
+            padding_width = 1
+        end
 
         local hls = {
             {
@@ -170,18 +183,18 @@ M.opts.defaults = {
                     0,
                     namelen,
                 },
-                require("plugin_utils.fnamehighlight").highlight_fname(path)
+                require("plugin_utils.fnamehighlight").highlight_fname(tail)
             },
             {
                 {
-                    namelen + 1,
-                    namelen + dirlen + 1,
+                    namelen + padding_width,
+                    namelen + padding_width + dirlen,
                 },
-                "OilDir"
+                "NonText"
             }
         }
 
-        return string.format("%s %s", tail, parendir), hls
+        return string.format("%s%s%s", tail, (" "):rep(padding_width), parendir), hls
     end,
 }
 
