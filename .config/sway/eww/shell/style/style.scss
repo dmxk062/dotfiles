@@ -265,8 +265,6 @@ tooltip{
 @import "./center_popup.scss";
 
 check {
-    all: unset;
-
     border-radius: 4px;
     min-width: 1.5rem;
     min-height: 1.5rem;
@@ -284,5 +282,24 @@ check {
         &:hover {
             background-color: fade($accent);
         }
+    }
+
+}
+
+.select check {
+    all: unset;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 50%;
+    margin-right: .6rem;
+
+    border: 2px solid $bg3;
+
+    &:hover {
+        background-color: $bg2;
+    }
+
+    &:checked {
+        border-color: $accent;
+        color: transparent;
     }
 }

@@ -33,7 +33,7 @@
                 (box :hexpand true :space-evenly false :halign "start"
                         (box :space-evenly false :style "margin-left: 1rem; padding: .2rem;"
                             (checkbox :checked {vpn.active} 
-                                :class "square-check"
+                                :class "select"
                                 :timeout "16s"
                                 :onchecked `nmcli connection up '${vpn.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
                                 :onunchecked `nmcli connection down '${vpn.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`)

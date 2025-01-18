@@ -13,9 +13,9 @@
         (for dev in devices
             (box :space-evenly false :style "margin-left: 1rem; margin-bottom: .5rem; padding: .2rem;" :orientation "v"
                 (box :space-evenly false (checkbox :checked {dev.index == audio[type == "sink" ? "out" : "in"].id}
-                    :class "square-check"
+                    :class "select"
                     :timeout "16s"
-                    :onchecked `pactl set-default-${type} ${dev.id}; ${EWW_CMD} update audio-${type}s="$(bin/audio_list.sh ${type}s)"`)
+                    :onchecked `pactl set-default-${type} ${dev.id}`)
                 (label :class "text" :text {dev.name} :limit-width 26 :tooltip {dev.name}))
                 (box :space-evenly false :visible {arraylength(dev.ports) > 1} :halign "end" :style "margin-bottom: .4rem;"
                     (for port in {dev.ports}
