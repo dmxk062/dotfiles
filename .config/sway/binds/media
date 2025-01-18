@@ -1,5 +1,7 @@
 # vim: ft=swayconfig
 
+set $pop ~/.config/sway/eww/shell/bin/center_popup.sh
+
 # output
 bindsym --locked XF86AudioRaiseVolume        exec $sc/audio_popup.sh DEFAULT_SINK raise 3
 bindsym --locked XF86AudioLowerVolume        exec $sc/audio_popup.sh DEFAULT_SINK lower 3
@@ -27,8 +29,8 @@ bindsym --locked XF86AudioPlay exec playerctl play-pause
 bindsym --locked Shift+XF86AudioNext exec playerctl next
 bindsym --locked Shift+XF86AudioPrev exec playerctl prev
 bindsym --locked Shift+XF86AudioPlay exec playerctld shift
-bindsym --locked XF86AudioNext exec playerctl position 5+
-bindsym --locked XF86AudioPrev exec playerctl position 5-
+bindsym --locked XF86AudioNext exec playerctl position 5+&&$pop mpris 1
+bindsym --locked XF86AudioPrev exec playerctl position 5-&&$pop mpris 1
 
 bindsym $mod+XF86AudioMute exec ~/.config/rofi/applets/mute/run.sh
 

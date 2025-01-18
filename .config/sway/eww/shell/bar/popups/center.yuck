@@ -24,8 +24,8 @@
 }
 }')
 
-(defwidget center-popup-content [] (revealer :reveal center-popup-reveal :transition "slidedown"
-    (box (box :class "center-popup-box" :space-evenly false
+(defwidget center-popup-audio []
+    (box :space-evenly false
         (themed-icon 
             :width 48 :height 48
             :name {audio-icons[audio-popup-kind][audio[audio-popup-kind].icon]})
@@ -36,7 +36,23 @@
                     :text "Audio ${audio-popup-kind == "out" ? "Output" : "Input"}: ${audio[audio-popup-kind].vol}%"))
                 (box :halign "start" :hexpand true :space-evenly false (label :class "text"
                     :text "${audio[audio-popup-kind].name}${audio[audio-popup-kind].mute ? " - muted" : ""}" :limit-width 28))
-            (scale :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}" :value {audio[audio-popup-kind].vol} :hexpand true))))))
+                (scale :interactive false :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}" :value {audio[audio-popup-kind].vol} :hexpand true))))
+
+(defwidget center-popup-mpris []
+    (box :space-evenly false
+        (image :path {mpris.art} :image-width 64 :image-height 64)
+        (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
+            (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+                :style "font-size: 1.2rem; font-weight: bold;"
+                :text "${mpris.title}"))
+            (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+                :text "${mpris.artist} - ${mpris.album}"))
+            (scale :interactive false :class "popup-slider" :value {mpris.progress * 100}))))
+
+(defwidget center-popup-content [] (revealer :reveal center-popup-reveal :transition "slidedown" (box (box :class "center-popup-box" :space-evenly false
+    (stack :selected center-popup-layer
+        (center-popup-audio)
+        (center-popup-mpris))))))
 
 (defwindow center-popup 
     :monitor 0
