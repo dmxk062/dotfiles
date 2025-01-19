@@ -35,14 +35,17 @@
                     :style "font-size: 1.2rem; font-weight: bold;"
                     :text "Audio ${audio-popup-kind == "out" ? "Output" : "Input"}: ${audio[audio-popup-kind].vol}%"))
                 (box :halign "start" :hexpand true :space-evenly false (label :class "text"
-                    :text "${audio[audio-popup-kind].name}${audio[audio-popup-kind].mute ? " - muted" : ""}" :limit-width 28))
-                (scale :interactive false :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}" :value {audio[audio-popup-kind].vol} :hexpand true))))
+                    :text "${audio[audio-popup-kind].name}${audio[audio-popup-kind].mute ? " - muted" : ""}" :limit-width 24))
+                (box :space-evenly false (scale 
+                    :interactive false :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}"
+                    :value {audio[audio-popup-kind].vol})))))
 
 (defwidget center-popup-mpris []
     (box :space-evenly false
         (image :path {mpris.art} :image-width 64 :image-height 64)
         (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+                :limit-width 24
                 :style "font-size: 1.2rem; font-weight: bold;"
                 :text "${mpris.title}"))
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
