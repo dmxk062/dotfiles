@@ -279,6 +279,7 @@ check {
         background-color: $accent;
         color: $inv;
         -gtk-icon-source: -gtk-icontheme('object-select-symbolic');
+        -gtk-icon-transform: scale(0.8);
         &:hover {
             background-color: fade($accent);
         }
@@ -300,6 +301,8 @@ check {
 
     &:checked {
         border-color: $accent;
-        color: transparent;
+        color: $fg0;
+        -gtk-icon-source: -gtk-icontheme('object-select-symbolic');
+        -gtk-icon-transform: scale(0.7);
     }
 }
