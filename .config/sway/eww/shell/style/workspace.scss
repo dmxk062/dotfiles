@@ -26,10 +26,10 @@
         border: none;
         box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
     }
-    &.cut {
-        border-color: $red;
-    }
     &.active {
         background-color: mix($bg2, $accent, 80%);
+    }
+    &.cut {
+        background-color: mix($bg3, $red, 80%);
     }
 }
