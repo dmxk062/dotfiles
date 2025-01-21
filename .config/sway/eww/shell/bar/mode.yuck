@@ -9,13 +9,13 @@
 (defvar mode-descs '{
 "default": [ ],
 "media": [
+    {"keys": "<M-*", "action": "On Microphone"},
     {"keys": "[jk]", "action": "Change Volume"},
     {"keys": "[hl]", "action": "Seek"},
     {"keys": "[0-9]", "action": "Set Volume" },
     {"keys": "[nN]", "action": "Cycle Device"},
-    {"keys": "<M-*", "action": "On Microphone"},
-    {"keys": "<Space>", "action": "Play / Pause"},
-    {"keys": "[mI]", "action": "Mute / Unmute"}
+    {"keys": "m", "action": "Mute / Unmute"},
+    {"keys": "<Space>", "action": "Play / Pause"}
 ],
 "screenshot": [
     {"keys": "s", "action": "Current Screen" },
@@ -46,11 +46,11 @@
     'swaymsg -t subscribe \'["mode"]\' -m')
 
 (defwidget mode-hints []
-        (box :space-evenly false 
-            (for desc in {mode-descs[mode.change]}
-                (box :space-evenly false :class "mode-box"
-                (label :text "${desc.keys}" :class "mode-keys")
-                (label :text "${desc.action}" :class "mode-action")))))
+    (box :space-evenly false 
+        (for desc in {mode-descs[mode.change]}
+            (box :space-evenly false :class "mode-box"
+            (label :text "${desc.keys}" :class "mode-keys")
+            (label :text "${desc.action}" :class "mode-action")))))
 
 (defwidget mode-symbol []
     (box :space-evenly false
