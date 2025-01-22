@@ -34,7 +34,7 @@ local colorscheme = {
     SpellCap                    = { sp = col.teal, undercurl = true },
 
     LineNr                      = { fg = col.bright_gray },
-    LineNrAbove                 = { fg = blend(col.green, col.bright_gray, 0.4) },
+    LineNrAbove                 = { fg = blend(col.magenta, col.bright_gray, 0.3) },
     LineNrBelow                 = { fg = blend(col.light_blue, pal.bg3, 0.7) },
     CursorLineNr                = { fg = pal.fg0 },
     Cursor                      = { reverse = true },
