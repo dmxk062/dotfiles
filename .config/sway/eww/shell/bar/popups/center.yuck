@@ -61,7 +61,7 @@
     (box :space-evenly false
         (themed-icon 
             :width 48 :height 48
-            :name "display-brightness-${brightness > 70 ? "high" : (brightness > 30 ? "medium" : "low")}-symbolic")
+            :name "display-brightness-${brightness > 70 ? "high" : (brightness > 30 ? "medium" : (brightness != 0 ? "low" : "off"))}-symbolic")
         (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
                 :style "font-size: 1.2rem; font-weight: bold;"
