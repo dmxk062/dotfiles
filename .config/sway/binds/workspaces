@@ -102,10 +102,10 @@ mode "normal" {
     bindsym O exec $term; mode "default"
     bindsym Shift+O split toggle; exec $term; mode "default"
 
-    bindsym $mod+H focus left
-    bindsym $mod+J focus down
-    bindsym $mod+K focus up
-    bindsym $mod+L focus right
+    bindsym H focus left
+    bindsym J focus down
+    bindsym K focus up
+    bindsym L focus right
 
     bindsym Shift+H move left
     bindsym Shift+J move down
