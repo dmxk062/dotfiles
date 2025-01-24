@@ -11,10 +11,10 @@
     &:hover { background-color: fade($purple); }
 }
 
-.mode-workspace {
+.mode-normal {
     @extend .mode;
     color: $inv;
-    background-color: $green;
+    background-color: $accent;
     &:hover { background-color: fade($green); }
 }
 

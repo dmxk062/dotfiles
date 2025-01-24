@@ -1,6 +1,6 @@
 (defvar mode-names '{
-"default": "normal",
-"workspace": "workspace",
+"default": "insert",
+"normal": "normal",
 "media": "media",
 "screenshot": "print",
 "config":"config"
@@ -33,11 +33,15 @@
     {"keys": "t", "action": "Theme"},
     {"keys": "m", "action": "Mirror Screen"}
 ],
-"workspace": [
-    {"keys": "[0-9]", "action": "Go to Workspace"},
-    {"keys": "][", "action": "Prev / Next"},
-    {"keys": "<lrud>", "action": "Second Monitor" },
-    {"keys": "<S-*", "action": "Move to Workspace"}
+"normal": [
+    {"keys": "[0-9]", "action": "Workspace"},
+    {"keys": "\`", "action": "Scratch"},
+    {"keys": "][", "action": "n/p"},
+    {"keys": "hjkl", "action":"Windows"},
+    {"keys": "<C-*>", "action":"Resize"},
+    {"keys": "<S-*>", "action": "Move"},
+    {"keys": "f", "action": "Fullscreen"},
+    {"keys": "d", "action": "Detach"}
 ]
 }')
 

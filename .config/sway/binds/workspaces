@@ -1,190 +1,210 @@
 # vim: ft=swayconfig
 
-bindsym {
-    $mod+1 workspace number 1
-    $mod+2 workspace number 2
-    $mod+3 workspace number 3
-    $mod+4 workspace number 4
-    $mod+5 workspace number 5
-    $mod+6 workspace number 6
-    $mod+7 workspace number 7
-    $mod+8 workspace number 8
-    $mod+9 workspace number 9
-    $mod+0 workspace number 10
+bindsym $mod+Grave scratchpad show
+bindsym $mod+Shift+Grave move window to scratchpad
 
-    $mod+KP_1 workspace number 1
-    $mod+KP_2 workspace number 2
-    $mod+KP_3 workspace number 3
-    $mod+KP_4 workspace number 4
-    $mod+KP_5 workspace number 5
-    $mod+KP_6 workspace number 6
-    $mod+KP_7 workspace number 7
-    $mod+KP_8 workspace number 8
-    $mod+KP_9 workspace number 9
-    $mod+KP_0 workspace number 10
+# numeric {{{
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
 
-    $mod+Shift+KP_1 move window to workspace number 1
-    $mod+Shift+KP_2 move window to workspace number 2
-    $mod+Shift+KP_3 move window to workspace number 3
-    $mod+Shift+KP_4 move window to workspace number 4
-    $mod+Shift+KP_5 move window to workspace number 5
-    $mod+Shift+KP_6 move window to workspace number 6
-    $mod+Shift+KP_7 move window to workspace number 7
-    $mod+Shift+KP_8 move window to workspace number 8
-    $mod+Shift+KP_9 move window to workspace number 9
-    $mod+Shift+KP_0 move window to workspace number 10
+bindsym $mod+KP_1 workspace number 1
+bindsym $mod+KP_2 workspace number 2
+bindsym $mod+KP_3 workspace number 3
+bindsym $mod+KP_4 workspace number 4
+bindsym $mod+KP_5 workspace number 5
+bindsym $mod+KP_6 workspace number 6
+bindsym $mod+KP_7 workspace number 7
+bindsym $mod+KP_8 workspace number 8
+bindsym $mod+KP_9 workspace number 9
+bindsym $mod+KP_0 workspace number 10
 
-    $mod+Ctrl+KP_1 move window to workspace number 1; workspace number 1
-    $mod+Ctrl+KP_2 move window to workspace number 2; workspace number 2
-    $mod+Ctrl+KP_3 move window to workspace number 3; workspace number 3
-    $mod+Ctrl+KP_4 move window to workspace number 4; workspace number 4
-    $mod+Ctrl+KP_5 move window to workspace number 5; workspace number 5
-    $mod+Ctrl+KP_6 move window to workspace number 6; workspace number 6
-    $mod+Ctrl+KP_7 move window to workspace number 7; workspace number 7
-    $mod+Ctrl+KP_8 move window to workspace number 8; workspace number 8
-    $mod+Ctrl+KP_9 move window to workspace number 9; workspace number 9
-    $mod+Ctrl+KP_0 move window to workspace number 10; workspace number 10
+bindsym $mod+Shift+KP_1 move window to workspace number 1
+bindsym $mod+Shift+KP_2 move window to workspace number 2
+bindsym $mod+Shift+KP_3 move window to workspace number 3
+bindsym $mod+Shift+KP_4 move window to workspace number 4
+bindsym $mod+Shift+KP_5 move window to workspace number 5
+bindsym $mod+Shift+KP_6 move window to workspace number 6
+bindsym $mod+Shift+KP_7 move window to workspace number 7
+bindsym $mod+Shift+KP_8 move window to workspace number 8
+bindsym $mod+Shift+KP_9 move window to workspace number 9
+bindsym $mod+Shift+KP_0 move window to workspace number 10
 
-    $mod+Grave scratchpad show
-    $mod+Shift+Grave move window to scratchpad
+bindsym $mod+Ctrl+KP_1 move window to workspace number 1; workspace number 1
+bindsym $mod+Ctrl+KP_2 move window to workspace number 2; workspace number 2
+bindsym $mod+Ctrl+KP_3 move window to workspace number 3; workspace number 3
+bindsym $mod+Ctrl+KP_4 move window to workspace number 4; workspace number 4
+bindsym $mod+Ctrl+KP_5 move window to workspace number 5; workspace number 5
+bindsym $mod+Ctrl+KP_6 move window to workspace number 6; workspace number 6
+bindsym $mod+Ctrl+KP_7 move window to workspace number 7; workspace number 7
+bindsym $mod+Ctrl+KP_8 move window to workspace number 8; workspace number 8
+bindsym $mod+Ctrl+KP_9 move window to workspace number 9; workspace number 9
+bindsym $mod+Ctrl+KP_0 move window to workspace number 10; workspace number 10
 
-    $mod+Shift+1 move window to workspace number 1
-    $mod+Shift+2 move window to workspace number 2
-    $mod+Shift+3 move window to workspace number 3
-    $mod+Shift+4 move window to workspace number 4
-    $mod+Shift+5 move window to workspace number 5
-    $mod+Shift+6 move window to workspace number 6
-    $mod+Shift+7 move window to workspace number 7
-    $mod+Shift+8 move window to workspace number 8
-    $mod+Shift+9 move window to workspace number 9
-    $mod+Shift+0 move window to workspace number 10
+bindsym $mod+Shift+1 move window to workspace number 1
+bindsym $mod+Shift+2 move window to workspace number 2
+bindsym $mod+Shift+3 move window to workspace number 3
+bindsym $mod+Shift+4 move window to workspace number 4
+bindsym $mod+Shift+5 move window to workspace number 5
+bindsym $mod+Shift+6 move window to workspace number 6
+bindsym $mod+Shift+7 move window to workspace number 7
+bindsym $mod+Shift+8 move window to workspace number 8
+bindsym $mod+Shift+9 move window to workspace number 9
+bindsym $mod+Shift+0 move window to workspace number 10
 
-    $mod+Ctrl+1 move window to workspace number 1; workspace number 1
-    $mod+Ctrl+2 move window to workspace number 2; workspace number 2
-    $mod+Ctrl+3 move window to workspace number 3; workspace number 3
-    $mod+Ctrl+4 move window to workspace number 4; workspace number 4
-    $mod+Ctrl+5 move window to workspace number 5; workspace number 5
-    $mod+Ctrl+6 move window to workspace number 6; workspace number 6
-    $mod+Ctrl+7 move window to workspace number 7; workspace number 7
-    $mod+Ctrl+8 move window to workspace number 8; workspace number 8
-    $mod+Ctrl+9 move window to workspace number 9; workspace number 9
-    $mod+Ctrl+0 move window to workspace number 10; workspace number 10
+bindsym $mod+Ctrl+1 move window to workspace number 1; workspace number 1
+bindsym $mod+Ctrl+2 move window to workspace number 2; workspace number 2
+bindsym $mod+Ctrl+3 move window to workspace number 3; workspace number 3
+bindsym $mod+Ctrl+4 move window to workspace number 4; workspace number 4
+bindsym $mod+Ctrl+5 move window to workspace number 5; workspace number 5
+bindsym $mod+Ctrl+6 move window to workspace number 6; workspace number 6
+bindsym $mod+Ctrl+7 move window to workspace number 7; workspace number 7
+bindsym $mod+Ctrl+8 move window to workspace number 8; workspace number 8
+bindsym $mod+Ctrl+9 move window to workspace number 9; workspace number 9
+bindsym $mod+Ctrl+0 move window to workspace number 10; workspace number 10
 
-    $mod+Left workspace s1
-    $mod+Down workspace s2
-    $mod+Right workspace s3
-    $mod+Up workspace s4
+bindsym $mod+Left workspace s1
+bindsym $mod+Down workspace s2
+bindsym $mod+Right workspace s3
+bindsym $mod+Up workspace s4
 
-    $mod+Shift+Left move window to workspace s1
-    $mod+Shift+Down move window to workspace s2
-    $mod+Shift+Right move window to workspace s3
-    $mod+Shift+Up move window to workspace s4
+bindsym $mod+Shift+Left move window to workspace s1
+bindsym $mod+Shift+Down move window to workspace s2
+bindsym $mod+Shift+Right move window to workspace s3
+bindsym $mod+Shift+Up move window to workspace s4
 
-    $mod+Ctrl+Left move window to workspace s1; workspace s1
-    $mod+Ctrl+Down move window to workspace s2; workspace s2
-    $mod+Ctrl+Right move window to workspace s3; workspace s3
-    $mod+Ctrl+Up move window to workspace s4; workspace s4
+bindsym $mod+Ctrl+Left move window to workspace s1; workspace s1
+bindsym $mod+Ctrl+Down move window to workspace s2; workspace s2
+bindsym $mod+Ctrl+Right move window to workspace s3; workspace s3
+bindsym $mod+Ctrl+Up move window to workspace s4; workspace s4
+# }}}
 
-    $mod+Bracketright exec $sc/in_order.sh go next
-    $mod+Bracketleft  exec $sc/in_order.sh go prev
-    $mod+Shift+Bracketright exec $sc/in_order.sh move next
-    $mod+Shift+Bracketleft  exec $sc/in_order.sh move prev
-    $mod+Ctrl+Bracketright exec $sc/in_order.sh push next
-    $mod+Ctrl+Bracketleft  exec $sc/in_order.sh push prev
-    $mod+Escape workspace number 1
+bindsym $mod+Bracketright exec $sc/in_order.sh go next
+bindsym $mod+Bracketleft  exec $sc/in_order.sh go prev
+bindsym $mod+Shift+Bracketright exec $sc/in_order.sh move next
+bindsym $mod+Shift+Bracketleft  exec $sc/in_order.sh move prev
+bindsym $mod+Ctrl+Bracketright exec $sc/in_order.sh push next
+bindsym $mod+Ctrl+Bracketleft  exec $sc/in_order.sh push prev
+
+mode "normal" {
+    bindsym Escape mode "default"
+
+    bindsym F fullscreen
+    bindsym D floating toggle; resize shrink width 800 height 800
+    bindsym I mode "default"
+    bindsym O exec $term; mode "default"
+    bindsym Shift+O split toggle; exec $term; mode "default"
+
+    bindsym $mod+H focus left
+    bindsym $mod+J focus down
+    bindsym $mod+K focus up
+    bindsym $mod+L focus right
+
+    bindsym Shift+H move left
+    bindsym Shift+J move down
+    bindsym Shift+K move up
+    bindsym Shift+L move right
+
+    bindsym Ctrl+H nop resize left 32
+    bindsym Ctrl+J nop resize down 32
+    bindsym Ctrl+K nop resize up 32
+    bindsym Ctrl+L nop resize right 32
+
+    bindsym Grave scratchpad show
+    bindsym Shift+Grave move window to scratchpad
+
+# numeric {{{
+    bindsym 1 workspace number 1
+    bindsym 2 workspace number 2
+    bindsym 3 workspace number 3
+    bindsym 4 workspace number 4
+    bindsym 5 workspace number 5
+    bindsym 6 workspace number 6
+    bindsym 7 workspace number 7
+    bindsym 8 workspace number 8
+    bindsym 9 workspace number 9
+    bindsym 0 workspace number 10
+
+    bindsym Shift+1 move window to workspace number 1
+    bindsym Shift+2 move window to workspace number 2
+    bindsym Shift+3 move window to workspace number 3
+    bindsym Shift+4 move window to workspace number 4
+    bindsym Shift+5 move window to workspace number 5
+    bindsym Shift+6 move window to workspace number 6
+    bindsym Shift+7 move window to workspace number 7
+    bindsym Shift+8 move window to workspace number 8
+    bindsym Shift+9 move window to workspace number 9
+    bindsym Shift+0 move window to workspace number 10
+
+    bindsym Ctrl+1 move window to workspace number 1; workspace number 1
+    bindsym Ctrl+2 move window to workspace number 2; workspace number 2
+    bindsym Ctrl+3 move window to workspace number 3; workspace number 3
+    bindsym Ctrl+4 move window to workspace number 4; workspace number 4
+    bindsym Ctrl+5 move window to workspace number 5; workspace number 5
+    bindsym Ctrl+6 move window to workspace number 6; workspace number 6
+    bindsym Ctrl+7 move window to workspace number 7; workspace number 7
+    bindsym Ctrl+8 move window to workspace number 8; workspace number 8
+    bindsym Ctrl+9 move window to workspace number 9; workspace number 9
+    bindsym Ctrl+0 move window to workspace number 10; workspace number 10
+
+    bindsym KP_1 workspace number 1
+    bindsym KP_2 workspace number 2
+    bindsym KP_3 workspace number 3
+    bindsym KP_4 workspace number 4
+    bindsym KP_5 workspace number 5
+    bindsym KP_6 workspace number 6
+    bindsym KP_7 workspace number 7
+    bindsym KP_8 workspace number 8
+    bindsym KP_9 workspace number 9
+    bindsym KP_0 workspace number 10
+
+    bindsym Shift+KP_1 move window to workspace number 1
+    bindsym Shift+KP_2 move window to workspace number 2
+    bindsym Shift+KP_3 move window to workspace number 3
+    bindsym Shift+KP_4 move window to workspace number 4
+    bindsym Shift+KP_5 move window to workspace number 5
+    bindsym Shift+KP_6 move window to workspace number 6
+    bindsym Shift+KP_7 move window to workspace number 7
+    bindsym Shift+KP_8 move window to workspace number 8
+    bindsym Shift+KP_9 move window to workspace number 9
+    bindsym Shift+KP_0 move window to workspace number 10
+
+    bindsym Ctrl+KP_1 move window to workspace number 1; workspace number 1
+    bindsym Ctrl+KP_2 move window to workspace number 2; workspace number 2
+    bindsym Ctrl+KP_3 move window to workspace number 3; workspace number 3
+    bindsym Ctrl+KP_4 move window to workspace number 4; workspace number 4
+    bindsym Ctrl+KP_5 move window to workspace number 5; workspace number 5
+    bindsym Ctrl+KP_6 move window to workspace number 6; workspace number 6
+    bindsym Ctrl+KP_7 move window to workspace number 7; workspace number 7
+    bindsym Ctrl+KP_8 move window to workspace number 8; workspace number 8
+    bindsym Ctrl+KP_9 move window to workspace number 9; workspace number 9
+    bindsym Ctrl+KP_0 move window to workspace number 10; workspace number 10
+
+    bindsym Left workspace s1
+    bindsym Down workspace s2
+    bindsym Right workspace s3
+    bindsym Up workspace s4
+
+    bindsym Shift+Left move window to workspace s1
+    bindsym Shift+Down move window to workspace s2
+    bindsym Shift+Right move window to workspace s3
+    bindsym Shift+Up move window to workspace s4
+
+    bindsym Bracketright exec $sc/in_order.sh go next
+    bindsym Bracketleft  exec $sc/in_order.sh go prev
+    bindsym Shift+Bracketright exec $sc/in_order.sh move next
+    bindsym Shift+Bracketleft  exec $sc/in_order.sh move prev
+    bindsym Ctrl+Bracketright exec $sc/in_order.sh push next
+    bindsym Ctrl+Bracketleft  exec $sc/in_order.sh push prev
+
+# }}}
 }
 
-mode "workspace" {
-    bindsym { 
-        Escape mode "default"
-
-        1 workspace number 1
-        2 workspace number 2
-        3 workspace number 3
-        4 workspace number 4
-        5 workspace number 5
-        6 workspace number 6
-        7 workspace number 7
-        8 workspace number 8
-        9 workspace number 9
-        0 workspace number 10
-
-        Shift+1 move window to workspace number 1
-        Shift+2 move window to workspace number 2
-
-        Shift+3 move window to workspace number 3
-        Shift+4 move window to workspace number 4
-        Shift+5 move window to workspace number 5
-        Shift+6 move window to workspace number 6
-        Shift+7 move window to workspace number 7
-        Shift+8 move window to workspace number 8
-        Shift+9 move window to workspace number 9
-        Shift+0 move window to workspace number 10
-
-        Ctrl+3 move window to workspace number 3; workspace number 3
-        Ctrl+4 move window to workspace number 4; workspace number 4
-        Ctrl+5 move window to workspace number 5; workspace number 5
-        Ctrl+6 move window to workspace number 6; workspace number 6
-        Ctrl+7 move window to workspace number 7; workspace number 7
-        Ctrl+8 move window to workspace number 8; workspace number 8
-        Ctrl+9 move window to workspace number 9; workspace number 9
-        Ctrl+0 move window to workspace number 10; workspace number 10
-
-        KP_1 workspace number 1
-        KP_2 workspace number 2
-        KP_3 workspace number 3
-        KP_4 workspace number 4
-        KP_5 workspace number 5
-        KP_6 workspace number 6
-        KP_7 workspace number 7
-        KP_8 workspace number 8
-        KP_9 workspace number 9
-        KP_0 workspace number 10
-
-        Shift+KP_1 move window to workspace number 1
-        Shift+KP_2 move window to workspace number 2
-        Shift+KP_3 move window to workspace number 3
-        Shift+KP_4 move window to workspace number 4
-        Shift+KP_5 move window to workspace number 5
-        Shift+KP_6 move window to workspace number 6
-        Shift+KP_7 move window to workspace number 7
-        Shift+KP_8 move window to workspace number 8
-        Shift+KP_9 move window to workspace number 9
-        Shift+KP_0 move window to workspace number 10
-
-        Ctrl+KP_1 move window to workspace number 1; workspace number 1
-        Ctrl+KP_2 move window to workspace number 2; workspace number 2
-        Ctrl+KP_3 move window to workspace number 3; workspace number 3
-        Ctrl+KP_4 move window to workspace number 4; workspace number 4
-        Ctrl+KP_5 move window to workspace number 5; workspace number 5
-        Ctrl+KP_6 move window to workspace number 6; workspace number 6
-        Ctrl+KP_7 move window to workspace number 7; workspace number 7
-        Ctrl+KP_8 move window to workspace number 8; workspace number 8
-        Ctrl+KP_9 move window to workspace number 9; workspace number 9
-        Ctrl+KP_0 move window to workspace number 10; workspace number 10
-
-
-
-        Left workspace s1
-        Down workspace s2
-        Right workspace s3
-        Up workspace s4
-
-        Shift+Left move window to workspace s1
-        Shift+Down move window to workspace s2
-        Shift+Right move window to workspace s3
-        Shift+Up move window to workspace s4
-
-        Bracketright exec $sc/in_order.sh go next
-        Bracketleft  exec $sc/in_order.sh go prev
-        Shift+Bracketright exec $sc/in_order.sh move next
-        Shift+Bracketleft  exec $sc/in_order.sh move prev
-        Ctrl+Bracketright exec $sc/in_order.sh push next
-        Ctrl+Bracketleft  exec $sc/in_order.sh push prev
-
-        Grave scratchpad show
-        Shift+Grave move window to scratchpad
-        }
-}
-
-bindsym $mod+Tab mode "workspace"
+bindsym $mod+Escape mode "normal"
