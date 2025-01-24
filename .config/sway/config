@@ -16,6 +16,8 @@ shadows enable
 shadows_on_csd enable
 shadow_color #00000060
 shadow_blur_radius 14
+blur_xray enable
+blur enable
 
 floating_modifier $mod
 
@@ -28,7 +30,7 @@ include ./color
 include ./displays
 include ./rules
 include ./workspaces
-include ./binds/binds
+include ./binds/*
 
 xwayland enable
 
