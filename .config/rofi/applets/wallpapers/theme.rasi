@@ -6,8 +6,8 @@ window {
     anchor: center;
     background-color: @bg0;
     children: [mainbox];
-    width: 48em;
-    height: 35em;
+    width: 60%;
+    height: 80%;
 }
 
 mainbox {
