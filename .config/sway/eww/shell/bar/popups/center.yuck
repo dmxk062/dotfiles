@@ -1,5 +1,6 @@
 (defvar center-popup-reveal false)
 (defvar center-popup-layer 0)
+(defpoll brightness :interval "2000h" "~/.config/sway/scripts/brightness.sh get")
 
 (defvar audio-popup-kind "out")
 
@@ -9,6 +10,7 @@
 "audio-headset": "audio-headset",
 "audio-headset-bluetooth": "audio-headphones",
 "audio-card-analog-pci": "audio-card",
+"audio-card-analog-usb": "audio-card",
 "audio-headset-analog-usb": "audio-headset",
 "speaker": "audio-speakers",
 "microphone": "audio-input-microphone"
@@ -24,38 +26,57 @@
 }
 }')
 
+;; (defwidget center-popup-content [icon value title text class]
+;;     (box :space-evenly false
+;;         (themed-icon
+;;             :width 48
+;;             :height 48
+;;             :name {icon})
+;;         (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
+;;             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+;;                 :style "font-size: 1.2rem; font-weight: bold;"
+;;                 :text {title}))
+;;             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+;;                 :text {text}
+;;                 :limit-width 24))
+;;             (box :space-evenly false :class "popup-slider ${class}"
+;;                 :value {value}))))
+
 (defwidget center-popup-audio []
     (box :space-evenly false
         (themed-icon 
             :width 48 :height 48
             :name {audio-icons[audio-popup-kind][audio[audio-popup-kind].icon]})
-        
-            (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
-                (box :halign "start" :hexpand true :space-evenly false (label :class "text" 
-                    :style "font-size: 1.2rem; font-weight: bold;"
-                    :text "Audio ${audio-popup-kind == "out" ? "Output" : "Input"}: ${audio[audio-popup-kind].vol}%"))
-                (box :halign "start" :hexpand true :space-evenly false (label :class "text"
-                    :text "${audio[audio-popup-kind].name}${audio[audio-popup-kind].mute ? " - muted" : ""}" :limit-width 24))
-                (box :space-evenly false (scale 
-                    :interactive false :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}"
-                    :value {audio[audio-popup-kind].vol})))))
+        (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
+            (box :halign "start" :hexpand true :space-evenly false (label :class "text" 
+                :style "font-size: 1.2rem; font-weight: bold;"
+                :text "Audio ${audio-popup-kind == "out" ? "Output" : "Input"}: ${audio[audio-popup-kind].vol}%"))
+            (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+                :text "${audio[audio-popup-kind].name}${audio[audio-popup-kind].mute ? " - muted" : ""}" :limit-width 24))
+            (box :space-evenly false (scale 
+                :interactive false :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}"
+                :value {audio[audio-popup-kind].vol})))))
 
-(defwidget center-popup-mpris []
+(defwidget center-popup-brightness []
     (box :space-evenly false
-        (image :path {mpris.art} :image-width 64 :image-height 64)
+        (themed-icon 
+            :width 48 :height 48
+            :name "display-brightness-${brightness > 70 ? "high" : (brightness > 30 ? "medium" : "low")}-symbolic")
         (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
-                :limit-width 24
                 :style "font-size: 1.2rem; font-weight: bold;"
-                :text "${mpris.title}"))
+                :text "Display Brightness: ${brightness}%"))
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
-                :text "${mpris.artist} - ${mpris.album}"))
-            (scale :interactive false :class "popup-slider" :value {mpris.progress * 100}))))
+                :text "Changes might take some time" :limit-width 24))
+            (box :space-evenly false (scale
+                :interactive false :class "popup-slider" 
+                :value brightness)))))
+
 
 (defwidget center-popup-content [] (revealer :reveal center-popup-reveal :transition "slidedown" (box (box :class "center-popup-box" :space-evenly false
     (stack :selected center-popup-layer
         (center-popup-audio)
-        (center-popup-mpris))))))
+        (center-popup-brightness))))))
 
 (defwindow center-popup 
     :monitor 0

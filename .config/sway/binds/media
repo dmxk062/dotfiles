@@ -17,20 +17,20 @@ bindsym --locked Mod1+Ctrl+XF86AudioLowerVolume exec $sc/audio_popup.sh DEFAULT_
 bindsym --locked Mod1+XF86AudioMute             exec $sc/audio_popup.sh DEFAULT_SOURCE mute
 
 # screen brightness
-bindsym --locked XF86MonBrightnessUp     exec $sc/bright_popup.sh raise 20
-bindsym --locked XF86MonBrightnessDown   exec $sc/bright_popup.sh lower 20
-bindsym --locked Ctrl+XF86MonBrightnessUp     exec $sc/bright_popup.sh raise 50
-bindsym --locked Ctrl+XF86MonBrightnessDown   exec $sc/bright_popup.sh lower 50
-bindsym --locked Mod4+XF86MonBrightnessUp     exec $sc/bright_popup.sh raise 100
-bindsym --locked Mod4+XF86MonBrightnessDown   exec $sc/bright_popup.sh lower 100
+bindsym --locked XF86MonBrightnessUp     exec $sc/brightness.sh set +5
+bindsym --locked XF86MonBrightnessDown   exec $sc/brightness.sh set -5
+bindsym --locked Ctrl+XF86MonBrightnessUp     exec $sc/brightness.sh set +20
+bindsym --locked Ctrl+XF86MonBrightnessDown   exec $sc/brightness.sh set -20
+bindsym --locked Mod4+XF86MonBrightnessUp     exec $sc/brightness.sh set +50
+bindsym --locked Mod4+XF86MonBrightnessDown   exec $sc/brightness.sh set -50
 
 # media players
 bindsym --locked XF86AudioPlay exec playerctl play-pause
 bindsym --locked Shift+XF86AudioNext exec playerctl next
 bindsym --locked Shift+XF86AudioPrev exec playerctl prev
 bindsym --locked Shift+XF86AudioPlay exec playerctld shift
-bindsym --locked XF86AudioNext exec playerctl position 5+&&$pop mpris 1
-bindsym --locked XF86AudioPrev exec playerctl position 5-&&$pop mpris 1
+bindsym --locked XF86AudioNext exec playerctl position 5+
+bindsym --locked XF86AudioPrev exec playerctl position 5-
 
 bindsym $mod+XF86AudioMute exec ~/.config/rofi/applets/mute/run.sh
 

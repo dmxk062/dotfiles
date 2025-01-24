@@ -20,6 +20,7 @@
             :max {max?:100}
             :active false
             :value {value}
+            :interactive false
             :class "perf-scale-${class?: (temp > 70 ? "critical" 
                 : (temp > 60 ? "hot" 
                 : (temp > 50 ? "warm" 
@@ -45,7 +46,7 @@
             (colored-scale 
                 :class "mem" 
                 :value {EWW_RAM.used_mem_perc}
-                :left "RAM: ${round(EWW_RAM.used_mem_perc, 1)}%"
+                :left "MEM: ${round(EWW_RAM.used_mem_perc, 1)}%"
                 :right "${round(EWW_RAM.used_mem / mem-gb, 1)}GB / ${round(EWW_RAM.total_mem / mem-gb, 1)}GB")
             (colored-scale 
                 :class "net-up"

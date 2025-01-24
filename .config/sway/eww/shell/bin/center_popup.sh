@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 EWW="$XDG_CONFIG_HOME/sway/eww/shell"
 
+time="${3:-1}"
 if [[ "$1" == "audio" ]]; then
     eww -c "$EWW" update center-popup-reveal=true audio-popup-kind="$2" center-popup-layer=0
 else
@@ -15,7 +16,7 @@ else
     eww -c "$EWW" open center-popup --screen "$(swaymsg -t get_outputs |jq -r '.[]|select(.focused).name')"
 fi
 echo $$ > "$PIDFILE"
-sleep 1
+sleep $time
 
 eww -c "$EWW" update center-popup-reveal=false
 sleep 0.5
