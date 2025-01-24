@@ -38,28 +38,41 @@
                     {perf-revealed ? "" : "" })))))
 
 (defpoll service-blueman :run-while perf-revealed :interval "20m"
-    "pgrep blueman-applet >/dev/null && echo true || echo false")
+    `pgrep blueman-applet -d " "`)
 (defpoll service-networkmanager :run-while perf-revealed :interval "20m"
-    "pgrep nm-applet >/dev/null && echo true || echo false")
+    `pgrep nm-applet -d " "`)
 (defpoll service-fcitx5 :run-while perf-revealed :interval "20m"
-    "pgrep fcitx5 >/dev/null && echo true || echo false")
+    `pgrep fcitx5 -d " "`)
 (defpoll service-autotile :run-while perf-revealed :interval "20m"
     `pgrep -f 'python.*layout.py' -d " "`)
 
+(defwidget pid-toggle [pid command var text]
+    (box :space-evenly false :halign "start" :style "margin-left: 1rem; padding: .2rem;"
+        (checkbox :checked {pid != ""}
+            :timeout "16s"
+            :onunchecked "kill ${pid}; ${EWW_CMD} update ${var}=''"
+            :onchecked "${command}& ${EWW_CMD} update ${var}=$!")
+        (label :class "text" :text {text})))
+
 (defwidget tray-processes []
-    (box :space-evenly false :orientation "vertical"
-        (box
-            (button :class "cbutton ${service-blueman ? "active" : ""}"
-                :onclick "killall blueman-applet && ${EWW_CMD} update service-blueman=false || { ${EWW_CMD} update service-blueman=true; blueman-applet& }"
-                "${service-blueman ? "" : ""}   Blueman Applet")
-            (button :class "cbutton ${service-networkmanager ? "active" : ""}"
-                :onclick "killall nm-applet && ${EWW_CMD} update service-networkmanager=false || { ${EWW_CMD} update service-networkmanager=true; nm-applet& }"
-                "${service-networkmanager ? "" : ""}   NM Applet"))
-        (box 
-            (button :class "cbutton ${service-fcitx5 ? "active" : ""}"
-                :onclick "killall fcitx5 && ${EWW_CMD} update service-fcitx5=false || { ${EWW_CMD} update service-fcitx5=true; fcitx5& }"
-                "${service-fcitx5 ? "" : ""}   fcitx5 IME")
-            (button :class "cbutton ${service-autotile != "" ? "active" : ""}"
-                :timeout "128s"
-                :onclick `kill ${service-autotile} && ${EWW_CMD} update service-autotile="" || { ~/.config/sway/scripts/layout.py& ${EWW_CMD} update service-autotile=$!; }`
-                {service-autotile != "" ? "󰙀    Autotiling" : "󰆾    Manual Tiling"}))))
+    (box :space-evenly false :orientation "vertical" :class "section" :style "padding: .8rem;"
+        (pid-toggle 
+            :pid service-blueman 
+            :var "service-blueman" 
+            :command "blueman-applet" 
+            :text "Blueman Applet")
+        (pid-toggle 
+            :pid service-networkmanager
+            :var "service-networkmanager"
+            :command "nm-applet"
+            :text "Networkmanager Applet")
+        (pid-toggle 
+            :pid service-fcitx5
+            :var "service-fcitx5"
+            :command "fcitx5"
+            :text "fcitx5 IME")
+        (pid-toggle
+            :pid service-autotile
+            :var "service-autotile"
+            :command "~/.config/sway/scripts/layout.py"
+            :text "Autotiling")))
