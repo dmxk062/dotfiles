@@ -11,10 +11,10 @@
 
 (defwidget right-box []
     (box :space-evenly false :halign "end"
-    (systray :class "tray-box")
-    (recording-indicator)
-    (mpris)
-    (clock)))
+        (systray :class "tray-box")
+        (recording-indicator)
+        (mpris)
+        (clock)))
 
 (defwidget top-bar []
     (centerbox :class "top-bar"
