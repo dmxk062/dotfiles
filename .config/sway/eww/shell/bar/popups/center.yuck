@@ -26,6 +26,10 @@
 }
 }')
 
+(defvar audio-icon-defaults '{
+"in":"audio-input-microphone",
+"out":"audio-speakers" }')
+
 ;; (defwidget center-popup-content [icon value title text class]
 ;;     (box :space-evenly false
 ;;         (themed-icon
@@ -46,7 +50,7 @@
     (box :space-evenly false
         (themed-icon 
             :width 48 :height 48
-            :name {audio-icons[audio-popup-kind][audio[audio-popup-kind].icon]})
+            :name {audio-icons[audio-popup-kind][audio[audio-popup-kind].icon]?: audio-icon-defaults[audio-popup-kind]})
         (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
             (box :halign "start" :hexpand true :space-evenly false (label :class "text" 
                 :style "font-size: 1.2rem; font-weight: bold;"
