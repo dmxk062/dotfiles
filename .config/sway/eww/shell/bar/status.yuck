@@ -1,5 +1,7 @@
 (defvar recording false)
 (defvar recording-info '{"start": 0, "pid": 0, "path": ""}')
+(defvar bat-discharging '[ "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" ]' )
+(defvar bat-charging '[ "󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅" ]' )
 
 (defwidget status []
     (box :class "button" :space-evenly false :spacing 8
@@ -25,6 +27,10 @@
                 : (wifi.signal > 60 ? "󰤥"
                 : (wifi.signal > 40 ? "󰤢"
                 : (wifi.signal > 20 ? "󰤟" : "󰤯"))))) : "󰤯"})
+        (revealer :reveal {EWW_BATTERY != ""} :visible {EWW_BATTERY != ""}
+            (label  :style "margin-left: .5rem;"
+                :class {EWW_BATTERY["BAT0"].capacity < 20 ? "red" : ""}
+                :text "${EWW_BATTERY["BAT0"].status == "Discharging" ? (bat-discharging[(EWW_BATTERY["BAT0"].capacity - EWW_BATTERY["BAT0"].capacity % 10)/10]) : (bat-charging[(EWW_BATTERY["BAT0"].capacity - EWW_BATTERY["BAT0"].capacity % 10)/10])}   ${EWW_BATTERY["BAT0"].capacity}%"))
         (revealer :reveal recording :transition "slideright" :visible recording
             (button :class "red" :style "min-width: 4rem; margin-left: .5rem;"
                 :onclick "kill ${recording-info.pid}"
