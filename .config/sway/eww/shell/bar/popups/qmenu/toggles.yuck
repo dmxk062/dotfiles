@@ -37,20 +37,20 @@
                     :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
                     {perf-revealed ? "" : "" })))))
 
-(defpoll service-blueman :run-while perf-revealed :interval "20m"
-    `pgrep blueman-applet -d " "`)
-(defpoll service-networkmanager :run-while perf-revealed :interval "20m"
-    `pgrep nm-applet -d " "`)
-(defpoll service-fcitx5 :run-while perf-revealed :interval "20m"
-    `pgrep fcitx5 -d " "`)
-(defpoll service-autotile :run-while perf-revealed :interval "20m"
-    `pgrep -f 'python.*layout.py' -d " "`)
+(defpoll service-blueman :run-while {perf-revealed} :interval "20m"
+    `pgrep blueman-applet -d " "||true`)
+(defpoll service-networkmanager :run-while {perf-revealed} :interval "20m"
+    `pgrep nm-applet -d " "||true`)
+(defpoll service-fcitx5 :run-while {perf-revealed} :interval "20m"
+    `pgrep fcitx5 -d " "||true`)
+(defpoll service-autotile :run-while {perf-revealed} :interval "20m"
+    `pgrep -f 'python.*layout.py' -d " "||true`)
 
 (defwidget pid-toggle [pid command var text]
     (box :space-evenly false :halign "start" :style "margin-left: 1rem; padding: .2rem;"
         (checkbox :checked {pid != ""}
             :timeout "16s"
-            :onunchecked "kill ${pid}; ${EWW_CMD} update ${var}=''"
+            :onunchecked "kill ${pid}&& ${EWW_CMD} update ${var}=''"
             :onchecked "${command}& ${EWW_CMD} update ${var}=$!")
         (label :class "text" :text {text})))
 

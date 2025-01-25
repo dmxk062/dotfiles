@@ -28,7 +28,7 @@
         :timeout "16s"
         (label :limit-width 12
             :text "${(bt-meta.powered && !rfkill.bluetooth) ? "󰂯" : "󰂲"}   ${num-connected == 1 ? bt-devices[0].alias 
-            : (num-connected == 0 ? (rfkill.bluetooth ? "Blocked" : "Bluetooth") : "${bt-devices[0].alias}...")}"))
+            : (num-connected == 0 ? (rfkill.bluetooth ? "Blocked" : "Bluetooth") : "${bt-devices?.[0]?.alias?:""}...")}"))
     (button 
         :onclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
         {bt-revealed ? "" : "" })))
@@ -63,7 +63,7 @@
                     (box :space-evenly false
                         (box :hexpand true :halign "start"
                             (themed-icon :name {dev.icon?:"bluetooth"} :width 48 :height 48)
-                            (circular-progress :visible {(dev.battery?:-1) > 0} :thickness 6 :value {dev.battery?:0}
+                            (circular-progress :visible {(dev.battery) > 0} :thickness 6 :value {dev.battery}
                                 :class "battery-circle-${dev.battery < 20 ? "critical" 
                                 : (dev.battery < 40 ? "low" 
                                 : (dev.battery < 80 ? "medium" : "high"))}"

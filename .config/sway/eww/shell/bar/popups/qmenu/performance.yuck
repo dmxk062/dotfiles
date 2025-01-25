@@ -20,7 +20,6 @@
             :max {max?:100}
             :active false
             :value {value}
-            :interactive false
             :class "perf-scale-${class?: (temp > 70 ? "critical" 
                 : (temp > 60 ? "hot" 
                 : (temp > 50 ? "warm" 
@@ -40,8 +39,8 @@
                 :right "${EWW_TEMPS[cpu-sensor]}°C")
             (colored-scale
                 :temp {EWW_TEMPS[gpu-sensor]} 
-                :value {perf-gpu.usage}
-                :left "GPU: ${perf-gpu.usage}%"
+                :value {perf-gpu?.usage?:0}
+                :left "GPU: ${perf-gpu?.usage?:"…"}%"
                 :right "${EWW_TEMPS[gpu-sensor]}°C")
             (colored-scale 
                 :class "mem" 

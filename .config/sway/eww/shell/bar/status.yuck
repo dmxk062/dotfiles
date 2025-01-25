@@ -3,9 +3,14 @@
 (defvar bat-discharging '[ "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" ]' )
 (defvar bat-charging '[ "󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅" ]' )
 
+(defwidget status-battery [bat]
+    (revealer :reveal {bat.capacity >= 0} :visible {bat.capacity >= 0}
+            (label :style "margin-left: .5rem;"
+                :class {bat.capacity < 20 ? "red" : ""}
+                :text "${bat.status == "Discharging" ? (bat-discharging[(bat.capacity - bat.capacity % 10)/10]) : (bat-charging[(bat.capacity - bat.capacity % 10)/10])}  ${bat.capacity}%")))
+
 (defwidget status []
     (box :class "button" :space-evenly false :spacing 8
-        
         (button
             :onclick "pamixer -t"
             :tooltip "${audio.out.name}: ${audio.out.vol}%"
@@ -27,10 +32,8 @@
                 : (wifi.signal > 60 ? "󰤥"
                 : (wifi.signal > 40 ? "󰤢"
                 : (wifi.signal > 20 ? "󰤟" : "󰤯"))))) : "󰤯"})
-        (revealer :reveal {EWW_BATTERY != ""} :visible {EWW_BATTERY != ""}
-            (label  :style "margin-left: .5rem;"
-                :class {EWW_BATTERY["BAT0"].capacity < 20 ? "red" : ""}
-                :text "${EWW_BATTERY["BAT0"].status == "Discharging" ? (bat-discharging[(EWW_BATTERY["BAT0"].capacity - EWW_BATTERY["BAT0"].capacity % 10)/10]) : (bat-charging[(EWW_BATTERY["BAT0"].capacity - EWW_BATTERY["BAT0"].capacity % 10)/10])}   ${EWW_BATTERY["BAT0"].capacity}%"))
+        (status-battery :bat {EWW_BATTERY?.["BAT0"]?: `{"status": "Discharging", "capacity": -1}`})
+        
         (revealer :reveal recording :transition "slideright" :visible recording
             (button :class "red" :style "min-width: 4rem; margin-left: .5rem;"
                 :onclick "kill ${recording-info.pid}"

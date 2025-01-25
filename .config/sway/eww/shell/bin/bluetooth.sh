@@ -29,7 +29,7 @@ function list_devices {
         [[ "$blocked" == "yes" ]]&&blocked=true||blocked=false
 
         if [[ -z "$battery" || "$connected" == false ]]; then
-            battery=null
+            battery=-1
         fi
 
         printf -v buffer '%s{"mac":"%s","name":"%s","alias":"%s","icon":"%s","connected":%s,"paired":%s,"trusted":%s,"blocked":%s,"battery":%s}' \
