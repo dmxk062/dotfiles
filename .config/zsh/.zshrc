@@ -44,7 +44,7 @@ source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 # fish-like suggestions
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 zvm_bindkey viins '^ ' autosuggest-accept
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_STRATEGY=(completion history)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
@@ -60,10 +60,10 @@ bindkey '^Z' push-line
 
 # semi lazily generate and load colors for ls etc
 if [[ -z "$LS_COLORS" ]]; then
-    color_cache="$ZCACHEDIR/${KITTY_THEME}_theme"
+    color_cache="$ZCACHEDIR/ls_colors"
     if [[ ! -f "$color_cache" ]]; then
         print -n "export LS_COLORS='" > "$color_cache"
-        vivid generate "$XDG_CONFIG_HOME/vivid/themes/${KITTY_THEME}nord.yaml" >> "$color_cache"
+        vivid generate "$XDG_CONFIG_HOME/vivid/themes/nord.yaml" >> "$color_cache"
         print -n "'" >> "$color_cache"
     fi
     source "$color_cache"
@@ -83,9 +83,9 @@ function __complete_galias {
 
 #completion opts
 zstyle ':completion:*' completer __complete_galias _complete _expand _approximate
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} "ma=;1"
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} "ma=100;94"
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' menu select=-1
+zstyle ':completion:*' menu select=1
 zstyle ':completion:*' select-prompt"%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' list-prompt "%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' verbose false

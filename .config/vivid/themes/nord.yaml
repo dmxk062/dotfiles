@@ -1,0 +1,140 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/sharkdp/vivid/refs/heads/master/schemas/theme.json
+
+colors:
+  black: '2e3440'         # #2e3440
+  dark_gray: '3b4252'     # #3b4252
+  gray: '434c5e'          # #434c5e
+  light_gray: '4c566a'    # #4c566a
+  bright_gray: '616e88'   # #616e88
+
+  darkest_white: 'd8dee9' # #d8dee9
+  dark_white: 'e5e9f0'    # #e5e9f0
+  white: 'eceff4'         # #eceff4
+
+  teal: '8fbcbb'          # #8fbcbb
+  lcyan: '88c0d0'         # #88c0d0
+  lblue: '81a1c1'         # #81a1c1
+  blue: '5e81ac'          # #5e81ac
+  red: 'bf616a'           # #bf616a
+  orange: 'd08770'        # #d08770
+  yellow: 'ebcb8b'        # #ebcb8b
+  green: 'a3be8c'         # #a3be8c
+  pink: 'c5b6cb'          # #c5b6cb
+  magenta: 'b48ead'       # #b48ead
+  purple: '9a8aac'        # #9a8aac
+
+core:
+  normal_text:
+    foreground: white
+
+  regular_file: {}
+
+  reset_to_normal:
+    foreground: white
+
+  directory:
+    foreground: teal
+    font-style: bold
+
+  executable_file:
+    foreground: green
+    font-style: bold
+
+  file_with_capability:
+    foreground: orange
+
+  setuid:
+    foreground: red
+    font-style: italic
+
+  setgid:
+    foreground: red
+    font-style: italic
+  
+  sticky:
+    foreground: blue
+    font-style: italic
+
+  sticky_other_writable:
+    foreground: lblue
+    font-style: italic
+
+  other_writable:
+    foreground: teal
+    font-style: italic
+
+  symlink:
+    foreground: blue
+
+  broken_symlink:
+    foreground: red
+    font-style: italic
+
+  missing_symlink_target:
+    foreground: bright_gray
+
+  multi_hard_link: {}
+
+  socket:
+    foreground: magenta
+
+  fifo: 
+    foreground: yellow
+
+  door:
+    foreground: pink
+
+  block_device:
+    foreground: yellow
+    font-style: bold
+    background: light_gray
+
+  character_device:
+    foreground: green
+    font-style: bold
+    background: light_gray
+
+executable:
+  foreground: green
+
+archives:
+  foreground: orange
+  background: light_gray
+
+media:
+  audio:
+    foreground: lblue
+  image:
+    foreground: pink
+  video:
+    foreground: yellow
+  fonts:
+    foreground: purple
+  3d:
+    foreground: orange
+
+office:
+  foreground: darkest_white
+
+text:
+  foreground: white
+  configuration:
+    foreground: purple
+    font-style: italic
+  licenses:
+    foreground: pink
+  special:
+    foreground: magenta
+  todo:
+    foreground: magenta
+
+markup:
+  foreground: white
+
+programming:
+  foreground: white
+  source:
+    foreground: lblue
+
+unimportant:
+  foreground: bright_gray
