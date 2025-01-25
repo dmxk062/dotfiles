@@ -12,6 +12,7 @@ from gi.repository import Gtk
 REGEX_NAMES = [
     ("^Minecraft.*", "minecraft"),
     ("^nv:.*", "neovim"),
+    ("^qalc$", "qalculator"),
 ]
 
 CLASS_OVERRIDES = {

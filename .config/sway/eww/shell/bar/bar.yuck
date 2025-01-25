@@ -2,9 +2,9 @@
 
 (include "./bar/popups/qmenu/menu.yuck")
 (include "./bar/workspace.yuck")
-(include "./bar/mpris.yuck")
+(include "./bar/status.yuck")
 (include "./bar/mode.yuck")
-(include "./bar/recording.yuck")
+(include "./bar/mpris.yuck")
 (include "./bar/notifications.yuck")
 (include "./bar/clock.yuck")
 
@@ -12,8 +12,8 @@
 (defwidget right-box []
     (box :space-evenly false :halign "end"
         (systray :class "tray-box")
-        (recording-indicator)
-        (mpris)
+        (mpris-current)
+        (status)
         (clock)))
 
 (defwidget top-bar []

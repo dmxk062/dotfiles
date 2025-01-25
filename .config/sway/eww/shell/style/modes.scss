@@ -20,8 +20,9 @@
 
 .mode-screenshot {
     @extend .mode;
-    background-color: $dblue;
-    &:hover { background-color: fade($dblue); }
+    background-color: $lblue;
+    color: $inv;
+    &:hover { background-color: fade($lblue); }
 }
 
 .mode-config {

@@ -1,12 +1,10 @@
 (deflisten mpris "./bin/mpris.py")
 
-(defwidget mpris []
-        (eventbox
-            :onscroll `[[ {} == up ]] && playerctl position 5+ || playerctl position 5-`
-            (button
-                :class "mpris-${mpris.playing ? "playing" : "paused"}"
-                :onclick "playerctl play-pause"
-                (label :limit-width 16
-                    :text {mpris.has_player ?
-                    "${mpris.title}"
-                    : "No Player"}))))
+(defwidget mpris-current []
+    (revealer :reveal {mpris.has_player} :transition "slideright"
+        (button :class "button ${mpris.playing ? "mpris-playing" : ""}"
+            :onclick "playerctl play-pause"
+            :tooltip "${mpris.title} in ${mpris.player}"
+            (label 
+                :limit-width 12
+                :text "${mpris.playing ? "󰐊" : "󰏤"}   ${mpris.title?: "No Player"}"))))

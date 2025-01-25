@@ -1,12 +1,8 @@
-.mpris-playing, .mpris-paused, .mpris-stopped, .mpris-name {
-    @extend .button;
-}
-
 .mpris-playing {
-    background-color: $pink;
+    background: linear-gradient(to right, $lblue, $pink);
     color: $inv;
     &:hover {
-        background-color: fade($pink);
+        background: linear-gradient(to right, fade($lblue), fade($pink));
     }
 }
 
