@@ -1,7 +1,8 @@
+# colors {{{
 set completion-bg "#2e3440"
 set completion-fg "#eceff4"
 set completion-group-bg "#2e3440"
-set completion-group-fg "#d08770"
+set completion-group-fg "#b48ead"
 set completion-highlight-bg "#8fbcbb"
 set completion-highlight-fg "#2e3440"
 set default-fg "#eceff4"
@@ -16,10 +17,10 @@ set notification-warning-bg "#2e3440"
 set notification-warning-fg "#d08770"
 set statusbar-bg "#2e3440"
 set statusbar-fg "#eceff4"
-set highlight-color rgba(59,66,82,0.2)
-set highlight-active-color rgba(180,142,173,0.4)
-set recolor-darkcolor "#2e3440"
-set recolor-lightcolor "#eceff4"
+set highlight-color rgba(70,86,106,0.6)
+set highlight-active-color rgba(143,188,187,0.4)
+set recolor-darkcolor "#eceff4"
+set recolor-lightcolor "#2e3440"
 set render-loading-bg "#2e3440"
 set render-loading-fg "#eceff4"
 set statusbar-home-tilde true
@@ -29,8 +30,17 @@ set index-fg "#eceff4"
 set index-bg "#3b4252"
 set index-active-fg "#8fbcbb"
 set index-active-bg "#3b4252"
+# }}}
+
+# mappings {{{
 map <C-r> rotate rotate-ccw
 map <C-m> mark_add
 map <C-M> mark_evaluate
 map <C-l> nohlsearch
+map i recolor
+# }}}
+
+# options {{{
 set font "FiraCode Nerd Font Mono, 10"
+set show-recent 0 # annoying
+# }}}
