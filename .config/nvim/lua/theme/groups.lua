@@ -478,9 +478,9 @@ add_with_prefix(colorscheme, "Lsp", {
     InlayHint      = { fg = col.bright_gray, italic = true },
     InfoBorder     = { fg = pal.bg3 },
     StaticMethod   = { fg = col.magenta },
-    ReferenceText  = { fg = pal.fg2, bg = pal.bg1 },
-    ReferenceRead  = { fg = pal.fg2, bg = pal.bg1 },
-    ReferenceWrite = { fg = pal.fg2, bg = pal.bg1 },
+    ReferenceText  = { link = "Substitute" },
+    ReferenceRead  = { link = "Substitute" },
+    ReferenceWrite = { link = "Substitute" },
 })
 
 add_with_prefix(colorscheme, "Diagnostic", {

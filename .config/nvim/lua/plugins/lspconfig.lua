@@ -58,18 +58,62 @@ M.config = function()
         callback = function(opts)
             local map = utils.local_mapper(opts.buf)
             map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
-            map("n", "<space>r", vim.lsp.buf.rename)
+
+            -- much nicer rename that edits directly in the buffer
+            map("n", "<space>r", function()
+                local old_name = vim.fn.expand("<cword>")
+                vim.lsp.buf.document_highlight()              -- start highlighting words that will be renamed
+                vim.cmd("normal! viw" .. vim.keycode "<C-g>") -- select current word
+                vim.api.nvim_create_autocmd("ModeChanged", {  -- wait for renamed word
+                    buffer = vim.api.nvim_get_current_buf(),
+                    callback = function()
+                        local old, new = vim.v.event["old_mode"], vim.v.event["new_mode"]
+                        -- abort if stopped in replace
+                        if (old == "s" and new ~= "i") then
+                            vim.lsp.buf.clear_references()
+                            return true
+                        end
+
+                        -- a mode change we dont need to care about
+                        if not (old == "i") then
+                            return
+                        end
+
+                        local istart, istop = vim.api.nvim_buf_get_mark(0, "["), vim.api.nvim_buf_get_mark(0, "]")
+                        local new_name = vim.api.nvim_buf_get_text(0,
+                            istart[1] - 1, istart[2],
+                            istop[1] - 1, istop[2],
+                            {})[1]
+                        if new_name == old_name then
+                            return true
+                        end
+
+                        -- HACK/TODO: vim.lsp.buf.rename only does cword modifications
+                        -- FIXME: this will ofc not work if a new undo sequence is started
+                        -- setting the buffer text does not overwrite the undo point though
+                        vim.cmd.undo()
+                        vim.lsp.buf.clear_references() -- clear highlighting
+
+                        vim.lsp.buf.rename(new_name)
+                        return true
+                    end
+                })
+            end)
 
             map("n", "gr", require("telescope.builtin").lsp_references)
             map("n", "gd", require("telescope.builtin").lsp_definitions)
-            map("n", "<C-w>gd", "<C-w>v<C-]>")
+            map("n", "<C-w>gd", function()
+                vim.cmd.wincmd("v")
+                vim.lsp.buf.definition { reuse_win = false }
+            end)
             map("n", "gi", require("telescope.builtin").lsp_implementations)
 
             vim.api.nvim_buf_create_user_command(opts.buf, "InlayHint", function(args)
-                if args.fargs[1] then
-                    if args.fargs[1] == "on" then
+                local cmd = args.fargs[1]
+                if cmd then
+                    if cmd == "on" then
                         vim.lsp.inlay_hint.enable(true)
-                    elseif args.fargs[1] == "off" then
+                    elseif cmd == "off" then
                         vim.lsp.inlay_hint.enable(false)
                     end
                 else
