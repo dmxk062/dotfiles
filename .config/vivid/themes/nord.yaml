@@ -135,6 +135,10 @@ programming:
   foreground: white
   source:
     foreground: lblue
+    sass: 
+      foreground: purple
+    css:
+      foreground: purple
 
 unimportant:
   foreground: bright_gray
