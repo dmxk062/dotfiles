@@ -85,7 +85,7 @@ function __complete_galias {
 zstyle ':completion:*' completer __complete_galias _complete _expand _approximate
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} "ma=100;94"
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' menu select=1
+zstyle ':completion:*' menu select=30
 zstyle ':completion:*' select-prompt"%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' list-prompt "%B%F{cyan}%S %l%s%f%b"
 zstyle ':completion:*' verbose false
