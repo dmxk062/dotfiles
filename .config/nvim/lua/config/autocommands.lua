@@ -1,4 +1,6 @@
 local autocmd = vim.api.nvim_create_autocmd
+
+-- window title {{{
 -- change the title in a more intelligent way
 autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
     callback = function(args)
@@ -38,9 +40,11 @@ autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
         vim.o.titlestring = "nv: " .. path
     end
 })
-
 vim.o.titlestring = "nv: NeoVIM" -- set initial
 
+-- }}}
+
+-- mode based linenumber {{{
 -- change line number based on mode:
 -- for command mode: make it absolute for ranges etc
 -- for normal mode: relative movements <3
@@ -75,10 +79,11 @@ autocmd("CmdlineLeave", {
     end
 })
 
+-- }}}
 
--- sane defaults for terminal mode
+-- sane defaults for terminal mode {{{
 autocmd("TermOpen", {
-    callback = function(ev)
+    callback = function()
         vim.wo[0][0].number = false
         vim.wo[0][0].relativenumber = false
         vim.wo[0][0].statuscolumn = ""
@@ -88,28 +93,42 @@ autocmd("TermOpen", {
     end
 })
 
+-- enter the terminal by default
+autocmd("WinEnter", {
+    callback = function(ev)
+        if vim.bo[ev.buf].buftype == "terminal" then
+            vim.cmd.startinsert()
+        end
+    end
+})
+-- }}}
+
+-- smarter :h 'autocd' {{{
 -- when opening a file, automatically lcd to its git repo ancestor
 -- if already in a repo, behave somewhat like autocd
+
 autocmd("BufReadPost", {
     callback = function(ev)
         if vim.bo[ev.buf].filetype == "help" then
             return
         end
+
         local path = vim.api.nvim_buf_get_name(ev.buf)
         local git_root = vim.fs.root(path, ".git")
         local pwd = vim.fn.getcwd()
-        if not git_root or not vim.startswith(pwd, git_root) then
+        if git_root and not vim.startswith(pwd, git_root) then
             vim.cmd.lcd(git_root)
         else
             vim.cmd.lcd(vim.fn.expand("%:p:h"))
         end
     end
 })
+-- }}}
 
 -- auto resize on window resize
 -- TODO: add actual heuristics for what to do
 autocmd("VimResized", {
-    callback = function(ev)
+    callback = function()
         vim.cmd.wincmd("=")
     end
 })
@@ -118,14 +137,5 @@ autocmd("VimResized", {
 autocmd("TextYankPost", {
     callback = function(ev)
         vim.highlight.on_yank { timeout = 120, higroup = "Yanked" }
-    end
-})
-
--- treat terminal buffers as terminals by default
-autocmd("WinEnter", {
-    callback = function(ev)
-        if vim.bo[ev.buf].buftype == "terminal" then
-            vim.cmd.startinsert()
-        end
     end
 })
