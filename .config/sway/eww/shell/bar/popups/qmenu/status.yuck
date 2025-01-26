@@ -52,7 +52,7 @@
                     :timeout "300s"
                     :tooltip "${formattime(mpris.position?:0, "%M:%S", "UTC")} / ${formattime(mpris.length?:0, "%M:%S", "UTC")}"
                     :class "mpris-seek-bar" 
-                    :value {mpris.progress?:0 * 100} :min 0 :max 100)))))))
+                    :value {(mpris.progress?:0) * 100} :min 0 :max 100)))))))
 
 (defwidget status-panel []
     (box :space-evenly false :orientation "vertical" 
