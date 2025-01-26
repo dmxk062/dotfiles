@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
 EWW="$XDG_CONFIG_HOME/sway/eww/shell"
-
 time="${3:-1}"
-if [[ "$1" == "audio" ]]; then
-    eww -c "$EWW" update center-popup-reveal=true audio-popup-kind="$2" center-popup-layer=0
-else
-    eww -c "$EWW" update center-popup-reveal=true center-popup-layer="$2"
+
+if [[ "$1" != close ]]; then
+    if [[ "$1" == "audio" ]]; then
+        eww -c "$EWW" update center-popup-reveal=true audio-popup-kind="$2" center-popup-layer=0
+    else
+        eww -c "$EWW" update center-popup-reveal=true center-popup-layer="$2"
+    fi
 fi
 
+
 PIDFILE="/tmp/.eww_popup"
-if [[ -f "$PIDFILE" ]]; then
-    kill "$(< $PIDFILE)"
-    rm "$PIDFILE"
+if [[ -f "$PIDFILE" ]] && kill "$(< "$PIDFILE")"; then
+    true
 else
     eww -c "$EWW" open center-popup --screen "$(swaymsg -t get_outputs |jq -r '.[]|select(.focused).name')"
 fi
+rm "$PIDFILE" -f
 echo $$ > "$PIDFILE"
 sleep $time
 
