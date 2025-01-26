@@ -13,12 +13,11 @@ fi
 
 PIDFILE="/tmp/.eww_popup"
 if [[ -f "$PIDFILE" ]] && kill "$(< "$PIDFILE")"; then
-    true
+    rm "$PIDFILE" -f
 else
     eww -c "$EWW" open center-popup --screen "$(swaymsg -t get_outputs |jq -r '.[]|select(.focused).name')"
+    echo $$ > "$PIDFILE"
 fi
-rm "$PIDFILE" -f
-echo $$ > "$PIDFILE"
 sleep $time
 
 eww -c "$EWW" update center-popup-reveal=false
