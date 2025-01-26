@@ -119,7 +119,7 @@ autocmd("BufReadPost", {
         if git_root and not vim.startswith(pwd, git_root) then
             vim.cmd.lcd(git_root)
         else
-            vim.cmd.lcd(vim.fn.expand("%:p:h"))
+            pcall(vim.cmd.lcd, vim.fn.expand("%:p:h"))
         end
     end
 })
