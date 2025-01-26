@@ -26,7 +26,7 @@ local snippets_for_ft = {
             body = function() return os.date("%Y-%m-%dT%M:%S") end
         },
         ["fold"] = {
-            body = function() 
+            body = function()
                 local fmarker = vim.split(vim.wo.foldmarker, ",")
                 local commentstring = vim.bo.commentstring ~= "" and vim.bo.commentstring or "%s"
                 local comment_start = string.format(commentstring, "${1:label} " .. fmarker[1])
@@ -53,8 +53,8 @@ local snippets_for_ft = {
                 return string.format("#ifndef ${1:%s}\n#define ${1}\n\n$0\n\n#endif", default)
             end
         },
-        ["attr_packed"] = {
-            body = "__attribute__((packed))"
+        ["attr"] = {
+            body = "__attribute__((${1:packed}))"
         },
     },
     python = {
