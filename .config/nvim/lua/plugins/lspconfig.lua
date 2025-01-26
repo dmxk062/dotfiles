@@ -240,7 +240,7 @@ M.config = function()
         filetypes = { 'haskell', 'lhaskell', 'cabal' },
     }
     -- dont need anything special from those *yet*
-    for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff", "taplo", }) do
+    for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff", "taplo", "yamlls", }) do
         lspconfig[lsp].setup {
             capabilities = capabilities
         }
