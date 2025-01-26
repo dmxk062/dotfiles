@@ -26,6 +26,7 @@
             :tooltip "${vpn.active ? "Connected via `${vpn.name}`" : "No VPN active"}"
             :text {vpn.active ? "󰒄" : "󰀑"})
         (label
+            :visible {wifi.powered}
             :tooltip {wifi.connected ? "Connected to ${wifi.ssid}" : "No Connection"}
             :text {wifi.connected ? (wifi.signal > 80 ? "󱛎"
             : (wifi.signal > 80 ? "󰤨"
