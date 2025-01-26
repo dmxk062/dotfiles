@@ -137,7 +137,7 @@ M.config = function()
                 ["gd"]        = "n",
                 ["<C-w>gd"]   = "n",
                 ["gi"]        = "n",
-                ["<space>rn"] = "n",
+                ["<space>r"]  = "n",
             } do
                 pcall(utils.lunmap, opts.buf, mode, mapping)
             end
