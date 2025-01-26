@@ -44,35 +44,36 @@
 (defpoll service-fcitx5 :run-while {perf-revealed} :interval "20m"
     `pgrep fcitx5 -d " "||true`)
 (defpoll service-autotile :run-while {perf-revealed} :interval "20m"
-    `pgrep -f 'python.*layout.py' -d " "||true`)
+    `pgrep -f 'python.*layout.py' -d " "`)
 
-(defwidget pid-toggle [pid command var text]
+(defwidget pid-toggle [pids command var text]
     (box :space-evenly false :halign "start" :style "margin-left: 1rem; padding: .2rem;"
-        (checkbox :checked {pid != ""}
+        (checkbox :checked {pids != ""}
             :timeout "16s"
-            :onunchecked "kill ${pid}&& ${EWW_CMD} update ${var}=''"
-            :onchecked "${command}& ${EWW_CMD} update ${var}=$!")
+            :onunchecked "kill ${pids}&& ${EWW_CMD} update ${var}=''"
+            :onchecked "${command}& ${EWW_CMD} update ${var}=$!"
+            )
         (label :class "text" :text {text})))
 
 (defwidget tray-processes []
     (box :space-evenly false :orientation "vertical" :class "section" :style "padding: .8rem;"
         (pid-toggle 
-            :pid service-blueman 
+            :pids service-blueman 
             :var "service-blueman" 
             :command "blueman-applet" 
             :text "Blueman Applet")
         (pid-toggle 
-            :pid service-networkmanager
+            :pids service-networkmanager
             :var "service-networkmanager"
             :command "nm-applet"
             :text "Networkmanager Applet")
         (pid-toggle 
-            :pid service-fcitx5
+            :pids service-fcitx5
             :var "service-fcitx5"
             :command "fcitx5"
             :text "fcitx5 IME")
         (pid-toggle
-            :pid service-autotile
+            :pids service-autotile
             :var "service-autotile"
             :command "~/.config/sway/scripts/layout.py"
             :text "Autotiling")))
