@@ -59,46 +59,30 @@ M.config = function()
             local map = utils.local_mapper(opts.buf)
             map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
 
-            -- much nicer rename that edits directly in the buffer
+            -- rename using a vim operator in visual mode
+            -- this allows things the default rename behavior just makes harder
+            -- e.g. you can just <space>rgU to capitalize a symbol
+            -- <space>c is a shorthand for just typing in a new name
             map("n", "<space>r", function()
                 local old_name = vim.fn.expand("<cword>")
-                vim.lsp.buf.document_highlight()              -- start highlighting words that will be renamed
-                vim.cmd("normal! viw" .. vim.keycode "<C-g>") -- select current word
-                vim.api.nvim_create_autocmd("ModeChanged", {  -- wait for renamed word
+                vim.cmd("normal! viw")
+                vim.api.nvim_create_autocmd({"TextChanged", "InsertLeave"}, {
                     buffer = vim.api.nvim_get_current_buf(),
+                    once = true,
                     callback = function()
-                        local old, new = vim.v.event["old_mode"], vim.v.event["new_mode"]
-                        -- abort if stopped in replace
-                        if (old == "s" and new ~= "i") then
-                            vim.lsp.buf.clear_references()
-                            return true
-                        end
+                        local new_name = vim.fn.expand("<cword>")
 
-                        -- a mode change we dont need to care about
-                        if not (old == "i") then
+                        if new_name == old_name then
                             return
                         end
 
-                        local istart, istop = vim.api.nvim_buf_get_mark(0, "["), vim.api.nvim_buf_get_mark(0, "]")
-                        local new_name = vim.api.nvim_buf_get_text(0,
-                            istart[1] - 1, istart[2],
-                            istop[1] - 1, istop[2],
-                            {})[1]
-                        if new_name == old_name then
-                            return true
-                        end
-
-                        -- HACK/TODO: vim.lsp.buf.rename only does cword modifications
-                        -- FIXME: this will ofc not work if a new undo sequence is started
-                        -- setting the buffer text does not overwrite the undo point though
                         vim.cmd.undo()
-                        vim.lsp.buf.clear_references() -- clear highlighting
-
                         vim.lsp.buf.rename(new_name)
-                        return true
                     end
                 })
             end)
+            map("n", "<space>c", "<space>rc", { remap = true })
+
 
             map("n", "gr", require("telescope.builtin").lsp_references)
             map("n", "gd", require("telescope.builtin").lsp_definitions)
@@ -132,12 +116,13 @@ M.config = function()
         group = augroup,
         callback = function(opts)
             for mapping, mode in pairs {
-                ["<space>a"]  = { "n", "v" },
-                ["gr"]        = "n",
-                ["gd"]        = "n",
-                ["<C-w>gd"]   = "n",
-                ["gi"]        = "n",
-                ["<space>r"]  = "n",
+                ["<space>a"] = { "n", "v" },
+                ["gr"]       = "n",
+                ["gd"]       = "n",
+                ["gi"]       = "n",
+                ["<C-w>gd"]  = "n",
+                ["<space>r"] = "n",
+                ["<space>c"] = "n",
             } do
                 pcall(utils.lunmap, opts.buf, mode, mapping)
             end
