@@ -62,11 +62,10 @@ M.config = function()
             -- rename using a vim operator in visual mode
             -- this allows things the default rename behavior just makes harder
             -- e.g. you can just <space>rgU to capitalize a symbol
-            -- <space>c is a shorthand for just typing in a new name
             map("n", "<space>r", function()
                 local old_name = vim.fn.expand("<cword>")
                 vim.cmd("normal! viw")
-                vim.api.nvim_create_autocmd({"TextChanged", "InsertLeave"}, {
+                vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
                     buffer = vim.api.nvim_get_current_buf(),
                     once = true,
                     callback = function()
