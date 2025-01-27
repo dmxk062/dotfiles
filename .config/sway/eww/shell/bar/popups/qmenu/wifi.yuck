@@ -43,7 +43,7 @@
             (for net in wifis
                 (box :orientation "vertical" :space-evenly false :class "card" :style "padding: .4rem;"
                     (box :space-evenly false
-                        (box :hexpand true :halign "start" :valign "center" 
+                        (box :hexpand true :halign "start" :space-evenly false
                             (wifi-icon :class "ticon large text" 
                                 :signal {net.signal} 
                                 :security {net.security} 
@@ -52,7 +52,7 @@
                             (label :class "title" :text {net.ssid} :limit-width 20)
                             (label :class "text" :text {net.bssid} :limit-width 20)))
                     (box :space-evenly false :hexpand true
-                        (box :space-evenly false :halign "start" :hexpand true
+                        (box :space-evenly false :hexpand true
                             (button 
                                 :class "button ${net.ssid == wifi.ssid ? "alert" : ""}" 
                                 :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; bin/wifi.sh upd"

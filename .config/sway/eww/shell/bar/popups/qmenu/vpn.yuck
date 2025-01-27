@@ -22,7 +22,7 @@
                 (box :halign "start" :hexpand true (button :class "sbutton"
                     :onclick "wl-copy '${dev.ip}'&"
                      
-                    "󰆏   ${dev.dev}: ${dev.ip} via ${dev.gateway}"))))
+                    "󰆏   ${dev.dev}: ${dev.ip}"))))
             (box :orientation "v" :space-evenly false :visible {current-ip != ""}
                 (box :halign "start" :hexpand true (button :class "sbutton" 
                     :onclick "wl-copy '${current-ip.ip}'&"
