@@ -64,18 +64,18 @@
 (defvar session-lock-seconds 20)
 (defwidget center-popup-session-lock []
     (box :space-evenly false
-            (themed-icon 
-                :width 48 :height 48
-                :name "lock-screen")
-            (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
-                (box :halign "start" :hexpand true :space-evenly false (label :class "text"
-                    :style "font-size: 1.2rem; font-weight: bold;"
-                    :text "Locking in: ${session-lock-time - EWW_TIME} seconds"))
-                (box :halign "start" :hexpand true :space-evenly false (label :class "text"
-                    :text "Screen will be locked" :limit-width 24))
-                (box :space-evenly false (scale
-                    :interactive false :class "popup-slider" 
-                    :value {session-lock-time - EWW_TIME} :max {session-lock-seconds} )))))
+        (themed-icon 
+            :width 48 :height 48
+            :name "lock-screen")
+        (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
+            (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+                :style "font-size: 1.2rem; font-weight: bold;"
+                :text "Locking in: ${session-lock-time - EWW_TIME} seconds"))
+            (box :halign "start" :hexpand true :space-evenly false (label :class "text"
+                :text "Screen will be locked" :limit-width 24))
+            (box :space-evenly false (scale
+                :interactive false :class "popup-slider" 
+                :value {session-lock-time - EWW_TIME} :max {session-lock-seconds} )))))
 
 
 (defwidget center-popup-content [] (revealer :reveal center-popup-reveal :transition "slidedown" (box (box :class "center-popup-box" :space-evenly false
