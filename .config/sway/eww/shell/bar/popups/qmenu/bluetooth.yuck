@@ -59,7 +59,7 @@
         ; comfortably fits 3 devices without scrolling
         (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
             (for dev in bt-devices 
-                (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem;"
+                (box :orientation "vertical" :space-evenly false :class "card"
                     (box :space-evenly false
                         (box :hexpand true :halign "start"
                             (themed-icon :name {dev.icon?:"bluetooth"} :width 48 :height 48)

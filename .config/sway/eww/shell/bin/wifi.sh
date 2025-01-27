@@ -18,15 +18,22 @@ function write_cur {
 function get_avail {
     eww -c "$EWW" update wifi-searching=true
     nmcli device wifi rescan
-    nmcli -g ACTIVE,SIGNAL,SECURITY,SSID device wifi list | while IFS=":" read -r active signal security ssid; do
+    active=""
+    while IFS=":" read -r active signal security ssid bssid; do
         if [[ "$active" == "yes" ]]; then
-            bactive="true"
-        else
-            bactive="false"
+            active="$ssid"
         fi
 
-        printf '{"connected":%s, "ssid":"%s", "signal":%s, "security":"%s"}' $bactive "$ssid" "$signal" "$security"
-    done | jq -cMs 'map(select(.ssid != ""))|unique_by(.ssid)|sort_by(.signal)|reverse'
+        if [[ "$active" == "$ssid" ]]; then
+            bactive=true
+        else
+            bactive=false
+        fi
+
+        printf '{"connected":%s,"ssid":"%s","bssid":"%s","signal":%s,"security":"%s"}' \
+            $bactive "$ssid" "${bssid//\\}" "$signal" "$security"
+    done < <(nmcli -g ACTIVE,SIGNAL,SECURITY,SSID,BSSID device wifi list | sort -r) \
+        | jq -cMs 'map(select(.ssid != ""))|unique_by(.ssid)|sort_by(.connected, .signal)|reverse'
     eww -c "$EWW" update wifi-searching=false
 }
 

@@ -41,15 +41,23 @@
                 {wifi-searching ? "   Searching..." : "󰐷   Search"}))
         (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true
             (for net in wifis
-                (box :orientation "vertical" :space-evenly false :class "card" :style "min-width: 20rem; padding: .4rem;"
+                (box :orientation "vertical" :space-evenly false :class "card" :style "padding: .4rem;"
                     (box :space-evenly false
-                        (box :hexpand true :halign "start" :valign "center" (wifi-icon :class "ticon large text" :signal {net.signal} :security {net.security} :active true))
-                        (box :orientation "vertical" :style "margin-right: 1rem;"
-                            (label :class "title" :text {net.ssid} :limit-width 16)
-                            (label :class "text" :text {net.security} :limit-width 16)))
-                    (box :space-evenly false :halign "start"
-                        (button 
-                            :class "button${net.ssid == wifi.ssid ? " alert" : ""}" 
-                            :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; bin/wifi.sh upd"
-                            :timeout "128s"
-                            {net.ssid == wifi.ssid ? "󰤭    Disconnect" : "󰤨    Connect"}))))))))
+                        (box :hexpand true :halign "start" :valign "center" 
+                            (wifi-icon :class "ticon large text" 
+                                :signal {net.signal} 
+                                :security {net.security} 
+                                :active true))
+                        (box :orientation "vertical" :style "margin-right: 1rem;" :halign "end"
+                            (label :class "title" :text {net.ssid} :limit-width 20)
+                            (label :class "text" :text {net.bssid} :limit-width 20)))
+                    (box :space-evenly false :hexpand true
+                        (box :space-evenly false :halign "start" :hexpand true
+                            (button 
+                                :class "button ${net.ssid == wifi.ssid ? "alert" : ""}" 
+                                :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; bin/wifi.sh upd"
+                                :timeout "128s"
+                                {net.ssid == wifi.ssid ? "󰤭    Disconnect" : "󰤨    Connect"}))
+                        (label 
+                            :class "button ${net.security == "" ? "good" : "warn"}" 
+                            :text {net.security == "" ? "No Password" : replace(net.security, " ", ", ")}))))))))

@@ -86,10 +86,21 @@
         background-color: fade($red);
     }
 }
-
-.red {
-    color: $red;
+.warn {
+    background-color: $yellow;
+    color: $inv;
+    &:hover {
+        background-color: fade($yellow);
+    }
 }
+.good {
+    background-color: $green;
+    color: $inv;
+    &:hover {
+        background-color: fade($green);
+    }
+}
+
 
 .text {
     color: $fg0;
@@ -97,6 +108,18 @@
 .text-tiny {
     color: $fg0;
     font-size: 12px;
+}
+
+.red {
+    color: $red;
+}
+
+.green {
+    color: $green;
+}
+
+.orange {
+    color: $orange;
 }
 
 .bar-text {
