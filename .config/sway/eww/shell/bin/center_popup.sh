@@ -1,24 +1,48 @@
 #!/usr/bin/env bash
-EWW="$XDG_CONFIG_HOME/sway/eww/shell"
-time="${3:-1}"
-
-if [[ "$1" != close ]]; then
-    if [[ "$1" == "audio" ]]; then
-        eww -c "$EWW" update center-popup-reveal=true audio-popup-kind="$2" center-popup-layer=0
-    else
-        eww -c "$EWW" update center-popup-reveal=true center-popup-layer="$2"
-    fi
-fi
-
-
 PIDFILE="/tmp/.eww_popup"
-if [[ -f "$PIDFILE" ]] && kill "$(< "$PIDFILE")"; then
-    rm "$PIDFILE" -f
-else
-    eww -c "$EWW" open center-popup --screen "$(swaymsg -t get_outputs |jq -r '.[]|select(.focused).name')"
-    echo $$ > "$PIDFILE"
+EWW="$XDG_CONFIG_HOME/sway/eww/shell"
+
+declare -A WIDGETS=(
+[audio]=0
+[bright]=1
+[lock]=2
+)
+
+if [[ "$1" == close ]]; then
+    eww -c "$EWW" update center-popup-reveal=false
+    sleep 0.5
+    
+    if [[ "$(eww -c get center-popup-reveal)" == false ]]; then
+        eww -c "$EWW" close center-popup
+    fi
+    exit
 fi
-sleep $time
+
+duration="${2:-1}"
+widget="${WIDGETS[$1]}"
+is_open=0
+if [[ "$(eww -c "$EWW" get center-popup-reveal)" == true ]]; then
+    is_open=1
+fi
+
+if [[ -f "$PIDFILE" ]]; then
+    PID="$(< "$PIDFILE")"
+    rm -f "$PIDFILE"
+    kill "$PID"
+fi
+
+echo $$ > "$PIDFILE"
+
+if [[ "$1" == "audio" ]]; then
+    eww -c "$EWW" update center-popup-reveal=true audio-popup-kind="$3" center-popup-layer=0
+else
+    eww -c "$EWW" update center-popup-reveal=true center-popup-layer="$widget"
+fi
+if ((! is_open)); then
+    eww -c "$EWW" open center-popup --screen "$(swaymsg -t get_outputs |jq -r '.[]|select(.focused).name')"
+fi
+
+sleep "$duration"
 
 eww -c "$EWW" update center-popup-reveal=false
 sleep 0.5
