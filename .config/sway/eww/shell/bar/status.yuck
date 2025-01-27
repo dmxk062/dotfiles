@@ -34,6 +34,13 @@
                 : (wifi.signal > 40 ? "󰤢"
                 : (wifi.signal > 20 ? "󰤟" : "󰤯"))))) : "󰤯"})
         (status-battery :bat {EWW_BATTERY?.["BAT0"]?: `{"status": "Discharging", "capacity": -1}`})
+        (label 
+            :text {brightness < 10 ? "󰃛" 
+                : (brightness < 20 ? "󰃜" 
+                : (brightness < 40 ? "󰃝"
+                : (brightness < 60 ? "󰃞"
+                : (brightness < 80 ? "󰃟"
+                : "󰃠"))))})
         
         (revealer :reveal recording :transition "slideright" :visible recording
             (button :class "red" :style "min-width: 4rem; margin-left: .5rem;"
