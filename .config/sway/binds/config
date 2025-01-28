@@ -4,7 +4,7 @@ mode "config" {
     bindsym Escape mode "default" 
     bindsym W exec ~/.config/rofi/applets/wallpapers/run.sh; mode "default"
     bindsym N exec killall gammastep || gammastep -O 3000; mode "default"
-    bindsym T exec $eww/shell/panel/bin/color.sh; "default"
+    bindsym T exec $eww/shell/bin/color.sh; "default"
     bindsym M exec $sc/mirror.sh; "default"
 
     bindsym R exec '~/.config/background/wallpaper.sh both ~/.config/background/img/"$(ls ~/.config/background/img/ | shuf -n 1)"'
