@@ -157,6 +157,7 @@
         border-radius: 12px 0px 0px 12px;
         margin: 0.4rem 0rem 0.4rem 0.4rem;
         padding: 0.07rem 0.8rem 0.07rem 0.85rem;
+        min-width: 8rem;
     }
     > :last-child {
         border-left: 0.6px solid $bg3;
