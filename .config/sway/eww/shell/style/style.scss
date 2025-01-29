@@ -342,8 +342,7 @@ check {
 
     &:checked {
         border-color: $accent;
-        color: $fg0;
-        -gtk-icon-source: -gtk-icontheme('object-select-symbolic');
-        -gtk-icon-transform: scale(0.7);
+        background-color: mix($accent, $bg0, 30%);
+        color: transparent;
     }
 }
