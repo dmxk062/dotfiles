@@ -1,4 +1,4 @@
-(deflisten mpris "./bin/mpris.py")
+(deflisten mpris "./bin/mpris.py 2>/dev/null")
 
 (defwidget mpris-current []
     (revealer :reveal {mpris.has_player} :transition "slideright"

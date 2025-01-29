@@ -41,7 +41,7 @@
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
                 :text "${audio[audio-popup-kind].name}${audio[audio-popup-kind].mute ? " - muted" : ""}" :limit-width 24))
             (box :space-evenly false (scale 
-                :interactive false :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}"
+                :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}"
                 :value {audio[audio-popup-kind].vol})))))
 
 (defpoll brightness :interval "2000h" "~/.config/sway/scripts/brightness.sh get")
@@ -57,7 +57,7 @@
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
                 :text "Changes might take some time" :limit-width 24))
             (box :space-evenly false (scale
-                :interactive false :class "popup-slider" 
+                :class "popup-slider" 
                 :value brightness)))))
 
 (defvar session-lock-time 0)
@@ -74,7 +74,7 @@
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
                 :text "Screen will be locked" :limit-width 24))
             (box :space-evenly false (scale
-                :interactive false :class "popup-slider" 
+                :class "popup-slider" 
                 :value {session-lock-time - EWW_TIME} :max {session-lock-seconds} )))))
 
 
