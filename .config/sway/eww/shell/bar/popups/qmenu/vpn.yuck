@@ -37,6 +37,6 @@
                     (box :space-evenly false :style "margin-left: 1rem; padding: .2rem;"
                         (checkbox :checked {vpn-con.active} :class "select"
                             :timeout "16s"
-                            :onchecked `${vpn.active ? "nmcli connection down '${vpn.name}';" : ""}nmcli connection up '${vpn-con.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
+                            :onchecked `nmcli connection up '${vpn-con.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
                             :onunchecked `nmcli connection down '${vpn-con.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`)
                         (label :class "text" :text {vpn-con.name}))))))))
