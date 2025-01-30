@@ -121,8 +121,7 @@ local Buttons = {
     {
         map = "n",
         cb = function()
-            vim.cmd.new()
-            vim.cmd.only()
+            vim.cmd.enew()
         end,
         text = "New Buffer",
         hl = "New",
