@@ -53,7 +53,7 @@
         (box :orientation "v" :hexpand true :space-evenly false :style "margin-left: 2rem;"
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
                 :style "font-size: 1.2rem; font-weight: bold;"
-                :text "Display Brightness: ${brightness}%"))
+                :text "Display Brightness: ${round(brightness, 0)}%"))
             (box :halign "start" :hexpand true :space-evenly false (label :class "text"
                 :text "Changes might take some time" :limit-width 24))
             (box :space-evenly false (scale
