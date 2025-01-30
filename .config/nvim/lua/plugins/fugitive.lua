@@ -12,8 +12,8 @@ M.config = function ()
         pattern = "FugitiveIndex",
         callback = function(ev)
             -- enable folding and fold by default
-            vim.wo[0].foldmethod = "syntax"
-            vim.wo[0].foldlevel = 0
+            vim.wo[0][0].foldmethod = "syntax"
+            vim.wo[0][0].foldlevel = 0
         end
     })
 end
