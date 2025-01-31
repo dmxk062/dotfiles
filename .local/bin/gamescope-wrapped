@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+NAME=DP-1
+
+read -r width height refresh < <(swaymsg -t get_outputs \
+    | jq -r --arg name "$NAME" \
+    '.[]|select(.name == $name).current_mode | "\(.width) \(.height) \(.refresh / 1000|round)"')
+
+gamescope -W "$width" -H "$height" -r "$refresh" -S integer -f -- "$@" &
+pid=$!
+sleep 0.1
+swaymsg "[pid=$pid]" move window to workspace number 10

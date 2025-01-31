@@ -60,6 +60,9 @@ exec_always $sc/layout.py
 exec_always pkill -f "python.*smart_resize.py"
 exec_always $sc/smart_resize.py
 
+# deal with hidpi (poorly)
+exec_always $sc/scale_gamescope.sh
+
 # handle effects for rofi in the compositor, much nicer and more consistent
 layer_effects "rofi" shadows enable; corner_radius 18; blur disable
 
