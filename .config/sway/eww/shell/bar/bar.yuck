@@ -8,10 +8,18 @@
 (include "./bar/notifications.yuck")
 (include "./bar/clock.yuck")
 
+(defvar systray-expanded true)
+(defwidget systray-expander []
+    (box :space-evenly false 
+        (button :class "button"
+            :onclick "${EWW_CMD} update systray-expanded=${!systray-expanded}"
+            {systray-expanded ? "" : ""})
+        (revealer :reveal {systray-expanded} :transition "slideleft"
+            (systray :class "tray-box"))))
 
 (defwidget right-box []
     (box :space-evenly false :halign "end"
-        (systray :class "tray-box")
+        (systray-expander)
         (mpris-current)
         (status)
         (clock)))
