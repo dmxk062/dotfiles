@@ -346,3 +346,10 @@ check {
         color: transparent;
     }
 }
+
+.hsep {
+    background-color: $bg3;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    min-height: 2px;
+}

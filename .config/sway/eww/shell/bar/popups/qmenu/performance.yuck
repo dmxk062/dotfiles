@@ -35,25 +35,30 @@
             (colored-scale 
                 :temp {EWW_TEMPS[cpu-sensor]}
                 :value {EWW_CPU.avg}
-                :left "CPU: ${round(EWW_CPU.avg, 1)}%"
+                :left "cpu: ${round(EWW_CPU.avg, 1)}%"
                 :right "${EWW_TEMPS[cpu-sensor]}°C")
-            (colored-scale
-                :temp {EWW_TEMPS[gpu-sensor]} 
-                :value {perf-gpu?.usage?:0}
-                :left "GPU: ${perf-gpu?.usage?:"…"}%"
-                :right "${EWW_TEMPS[gpu-sensor]}°C")
             (colored-scale 
                 :class "mem" 
                 :value {EWW_RAM.used_mem_perc}
-                :left "MEM: ${round(EWW_RAM.used_mem_perc, 1)}%"
+                :left "mem: ${round(EWW_RAM.used_mem_perc, 1)}%"
                 :right "${round(EWW_RAM.used_mem / mem-gb, 1)}GB / ${round(EWW_RAM.total_mem / mem-gb, 1)}GB")
+            (colored-scale
+                :temp {EWW_TEMPS[gpu-sensor]} 
+                :value {perf-gpu?.usage?:0}
+                :left "gpu: ${perf-gpu?.usage?:"?"}%"
+                :right "${EWW_TEMPS[gpu-sensor]}°C")
+            (colored-scale 
+                :class "mem" 
+                :value {(perf-gpu.mem_used / perf-gpu.mem_total) * 100}
+                :left "vmem: ${round((perf-gpu.mem_used / perf-gpu.mem_total) * 100, 1)}%"
+                :right "${round(perf-gpu.mem_used / mem-gb, 1)}GB / ${round(perf-gpu.mem_total / mem-gb, 1)}GB")
             (colored-scale 
                 :class "net-up"
                 :value {perf-net.sent_rel}
-                :left "Send: ${perf-net.sent_pretty}/s"
+                :left "send: ${perf-net.sent_pretty}/s"
                 :right "Total: ${perf-net.total_sent_pretty}")
             (colored-scale 
                 :class "net-down" 
                 :value {perf-net.recv_rel}
-                :left "Recv: ${perf-net.recv_pretty}/s"
+                :left "recv: ${perf-net.recv_pretty}/s"
                 :right "Total: ${perf-net.total_recv_pretty}"))))
