@@ -45,7 +45,7 @@ def set_gaps(i3: i3ipc.Connection, gaps: int):
 
 
 def adjust_gaps_on_ws(i3: i3ipc.Connection, focused, e: i3ipc.WindowEvent):
-    if e.change not in ("new", "close", "floating"):
+    if e.change not in ("new", "close", "floating", "move"):
         return
     ws = focused.workspace()
     screen = ws.parent
