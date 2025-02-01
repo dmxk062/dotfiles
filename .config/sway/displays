@@ -8,12 +8,13 @@
 # +--------------+ +------------------------+
 
 output $mainS {
+    # 3440x2160@144Hz
     modeline 1266.480 3840 3888 3920 4016 2160 2163 2168 2190 -hsync -vsync
     scale 1.4
     pos 0 0
 }
 
 output $leftS {
-    mode 1920x1080@60Hz
-    pos -1920 360
+    mode 2560x1440@120Hz
+    position -2560 100
 }
