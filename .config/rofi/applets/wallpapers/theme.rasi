@@ -6,14 +6,14 @@ window {
     anchor: center;
     background-color: @bg0;
     children: [mainbox];
-    width: 60%;
-    height: 80%;
+    width: 40%;
+    height: 60%;
 }
 
 mainbox {
     spacing: 10px;
     padding: 10px;
-    children: [imagebox, listbox];
+    children: [listbox];
     orientation: horizontal;
     background-color: @bg0;
 }
@@ -23,18 +23,12 @@ listbox {
     background-color: transparent;
 }
 
-imagebox{
-    border-radius: 12px;
-    background-color: @bg2;
-    background-image: url("~/.config/background/wall", height);
-}
-
 listview {
     padding: 8px;
     background-color: inherit;
     dynamic: true;
     cycle: true;
-    columns: 3;
+    columns: 6;
     lines: 3;
     spacing: 1em;
 }
