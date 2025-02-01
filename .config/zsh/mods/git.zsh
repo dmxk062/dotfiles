@@ -38,7 +38,7 @@ function lschg {
         local type line old_path new_path bits_old bits_new
         while read -r type line; do
             if [[ $type == 1 ]]; then
-                read -r mode _ _ old_perm new_perm _ _ file extra <<< "$line";
+                read -r mode _ _ old_perm new_perm _ _ file <<< "$line";
                 case $mode in 
                     M\.|MM) prefix="%B%F{yellow}";;
                     \.M) prefix="%F{yellow}";;
