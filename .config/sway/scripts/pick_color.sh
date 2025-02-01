@@ -30,6 +30,8 @@ magick -size 90x90 xc:none \
     -fill "#$hex" -draw "circle 40,40 40,0" \
     "$CACHEFILE"
 
+wl-copy -p "#$hex"
+
 reply="$(notify-send "#$hex" -i "$CACHEFILE" \
     --action=rgb="rgb($r, $g, $b)" \
     --action=hex="#$hex")"
@@ -39,5 +41,3 @@ case "$reply" in
     hex) wl-copy "#$hex";;
 esac
 unlink "$CACHEFILE"
-
-wl-copy -p "#$hex"
