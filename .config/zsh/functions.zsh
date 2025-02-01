@@ -46,6 +46,14 @@ function vipe {
 }
 
 
+function hlcolor {
+    while read -r hex; do
+        printf '\e[48;2;%d;%d;%dm%s\n' \
+            "0x${hex:1:2}" "0x${hex:3:2}" "0x${hex:5:2}" "$hex"
+    done
+}
+
+
 
 source $ZDOTDIR/handlers.zsh
 
