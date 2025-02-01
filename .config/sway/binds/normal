@@ -104,6 +104,11 @@ mode "normal" {
     bindsym Shift+Right move window to workspace s3
     bindsym Shift+Up move window to workspace s4
 
+    bindsym Ctrl+Left move window to workspace s1; workspace s1
+    bindsym Ctrl+Down move window to workspace s2; workspace s2
+    bindsym Ctrl+Right move window to workspace s3; workspace s3
+    bindsym Ctrl+Up move window to workspace s4; workspace s4
+
     bindsym Bracketright exec $sc/in_order.sh go next
     bindsym Bracketleft  exec $sc/in_order.sh go prev
     bindsym Shift+Bracketright exec $sc/in_order.sh move next
