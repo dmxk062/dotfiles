@@ -5,6 +5,7 @@ if [[ "$1" == "unload" ]]; then
     unfunction \
         json.hash \
         json.table \
+        json.props \
         table.props \
         table.json \
         table.select \
@@ -86,6 +87,11 @@ function json.table {
     IFS=$'\t' read -rA columns < <(print -- "$jsonObj"| jq -r '.[0]|keys_unsorted|join("\t")')
     print -- "${(pj[$sep])columns}"
     print -- "$jsonObj"|jq --arg sep "$sep" -r '.[]|[.[]]|join($sep)'
+}
+
+function json.props {
+    local sep="${1:-:	}"
+    jq --arg sep "$sep" -r 'to_entries|map("\(.key)\($sep)\(.value)")[]' 
 }
 
 
