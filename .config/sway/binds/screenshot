@@ -11,6 +11,8 @@ mode "screenshot" {
     bindsym Shift+S exec $sc/record.sh start; mode "default"
     bindsym Shift+V exec $sc/record.sh start select; mode "default"
     bindsym C exec $sc/pick_color.sh; mode "default"
+
+    bindsym T exec $sc/ocr.sh; mode "default"
 }
 
 bindsym Shift+Print exec $sc/screenshot.sh region tmp clip

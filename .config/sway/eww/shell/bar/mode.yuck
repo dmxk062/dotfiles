@@ -24,7 +24,8 @@
     {"keys": "<C-*", "action": "To Disk" },
     {"keys": "<S-s>", "action": "Record Screen"},
     {"keys": "<S-v>", "action": "Capture Region"},
-    {"keys": "c", "action": "Pick Color"}
+    {"keys": "c", "action": "Pick Color"},
+    {"keys": "t", "action": "Get Text"}
 ],
 "config": [
     {"keys": "w", "action": "Wallpaper"},
@@ -45,7 +46,7 @@
 ]
 }')
 
-(deflisten mode 
+(deflisten mode
     :initial '{"change": "default"}'
     'swaymsg -t subscribe \'["mode"]\' -m')
 
