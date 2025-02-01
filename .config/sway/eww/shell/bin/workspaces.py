@@ -12,6 +12,7 @@ from gi.repository import Gtk
 REGEX_NAMES = [
     ("^Minecraft.*", "minecraft"),
     ("^nv:.*", "neovim"),
+    ("^lf:.*", "file-manager"),
     ("^qalc$", "qalculator"),
 ]
 
@@ -35,7 +36,6 @@ def get_icon(icon_name, size=48, fallback="window-manager"):
 
 def get_for_ws(workspace: i3ipc.Con, output):
     on_ws = []
-    active = None
     is_active = False
     for w in workspace.descendants():
         if not w.pid:
