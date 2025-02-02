@@ -81,7 +81,6 @@ element {
 }
 element selected.normal {
     padding: 8px;
-    border-radius: 12px;
     background-color: @accent;
     color: @invert;
     text-color: @invert;
