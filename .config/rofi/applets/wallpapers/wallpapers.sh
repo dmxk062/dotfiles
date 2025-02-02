@@ -5,7 +5,6 @@ ICON="\0icon\x1f"
 SET_DELIM="\0delim\x1f"
 
 print_walls() {
-    echo -en "${PROMPT}Wallpapers...\t"
     for file in "$XDG_CONFIG_HOME"/background/img/*; do
         name="${file##*/}"
         printf "%s$ICON%s\t" "$name" "$file"
