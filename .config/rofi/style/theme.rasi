@@ -12,7 +12,7 @@ window {
 
 mainbox {
     spacing: 10px;
-    children: [top-box, listbox];
+    children: [left-box, listbox];
     background-color: @bg0;
     orientation: horizontal;
 }
@@ -86,7 +86,7 @@ entry {
     margin: 0px 12px 0px 12px;
 } 
 
-top-box {
+left-box {
     padding: 12px;
     border-radius: 12px;
     background-color: @bg0;
