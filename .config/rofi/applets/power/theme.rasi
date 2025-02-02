@@ -104,7 +104,7 @@ inputbar {
 entry {
     background-color:            @bg2;
     text-color:                  @fg0;
-    placeholder:                 "Power";
+    placeholder:                 ":Power";
     placeholder-color:           @fg3;
     horizontal-align: 0.5;
     vertical-align: 0.5;

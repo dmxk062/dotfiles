@@ -15,14 +15,14 @@ NO="󰅖    No"
 
 # initial run
 if [[ $ROFI_RETV -eq 0 ]]; then
-    uptime="$(uptime -p | sed -e 's/up //g')"
-    host=$(</etc/hostname)
-    echo -en "${PROMPT}${uptime} ${USER}@${host}
+    read uptime _ < /proc/uptime
+    uptimestr="$(date -d "@$((${uptime%%.*} - 3600))" +"%H:%M")"
+    echo -en "${PROMPT}up for ${uptimestr}
 ${LOCK}${META}lock
 ${SUSPEND}${META}suspend sleep
 ${LOGOUT}${META}logout exit
 ${REBOOT}${META}reboot restart
-${POWEROFF}${META}power off
+${POWEROFF}${META}power off shutdown
 "
     exit
 fi
