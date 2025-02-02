@@ -30,4 +30,5 @@ bg2: @nord2;
 bg3: @nord3;
 accent: @nord7;
 invert: @nord0;
+selected: @bg1;
 }

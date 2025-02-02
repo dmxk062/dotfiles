@@ -30,5 +30,5 @@ bg2: @nord4;
 bg3: #929aaa;
 accent: @nord7;
 invert: @nord0;
+selected: @bg2;
 }
-

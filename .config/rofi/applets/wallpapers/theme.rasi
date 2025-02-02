@@ -45,7 +45,7 @@ element {
 }
 element selected.normal {
     border-radius: 12px;
-    background-color: @bg1;
+    background-color: @selected;
     highlight: bold underline;
 }
 element-text {

@@ -34,7 +34,7 @@ button {
     width: 5em;
 }
 button selected {
-    background-color: @bg1;
+    background-color: @selected;
 }
 
 listview {
@@ -55,7 +55,7 @@ element {
     highlight: bold underline;
 }
 element selected.normal,element selected.active {
-    background-color: @bg1;
+    background-color: @selected;
     color: @fg0;
     text-color: @fg0;
     highlight: bold underline;
