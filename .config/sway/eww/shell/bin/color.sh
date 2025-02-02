@@ -37,6 +37,6 @@ recompile_scss "$XDG_CONFIG_HOME/wofi"
 
 wait
 eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" reload &
-swaync-client >/dev/null &
+swaync-client -rs >/dev/null &
 swaymsg reload >/dev/null &
 wait
