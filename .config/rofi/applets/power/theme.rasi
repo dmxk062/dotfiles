@@ -22,16 +22,12 @@ listbox{
     background-color: transparent;
     expand: true;
 }
-inputbox {
-    children: [inputbar, mode-switcher];
-    orientation: horizontal;
-    expand: false;
-    background-color: transparent;
-}
 promptbox{
     background-color: transparent;
     children: [entry, prompt];
     orientation: horizontal;
+    padding: 0px;
+    margin: 0px;
     expand: false;
 }
 prompt{
@@ -40,7 +36,7 @@ prompt{
     horizontal-align: 0.5;
     border-radius: 12px;
     padding: 1em;
-    margin: 1em;
+    margin: 1em 0em 1em 0em;
     color: @fg0;
 }
 button {
@@ -115,5 +111,5 @@ entry {
     expand: true;
     border-radius: 12px;
     padding: 1em;
-    margin: 1em;
+    margin: 1em 1em 1em 0em;
 } 
