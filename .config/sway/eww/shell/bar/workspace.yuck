@@ -1,4 +1,4 @@
-(deflisten workspaces :initial "[]" "./bin/workspaces.py 2>/dev/null")
+(deflisten sway :initial "{}" "exec ./bin/sway.py 2>/dev/null")
 
 (include "./bar/popups/workspace.yuck")
 
@@ -6,8 +6,10 @@
     (eventbox 
         :onhover "./bin/popup.sh ws-overview-win ws-overview-reveal open&" 
         (box :space-evenly false 
-            (for ws in workspaces
-                (button :visible {!ws.is_virtual}
-                    :class "button ${ws.focused ? "active" : ""}"
-                    :onclick "swaymsg -q workspace ${ws.ws}"
-                    "${ws.ws}")))))
+            (button :style "min-width: 1.6rem;" :class "button ${sway.scratch_count > 0 ? "special" : ""}" "~${sway.scratch_count}")
+            (box :space-evenly false 
+                (for ws in {sway.workspaces}
+                    (button :visible {!ws.is_virtual}
+                        :class "button ${ws.focused ? "active" : ""}"
+                        :onclick "swaymsg -q workspace ${ws.ws}"
+                        "${ws.ws}"))))))

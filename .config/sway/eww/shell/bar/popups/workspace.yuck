@@ -43,7 +43,7 @@
             :reveal {ws-overview-reveal}
             :transition "slidedown"
             (box (box :class "popup-win"
-                (for ws in workspaces
+                (for ws in {sway.workspaces}
                     (ws-box :ws {ws})))))))
 
 (defwindow ws-overview-win

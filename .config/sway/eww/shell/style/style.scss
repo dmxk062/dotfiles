@@ -101,6 +101,14 @@
     }
 }
 
+.special {
+    background-color: $purple;
+    color: $inv;
+    &:hover {
+        background-color: fade($purple);
+    }
+}
+
 
 .text {
     color: $fg0;

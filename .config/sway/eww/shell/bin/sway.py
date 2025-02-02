@@ -124,7 +124,10 @@ def update(i3, e):
             "is_virtual": True
         })
 
-    print(json.dumps(sorted_ws), flush=True)
+    print(json.dumps({
+        "workspaces": sorted_ws,
+        "scratch_count": len(root.scratchpad().floating_nodes)
+    }), flush=True)
 
 if __name__ == "__main__":
     i3 = i3ipc.Connection()
