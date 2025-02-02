@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-POWER="󰐥"
+POWEROFF="󰐥"
 REBOOT="󰑐"
 SUSPEND="󰤄"
 LOCK="󰌾"
@@ -13,85 +13,57 @@ DATA="\0data\x1f"
 YES="󰄬    Yes"
 NO="󰅖    No"
 
-ask_confirm(){
-    echo "Yes
-No"|rofi -dmenu \
-        -config "$XDG_CONFIG_HOME/rofi/applets/confirm.rasi"\
-         -theme "$XDG_CONFIG_HOME/rofi/applets/power/theme.rasi"\
-         -p "$1"|grep -q "Yes"
-}
-if [[ $ROFI_RETV -eq 0 ]]
-then
+# initial run
+if [[ $ROFI_RETV -eq 0 ]]; then
     uptime="$(uptime -p | sed -e 's/up //g')"
-    host=$(< /etc/hostname)
+    host=$(</etc/hostname)
     echo -en "${PROMPT}${uptime} ${USER}@${host}
 ${LOCK}${META}lock
 ${SUSPEND}${META}suspend sleep
 ${LOGOUT}${META}logout exit
 ${REBOOT}${META}reboot restart
-${POWER}${META}power off
+${POWEROFF}${META}power off
 "
-else
-    case $1 in
-        "$LOCK")
-            echo -en "${PROMPT}Lock the Device?
-${DATA}lock
-$YES
-$NO
-"
-            ;;
-        "$SUSPEND")
-            echo -en "${PROMPT}Suspend the Device?
-${DATA}suspend
-$YES
-$NO
-"
-            ;;
-        "$LOGOUT")
-            echo -en "${PROMPT}Exit the Session?
-${DATA}logout
-$YES
-$NO
-"
-            ;;
-        "$REBOOT")
-            echo -en "${PROMPT}Reboot the Device?
-${DATA}reboot
-$YES
-$NO
-"
-            ;;
-        "$POWER")
-            echo -en "${PROMPT}Perform Device Shutdown?
-${DATA}off
-$YES
-$NO
-"
-            ;;
-        "$YES")
-            case $ROFI_DATA in
-                lock)
-                    swaylock
-                    ;;
-                suspend)
-                    swaylock
-                    sleep 1
-                    systemctl suspend
-                    ;;
-                logout)
-                    if [[ -n "$SWAYSOCK" ]]; then
-                        swaymsg exit
-                    else
-                        hyprctl dispatch exit 1
-                    fi
-                    ;;
-                reboot)
-                    systemctl reboot
-                    ;;
-                off)
-                    systemctl poweroff
-                    ;;
-            esac
-    esac
-
+    exit
 fi
+
+declare -A questions=(
+    ["$LOCK"]="Lock the Session?"
+    ["$SUSPEND"]="Suspend the System?"
+    ["$LOGOUT"]="Exit the Session?"
+    ["$REBOOT"]="Reboot the System?"
+    ["$POWEROFF"]="Halt System?"
+)
+
+if [[ "$1" == "$NO" ]]; then
+    exit
+elif [[ "$1" == "$YES" ]]; then
+    case $ROFI_DATA in
+    "$LOCK")
+        swaylock
+        ;;
+    "$SUSPEND")
+        swaylock
+        sleep 1
+        systemctl suspend
+        ;;
+    "$LOGOUT")
+        if [[ -n "$SWAYSOCK" ]]; then
+            swaymsg exit
+        fi
+        ;;
+    "$REBOOT")
+        systemctl reboot
+        ;;
+    "$POWEROFF")
+        systemctl poweroff
+        ;;
+    esac
+    exit
+fi
+
+# ask the question
+echo -en "${PROMPT}${questions[$1]}
+$DATA$1
+$YES
+$NO"
