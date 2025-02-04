@@ -92,3 +92,5 @@ bindsym $mod+Shift+Bracketright exec $sc/in_order.sh move next
 bindsym $mod+Shift+Bracketleft  exec $sc/in_order.sh move prev
 bindsym $mod+Ctrl+Bracketright exec $sc/in_order.sh push next
 bindsym $mod+Ctrl+Bracketleft  exec $sc/in_order.sh push prev
+bindsym $mod+N workspace next
+bindsym $mod+Shift+N workspace prev
