@@ -14,6 +14,10 @@ map(mov, "<space>k", "<cmd>cprev<cr>")
 map(mov, "<space>n", "<cmd>lnext<cr>")
 map(mov, "<space>N", "<cmd>lprev<cr>")
 
+-- useful for e.g. gO in help buffers
+map(mov, "<C-j>", "<cmd>lnext<cr>")
+map(mov, "<C-k>", "<cmd>lprev<cr>")
+
 -- add items to qflist and loclist easily
 map("n", "+q", function()
     local bufnr = api.nvim_get_current_buf()
@@ -154,6 +158,11 @@ map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" 
 -- exit terminal mode with a single chord instead of 2
 map("t", "<M-Esc>", "<C-\\><C-n>")
 map("t", "<C-w>", "<C-\\><C-n><C-w>")
+
+-- those are hard to reach by default, I do not use Low and High, Middle is sometimes useful
+-- also kinda logical, a stronger version of lh
+map(mov, "L", "$")
+map(mov, "H", "^")
 -- }}}
 
 -- q to close windows {{{
