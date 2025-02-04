@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import os
 import re
 import i3ipc
 import json
