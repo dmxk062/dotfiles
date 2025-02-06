@@ -59,4 +59,4 @@
     :stacking "overlay"
     :exclusive false
     (eventbox 
-        :onhover "./bin/popup.sh settings-panel settings-panel-shown open& ./bin/weather.sh ${EWW_TIME - weather-last}"))
+        :onhover "./bin/popup.sh settings-panel settings-panel-shown open& disown"))

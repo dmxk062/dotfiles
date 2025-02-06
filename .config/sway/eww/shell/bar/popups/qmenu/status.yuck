@@ -1,6 +1,5 @@
 (defvar weather-city "Graz")
-(defvar weather '{}')
-(defvar weather-last 0)
+(defpoll weather :interval "30m" "bin/weather.sh")
 
 (defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
 
@@ -24,6 +23,27 @@
 "13n": "weather-snow-night",
 "50d": "weather-mist",
 "50n": "weather-mist"
+}')
+
+(defvar weather-text-icons '{
+"01d": "󰖙",
+"01n": "",
+"02d": "",
+"02n": "",
+"03d": "",
+"03n": "",
+"04d": "",
+"04n": "",
+"09d": "",
+"09n": "",
+"10d": "",
+"10n": "",
+"11d": "",
+"11n": "",
+"13d": "",
+"13n": "",
+"50d": "",
+"50n": ""
 }')
 
 (defwidget status-mpris []
