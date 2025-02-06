@@ -42,13 +42,6 @@
                 : (brightness < 60 ? "󰃞"
                 : (brightness < 80 ? "󰃟"
                 : "󰃠"))))})
-        (label :style "margin-left: .2rem;"
-            :tooltip "Weather in ${weather.name}:
-${weather.weather[0].description}
-${weather.main.temp}°C, feels like ${weather.main.feels_like}°C
-Wind: ${round(weather.wind.speed / 3.6, 1)}km/h
-Humidity: ${weather.main.humidity}%"
-            :text {weather-text-icons[weather.weather[0].icon]})
         (revealer :reveal recording :transition "slideright" :visible recording
             (button :class "red" :style "min-width: 4rem; margin-left: .5rem;"
                 :onclick "kill ${recording-info.pid}"
