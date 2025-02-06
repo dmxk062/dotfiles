@@ -1,7 +1,6 @@
 (deflisten wifi :initial '{"powered":false, "connected":false,"ssid":"","security":"","signal":0}' "./bin/wifi.sh listen")
 (defvar wifi-searching false)
 (defvar wifi-connecting false)
-(defpoll wifis :run-while wifi-revealed :interval "8s" "./bin/wifi.sh list")
 
 (defwidget wifi-icon [signal security active ?text ?width ?class]
     (label :class {class?: ""} :limit-width {width?:100} :text "${!active ? "󰤭"
@@ -37,7 +36,7 @@
         (box :space-evenly false
             (button 
                 :class "sbutton${wifi-searching ? " active" : ""}" 
-                :onclick "bin/wifi.sh upd&"
+                :onclick "${EWW_CMD} poll wifis"
                 {wifi-searching ? "   Searching..." : "󰐷   Search"}))
         (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true
             (for net in wifis
@@ -55,7 +54,7 @@
                         (box :space-evenly false :hexpand true
                             (button 
                                 :class "button ${net.ssid == wifi.ssid ? "alert" : ""}" 
-                                :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; bin/wifi.sh upd"
+                                :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; ${EWW_CMD} poll wifis"
                                 :timeout "128s"
                                 {net.ssid == wifi.ssid ? "󰤭    Disconnect" : "󰤨    Connect"}))
                         (label 

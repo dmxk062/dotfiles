@@ -47,9 +47,6 @@ listen)
 list)
     get_avail
     ;;
-upd)
-    eww -c "$EWW" update wifis="$(get_avail)"
-    ;;
 connect)
     ssid="$2"
     needs_auth="$3"

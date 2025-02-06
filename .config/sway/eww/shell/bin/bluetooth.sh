@@ -61,16 +61,7 @@ case $1 in
     poll)
         list_devices 
         ;;
-    sync)
-        eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" update "bt-devices"="$(list_devices)"
-        ;;
     poll-meta)
         get_meta
-        ;;
-    sync-meta)
-        eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" update "bt-meta"="$(get_meta)"
-        ;;
-    sync-all)
-        eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" update "bt-meta"="$(get_meta)" "bt-devices"="$(list_devices)"
         ;;
 esac

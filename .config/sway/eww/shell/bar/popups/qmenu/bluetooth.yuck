@@ -3,9 +3,6 @@
 (defpoll bt-devices :run-while bt-revealed :interval "8s" "./bin/bluetooth.sh poll")
 (defpoll bt-meta  :run-while bt-revealed :interval "8s" "./bin/bluetooth.sh poll-meta")
 (deflisten rfkill "./bin/rfkill.sh")
-(defvar bt-sync "./bin/bluetooth.sh sync")
-(defvar bt-msync "./bin/bluetooth.sh sync-meta")
-(defvar bt-syncall "./bin/bluetooth.sh sync-all")
 
 (defvar bt-icons '{
     "audio-headset":"audio-headphones",
@@ -21,10 +18,10 @@
 (defwidget _bt-toggle-button [num-connected]
 (box :class "dual-cbutton${bt-meta.powered ? " active" : ""}" :space-evenly false
     (button :hexpand true 
-        :onclick {rfkill.bluetooth ? "rfkill unblock bluetooth; sleep 1; ${bt-syncall}" 
-            : "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${bt-syncall}"}
+        :onclick {rfkill.bluetooth ? "rfkill unblock bluetooth; sleep 1; ${EWW_CMD} poll bt-meta bt-devices" 
+            : "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${EWW_CMD} poll bt-meta bt-devices"}
         :onrightclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
-        :onmiddleclick "rfkill block bluetooth; ${bt-syncall}"
+        :onmiddleclick "rfkill block bluetooth; ${EWW_CMD} poll bt-meta bt-device"
         :timeout "16s"
         (label :limit-width 12
             :text "${(bt-meta.powered && !rfkill.bluetooth) ? "󰂯" : "󰂲"}   ${num-connected == 1 ? bt-devices[0].alias 
@@ -45,15 +42,15 @@
     (box :space-evenly false :class "section" :orientation "vertical"
         (box :space-evenly false
             (button :tooltip "Visible"  :class "sbutton ${bt-meta.visible ? "active" : ""}"
-                :onclick "bluetoothctl discoverable ${bt-meta.visible ? "off" : "on"}; ${bt-syncall}"
+                :onclick "bluetoothctl discoverable ${bt-meta.visible ? "off" : "on"}; ${EWW_CMD} poll bt-meta bt-devices"
                 :timeout "16s"
                 "󰈈   Visible")
             (button :tooltip "Pairable" :class "sbutton ${bt-meta.pairable ? "active" : ""}" 
-                :onclick "bluetoothctl pairable ${bt-meta.pairable ? "off" : "on"}; ${bt-syncall}"
+                :onclick "bluetoothctl pairable ${bt-meta.pairable ? "off" : "on"}; ${EWW_CMD} poll bt-meta bt-devices"
                 :timeout "16s"
                 "󰌹   Pairable")
             (button :tooltip "Scanning" :class "sbutton ${bt-meta.scanning ? "active" : ""}"
-                :onclick "bluetoothctl scan ${bt-meta.scanning ? "off" : "on"}; ${bt-syncall}"
+                :onclick "bluetoothctl scan ${bt-meta.scanning ? "off" : "on"}; ${EWW_CMD} poll bt-meta bt-devices"
                 :timeout "16s"
                 "󰐷   Scanning"))
         ; comfortably fits 3 devices without scrolling
@@ -75,19 +72,19 @@
 
                         (box :space-evenly false :hexpand true
                             (box :hexpand true :space-evenly false (button :class "button ${dev.connected ? "alert" : ""}"
-                                :onclick "bluetoothctl ${dev.connected ? "disconnect" : "connect"} ${dev.mac}&& ${bt-sync}"
+                                :onclick "bluetoothctl ${dev.connected ? "disconnect" : "connect"} ${dev.mac}&& ${EWW_CMD} poll bt-devices"
                                 :timeout "16s"
                                 :timeout "16s"
                                 {dev.connected ? "󰂲    Disconnect" : "󰂯    Connect"}))
                             (button :tooltip "Trust" :class "button ${dev.trusted ? "active" : ""}"
-                                :onclick "bluetoothctl ${dev.trusted ? "un" : ""}trust ${dev.mac}; ${bt-sync}"
+                                :onclick "bluetoothctl ${dev.trusted ? "un" : ""}trust ${dev.mac}; ${EWW_CMD} poll bt-devices"
                                 :timeout "16s"
                                 "󰒘")
                             (button :tooltip "Pair" :class "button ${dev.paired ? "active" : ""}"
-                                :onclick "bluetoothctl ${dev.paired ? "remove" : "pair"} ${dev.mac}; ${bt-sync}"
+                                :onclick "bluetoothctl ${dev.paired ? "remove" : "pair"} ${dev.mac}; ${EWW_CMD} poll bt-devices"
                                 :timeout "16s"
                                 "󰌹")
                             (button :tooltip "Remove" :class "button alert" 
-                                :onclick "bluetoothctl remove ${dev.mac}; ${bt-sync}"
+                                :onclick "bluetoothctl remove ${dev.mac}; ${EWW_CMD} poll bt-devices"
                                 :timeout "16s"
                                 "󰩹"))))))))
