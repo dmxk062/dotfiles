@@ -15,14 +15,10 @@ configuration {
     kb-element-next: "";
     kb-row-down: "Down,Alt+j";
     kb-row-up: "Up,Alt+k";
+    kb-accept-alt: "";
+    kb-custom-1: "Shift+Return";
     line-margin: 10;
-    modes: [drun, window];
+    modes: [drun,"win:~/.config/rofi/sway.sh"];
     display-drun: "run";
-    display-window: "win";
-    // display-emoji: "emoji";
-    window {
-        fallback-icon: "wayland";
-    }
-    window-format: "{t}\n{c}";
 }
 @theme "~/.config/rofi/style/theme.rasi"
