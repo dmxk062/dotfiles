@@ -18,12 +18,12 @@
             :onclick "swaymsg [con_id=${win.id}] focus >/dev/null&"
             :onrightclick "${EWW_CMD} update overview-cut-win=${win.id == overview-cut-win ? 0 : win.id}"
             :onmiddleclick "swaymsg [con_id=${overview-cut-win}] move to workspace ${ws}; ${EWW_CMD} update overview-cut-win=0"
-               (image
-                    :path {win.icon}
-                    :valign "center"
-                    :halign "center"
-                    :image-width {round(win.rect.width / 10 * 45/100, 0)}
-                    :image-height {round(win.rect.height / 10 * 45/100, 0)}))))
+            (image
+                :path {win.icon}
+                :valign "center"
+                :halign "center"
+                :image-width {round(win.rect.width / 10 * 45/100, 0)}
+                :image-height {round(win.rect.height / 10 * 45/100, 0)}))))
 
 
 (defwidget ws-box [ws]
