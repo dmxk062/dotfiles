@@ -3,7 +3,6 @@
 (defwidget hsep [height]
     (box :class "hsep" :style "margin-top: ${height / 2}; margin-bottom: ${height / 2}"))
 
-
 (include "./bar/bar.yuck")
 (defwindow bar
     :monitor 0

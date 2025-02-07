@@ -12,6 +12,7 @@
 (defwidget systray-expander []
     (box :space-evenly false 
         (button :class "button"
+            :timeout "16s"
             :onclick "${EWW_CMD} update systray-expanded=${!systray-expanded}"
             {systray-expanded ? "" : ""})
         (revealer :reveal {systray-expanded} :transition "slideleft"

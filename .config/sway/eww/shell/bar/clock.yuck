@@ -4,4 +4,4 @@
             :onclick "bin/popup.sh settings-panel settings-panel-shown open"
             :timeout "16s"
             :class "button"
-            "${weather-text-icons[weather.weather[0].icon]}   ${formattime(EWW_TIME, "%m/%d - %H:%M")}")))
+            "${weather-text-icons[(weather?.weather?.[0]?.icon ?: "01d")]}    ${formattime(EWW_TIME, "%m/%d - %H:%M")}")))

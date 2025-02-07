@@ -32,6 +32,7 @@
     {"keys": "r", "action": "Random Wallpaper"},
     {"keys": "n", "action": "Nighlight"},
     {"keys": "t", "action": "Theme"},
+    {"keys": "b", "action": "Toggle Bar"},
     {"keys": "m", "action": "Mirror Screen"}
 ],
 "normal": [
