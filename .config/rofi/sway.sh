@@ -13,12 +13,9 @@ if ((ROFI_RETV == 0)); then
         icon="$class"
         if [[ "$class" == "kitty" ]]; then
             case "$name" in
-                nv:*)
-                    icon="nvim"
-                    ;;
-                lf:*)
-                    icon="file-manager"
-                    ;;
+                nv:*) icon="nvim" ;;
+                lf:*) icon="file-manager" ;;
+                qalc) icon="qalculator" ;;
             esac
         fi
         printf "%s\n%s$ICON%s$INFO%s\t" "$name" "$class" "$icon" "$id"
