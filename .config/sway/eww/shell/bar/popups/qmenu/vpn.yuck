@@ -1,13 +1,13 @@
 (deflisten vpn "./bin/vpn.sh listen")
 (defvar default-vpn "France")
 (defpoll vpns :run-while vpn-revealed :interval "16s" "./bin/vpn.sh list")
-(defpoll current-ip :run-while vpn-revealed :interval "10m" "curl --fail -s ipinfo.io")
-(defpoll local-ips :run-while vpn-revealed :interval "16s" `ip route | jq -sR 'split("\\n")|map(split(" ")|select(.[0] == "default")|{ip: .[8], dev: .[4], gateway: .[2]})'`)
+;; (defpoll current-ip :run-while vpn-revealed :interval "10m" "curl --fail -s ipinfo.io")
+;; (defpoll local-ips :run-while vpn-revealed :interval "16s" `ip route | jq -sR 'split("\\n")|map(split(" ")|select(.[0] == "default")|{ip: .[8], dev: .[4], gateway: .[2]})'`)
 
 (defwidget vpn-toggle-button []
     (box :class "dual-cbutton${vpn.active ? " active" : ""}" :space-evenly false
         (button :hexpand true
-            :onclick `nmcli connection ${vpn.active ? "down" : "up"} '${vpn.active ? vpn.name : default-vpn}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
+            :onclick `nmcli connection ${vpn.active ? "down" : "up"} '${vpn.active ? vpn.name : default-vpn}'; ${EWW_CMD} poll current-ip vpns`
             :onrightclick "${EWW_CMD} update vpn-revealed=${!vpn-revealed}"
             :timeout "16s"
             "${vpn.active ? "󰒄" : "󰲝"}   ${vpn.active ? vpn.name : "No VPN"}")
@@ -16,27 +16,13 @@
             {vpn-revealed ? "" : "" })))
 
 (defwidget vpn-panel []
-    (box :space-evenly false :class "section" :orientation "vertical"
-        (box :space-evenly false :orientation "v" :style "padding: .8rem;"
-            (box :orientation "v" (for dev in local-ips 
-                (box :halign "start" :hexpand true (button :class "sbutton"
-                    :onclick "wl-copy '${dev.ip}'&"
-                     
-                    "󰆏   ${dev.dev}: ${dev.ip}"))))
-            (box :orientation "v" :space-evenly false :visible {current-ip != ""}
-                (box :halign "start" :hexpand true (button :class "sbutton" 
-                    :onclick "wl-copy '${current-ip.ip}'&"
-                    "󰆏   Public: ${current-ip.ip}"))
-                (box :hexpand true :halign "start" (label :class "text"
-                    :text "Location: ${current-ip.city}, ${current-ip.region}, ${current-ip.country}"))
-                (box :hexpand true :halign "start" (label :class "text" 
-                    :text "Provider: ${current-ip.org}"))))
-        (scroll :style "min-height: 10rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
+    (box :space-evenly false :class "section" :style "padding: .8rem;"
+        (scroll :style "min-height: 14rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
             (for vpn-con in vpns 
                 (box :hexpand true :space-evenly false :halign "start"
                     (box :space-evenly false :style "margin-left: 1rem; padding: .2rem;"
-                        (checkbox :checked {vpn-con.active} :class "select"
+                        (checkbox :checked {vpn-con.uuid == vpn.uuid} :class "select"
                             :timeout "16s"
-                            :onchecked `nmcli connection up '${vpn-con.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`
-                            :onunchecked `nmcli connection down '${vpn-con.name}';./bin/vpn.sh upd; ${EWW_CMD} update current-ip="$(curl -s ipinfo.io)"`)
+                            :onchecked `${vpn.active ? "nmcli connection down '${vpn.name}';" : ""}nmcli connection up '${vpn-con.name}'`
+                            :onunchecked {vpn.uuid == vpn-con.uuid ? "nmcli connection down '${vpn.name}'" : ""})
                         (label :class "text" :text {vpn-con.name}))))))))

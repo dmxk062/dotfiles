@@ -38,7 +38,4 @@ case "$1" in
     list)
         list_vpns
         ;;
-    upd)
-        eww -c "$EWW" update vpns="$(list_vpns)"
-        ;;
 esac
