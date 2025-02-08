@@ -8,10 +8,9 @@ psvar=(
     ""            # 7 git renamed
     ""            # 8 git ahead
     ""            # 9 git behind
-    ""            # 10 python venv?
-    ""            # 11 current dir readable
-    12            # 12 color based on return status
-    ""            # 13 symbol/text to be used for return status
+    ""            # 10 current dir readable
+    "12"          # 11 color based on return status
+    ""            # 12 symbol/text to be used for return status
 )
 
 
@@ -46,10 +45,10 @@ function _update_git_status {
                             behind="$hname"
                             ahead="${ahead#+}"
                             behind="${behind#-}"
-                            [[ "$ahead" == -* ]]&& behind="${ahead#-}"
+                            [[ "$ahead" == -* ]] && behind="${ahead#-}"
 
-                            [[ "$ahead" == 0 ]]&&ahead=""
-                            [[ "$behind" == 0 ]]&&behind=""
+                            [[ "$ahead" == 0 ]] && ahead=""
+                            [[ "$behind" == 0 ]] && behind=""
                             ;;
                     esac
                     ;;
@@ -71,10 +70,10 @@ function _update_git_status {
             esac
         done
 
-        printf 'psvar[3]="%s";psvar[4]="%s";psvar[5]="%s";psvar[6]="%s";psvar[7]="%s";psvar[8]="%s";psvar[9]="%s"\n' \
-            "$branch" "$modified$smodified" "$deleted$sdeleted" "$added$sadded" "$renamed" "$ahead" "$behind"
+        printf "%s\t" "$branch" "$modified$smodified" "$deleted" "$sdeleted" "$renamed" "$ahead" "$behind"
+        echo
     else 
-        printf 'psvar[3]=""\n'
+        echo
     fi
 }
 
@@ -82,12 +81,12 @@ function _update_git_status {
 # left part of prompt, git part
 PROMPT="%F{8}╭%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
 # left part of prompt, current directory
-PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b
+PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b%(10V.%F{8} [ro] .)
 %F{8}╰╴%f "
 
-# right part of prompt, flags and previous command status
+# right part of prompt, previous command status
 # HACK: draw right prompt one line higher
-RPROMPT="%{$(echotc UP 1)%}%(1j.%F{8}[& %j] %f.)%(11V.%F{8}[ro] .)%(10V.%F{8}[ venv] .)%F{8}%K{8}%f󱎫 %1v %F{%12v}%k%S%13v%s%{$(echotc DO 1)%}"
+RPROMPT="%{$(echotc UP 1)%}%(1j.%F{8}[& %j] %f.)%F{8}%K{8}%f󱎫 %1v %F{%11v}%k%S%12v%s%{$(echotc DO 1)%}"
 
 declare -A _exitcolors=(
     [0]=12
@@ -120,17 +119,17 @@ function precmd {
     if ((exitc > 128 && exitc < 256)); then
         local signame="${signals[exitc-127]:l}"
         signame="${signame:-$exitc}"
-        psvar[13]="! $signame"
+        psvar[12]="! $signame"
     else 
         if ((! exitc)); then
-            psvar[13]="󰄬 0"
+            psvar[12]="󰄬 0"
         else
-            psvar[13]="󰅖 $exitc"
+            psvar[12]="󰅖 $exitc"
         fi
     fi
-    psvar[12]="${_exitcolors[$exitc]}"
+    psvar[11]="${_exitcolors[$exitc]}"
     if [[ -z "${psvar[12]}" ]]; then
-        psvar[12]=red
+        psvar[11]=red
     fi
 
     # dont print a new time on every single <cr>, just if a command ran
@@ -148,23 +147,25 @@ function precmd {
     fi
     # set the title
     print -Pn "\e]0;zsh%(1j. %j&.): %~\a"
-    if [[ -n "$VIRTUAL_ENV" ]]; then
+    if [[ ! -w "$PWD" ]]; then
         psvar[10]=1
     else
         psvar[10]=""
-    fi
-    if [[ ! -w "$PWD" ]]; then
-        psvar[11]=1
-    else
-        psvar[11]=""
     fi
     _PROMPTTIMER=0
 }
 
 function TRAPUSR1 {
-    local expr
-    read -r expr <&$_PROMPTFD
-    eval "$expr"
+    local -a tmp
+    read -u $_PROMPTFD -rA tmp
+    psvar[3]=$tmp[1]
+    psvar[4]=$tmp[2]
+    psvar[5]=$tmp[3]
+    psvar[6]=$tmp[4]
+    psvar[7]=$tmp[5]
+    psvar[8]=$tmp[6]
+    psvar[9]=$tmp[7]
+
     _PROMPTPROC=0
 
     zle -I && zle reset-prompt
