@@ -128,7 +128,7 @@ function precmd {
         fi
     fi
     psvar[11]="${_exitcolors[$exitc]}"
-    if [[ -z "${psvar[12]}" ]]; then
+    if [[ -z "${psvar[11]}" ]]; then
         psvar[11]=red
     fi
 
