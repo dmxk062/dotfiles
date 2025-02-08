@@ -7,7 +7,7 @@
 (defwidget vpn-toggle-button []
     (box :class "dual-cbutton${vpn.active ? " active" : ""}" :space-evenly false
         (button :hexpand true
-            :onclick `nmcli connection ${vpn.active ? "down" : "up"} '${vpn.active ? vpn.name : default-vpn}'; ${EWW_CMD} poll public-ip vpns`
+            :onclick `nmcli connection ${vpn.active ? "down" : "up"} '${vpn.active ? vpn.name : default-vpn}'`
             :onrightclick "${EWW_CMD} update vpn-revealed=${!vpn-revealed}"
             :timeout "16s"
             "${vpn.active ? "󰒄" : "󰲝"}   ${vpn.active ? vpn.name : "No VPN"}")
