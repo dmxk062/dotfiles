@@ -70,8 +70,8 @@ function _update_git_status {
             esac
         done
 
-        printf "%s\t" "$branch" "$modified$smodified" "$deleted" "$sdeleted" "$renamed" "$ahead" "$behind"
-        echo
+        printf "%s;%s;%s;%s;%s;%s;%s\n" \
+            "$branch" "$modified$smodified" "$deleted$sdeleted" "$added$sadded" "$renamed" "$ahead" "$behind"
     else 
         echo
     fi
@@ -157,7 +157,7 @@ function precmd {
 
 function TRAPUSR1 {
     local -a tmp
-    read -u $_PROMPTFD -rA tmp
+    IFS=";" read -u $_PROMPTFD -rA tmp
     psvar[3]=$tmp[1]
     psvar[4]=$tmp[2]
     psvar[5]=$tmp[3]
