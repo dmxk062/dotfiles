@@ -15,4 +15,4 @@
 <Multi_key> <ampersand> <t> : "⁊"
 <Multi_key> <ampersand> <7> : "⁊"
 
-<Multi_key> <ampersand> <ampersand> : "🙵" # fancy ampersand
+<Multi_key> <ampersand> <ampersand> : "🙵" # fancy ampersand, needs a space after it to be wider in monospace
