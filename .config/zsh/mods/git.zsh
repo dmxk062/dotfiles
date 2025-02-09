@@ -40,11 +40,11 @@ function lschg {
             if [[ $type == 1 ]]; then
                 read -r mode _ _ old_perm new_perm _ _ file <<< "$line";
                 case $mode in 
-                    M\.|MM) prefix="%B%F{yellow}";;
+                    M\.|MM) prefix="%K{#3b4252}%B%F{yellow}";;
                     \.M) prefix="%F{yellow}";;
-                    A\.|AA) prefix="%B%F{green}";;
+                    A\.|AA) prefix="%K{#3b4252}%B%F{green}";;
                     \.A) prefix="%F{green}";;
-                    D\.|DD) prefix="%B%F{red}";;
+                    D\.|DD) prefix="%K{#3b4252}%B%F{red}";;
                     \.D) prefix="%F{red}";;
                 esac
                 suffix=""
@@ -53,7 +53,7 @@ function lschg {
                     local bits_new="${new_perm:2}"
                     suffix=" %F{red}$bits_old%f -> %F{green}$bits_new%f"
                 fi
-                print -P -- "$prefix$mode%f%b $file$suffix"
+                print -P -- "$prefix$mode%f%b $file$suffix%k"
             elif ((all)) && [[ "$type" == "?" || "$type" == "!" ]]; then
                 print -P -- "%F{8}$type  $line%f"
             elif [[ "$type" == 2 ]]; then
@@ -68,7 +68,7 @@ function lschg {
                 fi
                 case "$mode" in
                     R.|RM)
-                        print -P -- "%B%F{red}${mode:0:1}%F{yellow}${mode:1:2}%b %F{red}$old_path%f -> %F{yellow}$new_path%f$suffix"
+                        print -P -- "%K{#3b4252}%B%F{red}${mode:0:1}%F{yellow}${mode:1:2}%b %F{red}$old_path%f -> %F{yellow}$new_path%f$suffix%k"
                         ;;
                 esac
             fi
