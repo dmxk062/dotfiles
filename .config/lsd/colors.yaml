@@ -1,90 +1,37 @@
-user: 
-  - 235
-  - 203
-  - 139
-group: 3
+user: magenta
+group: dark_blue
 permission:
-  exec: 
-    - 163
-    - 190
-    - 140
-  write:
-    - 208 
+  exec: green
+  write: 
+    - 208
     - 135
     - 112
-  read: 
-    - 235
-    - 203
-    - 139
-  exec-sticky: 
-    - 235
-    - 203
-    - 139
-  no-access: 
-    - 76
-    - 86
-    - 106
-  octal: 
-    - 94
-    - 129
-    - 172
-  acl: 
-    - 129
-    - 161
-    - 193
-  context: 
-    - 143
-    - 188
-    - 187
+  read: yellow
+  exec-sticky: dark_blue
+  no-access: red
+  octal: blue
+  acl: green
+  context: green
 date:
-  hour-old: 
-    - 136
-    - 192
-    - 208
-  day-old:
-    - 129
-    - 161
-    - 193
-  older: 
-    - 94
-    - 129
-    - 172
+  hour-old: blue
+  day-old: dark_blue
+  older: dark_grey
 size:
-  none: 
-    - 163
-    - 190
-    - 140
-  small: 
-    - 163
-    - 190
-    - 140
-  medium: 
-    - 208
-    - 135
-    - 112
-  large: 
-    - 180
-    - 142
-    - 173
+  none: green
+  small: dark_grey
+  medium: yellow
+  large: red
 inode:
-  valid:
-    - 143
-    - 188
-    - 187
-  invalid: 
-    - 191
-    - 97
-    - 106
+  valid: dark_magenta
+  invalid: red
 links:
-  valid:
-    - 143
-    - 188
-    - 187
-  invalid: 
-    - 191
-    - 97
-    - 106
-tree-edge: 
-  - 76
-  - 86
-  - 106
+  valid: dark_blue
+  invalid: red
+tree-edge: dark_grey
+git-status:
+  unmodified: grey
+  ignored: dark_grey
+  new-in-index: dark_green
+  default: dark_grey
+  deleted: dark_red
+  renamed: dark_magenta

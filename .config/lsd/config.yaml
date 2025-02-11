@@ -2,16 +2,18 @@ classic: false
 blocks:
   - permission
   - user
+  - group
   - size
   - date
   - name
 color:
   when: always
   theme: custom
-date: '+%H:%M %d-%m-%y'
+date: '+%H:%M %d/%m/%y'
 icons:
   when: always
   seperator: " "
 sorting:
     dir-grouping: first
-symlink-arrow: 
+symlink-arrow: ->
+size: short
