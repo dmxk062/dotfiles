@@ -404,7 +404,9 @@ end)
 -- allows me to repeat commands like theyre regular mappings
 operators.map_function("g:", function(mode, region, extra, get)
     if extra.repeated then
-        vim.cmd(string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
+        api.nvim_feedkeys(
+            string.format("<cmd>%d,%d%s<cr>", region[1][1], region[2][1], extra.saved.cmd),
+        "nt", false)
     else
         local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
         api.nvim_feedkeys(cmdstr, "n", false)
