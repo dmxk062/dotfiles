@@ -15,6 +15,14 @@
 (defvar vpn-revealed false)
 (defvar valent-revealed false)
 
+(defwidget battery-circle [percentage charging]
+    (circular-progress :visible {(percentage) > 0} :thickness 6 :value {percentage}
+        :tooltip "${percentage}% - ${charging ? "Charging" : "Discharging"}"
+        :class "battery-circle-${percentage < 20 ? "critical" 
+            : (percentage < 40 ? "low" 
+            : (percentage < 80 ? "medium" : "high"))}"
+            (label :text {charging ? bat-charging[(percentage - percentage % 10) / 10] : bat-discharging[(percentage - percentage % 10) / 10]})))
+
 (defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
     (revealer 
         :reveal {settings-panel-shown}

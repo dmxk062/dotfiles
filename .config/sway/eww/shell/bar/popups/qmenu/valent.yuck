@@ -1,14 +1,35 @@
 (deflisten valent "bin/valent.py")
 
+(defvar valent-call "busctl --user call ca.andyholmes.Valent")
+
 (defwidget valent-toggle-button []
     (box :class "dual-cbutton${valent.connected != "[]" ? " active" : ""}" :space-evenly false
         (button :hexpand true
             :timeout "16s"
             (label :limit-width 12
-                :text {valent.connected != "[]" ? "   ${valent.devices[0].name}" : "   No Phones"}))
+                :text {valent.connected != "[]" ? "   ${valent.devices[0].name} - ${round(valent.devices[0].battery.percentage, 0)}%" : "   No Phones"}))
         (button :onclick "${EWW_CMD} update valent-revealed=${!valent-revealed}"
             {valent-revealed ? "" : "" })))
 
 (defwidget valent-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
-        (box :space-evenly false)))
+        (box :space-evenly false
+            (button :class "sbutton" 
+                :onclick "gtk-launch ca.andyholmes.Valent& disown"
+                "󰒓   Valent"))
+        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
+            (for dev in {valent.devices}
+                (eventbox 
+                    :ondropped "${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.uris 1 as 1 '{}' 0"
+                    (box :orientation "vertical" :space-evenly false :class "card"
+                        (box :space-evenly false
+                            (box :hexpand true :halign "start"
+                                (themed-icon :name "phone" :width 48 :height 48)
+                                (battery-circle :percentage {dev.battery.percentage} :charging {dev.battery.charging}))
+                            (box :orientation "v" :style "margin-right: 1rem;"
+                                (label :class "title" :text {dev.name} :limit-width 16)
+                                (label :class "text" :text "${dev.network.name} (${dev.network.type}): ${dev.network.strength * 100}%")))
+                        (box :space-evenly false :hexpand true
+                            (button :class "button"
+                                :onclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.text 1 s "$(wl-paste)" 0`
+                                "󰅇   Send Clipboard")))))))))

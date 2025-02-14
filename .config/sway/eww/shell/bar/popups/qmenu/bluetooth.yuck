@@ -33,10 +33,6 @@
 (defwidget bt-toggle-button [] 
     (_bt-toggle-button :num-connected {jq(bt-devices, "map(select(.connected))|length")}))
 
-(defvar bt-battery-icons '[
-"󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
-]' )
-
 
 (defwidget bluetooth-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
@@ -60,12 +56,7 @@
                     (box :space-evenly false
                         (box :hexpand true :halign "start"
                             (themed-icon :name {dev.icon?:"bluetooth"} :width 48 :height 48)
-                            (circular-progress :visible {(dev.battery) > 0} :thickness 6 :value {dev.battery}
-                                :class "battery-circle-${dev.battery < 20 ? "critical" 
-                                : (dev.battery < 40 ? "low" 
-                                : (dev.battery < 80 ? "medium" : "high"))}"
-                                (label :text "${bt-battery-icons[(dev.battery - dev.battery % 10) / 10]}"))
-                            )
+                            (battery-circle :percentage {dev.battery} :charging false))
                         (box :orientation "vertical" :style "margin-right: 1rem;"
                             (label :class "title" :text "${dev.alias}" :limit-width 16)
                             (label :class "text" :text "${dev.mac}")))

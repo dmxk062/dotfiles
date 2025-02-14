@@ -220,6 +220,9 @@ tooltip{
     border-radius: 12px;
     padding: 0.2rem;
     margin: 0.4rem;
+    &:drop(active) {
+        background-color: $bg1;
+    }
 }
 
 .row {
