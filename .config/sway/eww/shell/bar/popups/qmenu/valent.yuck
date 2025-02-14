@@ -1,0 +1,14 @@
+(deflisten valent "bin/valent.py")
+
+(defwidget valent-toggle-button []
+    (box :class "dual-cbutton${valent.connected != "[]" ? " active" : ""}" :space-evenly false
+        (button :hexpand true
+            :timeout "16s"
+            (label :limit-width 12
+                :text {valent.connected != "[]" ? "   ${valent.devices[0].name}" : "   No Phones"}))
+        (button :onclick "${EWW_CMD} update valent-revealed=${!valent-revealed}"
+            {valent-revealed ? "" : "" })))
+
+(defwidget valent-panel []
+    (box :space-evenly false :class "section" :orientation "vertical"
+        (box :space-evenly false)))

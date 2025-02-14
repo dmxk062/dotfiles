@@ -5,6 +5,7 @@
 (include "./bar/popups/qmenu/status.yuck")
 (include "./bar/popups/qmenu/audio.yuck")
 (include "./bar/popups/qmenu/performance.yuck")
+(include "./bar/popups/qmenu/valent.yuck")
 
 (defvar settings-panel-shown false)
 ;; (defvar settings-section 0)
@@ -12,6 +13,7 @@
 (defvar wifi-revealed false)
 (defvar perf-revealed false)
 (defvar vpn-revealed false)
+(defvar valent-revealed false)
 
 (defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
     (revealer 
@@ -32,7 +34,8 @@
                 (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
                 (box
                     (vpn-toggle-button)
-                    (box))
+                    (valent-toggle-button))
+                (revealer :reveal {valent-revealed} :transition "slidedown" (valent-panel))
                 (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))))))))
 
 (defwindow settings-panel 
