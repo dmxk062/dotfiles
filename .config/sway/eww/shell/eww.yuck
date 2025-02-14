@@ -1,4 +1,4 @@
-; generic widget definitions
+; My desktop shell
 
 (defwidget hsep [height]
     (box :class "hsep" :style "margin-top: ${height / 2}; margin-bottom: ${height / 2}"))
