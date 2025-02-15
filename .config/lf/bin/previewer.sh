@@ -170,7 +170,7 @@ case "$MIMETYPE" in
         ;;
 
     text/*|*/xml|application/javascript|application/pgp-signature|application/x-setupscript|application/x-wine-extension-ini)
-        COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$[W-4] -f --number \
+        COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$[W-4] -f \
             --line-range 1:$[LINES - 2] "$FILE"
         ;;
 
@@ -188,7 +188,6 @@ case "$MIMETYPE" in
         ;;
 
     application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip)
-        info "󰛫 ${MIMETYPE//application\//} Archive"
         bsdtar --list --file "$FILE"
         ;;
     application/x-rar-compressed|application/x-rar)

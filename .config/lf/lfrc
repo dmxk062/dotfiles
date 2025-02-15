@@ -1,3 +1,22 @@
+# Unmap default maps i don't use {{{
+map t
+map w
+map r
+map sa
+map sc
+map sn
+map i
+map m
+map za
+map zh
+map zn
+map zr
+map zs
+map zt
+map c
+# }}}
+
+# Options {{{
 set shell zsh
 # my preview script, see there for explanation
 set previewer '~/.config/lf/bin/previewer.sh'
@@ -16,9 +35,10 @@ set number
 set dircounts true 
 set info 'size'
 # message for ! commands
-set waitmsg ' Press any key to continue to lf.'
+set waitmsg 'Press any key.'
 # enable mouse
 set mouse
+# }}}
 
 source "~/.config/lf/fmt.conf"
 source "~/.config/lf/binds/open.conf"
@@ -31,150 +51,104 @@ on-cd
 # move in parent pane
 map J :set dironly;updir; down;open;set dironly!
 map K :set dironly;updir; up;open;set dironly!
+
 # open files/dirs with enter
 map <enter> open
-map <backspace2> updir
+
 # trash commands
-map tt trash_trash
-map tr trash_restore
-map tDD trash_clear
-map t
-# tag a file
-map T tag-toggle "-"
+map tt trash-trash
+map tr trash-restore
+map tDD trash0clear
+
 # Options
 map Op set previewer '~/.config/lf/bin/npv.sh'
 map OP set previewer '~/.config/lf/bin/previewer.sh'
+
 # rename a file
 map R rename
+
 # completely delete a file
 map D delete
-map w
-map r
-# different copy, async
-map <c-p> pasteasync
-# copy the file name to clipboard
-map Yf copy_file
-# copy file to clipboard
-map Yn copy_fname
-# paste file from clipboard
-map Pm push :Paste<space>
-map Pl paste_link
-map Pi pasteinfo
-# chmods
+
+map <c-p> paste-async
+
+# clipboard
+map Yf cp-content
+map Yn cp-name
+map Pm push :clip-paste<space>
+map Pl paste-link
+map Pi clip-info
+
 map cm push :chmod<space>
-# chown
 map co push :chown<space>
 map cn :rename
 
-map rcm push :sudochmod<space>
-map rco push :sudochown<space>
-map rcn push :sudorename<space>
-
 # some dirs etc
 map gh set hidden!
-map gm &{{
-    lf -remote "send $id cd /run/media/$USER"
-}}
-map gG &{{
-    lf -remote "send $id cd /run/user/$UID/gvfs"
-}}
 map g~ cd ~
-map gM cd /mnt
-map gS cd ~/Documents/school/
 map gt cd ~/Tmp
 map gT cd ~/.local/share/Trash/files
 map g/ cd /
-map gr cd /
-map gE cd /etc 
 map gc cd ~/.config
-map gd cd /dev/disk/by-label
 map gD cd ~/Documents/
-map gv cd ~/Media
-map gV cd ~/places/gvfs
-map gU cd ~/places
-map gp cd ~/Pictures
-map gs cd ~/Pictures/Screenshots
 map gw cd ~/ws
 map g<space> push :cd<space>
+map gz :zi
+
 # clears the set marks
 map u unselect
 map <esc> clear
+
 # bookmark
 map M mark-save
+
 # sort
-map sa
-map sc
-map sn
 map st :set sortby time; set info 'time'
 map sd :set sortby natural; set info size
 map si :set reverse!
 map sT :set sortby time; set reverse!;top;set info 'time'
+
 # selections
 map <space>
-map <space> push :select<space>
+map <space>f :fzf-select
 map . :toggle
 map <gt> :toggle;down
 map <lt> :toggle;up
-map i
 map A invert
+
 # System bindings
 # gives me a shell
 map Ss $zsh -i
-# btm
-map Sm $btm
-map <c-l> follow_link
-map gl follow_link
+
+map <c-l> follow-link
+map gl follow-link
+
 # create stuff
-map m
 map md push :mkdir<space>
-map mf push :mf<space>
+map mf push :make-file<space>
 map ml push :link<space>
 map mD push :mkodt<space>""<left>
 map ~ backup
+
 # move to bg
 map <c-z> $ kill -STOP $PPID
-# various open commands
+
 map <c-f> :{{
     setfilter 
     filter
 }}
 set incfilter true
-# open using xdg-open
-map oDm fmount
-map oDu fumount
-# mount/unmount a device
-map odm dmount
-map odu dumount
-# for luks
-map odd ddecrypt
-map odc dencrypt
-# eject device
-map ode deject
-# archives
-map ae &{{~/.config/lf/bin/extract.sh $fx}}
-map aE $nvim $f
-map ax extract
-map at tardir
-map aT push :tar<space>
-map az zipdir
-map aZ push :zip<space>
-map al xz_tardir
-map za
-map zh
-map zn
-map zr
-map zs
-map zt
+
 # zoxide
 map z push :z<space>
-map Z zi
-# edit file using fzf
-map c
-# cd
+
+# fzf
 map F push :select<space>
-map <c-c> fzf_jump
-map <c-space> fzf_select
+map <c-c> fzf-jump
+map gf fzf-jump
+map <c-space> fzf-select
+
 # check disk usage
 map U %echo " 󰋊 $(du -shD $f)"
 # info
-map I fileinfo
+map I print-mimetype
