@@ -33,7 +33,8 @@ alias \
     -g '@noerr'="2>/dev/null" \
     -g "@noout"=">/dev/null" \
     -g "@ap"="| less -rFi" \
-    -g "@pg"="| less -ri"
+    -g "@pg"="| less -ri" \
+    -g "@help"='--help 2>&1 | bat -l help -p' \
 
 
 alias \
