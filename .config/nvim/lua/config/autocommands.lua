@@ -94,7 +94,7 @@ autocmd("TermOpen", {
 })
 
 -- enter the terminal by default
-autocmd("WinEnter", {
+autocmd({ "BufWinEnter", "WinEnter" }, {
     callback = function(ev)
         if vim.bo[ev.buf].buftype == "terminal" then
             vim.cmd.startinsert()
