@@ -157,4 +157,6 @@ done
 
 if ((edit_after_creation)) && ((${#created} > 0)); then
     exec $EDITOR "${created[@]}"
+elif [[ ! -t 1 ]]; then
+    echo "${created[0]}"
 fi
