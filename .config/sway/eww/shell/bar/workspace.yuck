@@ -6,7 +6,7 @@
     (eventbox 
         :onhover "./bin/popup.sh ws-overview-win ws-overview-reveal open&" 
         (box :space-evenly false 
-            (button :style "min-width: 1.3rem;" :class "button ${sway.scratch_count > 0 ? "special" : ""}" "~${sway.scratch_count}")
+            (button :style "min-width: 1.3rem;" :class "button ${sway.scratch_count > 0 ? "stack" : ""}" "~${sway.scratch_count}")
             (box :space-evenly false 
                 (for ws in {sway.workspaces}
                     (button :visible {!ws.is_virtual}

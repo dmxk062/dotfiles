@@ -11,7 +11,7 @@
 
 (defwidget status-valent [dev]
     (button 
-        :class {dev == "" ? "inactive" : ""}
+        :class {dev != "" ? "" : "inactive"}
         :tooltip {dev != "" ?
             "Connected to ${dev.name}, ${dev?.battery?.percentage}% - ${dev.battery.charging ? "Charing" : "Discharging"}"
             : "No Devices Connected"}
@@ -34,7 +34,7 @@
         (label
             :class {!bt-meta.powered ? "inactive" : ""}
             :text {bt-meta.powered ? "󰂯" : "󰂲"})
-        (status-valent :dev {valent.connected[0]})
+        (status-valent :dev {valent.connected?.[0] ?: ""})
         (label 
             :class {!vpn.active ? "inactive" : ""}
             :tooltip "${vpn.active ? "Connected via `${vpn.name}`" : "No VPN active"}"

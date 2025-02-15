@@ -109,6 +109,14 @@
     }
 }
 
+.stack {
+    background-color: $lblue;
+    color: $inv;
+    &:hover {
+        background-color: fade($lblue);
+    }
+}
+
 
 .text {
     color: $fg0;
