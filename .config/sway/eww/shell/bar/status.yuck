@@ -4,40 +4,50 @@
 (defvar bat-charging '[ "󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅" ]' )
 
 (defwidget status-battery [bat]
-    (revealer :reveal {bat.capacity >= 0} :visible {bat.capacity >= 0}
+    (revealer :reveal {bat.capacity >= 0} :visible {bat.capacity >= 0} :transition "slideright"
             (label :style "margin-left: .5rem;"
                 :class {bat.capacity < 20 ? "red" : ""}
                 :text "${bat.status == "Discharging" ? (bat-discharging[(bat.capacity - bat.capacity % 10)/10]) : (bat-charging[(bat.capacity - bat.capacity % 10)/10])}  ${bat.capacity}%")))
 
+(defwidget status-valent [dev]
+    (button 
+        :class {dev == "" ? "inactive" : ""}
+        :tooltip {dev != "" ?
+            "Connected to ${dev.name}, ${dev?.battery?.percentage}% - ${dev.battery.charging ? "Charing" : "Discharging"}"
+            : "No Devices Connected"}
+        :onclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.text 1 s "$(wl-paste)" 0`
+        ""))
+
 (defwidget status []
     (box :class "button" :space-evenly false :spacing 8
         (button
+            :class {audio.out.mute ? "inactive" : ""}
             :onclick "pamixer -t"
             :tooltip "${audio.out.name}: ${audio.out.vol}%"
             {audio.out.mute ? "󰸈" 
                 : (audio.out.vol > 70 ? "󰕾" : (audio.out.vol > 20 ? "󰖀" : "󰕿"))})
         (button 
+            :class {audio.in.mute ? "inactive" : ""}
             :onclick "pamixer -t --default-source"
             :tooltip "${audio.in.name}: ${audio.in.vol}%"
             {audio.in.mute ? "󰍭" : "󰍬"})
         (label
+            :class {!bt-meta.powered ? "inactive" : ""}
             :text {bt-meta.powered ? "󰂯" : "󰂲"})
+        (status-valent :dev {valent.connected[0]})
         (label 
+            :class {!vpn.active ? "inactive" : ""}
             :tooltip "${vpn.active ? "Connected via `${vpn.name}`" : "No VPN active"}"
-            :text {vpn.active ? "󰒄" : "󰀑"})
+            :text "󰒄")
         (label
-            :visible {wifi.powered}
+            :class {!wifi.powered ? "inactive" : ""}
             :tooltip {wifi.connected ? "Connected to ${wifi.ssid}" : "No Connection"}
-            :text {wifi.connected ? (wifi.signal > 80 ? "󱛎"
-            : (wifi.signal > 80 ? "󰤨"
+            :text {wifi.connected ? (wifi.signal > 80 ? "󰤨"
                 : (wifi.signal > 60 ? "󰤥"
                 : (wifi.signal > 40 ? "󰤢"
-                : (wifi.signal > 20 ? "󰤟" : "󰤯"))))) : "󰤯"})
+                : (wifi.signal > 20 ? "󰤟" : "󰤯")))) : (wifi.powered  ? "󰤫" : "󰤮")})
         (status-battery :bat {EWW_BATTERY?.["BAT0"]?: `{"status": "Discharging", "capacity": -1}`})
-        (label 
-            :visible {valent.connected != []}
-            :text "")
-        (label 
+        (label :style "margin-left: .2rem;"
             :tooltip "Screen Brightness: ${brightness}%"
             :text {brightness < 10 ? "󰃛" 
                 : (brightness < 20 ? "󰃜" 

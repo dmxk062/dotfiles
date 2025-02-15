@@ -8,7 +8,7 @@
 (include "./bar/notifications.yuck")
 (include "./bar/clock.yuck")
 
-(defvar systray-expanded true)
+(defvar systray-expanded false)
 (defwidget systray-expander []
     (box :space-evenly false 
         (button :class "button"

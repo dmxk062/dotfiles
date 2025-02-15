@@ -1,5 +1,5 @@
 (deflisten vpn "./bin/vpn.sh listen")
-(defvar default-vpn "France")
+(defvar default-vpn "Switzerland")
 (defpoll vpns :run-while vpn-revealed :interval "16s" "./bin/vpn.sh list")
 
 (defpoll public-ip :run-while vpn-revealed :interval "10m" "curl --fail -s ipinfo.io")
