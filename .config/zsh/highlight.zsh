@@ -56,3 +56,7 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 )
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+zle_highlight=(
+isearch:"bg=8"
+)
