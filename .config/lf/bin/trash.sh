@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env bash
 
 function notify {
     lf -remote "send $id echomsg $1"
@@ -6,26 +6,16 @@ function notify {
 
 function add {
     gio trash "$@"  
-    if (($# == 1)) {
-        name=file
-    } else {
-        name=files
-    }
-    notify "󰩹 Moved $# ${name} to trash"
+    notify "Trashed: $# Files"
 }
 
 function restore {
-    if (($# == 1)) {
-        name=file
-    } else {
-        name=files
-    }
     for file in "$@"; do
-        basename="${file:t}"
+        basename="${file##*/}"
         gio trash --restore trash:///"$basename"
     done
     sleep .1
-    notify "󰩹 Restored $# ${name} from trash"
+    notify "Restored: $# Files"
 }
 
 case "$1" in
