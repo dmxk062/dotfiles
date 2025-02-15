@@ -15,12 +15,13 @@ alias \
     llo='lsd -l --permission=octal --hyperlink=auto' \
     llao='lsd -lA --permission=octal --hyperlink=auto' \
     la='lsd -A --hyperlink=auto' \
-    lar='lsd -A --tree --depth 3  --hyperlink=auto' \
     l='lsd --hyperlink=auto' \
     grep='grep --color=auto' \
     fdd="fd -t d" \
     fdf="fd -t f" \
     g="git" \
+    pg="less -ri" \
+    ap="less -rFi" \
 
 alias '#'="noglob qalc" # do math directly on the cmdline
 
@@ -30,7 +31,10 @@ alias \
     -g "@err2out"="2>&1" \
     -g "@out2err"=">&2" \
     -g '@noerr'="2>/dev/null" \
-    -g "@noout"=">/dev/null"
+    -g "@noout"=">/dev/null" \
+    -g "@ap"="| less -rFi" \
+    -g "@pg"="| less -ri"
+
 
 alias \
     '@raw'="noglob" \
