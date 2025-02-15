@@ -58,7 +58,7 @@ map <enter> open
 # trash commands
 map tt trash-trash
 map tr trash-restore
-map tDD trash0clear
+map tDD trash-clear
 
 # Options
 map Op set previewer '~/.config/lf/bin/npv.sh'
