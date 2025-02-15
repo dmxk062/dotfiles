@@ -33,6 +33,7 @@ bindsym --locked XF86AudioNext exec playerctl position 5+
 bindsym --locked XF86AudioPrev exec playerctl position 5-
 
 bindsym $mod+XF86AudioMute exec ~/.config/rofi/applets/mute/run.sh
+bindsym $mod+Shift+M exec ~/.config/rofi/applets/mute/run.sh
 
 mode "media" {
     bindsym {
@@ -114,4 +115,3 @@ mode "media" {
 }
 
 bindsym $mod+M mode "media"
-
