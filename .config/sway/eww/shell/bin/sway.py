@@ -5,14 +5,21 @@ import i3ipc
 import json
 
 import gi
+
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 REGEX_NAMES = [
     ("^Minecraft.*", "minecraft"),
-    ("^nv:.*", "neovim"),
-    ("^lf:.*", "file-manager"),
+]
+
+TERMINAL = "kitty"
+TERM_OVERRIDES = [
+    ("^nv:", "neovim"),
+    ("^lf:", "file-manager"),
     ("^qalc$", "qalculator"),
+    ("^btm$", "preferences-system-performance"),
+    ("^pms$", "multimedia-audio-player"),
 ]
 
 CLASS_OVERRIDES = {
@@ -39,9 +46,13 @@ def get_for_ws(workspace: i3ipc.Con, output):
     for w in workspace.descendants():
         if not w.pid:
             continue
-        app_id = (w.app_id or w.window_class or None)
+        app_id = w.app_id or w.window_class or None
         app_id = CLASS_OVERRIDES.get(app_id, app_id)
-
+        
+        if app_id == TERMINAL:
+            for override in TERM_OVERRIDES:
+                if re.match(override[0], w.name):
+                    app_id = override[1]
         # overrides
         for override in REGEX_NAMES:
             if re.match(override[0], w.name):
@@ -55,12 +66,7 @@ def get_for_ws(workspace: i3ipc.Con, output):
             else:
                 app_id = "wayland"
 
-        rect = {
-            "x": 0,
-            "y": 0,
-            "width": 0,
-            "height": 0
-        }
+        rect = {"x": 0, "y": 0, "width": 0, "height": 0}
 
         width_scale = 1920 / output.rect.width
         height_scale = 1080 / output.rect.height
@@ -79,13 +85,14 @@ def get_for_ws(workspace: i3ipc.Con, output):
             "pid": w.pid,
             "focused": w.focused,
             "rect": rect,
-            "icon": get_icon(app_id)
+            "icon": get_icon(app_id),
         }
         if w.focused:
             is_active = True
 
         on_ws.append(win)
     return sorted(on_ws, key=lambda w: w["float"]), is_active
+
 
 def sort_by_name(ws):
     name = ws["ws"]
@@ -94,9 +101,10 @@ def sort_by_name(ws):
     else:
         return int(name)
 
+
 def update(i3, e):
     root = i3.get_tree()
-    
+
     workspaces = []
     for output in root.nodes:
         if output.name == "__i3":
@@ -104,29 +112,39 @@ def update(i3, e):
 
         for workspace in output.nodes:
             windows, is_active = get_for_ws(workspace, output)
-            workspaces.append({
+            workspaces.append(
+                {
                     "wins": windows,
                     "focused": workspace.focused or is_active,
                     "wsnum": workspace.num,
                     "ws": workspace.name,
-                    "is_virtual": False
-            })
+                    "is_virtual": False,
+                }
+            )
 
     sorted_ws = sorted(workspaces, key=sort_by_name)
 
     if len(sorted_ws[-1]["wins"]) != 0:
-        sorted_ws.append({
-            "wins": [],
-            "focused": False,
-            "wsnum": sorted_ws[-1]["wsnum"]+1,
-            "ws": str(sorted_ws[-1]["wsnum"]+1),
-            "is_virtual": True
-        })
+        sorted_ws.append(
+            {
+                "wins": [],
+                "focused": False,
+                "wsnum": sorted_ws[-1]["wsnum"] + 1,
+                "ws": str(sorted_ws[-1]["wsnum"] + 1),
+                "is_virtual": True,
+            }
+        )
 
-    print(json.dumps({
-        "workspaces": sorted_ws,
-        "scratch_count": len(root.scratchpad().floating_nodes)
-    }), flush=True)
+    print(
+        json.dumps(
+            {
+                "workspaces": sorted_ws,
+                "scratch_count": len(root.scratchpad().floating_nodes),
+            }
+        ),
+        flush=True,
+    )
+
 
 if __name__ == "__main__":
     i3 = i3ipc.Connection()
