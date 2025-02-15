@@ -130,8 +130,8 @@ M.config = function(_, opts)
     local ufo = require("ufo")
     ufo.setup(opts)
 
-    utils.map("n", "zO", ufo.openAllFolds)
-    utils.map("n", "zC", ufo.closeAllFolds)
+    utils.map("n", "zM", ufo.closeAllFolds)
+    utils.map("n", "zR", ufo.openAllFolds)
 
     utils.map("n", "<S-k>", function()
         local winid = ufo.peekFoldedLinesUnderCursor()
