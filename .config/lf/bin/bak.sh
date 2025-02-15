@@ -1,34 +1,36 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 file=$1
 shopt -s extglob
+
 i=0
-function backupNameGen(){
-    if ! [[ -f "${file}.~$i~" ]]
+function get_backup_name(){
+    if ! [[ -e "${file}.~$i~" ]]
     then
         newname="${file}.~$i~"
     else
         i=$((i+1))
-        backupNameGen
+        get_backup_name
     fi
 }
+
 function backup(){
-    backupNameGen
+    get_backup_name
     mv "$file" "$newname"
 }
-function unBackup(){
-    newname="$(echo $file|sed 's/\.~.~//')"
-    if [[ -f "$newname" ]]
+function un_backup(){
+    newname="${file//.~[0-9]~/}"
+    if [[ -e "$newname" ]]
     then
-        lf -remote "send $id echoerr 󰩋 File $newname already exists, aborting."
+        lf -remote "send $id echoerr $newname: File already exists"
         exit
     fi
     mv "$file" "$newname"
 }
 if [[ "$file" == *\.~*~ ]]
 then
-    unBackup
+    un_backup
 else   
     backup
 fi
-newname="$(echo $newname|sed 's/ /\\ /')"
-lf -remote "send $id select $newname"
+lf -remote "send $id select \"$newname\""
