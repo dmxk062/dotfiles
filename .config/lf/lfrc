@@ -149,7 +149,7 @@ map gf fzf-jump
 map <c-space> fzf-select
 
 # check disk usage
-map U %echo " 󰋊 $(du -shD $f)"
+map U :disk-usage
 # info
 map I print-mimetype
 
