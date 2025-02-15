@@ -41,21 +41,42 @@ local function get_marker_pattern()
     return cached_patterns[ft]
 end
 
+--- Format the virtual text of a fold as best as it can
+---@param virt_text [string, string][]
+---@param row integer
+---@param end_row integer
+---@param width integer
+---@param truncate fun(string, integer): string
+---@return table
 local function fold_formatter(virt_text, row, end_row, width, truncate)
     local new_text = {}
 
-    local first_line = virt_text[1][1]
+    -- get the actual first text element so i can check that for a foldmarker
+    -- the indent will be kept so it does not look out of place
+    local first_line = ""
+    local first_line_indent = ""
+    for _, chunk in ipairs(virt_text) do
+        if not chunk[1]:match("^%s*$") then
+            first_line = first_line .. chunk[1]
+            break
+        else
+            first_line_indent = first_line_indent .. chunk[1]
+        end
+    end
 
+    -- try to find a foldmarker
     local _, _, title, marker, level = first_line:find(get_marker_pattern())
 
     local suffix = (" -> %d lines"):format(end_row - row)
 
+    -- it's a marked fold, pretty print the marker label and (if it is there) level
     if marker and title then
         title = title:gsub("%s*$", "")
-        table.insert(new_text, { "# " .. title, "UfoFoldTitle" })
+        table.insert(new_text, { first_line_indent .. "@ " .. title, "UfoFoldTitle" })
         if #level > 0 then
-            table.insert(new_text, { " :" .. level, "Number" })
+            table.insert(new_text, { " ::" .. level, "Number" })
         end
+    -- otherwise keep the treesitter highlighting
     else
         local suff_width = vim.fn.strdisplaywidth(suffix)
         local target_width = width - suff_width
