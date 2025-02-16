@@ -352,21 +352,17 @@ function preview_sqlite {
             section "$table" 15
             curtbl="$table"
         fi
-        case "$ctype" in
-            INT|INTEGER) color=magenta; type=int;;
-            DATE) color=yellow; type=date;;
-            BIGINT) color=13; type="bigint";;
-            TEXT|VARCHAR) color=green; type=str;;
-            LONGVARCHAR) color=green; type="long varchar";;
-            VARCHAR*) 
-                color=green
-                type="${ctype:l}"
-                ;;
-            BOOLEAN) color=cyan; type=bool;;
-            DOUBLE) color=12; type=double;;
-            BLOB) color=yellow; type=blob;;
+        type="${ctype:l}"
+        case "$type" in
+            int|integer) color=magenta;;
+            date) color=yellow;;
+            bigint) color=13;;
+            text|varchar|varchar*) color=green;;
+            longvarchar) color=green;;
+            boolean) color=cyan;;
+            double|float|real) color=12;;
+            blob) color=yellow;;
             "") color=8; type=null;;
-            *) color=""; type="$ctype";;
         esac
         prop "$column" "$type" "$color"
     done < <(sqlite3 "$1" 'SELECT m.name, p.name, p.type 
