@@ -3,6 +3,12 @@
 CACHEDIR="$XDG_CACHE_HOME/lf"
 [[ ! -d "$CACHEDIR" ]] && mkdir -p "$CACHEDIR"
 
+# General purpose preview script, mainly meant for lf
+# Architecture:
+#   - Tries to cache as much as possible
+#   - Handle filetypes as generic categories with fallback
+#   - Coherent display between filetypes
+
 # given to us by lf
 FILE=$1
 W=$2
@@ -37,6 +43,14 @@ function title {
 
 function error {
     print -P "\n%F{red}%B! $1%f%b\n$2"
+    ((H-=2))
+    ((Y+=2))
+}
+
+function hint {
+    print -P "%F{12}%B! $1%f%b\n$2"
+    ((H--))
+    ((Y++))
 }
 
 function prop {
@@ -72,10 +86,12 @@ function create_cache {
 # }}}
 
 
-if ! [[ -r "$FILE" ]] {
+if ! [[ -e "$FILE" ]]; then
+    exit 1
+elif ! [[ -r "$FILE" ]]; then
     print -P "%F{red}%B! Permission Denied\e[0m"
     exit 1
-}
+fi
 
 MIMETYPE="$(file --dereference --brief --mime-type -- "$FILE")"
 
@@ -373,8 +389,28 @@ function preview_sqlite {
 }
 # }}}
 
+# Generic {{{
+function preview_binary {
+    info "Binary"
+    # HACK: the ultimate WTF, i hope xxd comes up with a way to change the colors some day
+    # this (in order): 
+    # removes bold, changes white to gray
+    # changes red to light blue, makes lines that just have '*' gray, and makes the addresses magenta in all other places
+    if create_cache "$1" .dump; then
+        xxd -a -R always  -c 12 -u "$1" | head -n 80 | sed -e 's/1;//g' -e 's/37m/90m/g' \
+            -e 's/31m/94m/g' -e $'s/^*/\e[90m*/g' -e 's/^\(.*\):/'$'\e[35m''\1'$'\e[90m'':/g' \
+            | tee "${reply[1]}"
+    else
+        head -n$[H-1] "${reply[1]}"
+    fi
+}
+
+function preview_text {
+    COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$[W-4] -f -r1:$[H - 2] "$FILE"
+}
+# }}}
+
 case "$MIMETYPE" in
-# Office {{{
     application/pdf) 
         preview_pdf "$FILE" "$MIMETYPE";;
     *opendocument*|application/vnd.openxmlformats-officedocument.*)
@@ -382,66 +418,51 @@ case "$MIMETYPE" in
     font/sfnt|application/vnd.ms-opentype)
         preview_font "$FILE" "$MIMETYPE"
         ;;
-# }}}
 
-# Media {{{
     image/*) preview_image "$FILE" "$MIMETYPE";;
     audio/*) preview_audio "$FILE" "$MIMETYPE";;
     video/*) preview_video "$FILE" "$MIMETYPE";;
-# }}}
 
-# Code {{{
     application/x-pie-executable|application/x-executable|application/x-sharedlib) 
         preview_elf "$FILE" "$MIMETYPE";;
     application/x-object) 
         preview_object "$FILE" "$MIMETYPE";;
-# }}}
 
-# Archives {{{
     *x-iso9660-image)
         bsdtar_list "$FILE" "ISO Disk Image"
         ;;
     application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip)
         bsdtar_list "$FILE" "${MIMETYPE//application\//} Archive"
         ;;
-    application/vnd.sqlite3)
-        preview_sqlite "$FILE"
-        ;;
     application/vnd.rar)
         preview_rar "$FILE"
         ;;
-# }}}
+    application/vnd.sqlite3)
+        preview_sqlite "$FILE"
+        ;;
 
-# Plain Text {{{
     text/*|*/xml|application/javascript|application/pgp-signature|application/x-setupscript|application/x-wine-extension-ini)
-        COLORTERM=truecolor bat -pf --wrap=character --terminal-width=$[W-4] -f --line-range 1:$[LINES - 2] "$FILE"
+        preview_text "$FILE" "$MIMETYPE"
         ;;
     application/json)
         jq -C < "$FILE"
         ;;
-# }}}
 
     # essentially all special cases
-    *octet-stream)
-        info "Binary"
-        # HACK: the ultimate WTF, i hope xxd comes up with a way to change the colors some day
-        # this (in order): 
-        # removes bold, changes white to gray
-        # changes red to light blue, makes lines that just have '*' gray, and makes the addresses magenta in all other places
-        if create_cache "$FILE" .dump; then
-            xxd -a -R always  -c 12 -u "$FILE" | head -n 80 | sed -e 's/1;//g' -e 's/37m/90m/g' \
-                -e 's/31m/94m/g' -e $'s/^*/\e[90m*/g' -e 's/^\(.*\):/'$'\e[35m''\1'$'\e[90m'':/g' \
-                | tee "${reply[1]}"
-        else
-            head -n$[H-1] "${reply[1]}"
-        fi
-        ;;
     inode/x-empty|application/x-empty) 
         print -P "%SEmpty\e[0m"
         ;;
+    *octet-stream)
+        preview_binary "$FILE" "$MIMETYPE"
+        ;;
     *)
-        info "${MIMETYPE}"
-        print "No Handler"
+        hint "No Handler installed for ${MIMETYPE}"
+        if [[ "$(file --mime-encoding -b -- "$FILE")" == "binary" ]]; then
+            preview_binary "$FILE" "$MIMETYPE"
+        else
+            info "Text"
+            preview_text "$FILE" "$MIMETYPE"
+        fi
         ;;
 esac
 exit 1
