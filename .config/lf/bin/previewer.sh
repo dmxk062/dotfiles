@@ -301,8 +301,9 @@ function bsdtar_list {
     info "$2"
     local lastwasdir=1
     local lastdir=""
+    local i=2
 
-    bsdtar -vtf "$1" | LC_ALL=C sort -k 9 | head -n $[H-4] | while read -r perms _ owner group size _ _ _ name; do
+    bsdtar -vtf "$1" | LC_ALL=C sort -k 9 | head -n $[H-4] | while read -r perms _ owner group size _ _ _ name && ((i++ < H)); do
         if [[ "$name" == "." ]]; then
             continue
         fi
@@ -310,9 +311,9 @@ function bsdtar_list {
         case "$ftype" in
             d) 
                 if ((lastwasdir)); then
-                    print -P "%F{cyan}%B󰉋 $name\e[0m"
+                    print -P "%F{cyan}%B󰉋 ${name%*/}/\e[0m"
                 else
-                    print -P "\n%F{cyan}%B󰉋 $name\e[0m"
+                    print -P "\n%F{cyan}%B󰉋 ${name%*/}/\e[0m"
                 fi
                 lastwasdir=1
                 lastdir="$name"
