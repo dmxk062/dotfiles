@@ -115,6 +115,7 @@ nameddirs=(
     ["a:/r"]="$HOME/.avfs"
     ["a:/~"]="$HOME/.avfs$HOME"
     ["a:/~dl"]="$HOME/.avfs$HOME/Downloads"
+    ["a:/~tmp"]="$HOME/.avfs$HOME/Tmp"
     ["build"]="$HOME/ws/build"
     ["cfg"]="$HOME/.config"
     ["dl"]="$HOME/Downloads"
