@@ -300,6 +300,8 @@ Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich."
 function bsdtar_list {
     info "$2"
     local lastwasdir=1
+    local lastdir=""
+
     bsdtar -vtf "$1" | LC_ALL=C sort -k 9 | head -n $[H-4] | while read -r perms _ owner group size _ _ _ name; do
         if [[ "$name" == "." ]]; then
             continue
@@ -307,26 +309,30 @@ function bsdtar_list {
         local ftype="${perms:0:1}"
         case "$ftype" in
             d) 
-                color=%B%F{cyan}
                 if ((lastwasdir)); then
-                    name="$name"
+                    print -P "%F{cyan}%B󰉋 $name\e[0m"
                 else
-                    name="\n$name"
+                    print -P "\n%F{cyan}%B󰉋 $name\e[0m"
                 fi
                 lastwasdir=1
+                lastdir="$name"
                 ;;
             l) 
                 lastwasdir=0
-                color=%F{blue}
+                IFS=">" read -r name target <<< "$name"
                 name="${name:t}"
+                print -P "%F{blue}󰌷 ${name%* -}%F{white} ->%F{blue}${target}\e[0m"
                 ;;
             -) 
-                color=%F{white}
+                if [[ "${name}" != "${name:h1}" && "${lastdir}" == "" ]]; then
+                    print -P "%F{cyan}%B󰉋 ${name:h1}/\e[0m"
+                    lastdir="${name:h1}/"
+                fi
                 lastwasdir=0
                 name="${name:t}"
+                print -P "󰈔 $name"
                 ;;
         esac
-        print -P "$color${name}\e[0m"
     done
 }
 
@@ -340,13 +346,14 @@ function preview_rar {
     | LC_ALL=C sort | while read size date time bits file; do
             if [[ "${bits:1:1}" == "D" ]]; then
                 if ((lastwasdir)); then
-                    print -P "%F{cyan}%B$file/\e[0m"
+                    print -P "%F{cyan}%B󰉋 $file/\e[0m"
                 else
-                    print -P "\n%F{cyan}%B$file/\e[0m"
+                    print -P "\n%F{cyan}%B󰉋 $file/\e[0m"
                 fi
                 lastwasdir=1
             else
-                print "${file:t}"
+                lastwasdir=0
+                print "󰈔 ${file:t}"
             fi
     done
 }
@@ -371,7 +378,7 @@ function preview_sqlite {
         type="${ctype:l}"
         case "$type" in
             int|integer) color=magenta;;
-            date) color=yellow;;
+            date|timestamp) color=yellow;;
             bigint) color=13;;
             text|varchar|varchar*) color=green;;
             longvarchar) color=green;;
@@ -379,6 +386,7 @@ function preview_sqlite {
             double|float|real) color=12;;
             blob) color=yellow;;
             "") color=8; type=null;;
+            *) color="green";;
         esac
         prop "$column" "$type" "$color"
     done < <(sqlite3 "$1" 'SELECT m.name, p.name, p.type 
