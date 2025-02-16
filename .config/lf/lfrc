@@ -110,7 +110,8 @@ map sT :set sortby time; set reverse!;top;set info 'time'
 
 # selections
 map <space>
-map <space>f :fzf-select
+map <space>f fzf-select
+map <space>/ rg-select
 map . :toggle
 map <gt> :toggle;down
 map <lt> :toggle;up
