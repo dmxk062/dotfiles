@@ -14,6 +14,7 @@ COLUMNS="$W"
 
 IMAGE_SIZE="800x600"
 
+# Helper Functions {{{
 # $1: image to display (file)
 # $2: height offset
 function display_image {
@@ -28,23 +29,29 @@ function info {
     ((Y+=2))
 }
 
+function title {
+    print -P "%F{cyan}%B# $1\e[0m"
+    ((H--))
+    ((Y++))
+}
+
+function error {
+    print -P "\n%F{red}%B! $1%f%b\n$2"
+}
+
 function prop {
     if [[ -z "$2" || "$2" == [[:space:]] ]]; then
         return
     fi
-    print -P "%F{blue}$1: %F{${3:-green}}$2\e[0m"
+    print -P "%F{blue}$1%F{8}: %F{${3:-green}}$2\e[0m"
     ((H--))
     ((Y++))
 }
 
 function section {
-    print -P "\n%F{green}%B## $1\e[0m"
+    print -P "\n%F{${2:-green}}%B## $1\e[0m"
     ((H-=2))
     ((Y+=2))
-}
-
-function separator {
-    printf "%.0s-" {1..$W}
 }
 
 # create a cache entry for a file
@@ -62,10 +69,12 @@ function create_cache {
     done
     [[ ! -f "${reply[1]}" ]]
 }
+# }}}
 
 
 if ! [[ -r "$FILE" ]] {
-    print -P "%SPermission Denied"
+    print -P "%F{red}%B! Permission Denied\e[0m"
+    exit 1
 }
 
 MIMETYPE="$(file --dereference --brief --mime-type -- "$FILE")"
@@ -271,43 +280,14 @@ Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich."
 # }}}
 
 # Archives {{{
-function preview_iso_image {
-    info "ISO Disk Image"
-    if create_cache "${1}" ".desc" ".list"; then
-        local keywords=1 application creator publisher volume
-        local -a files
-        iso-info --no-header -i "$1"|while read -r line; do
-            if ((keywords)) && [[ "$line" =~ ^.*:.*$ ]]; then
-                IFS="${IFS}:" read -r key value <<< "$line"
-                case "$key" in
-                    Application) application="$value";;
-                    Preparer) creator="$value";;
-                    Publisher) publisher="$value";;
-                    Volume) [[ "$value" != "Set"* ]] && volume="$value";;
-                esac
-            elif [[ "$line" == "ISO-9660 Information" ]]; then
-                keywords=0
-            elif ! ((keywords)); then
-                read -r size file <<< "$line"
-                files+=("$file")
-            fi
-        done
-        print "${application:--}\t${creator:--}\t${publisher:--}\t${volume:--}\t" > "${reply[1]}"
-        print "${(j:\n:)files}" > "${reply[2]}"
-    fi
-    IFS=$'\t' read name creator publisher volume < "${reply[1]}"
-    prop "Label" "$name"
-    prop "Creator" "$creator" 13
-    prop "Publisher" "$publisher" yellow
-    prop "Volume" "$volume" 12
 
-    section "File Listing"
-    head -n "$[H-1]" "${reply[2]}"
-}
-
-function preview_archive {
+function bsdtar_list {
+    info "$2"
     local lastwasdir=1
-    bsdtar --verbose --list --file "$1" | head -n $H | while read -r perms _ owner group size _ _ _ name; do
+    bsdtar -vtf "$1" |  sort -k 8 | head -n $[H-4] | while read -r perms _ owner group size _ _ _ name; do
+        if [[ "$name" == "." ]]; then
+            continue
+        fi
         local ftype="${perms:0:1}"
         case "$ftype" in
             d) 
@@ -320,7 +300,9 @@ function preview_archive {
                 lastwasdir=1
                 ;;
             l) 
+                lastwasdir=0
                 color=%F{blue}
+                name="${name:t}"
                 ;;
             -) 
                 lastwasdir=0
@@ -330,6 +312,68 @@ function preview_archive {
         esac
         print -P "$color${name}\e[0m"
     done
+}
+
+function preview_rar {
+    info "rar Archive"
+    local lastwasdir=1
+    # has shitty output, convert it smth nicer
+    unrar-free --list "$1" | awk \
+        '/^[-]+$/ { in_list = !in_list; next }
+        in_list { if (NR%2==0) {line = $0 } else { print $0 "\t" line} }' \
+    | sort | while read size date time bits file; do
+            if [[ "${bits:1:1}" == "D" ]]; then
+                if ((lastwasdir)); then
+                    print -P "%F{cyan}%B$file/\e[0m"
+                else
+                    print -P "\n%F{cyan}%B$file/\e[0m"
+                fi
+                lastwasdir=1
+            else
+                print "${file:t}"
+            fi
+    done
+}
+
+function preview_sqlite {
+    title "sqlite3 Database"
+
+    local curtbl=""
+    local count=0
+    while IFS="|" read -r table column ctype && ((H > 1)); do
+        if [[ "$table" == "*Error" ]]; then
+            error "Could not access database:" "$column"
+            break
+        fi
+        if [[ -z "$column" ]]; then
+            continue
+        fi
+        if [[ "$curtbl" != "$table" ]]; then
+            section "$table" 15
+            curtbl="$table"
+        fi
+        case "$ctype" in
+            INT|INTEGER) color=magenta; type=int;;
+            DATE) color=yellow; type=date;;
+            BIGINT) color=13; type="bigint";;
+            TEXT|VARCHAR) color=green; type=str;;
+            LONGVARCHAR) color=green; type="long varchar";;
+            VARCHAR*) 
+                color=green
+                type="${ctype:l}"
+                ;;
+            BOOLEAN) color=cyan; type=bool;;
+            DOUBLE) color=12; type=double;;
+            BLOB) color=yellow; type=blob;;
+            "") color=8; type=null;;
+            *) color=""; type="$ctype";;
+        esac
+        prop "$column" "$type" "$color"
+    done < <(sqlite3 "$1" 'SELECT m.name, p.name, p.type 
+    FROM sqlite_master m 
+    left outer join pragma_table_info((m.name)) p
+        on m.name <> p.name
+        order by m.name, p.name;' 2> >(while read -r err; do print "*Error|$err"; done) || return)
 }
 # }}}
 
@@ -359,10 +403,16 @@ case "$MIMETYPE" in
 
 # Archives {{{
     *x-iso9660-image)
-        preview_iso_image "$FILE" "$MIMETYPE"
+        bsdtar_list "$FILE" "ISO Disk Image"
         ;;
     application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip)
-        preview_archive "$FILE" "$MIMETYPE"
+        bsdtar_list "$FILE" "${MIMETYPE//application\//} Archive"
+        ;;
+    application/vnd.sqlite3)
+        preview_sqlite "$FILE"
+        ;;
+    application/vnd.rar)
+        preview_rar "$FILE"
         ;;
 # }}}
 
@@ -380,11 +430,12 @@ case "$MIMETYPE" in
         info "Binary"
         # HACK: the ultimate WTF, i hope xxd comes up with a way to change the colors some day
         # this (in order): 
-        # removes bold, changes white to gray, changes red to light blue, makes lines that just have '*' gray, and makes the addresses magenta in all other places
+        # removes bold, changes white to gray
+        # changes red to light blue, makes lines that just have '*' gray, and makes the addresses magenta in all other places
         if create_cache "$FILE" .dump; then
-            xxd -a -R always -l 1024 -c 12 -u "$FILE" | sed -e 's/1;//g' -e 's/37m/90m/g' \
+            xxd -a -R always  -c 12 -u "$FILE" | head -n 80 | sed -e 's/1;//g' -e 's/37m/90m/g' \
                 -e 's/31m/94m/g' -e $'s/^*/\e[90m*/g' -e 's/^\(.*\):/'$'\e[35m''\1'$'\e[90m'':/g' \
-                | tee "${reply[1]}" | head -n$[H-1]
+                | tee "${reply[1]}"
         else
             head -n$[H-1] "${reply[1]}"
         fi
