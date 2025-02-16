@@ -154,7 +154,8 @@ map U :disk-usage
 # info
 map I print-mimetype
 
-map aZ :push :zip<space>
-map az :push :unzip<space>
-map aT :push :tar<space>
-map at :push :untar<space>
+map aZ push :zip<space>
+map az push :unzip<space>
+map aT push :tar<space>
+map at push :untar<space>
+map ar push :unrar<space>

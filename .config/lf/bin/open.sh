@@ -10,7 +10,7 @@ MIMETYPE="$(file --mime-type --brief --dereference -- "$1")"
 case "$MIMETYPE" in
 image/*)
     for img in $fx; do
-        kitten icat -- "$img"
+        kitten icat --no-trailing-newline -- "$img"
         read
     done
     ;;
@@ -24,6 +24,20 @@ application/pdf)
     ;;
 text/* | application/json | inode/x-empty | application/javascript)
     nvim -b -- $fx
+    ;;
+application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip|application/vnd.rar|application/x-iso9660-image)
+    case "$MIMETYPE" in
+        *-iso9660-image)
+            suffix="#iso9660"
+            ;;
+        *)
+            suffix="#"
+            ;;
+    esac
+    if ! pgrep "avfsd"; then
+        avfsd ~/.avfs
+    fi
+    lf -remote "send $id cd $(printf '%s/%s%s' "$HOME/.avfs" "$f" "$suffix" | sed -z 's/\\/\\\\/g;s/"/\\"/g;s/\n/\\n/g;s/^/"/;s/$/"/')"
     ;;
 *)
     for file in $fx; do
