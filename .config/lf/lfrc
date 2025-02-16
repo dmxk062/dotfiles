@@ -17,6 +17,7 @@ map c
 # }}}
 
 # Options {{{
+set watch
 set shell zsh
 # my preview script, see there for explanation
 set previewer '~/.config/lf/bin/previewer.sh'
