@@ -42,7 +42,6 @@ set mouse
 # }}}
 
 source "~/.config/lf/fmt.conf"
-source "~/.config/lf/binds/open.conf"
 source "~/.config/lf/commands.conf"
 
 set ratios '1:2:3'
@@ -94,7 +93,7 @@ map gc cd ~/.config
 map gD cd ~/Documents/
 map gw cd ~/ws
 map g<space> push :cd<space>
-map gz :zi
+map gz zi
 
 # clears the set marks
 map u unselect
@@ -111,16 +110,12 @@ map sT :set sortby time; set reverse!;top;set info 'time'
 
 # selections
 map <space>
-map <space>f fzf-select
+map <space>F fzf-select
 map <space>/ rg-select
 map . :toggle
 map <gt> :toggle;down
 map <lt> :toggle;up
 map A invert
-
-# System bindings
-# gives me a shell
-map Ss $zsh -i
 
 map <c-l> follow-link
 map gl follow-link
@@ -151,12 +146,27 @@ map gf fzf-jump
 map <c-space> fzf-select
 
 # check disk usage
-map U :disk-usage
+map U disk-usage
 # info
-map I print-mimetype
+map Im print-mimetype
 
 map aZ push :zip<space>
 map az push :unzip<space>
 map aT push :tar<space>
 map at push :untar<space>
 map ar push :unrar<space>
+
+map <c-w>h kitty-cmd neighboring_window left
+map <c-w>j kitty-cmd neighboring_window down
+map <c-w>k kitty-cmd neighboring_window up
+map <c-w>l kitty-cmd neighboring_window right
+
+map <space>ss sp!
+map <space>sv vsp!
+
+map <space>ee $nvim $fx
+map <space>es sp nvim
+map <space>ev vsp nvim
+
+map <space>fs sp
+map <space>fv vsp
