@@ -226,7 +226,7 @@ ${(j:, :)undef}" | fmt -sw $((W-4))
 
 # Documents {{{
 function preview_pdf {
-    if create_cache "${1}" .png; then
+    if create_cache "$1" .png; then
         pdftoppm -singlefile -f 1 -l 1 -png "$1" > "${reply[1]}"
     fi
     display_image "${reply[1]}"
@@ -306,14 +306,27 @@ function preview_iso_image {
 }
 
 function preview_archive {
-    bsdtar --verbose --list --file "$1" | head -n $[H-1] | while read -r perms _ owner group size _ _ _ name; do
+    local lastwasdir=1
+    bsdtar --verbose --list --file "$1" | head -n $H | while read -r perms _ owner group size _ _ _ name; do
         local ftype="${perms:0:1}"
         case "$ftype" in
-            d) color=%B%F{cyan};;
-            l) color=blue;;
+            d) 
+                color=%B%F{cyan}
+                if ((lastwasdir)); then
+                    name="$name"
+                else
+                    name="\n$name"
+                fi
+                lastwasdir=1
+                ;;
+            l) 
+                color=%F{blue}
+                ;;
             -) 
+                lastwasdir=0
                 color=%F{white}
-                name="${name:t}";;
+                name="${name:t}"
+                ;;
         esac
         print -P "$color${name}\e[0m"
     done
