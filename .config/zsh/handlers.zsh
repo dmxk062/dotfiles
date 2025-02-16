@@ -121,7 +121,37 @@ function _clipboard_directory_name {
     fi
 }
 
-zsh_directory_name_functions+=(_clipboard_directory_name)
+function __avfs_directory_name {
+    if [[ "$1" == "d" ]]; then
+        return 1
+    elif [[ "$1" == "n" ]]; then
+        local prefix rest
+        IFS=":" read -r prefix rest <<< "$2"
+        if [[ "$prefix" != "a" ]]; then
+            return 1
+        fi
+
+        if [[ -z "$rest" ]]; then
+            typeset -ga reply
+            reply=("$HOME/.avfs/${PWD:a}")
+        else
+            typeset -ga reply
+            case "$rest" in
+                *.iso) suffix="iso9660#";;
+                *) suffix="#";;
+            esac
+            local archive="${rest:a}"
+            reply=("$HOME/.avfs/$archive$suffix")
+        fi
+    elif [[ "$1" == "c" ]]; then
+        local -a arcs=("$PWD/"{*.zip,*.rar,*.tar.*,*.iso})
+        local -a arcnames=("${(@)arcs:t}")
+        arcnames=("${(@)arcnames/#/a:}")
+        _wanted dynamic-dirs expl 'arc' compadd -S\] -a arcnames
+    fi
+}
+
+zsh_directory_name_functions+=(_clipboard_directory_name __avfs_directory_name)
 
 
 # ignore short commands
@@ -153,3 +183,4 @@ zle -N zle-isearch-exit
 # use bat as a pager for man
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT='-c'
+export PAGER="bat"

@@ -1,6 +1,5 @@
 export VISUAL="nvim"
 export EDITOR="nvim"
-export PAGER="bat -p"
 export npm_config_prefix="$HOME/.local"
 export MOZ_ENABLE_WAYLAND=1      
 

@@ -112,19 +112,22 @@ SAVEHIST=8000
 
 # hashed directories (accessible via ~name)
 nameddirs=(
+    ["a:/r"]="$HOME/.avfs"
+    ["a:/~"]="$HOME/.avfs$HOME"
+    ["a:/~dl"]="$HOME/.avfs$HOME/Downloads"
+    ["build"]="$HOME/ws/build"
     ["cfg"]="$HOME/.config"
     ["dl"]="$HOME/Downloads"
+    ["docs"]="$HOME/Documents"
+    ["games"]="$HOME/Games"
+    ["jrnl"]="$HOME/Documents/journal/journal/"
+    ["media"]="/run/media/$USER"
+    ["mnt"]="/mnt"
+    ["music"]="$HOME/Media/Music"
+    ["school"]="$HOME/Documents/school"
+    ["tmp"]="$HOME/Tmp"
     ["tmp"]="$HOME/Tmp"
     ["ws"]="$HOME/ws"
-    ["build"]="$HOME/ws/build"
-    ["music"]="$HOME/Media/Music"
-    ["docs"]="$HOME/Documents"
-    ["jrnl"]="$HOME/Documents/journal/journal/"
-    ["school"]="$HOME/Documents/school"
-    ["mnt"]="/mnt"
-    ["arc"]="$HOME/.avfs"
-    ["media"]="/run/media/$USER"
-    ["games"]="$HOME/Games"
 )
 
 

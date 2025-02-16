@@ -10,13 +10,13 @@ if [[ "$1" == "unload" ]]; then
     return
 fi
 
-FZF_DEFAULT_OPTS="--pointer='>' --no-scrollbar --no-separator --border=rounded"
+FZF_DEFAULT_OPTS="--pointer='' --no-scrollbar --no-separator --border=rounded --no-bold"
 FZF_DEFAULT_OPTS+=" --color="\
 prompt:cyan:bold,\
 fg:white,\
-fg+:cyan,\
 bg:black,\
-bg+:black,\
+bg+:gray,\
+gutter:black,\
 hl:cyan,\
 hl+:cyan,\
 info:magenta,\
@@ -24,7 +24,6 @@ border:gray,\
 query:white:regular,\
 preview-fg:white,\
 preview-bg:black,\
-pointer:cyan,\
 spinner:cyan,\
 marker:magenta,\
 header:white

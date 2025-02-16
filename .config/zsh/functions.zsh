@@ -64,7 +64,6 @@ source "$ZDOTDIR/mods/net.zsh"
 source "$ZDOTDIR/mods/fs.zsh"
 source "$ZDOTDIR/mods/structured_data.zsh"
 source "$ZDOTDIR/mods/git.zsh"
-source "$ZDOTDIR/mods/tmp.zsh"
 source "$ZDOTDIR/mods/fzf.zsh"
 
 if [[ "$TERM" == "xterm-kitty" ]]; then
