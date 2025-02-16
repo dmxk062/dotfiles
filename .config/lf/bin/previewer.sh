@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/zsh
 
 CACHEDIR="$XDG_CACHE_HOME/lf"
 [[ ! -d "$CACHEDIR" ]] && mkdir -p "$CACHEDIR"
@@ -300,7 +300,7 @@ Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich."
 function bsdtar_list {
     info "$2"
     local lastwasdir=1
-    bsdtar -vtf "$1" |  sort -k 8 | head -n $[H-4] | while read -r perms _ owner group size _ _ _ name; do
+    bsdtar -vtf "$1" | LC_ALL=C sort -k 9 | head -n $[H-4] | while read -r perms _ owner group size _ _ _ name; do
         if [[ "$name" == "." ]]; then
             continue
         fi
@@ -321,8 +321,8 @@ function bsdtar_list {
                 name="${name:t}"
                 ;;
             -) 
-                lastwasdir=0
                 color=%F{white}
+                lastwasdir=0
                 name="${name:t}"
                 ;;
         esac
@@ -337,7 +337,7 @@ function preview_rar {
     unrar-free --list "$1" | awk \
         '/^[-]+$/ { in_list = !in_list; next }
         in_list { if (NR%2==0) {line = $0 } else { print $0 "\t" line} }' \
-    | sort | while read size date time bits file; do
+    | LC_ALL=C sort | while read size date time bits file; do
             if [[ "${bits:1:1}" == "D" ]]; then
                 if ((lastwasdir)); then
                     print -P "%F{cyan}%B$file/\e[0m"
