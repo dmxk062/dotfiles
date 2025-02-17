@@ -148,7 +148,7 @@ map <c-space> fzf-select
 # check disk usage
 map U disk-usage
 # info
-map Im print-mimetype
+map Im info-mimetype
 
 map aZ push :zip<space>
 map az push :unzip<space>

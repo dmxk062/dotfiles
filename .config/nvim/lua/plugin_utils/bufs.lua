@@ -3,10 +3,11 @@ local api = vim.api
 
 local user = vim.env.USER
 local function expand_home(path)
+    local home = "/home/" .. user
     return vim.fn.pathshorten(path:gsub("/tmp/workspaces_" .. user, "~tmp")
-        :gsub("/home/" .. user .. "/ws", "~ws")
-        :gsub("/home/" .. user .. "/.config", "~cfg")
-        :gsub("/home/" .. user, "~"), 6)
+        :gsub(home .. "/ws", "~ws")
+        :gsub(home .. "/.config", "~cfg")
+        :gsub(home, "~"), 6)
 end
 
 function M.format_buf_name(buf, short)

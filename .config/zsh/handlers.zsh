@@ -121,43 +121,7 @@ function _clipboard_directory_name {
     fi
 }
 
-function __avfs_directory_name {
-    if [[ "$1" == "d" ]]; then
-        return 1
-    elif [[ "$1" == "n" ]]; then
-        local prefix rest
-        IFS=":" read -r prefix rest <<< "$2"
-        if [[ "$prefix" != "a" ]]; then
-            return 1
-        fi
-
-        if [[ -z "$rest" ]]; then
-            typeset -ga reply
-            if [[ "$PWD" == "$HOME/.avfs"* ]]; then
-                reply=("${PWD//$HOME\/.avfs/}")
-            else
-                reply=("$HOME/.avfs/${PWD:a}")
-            fi
-        else
-            local suffix
-            case "$rest" in
-                *.iso) suffix="#iso9660";;
-                /) suffix="";;
-                *) suffix="#";;
-            esac
-            local archive="${rest:a}"
-            typeset -ga reply
-            reply=("$HOME/.avfs/$archive$suffix")
-        fi
-    elif [[ "$1" == "c" ]]; then
-        local -a arcs=("$PWD/"{*.zip,*.rar,*.tar.*,*.iso})
-        local -a arcnames=("${(@)arcs:t}")
-        arcnames=("${(@)arcnames/#/a:}")
-        _wanted dynamic-dirs expl 'arc' compadd -S\] -a arcnames
-    fi
-}
-
-zsh_directory_name_functions+=(_clipboard_directory_name __avfs_directory_name)
+zsh_directory_name_functions+=(_clipboard_directory_name)
 
 
 # ignore short commands

@@ -27,12 +27,6 @@ function zvm_after_select_vi_mode {
 }
 
 function _update_git_status {
-    # don't try to index archive files
-    if [[ "$PWD" == "$HOME/.avfs"/* ]]; then
-        echo
-        return
-    fi
-
     # only update if inside a git dir that isnt ignored
     git check-ignore -q . 2>/dev/null
     # returns 0 if dir ignored and 1 if not but still git
