@@ -35,7 +35,7 @@ function __readnullcommand {
     local realpath="/proc/self/fd/0"
     realpath="${realpath:A}"
     if [[ -f "$realpath" ]]; then
-        command bat --color=always -Pp "$realpath"
+        command bat --color=always -Pp --file-name="$realpath"
     elif [[ -d "$realpath" ]]; then
         command lsd "$realpath"
     fi
