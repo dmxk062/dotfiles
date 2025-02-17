@@ -304,7 +304,7 @@ function bsdtar_list {
     local i=2
 
     bsdtar -vtf "$1" | LC_ALL=C sort -k 9 | head -n $[H-4] | while read -r perms _ owner group size _ _ _ name && ((i++ < H)); do
-        if [[ "$name" == "." ]]; then
+        if [[ "$name" == "." || "$name" == "/" || "$name" == "//" ]]; then
             continue
         fi
         local ftype="${perms:0:1}"
@@ -378,14 +378,15 @@ function preview_sqlite {
         fi
         type="${ctype:l}"
         case "$type" in
-            int|integer) color=magenta;;
-            date|timestamp) color=yellow;;
             bigint) color=13;;
-            text|varchar|varchar*) color=green;;
-            longvarchar) color=green;;
-            boolean) color=cyan;;
-            double|float|real) color=12;;
             blob) color=yellow;;
+            boolean) color=cyan;;
+            date|timestamp) color=yellow;;
+            double|float|real) color=12;;
+            int|integer) color=magenta;;
+            longvarchar) color=green;;
+            text|varchar|varchar*) color=green;;
+            variant) color=12;;
             "") color=8; type=null;;
             *) color="green";;
         esac
