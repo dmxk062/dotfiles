@@ -150,11 +150,9 @@ map U disk-usage
 # info
 map Im info-mimetype
 
-map aZ push :zip<space>
-map az push :unzip<space>
-map aT push :tar<space>
-map at push :untar<space>
-map ar push :unrar<space>
+map az push :zip<space>
+map at push :tar<space>
+map ax push :extract<space>
 
 map <c-w>h kitty-cmd neighboring_window left
 map <c-w>j kitty-cmd neighboring_window down
