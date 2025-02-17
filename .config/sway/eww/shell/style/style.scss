@@ -27,6 +27,49 @@
             color: $bg3;
         }
     }
+
+    &.blue {
+        color: $inv;
+        background-color: $lblue;
+        &:hover {
+            background-color: fade($lblue);
+        }
+    }
+    &.green {
+        color: $inv;
+        background-color: $green;
+        &:hover {
+            background-color: fade($green);
+        }
+    }
+    &.yellow {
+        color: $inv;
+        background-color: $yellow;
+        &:hover {
+            background-color: fade($yellow);
+        }
+    }
+    &.orange {
+        color: $inv;
+        background-color: $orange;
+        &:hover {
+            background-color: fade($orange);
+        }
+    }
+    &.red {
+        color: $inv;
+        background-color: $red;
+        &:hover {
+            background-color: fade($red);
+        }
+    }
+    &.magenta {
+        color: $inv;
+        background-color: $magenta;
+        &:hover {
+            background-color: fade($magenta);
+        }
+    }
 }
 
 .inline-button {
@@ -110,10 +153,10 @@
 }
 
 .stack {
-    background-color: $lblue;
+    background-color: $pink;
     color: $inv;
     &:hover {
-        background-color: fade($lblue);
+        background-color: fade($pink);
     }
 }
 
@@ -146,6 +189,11 @@
 
 .cbutton {
     @extend .button;
+    min-height: 2.5rem;
+}
+
+.scbutton {
+    @extend .sbutton;
     min-height: 2.5rem;
 }
 

@@ -1,9 +1,8 @@
-(defvar weather-city "Graz")
-(defpoll weather :interval "30m" "bin/weather.sh")
 
 (defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
 
 
+;; Icons {{{
 (defvar weather-icons '{
 "01d": "weather-clear",
 "01n": "weather-clear-night",
@@ -45,6 +44,7 @@
 "50d": "",
 "50n": ""
 }')
+;; }}}
 
 (defwidget status-mpris []
     (revealer :reveal {mpris.has_player} :transition "slidedown"
@@ -52,49 +52,110 @@
         (box :orientation "vertical" :space-evenly false :valign "center"
             (image :path {matches(mpris.title, "^Netflix") ? "assets/netflix.svg" : mpris.art} :image-width 96 :image-height 96 :style "margin: .8rem;"))
         (box :orientation "vertical" :space-evenly false :hexpand true
-            (box :orientation "vertical" :space-evenly false 
+            (box :orientation "vertical" :space-evenly false
                 :tooltip "${mpris.artist}${mpris.album != "" ? ", ${mpris.album}" : ""} - ${mpris.title}"
                 (label :class "title"
-                    :text "${mpris.title}" 
+                    :text "${mpris.title}"
                     :limit-width 16)
                 (label :class "text"
-                    :text "${mpris.artist}${mpris.album != "" ? " - ${mpris.album}" : ""}" 
+                    :text "${mpris.artist}${mpris.album != "" ? " - ${mpris.album}" : ""}"
                     :limit-width 16))
             (centerbox
                 (button :class "button" :onclick "playerctl previous" "")
-                (button :class "button ${mpris.playing ? "active" : ""}" 
-                    :onclick "playerctl play-pause" 
+                (button :class "button ${mpris.playing ? "active" : ""}"
+                    :onclick "playerctl play-pause"
                     "${mpris.playing ? "    Pause" : "   Play"}")
                 (button :class "button" :onclick "playerctl next" ""))
             (revealer :reveal {mpris.has_progress?:false} :transition "slidedown" (box
-                (scale 
+                (scale
                     :onchange `playerctl position $(echo 'scale=0;({}*${mpris.length})/100'|bc)`
                     :timeout "300s"
                     :tooltip "${formattime(mpris.position?:0, "%M:%S", "UTC")} / ${formattime(mpris.length?:0, "%M:%S", "UTC")}"
-                    :class "mpris-seek-bar" 
+                    :class "mpris-seek-bar"
                     :value {(mpris.progress?:0) * 100} :min 0 :max 100)))))))
 
-(defwidget status-panel []
-    (box :space-evenly false :orientation "vertical" 
-        (box :space-evenly false :orientation "vertical" :class "section"
-            (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
-            (label :class "text" :text "up for ${formattime(EWW_TIME - boottime, "%H hours, %M minutes", "UTC")}")
-            (box :height 20) ; padd
-            (box :space-evenly false
-                (themed-icon 
-                    :name {weather-icons[weather.weather[0].icon]}
-                    :width 64
-                    :height 64)
+(defwidget power-button [cmd icon desc color img]
+    (button :class "sbutton ${color}"
+        :style "min-height: 2.4rem;"
+        :timeout "16s"
+        :tooltip {desc}
+        :onclick "${EWW_CMD} update status-top-left-widget=1 power-current-question='${desc}' power-current-cmd='${cmd}' power-current-img='${img}'"
+        "${icon}"))
 
-                (box :orientation "vertical" :space-evenly false :halign "end" :hexpand true
-                    (label :class "weather-${weather.main.temp > 30 ? "hot" 
-                        : (weather.main.temp > 20 ? "warm" 
-                        : (weather.main.temp > 10 ? "temperate" 
-                        : (weather.main.temp > 5 ? "cool"
-                        : "cold")))}" 
-                        :text "󰔏   ${weather.main.temp}°C")
-                    (label :class "weather-wind" 
-                        :text "   ${round(weather.wind.speed / 3.6, 1)}km/h")
-                    (label :class "weather-description" 
-                        :text "󰋽   ${weather.weather[0].description}"))))
+(defvar power-current-question "")
+(defvar power-current-cmd "")
+(defvar power-current-img "")
+(defwidget power-confirmation-dialog []
+    (box :class "section" :orientation "v" :space-evenly false
+        (label :class "title" :text "${power-current-question}?")
+        (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")})
+        (hsep :height 20)
+        (box :space-evenly false :vexpand true :hexpand true
+            (box :style "margin-left: 1rem;" (themed-icon :name {power-current-img} :width 40 :height 40))
+            (box :space-evenly false :valign "center" :hexpand true :halign "end"
+                (button :class "scbutton"
+                    :timeout "16s"
+                    :onclick "${EWW_CMD} update status-top-left-widget=0; sleep .2; ${power-current-cmd}"
+                    "Confirm")
+                (button :class "scbutton"
+                    :onclick "${EWW_CMD} update status-top-left-widget=0"
+                    "Cancel")))))
+
+(defwidget status-logout []
+    (box :orientation "v" :class "section"
+        (scroll :vscroll true :style "min-width: 4rem;"
+            (box :orientation "v"
+                (power-button :icon "󰤄" :color "blue" :img "system-suspend"
+                    :desc "Suspend System"
+                    :cmd "cd; swaylock; systemctl suspend")
+                (power-button :icon "󰌾" :color "green" :img "lock"
+                    :desc "Lock Session"
+                    :cmd "cd; swaylock")
+                (power-button :icon "󰿅" :color "yellow" :img "system-log-out"
+                    :desc "Exit Session"
+                    :cmd "swaymsg exit")
+                (power-button :icon "󰑓" :color "orange" :img "system-reboot"
+                    :desc "Reboot System"
+                    :cmd "reboot")
+                (power-button :icon "" :color "red" :img "system-shutdown"
+                    :desc "Halt System"
+                    :cmd "poweroff")
+               (power-button :icon "󰘚" :color "magenta" :img "firmware-manager"
+                    :desc "Reboot to Firmware"
+                    :cmd "")))))
+
+(defvar status-top-left-widget 0)
+
+(defvar weather-city "Graz")
+(defpoll weather :interval "30m" "bin/weather.sh")
+(defwidget status-weather []
+    (box :space-evenly false :orientation "vertical" :class "section" :hexpand true
+        (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
+        (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")})
+        (hsep :height 20)
+        (box :space-evenly false
+            (themed-icon
+                :name {weather-icons[weather.weather[0].icon]}
+                :width 64
+                :height 64)
+
+            (box :orientation "vertical" :space-evenly false :halign "start"
+                (label :halign "start" :class "weather-${weather.main.temp > 30 ? "hot"
+                    : (weather.main.temp > 20 ? "warm"
+                    : (weather.main.temp > 10 ? "temperate"
+                    : (weather.main.temp > 5 ? "cool"
+                    : "cold")))}"
+                    :text "󰔏   ${weather.main.temp}°C")
+                (label :halign "start" :class "weather-wind"
+                    :text "   ${round(weather.wind.speed / 3.6, 1)}km/h")
+                (label :halign "start" :class "weather-description"
+                    :text "󰋽   ${weather.weather[0].description}")))))
+
+(defwidget status-panel []
+    (box :space-evenly false :orientation "vertical" :hexpand true
+        (box :hexpand true :space-evenly false
+            (stack :selected {status-top-left-widget} :hexpand true :transition "slideup" :same-size true
+                (status-weather)
+                (power-confirmation-dialog))
+        (status-logout))
     (status-mpris)))
