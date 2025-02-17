@@ -7,7 +7,7 @@ if [[ -n "$NVIM" ]]; then
 fi
 
 ARCHIVEDIR="$HOME/Tmp/arc"
-ARCLIST="$ARCHIVEDIR/open.list"
+ARCLIST="$ARCHIVEDIR/.open.list"
 [[ ! -d "$ARCHIVEDIR" ]] && mkdir -p "$ARCHIVEDIR"
 
 function create_arccache {
