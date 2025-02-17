@@ -6,6 +6,21 @@ if [[ -n "$NVIM" ]]; then
     exec nvr "$fx"
 fi
 
+ARCHIVEDIR="$HOME/Tmp/arc"
+ARCLIST="$ARCHIVEDIR/open.list"
+[[ ! -d "$ARCHIVEDIR" ]] && mkdir -p "$ARCHIVEDIR"
+
+function create_arccache {
+    local id="$(stat -c "%m.%i.%Y" -- "$1")"
+    id="${id//\//@}"
+    REPLY="$ARCHIVEDIR/$id$2"
+    [[ ! -e "$REPLY" ]]
+}
+
+function escape {
+    sed -z 's/\\/\\\\/g;s/"/\\"/g;s/\n/\\n/g;s/^/"/;s/$/"/'
+}
+
 MIMETYPE="$(file --mime-type --brief --dereference -- "$1")"
 case "$MIMETYPE" in
 image/*)
@@ -26,7 +41,23 @@ text/* | application/json | inode/x-empty | application/javascript|application/x
     nvim -b -- $fx
     ;;
 application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip|application/vnd.rar|application/x-iso9660-image)
-    exit
+
+
+    name="${f##*/}#x"
+    if create_arccache "$f" "#x"; then
+        # create 
+        mkdir "$REPLY" 
+        case "$MIMETYPE" in
+            *)
+                bsdtar -C "$REPLY" -x -f "$f"
+                ;;
+        esac
+        
+        printf "%s\0%s\0%s\n" "$f" "${f%/*}/$name" "$REPLY" >> "$ARCLIST"
+        ln -s "$REPLY" "$name"
+    fi
+
+    lf -remote "send $id cd $(printf '%s' "$name" | escape)"
     ;;
 *)
     for file in $fx; do
