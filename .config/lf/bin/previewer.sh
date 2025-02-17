@@ -441,7 +441,8 @@ case "$MIMETYPE" in
         bsdtar_list "$FILE" "ISO Disk Image"
         ;;
     application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip)
-        bsdtar_list "$FILE" "${MIMETYPE//application\//} Archive"
+        type="${MIMETYPE//application\//}"
+        bsdtar_list "$FILE" "${type#*x-} Archive"
         ;;
     application/vnd.rar)
         preview_rar "$FILE"
