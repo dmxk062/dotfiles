@@ -133,11 +133,16 @@ function __avfs_directory_name {
 
         if [[ -z "$rest" ]]; then
             typeset -ga reply
-            reply=("$HOME/.avfs/${PWD:a}")
+            if [[ "$PWD" == "$HOME/.avfs"* ]]; then
+                reply=("${PWD//$HOME\/.avfs/}")
+            else
+                reply=("$HOME/.avfs/${PWD:a}")
+            fi
         else
             local suffix
             case "$rest" in
-                *.iso) suffix="iso9660#";;
+                *.iso) suffix="#iso9660";;
+                /) suffix="";;
                 *) suffix="#";;
             esac
             local archive="${rest:a}"
