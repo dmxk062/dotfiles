@@ -54,10 +54,25 @@ application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|a
         esac
         
         printf "%s\0%s\0%s\n" "$f" "${f%/*}/$name" "$REPLY" >> "$ARCLIST"
-        ln -s "$REPLY" "$name"
+
+        err=""
+        [[ -L "$f#x" ]] && unlink "$f#x"
+        if ! ln -s "$REPLY" "$f#x"; then
+            err="$(chmod +w "${f%/*}" 2>&1 || true)"
+            if [[ -n "$err" ]]; then
+                lf -remote "send $id echoerr \\#arc: Could not symlink: $err"
+                exit 1
+            else
+                ln -s "$REPLY" "$f#x" 2>&1
+            fi
+        fi
+    fi
+    if [[ -d "$name" ]]; then
+        lf -remote "send $id cd $(printf '%s' "$name" | escape)"
+    elif [[ -d "$REPLY" ]]; then
+        lf -remote "send $id cd $(printf '%s' "$REPLY" | escape)"
     fi
 
-    lf -remote "send $id cd $(printf '%s' "$name" | escape)"
     ;;
 *)
     for file in $fx; do
