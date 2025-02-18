@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-import dbus
 import json
+import time
+
+import dbus
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib
 
@@ -119,6 +121,7 @@ def main():
         "su",
         [BUS_NAME, 0],
     )
+    time.sleep(2)
 
     loop = GLib.MainLoop()
     loop.run()

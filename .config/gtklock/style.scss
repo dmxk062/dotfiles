@@ -1,0 +1,75 @@
+@import "../sway/eww/style/color.scss";
+
+* {
+    all: unset;
+    font-family: "Torus Pro", "Torus", "Cantarell";
+    font-weight: 600;
+    font-size: 14px;
+}
+
+window {
+    background-color: $bg0;
+    // loaded relative to stylesheet
+    background-image: url("../background/lock");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#time-box {
+    #clock-label {
+        font-size: 8rem;
+        color: $snow0;
+    }
+    #date-label {
+        color: $snow0;
+        font-size: 2rem;
+    }
+    margin-bottom: 4rem;
+}
+
+grid {
+    background-color: $bg0;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 4px 6px;
+    margin: 2rem;
+    padding: 2rem .4rem .4rem 2rem;
+    border-radius: 12px;
+}
+
+entry {
+    color: $fg0;
+    margin-right: .4rem;
+    background-color: $bg1;
+    padding: .8rem;
+    min-height: 1.2rem;
+    border-radius: 8px;
+    caret-color: $fg0;
+    selection {
+        color: $inv;
+        background-color: $accent;
+    }
+}
+
+#error-label {
+    color: $red;
+}
+#warning-label {
+    color: $yellow;
+}
+
+#input-label {
+    color: $fg0;
+}
+
+#unlock-button {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0.2rem 1.15rem 0.2rem 0.85rem;
+    border-radius: 8px;
+    margin: 0.4rem;
+    min-height: 2.4rem;
+    background-color: $teal;
+    color: $inv;
+    &:hover {
+        background-color: fade($teal);
+    }
+}

@@ -107,10 +107,10 @@
             (box :orientation "v"
                 (power-button :icon "󰤄" :color "blue" :img "system-suspend"
                     :desc "Suspend System"
-                    :cmd "cd; swaylock; systemctl suspend")
+                    :cmd "cd; gtklock -d; systemctl suspend")
                 (power-button :icon "󰌾" :color "green" :img "lock"
                     :desc "Lock Session"
-                    :cmd "cd; swaylock")
+                    :cmd "cd; gtklock -d")
                 (power-button :icon "󰿅" :color "yellow" :img "system-log-out"
                     :desc "Exit Session"
                     :cmd "swaymsg exit")

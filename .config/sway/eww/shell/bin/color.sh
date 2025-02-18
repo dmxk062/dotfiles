@@ -34,8 +34,10 @@ relink_file "$XDG_CONFIG_HOME/sway" $target color &
 ) &
 recompile_scss "$XDG_CONFIG_HOME/swaync"
 recompile_scss "$XDG_CONFIG_HOME/wofi"
+recompile_scss "$XDG_CONFIG_HOME/gtklock/"
 
 wait
+sleep 0.1
 eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" reload &
 swaync-client -rs >/dev/null &
 swaymsg reload >/dev/null &

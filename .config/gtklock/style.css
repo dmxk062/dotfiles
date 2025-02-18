@@ -1,0 +1,78 @@
+@define-color bg0 #2E3440;
+@define-color bg1 #3B4251;
+@define-color bg2 #434C5E;
+@define-color bg3 #4C566A;
+@define-color fg0 #eceff4;
+@define-color fg1 #e4e9f0;
+@define-color fg2 #d8dee9;
+@define-color teal #8FBCBB;
+@define-color cyan #88C0D0;
+@define-color lblue #81A1C1;
+@define-color dblue #5E81AC;
+@define-color magenta #B48EAD;
+@define-color purple #8988ad;
+@define-color pink #c6b6cb;
+@define-color red #BF616A;
+@define-color orange #D08770;
+@define-color yellow #EBCB8B;
+@define-color green #A3BE8C;
+* {
+  all: unset;
+  font-family: "Torus Pro", "Torus", "Cantarell";
+  font-weight: 600;
+  font-size: 14px; }
+
+window {
+  background-color: #2E3440;
+  background-image: url("../background/lock");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+#time-box {
+  margin-bottom: 4rem; }
+  #time-box #clock-label {
+    font-size: 8rem;
+    color: #eceff4; }
+  #time-box #date-label {
+    color: #eceff4;
+    font-size: 2rem; }
+
+grid {
+  background-color: #2E3440;
+  box-shadow: rgba(0, 0, 0, 0.3) 2px 4px 6px;
+  margin: 2rem;
+  padding: 2rem .4rem .4rem 2rem;
+  border-radius: 12px; }
+
+entry {
+  color: #eceff4;
+  margin-right: .4rem;
+  background-color: #3B4251;
+  padding: .8rem;
+  min-height: 1.2rem;
+  border-radius: 8px;
+  caret-color: #eceff4; }
+  entry selection {
+    color: #2E3440;
+    background-color: #8FBCBB; }
+
+#error-label {
+  color: #BF616A; }
+
+#warning-label {
+  color: #EBCB8B; }
+
+#input-label {
+  color: #eceff4; }
+
+#unlock-button {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 0.2rem 1.15rem 0.2rem 0.85rem;
+  border-radius: 8px;
+  margin: 0.4rem;
+  min-height: 2.4rem;
+  background-color: #8FBCBB;
+  color: #2E3440; }
+  #unlock-button:hover {
+    background-color: #7b9da3; }
