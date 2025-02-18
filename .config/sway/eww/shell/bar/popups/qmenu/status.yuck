@@ -66,13 +66,13 @@
                     :onclick "playerctl play-pause"
                     "${mpris.playing ? "    Pause" : "   Play"}")
                 (button :class "button" :onclick "playerctl next" ""))
-            (revealer :reveal {mpris.has_progress?:false} :transition "slidedown" (box
+            (box
                 (scale
                     :onchange `playerctl position $(echo 'scale=0;({}*${mpris.length})/100'|bc)`
                     :timeout "300s"
                     :tooltip "${formattime(mpris.position?:0, "%M:%S", "UTC")} / ${formattime(mpris.length?:0, "%M:%S", "UTC")}"
-                    :class "mpris-seek-bar"
-                    :value {(mpris.progress?:0) * 100} :min 0 :max 100)))))))
+                    :class "mpris-seek-bar ${!mpris.has_progress ? "disabled" : ""}"
+                    :value {(mpris.progress?:0) * 100} :min 0 :max 100))))))
 
 (defwidget power-button [cmd icon desc color img]
     (button :class "sbutton ${color}"
@@ -116,13 +116,13 @@
                     :cmd "swaymsg exit")
                 (power-button :icon "󰑓" :color "orange" :img "system-reboot"
                     :desc "Reboot System"
-                    :cmd "reboot")
+                    :cmd "systemctl reboot")
                 (power-button :icon "" :color "red" :img "system-shutdown"
                     :desc "Halt System"
-                    :cmd "poweroff")
+                    :cmd "systemctl poweroff")
                (power-button :icon "󰘚" :color "magenta" :img "firmware-manager"
                     :desc "Reboot to Firmware"
-                    :cmd "")))))
+                    :cmd "systemctl reboot --firmware-setup")))))
 
 (defvar status-top-left-widget 0)
 

@@ -19,4 +19,7 @@
             background-color: $accent;
         }
     }
+    &.disabled {
+        background-color: $bg2;
+    }
 }
