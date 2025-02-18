@@ -452,7 +452,7 @@ case "$MIMETYPE" in
         preview_sqlite "$FILE"
         ;;
 
-    text/*|*/xml|application/javascript|application/pgp-signature|application/x-setupscript|application/x-wine-extension-ini)
+    text/*|*/xml|application/javascript|application/pgp-signature|application/x-setupscript|application/x-wine-extension-ini|application/x-pem-file)
         preview_text "$FILE" "$MIMETYPE"
         ;;
     application/json)
