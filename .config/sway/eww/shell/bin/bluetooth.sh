@@ -22,6 +22,9 @@ function list_devices {
                 Battery*) battery="$(sed -n 's/.*(\([0-9]*\))/\1/p' <<< "$value")";;
             esac
         done < <(bluetoothctl info "$mac")
+        if [[ -z "$name" ]]; then
+            continue
+        fi
 
         [[ "$connected" == "yes" ]]&&connected=true||connected=false
         [[ "$paired" == "yes" ]]&&paired=true||paired=false
@@ -31,6 +34,7 @@ function list_devices {
         if [[ -z "$battery" || "$connected" == false ]]; then
             battery=-1
         fi
+
 
         printf -v buffer '%s{"mac":"%s","name":"%s","alias":"%s","icon":"%s","connected":%s,"paired":%s,"trusted":%s,"blocked":%s,"battery":%s}' \
             "$buffer" "$mac" "$name" "$alias" "$icon" $connected $paired $trusted $blocked $battery

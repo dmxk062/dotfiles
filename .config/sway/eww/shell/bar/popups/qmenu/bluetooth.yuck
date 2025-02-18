@@ -16,19 +16,20 @@
 }')
 
 (defwidget _bt-toggle-button [num-connected]
-(box :class "dual-cbutton${bt-meta.powered ? " active" : ""}" :space-evenly false
-    (button :hexpand true 
-        :onclick {rfkill.bluetooth ? "rfkill unblock bluetooth; sleep 1; ${EWW_CMD} poll bt-meta bt-devices" 
-            : "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${EWW_CMD} poll bt-meta bt-devices"}
-        :onrightclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
-        :onmiddleclick "rfkill block bluetooth; ${EWW_CMD} poll bt-meta bt-device"
-        :timeout "16s"
-        (label :limit-width 12
-            :text "${(bt-meta.powered && !rfkill.bluetooth) ? "󰂯" : "󰂲"}   ${num-connected == 1 ? bt-devices[0].alias 
-            : (num-connected == 0 ? (rfkill.bluetooth ? "Blocked" : "Bluetooth") : "${bt-devices?.[0]?.alias?:""}...")}"))
-    (button 
-        :onclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
-        {bt-revealed ? "" : "" })))
+    (box :class "dual-cbutton${bt-meta.powered ? " active" : ""}" :space-evenly false
+        (button :hexpand true 
+            :onclick {rfkill.bluetooth ? "rfkill unblock bluetooth; sleep 1; ${EWW_CMD} poll bt-meta bt-devices" 
+                : "bluetoothctl power ${bt-meta.powered ? "off" : "on"};  ${EWW_CMD} poll bt-meta bt-devices"}
+            :onrightclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
+            :onmiddleclick "rfkill block bluetooth; ${EWW_CMD} poll bt-meta bt-device"
+            :timeout "16s"
+            (label :limit-width 12
+                :text "${(bt-meta.powered && !rfkill.bluetooth) ? "󰂯" : "󰂲"}   ${bt-meta.powered ? (num-connected == 1 ? bt-devices[0].alias
+                : (num-connected == 0 ? "Bluetooth" : "${bt-devices?.[0]?.alias?:""}..."))
+                : "Bluetooth"}"))
+        (button 
+            :onclick "${EWW_CMD} update bt-revealed=${!bt-revealed}" 
+            {bt-revealed ? "" : "" })))
 
 (defwidget bt-toggle-button [] 
     (_bt-toggle-button :num-connected {jq(bt-devices, "map(select(.connected))|length")}))
