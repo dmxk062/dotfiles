@@ -162,9 +162,10 @@ map <c-w>l kitty-cmd neighboring_window right
 map <space>ss sp!
 map <space>sv vsp!
 
-map <space>ee $nvim $fx
-map <space>es sp nvim
-map <space>ev vsp nvim
+map e
+map ee $nvim $fx
+map es sp nvim
+map ev vsp nvim
 
 map <space>fs sp
 map <space>fv vsp
