@@ -20,6 +20,8 @@
         }
     }
     &.disabled {
-        background-color: $bg2;
+        trough {
+            background-color: $bg2;
+        }
     }
 }
