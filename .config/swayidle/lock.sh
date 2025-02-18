@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
 if pgrep gtklock; then
-    gtklock -d
+    systemctl suspend
 else
     cd
     gtklock -d
-    systemctl suspend
 fi
