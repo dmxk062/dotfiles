@@ -292,7 +292,7 @@ M.config = function(_, opts)
         callback = function(bufnr)
             local dir = require("oil").get_current_dir()
             if dir then
-                vim.cmd.lcd(dir)
+                vim.fn.chdir(dir)
             end
         end
     })
