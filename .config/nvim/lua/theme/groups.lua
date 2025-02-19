@@ -531,6 +531,7 @@ add_with_prefix(colorscheme, "Mason", {
     Muted                       = { fg = pal.bg3 },
     MutedBlock                  = { bg = pal.bg3 },
     MutedBlockBold              = { link = "*MutedBlock" },
+    Backdrop                    = { link = "Normal" },
 })
 -- }}}
 
