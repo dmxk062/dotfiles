@@ -26,38 +26,6 @@ setopt auto_pushd
 setopt pushd_ignore_dups
 
 
-# vi mode plugin
-function zvm_config {
-    ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
-    ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BEAM
-    ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
-    ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
-    ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLOCK
-    ZVM_MODE_INSERT=true
-    ZVM_VI_SURROUND_BINDKEY=classic
-    ZVM_VI_HIGHLIGHT_BACKGROUND=8
-    zvm_bindkey vicmd "/" history-incremental-search-backward
-}
-source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-
-
-# fish-like suggestions
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-zvm_bindkey viins '^ ' autosuggest-accept
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
-
-# history
-autoload -U up-line-or-beginning-search
-autoload -U down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search # Up
-bindkey "^[[B" down-line-or-beginning-search # Down
-
-bindkey '^Z' push-line
-
-
 # semi lazily generate and load colors for ls etc
 if [[ -z "$LS_COLORS" ]]; then
     color_cache="$ZCACHEDIR/ls_colors"
@@ -133,6 +101,7 @@ nameddirs=(
 
 
 # my own config
+source "$ZDOTDIR/keybinds.zsh"
 source "$ZDOTDIR/functions.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/prompt.zsh"
@@ -148,10 +117,6 @@ source "$ZCACHEDIR/zoxide_init.zsh"
 
 # null: gray; false, true: teal; numbers: magenta; strings: green; array, object separators: gray; keys: blue
 export JQ_COLORS="0;90:0;36:0;36:0;35:0;32:0;90:0;90:1;34"
-
-function zvm_after_init {
-    source "$ZDOTDIR/pairs.zsh"
-}
 
 if [[ -n "$lf" ]]; then
     source "$ZDOTDIR/lf.zsh"
