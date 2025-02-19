@@ -152,3 +152,7 @@ export JQ_COLORS="0;90:0;36:0;36:0;35:0;32:0;90:0;90:1;34"
 function zvm_after_init {
     source "$ZDOTDIR/pairs.zsh"
 }
+
+if [[ -n "$lf" ]]; then
+    source "$ZDOTDIR/lf.zsh"
+fi

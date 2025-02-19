@@ -35,6 +35,21 @@ function ktty {
     }
 }
 
+function kitty-win-go-left { kitty @ action neighboring_window left }
+function kitty-win-go-down { kitty @ action neighboring_window down }
+function kitty-win-go-up { kitty @ action neighboring_window up }
+function kitty-win-go-right { kitty @ action neighboring_window right }
+
+zle -N kitty-win-go-left
+zle -N kitty-win-go-down
+zle -N kitty-win-go-up
+zle -N kitty-win-go-right
+
+zvm_bindkey vicmd "^Wh" kitty-win-go-left
+zvm_bindkey vicmd "^Wj" kitty-win-go-down
+zvm_bindkey vicmd "^Wk" kitty-win-go-down
+zvm_bindkey vicmd "^Wl" kitty-win-go-down
+
 autoload -Uz _ktty
 compdef _ktty ktty
 

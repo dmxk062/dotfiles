@@ -4,7 +4,7 @@
 if [[ "$1" == "unload" ]]; then
 
     unfunction lschg
-    unalias sparse_clone unstage
+    unalias sparse-clone sparse-add unstage
 
     return
 fi
@@ -89,5 +89,6 @@ function lschg {
 
 }
 
-alias sparse_clone="git clone --filter=blob:none --sparse" \
+alias sparse-clone="git clone --filter=blob:none --sparse" \
+    sparse-add="git sparse-checkout add"\
     unstage="git restore --staged -- "

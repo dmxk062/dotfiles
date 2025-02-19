@@ -6,8 +6,8 @@
 if [[ "$1" == "unload" ]]; then
 
     unfunction rgf mcd rp bn rcd \
-        pwf del \
-        readfile readstream lr .. \
+        pwf \
+        r .. \
         root
 
     unalias md ft bft zcp zln
@@ -37,16 +37,6 @@ compdef mcd=mkdir
 alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
 
-
-function del {
-    if (($# > 3)); then
-        print -n "Remove $# files? [yN] "
-        read -q||return 1
-    fi
-
-    rm -r -- "$@"
-}
-
 # ripgrep files
 function rgf {
     local search_term="$1"
@@ -72,26 +62,6 @@ function bn {
     print -l -- "${@:t}"
 }
 
-function readfile {
-    local arrayname="$1"
-    local file="$2"
-
-    eval "$arrayname"='("${(@f)mapfile['"$file"']}")'
-}
-
-function readstream {
-    local arrayname="${1}"
-    local line  
-    local -a buffer
-
-    while read -r line; do
-        buffer+=("$line")
-    done
-
-    eval "${arrayname}=("\${buffer}")"
-}
-
-
 function lr {
     command lsd --tree --depth 3 --hyperlink=always "$@" | less -rFi
 }
@@ -101,7 +71,7 @@ function pwf {
     print -P -- "%~"
 }
 
-# go up n levels, in a subshell, return the absolute path to the directory n levels above
+# go up n levels; in a subshell, return the absolute path to the directory n levels above
 function .. {
     local level="$1"
     if [[ -t 1 ]] {
