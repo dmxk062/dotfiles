@@ -18,14 +18,15 @@
     {"keys": "<Space>", "action": "Play / Pause"}
 ],
 "screenshot": [
-    {"keys": "s", "action": "Current Screen" },
-    {"keys": "v", "action": "Visual Selection" },
-    {"keys": "w", "action": "Current Window" },
+    {"keys": "s", "action": "Screen" },
+    {"keys": "v", "action": "Visual" },
+    {"keys": "w", "action": "Window" },
     {"keys": "<C-*", "action": "To Disk" },
     {"keys": "<S-s>", "action": "Record Screen"},
-    {"keys": "<S-v>", "action": "Capture Region"},
-    {"keys": "c", "action": "Pick Color"},
-    {"keys": "t", "action": "Get Text"}
+    {"keys": "<S-v>", "action": "Record Visual"},
+    {"keys": "c", "action": "Color"},
+    {"keys": "q", "action": "QR-Code"},
+    {"keys": "t", "action": "Text"}
 ],
 "config": [
     {"keys": "w", "action": "Wallpaper"},
