@@ -354,6 +354,24 @@ tooltip{
             background-color: $accent;
         }
     }
+    &.with-handle {
+        trough slider {
+            padding: .4rem;
+            margin: -.5rem;
+            border-radius: 50%;
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px;
+            background-color: $fg0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            &:hover {
+                background-color: fade($fg0);
+            }
+        }
+    }
+    &.disabled {
+        trough {
+            background-color: $bg2;
+        }
+    }
 }
 
 .bordered {

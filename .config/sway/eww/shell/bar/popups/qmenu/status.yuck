@@ -71,7 +71,7 @@
                     :onchange `playerctl position $(echo 'scale=0;({}*${mpris.length})/100'|bc)`
                     :timeout "300s"
                     :tooltip "${formattime(mpris.position?:0, "%M:%S", "UTC")} / ${formattime(mpris.length?:0, "%M:%S", "UTC")}"
-                    :class "mpris-seek-bar ${!mpris.has_progress ? "disabled" : ""}"
+                    :class "slider ${!mpris.has_progress ? "disabled" : "with-handle"}"
                     :value {(mpris.progress?:0) * 100} :min 0 :max 100))))))
 
 (defwidget power-button [cmd icon desc color img]

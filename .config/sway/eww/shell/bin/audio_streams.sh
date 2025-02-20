@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-media_names="$(pactl list sink-inputs | grep 'media.name' | cut -d"=" -f 2 | sed -e 's/^\s*"//' -e 's/"\s*$//')"
+media_names="$(pactl list "$1" | grep 'media.name' | cut -d"=" -f 2 | sed -e 's/^\s*"//' -e 's/"\s*$//')"
 
 
-pactl --format=json list sink-inputs 2>/dev/null | jq -cM --arg _names "$media_names" '. as $streams | $_names | split("\n") as $names |
+pactl --format=json list "$1" 2>/dev/null | jq -cM --arg _names "$media_names" '. as $streams | $_names | split("\n") as $names |
     $streams | [foreach .[] as $stream (-1; . + 1;  {
     id: $stream.index,
     mute: $stream.mute,
