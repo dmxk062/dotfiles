@@ -62,7 +62,7 @@
                     :limit-width 16))
             (centerbox
                 (button :class "button" :onclick "playerctl previous" "")
-                (button :class "button ${mpris.playing ? "active" : ""}"
+                (button :style "min-width: 4.4rem;" :class "sbutton ${mpris.playing ? "active" : ""}"
                     :onclick "playerctl play-pause"
                     "${mpris.playing ? "    Pause" : "   Play"}")
                 (button :class "button" :onclick "playerctl next" ""))
