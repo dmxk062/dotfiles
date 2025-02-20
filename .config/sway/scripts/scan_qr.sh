@@ -12,11 +12,11 @@ if ! grim -g "$region" "$file"; then
 fi
 
 decoded="$(zbarimg -q "$file")"
+rm "$file"
 if [[ -z "$decoded" ]]; then
     exit
 fi
 
-rm "$file"
 IFS=":" read -r prefix type data <<< "$decoded"
 case "$type" in
     WIFI)
