@@ -121,3 +121,6 @@ export JQ_COLORS="0;90:0;36:0;36:0;35:0;32:0;90:0;90:1;34"
 if [[ -n "$lf" ]]; then
     source "$ZDOTDIR/lf.zsh"
 fi
+if [[ -n "$NVIM" ]]; then
+    source "$ZDOTDIR/nvim.zsh"
+fi

@@ -48,10 +48,3 @@ alias \
 TAB=$'\t'
 FALSE=1
 TRUE=0
-
-if [[ -n "$NVIM" ]]; then
-    alias nv=nvr \
-        sp="nvr -o" \
-        vsp="nvr -O" \
-        tab="nvr -p"
-fi
