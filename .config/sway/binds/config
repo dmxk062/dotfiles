@@ -12,3 +12,6 @@ mode "config" {
 }
 
 bindsym $mod+Delete mode "config"
+
+# hack for gtklock sometimes freezing after suspend
+bindsym --locked $mod+Ctrl+Alt+R exec pkill -9 gtklock&&gtklock
