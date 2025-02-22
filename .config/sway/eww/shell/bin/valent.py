@@ -111,7 +111,6 @@ def main():
     for path in devices_iface.GetManagedObjects():
         DEVICES[str(path)] = ValentDevice(bus, path)
 
-    do_reprint()
 
     bus.call_blocking(
         "org.freedesktop.DBus",
@@ -122,6 +121,8 @@ def main():
         [BUS_NAME, 0],
     )
     time.sleep(2)
+
+    do_reprint()
 
     loop = GLib.MainLoop()
     loop.run()

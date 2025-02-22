@@ -34,6 +34,36 @@
 (defwidget bt-toggle-button [] 
     (_bt-toggle-button :num-connected {jq(bt-devices, "map(select(.connected))|length")}))
 
+(defwidget bluetooth-device-list [] (box :orientation "v" :hexpand true :space-evenly false
+    (for dev in bt-devices 
+        (box :orientation "vertical" :space-evenly false :class "card"
+            (box :space-evenly false
+                (box :hexpand true :halign "start"
+                    (themed-icon :name {dev.icon?:"bluetooth"} :width 48 :height 48)
+                    (battery-circle :percentage {dev.battery} :charging false))
+                (box :orientation "vertical" :style "margin-right: 1rem;"
+                    (label :tooltip {dev.name} :class "title" :text "${dev.alias}" :limit-width 16)
+                    (label :class "text" :text "${dev.mac}")))
+
+            (box :space-evenly false :hexpand true
+                (box :hexpand true :space-evenly false (button :class "button ${dev.connected ? "active" : ""}"
+                    :onclick "bluetoothctl ${dev.connected ? "disconnect" : "connect"} ${dev.mac}&& ${EWW_CMD} poll bt-devices"
+                    :timeout "128s"
+                    {dev.connected ? "󰂯    Connected" : "󰂲   Connect" }))
+                (button :tooltip "Trust" :class "button ${dev.trusted ? "active" : ""}"
+                    :onclick "bluetoothctl ${dev.trusted ? "un" : ""}trust ${dev.mac}; ${EWW_CMD} poll bt-devices"
+                    :timeout "16s"
+                    "󰒘")
+                (button :tooltip "Pair" :class "button ${dev.paired ? "active" : ""}"
+                    :onclick "bluetoothctl ${dev.paired ? "remove" : "pair"} ${dev.mac}; ${EWW_CMD} poll bt-devices"
+                    :timeout "16s"
+                    "󰌹")
+                (button :tooltip "Forget" :class "button alert" 
+                    :onclick "bluetoothctl remove ${dev.mac}; ${EWW_CMD} poll bt-devices"
+                    :timeout "16s"
+                    "󰩹")))))
+)
+
 
 (defwidget bluetooth-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
@@ -51,32 +81,5 @@
                 :timeout "16s"
                 "󰐷   Scanning"))
         ; comfortably fits 3 devices without scrolling
-        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
-            (for dev in bt-devices 
-                (box :orientation "vertical" :space-evenly false :class "card"
-                    (box :space-evenly false
-                        (box :hexpand true :halign "start"
-                            (themed-icon :name {dev.icon?:"bluetooth"} :width 48 :height 48)
-                            (battery-circle :percentage {dev.battery} :charging false))
-                        (box :orientation "vertical" :style "margin-right: 1rem;"
-                            (label :class "title" :text "${dev.alias}" :limit-width 16)
-                            (label :class "text" :text "${dev.mac}")))
-
-                        (box :space-evenly false :hexpand true
-                            (box :hexpand true :space-evenly false (button :class "button ${dev.connected ? "alert" : ""}"
-                                :onclick "bluetoothctl ${dev.connected ? "disconnect" : "connect"} ${dev.mac}&& ${EWW_CMD} poll bt-devices"
-                                :timeout "16s"
-                                :timeout "16s"
-                                {dev.connected ? "󰂲    Disconnect" : "󰂯    Connect"}))
-                            (button :tooltip "Trust" :class "button ${dev.trusted ? "active" : ""}"
-                                :onclick "bluetoothctl ${dev.trusted ? "un" : ""}trust ${dev.mac}; ${EWW_CMD} poll bt-devices"
-                                :timeout "16s"
-                                "󰒘")
-                            (button :tooltip "Pair" :class "button ${dev.paired ? "active" : ""}"
-                                :onclick "bluetoothctl ${dev.paired ? "remove" : "pair"} ${dev.mac}; ${EWW_CMD} poll bt-devices"
-                                :timeout "16s"
-                                "󰌹")
-                            (button :tooltip "Remove" :class "button alert" 
-                                :onclick "bluetoothctl remove ${dev.mac}; ${EWW_CMD} poll bt-devices"
-                                :timeout "16s"
-                                "󰩹"))))))))
+        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true
+            (bluetooth-device-list))))

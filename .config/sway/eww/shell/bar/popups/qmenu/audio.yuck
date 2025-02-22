@@ -17,7 +17,7 @@
                     :class "select"
                     :timeout "16s"
                     :onchecked `pactl set-default-${type} ${dev.id}`)
-                    (label :class "text" :text {dev.name} :limit-width 26 :tooltip {dev.name}))
+                    (label :class "text" :text {dev.name} :limit-width 28 :tooltip {dev.name}))
                 (box :space-evenly false :visible {arraylength(dev.ports) > 1} :halign "end" :style "margin-bottom: .4rem;"
                     (for port in {dev.ports}
                         (button 
