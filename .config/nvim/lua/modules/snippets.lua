@@ -12,6 +12,7 @@ local M = {}
 --- ft = ...
 --- _ : global snippets
 ---@type table<string, Snippets>
+-- Snippets {{{
 local snippets_for_ft = {
     _ = {
         ["date-epoch"] = {
@@ -90,8 +91,12 @@ local snippets_for_ft = {
         [".c,.h"] = {
             body = "${1:name}.c\n${1}.h"
         },
+        ["is/.c,.h"] = {
+            body = "src/${1:name}.c\ninclude/${1}.h"
+        },
     }
 }
+-- }}}
 
 ---@param dest lsp.CompletionItem[]
 ---@param snips Snippets
@@ -159,14 +164,12 @@ local Cmp_source = {
         local data = ci.data or {}
         local pv = data.body
 
-
         if data.highlight then
             pv = string.format("```%s\n%s\n```", vim.bo.filetype, pv)
         end
         if data.description then
             pv = data.description .. "\n" .. pv
         end
-
 
         ci.documentation = {
             kind = "markdown",

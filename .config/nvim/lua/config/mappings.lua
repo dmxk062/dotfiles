@@ -190,10 +190,11 @@ end)
 -- abbrevs {{{
 -- force quit
 abbrev("c", "Q", "q!")
+abbrev("c", "Qa", "qa!")
 -- shortcuts to enable/disable spelling
 abbrev("c", "spen", "setlocal spell spelllang=en_us")
 abbrev("c", "spde", "setlocal spell spelllang=de_at")
-abbrev("c", "spoff", "setlocal spell& spelllang&")
+abbrev("c", "spoff", "setlocal nospell spelllang=")
 
 -- I probably never will actually use :file
 -- If I need it, i can survive typing the full name
