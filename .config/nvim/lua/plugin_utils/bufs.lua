@@ -10,6 +10,13 @@ local function expand_home(path)
         :gsub(home, "~"), 6)
 end
 
+local names_for_fts = {
+    qf = "[qf]",
+    TelescopePrompt = "[tel]",
+    undotree = "[undo]",
+    fugitive = "[git]",
+}
+
 function M.format_buf_name(buf, short)
     local term_title = vim.b[buf].term_title
     if term_title then
@@ -34,14 +41,10 @@ function M.format_buf_name(buf, short)
         else
             elems[1] = expand_home(name:sub(#"oil://" + 1, -2)) .. "/"
         end
-    elseif ft == "qf" then
-        return "[qf]"
     elseif ft == "help" then
         return ":h " .. vim.fn.fnamemodify(name, ":t"):gsub("%.txt$", "")
-    elseif ft == "undotree" then
-        return "[undo]"
-    elseif ft == "fugitive" then
-        return "[git]"
+    elseif names_for_fts[ft] then
+        return names_for_fts[ft]
     end
 
     local normal_buf = vim.bo[buf].buftype == ""
