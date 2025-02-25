@@ -30,3 +30,6 @@ bindsym $mod+Ctrl+H nop resize left 32
 bindsym $mod+Ctrl+J nop resize down 32
 bindsym $mod+Ctrl+K nop resize up 32
 bindsym $mod+Ctrl+L nop resize right 32
+
+# suspend a windows underlying process
+bindsym $mod+Ctrl+Z exec $sc/stop_continue_window.sh
