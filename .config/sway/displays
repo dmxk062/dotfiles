@@ -16,6 +16,10 @@ output $mainS {
 }
 
 output $leftS {
+    disable
     mode 2560x1440@120Hz
     position 0 0
 }
+
+# terrible hack, prevent it from loading until later to make the main one the default
+exec swaymsg output $leftS enable

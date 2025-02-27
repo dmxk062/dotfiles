@@ -66,4 +66,4 @@ layer_effects "rofi" shadows enable; corner_radius 18; blur disable
 include /etc/sway/config.d/*
 # not set by the above files yet
 exec dbus-update-activation-environment XDG_SESSION_TYPE
-workspace 1
+workspace number 1
