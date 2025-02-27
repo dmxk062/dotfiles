@@ -16,6 +16,8 @@ local names_for_fts = {
     undotree = "[undo]",
     fugitive = "[git]",
     checkhealth = "[health]",
+    lazy = "[lazy]",
+    mason = "[mason]",
 }
 
 function M.format_buf_name(buf, short)
