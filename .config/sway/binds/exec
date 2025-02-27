@@ -2,11 +2,11 @@
 
 bindsym {
     $mod+Return         exec $term
-    $mod+Shift+Return   exec $sc/exec_with pid kitty "floating enable, resize set width 800 height 600"
+    $mod+Shift+Return   exec $sc/exec_with pid kitty "floating enable, resize set width 800px height 600px"
     $mod+W              exec firefox
     $mod+Shift+W        exec firefox --private-window
     $mod+E              exec nautilus -w
-    $mod+Shift+E        exec $sc/exec_with class org.gnome.Nautilus "nautilus -w" "floating enable, resize set width 800 height 600"
+    $mod+Shift+E        exec $sc/exec_with class org.gnome.Nautilus "nautilus -w" "floating enable, resize set width 800px height 600px"
     $mod+Space          exec killall rofi || rofi -show drun
     $mod+Shift+Semicolon exec killall rofi || ~/.config/rofi/applets/power/run.sh
     $mod+Semicolon      exec gtklock -d
