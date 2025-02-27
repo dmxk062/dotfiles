@@ -342,6 +342,7 @@ M.texts = {
     "All your issues are in the :cwindow",
     "g:<textobj>",
     "Þæs ofereode, þisses swā mæġ",
+    "Gæð a wyrd swā heo sċeal"
 }
 
 
