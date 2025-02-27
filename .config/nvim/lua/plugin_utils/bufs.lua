@@ -15,6 +15,7 @@ local names_for_fts = {
     TelescopePrompt = "[tel]",
     undotree = "[undo]",
     fugitive = "[git]",
+    checkhealth = "[health]",
 }
 
 function M.format_buf_name(buf, short)
