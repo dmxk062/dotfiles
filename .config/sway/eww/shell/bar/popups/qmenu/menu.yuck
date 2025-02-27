@@ -47,7 +47,7 @@
                 (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))))))))
 
 (defwindow settings-panel 
-    :monitor 0
+    :monitor '["DP-1", "eDP-1", 0]'
     :geometry (geometry 
         :x -20
         :y -20
@@ -60,7 +60,7 @@
     (qmenu))
 
 (defwindow qmenu-edge
-    :monitor 0
+    :monitor '["DP-1", "eDP-1", 0]'
     :geometry (geometry 
         :x 0
         :y 0

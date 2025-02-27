@@ -47,7 +47,7 @@
                     (ws-box :ws {ws})))))))
 
 (defwindow ws-overview-win
-    :monitor 0
+    :monitor '["DP-1", "eDP-1", 0]'
     :geometry (geometry
         :x 0
         :y -50

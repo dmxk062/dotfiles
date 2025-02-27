@@ -5,7 +5,7 @@
 
 (include "./bar/bar.yuck")
 (defwindow bar
-    :monitor 0
+    :monitor '["DP-1", "eDP-1", 0]'
     :geometry (geometry 
         :x "0px"
         :y "0px"
