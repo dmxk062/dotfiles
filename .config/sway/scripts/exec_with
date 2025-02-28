@@ -11,6 +11,7 @@ if [[ "$1" == class ]]; then
     swaymsg -t subscribe '["window"]' --monitor |
         jq --unbuffered --arg class "$CLASS" 'select(.change == "new" and .container.app_id == $class)|.container.id, halt' | {
         read -r id
+        sleep 0.1
         swaymsg "[con_id=$id] $4"
     }
 elif [[ "$1" == pid ]]; then
@@ -19,6 +20,7 @@ elif [[ "$1" == pid ]]; then
     swaymsg -t subscribe '["window"]' --monitor |
         jq --unbuffered --argjson pid "$pid" 'select(.change == "new" and .container.pid == $pid)|.container.id, halt' | {
         read -r id
+        sleep 0.1
         swaymsg "[con_id=$id] $3"
     }
 fi

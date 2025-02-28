@@ -14,7 +14,7 @@ set $eww ~/.config/sway/eww
 corner_radius 12
 shadows enable
 shadows_on_csd enable
-shadow_color #00000060
+shadow_color #00000048
 shadow_blur_radius 14
 blur_xray disable
 blur enable
