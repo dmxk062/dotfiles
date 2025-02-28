@@ -7,8 +7,8 @@ permission:
     - 135
     - 112
   read: yellow
-  exec-sticky: dark_blue
-  no-access: red
+  exec-sticky: red
+  no-access: dark_grey
   octal: blue
   acl: green
   context: green
