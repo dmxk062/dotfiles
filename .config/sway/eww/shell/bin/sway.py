@@ -68,14 +68,14 @@ def get_for_ws(workspace: i3ipc.Con, output):
 
         rect = {"x": 0, "y": 0, "width": 0, "height": 0}
 
-        width_scale = 1920 / output.rect.width
-        height_scale = 1080 / output.rect.height
+        width_scale =  output.rect.width
+        height_scale =  output.rect.height
 
-        rect["x"] = (w.rect.x - output.rect.x) * width_scale
-        rect["y"] = (w.rect.y - output.rect.y) * height_scale
+        rect["x"] = (w.rect.x - output.rect.x) / width_scale
+        rect["y"] = (w.rect.y - output.rect.y) / height_scale
 
-        rect["width"] = w.rect.width * width_scale
-        rect["height"] = w.rect.height * height_scale
+        rect["width"] = w.rect.width / width_scale
+        rect["height"] = w.rect.height / height_scale
 
         win = {
             "float": w.type == "floating_con",
@@ -112,15 +112,14 @@ def update(i3, e):
 
         for workspace in output.nodes:
             windows, is_active = get_for_ws(workspace, output)
-            workspaces.append(
-                {
+            ws = {
                     "wins": windows,
                     "focused": workspace.focused or is_active,
                     "wsnum": workspace.num,
                     "ws": workspace.name,
                     "is_virtual": False,
-                }
-            )
+            }
+            workspaces.append(ws)
 
     sorted_ws = sorted(workspaces, key=sort_by_name)
 

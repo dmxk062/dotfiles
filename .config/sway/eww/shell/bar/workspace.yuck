@@ -2,6 +2,14 @@
 
 (include "./bar/popups/workspace.yuck")
 
+(defwidget workspace-button [ws]
+    (button :visible {!ws.is_virtual}
+        :class "button ${ws.focused ? "active" : ""}"
+        :onclick "swaymsg -q workspace ${ws.ws}"
+        "${ws.ws}"))
+
+
+
 (defwidget workspace-list []
     (eventbox 
         :onhover "./bin/popup.sh ws-overview-win ws-overview-reveal open&" 
@@ -9,7 +17,4 @@
             (button :style "min-width: 1.3rem;" :class "button ${sway.scratch_count > 0 ? "stack" : ""}" "~${sway.scratch_count}")
             (box :space-evenly false 
                 (for ws in {sway.workspaces}
-                    (button :visible {!ws.is_virtual}
-                        :class "button ${ws.focused ? "active" : ""}"
-                        :onclick "swaymsg -q workspace ${ws.ws}"
-                        "${ws.ws}"))))))
+                    (workspace-button :ws {ws}))))))

@@ -1,13 +1,15 @@
 (defvar ws-overview-reveal false)
 (defvar overview-cut-win 0)
 
+(defvar overview-ws-width 193)
+(defvar overview-ws-height 109)
 
 (defwidget ws-win [win ws]
     (box :style "
-        margin-left: ${round(win.rect.x/10, 0)}px;
-        margin-top: ${round(win.rect.y/10, 0)}px;
-        margin-right: -${round((win.rect.x + win.rect.width)/10, 0)}px;
-        margin-bottom: -${round((win.rect.y + win.rect.height)/10, 0)}px;
+        margin-left: ${round(win.rect.x * overview-ws-width, 0)}px;
+        margin-top: ${round(win.rect.y * overview-ws-height, 0)}px;
+        margin-right: -${round((win.rect.x + win.rect.width) * overview-ws-width, 0)}px;
+        margin-bottom: -${round((win.rect.y + win.rect.height) * overview-ws-height, 0)}px;
         "
         :class "overview-window${win.focused ? " active" : ""} ${win.float ? "float" : ""} ${overview-cut-win == win.id ? "cut" : ""}"
         :hexpand false
@@ -22,8 +24,8 @@
                 :path {win.icon}
                 :valign "center"
                 :halign "center"
-                :image-width {round(win.rect.width / 10 * 45/100, 0)}
-                :image-height {round(win.rect.height / 10 * 45/100, 0)}))))
+                :image-width {round(win.rect.width * overview-ws-width / 3, 0)}
+                :image-height {round(win.rect.height * overview-ws-height / 3, 0)}))))
 
 
 (defwidget ws-box [ws]
