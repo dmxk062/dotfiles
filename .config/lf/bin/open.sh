@@ -15,7 +15,8 @@ function run_in_tty {
 
 # just let neovim deal with everything
 if [[ -n "$NVIM" ]]; then
-    run_in_tty nvr "$fx"
+    nvr "$fx"
+    exit
 fi
 
 ARCHIVEDIR="$HOME/Tmp/arc"
