@@ -18,6 +18,7 @@ bindsym $mod+S splitv
 bindsym $mod+V splith
 
 bindsym $mod+F fullscreen
+bindsym $mod+Shift+F gaps outer current set 0; gaps inner current set 0
 
 # Like vim for numbers
 bindsym $mod+A resize grow width 64px
