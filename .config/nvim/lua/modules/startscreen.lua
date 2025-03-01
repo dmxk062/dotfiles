@@ -119,6 +119,16 @@ local Letters = {
 
 local Buttons = {
     {
+        map = "s",
+        cb = function()
+            vim.cmd.split()
+            vim.cmd.terminal()
+        end,
+        text = "Shell Buffer",
+        hl = "Shell",
+        icon = ""
+    },
+    {
         map = "n",
         cb = function()
             vim.cmd.enew()
@@ -179,7 +189,7 @@ local Buttons = {
 }
 
 local function draw_logo(size)
-    if size.rows < (#Letters[1] + #Buttons + 2) then
+    if size.rows < (#Letters[1] + #Buttons + 4) then
         return
     end
     local start_row = math.floor((size.rows - #Letters[1] - #Buttons - 2) / 2)
@@ -202,8 +212,8 @@ end
 local line_handlers = {}
 local target_widths = {
     lim = 46,
-    lower = 40,
-    higher = 30
+    lower = 24,
+    higher = 40
 }
 
 ---@param opts {text: string, hl: string, cb: function, map: string, icon: string}
@@ -252,7 +262,7 @@ local function draw_screen()
     }
 
     draw_logo(size)
-    print_padding_lines(2)
+    print_padding_lines(3)
     state.first_editable = state.cur_row + 1
 
     vim.tbl_map(function(btn) button(size, btn) end, Buttons)

@@ -169,6 +169,8 @@ local colorscheme = {
 
     -- don't show those in italic
     helpExample                 = { link = "Normal" },
+
+    manBold                     = { bg = pal.bg0 },
 }
 -- }}}
 
@@ -362,6 +364,7 @@ add_with_prefix(colorscheme, "Startscreen", {
     Mason   = { fg = col.orange },
     Quit    = { fg = col.red },
     New     = { fg = col.purple },
+    Shell   = { fg = col.pink },
 })
 -- }}}
 

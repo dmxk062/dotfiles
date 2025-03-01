@@ -31,6 +31,7 @@ local named_colors = {
     green = "#A3BE8C",
     magenta = "#B48EAD",
     purple = blend("#B48EAD", "#5E81AC", 0.7),
+    pink = blend("#B48EAD",  "#D8DEE9", 0.5),
 }
 
 local dark_palette = {
