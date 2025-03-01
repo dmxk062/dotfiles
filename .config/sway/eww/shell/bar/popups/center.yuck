@@ -88,7 +88,7 @@
     :monitor 0
     :geometry (geometry
         :x 0
-        :width "16%"
+        :width "8%"
         :y -50
         :anchor "top center")
     :stacking "overlay"
