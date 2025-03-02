@@ -17,11 +17,14 @@ local operators = require("config.operators")
 
 -- qflist {{{
 -- quickly navigate qflist and loclist
+
+-- qflist: optimized for larger lists
 map(mov, "<space>j", "<cmd>cnext<cr>")
 map(mov, "<space>k", "<cmd>cprev<cr>")
 map(mov, "<space>0", "<cmd>cfirst<cr>")
 map(mov, "<space>$", "<cmd>clast<cr>")
 
+-- loclist: optimized for much smaller lists
 map(mov, "<C-j>", "<cmd>lnext<cr>")
 map(mov, "<C-k>", "<cmd>lprev<cr>")
 map(mov, "<space>L0", "<cmd>lfirst<cr>")
@@ -90,9 +93,12 @@ map("n", "+l", function() add_qf_item("loclist") end)
 map("n", "-q", function() rem_qf_item() end)
 map("n", "-l", function() rem_qf_item("loclist") end)
 
+map("n", "<space>Qr", function() require("quicker").refresh() end)
+map("n", "<space>Lr", function() require("quicker").refresh(0) end)
+
 -- toggle them
-map("n", "<space>q", function() require("quicker").toggle() end)
-map("n", "<space>l", function() require("quicker").toggle { loclist = true } end)
+map("n", "<space>q", function() require("quicker").toggle { min_height = 8 } end)
+map("n", "<space>l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
 -- }}}
 
 -- snippets {{{
@@ -223,10 +229,9 @@ map(mov, "H", "^")
 -- }}}
 
 -- q to close windows {{{
--- use <space>Q for macros instead, i dont use them that often
+-- use <C-q> for macros instead, i dont use them that often
 -- use reg, defaulting to "q
--- e.g. "a<space>Q instead of qa
-map("n", "<space>Q", function()
+map("n", "<C-q>", function()
     if fn.reg_recording() ~= "" then
         return "q"
     else
