@@ -49,7 +49,6 @@ end, {
 
 ---@param args vim.user_command_args
 local function smart_split(args)
-    local split_args = {}
 
     if args.args ~= "" then
         split_args[1] = args.args
@@ -59,11 +58,17 @@ local function smart_split(args)
     local width = vim.api.nvim_win_get_width(0)
 
     local cmd
-    if height > width / 1.61 then
+    if height * 2.6 > width then
         cmd = "split"
     else
         cmd = "vsplit"
     end
+
+    local split_args = {
+        range = {
+            math.floor((cmd == "split" and height or width ) / 2)
+        }
+    }
 
     vim.cmd[cmd](split_args)
 end
