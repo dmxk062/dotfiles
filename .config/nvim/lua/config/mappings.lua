@@ -245,20 +245,11 @@ abbrev("c", "f", "find")
 -- }}}
 
 -- shells {{{
-local kitty_leader = "<space>S"
-map("n", kitty_leader .. "w", function() utils.kitty_shell_in { what = "window" } end)
-map("n", kitty_leader .. "v", function() utils.kitty_shell_in { what = "window", location = "vsplit" } end)
-map("n", kitty_leader .. "s", function() utils.kitty_shell_in { what = "window", location = "hsplit" } end)
-map("n", kitty_leader .. "W", function() utils.kitty_shell_in { what = "os-window" } end)
-map("n", kitty_leader .. "t", function() utils.kitty_shell_in { what = "tab" } end)
-map("n", kitty_leader .. "o", function() utils.kitty_shell_in { what = "overlay" } end)
-
 local shell_leader = "<space>s"
-map("n", shell_leader .. "s", function() utils.nvim_term_in() end)
-map("n", shell_leader .. "v", function() utils.nvim_term_in { location = "vertical" } end)
-map("n", shell_leader .. "x", function() utils.nvim_term_in { location = "horizontal" } end)
-map("n", shell_leader .. "t", function() utils.nvim_term_in { location = "tab" } end)
-
+map("n", shell_leader .. "s", function() utils.nvim_term_in("new") end)
+map("n", shell_leader .. "v", function() utils.nvim_term_in("vnew") end)
+map("n", shell_leader .. "x", function() utils.nvim_term_in("enew") end)
+map("n", shell_leader .. "t", function() utils.nvim_term_in("tabnew") end)
 -- }}}
 
 -- insert mode {{{

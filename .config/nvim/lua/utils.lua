@@ -1,37 +1,8 @@
 local M = {}
 
-
-
---- tries to open a shell in the correct directory that the current file is in
----@param opts {location: "split"|"hsplit"|"vsplit", what: "window"|"os-window"|"tab"|"overlay"} | nil
-function M.kitty_shell_in(opts)
+---@param location "vnew"|"new"|"enew"|"tabnew"
+function M.nvim_term_in(location)
     local bname = vim.api.nvim_buf_get_name(0)
-    opts = opts or {}
-    local location = opts.location or "split"
-    local what = opts.what or "window"
-
-    local cmd = { "kitty", "@", "launch", "--type=" .. what, "--location=" .. location }
-
-    if vim.startswith(bname, "oil-ssh://") then
-        local addr = bname:match("//(.-)/")
-        local remote_path = bname:match("//.-(/.*)"):sub(2, -1)
-        vim.list_extend(cmd, { "--", "ssh", "-t", addr, "--", "cd", remote_path, ";", "exec", "${SHELL:-/bin/sh}" })
-    elseif vim.startswith(bname, "oil://") then
-        vim.list_extend(cmd, { "--cwd", require("oil").get_current_dir() })
-    else
-        local bpath = vim.fn.fnamemodify(bname, ":p:h")
-        if not vim.uv.fs_stat(bpath) then
-            bpath = vim.fn.getcwd()
-        end
-        vim.list_extend(cmd, { "--cwd", bpath })
-    end
-    vim.system(cmd, { detach = true })
-end
-
----@param opts {location: "horizontal"|"vertical"|"tab"} | nil
-function M.nvim_term_in(opts)
-    local bname = vim.api.nvim_buf_get_name(0)
-    opts = opts or {}
     local cmd
     local cwd = ""
     if vim.startswith(bname, "oil-ssh://") then
@@ -48,8 +19,7 @@ function M.nvim_term_in(opts)
         end
     end
 
-
-    vim.cmd((opts.location or "") .. " new")
+    vim.cmd(location)
     vim.fn.termopen(cmd, { cwd = cwd })
 end
 
