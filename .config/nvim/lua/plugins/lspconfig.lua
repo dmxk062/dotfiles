@@ -86,7 +86,7 @@ M.config = function()
             map("n", "gr", require("telescope.builtin").lsp_references)
             map("n", "gd", require("telescope.builtin").lsp_definitions)
             map("n", "<C-w>gd", function()
-                vim.cmd.wincmd("v")
+                vim.cmd("Sp")
                 vim.lsp.buf.definition { reuse_win = false }
             end)
             map("n", "gi", require("telescope.builtin").lsp_implementations)

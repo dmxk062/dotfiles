@@ -96,6 +96,10 @@ return {
             return "Oil" .. extension_highlights[ext]
         end
 
+        if name:sub(-1) == "/" then
+            return "OilDir"
+        end
+
         if is_hidden then
             return "OilHidden"
         end

@@ -53,24 +53,28 @@ local function render_buf(state)
     state.gmarks = gmarks
     state.lmarks = lmarks
 
-    local i = 0
+    local gnames = vim.tbl_keys(gmarks); table.sort(gnames)
+    local lnames = vim.tbl_keys(lmarks); table.sort(lnames)
 
-    for name, mark in pairs(lmarks) do
-        state.marks_for_lines[i] = name
+    local drawline = 0
+
+    for _, name in ipairs(lnames) do
+        local mark = lmarks[name]
+        state.marks_for_lines[drawline] = name
         state.found_old_marks[name] = false
 
         local line = string.format("%s %3d:%2d", name, mark[1], mark[2])
 
-        state.prev_lines[i] = line
-        api.nvim_buf_set_lines(state.render_buf, i, i, false, { line })
+        state.prev_lines[drawline] = line
+        api.nvim_buf_set_lines(state.render_buf, drawline, drawline, false, { line })
 
-        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkLocal", i, 0, 1)
-        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", i, 2, -1)
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkLocal", drawline, 0, 1)
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", drawline, 2, -1)
 
         -- show a preview of the line
         local ok, text = pcall(api.nvim_buf_get_text, state.target_buf, mark[1] - 1, mark[2], mark[1] - 1, -1, {})
         if ok then
-            api.nvim_buf_set_extmark(state.render_buf, state.ns, i, #line, {
+            api.nvim_buf_set_extmark(state.render_buf, state.ns, drawline, #line, {
                 virt_text = {
                     {
                         (mark[2] ~= 0 and "..." or "") .. text[1]:gsub("^%s*", ""),
@@ -80,11 +84,12 @@ local function render_buf(state)
             })
         end
 
-        i = i + 1
+        drawline = drawline + 1
     end
 
-    for name, mark in pairs(gmarks) do
-        state.marks_for_lines[i] = name
+    for _, name in ipairs(gnames) do
+        local mark = gmarks[name]
+        state.marks_for_lines[drawline] = name
         state.found_old_marks[name] = false
 
         local path = vim.fn.fnamemodify(mark[4]:gsub("oil://", ""), ":~:.")
@@ -94,19 +99,22 @@ local function render_buf(state)
         end
         local pos = string.format("%3d:%2d", mark[1], mark[2])
         local line = name .. " " .. pos .. " " .. path
-        state.prev_lines[i] = line
+        state.prev_lines[drawline] = line
 
-        api.nvim_buf_set_lines(state.render_buf, i, i, false, { line })
+        api.nvim_buf_set_lines(state.render_buf, drawline, drawline, false, { line })
 
-        -- grey out unloaded buffers
-        if mark[3] == 0 then
-            api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkUnloaded", i, 3 + #pos, -1)
+        local hlgroup
+        if vim.startswith(mark[4], "oil://") then
+            hlgroup = "OilDir"
+        else
+            hlgroup = require("plugin_utils.fnamehighlight").highlight_fname(path)
         end
-        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkGlobal", i, 0, 1)
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, hlgroup, drawline, 3 + #pos, -1)
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkGlobal", drawline, 0, 1)
 
-        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", i, 2, 2 + #pos)
+        api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkPosition", drawline, 2, 2 + #pos)
 
-        i = i + 1
+        drawline = drawline + 1
     end
 
     api.nvim_win_set_cursor(state.render_win, { 1, 0 })
@@ -145,8 +153,17 @@ local function parse_buffer(state)
                     column = tonumber(fcolumn) or 1
                 end
 
-                local buf = vim.fn.bufadd(vim.fn.expand(file))
-                api.nvim_buf_set_mark(buf, mark, row, column, {})
+                local path = vim.fn.expand(file)
+                local st = vim.uv.fs_stat(path)
+                if st and st.type == "directory" then
+                    path = "oil://" .. path
+                end
+                local buf = vim.fn.bufadd(path)
+                local ok, res = pcall(api.nvim_buf_set_mark, buf, mark, row, column, {})
+                if not ok then
+                    state.found_old_marks[mark] = false
+                    vim.notify("markeditor: Failed to set mark " .. mark .. ": " .. res)
+                end
             else
                 vim.notify("markeditor: Missing file for global mark on line: " .. i, vim.log.levels.ERROR)
                 return false
@@ -195,17 +212,17 @@ function M.marks_popup()
     local curbuf = api.nvim_get_current_buf()
     local buf = api.nvim_create_buf(false, true)
 
-    local win_width = api.nvim_win_get_width(0)
-    local win_height = api.nvim_win_get_height(0)
+    local win_width = vim.o.columns
+    local win_height = vim.o.lines
 
-    local width = win_width >= 48 and 50 or win_width - 2
+    local width = win_width >= 60 and 58 or win_width - 2
     local height = win_height >= 10 and 8 or win_height - 2
 
     local target_col = math.floor((win_width - width) / 2)
     local target_row = math.floor((win_height - height) / 2)
     local win = api.nvim_open_win(buf, true, {
         border = "rounded",
-        relative = "win",
+        relative = "editor",
         title = "Marks",
         title_pos = "center",
         width = width,
@@ -216,6 +233,7 @@ function M.marks_popup()
     popup_win = win
 
     vim.bo[buf].buftype = "acwrite"
+    vim.bo[buf].filetype = "marked"
     vim.bo[buf].bufhidden = "hide"
     vim.wo[win][0].wrap = false
     api.nvim_buf_set_name(buf, "marks")
@@ -246,6 +264,11 @@ function M.marks_popup()
     map("n", "v", function() open_mark("vsplit") end)
     map("n", "s", function() open_mark("split") end)
     map("n", "t", function() open_mark("tabnew") end)
+    map("n", "'", function()
+        local mark = vim.fn.getchar()
+        vim.cmd.quit()
+        M.jump_first_set_mark(mark)
+    end)
 
     local augroup = api.nvim_create_augroup("markeditor", { clear = true })
     api.nvim_create_autocmd("BufWriteCmd", {
@@ -301,8 +324,10 @@ function M.set_first_avail_lmark()
     end
 end
 
-function M.jump_first_set_mark()
-    local code = vim.fn.getchar()
+function M.jump_first_set_mark(code)
+    if not code then
+        code = vim.fn.getchar()
+    end
     local char = string.char(code)
 
     if char:upper() == char then

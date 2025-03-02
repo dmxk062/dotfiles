@@ -18,6 +18,7 @@ local names_for_fts = {
     checkhealth = "[health]",
     lazy = "[lazy]",
     mason = "[mason]",
+    marked = "[marks]",
 }
 
 function M.format_buf_name(buf, short)

@@ -257,7 +257,7 @@ M.config = function(_, opts)
         })
     })
 
-    require("modules.snippets").setup()
+    require("config.snippets").setup()
 end
 
 return M

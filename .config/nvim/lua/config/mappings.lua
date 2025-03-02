@@ -7,23 +7,27 @@ local obj = { "x", "o" }
 -- motion
 local mov = { "n", "x", "o" }
 
+-- my own custom textobjects
+local textobjs = require("config.textobjs")
+
 -- qflist {{{
 -- quickly navigate qflist and loclist
 map(mov, "<space>j", "<cmd>cnext<cr>")
 map(mov, "<space>k", "<cmd>cprev<cr>")
-map(mov, "<space>n", "<cmd>lnext<cr>")
-map(mov, "<space>N", "<cmd>lprev<cr>")
-
--- useful for e.g. gO in help buffers
 map(mov, "<C-j>", "<cmd>lnext<cr>")
 map(mov, "<C-k>", "<cmd>lprev<cr>")
 
--- add items to qflist and loclist easily
-map("n", "+q", function()
+-- add current line to list
+local function add_qf_item(where)
     local bufnr = api.nvim_get_current_buf()
     local cursor = api.nvim_win_get_cursor(0)
     local text = api.nvim_buf_get_lines(bufnr, cursor[1] - 1, cursor[1], false)[1]
-    vim.fn.setqflist({}, "a", {
+
+    local listfunc = where == "loclist"
+        and function(...) return vim.fn.setloclist(bufnr, ...) end
+        or vim.fn.setqflist
+
+    listfunc({}, "a", {
         items = { {
             bufnr = bufnr,
             lnum = cursor[1],
@@ -31,7 +35,46 @@ map("n", "+q", function()
             valid = true,
         } }
     })
-end)
+end
+
+-- remove entry on current line from list
+local function rem_qf_item(where)
+    local bufnr = vim.api.nvim_get_current_buf()
+    local cursor = api.nvim_win_get_cursor(0)
+
+    local getfn = where == "loclist"
+        and function(...) return vim.fn.getloclist(bufnr, ...) end
+        or vim.fn.getqflist
+
+    local items = getfn()
+    if #items == 0 then
+        return
+    end
+
+    local new_entries = {}
+    local found_to_rm = false
+    for i, entry in ipairs(items) do
+        if entry.bufnr == bufnr and entry.lnum == cursor[1] then
+            found_to_rm = true
+        else
+            table.insert(new_entries, entry)
+        end
+    end
+
+    if found_to_rm then
+        local setfn = where == "loclist"
+            and function(...) return vim.fn.setloclist(bufnr, ...) end
+            or vim.fn.setqflist
+
+        setfn({}, "r", { items = new_entries })
+    end
+end
+
+map("n", "+q", function() add_qf_item() end)
+map("n", "+l", function() add_qf_item("loclist") end)
+
+map("n", "-q", function() rem_qf_item() end)
+map("n", "-l", function() rem_qf_item("loclist") end)
 
 -- toggle them
 map("n", "<space>q", function() require("quicker").toggle() end)
@@ -139,7 +182,7 @@ end)
 -- }}}
 
 -- marks {{{
-local marks = require("modules.marks")
+local marks = require("config.marks")
 map("n", "<space>m", marks.marks_popup)
 
 -- automatically generate mark name
@@ -159,7 +202,7 @@ map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" 
 map("t", "<M-Esc>", "<C-\\><C-n>")
 map("t", "<C-w>", "<C-\\><C-n><C-w>")
 
--- those are hard to reach by default, I do not use Low and High, Middle is sometimes useful
+-- those are hard to reach by default, I do not use Low and High
 -- also kinda logical, a stronger version of lh
 map(mov, "L", "$")
 map(mov, "H", "^")
@@ -224,9 +267,6 @@ map("i", "<C-BS>", "<C-w>")
 map("i", "<C-Del>", "<esc>\"_cw")
 -- }}}
 
--- my own custom textobjects
-local textobjs = require("config.textobjs")
-
 -- diagnostics {{{
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
@@ -243,7 +283,6 @@ map(obj, "iDh", textobjs.diagnostic_hint)
 -- }}}
 
 -- additional textobjects {{{
-
 -- less annoying to type
 map(obj, "iq", [[i"]])
 map(obj, "aq", [[a"]])
@@ -407,7 +446,7 @@ operators.map_function("g:", function(mode, region, extra, get)
     if extra.repeated then
         api.nvim_feedkeys(
             string.format("<cmd>%d,%d%s<cr>", region[1][1], region[2][1], extra.saved.cmd),
-        "nt", false)
+            "nt", false)
     else
         local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
         api.nvim_feedkeys(cmdstr, "n", false)
