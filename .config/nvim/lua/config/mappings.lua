@@ -1,7 +1,8 @@
-local utils = require("utils")
+local utils = require("config.utils")
 local abbrev = utils.abbrev
 local map = utils.map
 local api = vim.api
+
 -- textobjects
 local obj = { "x", "o" }
 -- motion
@@ -9,6 +10,9 @@ local mov = { "n", "x", "o" }
 
 -- my own custom textobjects
 local textobjs = require("config.textobjs")
+-- create custom operators easily
+local operators = require("config.operators")
+
 
 -- qflist {{{
 -- quickly navigate qflist and loclist
@@ -211,6 +215,7 @@ map(mov, "H", "^")
 -- q to close windows {{{
 -- use <space>Q for macros instead, i dont use them that often
 -- use reg, defaulting to "q
+-- e.g. "a<space>Q instead of qa
 map("n", "<space>Q", function()
     if vim.fn.reg_recording() ~= "" then
         return "q"
@@ -234,6 +239,7 @@ end)
 -- force quit
 abbrev("c", "Q", "q!")
 abbrev("c", "Qa", "qa!")
+
 -- shortcuts to enable/disable spelling
 abbrev("c", "spen", "setlocal spell spelllang=en_us")
 abbrev("c", "spde", "setlocal spell spelllang=de_at")
@@ -246,10 +252,10 @@ abbrev("c", "f", "find")
 
 -- shells {{{
 local shell_leader = "<space>s"
-map("n", shell_leader .. "s", function() utils.nvim_term_in("new") end)
-map("n", shell_leader .. "v", function() utils.nvim_term_in("vnew") end)
-map("n", shell_leader .. "x", function() utils.nvim_term_in("enew") end)
-map("n", shell_leader .. "t", function() utils.nvim_term_in("tabnew") end)
+map("n", shell_leader .. "s", function() utils.nvim_term_in { opencmd = "new" } end)
+map("n", shell_leader .. "v", function() utils.nvim_term_in { opencmd = "vnew" } end)
+map("n", shell_leader .. "x", function() utils.nvim_term_in { opencmd = "enew" } end)
+map("n", shell_leader .. "t", function() utils.nvim_term_in { opencmd = "tabnew" } end)
 -- }}}
 
 -- insert mode {{{
@@ -303,8 +309,6 @@ map(obj, "gG", textobjs.entire_buffer)
 -- }}}
 
 -- operators {{{
-local operators = require("config.operators")
-
 -- evaluate lua and insert result in buffer
 operators.map_function("<space>el", function(mode, region, extra, get)
     local code = get()

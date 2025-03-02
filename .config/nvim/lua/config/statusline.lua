@@ -75,7 +75,7 @@ end
 
 
 local function update_title()
-    return require("plugin_utils.bufs").format_buf_name(0)
+    return require("config.utils").format_buf_name(0)
 end
 
 

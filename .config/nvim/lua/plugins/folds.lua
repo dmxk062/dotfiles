@@ -126,7 +126,7 @@ M.config = function(_, opts)
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true
 
-    local utils = require("utils")
+    local utils = require("config.utils")
     local ufo = require("ufo")
     ufo.setup(opts)
 

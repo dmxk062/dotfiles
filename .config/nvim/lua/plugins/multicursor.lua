@@ -9,7 +9,7 @@ function M.config(_, opts)
     local mc = require("multicursor-nvim")
     mc.setup(opts)
 
-    local map = require("utils").map
+    local map = require("config.utils").map
     local operators = require("config.operators")
 
     map("n", "<esc>", function()

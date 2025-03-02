@@ -283,7 +283,7 @@ M.opts = {
 -- }}}
 
 M.config = function(_, opts)
-    local map = require("utils").map
+    local map = require("config.utils").map
     require("oil").setup(opts)
 
     -- change directory if not ssh, only for current window

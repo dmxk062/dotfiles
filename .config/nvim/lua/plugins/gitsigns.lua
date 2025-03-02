@@ -32,7 +32,7 @@ M.opts = {
 M.config = function(_, opts)
     local gitsigns = require("gitsigns")
     opts.on_attach = function(bufnr)
-        local utils = require("utils")
+        local utils = require("config.utils")
         local mapp = utils.local_mapper(bufnr, "<space>g")
 
         mapp("n", "t", gitsigns.toggle_signs)

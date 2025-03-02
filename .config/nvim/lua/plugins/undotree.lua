@@ -3,7 +3,7 @@ local M = {
 }
 
 M.config = function()
-    local utils = require("utils")
+    local utils = require("config.utils")
     utils.map("n", "<space>u", vim.cmd.UndotreeToggle)
 
     local g = vim.g

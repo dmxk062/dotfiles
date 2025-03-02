@@ -39,7 +39,7 @@ local M = {
 
 M.config = function()
     local lspconfig = require("lspconfig")
-    local utils = require("utils")
+    local utils = require("config.utils")
 
     require("lspconfig.ui.windows").default_options = {
         border = "rounded"

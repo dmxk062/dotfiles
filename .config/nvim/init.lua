@@ -1,6 +1,7 @@
 vim.cmd.colorscheme("mynord")
 local open_start_screen = vim.fn.argc() == 0
 
+-- only open the startscreen if stdin is empty
 vim.api.nvim_create_autocmd("StdinReadPre", {
     once = true,
     callback = function(ctx)
@@ -73,14 +74,17 @@ opt.guicursor = {
     "i-c-ci-cr:ver10",
     "n-c-ci-cr-r-v:blinkon1",
 }
+
 o.cursorline = true
 o.cursorlineopt = "number"
 
 -- enable terminal title
 o.title = true
 
+-- ftplugins {{{
 -- i use C more than C++
 vim.g.c_syntax_for_h = true
+-- }}}
 
 
 -- use lazy for the remaining config
@@ -96,8 +100,8 @@ if not vim.uv.fs_stat(lazypath) then
         lazypath,
     })
 end
-
 opt.rtp:prepend(lazypath)
+
 require("lazy").setup("plugins", {
     -- so i can work on my own local plugins
     dev = {
@@ -151,6 +155,7 @@ require("config.commands")
 -- for some reason lazy deactivates that
 o.modeline = true
 
+-- create this autocommand after nvim had a chance to read from stdin
 vim.api.nvim_create_autocmd("VimEnter", {
     once = true,
     callback = function(ctx)
@@ -160,4 +165,5 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end
 })
 
+-- custom statusline
 require("config.statusline")

@@ -9,7 +9,7 @@ local M = {
             }
         }
 
-        local map = require("utils").map
+        local map = require("config.utils").map
 
         -- no one cares about the sleep operator...
         map("n", "gs", substitute.operator)

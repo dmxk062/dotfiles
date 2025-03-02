@@ -254,7 +254,7 @@ function M.marks_popup()
         vim.cmd((precmd and precmd .. "|" or "") .. "normal! `" .. mark)
     end
 
-    local map = require("utils").local_mapper(buf)
+    local map = require("config.utils").local_mapper(buf)
     map("n", "<cr>", function() open_mark() end)
     map("n", "v", function() open_mark("vsplit") end)
     map("n", "s", function() open_mark("split") end)

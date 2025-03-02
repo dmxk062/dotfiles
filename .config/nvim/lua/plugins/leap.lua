@@ -3,7 +3,7 @@ local M = {
 }
 
 M.config = function()
-    local utils = require("utils")
+    local utils = require("config.utils")
     local map = utils.map
 
     map("n", "S", "<Plug>(leap-from-window)")
