@@ -2,6 +2,7 @@ local utils = require("config.utils")
 local abbrev = utils.abbrev
 local map = utils.map
 local api = vim.api
+local fn = vim.fn
 
 -- textobjects
 local obj = { "x", "o" }
@@ -18,8 +19,17 @@ local operators = require("config.operators")
 -- quickly navigate qflist and loclist
 map(mov, "<space>j", "<cmd>cnext<cr>")
 map(mov, "<space>k", "<cmd>cprev<cr>")
+map(mov, "<space>0", "<cmd>cfirst<cr>")
+map(mov, "<space>$", "<cmd>clast<cr>")
+
 map(mov, "<C-j>", "<cmd>lnext<cr>")
 map(mov, "<C-k>", "<cmd>lprev<cr>")
+map(mov, "<space>L0", "<cmd>lfirst<cr>")
+map(mov, "<space>L$", "<cmd>llast<cr>")
+
+-- clear them
+map("n", "<space>Qc", function() fn.setqflist({}, "r") end)
+map("n", "<space>Lc", function() fn.setloclist(0, {}, "r") end)
 
 -- add current line to list
 local function add_qf_item(where)
@@ -28,8 +38,8 @@ local function add_qf_item(where)
     local text = api.nvim_buf_get_lines(bufnr, cursor[1] - 1, cursor[1], false)[1]
 
     local listfunc = where == "loclist"
-        and function(...) return vim.fn.setloclist(bufnr, ...) end
-        or vim.fn.setqflist
+        and function(...) return fn.setloclist(bufnr, ...) end
+        or fn.setqflist
 
     listfunc({}, "a", {
         items = { {
@@ -47,8 +57,8 @@ local function rem_qf_item(where)
     local cursor = api.nvim_win_get_cursor(0)
 
     local getfn = where == "loclist"
-        and function(...) return vim.fn.getloclist(bufnr, ...) end
-        or vim.fn.getqflist
+        and function(...) return fn.getloclist(bufnr, ...) end
+        or fn.getqflist
 
     local items = getfn()
     if #items == 0 then
@@ -67,8 +77,8 @@ local function rem_qf_item(where)
 
     if found_to_rm then
         local setfn = where == "loclist"
-            and function(...) return vim.fn.setloclist(bufnr, ...) end
-            or vim.fn.setqflist
+            and function(...) return fn.setloclist(bufnr, ...) end
+            or fn.setqflist
 
         setfn({}, "r", { items = new_entries })
     end
@@ -178,7 +188,7 @@ map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
     for _, b in ipairs(api.nvim_list_bufs()) do
-        if vim.bo[b].buflisted and vim.fn.bufwinid(b) == -1 then
+        if vim.bo[b].buflisted and fn.bufwinid(b) == -1 then
             api.nvim_buf_delete(b, {})
         end
     end
@@ -217,7 +227,7 @@ map(mov, "H", "^")
 -- use reg, defaulting to "q
 -- e.g. "a<space>Q instead of qa
 map("n", "<space>Q", function()
-    if vim.fn.reg_recording() ~= "" then
+    if fn.reg_recording() ~= "" then
         return "q"
     else
         local reg = vim.v.register
@@ -449,7 +459,7 @@ operators.map_function("g:", function(mode, region, extra, get)
         api.nvim_create_autocmd("CmdlineLeave", {
             once = true,
             callback = function()
-                local command_line = vim.fn.getcmdline()
+                local command_line = fn.getcmdline()
                 local command = command_line:match("^%d+,%d+(.*)$")
                 if not command then
                     command = ""
