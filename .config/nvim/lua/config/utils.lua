@@ -10,6 +10,7 @@ local names_for_fts = {
     TelescopePrompt = "[tel]",
     undotree = "[undo]",
     fugitive = "[git]",
+    NeogitStatus = "[git]",
     checkhealth = "[health]",
     lazy = "[lazy]",
     mason = "[mason]",
@@ -20,7 +21,7 @@ local names_for_fts = {
 local function expand_home(path)
     local user = vim.env.USER
     local home = "/home/" .. user
-    return vim.fn.pathshorten(path:gsub("/tmp/workspaces_" .. user, "~tmp")
+    return fn.pathshorten(path:gsub("/tmp/workspaces_" .. user, "~tmp")
         :gsub(home .. "/ws", "~ws")
         :gsub(home .. "/.config", "~cfg")
         :gsub(home, "~"), 6)
@@ -51,9 +52,12 @@ function M.format_buf_name(buf, short)
             elems[1] = expand_home(name:sub(#"oil://" + 1, -2)) .. "/"
         end
     elseif ft == "help" then
-        return ":h " .. vim.fn.fnamemodify(name, ":t"):gsub("%.txt$", "")
+        return "h: " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", "")
     elseif names_for_fts[ft] then
         return names_for_fts[ft]
+    elseif vim.startswith(name, "fugitive://") then
+        unnamed = false
+        elems[1] = "*g: " .. expand_home(fn.fnamemodify(name:gsub("fugitive://.-.git//%d+/", ""), ":t"))
     end
 
     local normal_buf = vim.bo[buf].buftype == ""
@@ -64,10 +68,10 @@ function M.format_buf_name(buf, short)
         else
             if vim.startswith(name, "oil-ssh://") then
                 local _, _, host, path = name:find("//([^/]+)/(.*)")
-                elems[1] = "@" .. host .. ":" .. vim.fn.fnamemodify(path, ":t")
+                elems[1] = "@" .. host .. ":" .. fn.fnamemodify(path, ":t")
             else
                 -- try to get smth reasonable for plugin provided buffers
-                elems[1] = vim.fn.fnamemodify(name, ":t")
+                elems[1] = fn.fnamemodify(name, ":t")
             end
         end
     end
@@ -77,7 +81,7 @@ function M.format_buf_name(buf, short)
         if readonly then table.insert(elems, "[ro]") end
 
         if short and do_modify then
-            elems[1] = vim.fn.fnamemodify(elems[1], ":t")
+            elems[1] = fn.fnamemodify(elems[1], ":t")
         end
 
         return table.concat(elems, " ")
@@ -89,7 +93,7 @@ end
 
 -- }}}
 
--- highlight file path {{{ 
+-- highlight file path {{{
 -- patterns {{{1
 local extension_highlights = {
     ["a"]       = "Bin",

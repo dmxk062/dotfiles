@@ -33,25 +33,28 @@ M.config = function(_, opts)
     local gitsigns = require("gitsigns")
     opts.on_attach = function(bufnr)
         local utils = require("config.utils")
-        local mapp = utils.local_mapper(bufnr, "<space>g")
+        local map = utils.local_mapper(bufnr, "<space>g")
 
-        mapp("n", "t", gitsigns.toggle_signs)
-        mapp("n", "p", gitsigns.preview_hunk)
+        map("n", "t", gitsigns.toggle_signs)
+        map("n", "p", gitsigns.preview_hunk)
 
         -- use fugitive cause its just better :(
-        mapp("n", "d", "<cmd>rightbelow Gvdiffsplit<cr>")
-        mapp("n", "D", "<cmd>rightbelow Gvdiffsplit !<cr>")
-        mapp("n", "b", gitsigns.blame_line)
-        mapp("n", "B", gitsigns.blame)
-        mapp("n", "q", gitsigns.setqflist)
-        mapp("n", "l", gitsigns.setloclist)
+        map("n", "d", "<cmd>rightbelow Gvdiffsplit<cr>")
+        map("n", "D", "<cmd>rightbelow Gvdiffsplit !<cr>")
+        map("n", "v", "<cmd>rightbelow Gdiffsplit<cr>")
+        map("n", "V", "<cmd>rightbelow Gdiffsplit<cr>")
 
-        mapp("n", "s", gitsigns.stage_hunk)
-        mapp("n", "u", gitsigns.undo_stage_hunk)
-        mapp("n", "R", gitsigns.reset_hunk)
+        map("n", "b", gitsigns.blame_line)
+        map("n", "B", gitsigns.blame)
+        map("n", "q", gitsigns.setqflist)
+        map("n", "l", gitsigns.setloclist)
 
-        mapp("n", "w", gitsigns.toggle_word_diff)
-        mapp("n", "r", gitsigns.toggle_deleted)
+        map("n", "s", gitsigns.stage_hunk)
+        map("n", "u", gitsigns.undo_stage_hunk)
+        map("n", "U", gitsigns.reset_hunk)
+
+        map("n", "w", gitsigns.toggle_word_diff)
+        map("n", "r", gitsigns.toggle_deleted)
 
         utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = bufnr })
     end
