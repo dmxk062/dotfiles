@@ -26,5 +26,5 @@ function vg {
 compdef vg=rg
 
 EDITOR=nvr
-export GIT_EDITOR="nvr -cc sp --remote-wait"
-ZVM_VI_EDITOR=(nvr -cc vsp --remote-wait)
+export GIT_EDITOR="nvr -cc Sp --remote-wait"
+ZVM_VI_EDITOR=(nvr -cc Sp --remote-wait)
