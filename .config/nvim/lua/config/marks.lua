@@ -53,13 +53,9 @@ local function render_buf(state)
     state.gmarks = gmarks
     state.lmarks = lmarks
 
-    local gnames = vim.tbl_keys(gmarks); table.sort(gnames)
-    local lnames = vim.tbl_keys(lmarks); table.sort(lnames)
-
     local drawline = 0
 
-    for _, name in ipairs(lnames) do
-        local mark = lmarks[name]
+    for name, mark in vim.spairs(lmarks) do
         state.marks_for_lines[drawline] = name
         state.found_old_marks[name] = false
 
@@ -87,8 +83,7 @@ local function render_buf(state)
         drawline = drawline + 1
     end
 
-    for _, name in ipairs(gnames) do
-        local mark = gmarks[name]
+    for name, mark in vim.spairs(gmarks) do
         state.marks_for_lines[drawline] = name
         state.found_old_marks[name] = false
 
