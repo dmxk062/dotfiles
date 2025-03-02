@@ -132,6 +132,7 @@ M.config = function(_, opts)
 
     utils.map("n", "zM", ufo.closeAllFolds)
     utils.map("n", "zR", ufo.openAllFolds)
+    utils.map("n", "zm", function() ufo.closeFoldsWith(vim.v.count1) end)
 
     utils.map("n", "<S-k>", function()
         local winid = ufo.peekFoldedLinesUnderCursor()
