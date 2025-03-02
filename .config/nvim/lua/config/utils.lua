@@ -201,7 +201,7 @@ end
 -- }}}
 
 -- open terminals {{{
----@param opts {opencmd: "vnew"|"new"|"enew"|"tabnew", cmd: string|nil, cwd: string|nil}
+---@param opts {opencmd: "vnew"|"new"|"enew"|"tabnew", cmd: string[]|nil, cwd: string|nil}
 function M.nvim_term_in(opts)
     local bname = api.nvim_buf_get_name(0)
     local cmd
