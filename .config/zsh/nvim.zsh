@@ -1,6 +1,7 @@
 # make it easier to use nvr inside neovim
 # e.g. `cmd | sp` just opens a split with the results
 
+unalias nv
 function nv {
     nvr "${@:--}"
 }
