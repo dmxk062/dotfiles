@@ -6,7 +6,6 @@ local fn = vim.fn
 -- format buffer title {{{
 -- names for special filetypes {{{1
 local names_for_fts = {
-    qf = "[qf]",
     TelescopePrompt = "[tel]",
     undotree = "[undo]",
     fugitive = "[git]",
@@ -27,6 +26,7 @@ local function expand_home(path)
         :gsub(home, "~"), 6)
 end
 
+local buf_list_type = {}
 function M.format_buf_name(buf, short)
     local term_title = vim.b[buf].term_title
     if term_title then
@@ -53,6 +53,13 @@ function M.format_buf_name(buf, short)
         end
     elseif ft == "help" then
         return "h: " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", "")
+    elseif ft == "qf" then
+        if not buf_list_type[buf] then
+            local win = fn.bufwinid(buf)
+            local isloclist = fn.getwininfo(win)[1].loclist == 1
+            buf_list_type[buf] = isloclist and "[loc]" or "[qf]"
+        end
+        return buf_list_type[buf]
     elseif names_for_fts[ft] then
         return names_for_fts[ft]
     elseif vim.startswith(name, "fugitive://") then

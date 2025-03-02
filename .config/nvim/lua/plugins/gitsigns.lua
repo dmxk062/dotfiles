@@ -35,7 +35,6 @@ M.config = function(_, opts)
         local utils = require("config.utils")
         local map = utils.local_mapper(bufnr, "<space>g")
 
-        map("n", "t", gitsigns.toggle_signs)
         map("n", "p", gitsigns.preview_hunk)
 
         -- use fugitive cause its just better :(
@@ -46,8 +45,11 @@ M.config = function(_, opts)
 
         map("n", "b", gitsigns.blame_line)
         map("n", "B", gitsigns.blame)
+
         map("n", "q", gitsigns.setqflist)
         map("n", "l", gitsigns.setloclist)
+        map("n", "L", "<cmd>0Gllog<cr>")
+        map("n", "Q", "<cmd>0Gclog<cr>")
 
         map("n", "s", gitsigns.stage_hunk)
         map("n", "u", gitsigns.undo_stage_hunk)
@@ -55,6 +57,7 @@ M.config = function(_, opts)
 
         map("n", "w", gitsigns.toggle_word_diff)
         map("n", "r", gitsigns.toggle_deleted)
+
 
         utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = bufnr })
     end

@@ -75,7 +75,7 @@ end
 
 
 local function update_title()
-    return require("config.utils").format_buf_name(0)
+    return require("config.utils").format_buf_name(api.nvim_get_current_buf())
 end
 
 
