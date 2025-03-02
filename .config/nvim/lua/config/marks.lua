@@ -102,7 +102,7 @@ local function render_buf(state)
         if vim.startswith(mark[4], "oil://") then
             hlgroup = "OilDir"
         else
-            hlgroup = require("plugin_utils.fnamehighlight").highlight_fname(path)
+            hlgroup = require("config.utils").highlight_fname(path)
         end
         api.nvim_buf_add_highlight(state.render_buf, state.ns, hlgroup, drawline, 3 + #pos, -1)
         api.nvim_buf_add_highlight(state.render_buf, state.ns, "MarkGlobal", drawline, 0, 1)

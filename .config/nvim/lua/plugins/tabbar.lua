@@ -66,7 +66,7 @@ local function render_tabline(f)
             f.set_gui("bold")
         end
 
-        local title, show_modified = require("plugin_utils.bufs").format_buf_name(info.buf, true)
+        local title, show_modified = require("config.utils").format_buf_name(info.buf, true)
         if wincount == 0 then
             f.add(".")
         end

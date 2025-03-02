@@ -235,7 +235,7 @@ M.opts = {
         natural_order = true,
         sort = sort,
         highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan)
-            return require("plugin_utils.fnamehighlight").highlight_fname(nil, entry, is_hidden)
+            return require("config.utils").highlight_fname(nil, entry, is_hidden)
         end
     },
 

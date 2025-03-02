@@ -183,7 +183,7 @@ M.opts.defaults = {
                     0,
                     namelen,
                 },
-                require("plugin_utils.fnamehighlight").highlight_fname(tail)
+                require("config.utils").highlight_fname(tail)
             },
             {
                 {
