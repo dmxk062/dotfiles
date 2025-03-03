@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function set(){
+function set_walls(){
     if ! swww query
     then
         swww-daemon &
@@ -27,14 +27,14 @@ case $1 in
         ;;
     wall)
         set_as_wall "$2"
-        set
+        set_walls
         ;;
     both)
         set_as_wall "$2"
         set_as_lock "$2"
-        set
+        set_walls
         ;;
     set)
-        set
+        set_walls
         ;;
 esac
