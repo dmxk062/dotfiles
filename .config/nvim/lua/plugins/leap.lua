@@ -2,6 +2,18 @@ local M = {
     "ggandor/leap.nvim",
 }
 
+--[[ Rationale {{{
+Why leap? Aren't motions enough?
+
+Yes, that's why i mostly use leap for it's remote functionality
+This allows me to use it to augment built in textobjects
+
+The standalone leap in insert mode can still be useful,
+*if* I am just navigating inside a single screen of text
+Otherwise, search or various more powerful (and easier) motions
+are much much easier
+}}} ]]--
+
 M.config = function()
     local utils = require("config.utils")
     local map = utils.map

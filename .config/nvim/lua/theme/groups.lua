@@ -242,9 +242,9 @@ add_with_prefix(colorscheme, "@", {
     ["text.title"]                   = { fg = col.blue },
     ["text.strong"]                  = { fg = pal.fg0, bold = true },
 
-    ["diff.plus"]                    = { link = "DiffAdd" },
-    ["diff.minus"]                   = { link = "DiffDelete" },
-    ["diff.delta"]                   = { link = "DiffChange" },
+    ["diff.plus"]                    = { fg = col.green },
+    ["diff.minus"]                   = { fg = col.red },
+    ["diff.delta"]                   = { fg = col.yellow },
 
     ["tag"]                          = { link = "*keyword" },
     ["tag.attribute"]                = { fg = pal.fg0 },
