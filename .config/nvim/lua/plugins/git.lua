@@ -3,6 +3,15 @@ local M = {
     { "tpope/vim-fugitive" },
 }
 
+--[[ Rationale {{{
+Both fugitive and gitsigns are great git plugins
+gitsigns generally performs better for basic features,
+whereas fugitive imo provides more capabilities
+
+I prefer gitsigns' buffer monitoring and interactive features,
+but fugitive's commands and history capabilities are better
+}}} ]]--
+
 -- gitsigns {{{
 M[1].opts = {
     signs = {
