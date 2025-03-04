@@ -10,7 +10,7 @@ whereas fugitive imo provides more capabilities
 
 I prefer gitsigns' buffer monitoring and interactive features,
 but fugitive's commands and history capabilities are better
-}}} ]]--
+}}} ]] --
 
 -- gitsigns {{{
 M[1].opts = {
@@ -45,28 +45,28 @@ M[1].opts = {
         -- all git related mappings in normal mode use the "<space>g" prefix
         local map = utils.local_mapper(buf, "<space>g")
 
-        map("n", "p", gitsigns.preview_hunk)
+        map("n", "p", gitsigns.preview_hunk, { desc = "Git: Preview hunk" })
 
         -- use fugitive cause its just better :(
-        map("n", "d", "<cmd>rightbelow Gvdiffsplit<cr>")
-        map("n", "D", "<cmd>rightbelow Gvdiffsplit !<cr>")
-        map("n", "v", "<cmd>rightbelow Gdiffsplit<cr>")
-        map("n", "V", "<cmd>rightbelow Gdiffsplit<cr>")
+        map("n", "v", "<cmd>rightbelow Gvdiffsplit<cr>", { desc = "Git: Diff with head" })
+        map("n", "V", "<cmd>rightbelow Gvdiffsplit !<cr>", { desc = "Git: Diff with last commit" })
+        map("n", "d", "<cmd>rightbelow Gdiffsplit<cr>", { desc = "Git: Diff with head (vertical)" })
+        map("n", "D", "<cmd>rightbelow Gdiffsplit !<cr>", { desc = "Git: Diff with last commit (vertical)" })
 
-        map("n", "b", gitsigns.blame_line)
-        map("n", "B", gitsigns.blame)
+        map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
+        map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
 
-        map("n", "q", gitsigns.setqflist)
-        map("n", "l", gitsigns.setloclist)
-        map("n", "L", "<cmd>0Gllog<cr>")
-        map("n", "Q", "<cmd>0Gclog<cr>")
+        map("n", "q", gitsigns.setqflist, { desc = "Git: Hunks to qflist" })
+        map("n", "l", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
+        map("n", "Q", "<cmd>0Gclog<cr>", { desc = "Git: History to qflist" })
+        map("n", "L", "<cmd>0Gllog<cr>", { desc = "Git: History to loclist" })
 
-        map("n", "s", gitsigns.stage_hunk)
-        map("n", "u", gitsigns.undo_stage_hunk)
-        map("n", "U", gitsigns.reset_hunk)
+        map("n", "s", gitsigns.stage_hunk, { desc = "Git: Stage" })
+        map("n", "u", gitsigns.undo_stage_hunk, { desc = "Git: Unstage" })
+        map("n", "U", gitsigns.reset_hunk, { desc = "Git: Reset" })
 
-        map("n", "w", gitsigns.toggle_word_diff)
-        map("n", "r", gitsigns.toggle_deleted)
+        map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
+        map("n", "r", gitsigns.toggle_deleted, { desc = "Git: Show deleted" })
 
 
         utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = buf })
@@ -75,10 +75,10 @@ M[1].opts = {
 -- }}}
 
 -- fugitive {{{
-M[2].config = function ()
+M[2].config = function()
     vim.g.fugitive_dynamic_colors = false
 
-    vim.api.nvim_create_autocmd({"User"}, {
+    vim.api.nvim_create_autocmd({ "User" }, {
         pattern = "FugitiveIndex",
         callback = function(ev)
             -- enable folding and fold by default
