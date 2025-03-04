@@ -1,8 +1,10 @@
 local M = {
-    "lewis6991/gitsigns.nvim",
+    { "lewis6991/gitsigns.nvim" },
+    { "tpope/vim-fugitive" },
 }
 
-M.opts = {
+-- gitsigns {{{
+M[1].opts = {
     signs = {
         add          = { text = "│" },
         change       = { text = "│" },
@@ -27,13 +29,12 @@ M.opts = {
     diff_opts = {
         vertical = true,
     },
-}
 
-M.config = function(_, opts)
-    local gitsigns = require("gitsigns")
-    opts.on_attach = function(bufnr)
+    on_attach = function(buf)
+        local gitsigns = require("gitsigns")
         local utils = require("config.utils")
-        local map = utils.local_mapper(bufnr, "<space>g")
+        -- all git related mappings in normal mode use the "<space>g" prefix
+        local map = utils.local_mapper(buf, "<space>g")
 
         map("n", "p", gitsigns.preview_hunk)
 
@@ -59,10 +60,25 @@ M.config = function(_, opts)
         map("n", "r", gitsigns.toggle_deleted)
 
 
-        utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = bufnr })
+        utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = buf })
     end
+}
+-- }}}
 
-    gitsigns.setup(opts)
+-- fugitive {{{
+M[2].config = function ()
+    vim.g.fugitive_dynamic_colors = false
+
+    vim.api.nvim_create_autocmd({"User"}, {
+        pattern = "FugitiveIndex",
+        callback = function(ev)
+            -- enable folding and fold by default
+            vim.wo[0][0].foldmethod = "syntax"
+            vim.wo[0][0].foldlevel = 0
+        end
+    })
 end
+
+-- }}}
 
 return M
