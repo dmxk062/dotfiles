@@ -5,6 +5,29 @@ local M = {
 
 M.opts = {}
 
+--[[ Rationale {{{
+Multiple cursors for NeoVIM:
+I generally use them as a replacement for macros and complex :g commands
+
+Ways to add cursors:
+- motion: <M-c><motion>
+- search: /<search term><cr><C-c>/
+- word match (like *):
+    - next: <C-n>
+    - prev: <C-p>
+    - all: <C-c>*
+    - in scope: <C-c>w<motion>
+    - custom match in scope: <C-c>o<motion><motion>
+- splitting / matching a visual selection:
+    - split: <C-c>s<regex><cr>
+    - match: <C-c>m<regex><cr>
+
+Actions to perform on cursors:
+- Perform *completely normal* vim edits
+- Each cursor has its own undo, registers &c
+- Align the text after/on cursors: <C-c>A
+}}} --]]
+
 function M.config(_, opts)
     local mc = require("multicursor-nvim")
     mc.setup(opts)

@@ -12,6 +12,7 @@ local M = {
     }
 }
 
+-- icons for kinds {{{
 local kind_symbols = {
     Text          = "󰉿 txt",
     Method        = "󰊕 method",
@@ -43,6 +44,7 @@ local kind_symbols = {
     Omnifunc      = " omni",
     Cmd           = "",
 }
+-- }}}
 
 local hlleader = "CmpItemKind"
 
