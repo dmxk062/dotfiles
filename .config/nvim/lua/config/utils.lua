@@ -5,15 +5,18 @@ local fn = vim.fn
 
 -- format buffer title {{{
 -- names for special filetypes {{{1
-local names_for_fts = {
-    TelescopePrompt = "[tel]",
-    undotree = "[undo]",
-    fugitive = "[git]",
-    gitcommit = "[commit]",
-    checkhealth = "[health]",
-    lazy = "[lazy]",
-    mason = "[mason]",
-    marked = "[marks]",
+local nomodified_names = {
+    TelescopePrompt = {"[tel]"},
+    undotree = {"[undo]"},
+    fugitive = {"[git]", "git"},
+    checkhealth = {"[health]"},
+    lazy = {"[lazy]"},
+    mason = {"[mason]"},
+}
+
+local modified_names = {
+    gitcommit = {"[commit]", "git"},
+    marked = {"[marks]"},
 }
 -- }}}
 
@@ -27,78 +30,66 @@ local function expand_home(path)
 end
 
 local buf_list_type = {}
+---@return string? name
+---@return string kind
+---@return boolean show_modified
 function M.format_buf_name(buf, short)
     local term_title = vim.b[buf].term_title
     if term_title then
-        return "!" .. term_title
+        return "!" .. term_title, "term", false
     end
 
     local name = api.nvim_buf_get_name(buf)
     local ft = vim.bo[buf].filetype
-    local changed = vim.bo[buf].modified
-    local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
-
-    local unnamed = true
-    local do_modify = true
-    local elems = {}
 
     if ft == "oil" then
-        unnamed = false
-        do_modify = false
+        local ret
         if vim.startswith(name, "oil-ssh://") then
             local _, _, host, path = name:find("//([^/]+)/(.*)")
-            elems[1] = "@" .. host .. ":" .. path
+            ret = "@" .. host .. ":" .. path
         else
-            elems[1] = expand_home(name:sub(#"oil://" + 1, -2)) .. "/"
+            ret = expand_home(name:sub(#"oil://" + 1, -2)) .. "/"
         end
+        return ret, "oil", true
     elseif vim.b[buf]._is_scratch then
-        unnamed = false
-        elems[1] = "*s " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", "")
+        return "*s "..  fn.fnamemodify(name, ":t"), "scratch", true
     elseif ft == "help" then
-        return "*h " .. name
+        return "*h " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
     elseif ft == "qf" then
         if not buf_list_type[buf] then
             local win = fn.bufwinid(buf)
             local isloclist = fn.getwininfo(win)[1].loclist == 1
             buf_list_type[buf] = isloclist and "[loc]" or "[qf]"
         end
-        return buf_list_type[buf]
-    elseif names_for_fts[ft] then
-        return names_for_fts[ft]
+        return buf_list_type[buf], "list", false
+    elseif nomodified_names[ft] then
+        return nomodified_names[ft][1], nomodified_names[ft][2] or "special", false
+    elseif modified_names[ft] then
+        return modified_names[ft][1], modified_names[ft][2] or "special", true
     elseif vim.startswith(name, "fugitive://") then
-        unnamed = false
-        elems[1] = "*g " .. expand_home(fn.fnamemodify(name:gsub("fugitive://.-.git//%d+/", ""), ":t"))
+        return "*g " .. expand_home(fn.fnamemodify(name:gsub("fugitive://.-.git//%d+/", ""), ":t")), "git", true
     end
 
     local normal_buf = vim.bo[buf].buftype == ""
-    if unnamed and name and name ~= "" then
-        unnamed = false
+    if name and name ~= "" then
         if normal_buf then
-            elems[1] = expand_home(name)
+            local ret = expand_home(name)
+            if short then
+                ret = fn.fnamemodify(ret, ":t")
+            end
+            return ret, "reg", true
         else
             if vim.startswith(name, "oil-ssh://") then
                 local _, _, host, path = name:find("//([^/]+)/(.*)")
-                elems[1] = "@" .. host .. ":" .. fn.fnamemodify(path, ":t")
+                return "@" .. host .. ":" .. fn.fnamemodify(path, ":t"), "reg", true
             else
                 -- try to get smth reasonable for plugin provided buffers
-                elems[1] = fn.fnamemodify(name, ":t")
+                return fn.fnamemodify(name, ":t"), "special", true
             end
         end
     end
 
-    if not unnamed then
-        if changed then table.insert(elems, "[+]") end
-        if readonly then table.insert(elems, "[ro]") end
-
-        if short and do_modify then
-            elems[1] = fn.fnamemodify(elems[1], ":t")
-        end
-
-        return table.concat(elems, " ")
-    end
-
-
-    return (readonly and "[ro]" or ((changed and normal_buf) and "[~]" or "[-]"))
+    return nil, "empty", true
 end
 
 -- }}}

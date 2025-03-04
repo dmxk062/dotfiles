@@ -174,3 +174,4 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 -- custom statusline
 require("config.statusline")
+require("config.bufferline")

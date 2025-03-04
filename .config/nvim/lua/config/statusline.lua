@@ -75,7 +75,20 @@ end
 
 
 local function update_title()
-    return require("config.utils").format_buf_name(api.nvim_get_current_buf())
+    local buf = api.nvim_get_current_buf()
+    local name, kind, show_modified =  require("config.utils").format_buf_name(buf)
+
+    if not show_modified then
+        return name
+    end
+    local changed = vim.bo[buf].modified
+    local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
+
+    if not name then
+        return readonly and "[ro]" or (changed and "[~]" or "[-]")
+    end
+
+    return name .. (readonly and " [ro]" or (changed and "~" or ""))
 end
 
 

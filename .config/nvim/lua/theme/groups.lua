@@ -61,7 +61,7 @@ local colorscheme = {
     Deleted                     = { fg = col.red },
     Removed                     = { link = "Deleted" },
     Changed                     = { fg = col.yellow },
-    DiffDelete                  = { bg = blend(col.red, pal.bg3, 0.3)},
+    DiffDelete                  = { bg = blend(col.red, pal.bg3, 0.3) },
     DiffChange                  = { bg = pal.bg1 },
     DiffAdd                     = { bg = pal.bg1, fg = col.green, italic = true },
     DiffText                    = { bg = pal.bg1, fg = col.yellow, italic = true },
@@ -340,6 +340,32 @@ add_with_prefix(colorscheme, "Status", {
 
     RInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
     LInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
+})
+-- }}}
+
+-- Bufferline {{{
+add_with_prefix(colorscheme, "Bl", {
+    AReg     = { bg = pal.bg1, fg = col.magenta },
+    IReg     = { fg = col.magenta },
+    ATab     = { bg = pal.bg1, fg = col.light_cyan },
+    ITab     = { fg = col.light_cyan },
+    ATerm     = { bg = pal.bg1, fg = col.orange },
+    ITerm     = { fg = col.orange },
+    AChanged = { bg = pal.bg1, fg = col.yellow },
+    IChanged = { fg = col.yellow },
+    IHidden  = { fg = col.bright_gray },
+    IText    = { fg = pal.fg0 },
+    AText    = { bg = pal.bg1, fg = pal.fg0 },
+    IDir     = { fg = col.teal },
+    ADir     = { bg = pal.bg1, fg = col.teal },
+    IScratch = { fg = col.yellow, italic = true },
+    AScratch = { bg = pal.bg1, fg = col.yellow, italic = true },
+    IList    = { fg = col.light_blue },
+    AList    = { bg = pal.bg1, fg = col.light_blue },
+    IGit     = { fg = col.green },
+    AGit     = { bg = pal.bg1, fg = col.green },
+    ASL      = { fg = pal.bg1 },
+    ASR      = { fg = pal.bg1 },
 })
 -- }}}
 
