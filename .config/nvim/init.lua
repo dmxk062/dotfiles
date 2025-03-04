@@ -55,6 +55,13 @@ opt.listchars = {
     multispace = " · ",
 }
 
+opt.diffopt = {
+    "filler",
+    "internal",
+    "closeoff",
+    "context:4", -- 6 is a bit too much for me
+}
+
 -- current directory, children and parent
 -- this can be **super** slow in large directories, just don't use it then :)
 opt.path = {
