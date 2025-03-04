@@ -43,9 +43,9 @@ function M.config(_, opts)
             end)
         end
         return nil
-    end, { normal_only = true })
+    end, { normal_only = true, desc = "Cursor: New for motion" })
 
-    map("x", "<M-c>", mc.visualToCursors)
+    map("x", "<M-c>", mc.visualToCursors, { desc = "Cursor: On each line" })
 
     -- put one cursor at each current search result
     map("n", "<C-c>/", function()
@@ -67,33 +67,39 @@ function M.config(_, opts)
                 cursor:setPos(pos)
             end
         end)
-    end)
+    end, { desc = "Cursor: New for /" })
 
     -- align cursors: all to same column
-    map({ "x", "n" }, "<C-c>a", function()
+    map({ "n", "x" }, "<C-c>a", function()
         mc.action(function(ctx)
             local maincol = ctx:mainCursor():getPos()[2]
             ctx:forEachCursor(function(cursor, i, all)
                 cursor:feedkeys(maincol .. "|")
             end)
         end)
-    end)
+    end, { desc = "Cursor: Align column" })
 
-    local vinorm = {"n", "x"}
+    local vinorm = { "n", "x" }
 
-    map(vinorm, "<C-c>j", mc.nextCursor)
-    map(vinorm, "<C-c>k", mc.prevCursor)
-    map(vinorm, "<C-c>$", mc.lastCursor)
-    map(vinorm, "<C-c>0", mc.firstCursor)
+    map(vinorm, "<C-c>x", mc.deleteCursor, { desc = "Cursor: Delete current" })
+    map(vinorm, "<C-c>j", mc.nextCursor, { desc = "Cursor: Next below" })
+    map(vinorm, "<C-c>k", mc.prevCursor, { desc = "Cursor: Next above" })
+    map(vinorm, "<C-c>$", mc.lastCursor, { desc = "Cursor: Last" })
+    map(vinorm, "<C-c>0", mc.firstCursor, { desc = "Cursor: First" })
 
-    map(vinorm, "<C-c>u", mc.restoreCursors)
-    map(vinorm, "<C-c>t", mc.toggleCursor)
-    map(vinorm, "<C-c>*", mc.matchAllAddCursors)
+    map(vinorm, "<C-n>", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
+    map(vinorm, "<C-p>", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
+    map(vinorm, "<C-c>*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
+    map(vinorm, "<C-c>w", function()
+        mc.operator { motion = "iw" }
+    end, { desc = "Cursor: New for word in" })
+    map(vinorm, "<C-c>o", mc.operator, { desc = "Cursor: New for obj in" })
 
-    map({ "x" }, "<C-c>s", mc.splitCursors)
-    map({ "x" }, "<C-c>m", mc.matchCursors)
-    map(vinorm, "<C-c>x", mc.deleteCursor)
-    map(vinorm, "<C-c>A", mc.alignCursors)
+    map(vinorm, "<C-c>u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
+
+    map({ "x" }, "<C-c>s", mc.splitCursors, { desc = "Cursor: Split visual" })
+    map({ "x" }, "<C-c>m", mc.matchCursors, { desc = "Cursor: Match visual" })
+    map(vinorm, "<C-c>A", mc.alignCursors, { desc = "Cursor: Align content" })
 
     -- replace default I and A for visual mode
     map("x", "I", mc.insertVisual)

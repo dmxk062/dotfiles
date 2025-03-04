@@ -80,22 +80,26 @@ end
 --- Maps a function as a visual and normal mode operator
 ---@param keys string
 ---@param cb op_function
----@param opts {normal_only: boolean}?
+---@param opts {normal_only: boolean?, desc: string?}?
 function M.map_function(keys, cb, opts)
     opts = opts or {}
+    mapopts = {
+        expr = true,
+        desc = opts.desc
+    }
     local id = keys .. "_operator"
     local operator = M.make_operator(id, cb)
     -- use last char of string to indicate repeat for one line
     local repeat_char = keys:sub(-1, -1)
 
     if not opts.normal_only then
-        vim.keymap.set("x", keys, operator, { expr = true })
+        vim.keymap.set("x", keys, operator, mapopts)
     end
-    vim.keymap.set("n", keys, operator, { expr = true })
+    vim.keymap.set("n", keys, operator, mapopts)
     vim.keymap.set("n", keys .. repeat_char, function()
         operator()
         return "g@Vl"
-    end, { expr = true })
+    end, mapopts)
 end
 
 return M
