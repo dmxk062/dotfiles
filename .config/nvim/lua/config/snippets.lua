@@ -78,6 +78,13 @@ local snippets_for_ft = {
         ["lreq"] = {
             body = "local ${1:mod} = require(\"${1}\")"
         },
+        ["--fold"] = {
+            desc = "Folded Block Comment",
+            body = function()
+                local fmarker = vim.split(vim.wo.foldmarker, ",")
+                return string.format("--%s $1 %s\n$0\n%s %s--", "[[", fmarker[1], fmarker[2], "]]")
+            end
+        }
     },
     markdown = {
         ["superscript"] = {
