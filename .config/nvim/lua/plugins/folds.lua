@@ -25,22 +25,6 @@ local marker_start = function()
     return vim.split(vim.wo[0].foldmarker, ",")[1]
 end
 
-local cached_patterns = {}
-local function get_marker_pattern()
-    local ft = vim.bo.filetype
-    if not cached_patterns[ft] then
-        local commentstr = vim.bo[0].commentstring
-        if commentstr then
-            -- remove the end of the commentstring, since in *most* languages that can span the whole line
-            commentstr = commentstr:gsub("([%*%-%+%?%[%]%.])", "%%%%%1"):gsub("%%s.*$", "%%s")
-        else
-            commentstr = "%s"
-        end
-        cached_patterns[ft] = commentstr:format("%s*(.-)(" .. marker_start() .. ")(%d*)%s*")
-    end
-    return cached_patterns[ft]
-end
-
 --- Format the virtual text of a fold as best as it can
 ---@param virt_text [string, string][]
 ---@param row integer
@@ -65,7 +49,7 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
     end
 
     -- try to find a foldmarker
-    local _, _, title, marker, level = first_line:find(get_marker_pattern())
+    local _, _, title, marker, level = first_line:find(".-%s+(.-)%s+(" .. marker_start() .. ")(%d*)")
 
     local suffix = (" -> %d lines"):format(end_row - row)
 
@@ -74,7 +58,7 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
         title = title:gsub("%s*$", "")
         table.insert(new_text, { first_line_indent .. "@ " .. title, "UfoFoldTitle" })
         if #level > 0 then
-            table.insert(new_text, { " ::" .. level, "Number" })
+            table.insert(new_text, { " :" .. level, "Number" })
         end
     -- otherwise keep the treesitter highlighting
     else
