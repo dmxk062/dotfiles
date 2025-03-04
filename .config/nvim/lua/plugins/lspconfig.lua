@@ -175,7 +175,7 @@ M.config = function()
         on_init = function(client)
             local path = client.workspace_folders[1].name
             -- we're editing some other lua project, not the nvim config
-            if not vim.startswith(path, vim.fn.stdpath("config")) then
+            if not (vim.startswith(path, vim.fn.stdpath("config")) or vim.startswith(path, vim.fn.stdpath("data"))) then
                 return
             end
             client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {

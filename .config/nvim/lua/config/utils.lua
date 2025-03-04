@@ -51,8 +51,11 @@ function M.format_buf_name(buf, short)
         else
             elems[1] = expand_home(name:sub(#"oil://" + 1, -2)) .. "/"
         end
+    elseif vim.b[buf]._is_scratch then
+        unnamed = false
+        elems[1] = "*s " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", "")
     elseif ft == "help" then
-        return "h: " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", "")
+        return "*h " .. name
     elseif ft == "qf" then
         if not buf_list_type[buf] then
             local win = fn.bufwinid(buf)
@@ -64,7 +67,7 @@ function M.format_buf_name(buf, short)
         return names_for_fts[ft]
     elseif vim.startswith(name, "fugitive://") then
         unnamed = false
-        elems[1] = "*g: " .. expand_home(fn.fnamemodify(name:gsub("fugitive://.-.git//%d+/", ""), ":t"))
+        elems[1] = "*g " .. expand_home(fn.fnamemodify(name:gsub("fugitive://.-.git//%d+/", ""), ":t"))
     end
 
     local normal_buf = vim.bo[buf].buftype == ""

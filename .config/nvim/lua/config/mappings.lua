@@ -213,6 +213,23 @@ map("n", "m_", marks.set_first_avail_gmark)
 map("n", "'", marks.jump_first_set_mark)
 -- }}}
 
+-- scratch buffers {{{
+local scratchleader = "<space>s"
+local scratch = require("config.scratch")
+map("n", scratchleader .. "L", function() scratch.open_scratch("eval", {
+    type = "lua",
+    del_on_hide = false,
+    temporary_file = false,
+    position = "float",
+}) end)
+map("n", scratchleader .. "l", function() scratch.open_scratch("eval", {
+    type = "lua",
+    del_on_hide = false,
+    temporary_file = false,
+    position = "vertical",
+}) end)
+-- }}}
+
 -- fix builtin mappings {{{
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })

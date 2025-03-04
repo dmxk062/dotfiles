@@ -3,7 +3,6 @@ local M = {
     dependencies = {
         "kevinhwang91/promise-async",
     },
-    event = { "BufRead" },
 }
 
 local function merged_provider(providers)
