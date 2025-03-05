@@ -115,6 +115,9 @@ end
 local function update_tablist()
     Tabs_for_idx = {}
     local tabs = api.nvim_list_tabpages()
+    if #tabs < 2 then
+        return ""
+    end
     local active_tab = api.nvim_get_current_tabpage()
     local count = 1
 
@@ -131,9 +134,6 @@ local function update_tablist()
             end
         end
         local shown_bufs = vim.tbl_keys(bufs_shown)
-        if #shown_bufs == 0 then
-            return
-        end
 
         local ret = string.format("%s%%#%s%d%%#%s#|%%#%s#%s%s",
             current and "%#BlASL#" or (count > 1 and "%#BlASL#|" or " "),
@@ -149,11 +149,7 @@ local function update_tablist()
         return ret
     end, tabs)
 
-    if #ret < 2 then
-        return ""
-    else
-        return table.concat(ret)
-    end
+    return table.concat(ret)
 end
 
 api.nvim_create_autocmd(bufcmds, {

@@ -216,17 +216,19 @@ map("n", "'", marks.jump_first_set_mark)
 -- scratch buffers {{{
 local scratchleader = "<space>s"
 local scratch = require("config.scratch")
-map("n", scratchleader .. "L", function() scratch.open_scratch("eval", {
+map("n", scratchleader .. "l", function() scratch.open_scratch("eval", {
     type = "lua",
     del_on_hide = false,
     temporary_file = false,
     position = "float",
 }) end)
-map("n", scratchleader .. "l", function() scratch.open_scratch("eval", {
-    type = "lua",
+
+
+map("n", scratchleader .. "w", function() scratch.open_scratch("notes.md", {
+    type = "md",
     del_on_hide = false,
     temporary_file = false,
-    position = "vertical",
+    position = "float",
 }) end)
 -- }}}
 
