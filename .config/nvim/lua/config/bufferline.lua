@@ -10,6 +10,8 @@ _G.Bufs_for_idx = {}
 ---@type table<integer, integer>
 _G.Tabs_for_idx = {}
 
+local idx_for_buf = {}
+
 
 local sections
 local function redraw()
@@ -42,11 +44,24 @@ local btypehighlights = {
     reg = "Reg",
     empty = "Reg",
     special = "Special",
-    help = "Special",
+    help = "Help",
+}
+
+local btypesymbols = {
+    term = "!",
+    oil = ":",
+    scratch = "*",
+    list = "=",
+    git = "@",
+    reg = "#",
+    empty = "#",
+    special = "*",
+    help = "?",
 }
 
 local function update_buflist()
     Bufs_for_idx = {}
+    idx_for_buf = {}
 
     local count = 1
     local out = {}
@@ -75,18 +90,19 @@ local function update_buflist()
         local readonly = vim.bo[b].readonly or not vim.bo[b].modifiable
 
         local res = string.format("%s%%#%s#%s%d %%#%s#%s %s%s",
-            current and "%#BlASL#" or " ",
+            current and "%#BlASL#" or (count > 1 and "%#BlASL#|" or " "),
             hlprefix .. btypehighlights[kind],
-            (wincount == 0 and "." or "#"),
+            btypesymbols[kind],
             count,
             hlprefix .. (wincount == 0 and "Hidden" or "Text"),
             (name or (readonly and "[ro]" or (changed and "[~]" or "[-]"))),
-            ((show_modified and changed) and "%#" .. hlprefix .. "Changed#~" or ""),
+            ((show_modified and changed and name) and "%#" .. hlprefix .. "Changed#~" or " "),
             current and "%#BlASR#" or " "
         )
         table.insert(out, res)
 
         Bufs_for_idx[count] = b
+        idx_for_buf[b] = count
         count = count + 1
 
         ::continue::
@@ -102,38 +118,51 @@ local function update_tablist()
     local active_tab = api.nvim_get_current_tabpage()
     local count = 1
 
-    return table.concat(vim.tbl_map(function(t)
+    local ret = vim.tbl_map(function(t)
         Tabs_for_idx[count] = t
         local current = active_tab == t
         local hlprefix = current and "BlA" or "BlI"
 
-        local ret = string.format("%s%%#%s##%d%s",
-            current and "%#BlASL#" or " ",
-            hlprefix .. "Tab",
+        local bufs_shown = {}
+        for _, w in pairs(api.nvim_tabpage_list_wins(t)) do
+            local buf = idx_for_buf[api.nvim_win_get_buf(w)]
+            if buf then
+                bufs_shown[buf] = true
+            end
+        end
+        local shown_bufs = vim.tbl_keys(bufs_shown)
+        if #shown_bufs == 0 then
+            return
+        end
+
+        local ret = string.format("%s%%#%s%d%%#%s#|%%#%s#%s%s",
+            current and "%#BlASL#" or (count > 1 and "%#BlASL#|" or " "),
+            hlprefix .. "Reg",
             count,
-            current and "%#BlASR#" or ""
+            hlprefix .. "Hidden",
+            hlprefix .. "Text",
+            table.concat(shown_bufs, " "),
+            current and "%#BlASR#" or " "
         )
 
         count = count + 1
         return ret
+    end, tabs)
 
-    end, tabs), " ")
+    if #ret < 2 then
+        return ""
+    else
+        return table.concat(ret)
+    end
 end
 
 api.nvim_create_autocmd(bufcmds, {
     group = augroup,
-    callback = function(ev)
+    callback = vim.schedule_wrap(function(ev)
         sections[1] = update_buflist()
-        redraw()
-    end
-})
-
-api.nvim_create_autocmd({"TabNew", "TabClosed", "TabEnter"}, {
-    group = augroup,
-    callback = function(ev)
         sections[3] = update_tablist()
         redraw()
-    end
+    end)
 })
 
 sections = {

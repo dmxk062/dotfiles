@@ -6,27 +6,27 @@ local fn = vim.fn
 -- format buffer title {{{
 -- names for special filetypes {{{1
 local nomodified_names = {
-    TelescopePrompt = {"[tel]"},
-    undotree = {"[undo]"},
-    fugitive = {"[git]", "git"},
-    checkhealth = {"[health]"},
-    lazy = {"[lazy]"},
-    mason = {"[mason]"},
+    TelescopePrompt = { "[tel]" },
+    undotree = { "[undo]" },
+    fugitive = { "[git]", "git" },
+    checkhealth = { "[health]" },
+    lazy = { "[lazy]" },
+    mason = { "[mason]" },
 }
 
 local modified_names = {
-    gitcommit = {"[commit]", "git"},
-    marked = {"[marks]"},
+    gitcommit = { "[commit]", "git" },
+    marked = { "[marks]" },
 }
 -- }}}
 
-local function expand_home(path)
+local function expand_home(path, length)
     local user = vim.env.USER
     local home = "/home/" .. user
     return fn.pathshorten(path:gsub("/tmp/workspaces_" .. user, "~tmp")
         :gsub(home .. "/ws", "~ws")
         :gsub(home .. "/.config", "~cfg")
-        :gsub(home, "~"), 6)
+        :gsub(home, "~"), length or 6)
 end
 
 local buf_list_type = {}
@@ -36,7 +36,7 @@ local buf_list_type = {}
 function M.format_buf_name(buf, short)
     local term_title = vim.b[buf].term_title
     if term_title then
-        return "!" .. term_title, "term", false
+        return term_title, "term", false
     end
 
     local name = api.nvim_buf_get_name(buf)
@@ -48,13 +48,15 @@ function M.format_buf_name(buf, short)
             local _, _, host, path = name:find("//([^/]+)/(.*)")
             ret = "@" .. host .. ":" .. path
         else
-            ret = expand_home(name:sub(#"oil://" + 1, -2)) .. "/"
+            ret = expand_home(name:sub(#"oil://" + 1, -2), 3) .. "/"
         end
         return ret, "oil", true
     elseif vim.b[buf]._is_scratch then
-        return "*s "..  fn.fnamemodify(name, ":t"), "scratch", true
+        return fn.fnamemodify(name, ":t"), "scratch", true
     elseif ft == "help" then
-        return "*h " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
+        return fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
+    elseif ft == "man" then
+        return fn.fnamemodify(name, ":t"), "help", false
     elseif ft == "qf" then
         if not buf_list_type[buf] then
             local win = fn.bufwinid(buf)
@@ -67,7 +69,7 @@ function M.format_buf_name(buf, short)
     elseif modified_names[ft] then
         return modified_names[ft][1], modified_names[ft][2] or "special", true
     elseif vim.startswith(name, "fugitive://") then
-        return "*g " .. expand_home(fn.fnamemodify(name:gsub("fugitive://.-.git//%d+/", ""), ":t")), "git", true
+        return expand_home(fn.fnamemodify(name:gsub("fugitive://.-.git//%d+/", ""), ":t")), "git", true
     end
 
     local normal_buf = vim.bo[buf].buftype == ""
