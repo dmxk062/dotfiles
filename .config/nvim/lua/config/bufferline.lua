@@ -50,7 +50,7 @@ local btypehighlights = {
 local btypesymbols = {
     term = "!",
     oil = ":",
-    scratch = "*",
+    scratch = "&",
     list = "=",
     git = "@",
     reg = "#",

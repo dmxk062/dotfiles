@@ -66,14 +66,14 @@ local function attach_autocommands(scratch)
     local group = api.nvim_create_augroup("scratch." .. scratch.name, { clear = true })
 
     local function clear_stuff()
-            if scratch.temporary then
-                uv.fs_unlink(scratch.path)
-            end
-            for _, client in ipairs(vim.lsp.get_clients { bufnr = scratch.buf }) do
-                vim.lsp.buf_detach_client(scratch.buf, client.id)
-            end
-            api.nvim_del_augroup_by_id(scratch.augroup)
-            M.open_scratches[scratch.name] = nil
+        if scratch.temporary then
+            uv.fs_unlink(scratch.path)
+        end
+        for _, client in ipairs(vim.lsp.get_clients { bufnr = scratch.buf }) do
+            vim.lsp.buf_detach_client(scratch.buf, client.id)
+        end
+        api.nvim_del_augroup_by_id(scratch.augroup)
+        M.open_scratches[scratch.name] = nil
     end
     scratch.augroup = group
     api.nvim_create_autocmd("WinClosed", {
@@ -81,7 +81,7 @@ local function attach_autocommands(scratch)
         buffer = scratch.buf,
         callback = function()
             if scratch.del_on_hide then
-                api.nvim_buf_delete(scratch.buf, { force = false})
+                api.nvim_buf_delete(scratch.buf, { force = false })
                 clear_stuff()
             end
             scratch.win = nil
@@ -149,7 +149,7 @@ local function create_and_open_scratch(name, opts)
 
     local path = M.scratchdir .. name
     local buf = fn.bufadd(path)
-    fn.bufload(buf)
+    pcall(fn.bufload, buf)
 
     local scratch = {
         name = name,
@@ -170,7 +170,7 @@ end
 
 ---@param name string
 ---@param opts config.scratch.openargs
-function M.open_scratch(name,  opts)
+function M.open_scratch(name, opts)
     local scratch = create_and_open_scratch(name, opts)
     if not scratch then
         return
