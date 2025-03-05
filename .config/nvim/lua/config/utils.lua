@@ -208,7 +208,7 @@ end
 -- }}}
 
 -- open terminals {{{
----@param opts {opencmd: "vnew"|"new"|"enew"|"tabnew", cmd: string[]|nil, cwd: string|nil}
+---@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil}
 function M.nvim_term_in(opts)
     local bname = api.nvim_buf_get_name(0)
     local cmd
@@ -233,7 +233,27 @@ function M.nvim_term_in(opts)
         end
     end
 
-    vim.cmd(opts.opencmd)
+    local b = api.nvim_create_buf(true, false)
+    if opts.position == "replace" then
+        api.nvim_set_current_buf(b)
+    elseif opts.position == "float" then
+        local w = vim.o.columns
+        local h = vim.o.lines
+        local width = math.floor(w * 0.6)
+        local height = math.floor(h * 0.6)
+        api.nvim_open_win(b, true, {
+            relative = "editor",
+            border = "rounded",
+            width = width,
+            height = height,
+            col = math.floor((w - width) / 2),
+            row = math.floor((h - height) / 2),
+        })
+    else
+        api.nvim_open_win(b, true, {
+            vertical = opts.position == "vertical"
+        })
+    end
     fn.termopen(cmd, { cwd = cwd })
 end
 

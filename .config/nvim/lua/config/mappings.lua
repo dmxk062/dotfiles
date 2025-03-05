@@ -134,7 +134,7 @@ map("n", bufleader .. bufleader, function()
 end)
 
 -- open buffer in a thing
--- vsplit, split, tab or float
+-- vsplit, split, tab
 local function open_buf_in(cmd)
     local target
     local count = vim.v.count
@@ -167,13 +167,13 @@ map("n", bufleader .. "s", function() open_buf_in("hor") end)
 map("n", bufleader .. "t", function() open_buf_in("tab") end)
 map("n", bufleader .. "f", function()
     local target = Bufs_for_idx[vim.v.count] or 0
-    local max_width = api.nvim_win_get_width(0)
-    local max_height = api.nvim_win_get_height(0)
+    local max_width = vim.o.columns
+    local max_height = vim.o.lines
 
-    local height = math.floor((max_height) * .8)
-    local width = math.floor((max_width) * .8)
+    local height = math.floor((max_height) * .6)
+    local width = math.floor((max_width) * .6)
     api.nvim_open_win(target, true, {
-        relative = "win",
+        relative = "editor",
         row = math.floor((max_height - height) / 2),
         col = math.floor((max_width - width) / 2),
         width = width,
@@ -216,20 +216,24 @@ map("n", "'", marks.jump_first_set_mark)
 -- scratch buffers {{{
 local scratchleader = "<space>s"
 local scratch = require("config.scratch")
-map("n", scratchleader .. "l", function() scratch.open_scratch("eval", {
-    type = "lua",
-    del_on_hide = false,
-    temporary_file = false,
-    position = "float",
-}) end)
+map("n", scratchleader .. "l", function()
+    scratch.open_scratch("eval", {
+        type = "lua",
+        del_on_hide = false,
+        temporary_file = false,
+        position = "float",
+    })
+end)
 
 
-map("n", scratchleader .. "w", function() scratch.open_scratch("notes.md", {
-    type = "md",
-    del_on_hide = false,
-    temporary_file = false,
-    position = "float",
-}) end)
+map("n", scratchleader .. "w", function()
+    scratch.open_scratch("notes.md", {
+        type = "md",
+        del_on_hide = false,
+        temporary_file = false,
+        position = "float",
+    })
+end)
 -- }}}
 
 -- fix builtin mappings {{{
@@ -288,10 +292,10 @@ abbrev("c", "vf", "vertical sf")
 
 -- shells {{{
 local shell_leader = "<space>s"
-map("n", shell_leader .. "s", function() utils.nvim_term_in { opencmd = "new" } end)
-map("n", shell_leader .. "v", function() utils.nvim_term_in { opencmd = "vnew" } end)
-map("n", shell_leader .. "x", function() utils.nvim_term_in { opencmd = "enew" } end)
-map("n", shell_leader .. "t", function() utils.nvim_term_in { opencmd = "tabnew" } end)
+map("n", shell_leader .. "s", function() utils.nvim_term_in { position = "horizontal" } end)
+map("n", shell_leader .. "v", function() utils.nvim_term_in { position = "vertical" } end)
+map("n", shell_leader .. "x", function() utils.nvim_term_in { position = "replace"} end)
+map("n", shell_leader .. "f", function() utils.nvim_term_in { position = "float" } end)
 -- }}}
 
 -- insert mode {{{
