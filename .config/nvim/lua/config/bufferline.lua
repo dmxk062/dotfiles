@@ -96,7 +96,9 @@ local function update_buflist()
             count,
             hlprefix .. (wincount == 0 and "Hidden" or "Text"),
             (name or (readonly and "[ro]" or (changed and "[~]" or "[-]"))),
-            ((show_modified and changed and name) and "%#" .. hlprefix .. "Changed#~" or " "),
+            ((show_modified and changed and name)
+                and "%#" .. hlprefix .. "Changed#~"
+                or (show_modified and " " or "")),
             current and "%#BlASR#" or " "
         )
         table.insert(out, res)
