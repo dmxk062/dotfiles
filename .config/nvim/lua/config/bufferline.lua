@@ -135,9 +135,9 @@ local function update_tablist()
         end
         local shown_bufs = vim.tbl_keys(bufs_shown)
 
-        local ret = string.format("%s%%#%s%d%%#%s#|%%#%s#%s%s",
+        local ret = string.format("%s%%#%s#%d%%#%s#|%%#%s#%s%s",
             current and "%#BlASL#" or (count > 1 and "%#BlASL#|" or " "),
-            hlprefix .. "Reg",
+            hlprefix .. "Tab",
             count,
             hlprefix .. "Hidden",
             hlprefix .. "Text",

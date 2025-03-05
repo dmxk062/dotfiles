@@ -45,7 +45,7 @@ local function open_scratch_in_win(split, scratch)
         local w = vim.o.columns
         local h = vim.o.lines
         local width = math.floor(w * 0.6)
-        local height = math.floor(h * 0.4)
+        local height = math.floor(h * 0.6)
         scratch.win = api.nvim_open_win(scratch.buf, true, {
             relative = "editor",
             border = "rounded",
