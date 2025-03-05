@@ -68,7 +68,8 @@ opt.path = {
     ".",
     "*",
     "../",
-    "../*"
+    "../*",
+    "../../*"
 }
 
 -- normal, o-pending, visual: block

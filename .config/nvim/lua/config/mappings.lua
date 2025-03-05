@@ -282,6 +282,8 @@ abbrev("c", "spoff", "setlocal nospell spelllang=")
 -- I probably never will actually use :file
 -- If I need it, i can survive typing the full name
 abbrev("c", "f", "find")
+-- so useful
+abbrev("c", "vf", "vertical sf")
 -- }}}
 
 -- shells {{{
