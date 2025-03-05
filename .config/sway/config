@@ -34,11 +34,16 @@ include ./binds/*
 
 xwayland enable
 
-font Torus Pro 10
+font Torus Pro 12
 
 input * {
     xkb_options compose:ralt
     xkb_numlock enabled
+}
+
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled 
 }
 
 exec swayidle -w
