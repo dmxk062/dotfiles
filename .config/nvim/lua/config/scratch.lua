@@ -67,7 +67,7 @@ local function attach_autocommands(scratch)
 
     local function clear_stuff()
         if scratch.temporary then
-            uv.fs_unlink(scratch.path)
+           uv.fs_unlink(scratch.path)
         end
         for _, client in ipairs(vim.lsp.get_clients { bufnr = scratch.buf }) do
             vim.lsp.buf_detach_client(scratch.buf, client.id)

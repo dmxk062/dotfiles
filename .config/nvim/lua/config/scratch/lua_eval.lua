@@ -57,19 +57,8 @@ local function debug_error(scratch, err)
     end
 end
 
-
-M = {
-    template = {
-        "-- Default Defs {{{ vim: ft=lua",
-        "local api = vim.api",
-        "local fn = vim.fn",
-        "local uv = vim.uv",
-        "local map = vim.tbl_map",
-        "-- }}}", "",
-        "--- INFO: Lua Scratch Buffer ---", "", ""
-    },
-    on_changes = function(scratch, ev)
-        local buf = scratch.buf
+local function run(scratch)
+local buf = scratch.buf
         api.nvim_buf_clear_namespace(buf, scratch.ns, 0, -1)
         vim.diagnostic.reset(scratch.ns, buf)
 
@@ -90,7 +79,19 @@ M = {
         xpcall(chunk, function(e)
             debug_error(scratch, e)
         end)
-    end,
+    end
+
+M = {
+    template = {
+        "-- Default Defs {{{ vim: ft=lua",
+        "local api = vim.api",
+        "local fn = vim.fn",
+        "local uv = vim.uv",
+        "local map = vim.tbl_map",
+        "-- }}}", "",
+        "--- INFO: Lua Scratch Buffer ---", "", ""
+    },
+    on_changes = run,
     on_init = function(scratch)
         vim.bo[scratch.buf].filetype = "lua"
     end
