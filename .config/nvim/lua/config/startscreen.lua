@@ -218,7 +218,7 @@ local target_widths = {
 
 ---@param opts {text: string, hl: string, cb: function, map: string, icon: string}
 local function button(size, opts)
-    state.set_col = size.padd + 2
+    state.set_col = size.padd + 3
 
     line_handlers[state.cur_row + 1] = opts.cb
     local text = opts.icon .. " " .. opts.text
