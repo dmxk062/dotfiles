@@ -250,7 +250,7 @@ M.opts = {
         ["es"]        = "actions.select_split",
         ["ev"]        = "actions.select_vsplit",
         ["eo"]        = "actions.open_external",
-        ["gx"]        = "actions.open_external",
+        ["go"]        = "actions.open_external",
 
         -- goto places
         ["g~"]        = function() goto_dir("~") end,
