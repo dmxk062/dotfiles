@@ -188,7 +188,6 @@ end
 
 -- }}}
 
-
 -- Options {{{
 M.opts = {
     default_file_explorer = true,
@@ -245,12 +244,10 @@ M.opts = {
         ["co"]        = function() open_cmd("!chown ") end,
         ["<C-space>"] = "actions.refresh",
         ["<CR>"]      = "actions.select",
-        ["<S-CR>"]    = "actions.select_tab",
-        ["<C-CR>"]    = "actions.select_split",
-        ["<M-CR>"]    = "actions.select_vsplit",
+        ["<S-CR>"]    = "actions.select_split",
+        ["<C-CR>"]    = "actions.select_vsplit",
 
         ["es"]        = "actions.select_split",
-        ["et"]        = "actions.select_tab",
         ["ev"]        = "actions.select_vsplit",
         ["eo"]        = "actions.open_external",
         ["gx"]        = "actions.open_external",
