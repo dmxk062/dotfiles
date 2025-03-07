@@ -75,7 +75,7 @@ local function update_buflist()
             count,
             hlprefix .. (wincount == 0 and "Hidden" or "Text"),
             (name or "[-]"),
-            (readonly and "%#" .. hlprefix .. "Readonly#[ro]" or ""),
+            (readonly and show_modified and "%#" .. hlprefix .. "Readonly#[ro]" or ""),
             (show_modified and not readonly
                 and (changed and "%#" .. hlprefix .. "Changed#~" or " ")
                 or ""),

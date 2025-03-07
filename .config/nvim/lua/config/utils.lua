@@ -55,6 +55,10 @@ function M.format_buf_name(buf, short)
         return fn.fnamemodify(name, ":t"), "scratch", true
     elseif ft == "help" then
         return fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
+    elseif ft == "git" then
+        return "[git]", "git", false
+    elseif ft == "fugitiveblame" then
+        return "[git-blame]", "git", false
     elseif ft == "man" then
         return fn.fnamemodify(name, ":t"), "help", false
     elseif ft == "qf" then

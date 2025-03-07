@@ -585,7 +585,7 @@ add_with_prefix(colorscheme, "GitSigns", {
 })
 
 add_with_prefix(colorscheme, "fugitive", {
-    UntrackedSection = { fg = col.light_gray },
+    UntrackedSection = { fg = col.bright_gray },
 })
 -- }}
 

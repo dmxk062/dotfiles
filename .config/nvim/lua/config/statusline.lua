@@ -85,7 +85,7 @@ local function update_title()
         btypehighlights[kind],
         btypesymbols[kind],
         (name or "[-]"),
-        (readonly and kind ~= "term" and "%#SlAReadonly#[ro]" or ""),
+        (readonly and show_modified and "%#SlAReadonly#[ro]" or ""),
         (show_modified and not readonly
             and (changed and "%#SlAChanged#~" or (" "))
             or "")
@@ -309,7 +309,7 @@ sections = {
     update_title(),          -- title of buf with modified etc
     "",                      -- diagnostics
     "",                      -- macro
-    " %#SlKeys#%-3(%S%)%= %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %=", -- keys, right align and position
+    " %#SlKeys#%-3(%S%)%= %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %=", -- keys, position and right align
     "",                      -- diff
     " %#SlASL#%#SlAText#",
     "",                      -- filetype
