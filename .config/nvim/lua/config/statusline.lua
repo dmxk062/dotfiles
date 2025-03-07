@@ -78,9 +78,6 @@ local function update_title()
     local buf = api.nvim_get_current_buf()
     local name, kind, show_modified = format_buf_name(buf)
 
-    if not show_modified then
-        return name
-    end
     local changed = vim.bo[buf].modified
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
 
@@ -88,7 +85,7 @@ local function update_title()
         btypehighlights[kind],
         btypesymbols[kind],
         (name or "[-]"),
-        (readonly and "%#SlAReadonly#[ro]" or ""),
+        (readonly and kind ~= "term" and "%#SlAReadonly#[ro]" or ""),
         (show_modified and not readonly
             and (changed and "%#SlAChanged#~" or (" "))
             or "")
