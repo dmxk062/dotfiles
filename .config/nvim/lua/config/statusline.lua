@@ -309,7 +309,7 @@ sections = {
     update_title(),          -- title of buf with modified etc
     "",                      -- diagnostics
     "",                      -- macro
-    " %#SlKeys#%-3(%S%)%= %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %=", -- keys, position and right align
+    " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ", -- keys, position and right align
     "",                      -- diff
     " %#SlASL#%#SlAText#",
     "",                      -- filetype
