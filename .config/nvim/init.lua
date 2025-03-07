@@ -1,7 +1,8 @@
 vim.cmd.colorscheme("mynord")
-local open_start_screen = vim.fn.argc() == 0
 
 -- only open the startscreen if stdin is empty
+-- and there are no command line arguments
+local open_start_screen = vim.fn.argc() == 0
 vim.api.nvim_create_autocmd("StdinReadPre", {
     once = true,
     callback = function(ctx)
@@ -9,30 +10,36 @@ vim.api.nvim_create_autocmd("StdinReadPre", {
     end
 })
 
-
 local opt = vim.opt
 local o = vim.o
 
-o.relativenumber = true
-o.number = true
-o.incsearch = true
+-- Basic options {{{
+o.cursorline = true
+o.cursorlineopt = "number"
+o.expandtab = true
+o.hlsearch = true
 o.ignorecase = true
+o.incsearch = true
+o.number = true
+o.numberwidth = 2
+o.relativenumber = true
+o.scrolloff = 1
+o.shiftwidth = 4
 o.showmode = false
 o.smartcase = true
-o.expandtab = true
 o.softtabstop = 4
-o.shiftwidth = 4
-o.hlsearch = true
-o.scrolloff = 1
+o.title = true
 o.undofile = true
-o.numberwidth = 2
+-- }}}
 
+-- Wrapping {{{
 -- wrap at whitespace, indent wrapped lines and show an indicator
 o.wrap = true
 o.linebreak = true
 o.breakindent = true
 o.breakindentopt = "sbr"
 o.showbreak = ""
+-- }}}
 
 -- idk why that isn't the default, much more intuitive imo
 o.splitright = true
@@ -42,6 +49,7 @@ opt.shortmess:append("S") -- hide search count
 opt.shortmess:append("s") -- hide search hit x
 opt.shortmess:append("q") -- hide macro
 
+-- Characters {{{
 opt.fillchars = {
     -- its visible from the gaps anyways
     diff = " ",
@@ -54,6 +62,8 @@ opt.listchars = {
     space = "·",
     multispace = " · ",
 }
+
+-- }}}
 
 opt.diffopt = {
     "filler",
@@ -83,18 +93,11 @@ opt.guicursor = {
     "n-c-ci-cr-r-v:blinkon1",
 }
 
-o.cursorline = true
-o.cursorlineopt = "number"
-
--- enable terminal title
-o.title = true
-
 -- ftplugins {{{
--- i use C more than C++
-vim.g.c_syntax_for_h = true
+vim.g.c_syntax_for_h = true -- i use C more than C++
 -- }}}
 
-
+-- Lazy {{{
 -- use lazy for the remaining config
 -- all the package definitions in ./lua/plugins/ will be loaded
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -151,14 +154,15 @@ require("lazy").setup("plugins", {
         }
     }
 })
+-- }}}
 
--- set various useful autocommands
-require("config.autocommands")
-
--- set all the mappings
-require("config.mappings")
--- custom commands for all buffers
-require("config.commands")
+-- Load Config {{{
+require("config.autocommands") -- set various useful autocommands
+require("config.mappings")     -- set all the mappings
+require("config.commands")     -- custom commands for all buffers
+require("config.statusline")   -- at bottom of screen
+require("config.bufferline")   -- at the top
+-- }}}
 
 -- for some reason lazy deactivates that
 o.modeline = true
@@ -172,7 +176,3 @@ vim.api.nvim_create_autocmd("VimEnter", {
         end
     end
 })
-
--- custom statusline
-require("config.statusline")
-require("config.bufferline")
