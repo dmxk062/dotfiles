@@ -24,7 +24,7 @@ local marker_start = function()
     return vim.split(vim.wo[0].foldmarker, ",")[1]
 end
 
---- Format the virtual text of a fold as best as it can
+--- Format the virtual text of a fold
 ---@param virt_text [string, string][]
 ---@param row integer
 ---@param end_row integer
@@ -59,11 +59,11 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
         if #level > 0 then
             table.insert(new_text, { " :" .. level, "Number" })
         end
-    -- otherwise keep the treesitter highlighting
-    else
+    else -- otherwise keep the treesitter highlighting
         local suff_width = vim.fn.strdisplaywidth(suffix)
         local target_width = width - suff_width
         local cur_width = 0
+
         for _, chunk in ipairs(virt_text) do
             local text = chunk[1]
             local text_width = vim.fn.strdisplaywidth(text)

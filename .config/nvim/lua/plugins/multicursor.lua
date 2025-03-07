@@ -6,7 +6,7 @@ local M = {
 M.opts = {}
 
 --[[ Rationale {{{
-Multiple cursors for NeoVIM:
+Multiple cursors for neovim:
 I generally use them as a replacement for macros and complex :g commands
 
 Ways to add cursors:

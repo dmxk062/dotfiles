@@ -1,14 +1,15 @@
 local M = {
     "nvim-telescope/telescope.nvim",
     keys = {
-        "<space>Df",
-        "<space>gf",
-        "<space>F",
-        "<space>o",
         "<space>/",
-        "<space>v",
-        "<space>V",
+        "<space><c-o>",
         "<space><space>",
+        "<space>Df",
+        "<space>F",
+        "<space>V",
+        "<space>gf",
+        "<space>o",
+        "<space>v",
     },
     cmd = { "Telescope" },
     dependencies = {
@@ -24,6 +25,7 @@ local default_config_tbl = {
 
 local cur_max_length = 0
 
+-- Custom Layout {{{
 local function create_layout(picker)
     local Layout = require("telescope.pickers.layout")
     ---@param enter boolean
@@ -118,6 +120,7 @@ local function create_layout(picker)
 
     return layout
 end
+-- }}}
 
 local function default_config(extra)
     return vim.tbl_deep_extend("force", default_config_tbl, extra or {})
@@ -235,7 +238,7 @@ M.opts.pickers = {
     help_tags = default_config_tbl,
 }
 M.opts.extensions = {
-    ["zf-native"] = { }
+    ["zf-native"] = {}
 }
 
 
@@ -254,6 +257,7 @@ M.config = function(_, opts)
         lsp_document_symbols = "<space>v",
         lsp_dynamic_workspace_symbols = "<space>V",
         buffers = "<space><space>",
+        jumplist = "<space><C-o>",
     }
 
     local builtin = require("telescope.builtin")

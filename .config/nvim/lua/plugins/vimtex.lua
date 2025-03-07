@@ -33,7 +33,6 @@ return {
         end)
 
 
-
         local group = vim.api.nvim_create_augroup("vimtex_events", {})
 
         vim.api.nvim_create_autocmd("BufEnter", {
