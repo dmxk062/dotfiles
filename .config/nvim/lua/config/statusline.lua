@@ -1,17 +1,13 @@
 local M = {}
 local api = vim.api
 local augroup = api.nvim_create_augroup("statusline", { clear = true })
+local utils = require("config.utils")
+local format_buf_name = utils.format_buf_name
+local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
 
 -- my own statusline
 -- this should be faster than lualine
 -- generally, only redraw things using autocmds unless there isnt a good one for the event
-
-local function left_sep(hl)
-    return "%#StatusLInv" .. hl .. "#"
-end
-local function right_sep(hl)
-    return "%#StatusRInv" .. hl .. "#"
-end
 
 local function padd(str, len)
     local strlen = #str
@@ -68,15 +64,19 @@ local function update_mode()
     local mode = api.nvim_get_mode().mode
     local short = mode:sub(1, 1)
     local hl = mode_to_hl_group[short]
-    return left_sep(hl) .. "%#Status" .. hl .. "#" 
-        .. padd((has_multicursor and "C-" or "") .. (mode_to_name[mode] or short), 3)
-        .. right_sep(hl)
+
+    return string.format("%%#SlSMode%s#%%#SlMode%s#%s%%#SlSMode%s#",
+        hl,
+        hl,
+        padd(((has_multicursor and "C-" or "") .. (mode_to_name[mode] or short)), 3),
+        hl
+    )
 end
 
 
 local function update_title()
     local buf = api.nvim_get_current_buf()
-    local name, kind, show_modified =  require("config.utils").format_buf_name(buf)
+    local name, kind, show_modified = format_buf_name(buf)
 
     if not show_modified then
         return name
@@ -84,11 +84,15 @@ local function update_title()
     local changed = vim.bo[buf].modified
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
 
-    if not name then
-        return readonly and "[ro]" or (changed and "[~]" or "[-]")
-    end
-
-    return name .. (readonly and " [ro]" or (changed and "~" or ""))
+    return string.format(" %%#SlASL#%%#SlA%s#%s %%#SlAText#%s %s%s%%#SlASR#",
+        btypehighlights[kind],
+        btypesymbols[kind],
+        (name or "[-]"),
+        (readonly and "%#SlAReadonly#[ro]" or ""),
+        (show_modified and not readonly
+            and (changed and "%#SlAChanged#~" or (" "))
+            or "")
+    )
 end
 
 
@@ -96,7 +100,7 @@ local function update_diagnostics()
     local err, warn, hint, info = 0, 0, 0, 0
     local diags = vim.diagnostic.get(0)
 
-    if not diags then
+    if not diags or #diags == 0 then
         return ""
     end
 
@@ -113,21 +117,21 @@ local function update_diagnostics()
             info = info + 1
         end
     end
-    local res = { " " }
+    local res = {}
     if err > 0 then
-        table.insert(res, string.format("%%#StatusError#e:%d ", err))
+        table.insert(res, string.format("%%#SlError#e:%d", err))
     end
     if warn > 0 then
-        table.insert(res, string.format("%%#StatusWarning#w:%d ", warn))
+        table.insert(res, string.format("%%#SlWarning#w:%d", warn))
     end
     if hint > 0 then
-        table.insert(res, string.format("%%#StatusHint#h:%d ", hint))
+        table.insert(res, string.format("%%#SlHint#h:%d", hint))
     end
     if info > 0 then
-        table.insert(res, string.format("%%#StatusInfo#i:%d ", info))
+        table.insert(res, string.format("%%#SlInfo#i:%d", info))
     end
 
-    return table.concat(res)
+    return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
 end
 
 local function update_macro(ev)
@@ -137,22 +141,13 @@ local function update_macro(ev)
             return ""
         end
 
-        return '%#StatusRegister#"' .. last .. "%#StatusCenter#"
+        return " %#SlASL#" .. '%#SlRegister#@' .. last .. "%#SlASR#"
     else
         local reg = vim.fn.reg_recording()
-        return '%#StatusRegister#"' .. reg .. "%#StatusCenter# <-"
+        return " %#SlASL#" .. '%#SlRegister#"' .. reg .. " <-%#SlASR#"
     end
 end
 
-local function update_lsp_names()
-    local clients = vim.lsp.get_clients { bufnr = 0 }
-    if #clients == "" then
-        return ""
-    end
-
-    local names = vim.tbl_map(function(lsp) return lsp.name end, clients)
-    return table.concat(names, ", ")
-end
 
 local function update_diffs()
     if not vim.b[0].gitsigns_status_dict then
@@ -162,16 +157,19 @@ local function update_diffs()
 
     local res = {}
     if status.added and status.added > 0 then
-        table.insert(res, string.format("%%#StatusDiffAdded#+%d ", status.added))
+        table.insert(res, string.format("%%#SlDiffAdded#+%d", status.added))
     end
     if status.changed and status.changed > 0 then
-        table.insert(res, string.format("%%#StatusDiffChanged#~%d ", status.changed))
+        table.insert(res, string.format("%%#SlDiffChanged#~%d", status.changed))
     end
     if status.removed and status.removed > 0 then
-        table.insert(res, string.format("%%#StatusDiffRemoved#-%d ", status.removed))
+        table.insert(res, string.format("%%#SlDiffRemoved#-%d", status.removed))
+    end
+    if #res == 0 then
+        return ""
     end
 
-    return table.concat(res)
+    return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
 end
 
 local function update_filetype()
@@ -195,17 +193,13 @@ end
 -- set up the gradient
 local theme = require("theme.colors")
 for i = 0, 10 do
-    local bg = theme.blend(theme.colors.green, theme.colors.teal, (i / 10))
+    local bg = theme.blend(theme.colors.pink, theme.colors.teal, (i / 10))
     local fg = theme.palettes.default.inverted
-    vim.api.nvim_set_hl(0, "StatusProgress" .. i, {
+    vim.api.nvim_set_hl(0, "SlProgress" .. i, {
         bg = bg,
         fg = fg,
     })
-    vim.api.nvim_set_hl(0, "StatusLInvProgress" .. i, {
-        fg = bg,
-        bg = theme.palettes.default.bg2,
-    })
-    vim.api.nvim_set_hl(0, "StatusRInvProgress" .. i, {
+    vim.api.nvim_set_hl(0, "SlSProgress" .. i, {
         fg = bg,
         bg = theme.palettes.default.bg0,
     })
@@ -226,8 +220,11 @@ local function update_progress()
         text = string.format("%02d%%%%", progress * 100)
     end
 
-    local hl = "Progress" .. as_int
-    return " " .. left_sep(hl) .. string.format("%%#Status%s#%s", hl, text) .. right_sep(hl)
+    return string.format("%%#SlSProgress%d#%%#SlProgress%d#%s%%#SlSProgress%d#",
+        as_int, as_int,
+        text,
+        as_int
+    )
 end
 
 local sections
@@ -237,14 +234,13 @@ end
 
 local indices = {
     mode = 1,
-    title = 3,
-    lsp = 5,
-    diagnostics = 6,
-    macro = 9,
-    diffs = 12,
-    filetype = 14,
-    wordcount = 15,
-    progress = 16,
+    title = 2,
+    diagnostics = 3,
+    macro = 4,
+    diffs = 6,
+    filetype = 8,
+    wordcount = 9,
+    progress = 11,
 }
 
 api.nvim_create_autocmd({ "ModeChanged" }, {
@@ -265,14 +261,6 @@ api.nvim_create_autocmd({ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", 
         sections[indices.title] = update_title()
         redraw()
     end)
-})
-
-api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufEnter", "BufLeave" }, {
-    group = augroup,
-    callback = function()
-        sections[indices.lsp] = update_lsp_names()
-        redraw()
-    end
 })
 
 api.nvim_create_autocmd({ "BufEnter", "FileType", "BufLeave" }, {
@@ -319,22 +307,17 @@ end)
 -- prefill the line
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
-    update_mode(),      -- mode
-    " %#StatusSection1#",
-    update_title(),     -- title of buf with modified etc
-    " " .. right_sep("Section1") .. "%#StatusSection2# ",
-    "",                 -- lsp name
-    "",                 -- lsp warnings erorrs etc
-    right_sep("Section2"),
-    "%#StatusCenter# ", --
-    "",                 -- macro
-    " %S%= %l:%c ",     -- keys, right align and position
-    left_sep("Section2") .. "%#StatusSection2# ",
-    "",                 -- diff
-    left_sep("Section1") .. "%#StatusSection1# ",
-    "",                 -- filetype
-    "",                 -- wordcount
-    update_progress(),  -- % in file
+    update_mode(),           -- mode
+    update_title(),          -- title of buf with modified etc
+    "",                      -- diagnostics
+    "",                      -- macro
+    " %#SlKeys#%S%= %l:%c ", -- keys, right align and position
+    "",                      -- diff
+    " %#SlASL#%#SlAText#",
+    "",                      -- filetype
+    "",                      -- wordcount
+    "%#SlASR# ",
+    update_progress(),       -- % in file
 }
 
 vim.o.laststatus = 3

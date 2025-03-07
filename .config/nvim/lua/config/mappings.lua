@@ -56,7 +56,7 @@ end
 
 -- remove entry on current line from list
 local function rem_qf_item(where)
-    local bufnr = vim.api.nvim_get_current_buf()
+    local bufnr = api.nvim_get_current_buf()
     local cursor = api.nvim_win_get_cursor(0)
 
     local getfn = where == "loclist"

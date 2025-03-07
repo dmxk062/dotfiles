@@ -296,82 +296,60 @@ add_with_prefix(colorscheme, "@lsp.", {
 })
 -- }}}
 
--- Statusline {{{
-add_with_prefix(colorscheme, "Status", {
-    Normal       = { bg = col.teal, fg = pal.inverted },
-    LInvNormal   = { fg = col.teal, bg = pal.bg0 },
-    RInvNormal   = { fg = col.teal, bg = pal.bg2 },
+-- Bufferline and Statusline {{{
+add_with_prefix(colorscheme, "Sl", {
+    AReg         = { bg = pal.bg1, fg = col.light_blue },
+    IReg         = { fg = col.light_blue },
+    ASpecial     = { bg = pal.bg1, fg = col.yellow },
+    ISpecial     = { fg = col.yellow },
+    AHelp        = { bg = pal.bg1, fg = col.green },
+    IHelp        = { fg = col.green },
+    ATab         = { bg = pal.bg1, fg = col.pink },
+    ITab         = { fg = col.pink },
+    ATerm        = { bg = pal.bg1, fg = col.orange },
+    ITerm        = { fg = col.orange },
+    IDir         = { fg = col.teal },
+    ADir         = { bg = pal.bg1, fg = col.teal },
+    IScratch     = { fg = col.pink },
+    AScratch     = { bg = pal.bg1, fg = col.pink },
+    IList        = { fg = col.magenta },
+    AList        = { bg = pal.bg1, fg = col.magenta },
+    IGit         = { fg = col.green },
+    AGit         = { bg = pal.bg1, fg = col.green },
 
-    Insert       = { bg = col.white, fg = pal.inverted },
-    LInvInsert   = { fg = col.white, bg = pal.bg0 },
-    RInvInsert   = { fg = col.white, bg = pal.bg2 },
+    AChanged     = { bg = pal.bg1, fg = col.yellow },
+    IChanged     = { fg = col.yellow },
+    AReadonly    = { bg = pal.bg1, fg = col.bright_gray },
+    IReadonly    = { fg = col.bright_gray },
+    AHidden      = { bg = pal.bg1, fg = col.bright_gray },
+    IHidden      = { fg = col.bright_gray },
+    ASL          = { fg = pal.bg1 },
+    ASR          = { fg = pal.bg1 },
+    IText        = { fg = pal.fg0 },
+    AText        = { bg = pal.bg1, fg = pal.fg0 },
 
-    Command      = { bg = col.green, fg = pal.inverted },
-    LInvCommand  = { fg = col.green, bg = pal.bg0 },
-    RInvCommand  = { fg = col.green, bg = pal.bg2 },
-
-    Visual       = { bg = col.light_blue, fg = pal.inverted },
-    LInvVisual   = { fg = col.light_blue, bg = pal.bg0 },
-    RInvVisual   = { fg = col.light_blue, bg = pal.bg2 },
-
-    Replace      = { bg = col.red, fg = pal.inverted },
-    LInvReplace  = { fg = col.red, bg = pal.bg0 },
-    RInvReplace  = { fg = col.red, bg = pal.bg2 },
-
-    Section1     = { bg = pal.bg2, fg = pal.fg2 },
-    LInvSection1 = { fg = pal.bg2, bg = pal.bg1 },
-    RInvSection1 = { fg = pal.bg2, bg = pal.bg1 },
-
-    Section2     = { bg = pal.bg1, fg = pal.fg2 },
-    LInvSection2 = { fg = pal.bg1, bg = pal.bg0 },
-    RInvSection2 = { fg = pal.bg1, bg = pal.bg0 },
-
-    Register     = { fg = col.yellow },
+    Keys         = { fg = pal.fg0 },
+    Register     = { fg = col.magenta, bg = pal.bg1 },
     Error        = { fg = col.red, bg = pal.bg1 },
     Warning      = { fg = col.orange, bg = pal.bg1 },
     Info         = { fg = col.blue, bg = pal.bg1 },
     Hint         = { fg = col.light_blue, bg = pal.bg1 },
 
-    Center       = { bg = pal.bg0, fg = pal.fg0 },
-
     DiffAdded    = { fg = col.green, bg = pal.bg1 },
     DiffChanged  = { fg = col.yellow, bg = pal.bg1 },
     DiffRemoved  = { fg = col.red, bg = pal.bg1 },
 
-    RInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
-    LInvEnd      = { fg = pal.bg2, bg = pal.bg0 },
-})
--- }}}
+    SModeNormal  = { bg = pal.bg0, fg = col.teal },
+    SModeInsert  = { bg = pal.bg0, fg = col.white },
+    SModeCommand = { bg = pal.bg0, fg = col.green },
+    SModeVisual  = { bg = pal.bg0, fg = col.light_blue },
+    SModeReplace = { bg = pal.bg0, fg = col.red },
 
--- Bufferline {{{
-add_with_prefix(colorscheme, "Bl", {
-    AReg     = { bg = pal.bg1, fg = col.light_blue },
-    IReg     = { fg = col.light_blue },
-    ASpecial = { bg = pal.bg1, fg = col.yellow },
-    ISpecial = { fg = col.yellow },
-    AHelp = { bg = pal.bg1, fg = col.green },
-    IHelp = { fg = col.green },
-    ATab     = { bg = pal.bg1, fg = col.pink },
-    ITab     = { fg = col.pink },
-    ATerm    = { bg = pal.bg1, fg = col.orange },
-    ITerm    = { fg = col.orange },
-    IDir     = { fg = col.teal },
-    ADir     = { bg = pal.bg1, fg = col.teal },
-    IScratch = { fg = col.pink },
-    AScratch = { bg = pal.bg1, fg = col.pink },
-    IList    = { fg = col.magenta },
-    AList    = { bg = pal.bg1, fg = col.magenta },
-    IGit     = { fg = col.green },
-    AGit     = { bg = pal.bg1, fg = col.green },
-
-    AChanged = { bg = pal.bg1, fg = col.yellow },
-    IChanged = { fg = col.yellow },
-    AHidden  = { bg = pal.bg1, fg = col.bright_gray },
-    IHidden  = { fg = col.bright_gray },
-    ASL      = { fg = pal.bg1 },
-    ASR      = { fg = pal.bg1 },
-    IText    = { fg = pal.fg0 },
-    AText    = { bg = pal.bg1, fg = pal.fg0 },
+    ModeNormal   = { bg = col.teal, fg = pal.inverted },
+    ModeInsert   = { bg = col.white, fg = pal.inverted },
+    ModeCommand  = { bg = col.green, fg = pal.inverted },
+    ModeVisual   = { bg = col.light_blue, fg = pal.inverted },
+    ModeReplace  = { bg = col.red, fg = pal.inverted },
 })
 -- }}}
 

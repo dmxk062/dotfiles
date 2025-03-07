@@ -1,7 +1,9 @@
 local api = vim.api
 local fn = vim.fn
 local augroup = api.nvim_create_augroup("bufferline", { clear = true })
-local getbufname = require("config.utils").format_buf_name
+local utils = require("config.utils")
+local getbufname = utils.format_buf_name
+local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
 
 -- mapping of buffer indices in the buffer line to buffer numbers
 ---@type table<integer, integer>
@@ -35,29 +37,6 @@ local bufcmds = {
     "WinLeave",
 }
 
-local btypehighlights = {
-    term = "Term",
-    oil = "Dir",
-    scratch = "Scratch",
-    list = "List",
-    git = "Git",
-    reg = "Reg",
-    empty = "Reg",
-    special = "Special",
-    help = "Help",
-}
-
-local btypesymbols = {
-    term = "!",
-    oil = ":",
-    scratch = "&",
-    list = "=",
-    git = "@",
-    reg = "#",
-    empty = "#",
-    special = "*",
-    help = "?",
-}
 
 local function update_buflist()
     Bufs_for_idx = {}
@@ -85,21 +64,22 @@ local function update_buflist()
         local current = b == active_buf
         local wincount = buf_wincounts[b] or 0
         local name, kind, show_modified = getbufname(b, true)
-        local hlprefix = current and "BlA" or "BlI"
+        local hlprefix = current and "SlA" or "SlI"
         local changed = vim.bo[b].modified
         local readonly = vim.bo[b].readonly or not vim.bo[b].modifiable
 
-        local res = string.format("%s%%#%s#%s%d %%#%s#%s %s%s",
-            current and "%#BlASL#" or (count > 1 and "%#BlASL#|" or " "),
+        local res = string.format("%s%%#%s#%s%d %%#%s#%s %s%s%s",
+            current and "%#SlASL#" or (count > 1 and "%#SlASL#|" or " "),
             hlprefix .. btypehighlights[kind],
             btypesymbols[kind],
             count,
             hlprefix .. (wincount == 0 and "Hidden" or "Text"),
-            (name or (readonly and "[ro]" or (changed and "[~]" or "[-]"))),
-            ((show_modified and changed and name)
-                and "%#" .. hlprefix .. "Changed#~"
-                or (show_modified and " " or "")),
-            current and "%#BlASR#" or " "
+            (name or "[-]"),
+            (readonly and "%#" .. hlprefix .. "Readonly#[ro]" or ""),
+            (show_modified and not readonly
+                and (changed and "%#" .. hlprefix .. "Changed#~" or " ")
+                or ""),
+            current and "%#SlASR#" or " "
         )
         table.insert(out, res)
 
@@ -109,7 +89,7 @@ local function update_buflist()
 
         ::continue::
     end
-    out[#out + 1] = "%#BlReset# "
+    out[#out + 1] = "%#SlReset# "
 
     return table.concat(out)
 end
@@ -126,7 +106,7 @@ local function update_tablist()
     local ret = vim.tbl_map(function(t)
         Tabs_for_idx[count] = t
         local current = active_tab == t
-        local hlprefix = current and "BlA" or "BlI"
+        local hlprefix = current and "SlA" or "SlI"
 
         local bufs_shown = {}
         for _, w in pairs(api.nvim_tabpage_list_wins(t)) do
@@ -138,13 +118,13 @@ local function update_tablist()
         local shown_bufs = vim.tbl_keys(bufs_shown)
 
         local ret = string.format("%s%%#%s#%d%%#%s#|%%#%s#%s%s",
-            current and "%#BlASL#" or (count > 1 and "%#BlASL#|" or " "),
+            current and "%#SlASL#" or (count > 1 and "%#SlASL#|" or " "),
             hlprefix .. "Tab",
             count,
             hlprefix .. "Hidden",
             hlprefix .. "Text",
             table.concat(shown_bufs, " "),
-            current and "%#BlASR#" or " "
+            current and "%#SlASR#" or " "
         )
 
         count = count + 1

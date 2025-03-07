@@ -94,6 +94,30 @@ function M.format_buf_name(buf, short)
     return nil, "empty", true
 end
 
+M.btypehighlights = {
+    term = "Term",
+    oil = "Dir",
+    scratch = "Scratch",
+    list = "List",
+    git = "Git",
+    reg = "Reg",
+    empty = "Reg",
+    special = "Special",
+    help = "Help",
+}
+
+M.btypesymbols = {
+    term = "!",
+    oil = ":",
+    scratch = "&",
+    list = "$",
+    git = "@",
+    reg = "#",
+    empty = "#",
+    special = "*",
+    help = "?",
+}
+
 -- }}}
 
 -- highlight file path {{{
