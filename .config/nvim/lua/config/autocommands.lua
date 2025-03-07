@@ -1,53 +1,22 @@
 local autocmd = vim.api.nvim_create_autocmd
 
--- window title {{{
+-- Window Title {{{
 -- change the title in a more intelligent way
 autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
     callback = function(args)
-        -- expand stuff similarly to my shell directory aliases
-        local function format_path(name, user)
-            local expanded = name:gsub("/tmp/workspaces_" .. user, "~tmp")
-                :gsub("/home/" .. user .. "/ws", "~ws")
-                :gsub("/home/" .. user .. "/.config", "~cfg")
-                :gsub("/home/" .. user, "~")
-            return expanded
-        end
+        local name, kind, show_modified = require("config.utils").format_buf_name(vim.api.nvim_get_current_buf(), true)
 
-        local path     = ""
-        local buf      = vim.api.nvim_get_current_buf()
-        local bufname  = vim.api.nvim_buf_get_name(buf)
-        local filetype = vim.bo[buf]["ft"]
-
-        local user     = vim.env.USER
-
-        if filetype == "oil" then
-            if vim.startswith(bufname, "oil-ssh://") then
-                local remote_path = bufname:match("//.-(/.*)"):sub(2, -1) -- the path at the host
-                path = "ssh:" .. remote_path
-            else
-                path = format_path(bufname:sub(#"oil:///"), user)
-            end
-        elseif filetype == "help" then
-            path = "Help"
-        elseif filetype == "lazy" then
-            path = "Plugins"
-        elseif bufname == "" then
-            return
-        else
-            path = format_path(bufname, user)
-        end
-
-        vim.o.titlestring = "nv: " .. path
+        vim.o.titlestring = "nv: " .. (name or "[-]")
     end
 })
 vim.o.titlestring = "nv: NeoVIM" -- set initial
-
 -- }}}
 
--- mode based linenumber {{{
--- change line number based on mode:
--- for command mode: make it absolute for ranges etc
--- for normal mode: relative movements <3
+--[[ Mode Based Linenumber {{{
+change line number based on mode:
+- command mode: make it absolute for ranges etc
+- normal mode: keep relative motions fast
+--]]
 local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
 -- debounce cmdline enter events to make sure we dont have flickering for non user cmdline use
 -- e.g. mappings using : instead of <cmd>
@@ -81,7 +50,7 @@ autocmd("CmdlineLeave", {
 
 -- }}}
 
--- sane defaults for terminal mode {{{
+-- Sane Defaults for Terminal Mode {{{
 autocmd("TermOpen", {
     callback = function()
         vim.wo[0][0].number = false
@@ -103,7 +72,7 @@ autocmd({ "BufWinEnter", "WinEnter" }, {
 })
 -- }}}
 
--- smarter :h 'autocd' {{{
+-- Smarter :h 'autocd' {{{
 -- when opening a file, automatically lcd to its git repo ancestor
 -- if already in a repo, behave somewhat like autocd
 

@@ -136,8 +136,8 @@ map("n", bufleader .. bufleader, function()
     end
 end)
 
--- open buffer in a thing
--- vsplit, split, tab
+---open buffer
+---@param cmd "vert"|"hor"|"tab"
 local function open_buf_in(cmd)
     local target
     local count = vim.v.count
@@ -188,12 +188,12 @@ end)
 map("n", bufleader .. "d", function()
     local target = Bufs_for_idx[vim.v.count] or 0
     api.nvim_buf_delete(target, {})
-    api.nvim__redraw { tabline = true }
 end)
 
-map("n", "gt", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
+map("n", bufleader .. "<space>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
+
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
     for _, b in ipairs(api.nvim_list_bufs()) do
@@ -206,7 +206,7 @@ end)
 
 -- marks {{{
 local marks = require("config.marks")
-map("n", "<space>m", marks.marks_popup)
+map("n", "<space>m", marks.marks_popup) -- show all marks in the current context
 
 -- automatically generate mark name
 map("n", "m<space>", marks.set_first_avail_lmark)

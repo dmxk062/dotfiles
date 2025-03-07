@@ -1,42 +1,34 @@
 local api = vim.api
-local fn = vim.fn
 local augroup = api.nvim_create_augroup("bufferline", { clear = true })
 local utils = require("config.utils")
 local getbufname = utils.format_buf_name
 local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
 
--- mapping of buffer indices in the buffer line to buffer numbers
----@type table<integer, integer>
-_G.Bufs_for_idx = {}
--- mapping of tab indices in the buffer line to tab ids
----@type table<integer, integer>
-_G.Tabs_for_idx = {}
+--[[ Rationale {{{
+Most bufferline plugins don't do everything I want out of the box.
 
-local idx_for_buf = {}
+This bufferline behaves like this:
+ - Buffers are shown with a virtual buffer number
+ - This is made accessible via _G.Bufs_for_idx in use by my \ mappings
+ - Buffers show an identifier describing what type of buffer they are
+ 
+Additionally, tabs are shown with all their open buffers inside them
+and are also accessible via _G.Tabs_for_idx
 
+Like my statusline, redraw only using autocommands
+}}} ]]--
+
+---@type table<integer, integer>
+_G.Bufs_for_idx = {} -- mapping of buffer indices in the buffer line to buffer numbers
+---@type table<integer, integer>
+_G.Tabs_for_idx = {} -- mapping of tab indices in the buffer line to tab ids
+
+local idx_for_buf = {} -- reverse lookup for tablist
 
 local sections
 local function redraw()
     vim.o.tabline = table.concat(sections)
 end
-
-local bufcmds = {
-    "BufAdd",
-    "BufDelete",
-    "BufEnter",
-    "BufFilePost",
-    "BufHidden",
-    "BufModifiedSet",
-    "BufNew",
-    "BufWinEnter",
-    "BufWinLeave",
-    "TermOpen",
-    "TermRequest",
-    "WinClosed",
-    "WinEnter",
-    "WinLeave",
-}
-
 
 local function update_buflist()
     Bufs_for_idx = {}
@@ -133,6 +125,23 @@ local function update_tablist()
 
     return table.concat(ret)
 end
+
+local bufcmds = {
+    "BufAdd",
+    "BufDelete",
+    "BufEnter",
+    "BufFilePost",
+    "BufHidden",
+    "BufModifiedSet",
+    "BufNew",
+    "BufWinEnter",
+    "BufWinLeave",
+    "TermOpen",
+    "TermRequest",
+    "WinClosed",
+    "WinEnter",
+    "WinLeave",
+}
 
 api.nvim_create_autocmd(bufcmds, {
     group = augroup,

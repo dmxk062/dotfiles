@@ -1,4 +1,13 @@
--- my own mark handling
+--[[ Rationale {{{
+Marks are powerful but somewhat cumbersome in vanilla vim
+Despite being very fast (two key strokes for 26 local + global each),
+they are hard to introspect and use effectively
+
+This module adds ways to handle them more effectively:
+ - <space>m shows an interactive popup that allows marks to be edited
+ - builtin ' is overriden to search for local marks in all open buffers
+ - create the first possible mark without fear of overriding the already set ones
+}}} ]]--
 
 ---@class marks_bufstate
 ---@field ns integer

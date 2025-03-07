@@ -28,7 +28,7 @@ local snippets_for_ft = {
         },
         ["fold"] = {
             body = function()
-                local fmarker = vim.split(vim.wo.foldmarker, ",")
+                local fmarker = vim.opt.foldmarker:get()
                 local commentstring = vim.bo.commentstring ~= "" and vim.bo.commentstring or "%s"
                 local comment_start = string.format(commentstring, "${1:label} " .. fmarker[1])
                 local comment_end = string.format(commentstring, fmarker[2])

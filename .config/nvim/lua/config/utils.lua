@@ -1,7 +1,8 @@
 local M = {}
-
 local api = vim.api
 local fn = vim.fn
+
+-- Reusable code for my entire config
 
 -- format buffer title {{{
 -- names for special filetypes {{{1

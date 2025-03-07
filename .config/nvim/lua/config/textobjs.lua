@@ -1,8 +1,19 @@
--- see https://github.com/chrisgrieser/nvim-various-textobjs
--- nowhere near as complex, but i just want some framework for making my own
 local M = {}
 local api = vim.api
 local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
+
+--[[ Rationale {{{
+see https://github.com/chrisgrieser/nvim-various-textobjs
+
+This will be nowhere near as complex, I just want a framework to my own
+see ./operators.lua as well
+
+Important ones:
+ - indent: ii, ai, aI
+ - diagnostics: id, iDe, iDw, iDi, iDh
+ - arbitrary single-line regexes
+ - entire buffer: gG
+}}} ]]--
 
 ---@alias point [integer, integer]
 ---@alias region [point, point]
@@ -186,7 +197,6 @@ M.indent_outer_with_last = M.create_textobj(indent, { outer = true, always_last 
 M.entire_buffer = M.create_textobj(function(pos, lcount, outer)
     return { { 1, 1 }, { lcount, 1 } }, "line"
 end, {})
-
 
 -- search for a pattern, use capture group to specify what to match
 -- two capture groups are necessary: an optional prefix and suffix

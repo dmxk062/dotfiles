@@ -32,6 +32,7 @@ local function complete_zoxide(l, line, cpos)
     end, vim.split(vim.system({ "zoxide", "query", "-l", l }):wait().stdout, "\n"))
 end
 
+-- Use zoxide to edit a directory using oil
 vim.api.nvim_create_user_command("Z", function(args)
     local name = args.fargs[1]
     local dir = get_zoxide_result(name)
@@ -49,8 +50,6 @@ end, {
 
 ---@param args vim.user_command_args
 local function smart_split(args)
-
-
     local height = vim.api.nvim_win_get_height(0)
     local width = vim.api.nvim_win_get_width(0)
 
@@ -73,7 +72,6 @@ local function smart_split(args)
 
     vim.cmd[cmd](split_args)
 end
-
 
 local split_cmd_opts = {
     complete = "file",

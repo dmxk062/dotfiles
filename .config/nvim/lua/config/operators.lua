@@ -1,7 +1,16 @@
 local M = {}
 
+--[[ Rationale {{{
+Despite being able to add operators to vim, this usually needs to be redone by each plugin
+This module adds common code that can be used to create custom operators
+
+make_operator() creates a function that wraps a operator function
+map_function() automatically creates the expected keybinds for linewise operation and visual mode
+}}} ]] --
+
+---global context for the operators of this module
 local Ctx = {
-    funs = { },
+    funs = {},
     extra_data = {},
     was_repeat = {},
     cb = nil,
@@ -49,9 +58,10 @@ function M.make_operator(name, cb)
         local function get_content(_mode)
             local m = _mode or mode
             if m == "line" then
-                return vim.api.nvim_buf_get_lines(0, region[1][1]-1, region[2][1], false)
+                return vim.api.nvim_buf_get_lines(0, region[1][1] - 1, region[2][1], false)
             else
-                return vim.api.nvim_buf_get_text(0, region[1][1]-1, region[1][2], region[2][1]-1, region[2][2] + 1, {})
+                return vim.api.nvim_buf_get_text(0, region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] + 1,
+                    {})
             end
         end
 
@@ -96,10 +106,12 @@ function M.map_function(keys, cb, opts)
         vim.keymap.set("x", keys, operator, mapopts)
     end
     vim.keymap.set("n", keys, operator, mapopts)
-    vim.keymap.set("n", keys .. repeat_char, function()
-        operator()
-        return "g@Vl"
-    end, mapopts)
+    if repeat_char ~= "~" then
+        vim.keymap.set("n", keys .. repeat_char, function()
+            operator()
+            return "g@Vl"
+        end, mapopts)
+    end
 end
 
 return M

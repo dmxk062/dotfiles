@@ -1,5 +1,9 @@
 local M = {}
 
+--[[ Just eye-candy on startup {{{
+Shows common actions and a few sentences on start
+}}} ]]--
+
 local state = {
     buf = 0,
     win = 0,
@@ -48,8 +52,6 @@ local function print_padding_lines(count)
     state.cur_row = state.cur_row + count
     state.was_newline = true
 end
-
-
 
 local Letters = {
     ---@format disable
@@ -354,6 +356,5 @@ M.texts = {
     "Þæs ofereode, þisses swā mæġ",
     "Gæð a wyrd swā heo sċeal"
 }
-
 
 return M
