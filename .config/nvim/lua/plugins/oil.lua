@@ -296,7 +296,7 @@ M.config = function(_, opts)
 
     local prefix = "<space>f"
 
-    map("n", prefix .. "x", require("oil").open)
+    map("n", prefix .. "f", require("oil").open)
     map("n", prefix .. "t", function()
         vim.api.nvim_command("tabnew")
         require("oil").open()
@@ -309,7 +309,7 @@ M.config = function(_, opts)
         vim.api.nvim_command("vsplit")
         require("oil").open()
     end)
-    map("n", prefix .. "f", require("oil").open_float)
+    map("n", prefix .. "F", require("oil").open_float)
     map("n", prefix .. "a", function()
         vim.api.nvim_command("Split")
         require("oil").open()
