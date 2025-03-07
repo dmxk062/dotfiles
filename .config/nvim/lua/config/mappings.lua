@@ -14,6 +14,9 @@ local textobjs = require("config.textobjs")
 -- create custom operators easily
 local operators = require("config.operators")
 
+-- unmap unused {{{
+map("n", "gQ", "<nop>") -- ex mode is just plain annoying
+-- }}}
 
 -- qflist {{{
 -- quickly navigate qflist and loclist

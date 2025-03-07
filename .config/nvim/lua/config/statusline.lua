@@ -217,9 +217,10 @@ local function update_progress()
         text = string.format("%02d%%%%", progress * 100)
     end
 
-    return string.format("%%#SlSProgress%d#%%#SlProgress%d#%s%%#SlSProgress%d#",
+    return string.format("%%#SlSProgress%d#%%#SlProgress%d#%s : %d%%#SlSProgress%d#",
         as_int, as_int,
         text,
+        num_lines,
         as_int
     )
 end
@@ -308,7 +309,7 @@ sections = {
     update_title(),          -- title of buf with modified etc
     "",                      -- diagnostics
     "",                      -- macro
-    " %#SlKeys#%S%= %l:%c ", -- keys, right align and position
+    " %#SlKeys#%-3(%S%)%= %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %=", -- keys, right align and position
     "",                      -- diff
     " %#SlASL#%#SlAText#",
     "",                      -- filetype
