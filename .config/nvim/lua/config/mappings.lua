@@ -297,7 +297,7 @@ abbrev("c", "vf", "vertical sf")
 local shell_leader = "<space>s"
 map("n", shell_leader .. "s", function() utils.nvim_term_in { position = "horizontal" } end)
 map("n", shell_leader .. "v", function() utils.nvim_term_in { position = "vertical" } end)
-map("n", shell_leader .. "x", function() utils.nvim_term_in { position = "replace"} end)
+map("n", shell_leader .. "x", function() utils.nvim_term_in { position = "replace" } end)
 map("n", shell_leader .. "f", function() utils.nvim_term_in { position = "float" } end)
 -- }}}
 
@@ -502,5 +502,69 @@ operators.map_function("g:", function(mode, region, extra, get)
         })
     end
     return nil
+end)
+
+local region_edit_hlns = api.nvim_create_namespace("region_edit")
+
+-- edit a region of a file in a new window and bufferview
+-- changes will be synced on write
+operators.map_function("<space>w", function(mode, region, extra, get)
+    local lines = get("line")
+    local main_buffer = api.nvim_get_current_buf()
+    local ft = vim.bo.filetype
+    local name = api.nvim_buf_get_name(main_buffer)
+
+    local buffer = api.nvim_create_buf(true, true)
+    api.nvim_buf_set_lines(buffer, 0, -1, false, lines)
+
+    vim.bo[buffer].filetype = ft
+    vim.bo[buffer].bufhidden = "delete"
+    vim.bo[buffer].buftype = "acwrite"
+    vim.bo[buffer].modified = false
+
+    api.nvim_buf_set_name(buffer, string.format("%s [%d:%d]", name, region[1][1], region[2][1]))
+    vim.b[buffer]._jhk_type = "region"
+
+
+    local original_region = {
+        region[1][1] - 1,
+        region[2][1]
+    }
+
+    local function highlight_mirrored()
+        api.nvim_buf_clear_namespace(main_buffer, region_edit_hlns, 0, -1)
+        api.nvim_buf_set_extmark(main_buffer, region_edit_hlns, original_region[1], 0, {
+            end_line = original_region[2],
+            hl_group = "Visual",
+        })
+    end
+
+    local augroup = api.nvim_create_augroup("region_edit" .. name .. "#" .. main_buffer, { clear = true })
+    api.nvim_create_autocmd("BufWriteCmd", {
+        group = augroup,
+        buffer = buffer,
+        callback = function()
+            local text = api.nvim_buf_get_lines(buffer, 0, -1, false)
+            api.nvim_buf_set_lines(main_buffer, original_region[1], original_region[2], false, text)
+            original_region[2] = original_region[1] + #text
+            vim.bo[buffer].modified = false
+
+            highlight_mirrored()
+        end
+    })
+
+    local function on_close()
+        api.nvim_buf_clear_namespace(main_buffer, region_edit_hlns, 0, -1)
+        api.nvim_del_augroup_by_id(augroup)
+    end
+
+    api.nvim_create_autocmd("BufDelete", {
+        group = augroup,
+        buffer = buffer,
+        callback = on_close
+    })
+
+    utils.open_window_smart(buffer, { enter = true })
+    highlight_mirrored()
 end)
 -- }}}

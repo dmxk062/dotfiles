@@ -167,7 +167,7 @@ local function create_and_open_scratch(name, opts)
         ns = ns,
     }
 
-    vim.b[buf]._is_scratch = true
+    vim.b[buf]._jhk_type = "scratch"
     vim.bo[buf].buflisted = true
     M.open_scratches[name] = scratch
     open_scratch_in_win(opts.position, scratch)

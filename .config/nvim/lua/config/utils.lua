@@ -52,8 +52,8 @@ function M.format_buf_name(buf, short)
             ret = expand_home(name:sub(#"oil://" + 1, -2), 3) .. "/"
         end
         return ret, "oil", true
-    elseif vim.b[buf]._is_scratch then
-        return fn.fnamemodify(name, ":t"), "scratch", true
+    elseif vim.b[buf]._jhk_type then
+        return fn.fnamemodify(name, ":t"), vim.b[buf]._jhk_type, true
     elseif ft == "help" then
         return fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
     elseif ft == "git" then
@@ -109,6 +109,7 @@ M.btypehighlights = {
     empty = "Reg",
     special = "Special",
     help = "Help",
+    region = "Region",
 }
 
 M.btypesymbols = {
@@ -121,6 +122,7 @@ M.btypesymbols = {
     empty = "#",
     special = "*",
     help = "?",
+    region = ">",
 }
 
 -- }}}
@@ -359,6 +361,18 @@ function M.abbrev(mode, keys, string)
     end
 end
 
+-- }}}
+
+-- Windows {{{
+---@param args {enter: boolean}
+function M.open_window_smart(buffer, args)
+    local height = api.nvim_win_get_height(0)
+    local width = api.nvim_win_get_width(0)
+
+    return api.nvim_open_win(buffer, args.enter, {
+        vertical = height * 2.6 < width
+    })
+end
 -- }}}
 
 return M

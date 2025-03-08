@@ -316,6 +316,8 @@ add_with_prefix(colorscheme, "Sl", {
     AList        = { bg = pal.bg1, fg = col.magenta },
     IGit         = { fg = col.green },
     AGit         = { bg = pal.bg1, fg = col.green },
+    IRegion      = { fg = col.magenta },
+    ARegion      = { bg = pal.bg1, fg = col.magenta },
 
     AChanged     = { bg = pal.bg1, fg = col.yellow },
     IChanged     = { fg = col.yellow },
