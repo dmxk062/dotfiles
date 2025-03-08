@@ -365,6 +365,9 @@ map(obj, "ii", textobjs.indent_inner)
 map(obj, "ai", textobjs.indent_outer)
 map(obj, "aI", textobjs.indent_outer_with_last)
 
+map(obj, "iz", textobjs.foldmarker_inner)
+map(obj, "az", textobjs.foldmarker_outer)
+
 -- operand to arithmetic
 map(obj, "io", textobjs.create_pattern_obj("([-+*/%%]%s*)[%w_%.]+()"))
 map(obj, "ao", textobjs.create_pattern_obj("()[-+*/%%]%s*[%w_%.]+()"))

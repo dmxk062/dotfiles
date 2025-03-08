@@ -13,7 +13,7 @@ Important ones:
  - diagnostics: id, iDe, iDw, iDi, iDh
  - arbitrary single-line regexes
  - entire buffer: gG
-}}} ]]--
+}}} ]] --
 
 ---@alias point [integer, integer]
 ---@alias region [point, point]
@@ -244,5 +244,51 @@ end
 function M.create_pattern_obj(pattern)
     return M.create_textobj(pattern_obj, { pattern = pattern })
 end
+
+local function foldmarker_object(pos, count, opts)
+    local marker = vim.opt.foldmarker:get()
+
+    local startpattern = vim.pesc(marker[1])
+    local endpattern = vim.pesc(marker[2])
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+    local startline, endline
+    local maxlines = vim.api.nvim_buf_line_count(0)
+
+    startline = line
+    local found_start_behind = true
+    while not getline(startline):find(startpattern) do
+        startline = startline - 1
+        if startline <= 1 then
+            found_start_behind = false
+            break
+        end
+    end
+    if not found_start_behind then
+        startline = line
+        while not getline(startline):find(startpattern) do
+            startline = startline + 1
+            if startline >= maxlines then
+                return
+            end
+        end
+    end
+
+
+    endline = startline
+    while not getline(endline):find(endpattern) do
+        endline = endline + 1
+        if endline >= maxlines then
+            return
+        end
+    end
+
+    return {
+        { startline + (opts.outer and 0 or 1), 0 },
+        { endline  - (opts.outer and 0 or 1),  0 },
+    }, "line"
+end
+
+M.foldmarker_outer = M.create_textobj(foldmarker_object, { outer = true })
+M.foldmarker_inner = M.create_textobj(foldmarker_object, { outer = false })
 
 return M
