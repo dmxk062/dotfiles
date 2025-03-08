@@ -603,4 +603,4 @@ operators.map_function("<C-w>e", function(mode, region, extra, get)
     utils.open_window_smart(buffer, { enter = true })
     highlight_mirrored()
 end)
--- }}
+-- }}}

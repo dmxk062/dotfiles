@@ -277,7 +277,7 @@ local function foldmarker_object(pos, count, opts)
     endline = startline + 1
     while not getline(endline):find(endpattern) do
         endline = endline + 1
-        if endline >= maxlines then
+        if endline >= maxlines + 1 then
             return
         end
     end
