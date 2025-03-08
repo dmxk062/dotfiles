@@ -88,6 +88,7 @@ M.config = function()
             map("n", "<C-w>gd", function()
                 vim.cmd("Sp")
                 vim.lsp.buf.definition { reuse_win = false }
+                vim.cmd.normal("zz")
             end)
             map("n", "gi", require("telescope.builtin").lsp_implementations)
 
