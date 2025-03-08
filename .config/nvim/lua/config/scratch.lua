@@ -190,6 +190,7 @@ end
 
 function M.complete()
     local dir, err = uv.fs_opendir(M.scratchdir, nil, 100)
+    assert(dir, err)
     local entries = uv.fs_readdir(dir)
 
     local res = {}

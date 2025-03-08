@@ -219,6 +219,7 @@ M.config = function(_, opts)
                     cmp.complete()
                 end
             end,
+            ["<cr>"] = function(fallback) fallback() end
         },
         sources = cmp.config.sources({
             { name = "omni" },
