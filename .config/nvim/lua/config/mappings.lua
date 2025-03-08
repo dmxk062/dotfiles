@@ -248,6 +248,21 @@ map("n", scratchleader .. "w", function()
         position = "float",
     })
 end)
+
+map("n", scratchleader .. "<space>", function()
+    vim.ui.input({
+        prompt = "Scratch",
+        completion = "customlist,v:lua.require'config.scratch'.complete"
+    }, function(value)
+        if not value then
+            return
+        end
+
+        scratch.open_scratch(value, {
+            position = "float"
+        })
+    end)
+end)
 -- }}}
 
 -- fix builtin mappings {{{

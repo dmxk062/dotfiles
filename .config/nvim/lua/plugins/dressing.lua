@@ -7,7 +7,8 @@ return {
             trim_prompt = false,
             relative = "win",
             override = function(opts)
-                opts.col = 1
+                opts.col = 6
+                opts.row = vim.o.lines - 3
                 return opts
             end,
         },
@@ -17,9 +18,10 @@ return {
             builtin = {
                 max_height = { 12, 0 },
                 min_height = { 4, 0 },
-                relative = "cursor",
+                relative = "win",
                 override = function(opts)
-                    opts.row = opts.row + 1
+                    opts.col = 0
+                    opts.row = vim.o.lines - 3
                     return opts
                 end,
             },

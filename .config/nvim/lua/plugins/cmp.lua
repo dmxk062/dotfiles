@@ -7,6 +7,7 @@ local M = {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
+        "hrsh7th/cmp-omni",
         "f3fora/cmp-spell",
     }
 }
@@ -208,6 +209,20 @@ M.config = function(_, opts)
                 }
             }
         )
+    })
+    cmp.setup.filetype("DressingInput", {
+        mapping = {
+            ["<Tab>"] = function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item()
+                else
+                    cmp.complete()
+                end
+            end,
+        },
+        sources = cmp.config.sources({
+            { name = "omni" },
+        })
     })
     cmp.setup.filetype("oil", {
         sources = cmp.config.sources({

@@ -7,7 +7,7 @@ This module adds that to neovim, while also allowing custom behavior
 Implementations for this are under ./scratch/
 
 TODO: math evaluation buffer
-}}} ]]--
+}}} ]] --
 
 local uv = vim.uv
 local api = vim.api
@@ -76,7 +76,7 @@ local function attach_autocommands(scratch)
 
     local function clear_stuff()
         if scratch.temporary then
-           uv.fs_unlink(scratch.path)
+            uv.fs_unlink(scratch.path)
         end
         for _, client in ipairs(vim.lsp.get_clients { bufnr = scratch.buf }) do
             vim.lsp.buf_detach_client(scratch.buf, client.id)
@@ -186,6 +186,21 @@ function M.open_scratch(name, opts)
     end
     scratch.del_on_hide = opts.del_on_hide
     scratch.temporary = opts.temporary_file
+end
+
+function M.complete()
+    local dir, err = uv.fs_opendir(M.scratchdir, nil, 100)
+    local entries = uv.fs_readdir(dir)
+
+    local res = {}
+    for _, e in pairs(entries) do
+        if e.name:sub(1,1) ~= "." then
+            table.insert(res, e.name)
+        end
+    end
+    uv.fs_closedir(dir)
+
+    return res
 end
 
 return M
