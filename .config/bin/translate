@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+function deepl_request {
+    local request="$1"
+    local auth_key="$( < "$XDG_DATA_HOME/keys/deepl" )"
+    if [[ "$auth_key" == "" ]]; then
+        echo "No key at $XDG_DATA_HOME/keys/deepl" >&2
+        return 1
+    fi
+    curl -s --request POST --header "Authorization: DeepL-Auth-Key $auth_key" \
+        --header "Content-Type: application/json" \
+        --data "$request" \
+        'https://api-free.deepl.com/v2/translate'
+}
+
+target="${1:-EN}"
+source="${2:-""}"
+request="$(jq -Rs --arg target "$target" --arg source "$source" \
+    '{text: [.], target_lang: $target} + (if $source != "" then {source_lang: $source} else {} end)')"
+deepl_request "$request"|jq '.translations.[0].text' -r

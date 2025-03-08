@@ -1,8 +1,0 @@
-# _translate
-#compdef translate
-
-_translate() {
-    _arguments\
-        '1:Target:((EN\:English ZH\:Chinese DE\:German BG\:Bulgarian CS\:Czech DA\:Danish EL\:Greek EN-GB\:British\ English EN-US\:American\ English ES\:Spanish ET\:Estonian FI\:Finnish FR\:French HU\:Hungarian ID\:Indonesian IT\:Italian JA\:Japanese KO\:Korean LT\:Lithuanian LV\:Latvian NB\:Norwegian NL\:Dutch PL\:Polish PT-BR\:Brazilian\ Portuguese PT-PT\:European\ Portuguese RO\:Romanian RU\:Russian SK\:Slovak SL\:Slovenian SV\:Swedish TR\:Turkish UK\:Ukrainian))' \
-        '2:Target:((EN\:English ZH\:Chinese DE\:German BG\:Bulgarian CS\:Czech DA\:Danish EL\:Greek EN-GB\:British\ English EN-US\:American\ English ES\:Spanish ET\:Estonian FI\:Finnish FR\:French HU\:Hungarian ID\:Indonesian IT\:Italian JA\:Japanese KO\:Korean LT\:Lithuanian LV\:Latvian NB\:Norwegian NL\:Dutch PL\:Polish PT-BR\:Brazilian\ Portuguese PT-PT\:European\ Portuguese RO\:Romanian RU\:Russian SK\:Slovak SL\:Slovenian SV\:Swedish TR\:Turkish UK\:Ukrainian))'
-}
