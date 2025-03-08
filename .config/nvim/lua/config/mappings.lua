@@ -113,8 +113,8 @@ map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- buffers & windows {{{
 local bufleader = "\\"
 
-map("n", bufleader .. "l", "<cmd>bnext<cr>")
-map("n", bufleader .. "h", "<cmd>bprev<cr>")
+map("n", "<C-n>", "<cmd>bnext<cr>")
+map("n", "<C-p>", "<cmd>bprev<cr>")
 
 -- go to the buffer given in count
 map("n", bufleader .. bufleader, function()
@@ -193,6 +193,17 @@ end)
 map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "<space>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
+
+for i = 1, 9 do
+    map("n", "<C-" .. i .. ">", function()
+        local target = Bufs_for_idx[i]
+        if not target then
+            return
+        end
+
+        api.nvim_set_current_buf(target)
+    end)
+end
 
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
@@ -515,7 +526,7 @@ local region_edit_hlns = api.nvim_create_namespace("region_edit")
 
 -- edit a region of a file in a new window and bufferview
 -- changes will be synced on write
-operators.map_function("<space>w", function(mode, region, extra, get)
+operators.map_function("<C-w>e", function(mode, region, extra, get)
     local lines = get("line")
     local main_buffer = api.nvim_get_current_buf()
     local ft = vim.bo.filetype

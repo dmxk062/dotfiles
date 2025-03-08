@@ -110,8 +110,8 @@ function M.config(_, opts)
     map(vinorm, "<C-c>$", mc.lastCursor, { desc = "Cursor: Last" })
     map(vinorm, "<C-c>0", mc.firstCursor, { desc = "Cursor: First" })
 
-    map(vinorm, "<C-n>", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
-    map(vinorm, "<C-p>", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
+    map(vinorm, "<C-c>n", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
+    map(vinorm, "<C-c>p", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
     map(vinorm, "<C-c>*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
     map(vinorm, "<C-c>w", function()
         mc.operator { motion = "iw" }
