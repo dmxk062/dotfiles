@@ -329,12 +329,12 @@ map(obj, "aq", [[a"]])
 map(obj, "iQ", [[i']])
 map(obj, "aQ", [[a']])
 
--- indents, very useful for e.g. python or other indent based languages
--- a includes one line above and below,
--- except for filetypes e.g. python where only the above line is included by default
--- aI always includes the last line too, even for python
--- v:count specifies the amount of indent levels around the one at the cursor to select
--- this uses shiftwidth, so it's not 100% reliable
+--[[ indents, very useful for e.g. python or other indent based languages
+a includes one line above and below,
+except for filetypes e.g. python where only the above line is included by default
+aI always includes the last line too, even for python
+v:count specifies the amount of indent levels around the one at the cursor to select
+this uses shiftwidth, so it's not 100% reliable --]]
 map(obj, "ii", textobjs.indent_inner)
 map(obj, "ai", textobjs.indent_outer)
 map(obj, "aI", textobjs.indent_outer_with_last)
@@ -351,7 +351,7 @@ map(obj, "a_", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 map(obj, "gG", textobjs.entire_buffer)
 -- }}}
 
--- operators {{{
+-- evaluate lua {{{
 -- evaluate lua and insert result in buffer
 operators.map_function("<space>el", function(mode, region, extra, get)
     local code = get()
@@ -390,7 +390,9 @@ operators.map_function("<space>el", function(mode, region, extra, get)
 
     return result, region[1], region[2]
 end)
+-- }}}
 
+-- evaluate math (qalc) {{{
 -- evalute qalculate expression/math and insert result in buffer
 operators.map_function("<space>em", function(mode, region, extra, get)
     local expressions = get()
@@ -415,7 +417,9 @@ operators.map_function("<space>em", function(mode, region, extra, get)
     end
     return output, region[1], region[2]
 end)
+-- }}}
 
+-- sort region {{{
 local sort_functions = {
     numeric = function(x, y)
         local xnumeric = x:match("^[+-]?%d*%.?%d+")
@@ -436,7 +440,6 @@ local sort_functions = {
     end
 }
 
--- sort selection/object:
 -- charwise: csv
 -- linewise: lines
 -- preserves indent/spacing
@@ -477,7 +480,9 @@ operators.map_function("g=", function(mode, region, extra, get)
 
     return output, region[1], region[2]
 end)
+-- }}}
 
+-- command in region {{{
 -- open a cmdline in a region specified by a textobject or motion
 -- allows me to repeat commands like theyre regular mappings
 operators.map_function("g:", function(mode, region, extra, get)
@@ -503,7 +508,9 @@ operators.map_function("g:", function(mode, region, extra, get)
     end
     return nil
 end)
+-- }}}
 
+-- edit region in split {{{
 local region_edit_hlns = api.nvim_create_namespace("region_edit")
 
 -- edit a region of a file in a new window and bufferview
@@ -567,4 +574,4 @@ operators.map_function("<space>w", function(mode, region, extra, get)
     utils.open_window_smart(buffer, { enter = true })
     highlight_mirrored()
 end)
--- }}}
+-- }}
