@@ -274,7 +274,7 @@ local function foldmarker_object(pos, count, opts)
     end
 
 
-    endline = startline
+    endline = startline + 1
     while not getline(endline):find(endpattern) do
         endline = endline + 1
         if endline >= maxlines then
@@ -282,10 +282,11 @@ local function foldmarker_object(pos, count, opts)
         end
     end
 
-    return {
+    local ret = {
         { startline + (opts.outer and 0 or 1), 0 },
-        { endline  - (opts.outer and 0 or 1),  0 },
-    }, "line"
+        { endline - (opts.outer and 0 or 1),   0 },
+    }
+    return ret, "line"
 end
 
 M.foldmarker_outer = M.create_textobj(foldmarker_object, { outer = true })
