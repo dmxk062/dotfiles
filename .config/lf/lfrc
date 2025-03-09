@@ -28,8 +28,6 @@ set icons
 set ifs "\n"
 set ignorecase
 set smartcase
-set drawbox true
-set roundbox
 set relativenumber
 set number
 # show how many files there are in dirs
