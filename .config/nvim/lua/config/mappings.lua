@@ -14,11 +14,11 @@ local textobjs = require("config.textobjs")
 -- create custom operators easily
 local operators = require("config.operators")
 
--- unmap unused {{{
+-- Unmap Unused {{{
 map("n", "gQ", "<nop>") -- ex mode is just plain annoying
 -- }}}
 
--- qflist {{{
+-- qflist / loclist {{{
 -- quickly navigate qflist and loclist
 
 -- qflist: optimized for larger lists
@@ -104,17 +104,16 @@ map("n", "<space>q", function() require("quicker").toggle { min_height = 8 } end
 map("n", "<space>l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
 -- }}}
 
--- snippets {{{
+-- Snippets {{{
 -- move between snippet fields
 map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 
--- buffers & windows {{{
+-- Buffers & Windows {{{
 local bufleader = "\\"
 
-map("n", "<C-n>", "<cmd>bnext<cr>")
-map("n", "<C-p>", "<cmd>bprev<cr>")
+map("n", "<C-s>", "<cmd>b #<cr>") -- faster altfile, mnemonic: [s]econd
 
 -- go to the buffer given in count
 map("n", bufleader .. bufleader, function()
@@ -215,7 +214,7 @@ map("n", bufleader .. "C", function()
 end)
 -- }}}
 
--- marks {{{
+-- Marks {{{
 local marks = require("config.marks")
 map("n", "<space>m", marks.marks_popup) -- show all marks in the current context
 
@@ -227,9 +226,10 @@ map("n", "m_", marks.set_first_avail_gmark)
 map("n", "'", marks.jump_first_set_mark)
 -- }}}
 
--- scratch buffers {{{
+-- Scratch Buffers {{{
 local scratchleader = "<space>s"
 local scratch = require("config.scratch")
+
 map("n", scratchleader .. "l", function()
     scratch.open_scratch("eval", {
         type = "lua",
@@ -238,7 +238,6 @@ map("n", scratchleader .. "l", function()
         position = "float",
     })
 end)
-
 
 map("n", scratchleader .. "w", function()
     scratch.open_scratch("notes.md", {
@@ -265,14 +264,10 @@ map("n", scratchleader .. "<space>", function()
 end)
 -- }}}
 
--- fix builtin mappings {{{
+-- Fix Builtin Mappings {{{
 -- stop {} from polluting the jumplist
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
-
--- exit terminal mode with a single chord instead of 2
-map("t", "<M-Esc>", "<C-\\><C-n>")
-map("t", "<C-w>", "<C-\\><C-n><C-w>")
 
 -- those are hard to reach by default, I do not use Low and High
 -- also kinda logical, a stronger version of lh
@@ -280,7 +275,7 @@ map(mov, "L", "$")
 map(mov, "H", "^")
 -- }}}
 
--- q to close windows {{{
+-- Q to close Windows {{{
 -- use <C-q> for macros instead, i dont use them that often
 -- use reg, defaulting to "q
 map("n", "<C-q>", function()
@@ -302,7 +297,7 @@ map("n", "q", function()
 end)
 -- }}}
 
--- abbrevs {{{
+-- Abbrevs {{{
 -- force quit
 abbrev("c", "Q", "q!")
 abbrev("c", "Qa", "qa!")
@@ -319,21 +314,25 @@ abbrev("c", "f", "find")
 abbrev("c", "vf", "vertical sf")
 -- }}}
 
--- shells {{{
-local shell_leader = "<space>s"
-map("n", shell_leader .. "s", function() utils.nvim_term_in { position = "horizontal" } end)
-map("n", shell_leader .. "v", function() utils.nvim_term_in { position = "vertical" } end)
-map("n", shell_leader .. "x", function() utils.nvim_term_in { position = "replace" } end)
-map("n", shell_leader .. "f", function() utils.nvim_term_in { position = "float" } end)
+-- Terminal {{{
+local termleader = "<space>t"
+map("n", termleader .. "s", function() utils.nvim_term_in { position = "horizontal" } end)
+map("n", termleader .. "v", function() utils.nvim_term_in { position = "vertical" } end)
+map("n", termleader .. "x", function() utils.nvim_term_in { position = "replace" } end)
+map("n", termleader .. "f", function() utils.nvim_term_in { position = "float" } end)
+
+-- exit terminal mode with a single chord instead of 2
+map("t", "<M-Esc>", "<C-\\><C-n>")
+map("t", "<C-w>", "<C-\\><C-n><C-w>")
 -- }}}
 
--- insert mode {{{
+-- Insert Mode {{{
 -- useful in insert mode, especially with lshift and rshift as bs and del
 map("i", "<C-BS>", "<C-w>")
 map("i", "<C-Del>", "<esc>\"_cw")
 -- }}}
 
--- diagnostics {{{
+-- Diagnostics {{{
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
 map("n", "<space>Dq", function() vim.diagnostic.setqflist() end)
@@ -348,7 +347,7 @@ map(obj, "iDi", textobjs.diagnostic_info)
 map(obj, "iDh", textobjs.diagnostic_hint)
 -- }}}
 
--- additional textobjects {{{
+-- Additional Textobjects {{{
 -- less annoying to type
 map(obj, "iq", [[i"]])
 map(obj, "aq", [[a"]])
@@ -380,7 +379,7 @@ map(obj, "a_", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 map(obj, "gG", textobjs.entire_buffer)
 -- }}}
 
--- evaluate lua {{{
+-- Evaluate Lua {{{
 -- evaluate lua and insert result in buffer
 operators.map_function("<space>el", function(mode, region, extra, get)
     local code = get()
@@ -421,7 +420,7 @@ operators.map_function("<space>el", function(mode, region, extra, get)
 end)
 -- }}}
 
--- evaluate math (qalc) {{{
+-- Evaluate Math (qalc) {{{
 -- evalute qalculate expression/math and insert result in buffer
 operators.map_function("<space>em", function(mode, region, extra, get)
     local expressions = get()
@@ -448,7 +447,7 @@ operators.map_function("<space>em", function(mode, region, extra, get)
 end)
 -- }}}
 
--- sort region {{{
+-- Sort Region {{{
 local sort_functions = {
     numeric = function(x, y)
         local xnumeric = x:match("^[+-]?%d*%.?%d+")
@@ -511,7 +510,7 @@ operators.map_function("g=", function(mode, region, extra, get)
 end)
 -- }}}
 
--- command in region {{{
+-- Command in Region {{{
 -- open a cmdline in a region specified by a textobject or motion
 -- allows me to repeat commands like theyre regular mappings
 operators.map_function("g:", function(mode, region, extra, get)
@@ -539,7 +538,7 @@ operators.map_function("g:", function(mode, region, extra, get)
 end)
 -- }}}
 
--- edit region in split {{{
+-- Edit Region in Split {{{
 local region_edit_hlns = api.nvim_create_namespace("region_edit")
 
 -- edit a region of a file in a new window and bufferview
