@@ -24,6 +24,7 @@ IMAGE_SIZE="800x600"
 # $1: image to display (file)
 # $2: height offset
 function display_image {
+    [[ "$TERM" != "xterm-kitty" ]]&&exit 1
     kitten icat --silent --stdin no --transfer-mode memory \
         --align "${3:-center}" --place "${W}x$[H-${2:-0}]@${X}x$[Y+${2:-0}]" \
         "$1" < /dev/null > /dev/tty

@@ -13,11 +13,6 @@ function run_in_tty {
     lf -remote "send $id \${{ $(aescape "$@") }}"
 }
 
-# just let neovim deal with everything
-if [[ -n "$NVIM" ]]; then
-    run_in_tty nvr "$fx"
-fi
-
 ARCHIVEDIR="$HOME/Tmp/arc"
 ARCLIST="$ARCHIVEDIR/.open.list"
 [[ ! -d "$ARCHIVEDIR" ]] && mkdir -p "$ARCHIVEDIR"
@@ -29,7 +24,7 @@ function create_arccache {
     [[ ! -e "$REPLY" ]]
 }
 
-MIMETYPE="$(file --mime-type --brief --dereference -- "$1")"
+MIMETYPE="$(file --mime-type --brief --dereference -- "$f")"
 case "$MIMETYPE" in
 audio/*)
     clear
@@ -39,22 +34,27 @@ application/pdf)
     zathura -- $fx &
     disown
     ;;
-text/* | application/json | inode/x-empty | application/javascript|application/x-wine-extension-ini)
-    run_in_tty nvim -b -- $fx
-    ;;
-application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip|application/vnd.rar|application/x-iso9660-image)
+text/* | application/json | inode/x-empty | application/javascript | application/x-wine-extension-ini)
+    # just let neovim deal with everything
+    if [[ -n "$NVIM" ]]; then
+        run_in_tty nvr "$fx"
+    else
+        run_in_tty nvim -b -- $fx
+    fi
 
+    ;;
+application/x-archive | application/x-cpio | application/x-tar | application/x-bzip2 | application/gzip | application/x-lzip | application/x-lzma | application/x-xz | application/x-7z-compressed | application/vnd.android.package-archive | application/vnd.debian.binary-package | application/java-archive | application/x-gtar | application/zip | application/vnd.rar | application/x-iso9660-image)
 
     if create_arccache "$f" "#x"; then
-        # create 
-        mkdir "$REPLY" 
+        # create
+        mkdir "$REPLY"
         case "$MIMETYPE" in
-            *)
-                bsdtar -C "$REPLY" -x -f "$f"
-                ;;
+        *)
+            bsdtar -C "$REPLY" -x -f "$f"
+            ;;
         esac
-        
-        printf "%s\0%s\n" "$f" "$REPLY" >> "$ARCLIST"
+
+        printf "%s\0%s\n" "$f" "$REPLY" >>"$ARCLIST"
     fi
     lf -remote "send $id cd $(printf '%s' "$REPLY" | escape)"
 
