@@ -239,7 +239,7 @@ end
 -- }}}
 
 -- open terminals {{{
----@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil}
+---@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil, title: string|nil}
 function M.nvim_term_in(opts)
     local bname = api.nvim_buf_get_name(0)
     local cmd = {}
@@ -291,6 +291,10 @@ function M.nvim_term_in(opts)
         })
     end
     fn.termopen(cmd, { cwd = cwd })
+
+    if opts.title then
+        vim.b[0].term_title = opts.title
+    end
 end
 
 -- }}}

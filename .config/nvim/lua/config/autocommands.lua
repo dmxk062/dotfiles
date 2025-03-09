@@ -62,10 +62,20 @@ autocmd("TermOpen", {
     end
 })
 
+local leap_is_open = false
 -- enter the terminal by default
+autocmd("User", {
+    pattern = "LeapEnter",
+    callback = function() leap_is_open = true end
+})
+autocmd("User", {
+    pattern = "LeapLeave",
+    callback = function() leap_is_open = false end
+})
 autocmd({ "BufWinEnter", "WinEnter" }, {
     callback = function(ev)
-        if vim.bo[ev.buf].buftype == "terminal" then
+        -- make sure that remote leap operations are not affected
+        if vim.bo[ev.buf].buftype == "terminal" and not leap_is_open then
             vim.cmd.startinsert()
         end
     end

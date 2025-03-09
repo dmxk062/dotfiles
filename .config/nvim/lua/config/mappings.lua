@@ -321,8 +321,39 @@ map("n", termleader .. "v", function() utils.nvim_term_in { position = "vertical
 map("n", termleader .. "x", function() utils.nvim_term_in { position = "replace" } end)
 map("n", termleader .. "f", function() utils.nvim_term_in { position = "float" } end)
 
+-- lf, integrates nicely by calling nvr when it needs to open stuff
 map("n", termleader .. "l", function() utils.nvim_term_in { position = "vertical", cmd = { "lf" } } end)
 map("n", termleader .. "L", function() utils.nvim_term_in { position = "horizontal", cmd = { "lf" } } end)
+
+-- various other useful programs, capital letter means regular split, lower case vsplit
+map("n", termleader .. "p", function()
+    utils.nvim_term_in {
+        position = "vertical",
+        cmd = { "python" },
+        title = "python"
+    }
+end)
+map("n", termleader .. "P", function()
+    utils.nvim_term_in {
+        position = "horizontal",
+        cmd = { "python" },
+        title = "python"
+    }
+end)
+map("n", termleader .. "q", function()
+    utils.nvim_term_in {
+        position = "vertical",
+        cmd = { "qalc" },
+        title = "qalc"
+    }
+end)
+map("n", termleader .. "Q", function()
+    utils.nvim_term_in {
+        position = "horizontal",
+        cmd = { "qalc" },
+        title = "qalc"
+    }
+end)
 
 -- exit terminal mode with a single chord instead of 2
 map("t", "<M-Esc>", "<C-\\><C-n>")
