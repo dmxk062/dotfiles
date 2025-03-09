@@ -57,7 +57,7 @@ function region {
 
 function window {
     window="$(swaymsg -t get_tree | jq -r \
-	'..| (.nodes? // empty)[] | select(.focused) |.rect
+        '..| ((.nodes? // empty), (.floating_nodes? // empty))[] | select(.focused) |.rect
 	    |"\(.x),\(.y) \(.width)x\(.height)"')"
     eval create_"$1"
     if ! grim -g "$window" "$REPLY"; then
