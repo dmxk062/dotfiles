@@ -74,6 +74,9 @@ local surround_fold = {
             return
         end
         local commentstring = vim.o.commentstring
+        if not commentstring:find(" %%s") then
+            commentstring = commentstring:gsub("%%s", " %%s")
+        end
         return {
             { commentstring:format(name .. " " .. marker[1]), "" },
             { "",                                             commentstring:format(marker[2]) }
