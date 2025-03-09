@@ -238,8 +238,21 @@ end
 
 -- }}}
 
+-- Windows {{{
+---@param args {enter: boolean}
+function M.open_window_smart(buffer, args)
+    local height = api.nvim_win_get_height(0)
+    local width = api.nvim_win_get_width(0)
+
+    return api.nvim_open_win(buffer, args.enter, {
+        vertical = height * 2.6 < width
+    })
+end
+
+-- }}}
+
 -- open terminals {{{
----@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil, title: string|nil}
+---@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil, title: string|nil, size: [number, number]}
 function M.nvim_term_in(opts)
     local bname = api.nvim_buf_get_name(0)
     local cmd = {}
@@ -270,13 +283,21 @@ function M.nvim_term_in(opts)
     end
 
     local b = api.nvim_create_buf(true, false)
+
+    opts.size = opts.size or {}
     if opts.position == "replace" then
         api.nvim_set_current_buf(b)
     elseif opts.position == "float" then
+        local width, height
         local w = vim.o.columns
         local h = vim.o.lines
-        local width = math.floor(w * 0.6)
-        local height = math.floor(h * 0.6)
+        if not opts.size then
+            width = math.floor(w * 0.6)
+            height = math.floor(h * 0.6)
+        else
+            width = opts.size[1]
+            height = opts.size[2]
+        end
         api.nvim_open_win(b, true, {
             relative = "editor",
             border = "rounded",
@@ -285,9 +306,13 @@ function M.nvim_term_in(opts)
             col = math.floor((w - width) / 2),
             row = math.floor((h - height) / 2),
         })
+    elseif opts.position == "autosplit" then
+        M.open_window_smart(b, { enter = true })
     else
         api.nvim_open_win(b, true, {
-            vertical = opts.position == "vertical"
+            vertical = opts.position == "vertical",
+            width = opts.size[1],
+            height = opts.size[2],
         })
     end
     fn.termopen(cmd, { cwd = cwd })
@@ -372,17 +397,6 @@ end
 
 -- }}}
 
--- Windows {{{
----@param args {enter: boolean}
-function M.open_window_smart(buffer, args)
-    local height = api.nvim_win_get_height(0)
-    local width = api.nvim_win_get_width(0)
 
-    return api.nvim_open_win(buffer, args.enter, {
-        vertical = height * 2.6 < width
-    })
-end
-
--- }}}
 
 return M

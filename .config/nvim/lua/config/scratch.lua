@@ -24,7 +24,7 @@ local fn = vim.fn
 ---@field data table
 ---@field ns integer
 
----@alias config.scratch.position "replace"|"vertical"|"horizontal"|"float"
+---@alias config.scratch.position "replace"|"vertical"|"horizontal"|"float"|"autosplit"
 ---@alias config.scratch.openargs {position: config.scratch.position, temporary_file: boolean, del_on_hide: boolean, type: string}
 
 M.scratchdir = fn.stdpath("data") .. "/scratch/"

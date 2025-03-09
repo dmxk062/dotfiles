@@ -320,6 +320,7 @@ map("n", termleader .. "s", function() utils.nvim_term_in { position = "horizont
 map("n", termleader .. "v", function() utils.nvim_term_in { position = "vertical" } end)
 map("n", termleader .. "x", function() utils.nvim_term_in { position = "replace" } end)
 map("n", termleader .. "f", function() utils.nvim_term_in { position = "float" } end)
+map("n", termleader .. "a", function() utils.nvim_term_in { position = "autosplit" } end)
 
 -- lf, integrates nicely by calling nvr when it needs to open stuff
 map("n", termleader .. "l", function() utils.nvim_term_in { position = "vertical", cmd = { "lf" } } end)
@@ -344,14 +345,16 @@ map("n", termleader .. "q", function()
     utils.nvim_term_in {
         position = "vertical",
         cmd = { "qalc" },
-        title = "qalc"
+        title = "qalc",
+        size = { 60, 20 }
     }
 end)
 map("n", termleader .. "Q", function()
     utils.nvim_term_in {
         position = "horizontal",
         cmd = { "qalc" },
-        title = "qalc"
+        title = "qalc",
+        size = { 10, 20 },
     }
 end)
 
