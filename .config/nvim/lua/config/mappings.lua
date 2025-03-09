@@ -321,6 +321,9 @@ map("n", termleader .. "v", function() utils.nvim_term_in { position = "vertical
 map("n", termleader .. "x", function() utils.nvim_term_in { position = "replace" } end)
 map("n", termleader .. "f", function() utils.nvim_term_in { position = "float" } end)
 
+map("n", termleader .. "l", function() utils.nvim_term_in { position = "vertical", cmd = { "lf" } } end)
+map("n", termleader .. "L", function() utils.nvim_term_in { position = "horizontal", cmd = { "lf" } } end)
+
 -- exit terminal mode with a single chord instead of 2
 map("t", "<M-Esc>", "<C-\\><C-n>")
 map("t", "<C-w>", "<C-\\><C-n><C-w>")

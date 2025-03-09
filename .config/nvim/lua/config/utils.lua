@@ -242,25 +242,30 @@ end
 ---@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil}
 function M.nvim_term_in(opts)
     local bname = api.nvim_buf_get_name(0)
-    local cmd
+    local cmd = {}
     local cwd = ""
+    local final_cmd = false
 
     if vim.startswith(bname, "oil-ssh://") then
+        final_cmd = true
         local addr, remote_path = bname:match("//(.-)(/.*)")
-        cmd = { "ssh", "-t", addr, "--", "cd", remote_path:sub(2, -1), ";", "exec", "${SHELL:-/bin/sh}" }
+        vim.list_extend(cmd, { "ssh", "-t", addr, "--", "cd", remote_path:sub(2, -1), ";", "exec", "${SHELL:-/bin/sh}" })
     elseif vim.startswith(bname, "oil://") then
-        cmd = { vim.o.shell }
         cwd = require("oil").get_current_dir()
-    elseif opts.cmd then
-        cmd = opts.cmd
-        if not opts.cwd then
-            cwd = fn.fnamemodify(bname, ":p:h")
-        end
+    elseif opts.cwd then
+        cwd = opts.cwd
     else
-        cmd = { vim.o.shell }
         cwd = fn.fnamemodify(bname, ":p:h")
         if not vim.uv.fs_stat(cwd) then
             cwd = fn.getcwd()
+        end
+    end
+
+    if not final_cmd then
+        if opts.cmd then
+            vim.list_extend(cmd, opts.cmd)
+        else
+            vim.list_extend(cmd, { vim.o.shell })
         end
     end
 
@@ -373,6 +378,7 @@ function M.open_window_smart(buffer, args)
         vertical = height * 2.6 < width
     })
 end
+
 -- }}}
 
 return M
