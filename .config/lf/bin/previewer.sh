@@ -196,7 +196,7 @@ function preview_audio {
 }
 # }}}
 
-# ELF Files {{{
+# Executables and object files {{{
 function preview_elf {
     case "$2" in 
         application/x-pie-executable|application/x-executable)

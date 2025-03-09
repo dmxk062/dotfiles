@@ -154,18 +154,15 @@ map az push :zip<space>
 map at push :tar<space>
 map ax push :extract<space>
 
-map <c-w>h kitty-cmd neighboring_window left
-map <c-w>j kitty-cmd neighboring_window down
-map <c-w>k kitty-cmd neighboring_window up
-map <c-w>l kitty-cmd neighboring_window right
-
-map <space>ss sp!
-map <space>sv vsp!
-
 map e
-map ee $nvim $fx
-map es sp nvim
-map ev vsp nvim
+map ee &~/.config/lf/bin/split.sh none edit "$fx"
+map es &~/.config/lf/bin/split.sh sp edit "$fx"
+map ev &~/.config/lf/bin/split.sh vsp edit "$fx"
 
-map <space>fs sp
-map <space>fv vsp
+map <space>sx &~/.config/lf/bin/split.sh none shell "$PWD"
+map <space>ss &~/.config/lf/bin/split.sh sp shell "$PWD"
+map <space>sv &~/.config/lf/bin/split.sh vsp shell "$PWD"
+
+map <space>ll &~/.config/lf/bin/split.sh none lf "$PWD"
+map <space>ls &~/.config/lf/bin/split.sh sp lf "$PWD"
+map <space>lv &~/.config/lf/bin/split.sh vsp lf "$PWD"
