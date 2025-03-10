@@ -315,46 +315,49 @@ abbrev("c", "vf", "vertical sf")
 -- }}}
 
 -- Terminal {{{
+local terminal = require("config.terminal")
 local termleader = "<space>t"
-map("n", termleader .. "s", function() utils.nvim_term_in { position = "horizontal" } end)
-map("n", termleader .. "v", function() utils.nvim_term_in { position = "vertical" } end)
-map("n", termleader .. "x", function() utils.nvim_term_in { position = "replace" } end)
-map("n", termleader .. "f", function() utils.nvim_term_in { position = "float" } end)
-map("n", termleader .. "a", function() utils.nvim_term_in { position = "autosplit" } end)
+map("n", termleader .. "s", function() terminal.open_term { position = "horizontal" } end)
+map("n", termleader .. "v", function() terminal.open_term { position = "vertical" } end)
+map("n", termleader .. "x", function() terminal.open_term { position = "replace" } end)
+map("n", termleader .. "f", function() terminal.open_term { position = "float" } end)
+map("n", termleader .. "a", function() terminal.open_term { position = "autosplit" } end)
 
 -- lf, integrates nicely by calling nvr when it needs to open stuff
-map("n", termleader .. "l", function() utils.nvim_term_in { position = "vertical", cmd = { "lf" } } end)
-map("n", termleader .. "L", function() utils.nvim_term_in { position = "horizontal", cmd = { "lf" } } end)
+map("n", termleader .. "l", function() terminal.open_term { position = "vertical", cmd = { "lf" } } end)
+map("n", termleader .. "L", function() terminal.open_term { position = "horizontal", cmd = { "lf" } } end)
 
 -- various other useful programs, capital letter means regular split, lower case vsplit
 map("n", termleader .. "p", function()
-    utils.nvim_term_in {
+    terminal.open_term {
         position = "vertical",
         cmd = { "python" },
         title = "python"
     }
 end)
 map("n", termleader .. "P", function()
-    utils.nvim_term_in {
+    terminal.open_term {
         position = "horizontal",
         cmd = { "python" },
         title = "python"
     }
 end)
 map("n", termleader .. "q", function()
-    utils.nvim_term_in {
+    terminal.open_term {
         position = "vertical",
         cmd = { "qalc" },
         title = "qalc",
-        size = { 60, 20 }
+        size = { 60, 20 },
+        promp_marker = ">"
     }
 end)
 map("n", termleader .. "Q", function()
-    utils.nvim_term_in {
+    terminal.open_term {
         position = "horizontal",
         cmd = { "qalc" },
         title = "qalc",
         size = { 10, 20 },
+        promp_marker = ">"
     }
 end)
 
