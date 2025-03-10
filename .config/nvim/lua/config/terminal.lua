@@ -3,23 +3,21 @@ local api = vim.api
 local utils = require("config.utils")
 local fn = vim.fn
 
----@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil, title: string|nil, size: [number, number]}
-function M.open_term(opts)
-    local bname = api.nvim_buf_get_name(0)
+local function get_cmd_and_cwd(bufname, opts)
     local cmd = {}
     local cwd = ""
     local final_cmd = false
 
-    if vim.startswith(bname, "oil-ssh://") then
+    if vim.startswith(bufname, "oil-ssh://") then
         final_cmd = true
-        local addr, remote_path = bname:match("//(.-)(/.*)")
+        local addr, remote_path = bufname:match("//(.-)(/.*)")
         vim.list_extend(cmd, { "ssh", "-t", addr, "--", "cd", remote_path:sub(2, -1), ";", "exec", "${SHELL:-/bin/sh}" })
-    elseif vim.startswith(bname, "oil://") then
+    elseif vim.startswith(bufname, "oil://") then
         cwd = require("oil").get_current_dir()
     elseif opts.cwd then
         cwd = opts.cwd
     else
-        cwd = fn.fnamemodify(bname, ":p:h")
+        cwd = fn.fnamemodify(bufname, ":p:h")
         if not vim.uv.fs_stat(cwd) then
             cwd = fn.getcwd()
         end
@@ -32,6 +30,14 @@ function M.open_term(opts)
             vim.list_extend(cmd, { vim.o.shell })
         end
     end
+
+    return cmd, cwd
+end
+
+---@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil, title: string|nil, size: [number, number]}
+function M.open_term(opts)
+    local bname = api.nvim_buf_get_name(0)
+    local cmd, cwd = get_cmd_and_cwd(bname, opts)
 
     local b = api.nvim_create_buf(true, false)
 
@@ -66,7 +72,7 @@ function M.open_term(opts)
             height = opts.size[2],
         })
     end
-    
+
     fn.termopen(cmd, {
         cwd = cwd,
     })
