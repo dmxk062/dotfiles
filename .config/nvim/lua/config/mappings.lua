@@ -348,7 +348,6 @@ map("n", termleader .. "q", function()
         cmd = { "qalc" },
         title = "qalc",
         size = { 60, 20 },
-        promp_marker = ">"
     }
 end)
 map("n", termleader .. "Q", function()
@@ -357,7 +356,6 @@ map("n", termleader .. "Q", function()
         cmd = { "qalc" },
         title = "qalc",
         size = { 10, 20 },
-        promp_marker = ">"
     }
 end)
 
