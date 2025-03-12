@@ -9,9 +9,9 @@ M.config = function()
     local g = vim.g
 
     g.undotree_ShortIndicators = true
-    g.undotree_WindowLayout = 2
+    g.undotree_WindowLayout = 1
     g.undotree_SetFocusWhenToggle = true
-    g.undotree_DiffAutoOpen = false
+    g.undotree_DiffAutoOpen = true
     g.undotree_HelpLine = false
     g.undotree_TreeNodeShape = "│"
     g.undotree_TreeVertShape = "╷"

@@ -34,8 +34,8 @@ local colorscheme = {
     SpellCap                    = { sp = col.teal, undercurl = true },
 
     LineNr                      = { fg = col.bright_gray },
-    LineNrAbove                 = { fg = blend(col.magenta, col.bright_gray, 0.3) },
-    LineNrBelow                 = { fg = blend(col.light_blue, pal.bg3, 0.7) },
+    LineNrAbove                 = { fg = blend(col.teal, col.bright_gray, 0.3) },
+    LineNrBelow                 = { fg = blend(col.pink, col.bright_gray, 0.3) },
     CursorLineNr                = { fg = pal.fg0 },
     Cursor                      = { reverse = true },
     CursorLine                  = { bg = pal.bg1 },
@@ -148,7 +148,7 @@ local colorscheme = {
 
     BinedCurrentLine            = { bg = pal.bg2 },
     TreesitterContext           = { bg = pal.bg2 },
-    TreesitterContextLineNumber = { fg = col.purple },
+    TreesitterContextLineNumber = { fg = col.teal },
     MultiCursorCursor           = { bg = pal.bg3 },
 
     UndotreeTimeStamp           = { fg = col.light_blue },
