@@ -46,6 +46,10 @@ input type:touchpad {
     natural_scroll enabled 
 }
 
+input type:tablet_tool {
+    map_to_output $mainS
+}
+
 exec swayidle -w
 exec playerctld
 exec nm-applet
