@@ -171,7 +171,7 @@ local function filter_items()
     vim.ui.input({
         default = cur_filter_pattern,
         prompt = "Enter filter pattern (lua)",
-        -- abuse it to update continously
+        -- abuse it to update continuously
         highlight = function(pattern)
             set_filter(pattern)
             return {}
