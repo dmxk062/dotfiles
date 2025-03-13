@@ -37,7 +37,12 @@ local buf_list_type = {}
 function M.format_buf_name(buf, short)
     local term_title = vim.b[buf].term_title
     if term_title then
-        return term_title, "term", false
+        local program, path = term_title:match("(.-): (.*)")
+        if not (program and path) then
+            return term_title, "term", false
+        end
+
+        return ("%s: %s"):format(program, expand_home(path, 4)), "term", false
     end
 
     local name = api.nvim_buf_get_name(buf)
