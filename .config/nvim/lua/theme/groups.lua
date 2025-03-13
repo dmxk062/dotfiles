@@ -55,7 +55,7 @@ local colorscheme = {
     Visual                      = { bg = pal.bg1 },
     NonText                     = { fg = col.bright_gray },
     SpecialKey                  = { link = "NonText" },
-    MatchParen                  = { fg = col.magenta, bg = pal.bg2, bold = true },
+    MatchParen                  = { bg = blend(pal.bg0, pal.bg1, 0.5)},
 
     Added                       = { fg = col.green },
     Deleted                     = { fg = col.red },
@@ -171,6 +171,11 @@ local colorscheme = {
     helpExample                 = { link = "Normal" },
 
     manBold                     = { bg = pal.bg0 },
+
+    xxdAddress                  = { link = "Label" },
+    xxdSep                      = { link = "Delimiter" },
+    xxdDot                      = { link = "Delimiter" },
+    xxdAscii                    = { link = "String" },
 }
 -- }}}
 

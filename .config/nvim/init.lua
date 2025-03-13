@@ -151,6 +151,17 @@ require("lazy").setup("plugins", {
                 "󱞩",
             },
         }
+    },
+    performance = {
+        rtp = {
+            reset = true,
+            disabled_plugins = {
+                "tutor",   -- I *think* I know vim well enough
+
+                "matchit", -- use matchup instead
+                "matchparen"
+            }
+        }
     }
 })
 -- }}}

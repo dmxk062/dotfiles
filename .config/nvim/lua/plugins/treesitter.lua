@@ -135,6 +135,9 @@ M.config = function()
         },
 
         textobjects = textobjects,
+        matchup = {
+            enable = true,
+        }
     }
 
     -- use the builtin repeat
