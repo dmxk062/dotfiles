@@ -30,6 +30,8 @@ local function expand_home(path, length)
         :gsub(home, "~"), length or 6)
 end
 
+M.expand_home = expand_home
+
 local buf_list_type = {}
 ---@return string? name
 ---@return string kind

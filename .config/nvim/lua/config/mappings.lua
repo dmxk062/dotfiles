@@ -641,3 +641,54 @@ operators.map_function("<C-w>e", function(mode, region, extra, get)
     highlight_mirrored()
 end)
 -- }}}
+
+--[[ Change Directory {{{
+Sometimes I need a quicker way to change dir than :cd, :lcd etc
+--]]
+local cdleader = "g."
+
+local function printdir()
+    local name = utils.expand_home(fn.getcwd(0, 0))
+    api.nvim_echo({ { "pwd: ", "NonText" }, { name, "Directory" } }, false, {})
+end
+
+
+-- goto parent
+map("n", cdleader .. "h", function()
+    local dir = fn.getcwd(0, 0)
+    vim.cmd.lcd(fn.fnamemodify(dir, ":h"))
+    printdir()
+end)
+
+-- go one element right in current files path
+map("n", cdleader .. "l", function()
+    local dir = vim.split(fn.getcwd(0, 0), "/")
+    local fpath = vim.split(fn.expand("%:h"), "/")
+
+    local elem = 1
+    while elem <= #dir and elem <= #fpath and dir[elem] == fpath[elem] do
+        elem = elem + 1
+    end
+
+    vim.cmd.lcd(fpath[elem])
+    printdir()
+end)
+
+-- go to current files dir
+map("n", cdleader .. "c", function()
+    vim.cmd.lcd(fn.expand("%:h"))
+    printdir()
+end)
+
+-- go to a root
+map("n", cdleader .. "r", function()
+    local root = vim.fs.root(fn.getcwd(0, 0), { ".git", ".luarc.json", "Makefile" })
+    if root then
+        vim.cmd.lcd(root)
+    end
+
+    printdir()
+end)
+
+map("n", cdleader .. ".", printdir)
+-- }}}

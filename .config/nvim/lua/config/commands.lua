@@ -1,3 +1,6 @@
+local fn = vim.fn
+local api = vim.api
+
 ---@class vim.user_command_args
 ---@field name string
 ---@field args string
@@ -14,7 +17,7 @@
 
 local function get_zoxide_result(path)
     local expanded = path:gsub("~", vim.env.HOME)
-    local cmd = { "zoxide", "query", expanded}
+    local cmd = { "zoxide", "query", expanded }
     local res = vim.system(cmd, {}):wait().stdout
     local dir = (res or ""):gsub("%s*$", "")
     if dir == "" or not dir then
@@ -62,7 +65,7 @@ local function smart_split(args)
 
     local split_args = {
         range = {
-            math.floor((cmd == "split" and height or width ) / 2)
+            math.floor((cmd == "split" and height or width) / 2)
         }
     }
 
