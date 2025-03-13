@@ -81,6 +81,7 @@ M.config = function()
                 })
             end)
             map("n", "<space>c", "<space>rc", { remap = true })
+            map("n", "<space>R", vim.lsp.buf.rename)
 
 
             map("n", "gr", require("telescope.builtin").lsp_references)
