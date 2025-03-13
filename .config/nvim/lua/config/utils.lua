@@ -7,7 +7,6 @@ local fn = vim.fn
 -- format buffer title {{{
 -- names for special filetypes {{{1
 local nomodified_names = {
-    TelescopePrompt = { "[tel]" },
     undotree = { "[undo]" },
     fugitive = { "[git]", "git" },
     checkhealth = { "[health]" },
@@ -76,6 +75,9 @@ function M.format_buf_name(buf, short)
             buf_list_type[buf] = isloclist and "[loc]" or "[qf]"
         end
         return buf_list_type[buf], "list", false
+    elseif ft == "TelescopePrompt" then
+        local picker = require("telescope.actions.state").get_current_picker(buf)
+        return ("[tel: %s]"):format(picker.prompt_title), "special", false
     elseif nomodified_names[ft] then
         return nomodified_names[ft][1], nomodified_names[ft][2] or "special", false
     elseif modified_names[ft] then
