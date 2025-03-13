@@ -1,3 +1,4 @@
+-- Spec {{{
 local M = {
     "nvim-telescope/telescope.nvim",
     keys = {
@@ -6,8 +7,8 @@ local M = {
         "<space><space>",
         "<space>Df",
         "<space>F",
-        "<space>V",
         "<space>gf",
+        "<space>gi",
         "<space>o",
         "<space>v",
     },
@@ -18,20 +19,21 @@ local M = {
         },
     },
 }
+-- }}}
 
-local default_config_tbl = {
-    disable_devicons = true,
-}
 
 local cur_max_length = 0
 
--- Custom Layout {{{
+--[[ Custom Layout {{{
+Place prompt at bottom of screen, list and preview above it
+--]]
 local function create_layout(picker)
     local Layout = require("telescope.pickers.layout")
     ---@param enter boolean
     ---@param opts vim.api.keyset.win_config
     local function create_win(enter, opts)
         local buf = vim.api.nvim_create_buf(false, true)
+
         local winopts = vim.tbl_extend("force", {
             style = "minimal",
             relative = "editor",
@@ -79,7 +81,7 @@ local function create_layout(picker)
                     view_height = height_override
                 end
             else
-                view_height = math.floor(0.3 * (height - 4))
+                view_height = math.floor(0.4 * (height - 4))
                 if view_height > 30 then
                     view_height = 30
                 elseif view_height < 8 then
@@ -122,10 +124,15 @@ local function create_layout(picker)
 end
 -- }}}
 
+local default_config_tbl = {
+    disable_devicons = true,
+}
+
 local function default_config(extra)
     return vim.tbl_deep_extend("force", default_config_tbl, extra or {})
 end
 
+-- Options {{{
 M.opts = {}
 M.opts.defaults = {
     create_layout = create_layout,
@@ -139,6 +146,7 @@ M.opts.defaults = {
 
             ["j"]        = "move_selection_next",
             ["k"]        = "move_selection_previous",
+
             ["gg"]       = "move_to_top",
             ["G"]        = "move_to_bottom",
 
@@ -146,7 +154,8 @@ M.opts.defaults = {
             ["M"]        = "move_to_middle",
             ["H"]        = "move_to_top",
 
-            ["<space>q"] = "send_to_qflist",
+            ["<space>q"] = "smart_send_to_qflist",
+            ["<space>l"] = "smart_send_to_loclist",
 
             ["<esc>"]    = "close",
             ["q"]        = "close",
@@ -164,7 +173,7 @@ M.opts.defaults = {
     selection_caret = "",
     entry_prefix = "",
     multi_icon = "",
-    prompt_prefix = " ed: ",
+    prompt_prefix = "ed: ",
     path_display = function(opts, path)
         local tail = vim.fn.fnamemodify(path, ":t")
         local parendir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":~:.:h"), 6)
@@ -208,11 +217,11 @@ local lsp_config = default_config {
         preview_width = 0.6,
     }
 }
+
 M.opts.pickers = {
     lsp_definitions = lsp_config,
     lsp_references = lsp_config,
-    lsp_dynamic_workspace_symbols = lsp_config,
-    lsp_document_symbols = lsp_config,
+    lsp_workspace_symbols = lsp_config,
     diagnostics = default_config {
         disable_coordinates = true,
     },
@@ -220,7 +229,7 @@ M.opts.pickers = {
     live_grep = default_config_tbl,
     oldfiles = default_config_tbl,
     buffers = default_config {
-        sort_lastused = true, -- so i can just <space><space><cr> to cycle
+        sort_lastused = true,     -- so i can just <space><space><cr> to cycle
         previewer = false,
         mappings = {
             n = {
@@ -237,10 +246,12 @@ M.opts.pickers = {
     find_files = default_config_tbl,
     help_tags = default_config_tbl,
 }
+
 M.opts.extensions = {
     ["zf-native"] = {}
 }
 
+-- }}}
 
 M.config = function(_, opts)
     local telescope = require("telescope")
@@ -251,11 +262,11 @@ M.config = function(_, opts)
     local maps = {
         diagnostics = "<space>Df",
         git_files = "<space>gf",
+        git_status = "<space>gi",
         find_files = "<space>F",
         oldfiles = "<space>o",
         live_grep = "<space>/",
-        lsp_document_symbols = "<space>v",
-        lsp_dynamic_workspace_symbols = "<space>V",
+        lsp_workspace_symbols = "<space>v",
         buffers = "<space><space>",
         jumplist = "<space><C-o>",
     }
