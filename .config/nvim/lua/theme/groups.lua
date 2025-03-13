@@ -171,11 +171,6 @@ local colorscheme = {
     helpExample                 = { link = "Normal" },
 
     manBold                     = { bg = pal.bg0 },
-
-    xxdAddress                  = { link = "Label" },
-    xxdSep                      = { link = "Delimiter" },
-    xxdDot                      = { link = "Delimiter" },
-    xxdAscii                    = { link = "String" },
 }
 -- }}}
 

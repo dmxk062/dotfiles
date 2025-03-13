@@ -84,3 +84,50 @@ local split_cmd_opts = {
 
 vim.api.nvim_create_user_command("Sp", smart_split, split_cmd_opts)
 vim.api.nvim_create_user_command("Split", smart_split, split_cmd_opts)
+
+vim.api.nvim_create_user_command("Xxd", function(opts)
+    if vim.b[0].xxd_last_pos then
+        return
+    end
+
+    local buf = api.nvim_get_current_buf()
+    local xxd_cmd = function(args)
+        vim.cmd { cmd = "!", args = { "xxd " .. (args or "") },
+            range = { 0, api.nvim_buf_line_count(buf) },
+            mods = { silent = true }
+        }
+    end
+
+    xxd_cmd()
+
+    vim.bo[buf].filetype = "xxd"
+    vim.b[buf].xxd_last_pos = {0,0}
+
+    local augroup = api.nvim_create_augroup("xxd:" .. buf, { clear = true })
+
+    api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = buf,
+        callback = function()
+            vim.b[buf].xxd_last_pos = api.nvim_win_get_cursor(0)
+            xxd_cmd("-r")
+        end
+    })
+    api.nvim_create_autocmd("BufWritePost", {
+        group = augroup,
+        buffer = buf,
+        callback = function()
+            xxd_cmd()
+            api.nvim_win_set_cursor(0, vim.b[buf].xxd_last_pos)
+            vim.bo[buf].modified = false
+        end
+    })
+
+    api.nvim_create_autocmd("BufDelete", {
+        group = augroup,
+        buffer = buf,
+        callback = function()
+            api.nvim_del_augroup_by_id(augroup)
+        end
+    })
+end, {})
