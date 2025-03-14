@@ -6,7 +6,7 @@ This module adds common code that can be used to create custom operators
 
 make_operator() creates a function that wraps a operator function
 map_function() automatically creates the expected keybinds for linewise operation and visual mode
-}}} ]] --
+}}} ]]
 
 ---global context for the operators of this module
 local Ctx = {

@@ -397,7 +397,7 @@ a includes one line above and below,
 except for filetypes e.g. python where only the above line is included by default
 aI always includes the last line too, even for python
 v:count specifies the amount of indent levels around the one at the cursor to select
-this uses shiftwidth, so it's not 100% reliable --]]
+this uses shiftwidth, so it's not 100% reliable ]]
 map(obj, "ii", textobjs.indent_inner)
 map(obj, "ai", textobjs.indent_outer)
 map(obj, "aI", textobjs.indent_outer_with_last)
@@ -645,7 +645,7 @@ end)
 --[[ Change Directory {{{
 Sometimes I need a quicker way to change dir than :cd, :lcd etc
 This may benefit from being turned into a sub mode sometime
---]]
+]]
 local cdleader = "<space>."
 
 local function get_cur_buf_parent()

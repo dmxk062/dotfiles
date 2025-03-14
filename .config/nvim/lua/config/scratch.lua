@@ -7,7 +7,7 @@ This module adds that to neovim, while also allowing custom behavior
 Implementations for this are under ./scratch/
 
 TODO: math evaluation buffer
-}}} ]] --
+}}} ]]
 
 local uv = vim.uv
 local api = vim.api

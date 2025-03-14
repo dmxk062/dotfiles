@@ -13,7 +13,7 @@ Important ones:
  - diagnostics: id, iDe, iDw, iDi, iDh
  - arbitrary single-line regexes
  - entire buffer: gG
-}}} ]] --
+}}} ]]
 
 ---@alias point [integer, integer]
 ---@alias region [point, point]

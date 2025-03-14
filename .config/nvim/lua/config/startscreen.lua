@@ -2,7 +2,7 @@ local M = {}
 
 --[[ Just eye-candy on startup {{{
 Shows common actions and a few sentences on start
-}}} ]]--
+}}} ]]
 
 local state = {
     buf = 0,

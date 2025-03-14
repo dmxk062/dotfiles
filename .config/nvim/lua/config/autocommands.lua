@@ -17,7 +17,7 @@ vim.o.titlestring = "nv: NeoVIM" -- set initial
 change line number based on mode:
 - command mode: make it absolute for ranges etc
 - normal mode: keep relative motions fast
---]]
+]]
 local cmdline_group = vim.api.nvim_create_augroup("CmdlineLinenr", {})
 -- debounce cmdline enter events to make sure we dont have flickering for non user cmdline use
 -- e.g. mappings using : instead of <cmd>

@@ -16,7 +16,7 @@ Additionally, tabs are shown with all their open buffers inside them
 and are also accessible via _G.Tabs_for_idx
 
 Like my statusline, redraw only using autocommands
-}}} ]]--
+}}} ]]
 
 ---@type table<integer, integer>
 _G.Bufs_for_idx = {} -- mapping of buffer indices in the buffer line to buffer numbers
