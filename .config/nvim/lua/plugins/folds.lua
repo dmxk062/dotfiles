@@ -55,7 +55,9 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
     -- it's a marked fold, pretty print the marker label and (if it is there) level
     if marker and title then
         title = title:gsub("%s*$", "")
-        table.insert(new_text, { first_line_indent .. "@ " .. title, "UfoFoldTitle" })
+        local hlgroup = "UfoFoldTitle"
+
+        table.insert(new_text, { first_line_indent .. "> " .. title, hlgroup })
         if #level > 0 then
             table.insert(new_text, { " :" .. level, "Number" })
         end

@@ -80,6 +80,12 @@ opt.path = {
     "../",
     "../*",
 }
+opt.cdpath = {
+    ".",
+    "**",
+    "../",
+    "../*",
+}
 
 -- normal, o-pending, visual: block
 -- replace: underscore

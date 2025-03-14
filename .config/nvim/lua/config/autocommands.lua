@@ -1,4 +1,5 @@
 local autocmd = vim.api.nvim_create_autocmd
+local utils = require("config.utils")
 
 -- Window Title {{{
 -- change the title in a more intelligent way
@@ -117,4 +118,14 @@ autocmd("TextYankPost", {
     callback = function(ev)
         vim.highlight.on_yank { timeout = 120, higroup = "Yanked" }
     end
+})
+
+-- show current directory
+local function printdir()
+    local name = utils.expand_home(vim.fn.getcwd(0, 0))
+    vim.api.nvim_echo({ { "pwd: ", "NonText" }, { name, "Directory" } }, false, {})
+end
+
+autocmd("DirChanged", {
+    callback = vim.schedule_wrap(printdir)
 })

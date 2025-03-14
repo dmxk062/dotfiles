@@ -644,40 +644,41 @@ end)
 
 --[[ Change Directory {{{
 Sometimes I need a quicker way to change dir than :cd, :lcd etc
+This may benefit from being turned into a sub mode sometime
 --]]
-local cdleader = "g."
+local cdleader = "<space>."
 
-local function printdir()
-    local name = utils.expand_home(fn.getcwd(0, 0))
-    api.nvim_echo({ { "pwd: ", "NonText" }, { name, "Directory" } }, false, {})
+local function get_cur_buf_parent()
+    local path = fn.expand("%:h"):gsub("^oil://", "")
+    return path
 end
-
 
 -- goto parent
 map("n", cdleader .. "h", function()
     local dir = fn.getcwd(0, 0)
     vim.cmd.lcd(fn.fnamemodify(dir, ":h"))
-    printdir()
 end)
 
 -- go one element right in current files path
 map("n", cdleader .. "l", function()
-    local dir = vim.split(fn.getcwd(0, 0), "/")
-    local fpath = vim.split(fn.expand("%:h"), "/")
+    local dir = fn.getcwd(0, 0)
+    local fpath = get_cur_buf_parent()
+    if fpath ~= dir then
+        local sdir = vim.split(dir, "/")
+        local spath = vim.split(fpath, "/")
 
-    local elem = 1
-    while elem <= #dir and elem <= #fpath and dir[elem] == fpath[elem] do
-        elem = elem + 1
+        local elem = 1
+        while elem <= #sdir and elem <= #spath and sdir[elem] == spath[elem] do
+            elem = elem + 1
+        end
+
+        vim.cmd.lcd(spath[elem])
     end
-
-    vim.cmd.lcd(fpath[elem])
-    printdir()
 end)
 
 -- go to current files dir
 map("n", cdleader .. "c", function()
-    vim.cmd.lcd(fn.expand("%:h"))
-    printdir()
+    vim.cmd.lcd(get_cur_buf_parent())
 end)
 
 -- go to a root
@@ -686,9 +687,5 @@ map("n", cdleader .. "r", function()
     if root then
         vim.cmd.lcd(root)
     end
-
-    printdir()
 end)
-
-map("n", cdleader .. ".", printdir)
 -- }}}

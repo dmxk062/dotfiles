@@ -44,10 +44,6 @@ local colorscheme = {
     Tabline                     = { link = "StatusLine" },
     StatusLine                  = { bg = pal.bg0 },
     Folded                      = { bg = blend(pal.bg1, pal.bg0, 0.4) },
-    UfoFoldedFg                 = {},
-    UfoFoldTitle                = { fg = col.teal, italic = true },
-    UfoFoldedBg                 = {},
-    UfoPreviewThumb             = {},
     FoldNumber                  = { fg = col.magenta, italic = true },
     FoldColumn                  = { fg = pal.bg3 },
     SignColumn                  = { fg = pal.bg3 },
@@ -55,7 +51,7 @@ local colorscheme = {
     Visual                      = { bg = pal.bg1 },
     NonText                     = { fg = col.bright_gray },
     SpecialKey                  = { link = "NonText" },
-    MatchParen                  = { bg = blend(pal.bg0, pal.bg1, 0.5)},
+    MatchParen                  = { bg = blend(pal.bg0, pal.bg1, 0.5) },
 
     Added                       = { fg = col.green },
     Deleted                     = { fg = col.red },
@@ -172,6 +168,16 @@ local colorscheme = {
 
     manBold                     = { bg = pal.bg0 },
 }
+-- }}}
+
+-- Ufo - Folds {{{
+add_with_prefix(colorscheme, "Ufo", {
+    FoldedFg     = {},
+    FoldedBg     = {},
+    PreviewThumb = {},
+
+    FoldTitle    = { fg = col.teal, italic = true },
+})
 -- }}}
 
 -- Treesitter {{{

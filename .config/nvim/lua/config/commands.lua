@@ -1,4 +1,3 @@
-local fn = vim.fn
 local api = vim.api
 
 ---@class vim.user_command_args
@@ -15,6 +14,7 @@ local api = vim.api
 ---@field mods string
 ---@field smods table
 
+-- Zoxide {{{
 local function get_zoxide_result(path)
     local expanded = path:gsub("~", vim.env.HOME)
     local cmd = { "zoxide", "query", expanded }
@@ -36,7 +36,7 @@ local function complete_zoxide(l, line, cpos)
 end
 
 -- Use zoxide to edit a directory using oil
-vim.api.nvim_create_user_command("Z", function(args)
+vim.api.nvim_create_user_command("Zed", function(args)
     local name = args.fargs[1]
     local dir = get_zoxide_result(name)
     if not dir or dir == "" then
@@ -51,6 +51,26 @@ end, {
     desc = "Use zoxide to open dir in an oil buffer"
 })
 
+local zcd_func = function(args)
+    local name = args.fargs[1]
+    local dir = get_zoxide_result(name)
+    if not dir or dir == "" then
+        vim.notify("Zoxide: could not find " .. name, vim.log.levels.ERROR)
+        return
+    end
+
+    vim.cmd.lcd(dir)
+end
+local zcd_args = {
+    nargs = 1,
+    complete = complete_zoxide,
+    desc = ":lcd using zoxide"
+}
+vim.api.nvim_create_user_command("Z", zcd_func, zcd_args)
+vim.api.nvim_create_user_command("Zcd", zcd_func, zcd_args)
+-- }}}
+
+-- Automatic Split {{{
 ---@param args vim.user_command_args
 local function smart_split(args)
     local height = vim.api.nvim_win_get_height(0)
@@ -84,6 +104,7 @@ local split_cmd_opts = {
 
 vim.api.nvim_create_user_command("Sp", smart_split, split_cmd_opts)
 vim.api.nvim_create_user_command("Split", smart_split, split_cmd_opts)
+-- }}}
 
 vim.api.nvim_create_user_command("Xxd", function(opts)
     if vim.b[0].xxd_last_pos then
@@ -101,7 +122,7 @@ vim.api.nvim_create_user_command("Xxd", function(opts)
     xxd_cmd()
 
     vim.bo[buf].filetype = "xxd"
-    vim.b[buf].xxd_last_pos = {0,0}
+    vim.b[buf].xxd_last_pos = { 0, 0 }
 
     local augroup = api.nvim_create_augroup("xxd:" .. buf, { clear = true })
 
