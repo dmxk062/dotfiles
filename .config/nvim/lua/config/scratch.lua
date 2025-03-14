@@ -12,6 +12,7 @@ TODO: math evaluation buffer
 local uv = vim.uv
 local api = vim.api
 local fn = vim.fn
+local utils = require("config.utils")
 
 ---@class config.scratch.file
 ---@field win integer?
@@ -24,8 +25,7 @@ local fn = vim.fn
 ---@field data table
 ---@field ns integer
 
----@alias config.scratch.position "replace"|"vertical"|"horizontal"|"float"|"autosplit"
----@alias config.scratch.openargs {position: config.scratch.position, temporary_file: boolean, del_on_hide: boolean, type: string}
+---@alias config.scratch.openargs {position: config.win.position, temporary_file: boolean, del_on_hide: boolean, type: string}
 
 M.scratchdir = fn.stdpath("data") .. "/scratch/"
 local ns = api.nvim_create_namespace("config.scratch")
@@ -44,30 +44,10 @@ if not uv.fs_stat(luarc) then
 end
 
 
----@param split config.scratch.position
+---@param split config.win.position
 ---@param scratch config.scratch.file
 local function open_scratch_in_win(split, scratch)
-    if split == "replace" then
-        scratch.win = api.nvim_get_current_win()
-        api.nvim_set_current_buf(scratch.buf)
-    elseif split == "float" then
-        local w = vim.o.columns
-        local h = vim.o.lines
-        local width = math.floor(w * 0.6)
-        local height = math.floor(h * 0.6)
-        scratch.win = api.nvim_open_win(scratch.buf, true, {
-            relative = "editor",
-            border = "rounded",
-            width = width,
-            height = height,
-            col = math.floor((w - width) / 2),
-            row = math.floor((h - height) / 2),
-        })
-    else
-        scratch.win = api.nvim_open_win(scratch.buf, true, {
-            vertical = split == "vertical"
-        })
-    end
+    scratch.win = utils.win_show_buf(scratch.buf, { position = split})
 end
 
 ---@param scratch config.scratch.file

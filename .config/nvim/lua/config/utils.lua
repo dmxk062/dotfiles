@@ -2,6 +2,14 @@ local M = {}
 local api = vim.api
 local fn = vim.fn
 
+---@alias config.win.position 
+---|"replace"
+---|"float"
+---|"autosplit"
+---|"vertical"
+---|"horizontal"
+---|"tab"
+
 -- Reusable code for my entire config
 
 -- format buffer title {{{
@@ -333,6 +341,44 @@ end
 
 -- }}}
 
-
+---@param b integer Buffer Number
+---@param opts {position: config.win.position, size: [integer, integer]?}
+function M.win_show_buf(b, opts)
+    if opts.position == "replace" then
+        api.nvim_set_current_buf(b)
+    elseif opts.position == "float" then
+        local width, height
+        local w = vim.o.columns
+        local h = vim.o.lines
+        if not opts.size then
+            width = math.floor(w * 0.6)
+            height = math.floor(h * 0.6)
+        else
+            width = opts.size[1]
+            height = opts.size[2]
+        end
+        opts.size = opts.size or {}
+        api.nvim_open_win(b, true, {
+            relative = "editor",
+            border = "rounded",
+            width = width,
+            height = height,
+            col = math.floor((w - width) / 2),
+            row = math.floor((h - height) / 2),
+        })
+    elseif opts.position == "autosplit" then
+        M.open_window_smart(b, { enter = true })
+    elseif opts.position == "tab" then
+        vim.cmd("tab split #" .. b)
+    else
+        api.nvim_open_win(b, true, {
+            vertical = opts.position == "vertical",
+            width = opts.size[1],
+            height = opts.size[2],
+        })
+    end
+    
+    return api.nvim_get_current_win()
+end
 
 return M

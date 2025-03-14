@@ -51,6 +51,7 @@ local function add_qf_item(where)
         items = { {
             bufnr = bufnr,
             lnum = cursor[1],
+            col = cursor[2] + 1,
             text = text,
             valid = true,
         } }
@@ -135,9 +136,7 @@ map("n", bufleader .. bufleader, function()
     end
 end)
 
----open buffer
----@param cmd "vert"|"hor"|"tab"
-local function open_buf_in(cmd)
+local function open_buf_in(dir)
     local target
     local count = vim.v.count
     if count == 0 then
@@ -145,10 +144,12 @@ local function open_buf_in(cmd)
     else
         target = Bufs_for_idx[count]
     end
-    if not target then
-        target = api.nvim_get_current_buf()
+    if not target or not api.nvim_buf_is_valid(target) then
+        vim.notify("No Buffer with idx=" .. count, vim.log.levels.ERROR)
+        return
     end
-    vim.cmd(cmd .. " sbuffer " .. target)
+
+    utils.win_show_buf(target, { position = dir })
 end
 
 ---run cmd with the effective tab target as an argument
@@ -164,25 +165,11 @@ local function indexed_tab_command(cmd)
     vim.cmd(cmd .. " " .. target)
 end
 
-map("n", bufleader .. "v", function() open_buf_in("vert") end)
-map("n", bufleader .. "s", function() open_buf_in("hor") end)
+map("n", bufleader .. "v", function() open_buf_in("vertical") end)
+map("n", bufleader .. "s", function() open_buf_in("horizontal") end)
 map("n", bufleader .. "t", function() open_buf_in("tab") end)
-map("n", bufleader .. "f", function()
-    local target = Bufs_for_idx[vim.v.count] or 0
-    local max_width = vim.o.columns
-    local max_height = vim.o.lines
-
-    local height = math.floor((max_height) * .6)
-    local width = math.floor((max_width) * .6)
-    api.nvim_open_win(target, true, {
-        relative = "editor",
-        row = math.floor((max_height - height) / 2),
-        col = math.floor((max_width - width) / 2),
-        width = width,
-        height = height,
-        border = "rounded",
-    })
-end)
+map("n", bufleader .. "f", function() open_buf_in("float") end)
+map("n", bufleader .. "a", function() open_buf_in("autosplit") end)
 
 map("n", bufleader .. "d", function()
     local target = Bufs_for_idx[vim.v.count] or 0

@@ -34,7 +34,7 @@ local function get_cmd_and_cwd(bufname, opts)
     return cmd, cwd
 end
 
----@param opts {position: config.scratch.position, cmd: string[]|nil, cwd: string|nil, title: string|nil, size: [number, number]}
+---@param opts {position: config.win.position, cmd: string[]|nil, cwd: string|nil, title: string|nil, size: [number, number]}
 function M.open_term(opts)
     local bname = api.nvim_buf_get_name(0)
     local cmd, cwd = get_cmd_and_cwd(bname, opts)
@@ -42,36 +42,7 @@ function M.open_term(opts)
     local b = api.nvim_create_buf(true, false)
 
     opts.size = opts.size or {}
-    if opts.position == "replace" then
-        api.nvim_set_current_buf(b)
-    elseif opts.position == "float" then
-        local width, height
-        local w = vim.o.columns
-        local h = vim.o.lines
-        if not opts.size then
-            width = math.floor(w * 0.6)
-            height = math.floor(h * 0.6)
-        else
-            width = opts.size[1]
-            height = opts.size[2]
-        end
-        api.nvim_open_win(b, true, {
-            relative = "editor",
-            border = "rounded",
-            width = width,
-            height = height,
-            col = math.floor((w - width) / 2),
-            row = math.floor((h - height) / 2),
-        })
-    elseif opts.position == "autosplit" then
-        utils.open_window_smart(b, { enter = true })
-    else
-        api.nvim_open_win(b, true, {
-            vertical = opts.position == "vertical",
-            width = opts.size[1],
-            height = opts.size[2],
-        })
-    end
+    utils.win_show_buf(b, { position = opts.position, size = opts.size})
 
     fn.termopen(cmd, {
         cwd = cwd,
