@@ -357,7 +357,6 @@ function M.win_show_buf(b, opts)
             width = opts.size[1]
             height = opts.size[2]
         end
-        opts.size = opts.size or {}
         api.nvim_open_win(b, true, {
             relative = "editor",
             border = "rounded",
@@ -371,6 +370,7 @@ function M.win_show_buf(b, opts)
     elseif opts.position == "tab" then
         vim.cmd("tab split #" .. b)
     else
+        opts.size = opts.size or {}
         api.nvim_open_win(b, true, {
             vertical = opts.position == "vertical",
             width = opts.size[1],
