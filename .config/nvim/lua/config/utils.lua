@@ -9,6 +9,8 @@ local fn = vim.fn
 ---|"vertical"
 ---|"horizontal"
 ---|"tab"
+---
+---@alias config.win.opts {position: config.win.position, size: [integer, integer]?, direction: "left"|"right"|"above"|"below"}
 
 -- Reusable code for my entire config
 
@@ -342,7 +344,7 @@ end
 -- }}}
 
 ---@param b integer Buffer Number
----@param opts {position: config.win.position, size: [integer, integer]?}
+---@param opts config.win.opts
 function M.win_show_buf(b, opts)
     if opts.position == "replace" then
         api.nvim_set_current_buf(b)
@@ -373,11 +375,12 @@ function M.win_show_buf(b, opts)
         opts.size = opts.size or {}
         api.nvim_open_win(b, true, {
             vertical = opts.position == "vertical",
+            split = opts.direction,
             width = opts.size[1],
             height = opts.size[2],
         })
     end
-    
+
     return api.nvim_get_current_win()
 end
 

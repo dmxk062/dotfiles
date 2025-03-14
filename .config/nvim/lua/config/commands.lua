@@ -106,7 +106,8 @@ vim.api.nvim_create_user_command("Sp", smart_split, split_cmd_opts)
 vim.api.nvim_create_user_command("Split", smart_split, split_cmd_opts)
 -- }}}
 
-vim.api.nvim_create_user_command("Xxd", function(opts)
+-- xxd Wrapper {{{
+api.nvim_create_user_command("Xxd", function(opts)
     if vim.b[0].xxd_last_pos then
         return
     end
@@ -152,3 +153,4 @@ vim.api.nvim_create_user_command("Xxd", function(opts)
         end
     })
 end, {})
+-- }}}

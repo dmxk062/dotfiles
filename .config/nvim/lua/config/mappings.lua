@@ -136,7 +136,9 @@ map("n", bufleader .. bufleader, function()
     end
 end)
 
-local function open_buf_in(dir)
+---@param dir config.win.position
+---@param opts config.win.opts?
+local function open_buf_in(dir, opts)
     local target
     local count = vim.v.count
     if count == 0 then
@@ -149,7 +151,7 @@ local function open_buf_in(dir)
         return
     end
 
-    utils.win_show_buf(target, { position = dir })
+    utils.win_show_buf(target, vim.tbl_extend("force", { position = dir }, opts or {}))
 end
 
 ---run cmd with the effective tab target as an argument
@@ -167,6 +169,8 @@ end
 
 map("n", bufleader .. "v", function() open_buf_in("vertical") end)
 map("n", bufleader .. "s", function() open_buf_in("horizontal") end)
+map("n", bufleader .. "V", function() open_buf_in("vertical", { direction = "left" }) end)
+map("n", bufleader .. "S", function() open_buf_in("horizontal", { direction = "above" }) end)
 map("n", bufleader .. "t", function() open_buf_in("tab") end)
 map("n", bufleader .. "f", function() open_buf_in("float") end)
 map("n", bufleader .. "a", function() open_buf_in("autosplit") end)
@@ -179,6 +183,18 @@ end)
 map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "<space>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
+map("n", bufleader .. "h", function()
+    local target
+    local count = vim.v.count
+    if count == 0 then
+        target = api.nvim_get_current_buf()
+    else
+        target = Bufs_for_idx[count]
+    end
+
+    local win = fn.bufwinid(target)
+    api.nvim_win_close(win, false)
+end)
 
 for i = 1, 9 do
     map("n", "<C-" .. i .. ">", function()
