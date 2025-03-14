@@ -3,7 +3,7 @@ syn match xxdSep contained ":"
 syn match xxdAscii "  .\{,16\}\r\=$"hs=s+2  contains=xxdDot
 syn match xxdDot contained "[.\r]"
 
-syn match xxdHex "[0-9a-f]\{4}"       contains=xxdNull,xxdNewline
+syn match xxdHex "[0-9a-f]\{4}\>"       contains=xxdNull,xxdNewline
 syn match xxdNull contained "\<00\|00\>"
 syn match xxdNewline contained "\<0a\|0a\>\|\<0d\|0d\>"
 
