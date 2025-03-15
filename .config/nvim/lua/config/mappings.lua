@@ -521,10 +521,15 @@ operators.map_function("g=", function(mode, region, extra, get)
         split = get()
     end
 
+    local no_whiteonly = vim.tbl_filter(function(v)
+        return not v:match("^%s*$")
+    end, split)
+
     local to_sort = {}
-    local indents = {}
-    for i, val in ipairs(split) do
-        indents[i], to_sort[i] = val:match("^(%s*)(.-)%s*$")
+    local init_white = {}
+    local post_white = {}
+    for i, val in ipairs(no_whiteonly) do
+        init_white[i], to_sort[i], post_white[i] = val:match("^(%s*)(.-)(%s*)$")
     end
 
     local sort_fun
@@ -537,12 +542,12 @@ operators.map_function("g=", function(mode, region, extra, get)
     table.sort(to_sort, sort_fun)
     local sorted = {}
     for i, val in ipairs(to_sort) do
-        table.insert(sorted, indents[i] .. val)
+        table.insert(sorted, init_white[i] .. val .. post_white[i])
     end
 
     local output
     if mode == "char" then
-        output = { table.concat(sorted, ", ") }
+        output = { table.concat(sorted, ",") }
     else
         output = sorted
     end
