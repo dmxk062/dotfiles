@@ -2,7 +2,7 @@ local M = {}
 local api = vim.api
 local fn = vim.fn
 
----@alias config.win.position 
+---@alias config.win.position
 ---|"replace"
 ---|"float"
 ---|"autosplit"
@@ -149,7 +149,9 @@ M.btypesymbols = {
 -- highlight file path {{{
 -- patterns {{{1
 local extension_highlights = {
-    ["a"]       = "Bin",
+    ["S"]       = "Code",
+    ["a"]       = "Archive",
+    ["as"]      = "Code",
     ["c"]       = "Code",
     ["cfg"]     = "Config",
     ["conf"]    = "Config",
@@ -163,30 +165,38 @@ local extension_highlights = {
     ["html"]    = "Markup",
     ["ini"]     = "Config",
     ["jar"]     = "Archive",
+    ["jpg"]     = "Ignore",
     ["js"]      = "Code",
     ["json"]    = "Markup",
+    ["jsonc"]   = "Markup",
     ["log"]     = "Info",
     ["lua"]     = "Code",
     ["md"]      = "Text",
     ["mk"]      = "Build",
     ["o"]       = "Bin",
+    ["pdf"]     = "Ignore",
+    ["png"]     = "Ignore",
     ["py"]      = "Code",
     ["pyc"]     = "Bin",
     ["rc"]      = "Config",
     ["rs"]      = "Code",
+    ["sass"]    = "Style",
     ["scss"]    = "Style",
     ["sh"]      = "Code",
     ["so"]      = "Bin",
+    ["svg"]     = "Style",
     ["tar"]     = "Archive",
     ["tex"]     = "Markup",
     ["toml"]    = "Config",
     ["ts"]      = "Code",
     ["txt"]     = "Text",
+    ["vim"]     = "Code",
     ["xhtml"]   = "Markup",
     ["xml"]     = "Markup",
     ["xz"]      = "Archive",
     ["yaml"]    = "Config",
     ["yuck"]    = "Code",
+    ["zig"]     = "Code",
     ["zip"]     = "Archive",
     ["zsh"]     = "Code",
 }
@@ -196,6 +206,7 @@ local name_highlights = {
     [".clang-format"]         = "Meta",
     [".clangd"]               = "Meta",
     [".config/"]              = "Config",
+    [".editorconfig"]         = "Meta",
     [".git/"]                 = "Ignore",
     [".gitconfig"]            = "Meta",
     [".gitignore"]            = "Meta",
@@ -343,6 +354,7 @@ end
 
 -- }}}
 
+-- Display a window in a variety of ways {{{
 ---@param b integer Buffer Number
 ---@param opts config.win.opts
 function M.win_show_buf(b, opts)
@@ -383,5 +395,7 @@ function M.win_show_buf(b, opts)
 
     return api.nvim_get_current_win()
 end
+
+-- }}}
 
 return M
