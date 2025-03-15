@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Slowly read text on stdin and show the split words on stdout
+# Arguments:
+# $1 : Language/Voice for espeak
+#
+# Output:
+# stdout: Words and punctuation
+
+WORCOUNT=2
+WORDDELAY=3
+
+function time_words {
+    local read_words=0 word punct
+    local -a words=()
+    while read -r line; do
+        read -ra words <<<"$line"
+        for word in "${words[@]}"; do
+            if [[ "$word" =~ [[:space:]] ]]; then
+                continue
+            elif [[ "$word" =~ [[:punct:]]$ ]]; then
+                punct="${word: -1}"
+                word="${word%?}"
+            fi
+            ((read_words += 1))
+            if ((read_words % WORCOUNT == 0)); then
+                sleep $WORDDELAY
+            fi
+            echo "$word"
+
+            if [[ -n "$punct" ]]; then
+                echo "$punct"
+                punct=""
+            fi
+        done
+        echo
+    done
+}
+
+time_words | tee >(espeak-ng -s 110 -v "$1" --punct -k20 -g8)
