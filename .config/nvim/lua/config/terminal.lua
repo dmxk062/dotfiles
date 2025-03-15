@@ -34,12 +34,13 @@ local function get_cmd_and_cwd(bufname, opts)
     return cmd, cwd
 end
 
----@param opts {position: config.win.position, cmd: string[]|nil, cwd: string|nil, title: string|nil, size: [number, number]}
+---@param opts {position: config.win.position, cmd: string[]|nil, cwd: string|nil, title: string|nil, size: [number, number], autoclose: boolean?}
 function M.open_term(opts)
     local bname = api.nvim_buf_get_name(0)
     local cmd, cwd = get_cmd_and_cwd(bname, opts)
 
     local b = api.nvim_create_buf(true, false)
+    vim.b[b].term_autoclose = opts.autoclose or true
 
     opts.size = opts.size or {}
     utils.win_show_buf(b, { position = opts.position, size = opts.size})
