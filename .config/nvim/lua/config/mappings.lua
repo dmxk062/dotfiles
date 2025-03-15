@@ -116,29 +116,7 @@ local bufleader = "\\"
 
 map("n", "<C-s>", "<cmd>b #<cr>") -- faster altfile, mnemonic: [s]econd
 
--- go to the buffer given in count
-map("n", bufleader .. bufleader, function()
-    local target = Bufs_for_idx[vim.v.count] or 0
-    if target == 0 then
-        vim.cmd("wincmd ")
-        return
-    end
-    for _, win in pairs(api.nvim_list_wins()) do
-        if api.nvim_win_get_buf(win) == target then
-            api.nvim_set_current_win(win)
-            return
-        end
-    end
-
-    local ok = pcall(api.nvim_set_current_buf, target)
-    if not ok then
-        vim.cmd.bprevious()
-    end
-end)
-
----@param dir config.win.position
----@param opts config.win.opts?
-local function open_buf_in(dir, opts)
+local function get_buf_idx()
     local target
     local count = vim.v.count
     if count == 0 then
@@ -147,9 +125,36 @@ local function open_buf_in(dir, opts)
         target = Bufs_for_idx[count]
     end
     if not target or not api.nvim_buf_is_valid(target) then
-        vim.notify("No Buffer with idx=" .. count, vim.log.levels.ERROR)
+        vim.notify("No Buffer " .. count, vim.log.levels.ERROR)
         return
     end
+
+    return target
+end
+
+-- go to the buffer given in count
+map("n", bufleader .. bufleader, function()
+    local target = get_buf_idx()
+    if not target then return end
+
+    local win = fn.bufwinid(target)
+    if win > 0 then
+        api.nvim_set_current_win(win)
+        return
+    end
+
+    local ok = pcall(api.nvim_set_current_buf, target)
+    if not ok then
+        vim.cmd.bprevious()
+    end
+end)
+
+
+---@param dir config.win.position
+---@param opts config.win.opts?
+local function open_buf_in(dir, opts)
+    local target = get_buf_idx()
+    if not target then return end
 
     utils.win_show_buf(target, vim.tbl_extend("force", { position = dir }, opts or {}))
 end
@@ -167,6 +172,7 @@ local function indexed_tab_command(cmd)
     vim.cmd(cmd .. " " .. target)
 end
 
+-- show a buffer by its index in the statusbar
 map("n", bufleader .. "v", function() open_buf_in("vertical") end)
 map("n", bufleader .. "s", function() open_buf_in("horizontal") end)
 map("n", bufleader .. "V", function() open_buf_in("vertical", { direction = "left" }) end)
@@ -176,36 +182,26 @@ map("n", bufleader .. "f", function() open_buf_in("float") end)
 map("n", bufleader .. "a", function() open_buf_in("autosplit") end)
 
 map("n", bufleader .. "d", function()
-    local target = Bufs_for_idx[vim.v.count] or 0
+    local target = get_buf_idx()
+    if not target then return end
+
     api.nvim_buf_delete(target, {})
+end)
+map("n", bufleader .. "h", function()
+    local target = get_buf_idx()
+    if not target then return end
+
+    local win = fn.bufwinid(target)
+    if win == -1 then
+        vim.notify("No open Window for Buffer " .. vim.v.count, vim.log.levels.ERROR)
+        return
+    end
+    api.nvim_win_close(win, false)
 end)
 
 map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "<space>", function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
-map("n", bufleader .. "h", function()
-    local target
-    local count = vim.v.count
-    if count == 0 then
-        target = api.nvim_get_current_buf()
-    else
-        target = Bufs_for_idx[count]
-    end
-
-    local win = fn.bufwinid(target)
-    api.nvim_win_close(win, false)
-end)
-
-for i = 1, 9 do
-    map("n", "<C-" .. i .. ">", function()
-        local target = Bufs_for_idx[i]
-        if not target then
-            return
-        end
-
-        api.nvim_set_current_buf(target)
-    end)
-end
 
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
