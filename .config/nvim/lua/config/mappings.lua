@@ -249,6 +249,14 @@ map("n", scratchleader .. "<space>", function()
         })
     end)
 end)
+
+map("n", scratchleader .. "s", function()
+    local bufname = vim.fn.expand("%:t")
+    scratch.open_file_scratch{
+        position = "float",
+        type = "md"
+    }
+end)
 -- }}}
 
 -- Fix Builtin Mappings {{{

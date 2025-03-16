@@ -47,7 +47,7 @@ end
 ---@param split config.win.position
 ---@param scratch config.scratch.file
 local function open_scratch_in_win(split, scratch)
-    scratch.win = utils.win_show_buf(scratch.buf, { position = split})
+    scratch.win = utils.win_show_buf(scratch.buf, { position = split })
 end
 
 ---@param scratch config.scratch.file
@@ -168,18 +168,36 @@ function M.open_scratch(name, opts)
     scratch.temporary = opts.temporary_file
 end
 
+---@param opts config.scratch.openargs
+function M.open_file_scratch(opts)
+    local path
+    local name
+    if vim.bo[0].filetype == "oil" then
+        path = api.nvim_buf_get_name(0):gsub("^oil://", "")
+        name = ".scratch"
+    else
+        path = fn.expand("%p::h:~")
+        name = fn.expand("%:t")
+    end
+    local bufname = string.format("%s/%s.%s", path, name, opts.type or "md")
+    fn.mkdir(M.scratchdir .. path, "p")
+    local scratch = create_and_open_scratch(bufname, opts)
+    if not scratch then
+        return
+    end
+    scratch.del_on_hide = opts.del_on_hide
+    scratch.temporary = opts.temporary_file
+end
+
 function M.complete()
-    local dir, err = uv.fs_opendir(M.scratchdir, nil, 100)
-    assert(dir, err)
-    local entries = uv.fs_readdir(dir)
+    local entries = vim.fs.dir(M.scratchdir, { depth = 16 })
 
     local res = {}
-    for _, e in pairs(entries) do
-        if e.name:sub(1,1) ~= "." then
-            table.insert(res, e.name)
+    for name, t in entries do
+        if t == "file" then
+            table.insert(res, name)
         end
     end
-    uv.fs_closedir(dir)
 
     return res
 end
