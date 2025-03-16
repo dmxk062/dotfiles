@@ -228,7 +228,7 @@ add_with_prefix(colorscheme, "@", {
     ["attribute"]                    = { fg = col.yellow },
     ["attribute.builtin"]            = { fg = col.yellow },
 
-    ["keyword"]                      = { fg = col.light_blue },
+    ["keyword"]                      = { fg = col.bright_gray },
     ["keyword.return"]               = { fg = col.light_blue, italic = true },
     ["keyword.repeat"]               = { fg = col.light_blue, italic = true },
     ["keyword.conditional"]          = { fg = col.light_blue, italic = true },
