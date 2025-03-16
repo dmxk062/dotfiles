@@ -143,8 +143,8 @@ local colorscheme = {
     IndentBlanklineCharActive   = { fg = pal.bg3 },
 
     BinedCurrentLine            = { bg = pal.bg2 },
-    TreesitterContext           = { bg = pal.bg2 },
-    TreesitterContextLineNumber = { fg = col.teal, bg = pal.bg2 },
+    TreesitterContext           = { bg = pal.bg1 },
+    TreesitterContextLineNumber = { fg = col.teal },
     MultiCursorCursor           = { bg = pal.bg3 },
 
     UndotreeTimeStamp           = { fg = col.light_blue },

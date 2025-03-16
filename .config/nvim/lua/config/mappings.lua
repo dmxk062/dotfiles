@@ -252,7 +252,7 @@ end)
 
 map("n", scratchleader .. "s", function()
     local bufname = vim.fn.expand("%:t")
-    scratch.open_file_scratch{
+    scratch.open_file_scratch {
         position = "float",
         type = "md"
     }
@@ -306,7 +306,7 @@ abbrev("c", "spoff", "setlocal nospell spelllang=")
 -- If I need it, i can survive typing the full name
 abbrev("c", "f", "find")
 abbrev("c", "vf", "vertical sf") -- much shorter, much more useful
-abbrev("c", "v!", "vertical") -- :v doesnt take !bang anyways
+abbrev("c", "v!", "vertical")    -- :v doesnt take !bang anyways
 -- }}}
 
 -- Terminal {{{
@@ -319,38 +319,27 @@ map("n", termleader .. "f", function() terminal.open_term { position = "float" }
 map("n", termleader .. "a", function() terminal.open_term { position = "autosplit" } end)
 
 -- lf, integrates nicely by calling nvr when it needs to open stuff
-map("n", termleader .. "l", function() terminal.open_term { position = "vertical", cmd = { "lf" } } end)
-map("n", termleader .. "L", function() terminal.open_term { position = "horizontal", cmd = { "lf" } } end)
+map("n", termleader .. "l", function()
+    terminal.open_term {
+        position = "autosplit",
+        cmd = { "lf" }
+    }
+end)
 
 -- various other useful programs, capital letter means regular split, lower case vsplit
 map("n", termleader .. "p", function()
     terminal.open_term {
-        position = "vertical",
-        cmd = { "python" },
-        title = "python"
-    }
-end)
-map("n", termleader .. "P", function()
-    terminal.open_term {
-        position = "horizontal",
+        position = "autosplit",
         cmd = { "python" },
         title = "python"
     }
 end)
 map("n", termleader .. "q", function()
     terminal.open_term {
-        position = "vertical",
+        position = "autosplit",
         cmd = { "qalc" },
         title = "qalc",
         size = { 60, 20 },
-    }
-end)
-map("n", termleader .. "Q", function()
-    terminal.open_term {
-        position = "horizontal",
-        cmd = { "qalc" },
-        title = "qalc",
-        size = { 10, 20 },
     }
 end)
 
