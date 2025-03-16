@@ -157,11 +157,9 @@ local colorscheme = {
 
     Yanked                      = { bg = pal.bg1 },
 
-    MarkGlobal                  = { fg = col.yellow, bold = true },
-    MarkLocal                   = { fg = col.light_blue },
-    MarkPosition                = { link = "Number" },
-    MarkUnloaded                = { fg = col.bright_gray },
-    MarkPreview                 = { italic = true, fg = col.bright_gray },
+    GrappleName                 = { fg = col.pink, italic = true },
+    GrappleBold                 = { link = "Identifier" },
+    GrappleCurrent              = { fg = col.teal },
 
     -- don't show those in italic
     helpExample                 = { link = "Normal" },
@@ -335,6 +333,8 @@ add_with_prefix(colorscheme, "Sl", {
     ASR          = { fg = pal.bg1 },
     IText        = { fg = pal.fg0 },
     AText        = { bg = pal.bg1, fg = pal.fg0 },
+    AGrapple     = { bg = pal.bg1, fg = col.magenta },
+    IGrapple     = { fg = col.magenta },
 
     Keys         = { fg = pal.fg0 },
     Register     = { fg = col.magenta, bg = pal.bg1 },

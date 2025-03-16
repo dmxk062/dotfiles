@@ -213,18 +213,6 @@ map("n", bufleader .. "C", function()
 end)
 -- }}}
 
--- Marks {{{
-local marks = require("config.marks")
-map("n", "<space>m", marks.marks_popup) -- show all marks in the current context
-
--- automatically generate mark name
-map("n", "m<space>", marks.set_first_avail_lmark)
-map("n", "m_", marks.set_first_avail_gmark)
-
--- make mark work across all open buffers
-map("n", "'", marks.jump_first_set_mark)
--- }}}
-
 -- Scratch Buffers {{{
 local scratchleader = "<space>s"
 local scratch = require("config.scratch")

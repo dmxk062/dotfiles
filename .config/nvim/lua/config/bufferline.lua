@@ -3,6 +3,7 @@ local augroup = api.nvim_create_augroup("bufferline", { clear = true })
 local utils = require("config.utils")
 local getbufname = utils.format_buf_name
 local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
+local grapple = require("grapple")
 
 --[[ Rationale {{{
 Most bufferline plugins don't do everything I want out of the box.
@@ -11,7 +12,7 @@ This bufferline behaves like this:
  - Buffers are shown with a virtual buffer number
  - This is made accessible via _G.Bufs_for_idx in use by my \ mappings
  - Buffers show an identifier describing what type of buffer they are
- 
+
 Additionally, tabs are shown with all their open buffers inside them
 and are also accessible via _G.Tabs_for_idx
 
@@ -19,16 +20,18 @@ Like my statusline, redraw only using autocommands
 }}} ]]
 
 ---@type table<integer, integer>
-_G.Bufs_for_idx = {} -- mapping of buffer indices in the buffer line to buffer numbers
+_G.Bufs_for_idx = {}   -- mapping of buffer indices in the buffer line to buffer numbers
 ---@type table<integer, integer>
-_G.Tabs_for_idx = {} -- mapping of tab indices in the buffer line to tab ids
+_G.Tabs_for_idx = {}   -- mapping of tab indices in the buffer line to tab ids
 
 local idx_for_buf = {} -- reverse lookup for tablist
+local grapple_tags -- lookup tags
 
 local sections
 local function redraw()
     vim.o.tabline = table.concat(sections)
 end
+
 
 local function update_buflist()
     Bufs_for_idx = {}
@@ -53,15 +56,34 @@ local function update_buflist()
             goto continue
         end
 
+
         local current = b == active_buf
         local wincount = buf_wincounts[b] or 0
         local name, kind, show_modified = getbufname(b, true)
         local hlprefix = current and "SlA" or "SlI"
         local changed = vim.bo[b].modified
         local readonly = vim.bo[b].readonly or not vim.bo[b].modifiable
+        
+        -- try to add them every time while we do not have any
+        if not grapple_tags then
+            grapple_tags = grapple.tags()
+        end
 
-        local res = string.format("%s%%#%s#%s%d %%#%s#%s %s%s%s",
+        local grapple_mark = ""
+        local mark = grapple.find { buffer = b }
+        if mark then
+            for i, tag in ipairs(grapple_tags) do
+                if tag.path == mark.path then
+                    grapple_mark = string.format("%%#%sGrapple#'%d ", hlprefix, i)
+                    break
+                end
+            end
+        end
+
+
+        local res = string.format("%s%s%%#%s#%s%d %%#%s#%s %s%s%s",
             current and "%#SlASL#" or (count > 1 and "%#SlASL#|" or " "),
+            grapple_mark,
             hlprefix .. btypehighlights[kind],
             btypesymbols[kind],
             count,
@@ -150,6 +172,15 @@ api.nvim_create_autocmd(bufcmds, {
         sections[3] = update_tablist()
         redraw()
     end)
+})
+
+api.nvim_create_autocmd("User", {
+    pattern = "GrappleUpdate",
+    callback = function()
+        grapple_tags = grapple.tags()
+        sections[1] = update_buflist()
+        redraw()
+    end
 })
 
 sections = {
