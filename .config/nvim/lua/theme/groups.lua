@@ -144,7 +144,7 @@ local colorscheme = {
 
     BinedCurrentLine            = { bg = pal.bg2 },
     TreesitterContext           = { bg = pal.bg2 },
-    TreesitterContextLineNumber = { fg = col.teal },
+    TreesitterContextLineNumber = { fg = col.teal, bg = pal.bg2 },
     MultiCursorCursor           = { bg = pal.bg3 },
 
     UndotreeTimeStamp           = { fg = col.light_blue },

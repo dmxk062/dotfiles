@@ -137,6 +137,7 @@ M.config = function()
         textobjects = textobjects,
         matchup = {
             enable = true,
+            disable_virtual_text = true,
         }
     }
 
