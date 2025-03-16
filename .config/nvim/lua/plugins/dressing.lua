@@ -5,10 +5,10 @@ return {
             insert_only = false,
             default_prompt = "Input",
             trim_prompt = false,
-            relative = "win",
+            relative = "editor",
             override = function(opts)
                 opts.col = 0
-                opts.row = vim.o.lines - 3
+                opts.row = vim.o.lines - 2
                 return opts
             end,
         },
@@ -18,7 +18,7 @@ return {
             builtin = {
                 max_height = { 12, 0 },
                 min_height = { 4, 0 },
-                relative = "win",
+                relative = "editor",
                 override = function(opts)
                     opts.col = 0
                     opts.row = vim.o.lines - 3
