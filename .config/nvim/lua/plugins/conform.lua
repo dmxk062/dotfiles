@@ -27,7 +27,7 @@ M.opts = {
         jq = {
             inherit = true,
             -- make jq respect shiftwidth
-            append_args = function(_, ctx)
+            append_args = function(self, ctx)
                 if vim.bo[ctx.buf].expandtab then
                     local width = ctx.shiftwidth
                     if width > 7 then
@@ -37,6 +37,16 @@ M.opts = {
                     return { "--indent", tostring(width) }
                 else
                     return { "--tab" }
+                end
+            end
+        },
+        shfmt = {
+            inherit = true,
+            append_args = function(self, ctx)
+                if vim.bo[ctx.buf].expandtab then 
+                    return ctx.shiftwidth
+                else
+                    return 0
                 end
             end
         }
