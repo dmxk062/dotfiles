@@ -42,7 +42,6 @@ function M.open_term(opts)
     local b = api.nvim_create_buf(true, false)
     vim.b[b].term_autoclose = opts.autoclose or true
 
-    opts.size = opts.size or {}
     utils.win_show_buf(b, { position = opts.position, size = opts.size})
 
     fn.termopen(cmd, {
