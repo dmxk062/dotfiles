@@ -138,27 +138,27 @@ M.opts.defaults = {
     create_layout = create_layout,
     default_mappings = {
         n = {
-            ["<cr>"]     = "select_drop",
-            ["t"]        = "select_tab",
-            ["e"]        = "file_edit",
-            ["s"]        = "select_horizontal",
-            ["v"]        = "select_vertical",
+            ["<cr>"]  = "select_drop",
+            ["t"]     = "select_tab",
+            ["e"]     = "file_edit",
+            ["s"]     = "select_horizontal",
+            ["v"]     = "select_vertical",
 
-            ["j"]        = "move_selection_next",
-            ["k"]        = "move_selection_previous",
+            ["j"]     = "move_selection_next",
+            ["k"]     = "move_selection_previous",
 
-            ["gg"]       = "move_to_top",
-            ["G"]        = "move_to_bottom",
+            ["gg"]    = "move_to_top",
+            ["G"]     = "move_to_bottom",
 
-            ["L"]        = "move_to_bottom",
-            ["M"]        = "move_to_middle",
-            ["H"]        = "move_to_top",
+            ["L"]     = "move_to_bottom",
+            ["M"]     = "move_to_middle",
+            ["H"]     = "move_to_top",
 
-            ["<space>q"] = "smart_send_to_qflist",
-            ["<space>l"] = "smart_send_to_loclist",
+            ["$"]     = "smart_send_to_qflist",
+            ["#"]     = "smart_send_to_loclist",
 
-            ["<esc>"]    = "close",
-            ["q"]        = "close",
+            ["<esc>"] = "close",
+            ["q"]     = "close",
         },
         i = {
             ["<cr>"]   = "select_drop",

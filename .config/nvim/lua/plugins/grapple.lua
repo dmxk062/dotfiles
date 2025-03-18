@@ -106,8 +106,13 @@ M.config = function()
     map("n", "+g", add_grapple)
     map("n", "-g", rm_grapple)
 
-    map("n", "<C-n>", function() grapple.cycle_tags("next") end)
-    map("n", "<C-p>", function() grapple.cycle_tags("prev") end)
+    map("n", "<C-n>", function()
+        if vim.v.count == 0 then
+            grapple.cycle_tags("next")
+        else
+            grapple.select { index = vim.v.count }
+        end
+    end)
     map("n", "<space>h", function() grapple.toggle_tags() end)
     map("n", "<space>m", function() grapple.toggle_loaded() end)
     map("n", "<space>M", function() grapple.toggle_scopes() end)
