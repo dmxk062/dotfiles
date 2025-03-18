@@ -154,3 +154,38 @@ api.nvim_create_user_command("Xxd", function(opts)
     })
 end, {})
 -- }}}
+
+-- Shell Utils {{{
+
+---Set qflist/loclist (with !bang) to result of command
+---@param args vim.user_command_args
+api.nvim_create_user_command("Csh", function(args)
+    local command = args.fargs
+    local exit = vim.system(command, {
+        text = true
+    }):wait()
+
+    if exit.code ~= 0 then
+        vim.notify(("%s: %s exited with code %d:\n%s")
+        :format(args.name, vim.inspect(command), exit.code, exit.stderr),
+            vim.log.levels.ERROR)
+        return
+    end
+
+    -- errorfmt is too complex for this, a simple list of names works
+    local items = vim.tbl_map(function(line)
+        local path, rest = line:match("([^:]+):?(.*)")
+        local row, col, ctx
+        if rest then
+            row, col, ctx = rest:match("(%d+):(%d+):(.*)")
+        end
+        return { filename = path, row = row, col = col, text = ctx or path }
+    end, vim.split(exit.stdout, "\n"))
+
+    if args.bang then
+        vim.fn.setloclist(0, items)
+    else
+        vim.fn.setqflist(items)
+    end
+end, { complete = "shellcmd", nargs = "+", bang = true })
+-- }}}

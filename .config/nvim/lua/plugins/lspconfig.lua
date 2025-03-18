@@ -36,10 +36,64 @@ local M = {
     event = { "BufReadPost", "BufNewFile" }
 }
 
+local utils = require("config.utils")
+
+local lsp_map = function(buf)
+    local map = utils.local_mapper(buf, { group = true })
+    map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
+
+    -- rename using a vim operator in visual mode
+    -- this allows things the default rename behavior just makes harder
+    -- e.g. you can just <space>rgU to capitalize a symbol
+    map("n", "<space>r", function()
+        local old_name = vim.fn.expand("<cword>")
+        vim.cmd("normal! viw")
+        vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+            buffer = vim.api.nvim_get_current_buf(),
+            once = true,
+            callback = function()
+                local new_name = vim.fn.expand("<cword>")
+
+                if new_name == old_name then
+                    return
+                end
+
+                vim.cmd.undo()
+                vim.lsp.buf.rename(new_name)
+            end
+        })
+    end)
+    map("n", "<space>c", "<space>rc", { remap = true })
+    map("n", "<space>R", vim.lsp.buf.rename)
+
+    map("n", "<space>Ql", function()
+        vim.fn.setqflist(vim.diagnostic.toqflist(vim.diagnostic.get(0)))
+        require("quicker").open()
+    end)
+    map("n", "<space>Ll", function()
+        vim.fn.setloclist(0, vim.diagnostic.toqflist(vim.diagnostic.get(0)))
+        require("quicker").open { loclist = true }
+    end)
+
+
+    map("n", "gr", require("telescope.builtin").lsp_references)
+    map("n", "gd", require("telescope.builtin").lsp_definitions)
+    map("n", "<C-w>gd", function()
+        utils.open_window_smart(0, { enter = true })
+        vim.lsp.buf.definition { reuse_win = false }
+        vim.cmd.normal("zz")
+    end)
+    map("n", "<C-w>gr", function()
+        utils.open_window_smart(0, { enter = true })
+        vim.lsp.buf.definition { reuse_win = false }
+        vim.cmd.normal("zz")
+    end)
+    map("n", "gi", require("telescope.builtin").lsp_implementations)
+end
+
 
 M.config = function()
     local lspconfig = require("lspconfig")
-    local utils = require("config.utils")
 
     require("lspconfig.ui.windows").default_options = {
         border = "rounded"
@@ -56,43 +110,7 @@ M.config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
         group = augroup,
         callback = function(opts)
-            local map = utils.local_mapper(opts.buf)
-            map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
-
-            -- rename using a vim operator in visual mode
-            -- this allows things the default rename behavior just makes harder
-            -- e.g. you can just <space>rgU to capitalize a symbol
-            map("n", "<space>r", function()
-                local old_name = vim.fn.expand("<cword>")
-                vim.cmd("normal! viw")
-                vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-                    buffer = vim.api.nvim_get_current_buf(),
-                    once = true,
-                    callback = function()
-                        local new_name = vim.fn.expand("<cword>")
-
-                        if new_name == old_name then
-                            return
-                        end
-
-                        vim.cmd.undo()
-                        vim.lsp.buf.rename(new_name)
-                    end
-                })
-            end)
-            map("n", "<space>c", "<space>rc", { remap = true })
-            map("n", "<space>R", vim.lsp.buf.rename)
-
-
-            map("n", "gr", require("telescope.builtin").lsp_references)
-            map("n", "gd", require("telescope.builtin").lsp_definitions)
-            map("n", "<C-w>gd", function()
-                vim.cmd("Sp")
-                vim.lsp.buf.definition { reuse_win = false }
-                vim.cmd.normal("zz")
-            end)
-            map("n", "gi", require("telescope.builtin").lsp_implementations)
-
+            lsp_map(opts.buf)
             vim.api.nvim_buf_create_user_command(opts.buf, "InlayHint", function(args)
                 local cmd = args.fargs[1]
                 if cmd then
@@ -115,20 +133,10 @@ M.config = function()
 
     vim.api.nvim_create_autocmd("LspDetach", {
         group = augroup,
-        callback = function(opts)
-            for mapping, mode in pairs {
-                ["<space>a"] = { "n", "v" },
-                ["gr"]       = "n",
-                ["gd"]       = "n",
-                ["gi"]       = "n",
-                ["<C-w>gd"]  = "n",
-                ["<space>r"] = "n",
-                ["<space>c"] = "n",
-            } do
-                pcall(utils.lunmap, opts.buf, mode, mapping)
-            end
+        callback = function(ev)
+            utils.unmap_group(ev.buf)
 
-            vim.api.nvim_buf_del_user_command(opts.buf, "InlayHint")
+            vim.api.nvim_buf_del_user_command(ev.buf, "InlayHint")
         end
     })
 
@@ -205,8 +213,8 @@ M.config = function()
             "clangd", "--enable-config", "--background-index"
         },
         on_attach = function()
-            -- cycle between definition and implementation files, who cares about select mode lol
-            utils.lmap(vim.api.nvim_get_current_buf(), "n", "gH", "<cmd>ClangdSwitchSourceHeader<CR>")
+            local map = utils.local_mapper(vim.api.nvim_get_current_buf(), { group = true })
+            map("n", "gH", "<cmd>ClangdSwitchSourceHeader<CR>")
         end
     }
     lspconfig.asm_lsp.setup {

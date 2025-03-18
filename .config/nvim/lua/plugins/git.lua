@@ -17,7 +17,7 @@ local function map_on_git_buffer(buf)
     local utils = require("config.utils")
 
     -- all git related mappings in normal mode use the "<space>g" prefix
-    local map = utils.local_mapper(buf, "<space>g")
+    local map = utils.local_mapper(buf, { prefix = "<space>g" })
 
     map("n", "p", gitsigns.preview_hunk_inline, { desc = "Git: Preview hunk" })
 

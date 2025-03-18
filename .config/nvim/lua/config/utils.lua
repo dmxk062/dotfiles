@@ -320,23 +320,39 @@ function M.lmap(bufnr, mode, keys, action, opts)
     vim.keymap.set(mode, keys, action, opts)
 end
 
+M.local_maps = {}
+
 ---@param bufnr integer
----@param prefix string?
+---@param opts {prefix: string?, group: boolean}?
 ---@return fun(mode: nvim_mode, keys: string, action: string|function, opts: vim.keymap.set.Opts?)
-function M.local_mapper(bufnr, prefix)
-    if prefix then
-        return function(mode, keys, action, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, prefix .. keys, action, opts)
-        end
-    else
-        return function(mode, keys, action, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, keys, action, opts)
+function M.local_mapper(bufnr, opts)
+    opts = opts or {}
+    local prefix = opts.prefix
+
+    if opts.group then
+        if not M.local_maps[bufnr] then
+            M.local_maps[bufnr] = {}
         end
     end
+
+    return function(mode, keys, action, mopts)
+        mopts = mopts or {}
+        mopts.buffer = bufnr
+        keys = prefix and (prefix .. keys) or keys
+        if opts.group then
+            table.insert(M.local_maps[bufnr], { mode, keys })
+        end
+
+        vim.keymap.set(mode, keys, action, mopts)
+    end
+end
+
+function M.unmap_group(bufnr)
+    for _, map in ipairs(M.local_maps[bufnr]) do
+        vim.keymap.del(map[1], map[2], { buffer = bufnr })
+    end
+
+    M.local_maps[bufnr] = nil
 end
 
 ---@param mode nvim_mode
