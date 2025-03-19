@@ -140,6 +140,7 @@ M.indent_only_before = {
     asm      = true,
     lisp     = true,
     yuck     = true,
+    yaml     = true,
 }
 
 local function indent(pos, lcount, opts)
