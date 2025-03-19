@@ -28,9 +28,6 @@ M.config = function()
     -- not for visual mode, since r is useful there
     map("o", "r", function() require("leap.remote").action() end)
 
-    -- use from normal mode: e.g. gR<leap>dd
-    map("n", "gR", function() require("leap.remote").action() end)
-
     -- HACK: override colors only after it has been setup
     vim.api.nvim_create_autocmd("User", {
         pattern = "LeapEnter",
@@ -54,9 +51,9 @@ M.config = function()
         -- delimiters
         "[", "]", "(", ")", "{", "}", "'", '"', "`", "<", ">", "b", "t", "q", "Q", "B",
         -- treesitter
-        "f", "a", "c", "l", "C", "r",
+        "f", "a", "c", "l", "C", "r", "?",
         -- my own
-        "i", "o", "_"
+        "i", "o", "-", ".", "/", "z"
     }
 
     -- not full pairs
@@ -64,7 +61,7 @@ M.config = function()
         -- treesitter
         "iv", "aA", "iN", "in",
         -- my own
-        "id", "iDe", "iDw", "iDi", "iDh", "aI"
+        "id", "iDe", "iDw", "iDi", "iDh", "aI", "gG"
     }
 
     for _, obj in ipairs(textobjects_ai) do

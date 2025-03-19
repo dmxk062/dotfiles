@@ -54,6 +54,14 @@ local function map_on_git_buffer(buf)
     mapboth("s", gitsigns.stage_hunk, "Git: Toggle stage")
     mapboth("U", gitsigns.reset_hunk, "Git: Reset")
 
+    local ts_repeat = require("nvim-treesitter.textobjects.repeatable_move")
+    local nh, ph = ts_repeat.make_repeatable_move_pair(
+        function() gitsigns.nav_hunk("next") end,
+        function() gitsigns.nav_hunk("prev") end
+    )
+    vim.keymap.set({ "n", "x", "o" }, "]g", nh)
+    vim.keymap.set({ "n", "x", "o" }, "[g", ph)
+
 
     utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = buf })
 end

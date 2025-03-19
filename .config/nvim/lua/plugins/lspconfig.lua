@@ -92,6 +92,20 @@ local lsp_map = function(buf)
         vim.lsp.buf.implementation { reuse_win = false, loclist = true }
         vim.cmd.normal("zz")
     end)
+
+    -- map("n", "gO", function()
+    --     local params = vim.lsp.util.make_position_params(0)
+    --     local b = vim.api.nvim_get_current_buf()
+    --     vim.lsp.buf_request(b, "textDocument/documentSymbol", params, function(err, results, ctx, ...)
+    --         if err then
+    --             vim.notify(("Failed to get symbols: %s"):format(err.message))
+    --             return
+    --         end
+    --
+    --         local locations = vim.lsp.util.symbols_to_items(results, b)
+    --         vim.notify(vim.inspect(locations))
+    --     end)
+    -- end)
 end
 
 local on_attach = function(ev)

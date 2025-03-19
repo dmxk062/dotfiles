@@ -44,14 +44,8 @@ map("n", "<space>Lc", function()
 end)
 
 -- set lists to diagnostics
-map("n", "<space>Qd", function()
-    vim.fn.setqflist(vim.diagnostic.toqflist(vim.diagnostic.get(0)))
-    require("quicker").open()
-end)
-map("n", "<space>Ld", function()
-    vim.fn.setloclist(0, vim.diagnostic.toqflist(vim.diagnostic.get(0)))
-    require("quicker").open { loclist = true }
-end)
+map("n", "<space>Qd", function() vim.diagnostic.setqflist { open = true } end)
+map("n", "<space>Ld", function() vim.diagnostic.setloclist { open = true } end)
 
 -- add current line to list
 local function add_qf_item(where)
@@ -128,9 +122,12 @@ map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 
 -- Buffers & Windows {{{
-local bufleader = "\\"
+local bufleader = "'"
+map("n", bufleader, "<nop>")      -- there still is ` for marks, ' is on the home row, soooo nice
 
-map("n", "<C-s>", "<cmd>b #<cr>") -- faster altfile, mnemonic: [s]econd
+map("n", "<C-s>", "<cmd>b #<cr>") -- faster altfile, mnemonic: [s]econd, also allows remapping <C-6>
+map("n", bufleader .. "j", "<cmd>bnext<cr>")
+map("n", bufleader .. "k", "<cmd>bprev<cr>")
 
 local function get_buf_idx()
     local target
@@ -215,8 +212,7 @@ map("n", bufleader .. "h", function()
     api.nvim_win_close(win, false)
 end)
 
-map("n", bufleader .. "<cr>", function() indexed_tab_command("norm! gt") end)
-map("n", bufleader .. "<space>", function() indexed_tab_command("norm! gt") end)
+map("n", bufleader .. '"', function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
 
 -- clear hidden buffers
@@ -267,7 +263,6 @@ map("n", scratchleader .. "<space>", function()
 end)
 
 map("n", scratchleader .. "s", function()
-    local bufname = vim.fn.expand("%:t")
     scratch.open_file_scratch {
         position = "float",
         type = "md"
@@ -377,8 +372,6 @@ map("i", "<C-Del>", "<esc>\"_cw")
 -- Diagnostics {{{
 -- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
-map("n", "<space>Dq", function() vim.diagnostic.setqflist() end)
-map("n", "<space>Dl", function() vim.diagnostic.setloclist() end)
 
 -- target the area of a diagnostic with a textobject
 -- <id> matches every type
@@ -701,9 +694,42 @@ end)
 
 -- go to a root
 map("n", cdleader .. "r", function()
-    local root = vim.fs.root(fn.getcwd(0, 0), { ".git", ".luarc.json", "Makefile" })
+    local root
+    local clients = vim.lsp.get_clients { bufnr = api.nvim_get_current_buf() }
+    if #clients > 0 then
+        root = clients[1].root_dir
+    end
+
+    if not root then
+        root = vim.fs.root(fn.getcwd(0, 0), { ".git", "Makefile" })
+    end
+
     if root then
         vim.cmd.lcd(root)
     end
 end)
 -- }}}
+
+--[[ Ideas for Unbound {{{
+gh
+gl
+gm
+gt
+gw
+gy
+gz
+gA
+gB
+gC
+gD
+gK
+gL
+gM
+gO TODO: make it behave like in help buffer
+gT
+gV
+gW
+gX
+gY
+gZ
+}} ]]

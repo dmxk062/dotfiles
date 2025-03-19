@@ -1,6 +1,6 @@
 -- Spec {{{
 local picker_maps = {
-    diagnostics = "<space>Df",
+    diagnostics = "<space>D",
     git_files = "<space>gf",
     git_status = "<space>gi",
     find_files = "<space>F",
