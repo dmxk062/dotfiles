@@ -102,6 +102,7 @@ M.config = function()
             grapple.untag()
         end
     end
+
     map("n", "<C-t>", add_grapple)
     map("n", "+g", add_grapple)
     map("n", "-g", rm_grapple)
