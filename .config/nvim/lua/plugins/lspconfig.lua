@@ -21,7 +21,7 @@ local M = {
                 }
 
                 require("mason-lspconfig").setup {
-                    automatic_installation = true,
+                    automatic_installation = false,
                     ensure_installed = {
                         "ruff",
                         "asm_lsp",
@@ -29,13 +29,13 @@ local M = {
                     }
                 }
             end,
-            cmd = { "Mason", "MasonUpdate", "MasonInstall", "MasonUninstall", "MasonLog", "MasonUninstallAll" },
+            cmd = { "Mason", "MasonInstall", "MasonLog", "MasonUninstall", "MasonUninstallAll", "MasonUpdate" },
             dependencies = {
                 "williamboman/mason-lspconfig.nvim",
             },
         },
     },
-    event = { "BufReadPost", "BufNewFile" }
+    event = { "BufNewFile", "BufReadPost" }
 }
 -- }}}
 
@@ -124,18 +124,35 @@ end
 -- Configs {{{
 local L = {}
 
--- wrap in a function to delay loading schemastore
-L.jsonls = function()
-    return {
-        capabilities = true,
-        settings = {
-            json = {
-                schemas = require("schemastore").json.schemas(),
-                validate = { enable = true },
-            },
-        },
-    }
+-- lazy load schemastore schemas
+local lazy_schemastore = function(type)
+    return function(client)
+        client.config.settings[type].schemas = require("schemastore")[type].schemas()
+    end
 end
+
+L.jsonls = {
+    capabilities = true,
+    settings = {
+        json = {
+            validate = { enable = true },
+        },
+    },
+    on_init = lazy_schemastore("json")
+}
+
+L.yamlls = {
+    capabilities = true,
+    settings = {
+        yaml = {
+            schemaStore = {
+                enable = false,
+                url = "",
+            }
+        }
+    },
+    on_init = lazy_schemastore("yaml")
+}
 
 L.lua_ls = {
     capabilities = true,
@@ -208,7 +225,7 @@ L.hls = {
     filetypes = { 'haskell', 'lhaskell', 'cabal' },
 }
 
-for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff", "taplo", "yamlls" }) do
+for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff", "taplo" }) do
     L[lsp] = { capabilities = true }
 end
 -- }}}
@@ -259,19 +276,15 @@ M.config = function()
     -- remove sign text
     local signs = {
         "DiagnosticSignError",
-        "DiagnosticSignWarn",
-        "DiagnosticSignInfo",
         "DiagnosticSignHint",
+        "DiagnosticSignInfo",
+        "DiagnosticSignWarn",
     }
     for _, sign in ipairs(signs) do
         vim.fn.sign_define(sign, { texthl = sign, text = "", numhl = sign })
     end
 
     for lsp, config in pairs(L) do
-        if type(config) == "function" then
-            config = config()
-        end
-
         if config.capabilities == true then
             config.capabilities = capabilities
         end
