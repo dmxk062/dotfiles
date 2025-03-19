@@ -175,9 +175,8 @@ L.lua_ls.on_init = function(client)
     end
 
     local libpaths = {
-        vim.env.VIMRUNTIME,                 -- runtime files
-        vim.fn.stdpath("config") .. "/lua", -- config files
-        "${3rd}/luv/library",               -- vim.uv
+        vim.env.VIMRUNTIME,   -- runtime files
+        "${3rd}/luv/library", -- vim.uv
     }
 
     -- load lazy plugins for those that do use lua
@@ -187,6 +186,9 @@ L.lua_ls.on_init = function(client)
             table.insert(libpaths, dir)
         end
     end
+
+    -- put config files last so plugin specs don't conflict with plugins
+    table.insert(libpaths, vim.fn.stdpath("config") .. "/lua")
 
     -- load nvim-specific libraries only for config
     client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
