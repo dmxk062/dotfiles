@@ -1,3 +1,4 @@
+-- Spec {{{
 local M = {
     event = { "BufReadPost", "BufNewFile", "FileType" },
     "nvim-treesitter/nvim-treesitter",
@@ -12,7 +13,9 @@ local M = {
         },
     },
 }
+-- }}}
 
+-- Textobjects {{{
 local textobjects = {}
 textobjects.select = {
     enable = true,
@@ -35,6 +38,9 @@ textobjects.select = {
         -- loops
         ["il"] = "@loop.inner",
         ["al"] = "@loop.outer",
+        -- conditionals
+        ["i?"] = "@conditional.inner",
+        ["a?"] = "@conditional.outer",
         -- classes/structs
         ["iC"] = "@class.inner",
         ["aC"] = "@class.outer",
@@ -45,6 +51,9 @@ textobjects.select = {
         ["ar"] = "@return.outer",
     }
 }
+-- }}}
+
+-- Bracket Movement {{{
 textobjects.move = {
     enable = true,
     goto_next_start = {
@@ -77,7 +86,9 @@ textobjects.move = {
 
     },
 }
+-- }}}
 
+-- Swap {{{
 textobjects.swap = {
     enable = true,
     swap_next = {
@@ -90,6 +101,7 @@ textobjects.swap = {
         ["g<f"] = "@function.outer",
     },
 }
+-- }}}
 
 M.config = function()
     require("nvim-treesitter.configs").setup {
@@ -114,6 +126,9 @@ M.config = function()
             "vim",
             "vimdoc",
         },
+        ignore_install = {},
+
+        modules = {},
 
         sync_install = false,
         auto_install = true,
@@ -150,10 +165,6 @@ M.config = function()
     end
 
     -- additional repeat movements for plugins
-    local gs = require("gitsigns")
-    local nh, ph = ts_repeat.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
-    vim.keymap.set({ "n", "x", "o" }, "]g", nh)
-    vim.keymap.set({ "n", "x", "o" }, "[g", ph)
     local nd, pd = ts_repeat.make_repeatable_move_pair(
         function() vim.diagnostic.goto_next { float = false } end,
         function() vim.diagnostic.goto_prev { float = false } end
