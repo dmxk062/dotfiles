@@ -717,6 +717,7 @@ map("n", "gO", function()
     local buf = api.nvim_get_current_buf()
     local ok, folds = pcall(ufo.getFolds, buf, "treesitter")
 
+
     if not ok then
         folds = ufo.getFolds(buf, "indent")
     end
@@ -765,11 +766,39 @@ gD
 gK
 gL
 gM
-gO TODO: make it behave like in help buffer
 gT
 gV
 gW
 gX
 gY
 gZ
+
+<space>b
+<space>i
+<space>n
+<space>w
+<space>x
+<space>y
+<space>z
+<space>A
+<space>B
+<space>C
+<space>E
+<space>G
+<space>H
+<space>I
+<space>J
+<space>K
+<space>L
+<space>N
+<space>O
+<space>P
+<space>S
+<space>T
+<space>U
+<space>V
+<space>W
+<space>X
+<space>Y
+<space>Z
 }} ]]
