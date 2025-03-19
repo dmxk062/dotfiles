@@ -710,6 +710,46 @@ map("n", cdleader .. "r", function()
 end)
 -- }}}
 
+-- Table of Content {{{
+-- based on folds, so it works for most filetypes
+map("n", "gO", function()
+    local ufo = require("ufo")
+    local buf = api.nvim_get_current_buf()
+    local ok, folds = pcall(ufo.getFolds, buf, "treesitter")
+
+    if not ok then
+        folds = ufo.getFolds(buf, "indent")
+    end
+
+    -- ignore folds with more indent levels
+    -- also remove duplicates
+    local seen = {}
+    folds = vim.tbl_filter(function(f)
+        local show = not seen[f.startLine] and
+            vim.fn.indent(f.startLine + 1) == 0
+
+        seen[f.startLine] = true
+        return show
+    end, folds)
+
+
+
+    local items = {}
+    for _, fold in ipairs(folds) do
+        table.insert(items, {
+            bufnr = buf,
+            lnum = fold.startLine + 1,
+            end_lnum = fold.endLine + 1,
+        })
+    end
+
+    fn.setloclist(0, items)
+    local quicker = require("quicker.init")
+    quicker.refresh(0)
+    quicker.open { loclist = true }
+end)
+-- }}}
+
 --[[ Ideas for Unbound {{{
 gh
 gl

@@ -13,36 +13,7 @@ local M = {
 }
 
 -- icons for kinds {{{
-local kind_symbols = {
-    Text          = "󰉿 txt",
-    Method        = "󰊕 method",
-    Function      = "󰊕 func",
-    Constructor   = "󰙴 init",
-    Field         = ". field",
-    Variable      = "α var",
-    Class         = "󰅩 class",
-    Interface     = " type",
-    Module        = " mod",
-    Property      = ". prop",
-    Unit          = "󰑭 unit",
-    Value         = "󰎠 val",
-    Enum          = " enum",
-    EnumMember    = " enum",
-    Keyword       = " keywd",
-    Snippet       = " snip",
-    Color         = "󰏘 color",
-    File          = "󰈙 file",
-    Reference     = "󰌷 ref",
-    Folder        = " dir",
-    Constant      = "π const",
-    Struct        = "󰅩 struct",
-    Event         = "! event",
-    Operator      = "± op",
-    TypeParameter = " t-param",
-    Latex         = " tex",
-    Neorg         = "󱞁 norg",
-    Cmd           = "",
-}
+local kind_symbols = require("config.utils").lsp_symbols
 -- }}}
 
 local hlleader = "CmpItemKind"

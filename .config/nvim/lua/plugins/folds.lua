@@ -90,7 +90,7 @@ M.opts = {
         default = { "imports", "marker" },
     },
     provider_selector = function(bufnr, ft, bft)
-        return { merged_provider { "treesitter", "marker" }, "indent" }
+        return { merged_provider { "treesitter", "marker", "indent" }, "indent" }
     end,
     preview = {
         win_config = {
