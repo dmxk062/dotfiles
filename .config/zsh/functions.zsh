@@ -54,6 +54,12 @@ function hlcolor {
 }
 
 
+function open {
+    local arg
+    for arg in "$@"; do
+        setsid xdg-open "$arg" >/dev/null 2>&1
+    done
+}
 
 source $ZDOTDIR/handlers.zsh
 
