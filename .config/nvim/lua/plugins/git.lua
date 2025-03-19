@@ -19,6 +19,18 @@ local function map_on_git_buffer(buf)
     -- all git related mappings in normal mode use the "<space>g" prefix
     local map = utils.local_mapper(buf, { prefix = "<space>g" })
 
+    local vimap = function(fn)
+        return function()
+            fn { vim.fn.line("."), vim.fn.line("v") }
+        end
+    end
+
+    local function mapboth(keys, fn, desc)
+        local tbl = { desc = desc }
+        map("n", keys, fn, tbl)
+        map("v", keys, vimap(fn), tbl)
+    end
+
     map("n", "p", gitsigns.preview_hunk_inline, { desc = "Git: Preview hunk" })
 
     -- use fugitive cause its just better :(
@@ -37,12 +49,11 @@ local function map_on_git_buffer(buf)
     map("n", "Q", "<cmd>0Gclog<cr>", { desc = "Git: History to qflist" })
     map("n", "L", "<cmd>0Gllog<cr>", { desc = "Git: History to loclist" })
 
-    map("n", "s", gitsigns.stage_hunk, { desc = "Git: Stage" })
-    map("n", "u", gitsigns.undo_stage_hunk, { desc = "Git: Unstage" })
-    map("n", "U", gitsigns.reset_hunk, { desc = "Git: Reset" })
-
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
-    map("n", "r", gitsigns.toggle_deleted, { desc = "Git: Show deleted" })
+
+    mapboth("s", gitsigns.stage_hunk, "Git: Toggle stage")
+    mapboth("U", gitsigns.reset_hunk, "Git: Reset")
+
 
     utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = buf })
 end
@@ -53,7 +64,7 @@ M[1].opts = {
         add          = { text = "│" },
         change       = { text = "│" },
         delete       = { text = "_" },
-        topdelete    = { text = "-" },
+        topdelete    = { text = "^" },
         changedelete = { text = "~" },
         untracked    = { text = "." },
     },
@@ -88,6 +99,11 @@ M[2].config = function()
             -- enable folding and fold by default
             vim.wo[0][0].foldmethod = "syntax"
             vim.wo[0][0].foldlevel = 0
+
+            -- show the relevant fold immediately
+            -- this will be staged if there is one,
+            -- otherwise it'll be unstaged
+            vim.cmd.normal("Gzo")
         end
     })
 
