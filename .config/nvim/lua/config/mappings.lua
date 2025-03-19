@@ -34,8 +34,14 @@ map(mov, "<space>L0", "<cmd>lfirst<cr>")
 map(mov, "<space>L$", "<cmd>llast<cr>")
 
 -- clear them
-map("n", "<space>Qc", function() fn.setqflist({}, "r") end)
-map("n", "<space>Lc", function() fn.setloclist(0, {}, "r") end)
+map("n", "<space>Qc", function()
+    fn.setqflist({}, "r")
+    require("quicker").close()
+end)
+map("n", "<space>Lc", function()
+    fn.setloclist(0, {}, "r")
+    require("quicker").close { loclist = true }
+end)
 
 -- set lists to diagnostics
 map("n", "<space>Qd", function()
@@ -274,6 +280,10 @@ end)
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
+-- center the screen for jumps
+map(mov, "<C-o>", "<C-o>zz")
+map(mov, "<C-i>", "<C-i>zz")
+
 -- those are hard to reach by default, I do not use Low and High
 -- also kinda logical, a stronger version of lh
 map(mov, "L", "$")
@@ -388,10 +398,11 @@ map(obj, "aQ", [[a']])
 
 --[[ indents, very useful for e.g. python or other indent based languages
 a includes one line above and below,
-except for filetypes e.g. python where only the above line is included by default
-aI always includes the last line too, even for python
+except for filetypes like python or lisps where only the above line is included by default
+aI always includes the last line too, even for python et cetera
 v:count specifies the amount of indent levels around the one at the cursor to select
-this uses shiftwidth, so it's not 100% reliable ]]
+NOTE: this uses shiftwidth, so it's not 100% reliable for files
+that do not have the same shiftwidth or variations in its indent width ]]
 map(obj, "ii", textobjs.indent_inner)
 map(obj, "ai", textobjs.indent_outer)
 map(obj, "aI", textobjs.indent_outer_with_last)
@@ -404,8 +415,16 @@ map(obj, "io", textobjs.create_pattern_obj("([-+*/%%]%s*)[%w_%.]+()"))
 map(obj, "ao", textobjs.create_pattern_obj("()[-+*/%%]%s*[%w_%.]+()"))
 
 -- snake_case or kebab-case word
-map(obj, "i_", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
-map(obj, "a_", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
+map(obj, "i-", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
+map(obj, "a-", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
+
+-- object chain, most languages, NOTE: does not include lua `:`
+map(obj, "i.", textobjs.create_pattern_obj("()[%w._]+()"))
+map(obj, "a.", textobjs.create_pattern_obj("()%s*[%w._]+%s*()"))
+
+-- path component, NOTE: around does only includes final slashes
+map(obj, "i/", textobjs.create_pattern_obj("()[^/]+()"))
+map(obj, "a/", textobjs.create_pattern_obj("()[^/]+()/*"))
 
 -- select the entire buffer
 map(obj, "gG", textobjs.entire_buffer)
