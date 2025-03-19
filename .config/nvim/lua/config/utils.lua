@@ -322,7 +322,7 @@ end
 
 M.local_maps = {}
 
----@param bufnr integer
+---@param bufnr integer buffer for which to create a local mapper
 ---@param opts {prefix: string?, group: boolean}?
 ---@return fun(mode: nvim_mode, keys: string, action: string|function, opts: vim.keymap.set.Opts?)
 function M.local_mapper(bufnr, opts)
@@ -347,12 +347,14 @@ function M.local_mapper(bufnr, opts)
     end
 end
 
-function M.unmap_group(bufnr)
-    for _, map in ipairs(M.local_maps[bufnr]) do
-        vim.keymap.del(map[1], map[2], { buffer = bufnr })
+---Unmap all mappings created by a local_mapper with `group = true` for the buffer buf
+---@param buf integer Buffer for which local_mapper was created
+function M.unmap_group(buf)
+    for _, map in ipairs(M.local_maps[buf]) do
+        vim.keymap.del(map[1], map[2], { buffer = buf })
     end
 
-    M.local_maps[bufnr] = nil
+    M.local_maps[buf] = nil
 end
 
 ---@param mode nvim_mode
