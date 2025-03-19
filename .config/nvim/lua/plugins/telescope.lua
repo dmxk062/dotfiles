@@ -1,17 +1,19 @@
 -- Spec {{{
+local picker_maps = {
+    diagnostics = "<space>Df",
+    git_files = "<space>gf",
+    git_status = "<space>gi",
+    find_files = "<space>F",
+    oldfiles = "<space>o",
+    live_grep = "<space>/",
+    lsp_workspace_symbols = "<space>v",
+    buffers = "<space><space>",
+    jumplist = "<space><C-o>",
+}
+
 local M = {
     "nvim-telescope/telescope.nvim",
-    keys = {
-        "<space>/",
-        "<space><c-o>",
-        "<space><space>",
-        "<space>Df",
-        "<space>F",
-        "<space>gf",
-        "<space>gi",
-        "<space>o",
-        "<space>v",
-    },
+    keys = vim.tbl_values(picker_maps),
     cmd = { "Telescope" },
     dependencies = {
         {
@@ -259,21 +261,10 @@ M.config = function(_, opts)
     telescope.setup(opts)
     telescope.load_extension("zf-native")
 
-    local maps = {
-        diagnostics = "<space>Df",
-        git_files = "<space>gf",
-        git_status = "<space>gi",
-        find_files = "<space>F",
-        oldfiles = "<space>o",
-        live_grep = "<space>/",
-        lsp_workspace_symbols = "<space>v",
-        buffers = "<space><space>",
-        jumplist = "<space><C-o>",
-    }
-
     local builtin = require("telescope.builtin")
-    for picker, keys in pairs(maps) do
-        vim.keymap.set("n", keys, builtin[picker])
+    local map = require("config.utils").map
+    for picker, keys in pairs(picker_maps) do
+        map("n", keys, builtin[picker])
     end
 end
 
