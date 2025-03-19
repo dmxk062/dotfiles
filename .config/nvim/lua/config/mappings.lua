@@ -37,6 +37,16 @@ map(mov, "<space>L$", "<cmd>llast<cr>")
 map("n", "<space>Qc", function() fn.setqflist({}, "r") end)
 map("n", "<space>Lc", function() fn.setloclist(0, {}, "r") end)
 
+-- set lists to diagnostics
+map("n", "<space>Qd", function()
+    vim.fn.setqflist(vim.diagnostic.toqflist(vim.diagnostic.get(0)))
+    require("quicker").open()
+end)
+map("n", "<space>Ld", function()
+    vim.fn.setloclist(0, vim.diagnostic.toqflist(vim.diagnostic.get(0)))
+    require("quicker").open { loclist = true }
+end)
+
 -- add current line to list
 local function add_qf_item(where)
     local bufnr = api.nvim_get_current_buf()
