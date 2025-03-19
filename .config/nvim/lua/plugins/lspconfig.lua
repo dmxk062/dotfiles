@@ -230,6 +230,7 @@ for _, lsp in pairs({ "bashls", "ts_ls", "html", "jedi_language_server", "ruff",
 end
 -- }}}
 
+-- Config Function {{{
 M.config = function()
     local lspconfig = require("lspconfig")
 
@@ -291,5 +292,6 @@ M.config = function()
         lspconfig[lsp].setup(config)
     end
 end
+-- }}}
 
 return M

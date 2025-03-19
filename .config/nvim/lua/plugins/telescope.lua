@@ -28,7 +28,7 @@ local cur_max_length = 0
 
 --[[ Custom Layout {{{
 Place prompt at bottom of screen, list and preview above it
---]]
+]]
 local function create_layout(picker)
     local Layout = require("telescope.pickers.layout")
     ---@param enter boolean
