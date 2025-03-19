@@ -40,10 +40,10 @@ if [[ "$1" == "$NO" ]]; then
 elif [[ "$1" == "$YES" ]]; then
     case $ROFI_DATA in
     "$LOCK")
-        swaylock
+        gtklock -d
         ;;
     "$SUSPEND")
-        swaylock
+        gtklock -d
         sleep 1
         systemctl suspend
         ;;
