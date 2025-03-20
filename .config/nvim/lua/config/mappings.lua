@@ -283,6 +283,10 @@ map(mov, "<C-i>", "<C-i>zz")
 -- also kinda logical, a stronger version of lh
 map(mov, "L", "$")
 map(mov, "H", "^")
+
+-- keep the old ones around though
+map(mov, "gL", "L")
+map(mov, "gH", "H")
 -- }}}
 
 -- Q to close Windows {{{
@@ -764,7 +768,6 @@ gB
 gC
 gD
 gK
-gL
 gM
 gT
 gV
