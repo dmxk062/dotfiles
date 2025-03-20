@@ -92,35 +92,6 @@ local lsp_map = function(buf)
         vim.lsp.buf.implementation { reuse_win = false, loclist = true }
         vim.cmd.normal("zz")
     end)
-
-    -- symbol outline / ToC
-    map("n", "gO", function()
-        local params = vim.lsp.util.make_position_params(0)
-        local b = vim.api.nvim_get_current_buf()
-        vim.lsp.buf_request(b, "textDocument/documentSymbol", params, function(err, results, ctx, ...)
-            if err then
-                vim.notify(("Failed to get symbols: %s"):format(err.message))
-                return
-            end
-
-            local items = {}
-            for _, entry in ipairs(results) do
-                local start, stop = entry.selectionRange.start, entry.selectionRange["end"]
-                table.insert(items, {
-                    lnum = start.line + 1,
-                    end_lnum = stop.line + 1,
-                    col = start.character + 1,
-                    end_col = stop.character + 1,
-                    bufnr = b,
-                })
-            end
-
-            vim.fn.setloclist(0, items)
-            local quicker = require("quicker.init")
-            quicker.refresh(0)
-            quicker.open { loclist = true }
-        end)
-    end)
 end
 
 local on_attach = function(ev)
