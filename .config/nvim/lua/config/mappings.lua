@@ -193,6 +193,7 @@ map("n", bufleader .. "S", function() open_buf_in("horizontal", { direction = "a
 map("n", bufleader .. "t", function() open_buf_in("tab") end)
 map("n", bufleader .. "f", function() open_buf_in("float") end)
 map("n", bufleader .. "a", function() open_buf_in("autosplit") end)
+map("n", bufleader .. "r", function() open_buf_in("replace") end)
 
 map("n", bufleader .. "d", function()
     local target = get_buf_idx()
