@@ -78,6 +78,9 @@ local snippets_for_ft = {
         ["lreq"] = {
             body = "local ${1:mod} = require(\"${1}\")"
         },
+        ["pr"] = {
+            body = "vim.print(vim.inspect($1))"
+        },
         ["--fold"] = {
             desc = "Folded Block Comment",
             body = function()
