@@ -61,6 +61,7 @@ local colorscheme = {
     DiffChange                  = { bg = pal.bg1 },
     DiffAdd                     = { bg = pal.bg1, fg = col.green, italic = true },
     DiffText                    = { bg = pal.bg1, fg = col.yellow, italic = true },
+    diffFile                    = { link = "Directory" },
 
     Question                    = { fg = col.bright_gray },
     Warnings                    = { fg = col.orange },
@@ -593,7 +594,6 @@ add_with_prefix(colorscheme, "GitSigns", {
 })
 
 add_with_prefix(colorscheme, "fugitive", {
-    UntrackedSection  = { fg = col.bright_gray },
     UntrackedHeading  = { fg = col.purple, italic = true },
     UntrackedModifier = { fg = col.purple },
 
@@ -603,8 +603,16 @@ add_with_prefix(colorscheme, "fugitive", {
     StagedHeading     = { fg = col.green, italic = true },
     StagedModifier    = { fg = col.green },
 
-    Header            = { fg = col.blue },
+    Header            = { link = "@property" },
     SymbolicRef       = { fg = col.green },
+})
+
+add_with_prefix(colorscheme, "git", {
+    Keyword         = { link = "@property" },
+    IdentityHeader  = { link = "@property" },
+    DateHeader      = { link = "@property" },
+    IdentityKeyword = { link = "@property" },
+    File            = { link = "diffFile" },
 })
 -- }}
 

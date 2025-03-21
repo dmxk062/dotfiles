@@ -100,10 +100,10 @@ M[1].opts = {
 -- fugitive {{{
 M[2].config = function()
     vim.g.fugitive_dynamic_colors = false
+    local utils = require("config.utils")
 
-    vim.api.nvim_create_autocmd({ "User" }, {
-        pattern = "FugitiveIndex",
-        callback = function(ev)
+    utils.user_autogroup("config.fugitive", {
+        FugitiveIndex = function(ev)
             -- enable folding and fold by default
             vim.wo[0][0].foldmethod = "syntax"
             vim.wo[0][0].foldlevel = 0
@@ -112,15 +112,19 @@ M[2].config = function()
             -- this will be staged if there is one,
             -- otherwise it'll be unstaged
             vim.cmd.normal("Gzo[zzz")
-        end
-    })
+        end,
 
-    -- make G blame etc appear in the buffer list
-    vim.api.nvim_create_autocmd({ "User" }, {
-        pattern = { "FugitivePager" },
-        callback = function(ev)
+        -- make G blame etc appear in the buffer list
+        FugitivePager = function(ev)
             vim.bo[ev.buf].buflisted = true
-        end
+        end,
+
+        FugitiveCommit = function()
+            vim.defer_fn(function()
+                vim.wo[0][0].foldmethod = "syntax"
+                vim.wo[0][0].foldlevel = 0
+            end, 100)
+        end,
     })
 end
 

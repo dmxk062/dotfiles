@@ -424,6 +424,7 @@ function M.win_show_buf(b, opts)
 
     return api.nvim_get_current_win()
 end
+
 -- }}}
 
 -- LSP Symbols {{{
@@ -474,6 +475,18 @@ M.autogroup = function(name, commands)
         tbl.group = group
 
         api.nvim_create_autocmd(ev, tbl)
+    end
+end
+
+---@param name string
+---@param commands table<string|string[], function>
+M.user_autogroup = function(name, commands)
+    local group = api.nvim_create_augroup(name, { clear = true })
+
+    for ev, fn in pairs(commands) do
+        local tbl = { pattern = ev, callback = fn, group = group }
+
+        api.nvim_create_autocmd("User", tbl)
     end
 end
 -- }}}
