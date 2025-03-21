@@ -93,7 +93,7 @@ end
 ---@param opts {normal_only: boolean?, desc: string?}?
 function M.map_function(keys, cb, opts)
     opts = opts or {}
-    mapopts = {
+    local mapopts = {
         expr = true,
         desc = opts.desc
     }
