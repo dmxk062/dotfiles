@@ -449,4 +449,24 @@ M.lsp_symbols = {
 }
 -- }}}
 
+-- Autocommands {{{
+---@param name string
+---@param commands table<string|string[], function|vim.api.keyset.create_autocmd>
+M.autogroup = function(name, commands)
+    local group = api.nvim_create_augroup(name, { clear = true })
+
+    for ev, cfg in pairs(commands) do
+        local tbl
+        if type(cfg) == "function" then
+            tbl = { callback = cfg }
+        else
+            tbl = cfg
+        end
+        tbl.group = group
+
+        api.nvim_create_autocmd(ev, tbl)
+    end
+end
+-- }}}
+
 return M

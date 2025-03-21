@@ -19,14 +19,13 @@ change line number based on mode:
 - command mode: make it absolute for ranges etc
 - normal mode: keep relative motions fast
 ]]
-local cmdline_group = api.nvim_create_augroup("CmdlineLinenr", {})
+
 -- debounce cmdline enter events to make sure we dont have flickering for non user cmdline use
 -- e.g. mappings using : instead of <cmd>
 local cmdline_debounce_timer
 
-autocmd("CmdlineEnter", {
-    group = cmdline_group,
-    callback = function()
+utils.autogroup("config.cmdline_linenr", {
+    CmdlineEnter = function()
         cmdline_debounce_timer = vim.uv.new_timer()
         cmdline_debounce_timer:start(100, 0, vim.schedule_wrap(function()
             if vim.o.number then
@@ -34,12 +33,9 @@ autocmd("CmdlineEnter", {
                 api.nvim__redraw({ statuscolumn = true })
             end
         end))
-    end
-})
+    end,
 
-autocmd("CmdlineLeave", {
-    group = cmdline_group,
-    callback = function()
+    CmdlineLeave = function()
         if cmdline_debounce_timer then
             cmdline_debounce_timer:stop()
             cmdline_debounce_timer = nil
@@ -47,56 +43,46 @@ autocmd("CmdlineLeave", {
         if vim.o.number then
             vim.o.relativenumber = true
         end
-    end
+    end,
 })
-
 -- }}}
 
 -- Sane Defaults for Terminal Mode {{{
-autocmd("TermOpen", {
-    callback = function()
+local nvim_builtin_termclose = api.nvim_get_autocmds { group = "nvim_terminal", event = "TermClose" }
+api.nvim_del_autocmd(nvim_builtin_termclose[1].id)
+
+utils.autogroup("config.terminal_mode", {
+    -- saner options
+    TermOpen = function()
         vim.wo[0][0].number = false
         vim.wo[0][0].relativenumber = false
         vim.wo[0][0].statuscolumn = ""
         vim.wo[0][0].signcolumn = "no"
         -- immediately hand over control
         vim.cmd.startinsert()
-    end
-})
+    end,
 
-local leap_is_open = false
--- enter the terminal by default
-autocmd("User", {
-    pattern = "LeapEnter",
-    callback = function() leap_is_open = true end
-})
-autocmd("User", {
-    pattern = "LeapLeave",
-    callback = function() leap_is_open = false end
-})
-autocmd({ "BufWinEnter", "WinEnter" }, {
-    callback = function(ev)
+    -- automatically close interactive term buffers
+    TermClose = {
+        nested = true, -- trigger BufDelete
+        callback = function(ev)
+            if vim.v.event.status ~= 0 then
+                return
+            end
+
+            if vim.b[ev.buf].term_autoclose then
+                api.nvim_buf_delete(ev.buf, { force = true })
+            end
+        end
+    },
+
+    -- automatically enter insert
+    [{ "BufWinEnter", "WinEnter" }] = function(ev)
         -- make sure that remote leap operations are not affected
-        if vim.bo[ev.buf].buftype == "terminal" and not leap_is_open then
+        if vim.bo[ev.buf].buftype == "terminal" then
             vim.cmd.startinsert()
         end
-    end
-})
-
--- automatically close interactive terminal buffers
-local nvim_builtin_termclose = api.nvim_get_autocmds { group = "nvim_terminal", event = "TermClose" }
-api.nvim_del_autocmd(nvim_builtin_termclose[1].id)
-autocmd("TermClose", {
-    nested = true, -- trigger BufDelete
-    callback = function(ev)
-        if vim.v.event.status ~= 0 then
-            return
-        end
-
-        if vim.b[ev.buf].term_autoclose then
-            api.nvim_buf_delete(ev.buf, { force = true })
-        end
-    end
+    end,
 })
 -- }}}
 
