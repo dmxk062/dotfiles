@@ -1,6 +1,7 @@
 local autocmd = vim.api.nvim_create_autocmd
 local api = vim.api
 local utils = require("config.utils")
+local ftpref = require("config.ftpref")
 
 -- Window Title {{{
 -- change the title in a more intelligent way

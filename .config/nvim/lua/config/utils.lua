@@ -402,12 +402,12 @@ function M.win_show_buf(b, opts)
     elseif opts.position == "tab" then
         vim.cmd("tab split #" .. b)
     else
-        opts.size = opts.size or {}
+        local size = opts.size or {}
         api.nvim_open_win(b, true, {
             vertical = opts.position == "vertical",
             split = opts.direction,
-            width = opts.size[1],
-            height = opts.size[2],
+            width = size[1],
+            height = size[2]
         })
     end
 

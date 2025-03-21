@@ -29,7 +29,7 @@ local F = {
     },
     json = {
         toc_indent = 2,
-    }
+    },
 }
 
 

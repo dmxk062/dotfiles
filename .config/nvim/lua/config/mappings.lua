@@ -1,14 +1,12 @@
 local utils = require("config.utils")
+local ftpref = require("config.ftpref")
 local abbrev = utils.abbrev
 local map = utils.map
 local api = vim.api
 local fn = vim.fn
-local ftpref = require("config.ftpref")
 
--- textobjects
-local obj = { "x", "o" }
--- motion
-local mov = { "n", "x", "o" }
+local obj = { "x", "o" } -- textobjects
+local mov = { "n", "x", "o" } -- motion
 
 -- my own custom textobjects
 local textobjs = require("config.textobjs")
@@ -196,12 +194,14 @@ map("n", bufleader .. "f", function() open_buf_in("float") end)
 map("n", bufleader .. "a", function() open_buf_in("autosplit") end)
 map("n", bufleader .. "r", function() open_buf_in("replace") end)
 
+-- delete buffer
 map("n", bufleader .. "d", function()
     local target = get_buf_idx()
     if not target then return end
 
     api.nvim_buf_delete(target, {})
 end)
+-- close the first window that the buffer is shown in
 map("n", bufleader .. "h", function()
     local target = get_buf_idx()
     if not target then return end
@@ -213,10 +213,6 @@ map("n", bufleader .. "h", function()
     end
     api.nvim_win_close(win, false)
 end)
-
-map("n", bufleader .. '"', function() indexed_tab_command("norm! gt") end)
-map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
-
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
     for _, b in ipairs(api.nvim_list_bufs()) do
@@ -225,6 +221,10 @@ map("n", bufleader .. "C", function()
         end
     end
 end)
+
+map("n", bufleader .. '"', function() indexed_tab_command("norm! gt") end)
+map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
+
 -- }}}
 
 -- Scratch Buffers {{{
