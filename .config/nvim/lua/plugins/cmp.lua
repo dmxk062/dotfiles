@@ -11,9 +11,7 @@ local M = {
     }
 }
 
--- icons for kinds {{{
 local kind_symbols = require("config.utils").lsp_symbols
--- }}}
 
 local hlleader = "CmpItemKind"
 

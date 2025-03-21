@@ -762,7 +762,6 @@ gl
 gm
 gt
 gw
-gy
 gz
 gA
 gB
@@ -805,4 +804,7 @@ gZ
 <space>X
 <space>Y
 <space>Z
+
+i_<C-b>
+i_<C-l>
 }} ]]

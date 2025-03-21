@@ -13,7 +13,7 @@ local M = {}
 --- _ : global snippets
 ---@type table<string, Snippets>
 -- Snippets {{{
-local snippets_for_ft = {
+M.snippets = {
     _ = {
         ["date-epoch"] = {
             body = function() return os.date("%s") end,
@@ -151,7 +151,7 @@ local Cmp_source = {
     complete = function(_, _, cb)
         local ft = vim.bo.filetype
 
-        local snips = snippets_for_ft[ft]
+        local snips = M.snippets[ft]
 
         ---@type lsp.CompletionItem[]
         local res = {}
@@ -160,7 +160,7 @@ local Cmp_source = {
             do_snippets(res, snips)
         end
 
-        local gsnips = snippets_for_ft._
+        local gsnips = M.snippets._
         if gsnips then
             do_snippets(res, gsnips)
         end
