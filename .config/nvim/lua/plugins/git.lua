@@ -111,7 +111,7 @@ M[2].config = function()
             -- show the relevant fold immediately
             -- this will be staged if there is one,
             -- otherwise it'll be unstaged
-            vim.cmd.normal("Gzo")
+            vim.cmd.normal("Gzo[zzz")
         end
     })
 

@@ -593,7 +593,18 @@ add_with_prefix(colorscheme, "GitSigns", {
 })
 
 add_with_prefix(colorscheme, "fugitive", {
-    UntrackedSection = { fg = col.bright_gray },
+    UntrackedSection  = { fg = col.bright_gray },
+    UntrackedHeading  = { fg = col.purple, italic = true },
+    UntrackedModifier = { fg = col.purple },
+
+    UnstagedHeading   = { fg = col.yellow, italic = true },
+    UnstagedModifier  = { fg = col.yellow },
+
+    StagedHeading     = { fg = col.green, italic = true },
+    StagedModifier    = { fg = col.green },
+
+    Header            = { fg = col.blue },
+    SymbolicRef       = { fg = col.green },
 })
 -- }}
 
