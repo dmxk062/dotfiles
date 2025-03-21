@@ -8,7 +8,6 @@ local M = {
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-omni",
-        "f3fora/cmp-spell",
     }
 }
 
@@ -95,6 +94,7 @@ M.opts = {
 M.config = function(_, opts)
     local cmp = require("cmp")
     local compare = cmp.config.compare
+
     opts.mapping = {
         ["<C-e>"] = function(fallback)
             if cmp.visible() then
@@ -117,7 +117,10 @@ M.config = function(_, opts)
                 cmp.complete()
             end
         end,
-        ["<CR>"] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace },
+        ["<C-space>"] = cmp.mapping.confirm {
+            select = true,
+            behavior = cmp.ConfirmBehavior.Replace
+        },
     }
     opts.sorting.comparators = {
         compare.offset,
@@ -132,32 +135,6 @@ M.config = function(_, opts)
 
     cmp.setup(opts)
 
-    cmp.setup.filetype("gitcommit", {
-        sources = cmp.config.sources({
-            { name = "snippet" },
-            { name = "buffer" },
-        })
-    })
-
-
-    cmp.setup.filetype("markdown", {
-        sources = cmp.config.sources({
-            { name = "snippet" },
-            { name = "path" },
-            { name = "buffer" },
-            { name = "nvim_lsp" },
-            { name = "spell" } -- move spell to the bottom so it doesnt slow it down that much
-        })
-    })
-    cmp.setup.filetype("norg", {
-        sources = cmp.config.sources({
-            { name = "neorg" },
-            { name = "snippet" },
-            { name = "path" },
-            { name = "buffer" },
-            { name = "spell" } -- move spell to the bottom so it doesnt slow it down that much
-        })
-    })
     cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline({}),
         sources = cmp.config.sources({
@@ -209,7 +186,6 @@ M.config = function(_, opts)
             },
             { name = "snippet" },
             { name = "buffer" },
-            { name = "nvim_lsp" },
         })
     })
 
