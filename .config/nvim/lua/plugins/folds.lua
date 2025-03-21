@@ -119,11 +119,9 @@ M.config = function(_, opts)
     utils.map("n", "zR", ufo.openAllFolds)
     utils.map("n", "zm", function() ufo.closeFoldsWith(vim.v.count1) end)
 
-    utils.map("n", "<S-k>", function()
+    utils.map("n", "<space>z", function()
         local winid = ufo.peekFoldedLinesUnderCursor()
-        if not winid then
-            vim.lsp.buf.hover()
-        else
+        if winid then
             --HACK: no better way rn
             vim.wo[winid].list = false
             vim.wo[winid].wrap = true
