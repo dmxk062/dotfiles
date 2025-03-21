@@ -47,11 +47,11 @@ M.config = function()
     -- easier to remember, more vim
     local textobjects_ai = {
         -- builtins
-        "w", "W", "s", "p",
+        "w", "W", "p",
         -- delimiters
         "[", "]", "(", ")", "{", "}", "'", '"', "`", "<", ">", "b", "t", "q", "Q", "B",
         -- treesitter
-        "f", "a", "c", "l", "C", "r", "?",
+        "f", "a", "c", "l", "s", "?", "<space>",
         -- my own
         "i", "o", "-", ".", "/", "z"
     }

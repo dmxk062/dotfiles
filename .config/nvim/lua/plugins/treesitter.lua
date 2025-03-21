@@ -21,17 +21,19 @@ textobjects.select = {
     enable = true,
     lookahead = true,
     keymaps = {
+        -- function declarations
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
-        -- read: all arguments
-        ["aA"] = "@call.inner",
+        -- function calls
+        ["iF"] = "@call.inner",
+        ["aF"] = "@call.outer",
         -- read: inside/around argument
         ["ia"] = "@parameter.inner",
         ["aa"] = "@parameter.outer",
         -- value
         ["iv"] = "@assignment.rhs",
         -- name
-        ["iN"] = "@assignment.lhs",
+        ["in"] = "@assignment.lhs",
         -- comment
         ["ic"] = "@comment.inner",
         ["ac"] = "@comment.outer",
@@ -41,14 +43,15 @@ textobjects.select = {
         -- conditionals
         ["i?"] = "@conditional.inner",
         ["a?"] = "@conditional.outer",
-        -- classes/structs
-        ["iC"] = "@class.inner",
-        ["aC"] = "@class.outer",
+        -- classes/[s]tructs, sentences really do not matter
+        ["is"] = "@class.inner",
+        ["as"] = "@class.outer",
         -- numbers
-        ["in"] = "@number.inner",
-        -- return value
-        ["ir"] = "@return.inner",
-        ["ar"] = "@return.outer",
+        ["i1"] = "@number.inner",
+
+        -- blocks
+        ["i<space>"] = "@block.inner",
+        ["a<space>"] = "@block.outer",
     }
 }
 -- }}}

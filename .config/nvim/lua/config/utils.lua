@@ -9,7 +9,7 @@ local fn = vim.fn
 ---|"vertical"
 ---|"horizontal"
 ---|"tab"
----
+
 ---@alias config.win.opts {position: config.win.position, size: [integer, integer]?, direction: "left"|"right"|"above"|"below"}
 
 -- Reusable code for my entire config
@@ -444,7 +444,6 @@ M.lsp_symbols = {
     Operator      = "± op",
     TypeParameter = " t-param",
     Latex         = " tex",
-    Neorg         = "󱞁 norg",
     Cmd           = "",
 }
 -- }}}
