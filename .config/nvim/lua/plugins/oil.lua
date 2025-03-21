@@ -242,7 +242,6 @@ M.opts = {
         ["!"]         = function() open_cmd("!") end,
         ["cm"]        = function() open_cmd("!chmod ") end,
         ["co"]        = function() open_cmd("!chown ") end,
-        ["<C-space>"] = "actions.refresh",
         ["<CR>"]      = "actions.select",
         ["<S-CR>"]    = "actions.select_split",
         ["<C-CR>"]    = "actions.select_vsplit",
@@ -275,6 +274,8 @@ M.opts = {
         ["g=t"]       = function() set_sort("mtime") end,
         ["g=i"]       = function() set_sort("invert") end,
         ["g=d"]       = function() set_sort("default") end,
+
+        ["+q"] = "actions.add_to_qflist",
     },
 }
 -- }}}
