@@ -168,6 +168,16 @@ function M.open_scratch(name, opts)
     scratch.temporary = opts.temporary_file
 end
 
+function M.open_subdir_scratch(path, name, opts)
+    fn.mkdir(M.scratchdir .. path, "p")
+    local scratch = create_and_open_scratch(name, opts)
+    if not scratch then
+        return
+    end
+    scratch.del_on_hide = opts.del_on_hide
+    scratch.temporary = opts.temporary_file
+end
+
 ---@param opts config.scratch.openargs
 function M.open_file_scratch(opts)
     local path
@@ -180,13 +190,24 @@ function M.open_file_scratch(opts)
         name = fn.expand("%:t")
     end
     local bufname = string.format("%s/%s.%s", path, name, opts.type or "md")
-    fn.mkdir(M.scratchdir .. path, "p")
-    local scratch = create_and_open_scratch(bufname, opts)
-    if not scratch then
-        return
+    M.open_subdir_scratch(path, bufname, opts)
+end
+
+---@param opts config.scratch.openargs
+function M.open_project_scratch(opts)
+    local path
+    local buf = api.nvim_get_current_buf()
+    local clients = vim.lsp.get_clients { bufnr = buf }
+    if #clients > 0 then
+        path = clients[1].root_dir
     end
-    scratch.del_on_hide = opts.del_on_hide
-    scratch.temporary = opts.temporary_file
+
+    if not path then
+        path = vim.fs.root(buf, { ".git", "Makefile" })
+    end
+
+    local bufname = string.format("%s/%s.%s", path, vim.fs.basename(path), opts.type or "md")
+    M.open_subdir_scratch(path, bufname, opts)
 end
 
 function M.complete()

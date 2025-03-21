@@ -231,6 +231,7 @@ map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
 local scratchleader = "<space>s"
 local scratch = require("config.scratch")
 
+-- lua buffer
 map("n", scratchleader .. "l", function()
     scratch.open_scratch("eval", {
         type = "lua",
@@ -240,6 +241,7 @@ map("n", scratchleader .. "l", function()
     })
 end)
 
+-- general written notes
 map("n", scratchleader .. "w", function()
     scratch.open_scratch("notes.md", {
         type = "md",
@@ -249,6 +251,7 @@ map("n", scratchleader .. "w", function()
     })
 end)
 
+-- enter scratch name
 map("n", scratchleader .. "<space>", function()
     vim.ui.input({
         prompt = "Scratch",
@@ -264,8 +267,17 @@ map("n", scratchleader .. "<space>", function()
     end)
 end)
 
+-- scratch for current file
 map("n", scratchleader .. "s", function()
     scratch.open_file_scratch {
+        position = "float",
+        type = "md"
+    }
+end)
+
+-- scratch for current project
+map("n", scratchleader .. "p", function()
+    scratch.open_project_scratch {
         position = "float",
         type = "md"
     }
