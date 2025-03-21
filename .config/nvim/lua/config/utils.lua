@@ -10,7 +10,7 @@ local fn = vim.fn
 ---|"horizontal"
 ---|"tab"
 
----@alias config.win.opts {position: config.win.position, size: [integer, integer]?, direction: "left"|"right"|"above"|"below"}
+---@alias config.win.opts {position: config.win.position, size: [number, number]?, direction: "left"|"right"|"above"|"below"}
 
 -- Reusable code for my entire config
 
@@ -376,44 +376,54 @@ end
 ---@param b integer Buffer Number
 ---@param opts config.win.opts
 function M.win_show_buf(b, opts)
+    local width, height
+    local ewidth, eheight = vim.o.columns, vim.o.lines
+
+    if opts.size then
+        width, height = opts.size[1], opts.size[2]
+
+        if width < 1 then
+            width = math.floor(ewidth * width)
+        else
+            width = width
+        end
+
+        if height < 1 then
+            height = math.floor(eheight * height)
+        else
+            height = height
+        end
+    end
+
     if opts.position == "replace" then
         api.nvim_set_current_buf(b)
     elseif opts.position == "float" then
-        local width, height
-        local w = vim.o.columns
-        local h = vim.o.lines
-        if not opts.size then
-            width = math.floor(w * 0.6)
-            height = math.floor(h * 0.6)
-        else
-            width = opts.size[1]
-            height = opts.size[2]
-        end
+        width = width or math.floor(ewidth * 0.6)
+        height = height or math.floor(eheight * 0.6)
+
         api.nvim_open_win(b, true, {
             relative = "editor",
             border = "rounded",
             width = width,
             height = height,
-            col = math.floor((w - width) / 2),
-            row = math.floor((h - height) / 2),
+            col = math.floor((ewidth - width) / 2),
+            row = math.floor((eheight - height) / 2),
         })
     elseif opts.position == "autosplit" then
         M.open_window_smart(b, { enter = true })
     elseif opts.position == "tab" then
         vim.cmd("tab split #" .. b)
     else
-        local size = opts.size or {}
         api.nvim_open_win(b, true, {
             vertical = opts.position == "vertical",
             split = opts.direction,
-            width = size[1],
-            height = size[2]
+            width = width,
+            height = height
         })
     end
 
     return api.nvim_get_current_win()
 end
-
 -- }}}
 
 -- LSP Symbols {{{

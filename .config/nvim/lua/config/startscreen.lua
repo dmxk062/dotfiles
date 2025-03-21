@@ -1,9 +1,13 @@
 local M = {}
+local utils = require("config.utils")
+local api = vim.api
+local fn = vim.fn
 
 --[[ Just eye-candy on startup {{{
 Shows common actions and a few sentences on start
 }}} ]]
 
+-- Helpers {{{
 local state = {
     buf = 0,
     win = 0,
@@ -17,6 +21,11 @@ local state = {
     set_col = 0,
 }
 
+---Print a line with a highlight group
+---@param string string text to print
+---@param hlgroup string highlight group of text
+---@param offset integer padding from the left
+---@param do_newline boolean display a newline afterwards
 local function print_hl_line(string, hlgroup, offset, do_newline)
     if do_newline == nil then
         do_newline = true
@@ -24,11 +33,11 @@ local function print_hl_line(string, hlgroup, offset, do_newline)
     local padded = (" "):rep(offset) .. string
     local width = #padded
     if state.was_newline then
-        vim.api.nvim_buf_set_lines(state.buf, state.cur_row, state.cur_row, false, { padded })
+        api.nvim_buf_set_lines(state.buf, state.cur_row, state.cur_row, false, { padded })
     else
-        vim.api.nvim_buf_set_text(state.buf, state.cur_row, state.cur_col, state.cur_row, state.cur_col, { padded })
+        api.nvim_buf_set_text(state.buf, state.cur_row, state.cur_col, state.cur_row, state.cur_col, { padded })
     end
-    vim.api.nvim_buf_add_highlight(state.buf, state.ns, hlgroup, state.cur_row, state.cur_col, state.cur_col + width)
+    api.nvim_buf_add_highlight(state.buf, state.ns, hlgroup, state.cur_row, state.cur_col, state.cur_col + width)
 
     if do_newline then
         state.cur_col = 0
@@ -40,19 +49,23 @@ local function print_hl_line(string, hlgroup, offset, do_newline)
     end
 end
 
+---print count lines of padding
+---@param count integer
 local function print_padding_lines(count)
     local tbl = {}
     for i = 1, count do
         tbl[i] = ""
     end
-    vim.api.nvim_buf_set_lines(state.buf, state.cur_row, state.cur_row + count, false, tbl)
+    api.nvim_buf_set_lines(state.buf, state.cur_row, state.cur_row + count, false, tbl)
 
 
     state.cur_col = 0
     state.cur_row = state.cur_row + count
     state.was_newline = true
 end
+-- }}}
 
+-- Banner {{{
 local Letters = {
     ---@format disable
     {
@@ -116,15 +129,15 @@ local Letters = {
         [[ █████ ████ ██████]],
     }
     ---@format enable
-
 }
+-- }}}
 
+-- Actions {{{
 local Buttons = {
     {
         map = "s",
         cb = function()
-            vim.cmd.split()
-            vim.cmd.terminal()
+            require("config.terminal").open_term { position = "autosplit" }
         end,
         text = "Shell Buffer",
         hl = "Shell",
@@ -162,8 +175,10 @@ local Buttons = {
     },
     {
         map = "G",
-        cb = function() require("telescope.builtin").git_files() end,
-        text = "Search Git Files",
+        cb = function()
+            vim.cmd("Git")
+        end,
+        text = "Git Status",
         hl = "Git",
         icon = "󰊢",
     },
@@ -189,6 +204,7 @@ local Buttons = {
         icon = "󰿅",
     },
 }
+-- }}}
 
 local function draw_logo(size)
     if size.rows < (#Letters[1] + #Buttons + 4) then
@@ -198,7 +214,7 @@ local function draw_logo(size)
     print_padding_lines(start_row - 1)
     local text_len = 0
     for _, ltr in pairs(Letters) do
-        text_len = text_len + vim.fn.strdisplaywidth(ltr[1])
+        text_len = text_len + fn.strdisplaywidth(ltr[1])
     end
     local start_offset = math.floor((size.cols - text_len) / 2)
 
@@ -237,22 +253,22 @@ end
 
 ---@param opts {text: string, hl: string}
 local function centered_text(size, opts)
-    local width = vim.fn.strdisplaywidth(opts.text)
+    local width = fn.strdisplaywidth(opts.text)
     local padd = math.floor((size.cols - width) / 2)
-    print_hl_line(opts.text, "Startscreen" .. opts.hl, padd)
+    print_hl_line(opts.text, "Startscreen" .. opts.hl, padd, false)
 end
 
 local function draw_screen()
     vim.bo[state.buf].modifiable = true
-    vim.api.nvim_buf_set_lines(state.buf, 0, -1, false, {})
+    api.nvim_buf_set_lines(state.buf, 0, -1, false, {})
     state.cur_row = 0
     state.cur_col = 0
     state.first_editable = 0
     state.was_newline = false
     line_handlers = {}
 
-    local cols = vim.api.nvim_win_get_width(state.win)
-    local rows = vim.api.nvim_win_get_height(state.win)
+    local cols = api.nvim_win_get_width(state.win)
+    local rows = api.nvim_win_get_height(state.win)
     local target = cols > target_widths.lim and target_widths.higher or target_widths.lower
     local padd = math.floor((cols - target) / 2)
 
@@ -272,7 +288,7 @@ local function draw_screen()
     state.last_editable = state.cur_row
     if rows > state.cur_row + 2 then
         print_padding_lines(rows - state.cur_row - 2)
-        centered_text(size, { text = M.texts[(vim.fn.rand() % #M.texts) + 1], hl = "Text" })
+        centered_text(size, { text = M.texts[(fn.rand() % #M.texts) + 1], hl = "Text" })
     end
     vim.bo[state.buf].modifiable = false
     vim.bo[state.buf].modified = false
@@ -286,10 +302,10 @@ local saved_opts = {
 }
 
 function M.show_start_screen()
-    state.buf = vim.api.nvim_get_current_buf()
-    state.win = vim.api.nvim_get_current_win()
-    state.ns = vim.api.nvim_create_namespace("Startscreen")
-    state.augroup = vim.api.nvim_create_augroup("Startscreen", {})
+    state.buf = api.nvim_get_current_buf()
+    state.win = api.nvim_get_current_win()
+    state.ns = api.nvim_create_namespace("Startscreen")
+    state.augroup = api.nvim_create_augroup("Startscreen", {})
 
     for k, v in pairs(saved_opts) do
         vim.wo[state.win][0][k] = v
@@ -299,11 +315,11 @@ function M.show_start_screen()
     vim.bo[0].buflisted = false
 
     -- constrain cursor
-    vim.api.nvim_create_autocmd("CursorMoved", {
+    api.nvim_create_autocmd("CursorMoved", {
         buffer = state.buf,
         group = state.augroup,
         callback = function(ctx)
-            local pos = vim.api.nvim_win_get_cursor(0)
+            local pos = api.nvim_win_get_cursor(0)
             local row
             if pos[1] <= state.first_editable then
                 row = state.first_editable
@@ -312,29 +328,29 @@ function M.show_start_screen()
             else
                 row = pos[1]
             end
-            vim.fn.setcursorcharpos(row, state.set_col)
+            fn.setcursorcharpos(row, state.set_col)
         end
     })
 
-    vim.api.nvim_create_autocmd({ "WinResized" }, {
+    api.nvim_create_autocmd({ "WinResized" }, {
         group = state.augroup,
         callback = draw_screen,
     })
 
-    vim.api.nvim_create_autocmd({ "BufWinLeave", "BufHidden" }, {
+    api.nvim_create_autocmd({ "BufWinLeave", "BufHidden" }, {
         buffer = state.buf,
         once = true,
         group = state.augroup,
         callback = function(ctx)
-            vim.api.nvim_del_augroup_by_id(state.augroup)
+            api.nvim_del_augroup_by_id(state.augroup)
             vim.defer_fn(function()
-                vim.api.nvim_buf_delete(state.buf, { force = true })
+                api.nvim_buf_delete(state.buf, { force = true })
             end, 10)
         end
     })
 
     vim.keymap.set("n", "<CR>", function()
-        local row = vim.api.nvim_win_get_cursor(0)[1]
+        local row = api.nvim_win_get_cursor(0)[1]
         if line_handlers[row] then
             line_handlers[row]()
         end
