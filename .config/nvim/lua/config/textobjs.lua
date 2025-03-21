@@ -1,6 +1,7 @@
 local M = {}
 local api = vim.api
 local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
+local ftpref = require("config.ftpref")
 
 --[[ Rationale {{{
 see https://github.com/chrisgrieser/nvim-various-textobjs
@@ -127,22 +128,6 @@ local function line_is_blank(lnum)
     return line:find("^%s*$") ~= nil
 end
 
--- filetypes for which outer indentation should only be applied to lines above by default
--- this is only due to language syntax and might not 100% be reliable
--- e.g. multiline lists/maps in python
---
--- to force both, use `aI`(current mapping), this also works in other filetypes,
--- so use that for macros to force that behavior
-M.indent_only_before = {
-    python   = true,
-    norg     = true,
-    markdown = true,
-    asm      = true,
-    lisp     = true,
-    yuck     = true,
-    yaml     = true,
-}
-
 local function indent(pos, lcount, opts)
     local multiplier = vim.v.count > 1 and (vim.v.count - 1) or 0
     local around = vim.o.shiftwidth * multiplier
@@ -172,7 +157,7 @@ local function indent(pos, lcount, opts)
         nextl = nextl + 1
     end
 
-    if opts.outer and not opts.always_last and M.indent_only_before[vim.bo[0].ft] then
+    if opts.outer and not opts.always_last and ftpref[vim.bo[0].ft].indent_only_above then
         nextl = nextl - 1
     end
     if not opts.outer then

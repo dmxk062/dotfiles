@@ -3,6 +3,7 @@ local abbrev = utils.abbrev
 local map = utils.map
 local api = vim.api
 local fn = vim.fn
+local ftpref = require("config.ftpref")
 
 -- textobjects
 local obj = { "x", "o" }
@@ -721,24 +722,30 @@ map("n", "gO", function()
     local ufo = require("ufo")
     local buf = api.nvim_get_current_buf()
     local ok, folds = pcall(ufo.getFolds, buf, "treesitter")
-
-
     if not ok then
         folds = ufo.getFolds(buf, "indent")
     end
+
+    local ft = vim.bo[buf].ft
+
+    local indent_max = (ftpref[ft].toc_indent or 0) * vim.bo.shiftwidth
 
     -- ignore folds with more indent levels
     -- also remove duplicates
     local seen = {}
     folds = vim.tbl_filter(function(f)
-        local show = not seen[f.startLine] and
-            vim.fn.indent(f.startLine + 1) == 0
+        if vim.api.nvim_buf_get_lines(buf, f.startLine, f.startLine + 1, false)[1] == "{" then
+            f.startLine = f.startLine - 1
+            if f.startLine <= 0 then
+                return false
+            end
+        end
 
+        local show = not seen[f.startLine] and
+            vim.fn.indent(f.startLine + 1) <= indent_max
         seen[f.startLine] = true
         return show
     end, folds)
-
-
 
     local items = {}
     for _, fold in ipairs(folds) do
@@ -750,7 +757,7 @@ map("n", "gO", function()
     end
 
     fn.setloclist(0, items)
-    local quicker = require("quicker.init")
+    local quicker = require("quicker")
     quicker.refresh(0)
     quicker.open { loclist = true }
 end)
