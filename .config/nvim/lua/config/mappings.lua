@@ -314,6 +314,19 @@ map(mov, "H", "^")
 -- keep the old ones around though
 map(mov, "gL", "L")
 map(mov, "gH", "H")
+
+map("n", "z=", function()
+    local word = fn.expand("<cword>")
+    local suggestions = fn.spellsuggest(word, 9)
+    vim.ui.select(suggestions, { prompt = "Spell" }, function(replacement)
+        if not replacement then
+            return
+        end
+
+        vim.cmd('normal! "_ciw' .. replacement)
+        vim.cmd.stopinsert()
+    end)
+end)
 -- }}}
 
 -- Give Q more purpose {{{
@@ -357,8 +370,8 @@ abbrev("c", "vt", "vertical terminal")
 abbrev("c", "st", "horizontal terminal")
 
 -- same for fugitive
-abbrev("c", "vG",  "vertical Git")
-abbrev("c", "sG",  "horizontal Git")
+abbrev("c", "vG", "vertical Git")
+abbrev("c", "sG", "horizontal Git")
 
 abbrev("c", "v!", "vertical")   -- :v doesnt take !bang anyways
 abbrev("c", "s!", "horizontal") -- same for consistency
@@ -801,62 +814,12 @@ map("n", "gO", function()
     quicker.open { loclist = true }
 end)
 
--- view information in manpage
+-- view information in manpage or help
 -- this is also meant to be overridden if necessary, which is why it's here
 map("n", "gK", function()
-    return "<cmd>Man " .. fn.expand("<cword>") .. "<cr>"
+    if vim.startswith(vim.fn.expand("%:p"), vim.fn.stdpath("config")) then
+        return "<cmd>h " .. vim.fn.expand("<cword>") .. "<cr>"
+    else
+        return "<cmd>Man " .. fn.expand("<cword>") .. "<cr>"
+    end
 end, { expr = true })
--- }}}
-
---[[ Ideas for Unbound {{{
-gh
-gl
-gm
-gt
-gw
-gz
-gA
-gB
-gC
-gD
-gK
-gM
-gT
-gV
-gW
-gX
-gY
-gZ
-
-<space>A
-<space>B
-<space>C
-<space>E
-<space>G
-<space>H
-<space>I
-<space>J
-<space>K
-<space>L
-<space>N
-<space>O
-<space>P
-<space>S
-<space>T
-<space>U
-<space>V
-<space>W
-<space>X
-<space>Y
-<space>Z
-<space>b
-<space>h
-<space>i
-<space>n
-<space>w
-<space>x
-<space>y
-
-i_<C-b>
-i_<C-l>
-}} ]]

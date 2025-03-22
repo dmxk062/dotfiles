@@ -21,7 +21,7 @@ return {
                 relative = "editor",
                 override = function(opts)
                     opts.col = 0
-                    opts.row = vim.o.lines - 3
+                    opts.row = vim.o.lines - opts.height * 2
                     return opts
                 end,
             },
