@@ -217,14 +217,6 @@ local function update_filetype()
     end
 end
 
-local function update_wordcount()
-    local wc = vim.fn.wordcount()
-    if wc.visual_words then
-        return string.format(" w:%d c:%d", wc.visual_words, wc.visual_chars)
-    else
-        return " w:" .. wc.words
-    end
-end
 
 -- set up the gradient
 local theme = require("theme.colors")
@@ -272,57 +264,55 @@ end
 local indices = {
     mode = 1,
     title = 2,
-    diffs = 3,
+    git = 3,
     diagnostics = 4,
     macro = 6,
     filetype = 8,
-    wordcount = 9,
-    progress = 11,
+    progress = 10,
 }
 
-api.nvim_create_autocmd({ "ModeChanged" }, {
-    group = augroup,
-    callback = function(ev)
+utils.autogroup("config.statusline", {
+    ModeChanged = function(ev)
         -- stop flickering
         if vim.bo[ev.buf].filetype == "TelescopePrompt" then
             return
         end
         sections[indices.mode] = update_mode()
         redraw()
-    end
-})
+    end,
+    [{ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", "FileChangedRO", "TermRequest" }] =
+        vim.schedule_wrap(function()
+            sections[indices.title] = update_title()
+            sections[indices.git] = update_git()
+            redraw()
+        end),
 
-api.nvim_create_autocmd({ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", "FileChangedRO", "TermRequest" }, {
-    group = augroup,
-    callback = vim.schedule_wrap(function()
-        sections[indices.title] = update_title()
-        redraw()
-    end)
-})
+    [{ "BufEnter", "FileType", "BufLeave" }] =
+        vim.schedule_wrap(function()
+            -- prevent completion etc
+            if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
+                return
+            end
+            sections[indices.filetype] = update_filetype()
+            redraw()
+        end),
 
-api.nvim_create_autocmd({ "BufEnter", "FileType", "BufLeave" }, {
-    group = augroup,
-    callback = vim.schedule_wrap(function()
-        -- prevent completion etc
-        if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
-            return
-        end
-        sections[indices.filetype] = update_filetype()
-        redraw()
-    end)
-})
+    [{ "RecordingEnter", "RecordingLeave" }] =
+        function(ev)
+            sections[indices.macro] = update_macro(ev.event)
+            redraw()
+        end,
 
-api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
-    group = augroup,
-    callback = function(ev)
-        sections[indices.macro] = update_macro(ev.event)
-        redraw()
-    end
+    User = {
+        pattern = { "FugitiveChanged", "FugitiveObject", "GitSignsUpdate" },
+        callback = vim.schedule_wrap(function()
+            sections[indices.git] = update_git()
+        end)
+    }
 })
 
 local always_timer = vim.uv.new_timer()
 always_timer:start(0, 100, vim.schedule_wrap(function()
-    sections[indices.wordcount] = update_wordcount()
     sections[indices.progress] = update_progress()
     redraw()
 end))
@@ -334,7 +324,6 @@ normal_timer:start(0, 100, vim.schedule_wrap(function()
         return
     end
     sections[indices.diagnostics] = update_diagnostics()
-    sections[indices.diffs] = update_git()
     redraw()
 end)
 )
@@ -352,7 +341,6 @@ sections = {
     " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ", -- keys, position and right align
     " %#SlASL#%#SlAText#",
     "",                                                           -- filetype
-    "",                                                           -- wordcount
     "%#SlASR# ",
     update_progress(),                                            -- % in file
 }
