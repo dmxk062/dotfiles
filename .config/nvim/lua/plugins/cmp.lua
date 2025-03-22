@@ -94,6 +94,7 @@ M.config = function(_, opts)
     local compare = cmp.config.compare
 
     opts.mapping = {
+        ---@param fallback function
         ["<C-e>"] = function(fallback)
             if cmp.visible() then
                 cmp.abort()
@@ -101,6 +102,7 @@ M.config = function(_, opts)
                 fallback()
             end
         end,
+        ---@param fallback function
         ["<C-n>"] = function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
@@ -108,6 +110,7 @@ M.config = function(_, opts)
                 cmp.complete()
             end
         end,
+        ---@param fallback function
         ["<C-p>"] = function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
@@ -125,9 +128,9 @@ M.config = function(_, opts)
         compare.exact,
         compare.scopes,
         compare.score,
+        compare.kind,
         compare.recently_used,
         compare.locality,
-        compare.kind,
         compare.order,
     }
 
@@ -143,21 +146,14 @@ M.config = function(_, opts)
     cmp.setup.cmdline({ ":" }, {
         mapping = cmp.mapping.preset.cmdline({}),
         sources = cmp.config.sources(
-            {
-                { name = "path" }
-            },
-            {
-                {
-                    name = "cmdline",
-                    option = {
-                        ignore_cmds = {}
-                    }
-                }
+            { { name = "path" } },
+            { { name = "cmdline", option = { ignore_cmds = {} } },
             }
         )
     })
     cmp.setup.filetype("DressingInput", {
         mapping = {
+            ---@param fallback function
             ["<Tab>"] = function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
@@ -165,6 +161,7 @@ M.config = function(_, opts)
                     cmp.complete()
                 end
             end,
+            ---@param fallback function
             ["<cr>"] = function(fallback) fallback() end
         },
         sources = cmp.config.sources({

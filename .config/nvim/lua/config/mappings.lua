@@ -330,9 +330,8 @@ end, { expr = true })
 
 -- faster to close windows and cycle
 map("n", "q", function()
-    if #api.nvim_list_wins() > 1 then
-        vim.cmd.close()
-    else
+    local ok = pcall(vim.cmd.close)
+    if not ok then
         vim.cmd.bnext()
     end
 end)
@@ -644,7 +643,7 @@ operators.map_function("<C-w>e", function(mode, region, extra, get)
     vim.bo[buffer].modified = false
 
     api.nvim_buf_set_name(buffer, string.format("%s [%d:%d]", name, region[1][1], region[2][1]))
-    vim.b[buffer]._jhk_type = "region"
+    vim.b[buffer].special_buftype = "region"
 
 
     local original_region = {

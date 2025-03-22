@@ -68,8 +68,8 @@ function M.format_buf_name(buf, short)
             ret = expand_home(name:sub(#"oil://" + 1, -2), 3) .. "/"
         end
         return ret, "oil", true
-    elseif vim.b[buf]._jhk_type then
-        return fn.fnamemodify(name, ":t"), vim.b[buf]._jhk_type, true
+    elseif vim.b[buf].special_buftype then
+        return fn.fnamemodify(name, ":t"), vim.b[buf].special_buftype, true
     elseif ft == "help" then
         return fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
     elseif ft == "git" then
