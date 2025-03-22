@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+if [[ -t 1 ]]; then
+    YELLOW="\e[0;33m"
+    GREEN="\e[0;32m"
+    RED="\e[0;31m"
+    GRAY="\e[0;90m"
+    BRIGHT_GRAY="\e[38;2;97;110;136m"
+    HIGHLIGHT="\e[48;2;59;66;82m"
+    RESET="\e[0m"
+fi
+
+declare -a DIRS=()
+
+ignored=no
+do_ignored=0
+untracked=no
+do_untracked=0
+for arg in "$@"; do
+    case "$arg" in
+    -i | --ignored)
+        ignored=traditional
+        untracked=yes
+        do_ignored=1
+        ;;
+    -u | --untracked)
+        untracked=yes
+        do_untracked=1
+        ;;
+    -a | --all)
+        ignored=traditional
+        untracked=yes
+        do_ignored=1
+        do_untracked=1
+        ;;
+    *) DIRS+=("$arg") ;;
+    esac
+done
+
+function compare_modes {
+
+    if [[ "$1" != "$2" && "$2" != "000000" ]]; then
+        bits_old="${1:2}"
+        bits_new="${2:2}"
+        REPLY=" ${RED}${bits_old}$RESET $GRAY-> ${GREEN}${bits_new}"
+    else
+        REPLY=""
+    fi
+}
+
+function list_changes {
+    local dir="$1"
+    if [[ ! -d "$dir" || ! -x "$dir" ]]; then
+        printf "${RED}Failed to access as directory: %s${RESET}\n" "$dir" >&2
+        return 1
+    fi
+
+    (
+        cd -- "$dir"
+        git status --untracked-files=$untracked --ignored=$ignored --porcelain=v2 "."
+    ) |
+        while read -r type line; do
+            if [[ "$type" == 1 ]]; then
+                read -r mode _ _ old_perm new_perm _ _ file <<<"$line"
+                case "$mode" in
+                \.M) prefix="$YELLOW" ;;
+                \.A) prefix="$GREEN" ;;
+                \.D) prefix="$RED" ;;
+                M\. | MM) prefix="$YELLOW$HIGHLIGHT" ;;
+                A\. | AA) prefix="$GREEN$HIGHLIGHT" ;;
+                D\. | DD) prefix="$RED$HIGHLIGHT" ;;
+                esac
+                compare_modes "$old_perm" "$new_perm"
+
+                printf "$prefix%s$RESET %s$REPLY$RESET\n" "$mode" "$file"
+            elif ((do_untracked)) && [[ "$type" == "?" ]]; then
+                printf "$BRIGHT_GRAY?  %s\n" "$line"
+            elif ((do_ignored)) && [[ "$type" == "!" ]]; then
+                printf "$GRAY!  %s$RESET\n" "$line"
+            elif [[ "$type" == 2 ]]; then
+                read -r mode _ _ old_perm new_perm _ _ _ files <<<"$line"
+                IFS=$'\t' read -r new_path old_path <<<"$files"
+                compare_modes "$old_perm" "$new_perm"
+                case "$mode" in
+                R. | RM)
+                    printf "$HIGHLIGHT$RED%s$YELLOW%s $RED%s $GRAY-> $YELLOW%s$REPLY\n" \
+                        "${mode:0:1}" "${mode:1:2}" "$old_path" "$new_path"
+                    ;;
+                esac
+            fi
+        done
+}
+if ((${#DIRS} == 0)); then
+    DIRS=(".")
+fi
+
+for dir in "${DIRS[@]}"; do
+    list_changes "$dir"
+done
