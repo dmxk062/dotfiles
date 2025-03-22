@@ -266,7 +266,7 @@ local indices = {
     title = 2,
     git = 3,
     diagnostics = 4,
-    macro = 6,
+    macro = 5,
     filetype = 8,
     progress = 10,
 }
@@ -335,7 +335,7 @@ end)
 sections = {
     update_mode(),                                                -- mode
     update_title(),                                               -- title of buf with modified etc
-    "",                                                           -- diff
+    "",                                                           -- git
     "",                                                           -- diagnostics
     "",                                                           -- macro
     " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ", -- keys, position and right align
