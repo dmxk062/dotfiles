@@ -11,7 +11,7 @@ local fn = vim.fn
 ---|"tab"
 
 ---@class config.win.opts
----@field position config.win.position
+---@field position config.win.position?
 ---@field size [number, number]?
 ---@field direction "left"|"right"|"above"|"below"?
 ---@field at_cursor boolean?
