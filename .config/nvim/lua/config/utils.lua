@@ -10,7 +10,11 @@ local fn = vim.fn
 ---|"horizontal"
 ---|"tab"
 
----@alias config.win.opts {position: config.win.position, size: [number, number]?, direction: "left"|"right"|"above"|"below"}
+---@class config.win.opts
+---@field position config.win.position
+---@field size [number, number]?
+---@field direction "left"|"right"|"above"|"below"?
+---@field at_cursor boolean?
 
 -- Reusable code for my entire config
 
@@ -401,13 +405,22 @@ function M.win_show_buf(b, opts)
         width = width or math.floor(ewidth * 0.6)
         height = height or math.floor(eheight * 0.6)
 
+        local row, col
+        if opts.at_cursor then
+            col = -width
+            row = 1
+        else
+            col = math.floor((ewidth - width) / 2)
+            row = math.floor((eheight - height) / 2)
+        end
+
         api.nvim_open_win(b, true, {
-            relative = "editor",
+            relative = opts.at_cursor and "cursor" or "editor",
             border = "rounded",
             width = width,
             height = height,
-            col = math.floor((ewidth - width) / 2),
-            row = math.floor((eheight - height) / 2),
+            col = col,
+            row = row,
         })
     elseif opts.position == "autosplit" then
         M.open_window_smart(b, { enter = true })

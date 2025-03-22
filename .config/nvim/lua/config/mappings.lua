@@ -356,8 +356,8 @@ abbrev("c", "vf", "vertical sf") -- much shorter, much more useful
 abbrev("c", "vt", "vertical terminal")
 abbrev("c", "st", "horizontal terminal")
 
-abbrev("c", "v!", "vertical")    -- :v doesnt take !bang anyways
-abbrev("c", "s!", "horizontal")  -- same for consistency
+abbrev("c", "v!", "vertical")   -- :v doesnt take !bang anyways
+abbrev("c", "s!", "horizontal") -- same for consistency
 -- }}}
 
 -- Terminal {{{
@@ -796,6 +796,12 @@ map("n", "gO", function()
     quicker.refresh(0)
     quicker.open { loclist = true }
 end)
+
+-- view information in manpage
+-- this is also meant to be overridden if necessary, which is why it's here
+map("n", "gK", function()
+    return "<cmd>Man " .. fn.expand("<cword>") .. "<cr>"
+end, { expr = true })
 -- }}}
 
 --[[ Ideas for Unbound {{{
@@ -818,12 +824,6 @@ gX
 gY
 gZ
 
-<space>b
-<space>i
-<space>n
-<space>w
-<space>x
-<space>y
 <space>A
 <space>B
 <space>C
@@ -845,6 +845,13 @@ gZ
 <space>X
 <space>Y
 <space>Z
+<space>b
+<space>h
+<space>i
+<space>n
+<space>w
+<space>x
+<space>y
 
 i_<C-b>
 i_<C-l>

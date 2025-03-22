@@ -1,5 +1,6 @@
 local api = vim.api
 local terminal = require("config.terminal")
+local utils = require("config.utils")
 
 ---@class config.cmdargs
 ---@field name string
@@ -119,7 +120,7 @@ api.nvim_create_user_command("Csh", function(args)
 
     if exit.code ~= 0 then
         vim.notify(("%s: %s exited with code %d:\n%s")
-        :format(args.name, vim.inspect(command), exit.code, exit.stderr),
+            :format(args.name, vim.inspect(command), exit.code, exit.stderr),
             vim.log.levels.ERROR)
         return
     end
@@ -149,5 +150,5 @@ api.nvim_create_user_command("Ft", function(args)
         cmd = args.fargs,
         autoclose = args.bang,
     }
-end, { complete = "shellcmd", nargs = "+", bang = true})
+end, { complete = "shellcmd", nargs = "+", bang = true })
 -- }}}
