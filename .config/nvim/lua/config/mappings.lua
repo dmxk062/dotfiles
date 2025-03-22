@@ -356,6 +356,10 @@ abbrev("c", "vf", "vertical sf") -- much shorter, much more useful
 abbrev("c", "vt", "vertical terminal")
 abbrev("c", "st", "horizontal terminal")
 
+-- same for fugitive
+abbrev("c", "vG",  "vertical Git")
+abbrev("c", "sG",  "horizontal Git")
+
 abbrev("c", "v!", "vertical")   -- :v doesnt take !bang anyways
 abbrev("c", "s!", "horizontal") -- same for consistency
 -- }}}
