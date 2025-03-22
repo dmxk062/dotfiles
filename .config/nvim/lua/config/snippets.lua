@@ -79,7 +79,7 @@ M.snippets = {
             body = "local ${1:mod} = require(\"${1}\")"
         },
         ["pr"] = {
-            body = "vim.print(vim.inspect($1))"
+            body = "vim.notify(vim.inspect($1))"
         },
         ["--fold"] = {
             desc = "Folded Block Comment",
