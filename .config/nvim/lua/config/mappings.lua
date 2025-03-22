@@ -352,6 +352,10 @@ abbrev("c", "spoff", "setlocal nospell spelllang=")
 abbrev("c", "f", "find")
 abbrev("c", "vf", "vertical sf") -- much shorter, much more useful
 
+-- often useful for one-off commands
+abbrev("c", "vt", "vertical terminal")
+abbrev("c", "st", "horizontal terminal")
+
 abbrev("c", "v!", "vertical")    -- :v doesnt take !bang anyways
 abbrev("c", "s!", "horizontal")  -- same for consistency
 -- }}}

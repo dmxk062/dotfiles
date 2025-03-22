@@ -28,7 +28,8 @@ utils.autogroup("config.terminal_mode", {
                 return
             end
 
-            if vim.b[ev.buf].term_autoclose then
+            if vim.b[ev.buf].term_autoclose == true then
+                api.nvim_win_close(0, true)
                 api.nvim_buf_delete(ev.buf, { force = true })
             end
         end
@@ -82,7 +83,7 @@ function M.open_term(opts)
     local cmd, cwd = get_cmd_and_cwd(bname, opts)
 
     local b = api.nvim_create_buf(true, false)
-    vim.b[b].term_autoclose = opts.autoclose or true
+    vim.b[b].term_autoclose = opts.autoclose == nil and true or opts.autoclose
 
     utils.win_show_buf(b, { position = opts.position, size = opts.size })
 

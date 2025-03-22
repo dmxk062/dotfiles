@@ -1,4 +1,5 @@
 local api = vim.api
+local terminal = require("config.terminal")
 
 ---@class config.cmdargs
 ---@field name string
@@ -139,4 +140,14 @@ api.nvim_create_user_command("Csh", function(args)
         vim.fn.setqflist(items)
     end
 end, { complete = "shellcmd", nargs = "+", bang = true })
+
+---Run a single command in a floating window
+---@param args config.cmdargs
+api.nvim_create_user_command("Ft", function(args)
+    terminal.open_term {
+        position = "float",
+        cmd = args.fargs,
+        autoclose = args.bang,
+    }
+end, { complete = "shellcmd", nargs = "+", bang = true})
 -- }}}
