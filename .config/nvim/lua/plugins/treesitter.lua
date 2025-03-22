@@ -179,13 +179,21 @@ M.config = function()
     vim.keymap.set({ "n", "x", "o" }, "]d", nd)
     vim.keymap.set({ "n", "x", "o" }, "[d", pd)
 
+
+    for _, severity in ipairs(vim.diagnostic.severity) do
+        local nb, pb = ts_repeat.make_repeatable_move_pair(
+            function() vim.diagnostic.goto_next { float = false, severity = severity } end,
+            function() vim.diagnostic.goto_prev { float = false, severity = severity } end
+        )
+
+        local key = severity:sub(1, 1):lower()
+        vim.keymap.set({"n", "x", "o"}, "]" .. key, nb)
+        vim.keymap.set({"n", "x", "o"}, "[" .. key, pb)
+    end
     local ne, pe = ts_repeat.make_repeatable_move_pair(
-        function() vim.diagnostic.goto_next { float = false, severity = "ERROR" } end,
+        function() vim.diagnostic.goto_next { float = false, severity = ""} end,
         function() vim.diagnostic.goto_prev { float = false, severity = "ERROR" } end
     )
-
-    vim.keymap.set({ "n", "x", "o" }, "]e", ne)
-    vim.keymap.set({ "n", "x", "o" }, "[e", pe)
 end
 
 return M

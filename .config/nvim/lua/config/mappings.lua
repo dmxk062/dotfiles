@@ -5,7 +5,7 @@ local map = utils.map
 local api = vim.api
 local fn = vim.fn
 
-local obj = { "x", "o" } -- textobjects
+local obj = { "x", "o" }      -- textobjects
 local mov = { "n", "x", "o" } -- motion
 
 -- my own custom textobjects
@@ -17,8 +17,11 @@ local operators = require("config.operators")
 map("n", "gQ", "<nop>") -- ex mode is just plain annoying
 -- }}}
 
--- qflist / loclist {{{
--- quickly navigate qflist and loclist
+--[[ qflist / loclist {{{
+Navigate faster with the lists
+The qflist is generally used for workspace wide things
+The loclist per each buffer/window
+]]
 
 -- qflist: optimized for larger lists
 map(mov, "<space>j", "<cmd>cnext<cr>")
@@ -161,7 +164,6 @@ map("n", bufleader .. bufleader, function()
     end
 end)
 
-
 ---@param dir config.win.position
 ---@param opts config.win.opts?
 local function open_buf_in(dir, opts)
@@ -171,20 +173,8 @@ local function open_buf_in(dir, opts)
     utils.win_show_buf(target, vim.tbl_extend("force", { position = dir }, opts or {}))
 end
 
----run cmd with the effective tab target as an argument
-local function indexed_tab_command(cmd)
-    local target
-    local count = vim.v.count
-    if count == 0 then
-        target = ""
-    else
-        target = Tabs_for_idx[count]
-    end
-
-    vim.cmd(cmd .. " " .. target)
-end
-
 -- show a buffer by its index in the statusbar
+-- 'v, 's are equivalent to <C-w>v and <C-w>s
 map("n", bufleader .. "v", function() open_buf_in("vertical") end)
 map("n", bufleader .. "s", function() open_buf_in("horizontal") end)
 map("n", bufleader .. "V", function() open_buf_in("vertical", { direction = "left" }) end)
@@ -201,6 +191,7 @@ map("n", bufleader .. "d", function()
 
     api.nvim_buf_delete(target, {})
 end)
+
 -- close the first window that the buffer is shown in
 map("n", bufleader .. "h", function()
     local target = get_buf_idx()
@@ -213,6 +204,7 @@ map("n", bufleader .. "h", function()
     end
     api.nvim_win_close(win, false)
 end)
+
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
     for _, b in ipairs(api.nvim_list_bufs()) do
@@ -222,12 +214,32 @@ map("n", bufleader .. "C", function()
     end
 end)
 
+---run cmd with the effective tab target as an argument
+local function indexed_tab_command(cmd)
+    local target
+    local count = vim.v.count
+    if count == 0 then
+        target = ""
+    else
+        target = Tabs_for_idx[count]
+    end
+
+    vim.cmd(cmd .. " " .. target)
+end
+
 map("n", bufleader .. '"', function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
 
 -- }}}
 
--- Scratch Buffers {{{
+--[[ Scratch Buffers {{{
+Scratch buffers are for notes, *not* for documentation or actual code
+
+There are three types of scratch buffers:
+- General: accessible everywhere, e.g. <space>sl, <space>sw
+- File-local: Based on the current buffers path: <space>ss
+- Project-local: Based on the current projects path: <space>sp
+]]
 local scratchleader = "<space>s"
 local scratch = require("config.scratch")
 
@@ -293,8 +305,9 @@ map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" 
 map(mov, "<C-o>", "<C-o>zz")
 map(mov, "<C-i>", "<C-i>zz")
 
--- those are hard to reach by default, I do not use Low and High
--- also kinda logical, a stronger version of lh
+--[[ those are hard to reach by default,
+I do not use Low and High for navigation and even rarer in o-pending mode
+also kinda logical, a stronger version of lh ]]
 map(mov, "L", "$")
 map(mov, "H", "^")
 
@@ -303,9 +316,9 @@ map(mov, "gL", "L")
 map(mov, "gH", "H")
 -- }}}
 
--- Q to close Windows {{{
+-- Give Q more purpose {{{
 -- use <C-q> for macros instead, i dont use them that often
--- use reg, defaulting to "q
+-- use "reg, like other vim commands, defaulting to "q
 map("n", "<C-q>", function()
     if fn.reg_recording() ~= "" then
         return "q"
@@ -318,7 +331,7 @@ end, { expr = true })
 -- faster to close windows and cycle
 map("n", "q", function()
     if #api.nvim_list_wins() > 1 then
-        vim.cmd.quit()
+        vim.cmd.close()
     else
         vim.cmd.bnext()
     end
@@ -339,7 +352,9 @@ abbrev("c", "spoff", "setlocal nospell spelllang=")
 -- If I need it, i can survive typing the full name
 abbrev("c", "f", "find")
 abbrev("c", "vf", "vertical sf") -- much shorter, much more useful
+
 abbrev("c", "v!", "vertical")    -- :v doesnt take !bang anyways
+abbrev("c", "s!", "horizontal")  -- same for consistency
 -- }}}
 
 -- Terminal {{{
@@ -351,7 +366,7 @@ map("n", termleader .. "x", function() terminal.open_term { position = "replace"
 map("n", termleader .. "f", function() terminal.open_term { position = "float" } end)
 map("n", termleader .. "a", function() terminal.open_term { position = "autosplit" } end)
 
--- lf, integrates nicely by calling nvr when it needs to open stuff
+-- lf integrates nicely by calling nvr when it needs to open stuff
 map("n", termleader .. "l", function()
     terminal.open_term {
         position = "autosplit",
@@ -359,7 +374,7 @@ map("n", termleader .. "l", function()
     }
 end)
 
--- various other useful programs, capital letter means regular split, lower case vsplit
+-- various other useful programs
 map("n", termleader .. "p", function()
     terminal.open_term {
         position = "autosplit",
@@ -382,13 +397,13 @@ map("t", "<C-w>", "<C-\\><C-n><C-w>")
 -- }}}
 
 -- Insert Mode {{{
--- useful in insert mode, especially with lshift and rshift as bs and del
-map("i", "<C-BS>", "<C-w>")
-map("i", "<C-Del>", "<esc>\"_cw")
+-- Why would I want to do smth so un-vimmy?
+-- Well, on my keyboard tapping L/R Shift yields BS/Del
+map("i", "<S-BS>", "<C-w>")
+map("i", "<S-Del>", "<c-o>\"_dw")
 -- }}}
 
 -- Diagnostics {{{
--- these work with all diagnostics
 map("n", "<space>d", vim.diagnostic.open_float)
 
 -- target the area of a diagnostic with a textobject
@@ -407,17 +422,20 @@ map(obj, "aq", [[a"]])
 map(obj, "iQ", [[i']])
 map(obj, "aQ", [[a']])
 
---[[ indents, very useful for e.g. python or other indent based languages
-a includes one line above and below,
-except for filetypes like python or lisps where only the above line is included by default
-aI always includes the last line too, even for python et cetera
-v:count specifies the amount of indent levels around the one at the cursor to select
-NOTE: this uses shiftwidth, so it's not 100% reliable for files
-that do not have the same shiftwidth or variations in its indent width ]]
+--[[ indents, very useful for python or other indent based languages
+ a includes one line above and below,
+ except for filetypes like python or lisps where only the above line is included by default
+ aI always includes the last line too, even for python et cetera,
+ useful for object literals like dicts or lists
+
+ v:count specifies the amount of indent levels around the one at the cursor to select
+ NOTE: this uses shiftwidth, so it's not 100% reliable for files
+ that do not have the same shiftwidth or variations in its indent width ]]
 map(obj, "ii", textobjs.indent_inner)
 map(obj, "ai", textobjs.indent_outer)
 map(obj, "aI", textobjs.indent_outer_with_last)
 
+-- a foldmarker section - *not* a fold
 map(obj, "iz", textobjs.foldmarker_inner)
 map(obj, "az", textobjs.foldmarker_outer)
 
@@ -437,7 +455,7 @@ map(obj, "a.", textobjs.create_pattern_obj("()%s*[%w._]+%s*()"))
 map(obj, "i/", textobjs.create_pattern_obj("()[^/]+()"))
 map(obj, "a/", textobjs.create_pattern_obj("()[^/]+()/*"))
 
--- select the entire buffer
+-- entire buffer, mirroring the motions that would achieve the same thing: VgG
 map(obj, "gG", textobjs.entire_buffer)
 -- }}}
 
@@ -484,6 +502,7 @@ end)
 
 -- Evaluate Math (qalc) {{{
 -- evalute qalculate expression/math and insert result in buffer
+-- this is quite useful for e.g. unit conversion
 operators.map_function("<space>em", function(mode, region, extra, get)
     local expressions = get()
     local last_expr = expressions[#expressions]
@@ -608,7 +627,7 @@ end)
 -- Edit Region in Split {{{
 local region_edit_hlns = api.nvim_create_namespace("region_edit")
 
--- edit a region of a file in a new window and bufferview
+-- edit a region of a file in a new window and buffer
 -- changes will be synced on write
 operators.map_function("<C-w>e", function(mode, region, extra, get)
     local lines = get("line")
@@ -710,7 +729,7 @@ map("n", cdleader .. "c", function()
     vim.cmd.lcd(get_cur_buf_parent())
 end)
 
--- go to a root
+-- go to project root
 map("n", cdleader .. "r", function()
     local root
     local clients = vim.lsp.get_clients { bufnr = api.nvim_get_current_buf() }
@@ -729,6 +748,7 @@ end)
 -- }}}
 
 -- Table of Content {{{
+-- like the one in a help buffer
 -- based on folds, so it works for most filetypes
 map("n", "gO", function()
     local ufo = require("ufo")
