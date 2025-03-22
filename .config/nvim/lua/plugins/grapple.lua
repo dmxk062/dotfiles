@@ -109,7 +109,7 @@ M.config = function()
 
     -- use the same prefix as the buffer maps
     map("n", "'g", function() grapple.open_tags() end)
-    map("n", "'G", function() grapple.open_loaded { all = true } end)
+    map("n", "'G", function() grapple.open_scopes { all = true } end)
 
     -- specifying the unnamed register makes little to no sense
     map("n", '""', function()

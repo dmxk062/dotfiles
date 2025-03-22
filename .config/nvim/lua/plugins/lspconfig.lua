@@ -266,14 +266,9 @@ M.config = function()
         }
     }
 
-    local augroup = vim.api.nvim_create_augroup("UserLspConfig", {})
-    vim.api.nvim_create_autocmd("LspAttach", {
-        group = augroup,
-        callback = on_attach,
-    })
-    vim.api.nvim_create_autocmd("LspDetach", {
-        group = augroup,
-        callback = on_detach,
+    local augroup = utils.autogroup("config.lspconfig", {
+        LspAttach = on_attach,
+        LspDetach = on_detach,
     })
 
     -- remove sign text

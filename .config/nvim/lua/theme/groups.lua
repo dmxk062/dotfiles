@@ -344,14 +344,15 @@ add_with_prefix(colorscheme, "Sl", {
     Info         = { fg = col.blue, bg = pal.bg1 },
     Hint         = { fg = col.light_blue, bg = pal.bg1 },
 
-    Row          = { fg = col.magenta },
-    Col          = { fg = col.blue },
+    Row          = { fg = col.pink },
+    Col          = { fg = col.light_blue },
 
     DiffAdded    = { fg = col.green, bg = pal.bg1 },
     DiffChanged  = { fg = col.yellow, bg = pal.bg1 },
     DiffRemoved  = { fg = col.red, bg = pal.bg1 },
     GitHead      = { fg = col.light_blue, bg = pal.bg1 },
     GitHash      = { fg = col.pink, bg = pal.bg1 },
+    LspName      = { link = "Identifier", bg = pal.bg1 },
 
     SModeNormal  = { bg = pal.bg0, fg = col.teal },
     SModeInsert  = { bg = pal.bg0, fg = col.white },

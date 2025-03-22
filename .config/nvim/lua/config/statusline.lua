@@ -1,7 +1,6 @@
 local M = {}
 local api = vim.api
 local fn = vim.fn
-local augroup = api.nvim_create_augroup("statusline", { clear = true })
 local utils = require("config.utils")
 local format_buf_name = utils.format_buf_name
 local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
@@ -9,6 +8,10 @@ local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
 -- my own statusline
 -- this should be faster than lualine
 -- generally, only redraw things using autocmds unless there isnt a good one for the event
+
+local function esc(str)
+    return str:gsub("%%", "%%%%")
+end
 
 local function padd(str, len)
     local strlen = #str
@@ -23,7 +26,6 @@ local function padd(str, len)
         end
     end
 end
-
 
 local mode_to_hl_group = {
     ---@format disable
@@ -78,7 +80,7 @@ end
 local function update_title()
     local buf = api.nvim_get_current_buf()
     local name, kind, show_modified = format_buf_name(buf)
-    name = name and name:gsub("%%", "%%%%")
+    name = name and esc(name)
 
     local changed = vim.bo[buf].modified
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
@@ -93,7 +95,6 @@ local function update_title()
             or "")
     )
 end
-
 
 local function update_diagnostics()
     local err, warn, hint, info = 0, 0, 0, 0
@@ -210,51 +211,20 @@ local function update_git()
 end
 
 local function update_filetype()
-    local ft = vim.bo[0].filetype
-    if ft and ft ~= "" then
-        return ft
-    else
-        return "[noft]"
-    end
+    local ft = vim.bo.filetype
+
+    return ft and ft ~= "" and ft or "[noft]"
 end
 
+local function update_lsp_servers()
+    local clients = vim.lsp.get_clients { bufnr = 0 }
 
--- set up the gradient
-local theme = require("theme.colors")
-for i = 0, 10 do
-    local bg = theme.blend(theme.colors.pink, theme.colors.teal, (i / 10))
-    local fg = theme.palettes.default.inverted
-    vim.api.nvim_set_hl(0, "SlProgress" .. i, {
-        bg = bg,
-        fg = fg,
-    })
-    vim.api.nvim_set_hl(0, "SlSProgress" .. i, {
-        fg = bg,
-        bg = theme.palettes.default.bg0,
-    })
-end
+    ---@param c vim.lsp.Client
+    local display = vim.tbl_map(function(c)
+        return "%#SlHint#*" .. c.name
+    end, clients)
 
-local function update_progress()
-    local row = api.nvim_win_get_cursor(0)[1]
-    local num_lines = api.nvim_buf_line_count(0)
-    local progress = row / num_lines
-    local as_int = math.floor(progress * 10)
-
-    local text
-    if row == 1 then
-        text = "Top"
-    elseif row == num_lines then
-        text = "End"
-    else
-        text = string.format("%02d%%%%", progress * 100)
-    end
-
-    return string.format("%%#SlSProgress%d#%%#SlProgress%d#%s : %d%%#SlSProgress%d#",
-        as_int, as_int,
-        text,
-        num_lines,
-        as_int
-    )
+    return " " .. table.concat(display, ", ")
 end
 
 local sections
@@ -268,10 +238,12 @@ local indices = {
     git = 3,
     diagnostics = 4,
     macro = 5,
-    filetype = 8,
-    progress = 10,
+    lsp_messages = 7,
+    filetype = 9,
+    lsp = 10,
 }
 
+-- Autocommands {{{
 utils.autogroup("config.statusline", {
     ModeChanged = function(ev)
         -- stop flickering
@@ -285,6 +257,7 @@ utils.autogroup("config.statusline", {
         vim.schedule_wrap(function()
             sections[indices.title] = update_title()
             sections[indices.git] = update_git()
+            sections[indices.lsp] = update_lsp_servers()
             redraw()
         end),
 
@@ -304,19 +277,42 @@ utils.autogroup("config.statusline", {
             redraw()
         end,
 
+    [{ "LspAttach", "LspDetach" }] =
+        vim.schedule_wrap(function()
+            sections[indices.lsp] = update_lsp_servers()
+            redraw()
+        end),
+
+    LspProgress = function(ev)
+        local data = ev.data
+        local client = vim.lsp.get_client_by_id(data.client_id)
+        if not client then
+            return
+        end
+
+        local value = data.params.value
+
+        if value.kind == "end" then
+            sections[indices.lsp_messages] = ""
+        else
+            sections[indices.lsp_messages] = string.format(
+                "%%#Identifier#*%s%%#Delimiter#: %%#Normal#%s %%#Number#%02d%%%%",
+                client.name,
+                esc(value.title),
+                value.percentage
+            )
+        end
+        redraw()
+    end,
+
     User = {
         pattern = { "FugitiveChanged", "FugitiveObject", "GitSignsUpdate" },
         callback = vim.schedule_wrap(function()
             sections[indices.git] = update_git()
         end)
-    }
+    },
 })
-
-local always_timer = vim.uv.new_timer()
-always_timer:start(0, 100, vim.schedule_wrap(function()
-    sections[indices.progress] = update_progress()
-    redraw()
-end))
+-- }}}
 
 -- only updates in normal mode
 local normal_timer = vim.uv.new_timer()
@@ -329,8 +325,6 @@ normal_timer:start(0, 100, vim.schedule_wrap(function()
 end)
 )
 
-
-
 -- prefill the line
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
@@ -340,10 +334,11 @@ sections = {
     "",                                                           -- diagnostics
     "",                                                           -- macro
     " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ", -- keys, position and right align
+    "",                                                           -- lsp messages
     " %#SlASL#%#SlAText#",
     "",                                                           -- filetype
+    "",                                                           -- attached lsps
     "%#SlASR# ",
-    update_progress(),                                            -- % in file
 }
 
 vim.o.laststatus = 3
