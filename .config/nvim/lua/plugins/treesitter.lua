@@ -190,10 +190,6 @@ M.config = function()
         vim.keymap.set({"n", "x", "o"}, "]" .. key, nb)
         vim.keymap.set({"n", "x", "o"}, "[" .. key, pb)
     end
-    local ne, pe = ts_repeat.make_repeatable_move_pair(
-        function() vim.diagnostic.goto_next { float = false, severity = ""} end,
-        function() vim.diagnostic.goto_prev { float = false, severity = "ERROR" } end
-    )
 end
 
 return M
