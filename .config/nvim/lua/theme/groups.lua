@@ -350,6 +350,8 @@ add_with_prefix(colorscheme, "Sl", {
     DiffAdded    = { fg = col.green, bg = pal.bg1 },
     DiffChanged  = { fg = col.yellow, bg = pal.bg1 },
     DiffRemoved  = { fg = col.red, bg = pal.bg1 },
+    GitHead      = { fg = col.light_blue, bg = pal.bg1 },
+    GitHash      = { fg = col.pink, bg = pal.bg1 },
 
     SModeNormal  = { bg = pal.bg0, fg = col.teal },
     SModeInsert  = { bg = pal.bg0, fg = col.white },

@@ -1,5 +1,6 @@
 local M = {}
 local api = vim.api
+local fn = vim.fn
 local augroup = api.nvim_create_augroup("statusline", { clear = true })
 local utils = require("config.utils")
 local format_buf_name = utils.format_buf_name
@@ -114,18 +115,19 @@ local function update_diagnostics()
             info = info + 1
         end
     end
+
     local res = {}
     if err > 0 then
-        table.insert(res, string.format("%%#SlError#e:%d", err))
+        table.insert(res, string.format("%%#SlError#!%d", err))
     end
     if warn > 0 then
-        table.insert(res, string.format("%%#SlWarning#w:%d", warn))
+        table.insert(res, string.format("%%#SlWarning#!%d", warn))
     end
     if hint > 0 then
-        table.insert(res, string.format("%%#SlHint#h:%d", hint))
+        table.insert(res, string.format("%%#SlHint#?%d", hint))
     end
     if info > 0 then
-        table.insert(res, string.format("%%#SlInfo#i:%d", info))
+        table.insert(res, string.format("%%#SlInfo#.%d", info))
     end
 
     return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
@@ -145,14 +147,51 @@ local function update_macro(ev)
     end
 end
 
+local function get_fugitive_info()
+    local res = {}
+    local head = fn.FugitiveHead(8)
+    if head and head ~= "" then
+        table.insert(res, string.format("%%#SlGitHead#󰘬 %s", head))
+    end
 
-local function update_diffs()
+    ---@type string
+    local object = fn["fugitive#Object"](api.nvim_buf_get_name(0))
+    if object then
+        if vim.startswith(object, "/tmp") then
+            object = "log"
+        elseif object:match("^%x+$") then
+            object = object:sub(0, 7)
+        elseif object:match("^%x+:.*$") then
+            object = "@" .. object:sub(0, 7)
+        elseif object == ":" then
+            object = "status"
+        else
+            local ago = object:match("^:(%d+):.*")
+            if ago == "0" then
+                object = "HEAD"
+            end
+        end
+        table.insert(res, string.format("%%#SlGitHash#%s", object))
+    end
+
+    return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
+end
+
+local function update_git()
+    if vim.b[0].fugitive_type then
+        return get_fugitive_info()
+    end
+
     if not vim.b[0].gitsigns_status_dict then
         return ""
     end
     local status = vim.b[0].gitsigns_status_dict
 
     local res = {}
+    if status.head then
+        table.insert(res, string.format("%%#SlGitHead#󰘬 %s", status.head))
+    end
+
     if status.added and status.added > 0 then
         table.insert(res, string.format("%%#SlDiffAdded#+%d", status.added))
     end
@@ -233,9 +272,9 @@ end
 local indices = {
     mode = 1,
     title = 2,
-    diagnostics = 3,
-    macro = 4,
-    diffs = 6,
+    diffs = 3,
+    diagnostics = 4,
+    macro = 6,
     filetype = 8,
     wordcount = 9,
     progress = 11,
@@ -295,7 +334,7 @@ normal_timer:start(0, 100, vim.schedule_wrap(function()
         return
     end
     sections[indices.diagnostics] = update_diagnostics()
-    sections[indices.diffs] = update_diffs()
+    sections[indices.diffs] = update_git()
     redraw()
 end)
 )
@@ -305,17 +344,17 @@ end)
 -- prefill the line
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
-    update_mode(),           -- mode
-    update_title(),          -- title of buf with modified etc
-    "",                      -- diagnostics
-    "",                      -- macro
+    update_mode(),                                                -- mode
+    update_title(),                                               -- title of buf with modified etc
+    "",                                                           -- diff
+    "",                                                           -- diagnostics
+    "",                                                           -- macro
     " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ", -- keys, position and right align
-    "",                      -- diff
     " %#SlASL#%#SlAText#",
-    "",                      -- filetype
-    "",                      -- wordcount
+    "",                                                           -- filetype
+    "",                                                           -- wordcount
     "%#SlASR# ",
-    update_progress(),       -- % in file
+    update_progress(),                                            -- % in file
 }
 
 vim.o.laststatus = 3
