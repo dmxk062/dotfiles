@@ -1,7 +1,8 @@
+---@type config.overlay
+---@diagnostic disable-next-line: missing-fields
 local M = {}
 
 local api = vim.api
-local fn = vim.fn
 local utils = require("config.utils")
 
 local function drop_undo(buf)
@@ -14,7 +15,7 @@ local function drop_undo(buf)
 end
 
 local function xxd_disassemble(buf)
-    vim.b[buf].xxd_is_dumped = true
+    M.state[buf].is_dumped = true
     vim.cmd.undojoin()
     vim.cmd { cmd = "!",
         args = { "xxd" },
@@ -24,7 +25,7 @@ local function xxd_disassemble(buf)
 end
 
 local function xxd_reassemble(buf)
-    vim.b[buf].xxd_is_dumped = false
+    M.state[buf].is_dumped = false
     vim.cmd { cmd = "!",
         args = { "xxd -r" },
         range = { 0, api.nvim_buf_line_count(buf) },
@@ -33,23 +34,31 @@ local function xxd_reassemble(buf)
     vim.cmd.undojoin()
 end
 
+---@type table<integer, {last_pos: [integer, integer], is_dumped: boolean, prev_ft: string?, augroup: integer}>
+M.state = {}
 
-function M.attach(buf)
+
+function M.attach(buf, ...)
     if buf == 0 then
         buf = api.nvim_get_current_buf()
     end
 
-    if vim.b[buf].xxd_last_pos then
-        return
+    if M.state[buf] then
+        vim.notify("Xxd: Already attached", vim.log.levels.ERROR)
+        return false
     end
 
     local lsps = vim.lsp.get_clients { bufnr = buf }
     for _, lsp in ipairs(lsps) do
         lsp.stop()
     end
-    vim.b[buf].xxd_last_ft = vim.bo[buf].ft
+    local state = {
+        last_ft = vim.bo[buf].ft,
+        last_pos = { 1, 0 },
+        is_dumped = false,
+    }
+    M.state[buf] = state
 
-    vim.b[buf].xxd_last_pos = { 1, 0 }
     vim.bo[buf].ft = "xxd"
 
     xxd_disassemble(buf)
@@ -61,13 +70,13 @@ function M.attach(buf)
             -- make undo correspond exactly, this may fail, we dont care
             -- nevertheless, undo will always be slow for large files
             pcall(vim.cmd.undojoin)
-            vim.b[buf].xxd_last_pos = api.nvim_win_get_cursor(0)
+            state.last_pos = api.nvim_win_get_cursor(0)
             xxd_reassemble(buf)
         end,
 
         BufWritePost = function()
             xxd_disassemble(buf)
-            api.nvim_win_set_cursor(0, vim.b[buf].xxd_last_pos)
+            api.nvim_win_set_cursor(0, state.last_pos)
             vim.bo[buf].modified = false
         end,
 
@@ -76,18 +85,26 @@ function M.attach(buf)
         end
     }, { buf = buf })
 
-    api.nvim_buf_create_user_command(buf, "Mq", function()
-        api.nvim_del_augroup_by_id(augroup)
-        if vim.b[buf].xxd_is_dumped then
-            xxd_reassemble(buf)
-            drop_undo(buf)
-            vim.b[buf].xxd_last_pos = nil
-            api.nvim_buf_del_user_command(buf, "Mq")
+    state.augroup = augroup
 
-            vim.bo[buf].ft = vim.b[buf].xxd_last_ft
-            vim.b[buf].xxd_last_ft = nil
-        end
-    end, { nargs = 0, desc = "Quit xxd mode" })
+    return true
+end
+
+function M.detach(buf)
+    local state = M.state[buf]
+    if not state then
+        return
+    end
+
+    api.nvim_del_augroup_by_id(state.augroup)
+    if state.is_dumped then
+        xxd_reassemble(buf)
+        drop_undo(buf)
+
+        vim.bo[buf].ft = state.prev_ft
+    end
+
+    M.state[buf] = nil
 end
 
 return M

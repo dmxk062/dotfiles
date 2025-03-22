@@ -1,6 +1,6 @@
 local api = vim.api
 
----@class vim.user_command_args
+---@class config.cmdargs
 ---@field name string
 ---@field args string
 ---@field fargs string[]
@@ -71,7 +71,7 @@ vim.api.nvim_create_user_command("Zcd", zcd_func, zcd_args)
 -- }}}
 
 -- Automatic Split {{{
----@param args vim.user_command_args
+---@param args config.cmdargs
 local function smart_split(args)
     local height = vim.api.nvim_win_get_height(0)
     local width = vim.api.nvim_win_get_width(0)
@@ -109,7 +109,7 @@ vim.api.nvim_create_user_command("Split", smart_split, split_cmd_opts)
 -- Shell Utils {{{
 
 ---Set qflist/loclist (with !bang) to result of command
----@param args vim.user_command_args
+---@param args config.cmdargs
 api.nvim_create_user_command("Csh", function(args)
     local command = args.fargs
     local exit = vim.system(command, {
