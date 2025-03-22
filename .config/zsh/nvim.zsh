@@ -1,6 +1,8 @@
-# make it easier to use nvr inside neovim
+# redirect nv inside neovim to nvr
 # e.g. `cmd | sp` just opens a split with the results
 
+# all of those functions are necessary since nvr with no arguments
+# does not use stdin like neovim
 unalias nv
 function nv {
     nvr "${@:--}"
@@ -27,5 +29,6 @@ function vg {
 compdef vg=rg
 
 EDITOR=nvr
+# make sure the buffer gets closed on q, so that the process exits 
 export GIT_EDITOR="nvr -cc Sp -c 'se bufhidden=delete' --remote-wait"
 ZVM_VI_EDITOR=(nvr -cc Sp -c 'se bufhidden=delete' --remote-wait)

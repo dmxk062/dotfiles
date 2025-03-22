@@ -6,6 +6,7 @@ if [[ "$1" == "unload" ]]; then
     unfunction fupload \
         urlenc urldec \
         makeqr \
+        ip-local \
         ncsend ncrecv ncsenddir ncrecvdir
 
     unalias req 
@@ -56,6 +57,10 @@ function urldec {
         file="${file//\%/\\x}"
         print -- "$file"
     done
+}
+
+function ip-local {
+    ip route | awk '$1 == "default" { print $5" "$9}'
 }
 
 function makeqr {

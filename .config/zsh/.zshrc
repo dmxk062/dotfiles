@@ -1,6 +1,7 @@
 # load the initial time first so we can show it in the prompt
 zmodload zsh/datetime
 _PROMPTTIMER=$EPOCHREALTIME
+
 ZCACHEDIR="$XDG_CACHE_HOME/zsh-$ZSH_VERSION"
 if [[ ! -d "$ZCACHEDIR" ]]; then
     mkdir -p "$ZCACHEDIR"
@@ -12,19 +13,12 @@ declare -A ZSH_COLORS_RGB=(
     ["orange"]="#d08770"
 )
 
-# handle combining unicode chars
-setopt combiningchars
-# cds on path
-setopt autocd
-# no annoying beeps
-unsetopt beep
-# complete inside words, brackets etc 
-setopt completeinword
-
-# make directory stack better
-setopt auto_pushd
+setopt combiningchars   # handle combining unicode chars
+setopt autocd           # cds on path as command
+unsetopt beep           # no annoying beeps
+setopt completeinword   # complete inside words, brackets etc 
+setopt auto_pushd       # add directories to stack automatically
 setopt pushd_ignore_dups
-
 
 # semi lazily generate and load colors for ls etc
 if [[ -z "$LS_COLORS" ]]; then
@@ -80,11 +74,6 @@ SAVEHIST=8000
 
 # hashed directories (accessible via ~name)
 nameddirs=(
-    ["a:/r"]="$HOME/.avfs"
-    ["a:/~"]="$HOME/.avfs$HOME"
-    ["a:/~dl"]="$HOME/.avfs$HOME/Downloads"
-    ["a:/~tmp"]="$HOME/.avfs$HOME/Tmp"
-    ["build"]="$HOME/ws/build"
     ["cfg"]="$HOME/.config"
     ["dl"]="$HOME/Downloads"
     ["docs"]="$HOME/Documents"
@@ -115,12 +104,10 @@ if [[ ! -f "$ZCACHEDIR/zoxide_init.zsh" ]]; then
 fi
 source "$ZCACHEDIR/zoxide_init.zsh"
 
+# like neovim's highlighting
 # null: gray; false, true: teal; numbers: magenta; strings: green; array, object separators: gray; keys: blue
 export JQ_COLORS="0;90:0;36:0;36:0;35:0;32:0;90:0;90:1;34"
 
-if [[ -n "$lf" ]]; then
-    source "$ZDOTDIR/lf.zsh"
-fi
 if [[ -n "$NVIM" ]]; then
     source "$ZDOTDIR/nvim.zsh"
 fi
