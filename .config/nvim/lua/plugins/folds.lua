@@ -100,7 +100,7 @@ M.opts = {
         mappings = {
             jumpTop = "[",
             jumpBot = "]",
-            switch = "K"
+            switch = "<space>z"
         }
     },
 }

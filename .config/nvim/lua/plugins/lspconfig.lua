@@ -174,11 +174,6 @@ L.lua_ls.on_init = function(client)
         return
     end
 
-    local map = utils.local_mapper(vim.api.nvim_get_current_buf(), { group = true })
-    map("n", "gK", function()
-        return "<cmd>h " .. vim.fn.expand("<cword>") .. "<cr>"
-    end, { expr = true })
-
     local libpaths = {
         vim.env.VIMRUNTIME,   -- runtime files
         "${3rd}/luv/library", -- vim.uv
