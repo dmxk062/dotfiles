@@ -147,8 +147,8 @@ end, { complete = "shellcmd", nargs = "+", bang = true })
 api.nvim_create_user_command("Ft", function(args)
     terminal.open_term {
         position = "float",
-        cmd = args.fargs,
+        cmd = #args.fargs > 0 and args.fargs or nil,
         autoclose = args.bang,
     }
-end, { complete = "shellcmd", nargs = "+", bang = true })
+end, { complete = "shellcmd", nargs = "*", bang = true })
 -- }}}
