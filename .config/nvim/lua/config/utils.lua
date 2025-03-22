@@ -462,7 +462,9 @@ M.lsp_symbols = {
 -- Autocommands {{{
 ---@param name string
 ---@param commands table<string|string[], function|vim.api.keyset.create_autocmd>
-M.autogroup = function(name, commands)
+---@param opts {buf: integer}?
+M.autogroup = function(name, commands, opts)
+    opts = opts or {}
     local group = api.nvim_create_augroup(name, { clear = true })
 
     for ev, cfg in pairs(commands) do
@@ -473,9 +475,12 @@ M.autogroup = function(name, commands)
             tbl = cfg
         end
         tbl.group = group
+        tbl.buffer = opts.buf
 
         api.nvim_create_autocmd(ev, tbl)
     end
+
+    return group
 end
 
 ---@param name string

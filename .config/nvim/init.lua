@@ -180,6 +180,7 @@ require("config.mappings")     -- set all the mappings
 require("config.commands")     -- custom commands for all buffers
 require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
+require("config.modes")        -- specialized file operations
 -- }}}
 
 -- for some reason lazy deactivates that
