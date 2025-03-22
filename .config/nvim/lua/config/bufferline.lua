@@ -60,6 +60,8 @@ local function update_buflist()
         local current = b == active_buf
         local wincount = buf_wincounts[b] or 0
         local name, kind, show_modified = getbufname(b, true)
+        name = name and name:gsub("%%", "%%%%")
+
         local hlprefix = current and "SlA" or "SlI"
         local changed = vim.bo[b].modified
         local readonly = vim.bo[b].readonly or not vim.bo[b].modifiable

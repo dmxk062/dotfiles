@@ -78,6 +78,7 @@ end
 local function update_title()
     local buf = api.nvim_get_current_buf()
     local name, kind, show_modified = format_buf_name(buf)
+    name = name and name:gsub("%%", "%%%%")
 
     local changed = vim.bo[buf].modified
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
