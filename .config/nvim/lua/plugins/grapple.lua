@@ -107,16 +107,18 @@ M.config = function()
     map("n", "+g", add_grapple)
     map("n", "-g", rm_grapple)
 
-    map("n", "<C-n>", function()
+    -- use the same prefix as the buffer maps
+    map("n", "'g", function() grapple.open_tags() end)
+    map("n", "'G", function() grapple.open_loaded { all = true } end)
+
+    -- specifying the unnamed register makes little to no sense
+    map("n", '""', function()
         if vim.v.count == 0 then
             grapple.cycle_tags("next")
         else
             grapple.select { index = vim.v.count }
         end
     end)
-    map("n", "<space>h", function() grapple.toggle_tags() end)
-    map("n", "<space>m", function() grapple.toggle_loaded() end)
-    map("n", "<space>M", function() grapple.toggle_scopes() end)
 
     for i = 1, 9 do
         map("n", ("<C-%d>"):format(i), function()
