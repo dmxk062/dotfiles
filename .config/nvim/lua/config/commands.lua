@@ -152,3 +152,14 @@ api.nvim_create_user_command("Ft", function(args)
     }
 end, { complete = "shellcmd", nargs = "*", bang = true })
 -- }}}
+
+-- Spell {{{
+api.nvim_create_user_command("Spell", function(args)
+    return require("config.spell").spell_cmd(args)
+end, {
+    complete = function(...)
+        return require("config.spell").spell_cmd_complete(...)
+    end,
+    nargs = "*",
+})
+-- }}}

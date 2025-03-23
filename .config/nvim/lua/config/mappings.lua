@@ -315,18 +315,8 @@ map(mov, "H", "^")
 map(mov, "gL", "L")
 map(mov, "gH", "H")
 
-map("n", "z=", function()
-    local word = fn.expand("<cWORD>")
-    local suggestions = fn.spellsuggest(word, 9)
-    vim.ui.select(suggestions, { prompt = "Spell" }, function(replacement)
-        if not replacement then
-            return
-        end
-
-        vim.cmd('normal! "_ciW' .. replacement)
-        vim.cmd.stopinsert()
-    end)
-end)
+-- more humane spell popup
+map("n", "z=", function() require("config.spell").popup() end)
 -- }}}
 
 -- Give Q more purpose {{{
@@ -354,13 +344,6 @@ end)
 -- force quit
 abbrev("c", "Q", "q!")
 abbrev("c", "Qa", "qa!")
-
--- shortcuts to enable/disable spelling
-abbrev("c", "spen", "setlocal spell spelllang=en_us")
-abbrev("c", "spus", "setlocal spell spelllang=en_us")
-abbrev("c", "spgb", "setlocal spell spelllang=en_us")
-abbrev("c", "spde", "setlocal spell spelllang=de_at")
-abbrev("c", "spoff", "setlocal nospell spelllang=")
 
 -- I probably never will actually use :file
 -- If I need it, i can survive typing the full name
