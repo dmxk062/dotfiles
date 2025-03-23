@@ -229,8 +229,10 @@ end
 
 local function update_filetype()
     local ft = vim.bo.filetype
+    local ftstr = ft and ft ~= "" and ft or "[noft]"
+    local spell = vim.wo.spell and ("?" ..  vim.bo.spelllang) or "[nospell]"
 
-    return ft and ft ~= "" and ft or "[noft]"
+    return ftstr .. " " .. spell
 end
 
 local function update_lsp_servers()
@@ -288,6 +290,14 @@ utils.autogroup("config.statusline", {
             sections[indices.filetype] = update_filetype()
             redraw()
         end),
+
+    OptionSet = {
+        pattern = { "spell", "spellang" },
+        callback = function()
+            sections[indices.filetype] = update_filetype()
+            redraw()
+        end
+    },
 
     [{ "RecordingEnter", "RecordingLeave" }] =
         function(ev)
