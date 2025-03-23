@@ -316,14 +316,14 @@ map(mov, "gL", "L")
 map(mov, "gH", "H")
 
 map("n", "z=", function()
-    local word = fn.expand("<cword>")
+    local word = fn.expand("<cWORD>")
     local suggestions = fn.spellsuggest(word, 9)
     vim.ui.select(suggestions, { prompt = "Spell" }, function(replacement)
         if not replacement then
             return
         end
 
-        vim.cmd('normal! "_ciw' .. replacement)
+        vim.cmd('normal! "_ciW' .. replacement)
         vim.cmd.stopinsert()
     end)
 end)
