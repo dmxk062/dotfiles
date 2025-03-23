@@ -43,9 +43,9 @@ textobjects.select = {
         -- conditionals
         ["i?"] = "@conditional.inner",
         ["a?"] = "@conditional.outer",
-        -- classes/[s]tructs, sentences really do not matter
-        ["is"] = "@class.inner",
-        ["as"] = "@class.outer",
+        -- [k]lasses/structs
+        ["ik"] = "@class.inner",
+        ["ak"] = "@class.outer",
         -- numbers
         ["i1"] = "@number.inner",
 
