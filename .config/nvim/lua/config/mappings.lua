@@ -357,6 +357,8 @@ abbrev("c", "Qa", "qa!")
 
 -- shortcuts to enable/disable spelling
 abbrev("c", "spen", "setlocal spell spelllang=en_us")
+abbrev("c", "spus", "setlocal spell spelllang=en_us")
+abbrev("c", "spgb", "setlocal spell spelllang=en_us")
 abbrev("c", "spde", "setlocal spell spelllang=de_at")
 abbrev("c", "spoff", "setlocal nospell spelllang=")
 
