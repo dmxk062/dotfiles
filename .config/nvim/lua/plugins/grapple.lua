@@ -119,12 +119,6 @@ M.config = function()
             grapple.select { index = vim.v.count }
         end
     end)
-
-    for i = 1, 9 do
-        map("n", ("<C-%d>"):format(i), function()
-            grapple.select { index = i }
-        end)
-    end
 end
 
 return M
