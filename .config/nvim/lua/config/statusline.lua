@@ -9,6 +9,7 @@ local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
 -- this should be faster than lualine
 -- generally, only redraw things using autocmds unless there isnt a good one for the event
 
+-- Utility functions {{{
 local function esc(str)
     return str:gsub("%%", "%%%%")
 end
@@ -26,7 +27,10 @@ local function padd(str, len)
         end
     end
 end
+-- }}}
 
+-- Mode Element {{{
+-- Change color with mode
 local mode_to_hl_group = {
     ---@format disable
     n      = "Normal",
@@ -75,8 +79,9 @@ local function update_mode()
         hl
     )
 end
+-- }}}
 
-
+-- Current Buffer Title {{{
 local function update_title()
     local buf = api.nvim_get_current_buf()
     local name, kind, show_modified = format_buf_name(buf)
@@ -95,7 +100,9 @@ local function update_title()
             or "")
     )
 end
+-- }}}
 
+-- Diagnostics {{{
 local function update_diagnostics()
     local err, warn, hint, info = 0, 0, 0, 0
     local diags = vim.diagnostic.get(0)
@@ -134,7 +141,9 @@ local function update_diagnostics()
 
     return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
 end
+-- }}}
 
+-- Current Macro {{{
 local function update_macro(ev)
     if ev == "RecordingLeave" then
         local last = vim.fn.reg_recording()
@@ -148,7 +157,10 @@ local function update_macro(ev)
         return " %#SlASL#" .. '%#SlRegister#"' .. reg .. " <-%#SlASR#"
     end
 end
+-- }}}
 
+-- Git {{{
+-- extra info for fugitive buffers
 local function get_fugitive_info()
     local res = {}
     local head = fn.FugitiveHead(8)
@@ -209,7 +221,9 @@ local function update_git()
 
     return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
 end
+-- }}}
 
+-- Position in Words, Lines and Search {{{
 local function update_words()
     local count = fn.wordcount()
     local search = ""
@@ -226,7 +240,9 @@ local function update_words()
         count.words
     )
 end
+-- }}}
 
+-- Type of the Current Buffer and Spelling {{{
 local function update_filetype()
     local ft = vim.bo.filetype
     local ftstr = ft and ft ~= "" and ft or "[noft]"
@@ -234,7 +250,9 @@ local function update_filetype()
 
     return ftstr .. " " .. spell
 end
+-- }}}
 
+-- Attached LSPs {{{
 local function update_lsp_servers()
     local clients = vim.lsp.get_clients { bufnr = 0 }
 
@@ -245,6 +263,7 @@ local function update_lsp_servers()
 
     return " " .. table.concat(display, ", ")
 end
+-- }}}
 
 local sections
 local redraw = function()
@@ -374,8 +393,6 @@ sections = {
 
 vim.o.laststatus = 3
 vim.o.showcmdloc = "statusline"
-
 redraw()
-
 
 return M
