@@ -106,6 +106,8 @@ vim.g.c_syntax_for_h = true -- i use C more than C++
 -- make manpage formatting decent
 vim.g.man_hardwrap = 0
 vim.g.ft_man_folding_enable = 1
+
+vim.g.loaded_spellfile_plugin = 1 -- use my own code instead
 -- }}}
 
 -- Lazy {{{
