@@ -53,7 +53,7 @@ function M.attach(buf, ...)
         lsp.stop()
     end
     local state = {
-        last_ft = vim.bo[buf].ft,
+        prev_ft = vim.bo[buf].ft,
         last_pos = { 1, 0 },
         is_dumped = false,
     }
@@ -100,10 +100,10 @@ function M.detach(buf)
     if state.is_dumped then
         xxd_reassemble(buf)
         drop_undo(buf)
-
-        vim.bo[buf].ft = state.prev_ft
     end
 
+    vim.bo[buf].ft = state.prev_ft
+    print("hey")
     M.state[buf] = nil
 end
 
