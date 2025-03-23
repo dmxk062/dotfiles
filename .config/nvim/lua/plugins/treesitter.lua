@@ -154,6 +154,10 @@ M.config = function()
             additional_vim_regex_highlighting = false,
         },
 
+        indent = {
+            enable = true
+        },
+
         textobjects = textobjects,
         matchup = {
             enable = true,
