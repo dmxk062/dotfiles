@@ -28,10 +28,10 @@ local colorscheme = {
     LeapMatch                   = { underline = true, fg = col.yellow },
     LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
 
-    SpellBad                    = { sp = col.orange, undercurl = true },
-    SpellRare                   = { sp = col.magenta, underdotted = true },
-    SpellLocal                  = { sp = col.teal, underdotted = true },
-    SpellCap                    = { sp = col.teal, undercurl = true },
+    SpellBad                    = { sp = col.red, undercurl = true },
+    SpellRare                   = { sp = col.magenta, undercurl = true },
+    SpellLocal                  = { sp = col.pink, undercurl = true },
+    SpellCap                    = { sp = col.yellow, undercurl = true },
 
     LineNr                      = { fg = col.bright_gray },
     LineNrAbove                 = { fg = blend(col.teal, col.bright_gray, 0.3) },
