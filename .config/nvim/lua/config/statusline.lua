@@ -235,7 +235,7 @@ local function update_words()
     end
 
 
-    return search .. string.format("%%#SlWords#%3d/%3d",
+    return search .. string.format("%%#SlWords#%4d/%4d",
         count.cursor_words or count.visual_words,
         count.words
     )
@@ -246,7 +246,7 @@ end
 local function update_filetype()
     local ft = vim.bo.filetype
     local ftstr = ft and ft ~= "" and ft or "[noft]"
-    local spell = vim.wo.spell and ("?" ..  vim.bo.spelllang) or "[nospell]"
+    local spell = vim.wo.spell and ("?" .. vim.bo.spelllang) or "[nospell]"
 
     return ftstr .. " " .. spell
 end
@@ -376,18 +376,20 @@ end)
 -- prefill the line
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
-    update_mode(),                                                -- mode
-    update_title(),                                               -- title of buf with modified etc
-    "",                                                           -- git
-    "",                                                           -- diagnostics
-    "",                                                           -- macro
-    " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ", -- keys, position and right align
-    "",                                                           -- lsp messages
+    update_mode(),  -- mode
+    update_title(), -- title of buf with modified etc
+    "",             -- git
+    "",             -- diagnostics
+    "",             -- macro
+    -- keys, position and right align
+    " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ",
+    "", -- lsp messages
     " %#SlASL#%#SlAText#",
-    "",                                                           -- words
-    "%#SlLines#  %3l/%3L%#SlAText# ",                             -- progress
-    "",                                                           -- filetype
-    "",                                                           -- attached lsps
+    "", -- words
+    -- progress
+    "%#SlLines#  %3l/%3L%#SlAText# %#SlASR# %#SlAText#",
+    "", -- filetype
+    "", -- attached lsps
     "%#SlASR# ",
 }
 
