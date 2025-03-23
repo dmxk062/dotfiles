@@ -13,6 +13,20 @@ local textobjs = require("config.textobjs")
 -- create custom operators easily
 local operators = require("config.operators")
 
+local function cmd_with_count(cmd)
+    return function()
+        local ok, err = pcall(api.nvim_cmd, {
+            cmd = cmd,
+            count = vim.v.count1,
+            mods = {
+            }
+        }, { output = false })
+        if not ok then
+            vim.notify(err, vim.log.levels.ERROR)
+        end
+    end
+end
+
 -- Unmap Unused {{{
 map("n", "gQ", "<nop>") -- ex mode is just plain annoying
 -- }}}
@@ -24,16 +38,18 @@ The loclist per each buffer/window
 ]]
 
 -- qflist: optimized for larger lists
-map(mov, "<space>j", "<cmd>cnext<cr>")
-map(mov, "<space>k", "<cmd>cprev<cr>")
+map(mov, "<space>j", cmd_with_count("cnext"))
+map(mov, "<space>k", cmd_with_count("cprev"))
+map(mov, "<space>n", cmd_with_count("cnfile"))
+map(mov, "<space>N", cmd_with_count("cpfile"))
 map(mov, "<space>0", "<cmd>cfirst<cr>")
 map(mov, "<space>$", "<cmd>clast<cr>")
 
 -- loclist: optimized for much smaller lists
-map(mov, "<C-j>", "<cmd>lnext<cr>")
-map(mov, "<C-k>", "<cmd>lprev<cr>")
-map(mov, "<space>L0", "<cmd>lfirst<cr>")
-map(mov, "<space>L$", "<cmd>llast<cr>")
+map(mov, "<C-j>", cmd_with_count("lnext"))
+map(mov, "<C-k>", cmd_with_count("lprev"))
+map(mov, "<C-S-J>", "<cmd>llast<cr>")
+map(mov, "<C-S-K>", "<cmd>lfirst<cr>")
 
 -- clear them
 map("n", "<space>Qc", function()
@@ -808,3 +824,56 @@ map("n", "gK", function()
         return "<cmd>Man " .. fn.expand("<cword>") .. "<cr>"
     end
 end, { expr = true })
+
+--[[ Ideas for Unbound {{{
+gh
+gl
+gm
+gt
+gw
+gz
+gA
+gB
+gC
+gD
+gK
+gM
+gT
+gV
+gW
+gX
+gY
+gZ
+
+<space>A
+<space>B
+<space>C
+<space>E
+<space>G
+<space>H
+<space>I
+<space>J
+<space>K
+<space>L
+<space>N
+<space>O
+<space>P
+<space>S
+<space>T
+<space>U
+<space>V
+<space>W
+<space>X
+<space>Y
+<space>Z
+<space>b
+<space>h
+<space>i
+<space>n
+<space>w
+<space>x
+<space>y
+
+i_<C-b>
+i_<C-l>
+}} ]]
