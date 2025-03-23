@@ -210,6 +210,23 @@ local function update_git()
     return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
 end
 
+local function update_words()
+    local count = fn.wordcount()
+    local search = ""
+    if vim.v.hlsearch == 1 then
+        local ok, res = pcall(fn.searchcount, { maxcount = 999, timeout = 10 })
+        if ok and res.total then
+            search = string.format("%%#SlSearch#%2d/%2d ", res.current, res.total)
+        end
+    end
+
+
+    return search .. string.format("%%#SlWords#%3d/%3d",
+        count.cursor_words or count.visual_words,
+        count.words
+    )
+end
+
 local function update_filetype()
     local ft = vim.bo.filetype
 
@@ -239,8 +256,9 @@ local indices = {
     diagnostics = 4,
     macro = 5,
     lsp_messages = 7,
-    filetype = 9,
-    lsp = 10,
+    words = 9,
+    filetype = 11,
+    lsp = 12,
 }
 
 -- Autocommands {{{
@@ -309,18 +327,19 @@ utils.autogroup("config.statusline", {
         pattern = { "FugitiveChanged", "FugitiveObject", "GitSignsUpdate" },
         callback = vim.schedule_wrap(function()
             sections[indices.git] = update_git()
+            redraw()
         end)
     },
 })
 -- }}}
 
 -- only updates in normal mode
-local normal_timer = vim.uv.new_timer()
-normal_timer:start(0, 100, vim.schedule_wrap(function()
-    if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
-        return
+local update_timer = vim.uv.new_timer()
+update_timer:start(0, 100, vim.schedule_wrap(function()
+    if api.nvim_get_mode().mode:sub(1, 1) == "n" then
+        sections[indices.diagnostics] = update_diagnostics()
     end
-    sections[indices.diagnostics] = update_diagnostics()
+    sections[indices.words] = update_words()
     redraw()
 end)
 )
@@ -336,6 +355,8 @@ sections = {
     " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ", -- keys, position and right align
     "",                                                           -- lsp messages
     " %#SlASL#%#SlAText#",
+    "",                                                           -- words
+    "%#SlLines#  %3l/%3L%#SlAText# ",                             -- progress
     "",                                                           -- filetype
     "",                                                           -- attached lsps
     "%#SlASR# ",

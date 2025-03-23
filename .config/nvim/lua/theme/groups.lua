@@ -354,6 +354,10 @@ add_with_prefix(colorscheme, "Sl", {
     GitHash      = { fg = col.pink, bg = pal.bg1 },
     LspName      = { link = "Identifier", bg = pal.bg1 },
 
+    Search       = { fg = col.yellow, bg = pal.bg1 },
+    Words       = { fg = pal.fg2, bg = pal.bg1 },
+    Lines       = { fg = col.pink, bg = pal.bg1 },
+
     SModeNormal  = { bg = pal.bg0, fg = col.teal },
     SModeInsert  = { bg = pal.bg0, fg = col.white },
     SModeCommand = { bg = pal.bg0, fg = col.green },
