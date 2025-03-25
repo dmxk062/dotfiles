@@ -40,6 +40,7 @@ local function map_on_git_buffer(buf)
     map("n", "H", "<cmd>rightbelow Ghdiffsplit !<cr>", { desc = "Git: Diff with last commit (horizontal)" })
     map("n", "d", "<cmd>rightbelow Gdiffsplit<cr>", { desc = "Git: Diff with head" })
     map("n", "D", "<cmd>rightbelow Gdiffsplit !<cr>", { desc = "Git: Diff with last commit" })
+    map("n", "C", "<cmd>silent vertical G commit<cr>")
 
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
     map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
