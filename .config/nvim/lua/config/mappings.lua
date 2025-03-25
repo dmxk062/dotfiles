@@ -133,6 +133,14 @@ map("n", "<space>q", function() require("quicker").toggle { min_height = 8 } end
 map("n", "<space>l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
 -- }}}
 
+-- Navigation {{{
+
+-- close all folds, open the current one,
+-- move to the top of it, place it at the top of the screen
+-- the j is required so that this applies when on the fold start
+map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]] })
+-- }}}
+
 -- Snippets {{{
 -- move between snippet fields
 map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
