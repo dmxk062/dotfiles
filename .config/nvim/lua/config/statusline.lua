@@ -246,7 +246,7 @@ end
 local function update_filetype()
     local ft = vim.bo.filetype
     local ftstr = ft and ft ~= "" and ft or "[noft]"
-    local spell = vim.wo.spell and ("?" .. vim.bo.spelllang) or "[nospell]"
+    local spell = vim.wo.spell and ("=" .. vim.bo.spelllang) or "[nospell]"
 
     return ftstr .. " " .. spell
 end
