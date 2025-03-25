@@ -66,12 +66,12 @@ map("n", "<space>Qd", function() vim.diagnostic.setqflist { open = true } end)
 map("n", "<space>Ld", function() vim.diagnostic.setloclist { open = true } end)
 
 -- add current line to list
-local function add_qf_item(where)
+local function add_qf_item(use_loclist)
     local bufnr = api.nvim_get_current_buf()
     local cursor = api.nvim_win_get_cursor(0)
     local text = api.nvim_buf_get_lines(bufnr, cursor[1] - 1, cursor[1], false)[1]
 
-    local listfunc = where == "loclist"
+    local listfunc = use_loclist
         and function(...) return fn.setloclist(bufnr, ...) end
         or fn.setqflist
 
@@ -87,11 +87,11 @@ local function add_qf_item(where)
 end
 
 -- remove entry on current line from list
-local function rem_qf_item(where)
+local function rem_qf_item(use_loclist)
     local bufnr = api.nvim_get_current_buf()
     local cursor = api.nvim_win_get_cursor(0)
 
-    local getfn = where == "loclist"
+    local getfn = use_loclist
         and function(...) return fn.getloclist(bufnr, ...) end
         or fn.getqflist
 
@@ -111,7 +111,7 @@ local function rem_qf_item(where)
     end
 
     if found_to_rm then
-        local setfn = where == "loclist"
+        local setfn = use_loclist
             and function(...) return fn.setloclist(bufnr, ...) end
             or fn.setqflist
 
@@ -120,10 +120,10 @@ local function rem_qf_item(where)
 end
 
 map("n", "+q", function() add_qf_item() end)
-map("n", "+l", function() add_qf_item("loclist") end)
+map("n", "+l", function() add_qf_item(true) end)
 
 map("n", "-q", function() rem_qf_item() end)
-map("n", "-l", function() rem_qf_item("loclist") end)
+map("n", "-l", function() rem_qf_item(true) end)
 
 map("n", "<space>Qr", function() require("quicker").refresh() end)
 map("n", "<space>Lr", function() require("quicker").refresh(0) end)
@@ -826,25 +826,8 @@ map("n", "gK", function()
 end, { expr = true })
 
 --[[ Ideas for Unbound {{{
-gh
-gl
-gm
-gt
-gw
-gz
-gA
-gB
-gC
-gD
-gK
-gM
-gT
-gV
-gW
-gX
-gY
-gZ
 
+- Normal {{{1
 <space>A
 <space>B
 <space>C
@@ -873,7 +856,30 @@ gZ
 <space>w
 <space>x
 <space>y
+gA
+gB
+gC
+gD
+gK
+gM
+gT
+gV
+gW
+gX
+gY
+gZ
+gh
+gl
+gm
+gt
+gw
+gz
+}}}
 
-i_<C-b>
-i_<C-l>
+- Insert: {{{1
+<C-b>
+<C-l>
+<C-s>
+<C-z>
+}}}
 }} ]]
