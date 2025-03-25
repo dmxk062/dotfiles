@@ -138,9 +138,12 @@ map("n", "<space>l", function() require("quicker").toggle { min_height = 8, locl
 
 -- Navigation {{{
 
--- close all folds, open the current one,
--- move to the top of it, place it at the top of the screen
--- the j is required so that this applies when on the fold start
+--[[ focus the current fold
+- zM: close all folds
+- zO: open the current one, recursively
+- [z: move to the top of it
+- zt: place it at the top of the screen
+the j is required so that this applies when on the fold start ]]
 map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]] })
 -- }}}
 
