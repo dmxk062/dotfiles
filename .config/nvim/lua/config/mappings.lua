@@ -432,8 +432,9 @@ map("t", "<C-w>", "<C-\\><C-n><C-w>")
 -- }}}
 
 -- Insert Mode {{{
--- Why would I want to do smth so un-vimmy?
--- Well, on my keyboard tapping L/R Shift yields BS/Del
+--[[ Why would I want to do smth so un-vimmy?
+Well, on my keyboard tapping L/R Shift yields BS/Del,
+so tapping one shift key while holding the other makes sense ]]
 map("i", "<S-BS>", "<C-w>")
 map("i", "<S-Del>", "<c-o>\"_dw")
 -- }}}
@@ -840,7 +841,6 @@ map("n", "gK", function()
 end, { expr = true })
 
 --[[ Ideas for Unbound {{{
-
 - Normal {{{1
 <space>A
 <space>B
@@ -896,4 +896,4 @@ gz
 <C-s>
 <C-z>
 }}}
-}} ]]
+}}} ]]
