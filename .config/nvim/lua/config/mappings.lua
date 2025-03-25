@@ -29,6 +29,9 @@ end
 
 -- Unmap Unused {{{
 map("n", "gQ", "<nop>") -- ex mode is just plain annoying
+
+-- ZZ and ZQ are not that short and often just annoying
+map("n", "Z", "<nop>")
 -- }}}
 
 --[[ qflist / loclist {{{
