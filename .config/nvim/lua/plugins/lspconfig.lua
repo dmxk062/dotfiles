@@ -257,30 +257,11 @@ M.config = function()
             border = "rounded"
         }
     )
-    vim.diagnostic.config {
-        float = {
-            border = "rounded",
-        },
-        virtual_text = {
-            prefix = "!",
-        }
-    }
 
     local augroup = utils.autogroup("config.lspconfig", {
         LspAttach = on_attach,
         LspDetach = on_detach,
     })
-
-    -- remove sign text
-    local signs = {
-        "DiagnosticSignError",
-        "DiagnosticSignHint",
-        "DiagnosticSignInfo",
-        "DiagnosticSignWarn",
-    }
-    for _, sign in ipairs(signs) do
-        vim.fn.sign_define(sign, { texthl = sign, text = "", numhl = sign })
-    end
 
     for lsp, config in pairs(L) do
         if config.capabilities == true then

@@ -180,13 +180,35 @@ require("lazy").setup("plugins", {
 })
 -- }}}
 
+-- Diagnostics {{{
+vim.diagnostic.config {
+    float = {
+        border = "rounded",
+    },
+    virtual_text = {
+        prefix = "!",
+    }
+}
+
+-- remove sign text, but keep hl
+local signs = {
+    "DiagnosticSignError",
+    "DiagnosticSignHint",
+    "DiagnosticSignInfo",
+    "DiagnosticSignWarn",
+}
+for _, sign in ipairs(signs) do
+    vim.fn.sign_define(sign, { texthl = sign, text = "", numhl = sign })
+end
+-- }}}
+
 -- Load Config {{{
 require("config.autocommands") -- set various useful autocommands
 require("config.mappings")     -- set all the mappings
 require("config.commands")     -- custom commands for all buffers
 require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
-require("config.overlays")        -- specialized file operations
+require("config.overlays")     -- specialized file operations
 -- }}}
 
 -- for some reason lazy deactivates that
