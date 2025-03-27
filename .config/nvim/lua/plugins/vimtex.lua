@@ -21,11 +21,8 @@ M.config = function()
     cmp.setup.filetype("tex", {
         sources = cmp.config.sources({
             { name = "vimtex" },
-            { name = "snippet" },
-            { name = "path" },
             { name = "buffer" },
             { name = "nvim_lsp" },
-            { name = "spell" } -- move spell to the bottom so it doesnt slow it down that much
         })
     })
 

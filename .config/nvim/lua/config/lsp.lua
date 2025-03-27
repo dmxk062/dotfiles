@@ -2,7 +2,6 @@
 Set up LSPs
 ]]
 
-
 local utils = require("config.utils")
 
 local signature_help_cfg = {
