@@ -506,6 +506,12 @@ M.user_autogroup = function(name, commands)
         api.nvim_create_autocmd("User", tbl)
     end
 end
+
+---@param
+M.del_autocommand = function(group, event)
+    local commands = api.nvim_get_autocmds { group = group, event = event }
+    api.nvim_del_autocmd(commands[1].id)
+end
 -- }}}
 
 return M

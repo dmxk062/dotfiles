@@ -6,8 +6,8 @@ local fn = vim.fn
 M.last_term = 0
 
 -- General autocommands {{{
-local nvim_builtin_termclose = api.nvim_get_autocmds { group = "nvim.terminal", event = "TermClose" }
-api.nvim_del_autocmd(nvim_builtin_termclose[1].id)
+-- remove the builtin handler
+utils.del_autocommand("nvim.terminal", "TermClose")
 
 utils.autogroup("config.terminal_mode", {
     -- saner options
