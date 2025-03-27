@@ -1,5 +1,4 @@
 local api = vim.api
-local augroup = api.nvim_create_augroup("bufferline", { clear = true })
 local utils = require("config.utils")
 local getbufname = utils.format_buf_name
 local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
@@ -25,7 +24,7 @@ _G.Bufs_for_idx = {}   -- mapping of buffer indices in the buffer line to buffer
 _G.Tabs_for_idx = {}   -- mapping of tab indices in the buffer line to tab ids
 
 local idx_for_buf = {} -- reverse lookup for tablist
-local grapple_tags -- lookup tags
+local grapple_tags     -- lookup tags
 
 local sections
 local function redraw()
@@ -65,7 +64,7 @@ local function update_buflist()
         local hlprefix = current and "SlA" or "SlI"
         local changed = vim.bo[b].modified
         local readonly = vim.bo[b].readonly or not vim.bo[b].modifiable
-        
+
         -- try to add them every time while we do not have any
         if not grapple_tags then
             grapple_tags = grapple.tags()
@@ -167,23 +166,23 @@ local bufcmds = {
     "WinLeave",
 }
 
-api.nvim_create_autocmd(bufcmds, {
-    group = augroup,
-    callback = vim.schedule_wrap(function(ev)
+utils.autogroup("config.bufferline", {
+    [bufcmds] = vim.schedule_wrap(function(ev)
         sections[1] = update_buflist()
         sections[3] = update_tablist()
         redraw()
-    end)
+    end),
+
+    User = {
+        pattern = "GrappleUpdate",
+        callback = function()
+            grapple_tags = grapple.tags()
+            sections[1] = update_buflist()
+            redraw()
+        end
+    }
 })
 
-api.nvim_create_autocmd("User", {
-    pattern = "GrappleUpdate",
-    callback = function()
-        grapple_tags = grapple.tags()
-        sections[1] = update_buflist()
-        redraw()
-    end
-})
 
 sections = {
     "",
