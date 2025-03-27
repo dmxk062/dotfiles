@@ -2,7 +2,14 @@ local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
 
--- Mappings for lsp Bufs {{{
+local signature_help_cfg = {
+    doc_lines = 6,
+    max_width = 60,
+    close_timeout = 1000,
+    hint_enable = false,
+}
+
+-- Callbacks & Mappings {{{
 local on_lsp_attached = function(ev)
     local buf = ev.buf
 
@@ -74,6 +81,8 @@ local on_lsp_attached = function(ev)
             return { "on", "off" }
         end
     })
+
+    require("lsp_signature").on_attach(signature_help_cfg, ev.buf)
 end
 
 local on_lsp_detached = function(ev)
@@ -81,7 +90,7 @@ local on_lsp_detached = function(ev)
     vim.api.nvim_buf_del_user_command(ev.buf, "InlayHint")
 end
 
-local augroup = utils.autogroup("config.lspconfig", {
+utils.autogroup("config.lspconfig", {
     LspAttach = on_lsp_attached,
     LspDetach = on_lsp_detached,
 })
