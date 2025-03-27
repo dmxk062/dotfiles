@@ -164,6 +164,10 @@ L.luals = {
     cmd = { "lua-language-server" },
     root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", ".git" },
     on_init = function(client)
+        if not client.workspace_folders then
+            return
+        end
+
         local path = client.workspace_folders[1].name
 
         local is_in_rtp = false
