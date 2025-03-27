@@ -514,4 +514,20 @@ M.del_autocommand = function(group, event)
 end
 -- }}}
 
+-- Mason {{{
+---@param name string program name
+M.ensure_program_installed = function(name)
+    if vim.fn.executable(name) == 1 then
+        return
+    end
+
+    local registry = require("mason-registry")
+    for _, spec in pairs(registry.get_all_package_specs()) do
+        if spec.bin and spec.bin[name] then
+            vim.cmd.Mason(spec.name)
+        end
+    end
+end
+-- }}}
+
 return M

@@ -1,5 +1,8 @@
-local api = vim.api
-local fn = vim.fn
+--[[ LSP-Configuration
+Set up LSPs
+]]
+
+
 local utils = require("config.utils")
 
 local signature_help_cfg = {
