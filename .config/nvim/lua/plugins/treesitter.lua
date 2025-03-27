@@ -81,16 +81,16 @@ textobjects.move = {
     },
 
     goto_next_end = {
+        ["]A"] = "@parameter.inner",
         ["]F"] = "@function.outer",
         ["]M"] = "@method.outer",
         ["]]"] = "@block.inner",
-
     },
     goto_previous_end = {
+        ["[A"] = "@parameter.inner",
         ["[F"] = "@function.outer",
         ["[M"] = "@method.outer",
         ["[["] = "@block.inner",
-
     },
 }
 -- }}}
