@@ -355,8 +355,8 @@ add_with_prefix(colorscheme, "Sl", {
     LspName      = { link = "Identifier", bg = pal.bg1 },
 
     Search       = { fg = col.yellow, bg = pal.bg1 },
-    Words       = { fg = pal.fg2, bg = pal.bg1 },
-    Lines       = { fg = col.pink, bg = pal.bg1 },
+    Words        = { fg = pal.fg2, bg = pal.bg1 },
+    Lines        = { fg = col.pink, bg = pal.bg1 },
 
     SModeNormal  = { bg = pal.bg0, fg = col.teal },
     SModeInsert  = { bg = pal.bg0, fg = col.white },
@@ -507,12 +507,13 @@ add_with_prefix(colorscheme, "CmpItem", {
 
 -- LSP & Diagnostics {{{
 add_with_prefix(colorscheme, "Lsp", {
-    InlayHint      = { fg = col.bright_gray, italic = true },
-    InfoBorder     = { fg = pal.bg3 },
-    StaticMethod   = { fg = col.magenta },
-    ReferenceText  = { link = "Substitute" },
-    ReferenceRead  = { link = "Substitute" },
-    ReferenceWrite = { link = "Substitute" },
+    InlayHint       = { fg = col.bright_gray, italic = true },
+    InfoBorder      = { fg = pal.bg3 },
+    StaticMethod    = { fg = col.magenta },
+    ReferenceTarget = { link = "Visual" },
+    ReferenceText   = { link = "Substitute" },
+    ReferenceRead   = { link = "Substitute" },
+    ReferenceWrite  = { link = "Substitute" },
 })
 
 add_with_prefix(colorscheme, "Diagnostic", {
