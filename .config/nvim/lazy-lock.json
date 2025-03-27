@@ -27,17 +27,13 @@
         "branch": "main",
         "commit": "91ff86cd9c29299a64f968ebb45846c485725f23"
     },
-    "cmp-spell": {
-        "branch": "master",
-        "commit": "694a4e50809d6d645c1ea29015dad0c293f019d6"
-    },
     "cmp-vimtex": {
         "branch": "master",
         "commit": "5283bf9108ef33d41e704027b9ef22437ce7a15b"
     },
     "conform.nvim": {
         "branch": "master",
-        "commit": "db8a4a9edb217067b1d7a2e0362c74bfe9cc944d"
+        "commit": "f9ef25a7ef00267b7d13bfc00b0dea22d78702d5"
     },
     "dressing.nvim": {
         "branch": "master",
@@ -69,7 +65,7 @@
     },
     "lsp_signature.nvim": {
         "branch": "master",
-        "commit": "8b681c86b0bd7f932cd91987983d91497e43d83f"
+        "commit": "c909a01eb923101c76a57fd2187835e9013ab59a"
     },
     "luarocks.nvim": {
         "branch": "main",
