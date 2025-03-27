@@ -149,6 +149,7 @@ require("lazy").setup("plugins", {
         title = "Plugins - Lazy",
         backdrop = 100,
         pills = false,
+        border = "rounded",
         icons = {
             loaded     = "󰗠",
             not_loaded = "󰍷",
