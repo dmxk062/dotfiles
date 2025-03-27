@@ -11,10 +11,7 @@ local signature_help_cfg = {
     hint_enable = false,
 }
 
--- Callbacks & Mappings {{{
-local on_lsp_attached = function(ev)
-    local buf = ev.buf
-
+local function lsp_map(buf)
     local map = utils.local_mapper(buf, { group = true })
     map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
 
@@ -65,6 +62,13 @@ local on_lsp_attached = function(ev)
         vim.lsp.buf.implementation { reuse_win = false, loclist = true }
         vim.cmd.normal("zz")
     end)
+end
+
+-- Callbacks & Mappings {{{
+local on_lsp_attached = function(ev)
+    local buf = ev.buf
+
+    lsp_map(buf)
 
     vim.api.nvim_buf_create_user_command(buf, "InlayHint", function(args)
         local cmd = args.fargs[1]
@@ -121,6 +125,7 @@ end
 local lazy_schemastore = function(type)
     ---@param client vim.lsp.Client
     return function(client)
+        ---@diagnostic disable-next-line: undefined-field
         add_setting(client, "json", { schemas = require("schemastore")[type].schemas() })
     end
 end
