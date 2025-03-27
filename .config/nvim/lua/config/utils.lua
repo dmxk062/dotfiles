@@ -416,7 +416,6 @@ function M.win_show_buf(b, opts)
 
         api.nvim_open_win(b, true, {
             relative = opts.at_cursor and "cursor" or "editor",
-            border = "rounded",
             width = width,
             height = height,
             col = col,

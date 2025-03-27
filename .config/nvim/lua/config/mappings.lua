@@ -2,6 +2,7 @@ local utils = require("config.utils")
 local ftpref = require("config.ftpref")
 local abbrev = utils.abbrev
 local map = utils.map
+local unmap = utils.unmap
 local api = vim.api
 local fn = vim.fn
 
@@ -32,6 +33,12 @@ map("n", "gQ", "<nop>") -- ex mode is just plain annoying
 
 -- ZZ and ZQ are not that short and often just annoying
 map("n", "Z", "<nop>")
+
+-- i dont like the lsp mappings
+unmap("n", "grn") -- rename
+unmap("n", "gra") -- actions
+unmap("n", "grr") -- references
+unmap("n", "gri") -- implementation
 -- }}}
 
 --[[ qflist / loclist {{{

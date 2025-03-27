@@ -30,6 +30,7 @@ o.smartcase = true
 o.softtabstop = 4
 o.title = true
 o.undofile = true
+o.winborder = "rounded"
 -- }}}
 
 -- Wrapping {{{
@@ -146,7 +147,6 @@ require("lazy").setup("plugins", {
 
     ui = {
         title = "Plugins - Lazy",
-        border = "rounded",
         backdrop = 100,
         pills = false,
         icons = {
@@ -182,9 +182,6 @@ require("lazy").setup("plugins", {
 
 -- Diagnostics {{{
 vim.diagnostic.config {
-    float = {
-        border = "rounded",
-    },
     virtual_text = {
         prefix = "!",
     }

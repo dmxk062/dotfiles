@@ -98,7 +98,6 @@ M.opts = {
     end,
     preview = {
         win_config = {
-            border = "rounded",
             winblend = 0,
         },
         mappings = {

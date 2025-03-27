@@ -8,7 +8,6 @@ local M = {
             config = function()
                 require("mason").setup {
                     ui = {
-                        border = "rounded",
                         width = 0.8,
                         height = 0.8,
 
@@ -242,21 +241,6 @@ M.config = function()
         dynamicRegistration = false,
         lineFoldingOnly = true
     }
-
-    -- rounded corners for everything
-    require("lspconfig.ui.windows").default_options = {
-        border = "rounded"
-    }
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-        vim.lsp.handlers.hover, {
-            border = "rounded",
-        }
-    )
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-        vim.lsp.handlers.signature_help, {
-            border = "rounded"
-        }
-    )
 
     local augroup = utils.autogroup("config.lspconfig", {
         LspAttach = on_attach,

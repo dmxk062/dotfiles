@@ -56,7 +56,6 @@ M.config = function()
             col = 0.5,
 
             border = "rounded",
-
             footer = "",
         },
         tag_hook = on_window_open,
