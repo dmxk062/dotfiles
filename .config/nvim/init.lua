@@ -207,6 +207,7 @@ require("config.commands")     -- custom commands for all buffers
 require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
 require("config.overlays")     -- specialized file operations
+require("config.lsp")     -- language servers
 -- }}}
 
 -- for some reason lazy deactivates that

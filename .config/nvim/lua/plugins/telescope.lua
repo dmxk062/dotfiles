@@ -112,6 +112,7 @@ local function create_layout(picker)
                 height = 1,
                 row = height - 3,
                 col = 0,
+                border = "none",
             })
         end,
         unmount = function(self)
