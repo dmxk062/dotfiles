@@ -1,4 +1,3 @@
-# _ktty
 #compdef ktty
 
 _ktty() {
@@ -6,3 +5,5 @@ _ktty() {
         '1:Mode:(os-window overlay tab window)'\
         '*::Command:_precommand'
 }
+
+compdef _ktty ktty

@@ -50,10 +50,6 @@ zvm_bindkey vicmd "^Wj" kitty-win-go-down
 zvm_bindkey vicmd "^Wk" kitty-win-go-down
 zvm_bindkey vicmd "^Wl" kitty-win-go-down
 
-autoload -Uz _ktty
-compdef _ktty ktty
-
-
 alias -- "@w"="ktty window" \
     "@W"="ktty os-window" \
     "@t"="ktty tab" \
