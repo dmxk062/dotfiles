@@ -24,11 +24,11 @@ local M = {
 -- }}}
 
 
-local cur_max_length = 0
-
 --[[ Custom Layout {{{
 Place prompt at bottom of screen, list and preview above it
 ]]
+
+local MIN_FILENAME_WIDTH = 40
 local function create_layout(picker)
     local Layout = require("telescope.pickers.layout")
     ---@param enter boolean
@@ -63,14 +63,13 @@ local function create_layout(picker)
         picker = picker,
         mount = function(self)
             local width = vim.o.columns
-            local factor = 0.5
+            local factor = 0.4
             local fhalf = math.floor(width * (factor))
             local shalf = math.floor(width * (1 - factor))
 
             if (fhalf + shalf) ~= width then
                 fhalf = fhalf + 1
             end
-            cur_max_length = fhalf
 
             local height = vim.o.lines
             local height_override = self.picker.layout_config.height
@@ -104,11 +103,12 @@ local function create_layout(picker)
                 row = row,
                 col = fhalf + 2,
                 width = shalf - 2,
-                height = view_height,
+                height = view_height + 1,
+                style = "",
                 border = { "┬", "─", "─", "", "", "", "", "│" },
             })
             self.prompt = create_win(true, {
-                width = width,
+                width = fhalf,
                 height = 1,
                 row = height - 3,
                 col = 0,
@@ -125,6 +125,37 @@ local function create_layout(picker)
 
     return layout
 end
+
+local path_display = function(opts, path)
+    local tail = vim.fn.fnamemodify(path, ":t")
+    local parendir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":~:.:h"), 6)
+
+    local namelen = #tail
+    local namewidth = vim.fn.strdisplaywidth(tail)
+    local dirlen = #parendir
+    local dirwidth = vim.fn.strdisplaywidth(parendir)
+
+    local padding = math.max(MIN_FILENAME_WIDTH - (namewidth + dirwidth), 0)
+
+    local hls = {
+        {
+            {
+                0,
+                namelen,
+            },
+            require("config.utils").highlight_fname(tail)
+        },
+        {
+            {
+                namelen + 1 + padding,
+                namelen + dirlen + 1 + padding,
+            },
+            "NonText"
+        }
+    }
+
+    return string.format("%s %s%s ", tail, (" "):rep(padding), parendir), hls
+end
 -- }}}
 
 local default_config_tbl = {
@@ -139,6 +170,7 @@ end
 M.opts = {}
 M.opts.defaults = {
     create_layout = create_layout,
+    path_display = path_display,
     default_mappings = {
         n = {
             ["<cr>"]  = "select_drop",
@@ -177,40 +209,6 @@ M.opts.defaults = {
     entry_prefix = "",
     multi_icon = "",
     prompt_prefix = "ed: ",
-    path_display = function(opts, path)
-        local tail = vim.fn.fnamemodify(path, ":t")
-        local parendir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":~:.:h"), 6)
-
-        local namewidth = vim.fn.strdisplaywidth(tail)
-        local namelen = #tail
-
-        local dirwidth = vim.fn.strdisplaywidth(parendir)
-        local dirlen = #parendir
-
-        local padding_width = cur_max_length - (namewidth + dirwidth)
-        if padding_width < 0 then
-            padding_width = 1
-        end
-
-        local hls = {
-            {
-                {
-                    0,
-                    namelen,
-                },
-                require("config.utils").highlight_fname(tail)
-            },
-            {
-                {
-                    namelen + padding_width,
-                    namelen + padding_width + dirlen,
-                },
-                "NonText"
-            }
-        }
-
-        return string.format("%s%s%s", tail, (" "):rep(padding_width), parendir), hls
-    end,
 }
 
 local lsp_config = default_config {
@@ -229,7 +227,9 @@ M.opts.pickers = {
         disable_coordinates = true,
     },
     git_files = default_config_tbl,
-    live_grep = default_config_tbl,
+    live_grep = default_config {
+        disable_coordinates = true,
+    },
     oldfiles = default_config_tbl,
     buffers = default_config {
         sort_lastused = true, -- so i can just <space><space><cr> to cycle
