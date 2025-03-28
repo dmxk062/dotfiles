@@ -109,6 +109,10 @@ vim.g.man_hardwrap = 0
 vim.g.ft_man_folding_enable = 1
 
 vim.g.loaded_spellfile_plugin = 1 -- use my own code instead
+
+vim.g.health = {
+    style = "float"
+}
 -- }}}
 
 -- Lazy {{{
