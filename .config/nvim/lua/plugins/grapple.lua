@@ -110,8 +110,8 @@ M.config = function()
     map("n", "'g", function() grapple.open_tags() end)
     map("n", "'G", function() grapple.open_scopes { all = true } end)
 
-    -- specifying the unnamed register makes little to no sense
-    map("n", '""', function()
+    -- the file position is obvious anyways
+    map("n", '<C-g>', function()
         if vim.v.count == 0 then
             grapple.cycle_tags("next")
         else
