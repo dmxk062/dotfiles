@@ -4,10 +4,6 @@ Set up LSPs
 
 local utils = require("config.utils")
 
-local servers = {
-    ""
-}
-
 local signature_help_cfg = {
     doc_lines = 6,
     max_width = 60,
@@ -15,6 +11,7 @@ local signature_help_cfg = {
     hint_enable = false,
 }
 
+-- Callbacks & Mappings {{{
 local function lsp_map(buf)
     local map = utils.local_mapper(buf, { group = true })
     map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
@@ -68,7 +65,6 @@ local function lsp_map(buf)
     end)
 end
 
--- Callbacks & Mappings {{{
 local on_lsp_attached = function(ev)
     local buf = ev.buf
 
