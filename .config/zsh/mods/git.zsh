@@ -3,6 +3,7 @@
 
 if [[ "$1" == "unload" ]]; then
     unalias sparse-clone sparse-add unstage
+    unfunction gac
 
     return
 fi
@@ -10,3 +11,11 @@ fi
 alias sparse-clone="git clone --filter=blob:none --sparse" \
     sparse-add="git sparse-checkout add"\
     unstage="git restore --staged -- "
+
+# git add commit
+function gac {
+    local msg="$1"
+    shift
+    git add "$@"
+    git commit -m "$msg"
+}
