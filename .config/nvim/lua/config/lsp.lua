@@ -4,6 +4,10 @@ Set up LSPs
 
 local utils = require("config.utils")
 
+local servers = {
+    ""
+}
+
 local signature_help_cfg = {
     doc_lines = 6,
     max_width = 60,
@@ -132,18 +136,25 @@ end
 
 ---@type table<string, vim.lsp.Config>
 local L = setmetatable({}, {
-    __newindex = function(t, k, v)
-        if not v.name then
-            v.name = k
-        end
-        if v.capabilities == false then
-            v.capabilities = nil
-        else
-            v.capabilities = capabilities
+    __newindex = function(t, name, cfg)
+        if not cfg.name then
+            cfg.name = name
         end
 
-        vim.lsp.config[k] = v
-        rawset(t, k, true)
+        if cfg.autoinstall == false then
+            cfg.autoinstall = nil
+        else
+            utils.ensure_program_installed(cfg.cmd[1])
+        end
+
+        if cfg.capabilities == false then
+            cfg.capabilities = nil
+        else
+            cfg.capabilities = capabilities
+        end
+
+        vim.lsp.config[name] = cfg
+        rawset(t, name, true)
     end
 })
 

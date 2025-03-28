@@ -35,9 +35,10 @@ M.config = function()
                 click = "v:lua.ScLa",
             },
             {
+                -- HACK: dont show the second column
                 sign = {
                     namespace = { "oil.*" },
-                    maxwidth = 2,
+                    maxwidth = 1,
                     auto = true
                 },
             },

@@ -524,9 +524,21 @@ M.ensure_program_installed = function(name)
     local registry = require("mason-registry")
     for _, spec in pairs(registry.get_all_package_specs()) do
         if spec.bin and spec.bin[name] then
-            vim.cmd.Mason(spec.name)
+            local package = registry.get_package(spec.name)
+        vim.notify(("Mason: installing `%s` for `%s`"):format(spec.name, name))
+            package:install():on("closed", vim.schedule_wrap(function()
+                if package:is_installed() then
+                    vim.notify(("Mason: installed `%s` for `%s`"):format(spec.name, name))
+                else
+                    vim.notify(("Mason: failed to install `%s` for `%s`"):format(spec.name, name), vim.log.levels.ERROR)
+                end
+            end))
+
+            return
         end
     end
+
+    vim.notify(("Mason: no package found for `%s`"):format(name), vim.log.levels.ERROR)
 end
 -- }}}
 
