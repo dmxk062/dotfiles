@@ -331,20 +331,18 @@ add_with_prefix(colorscheme, "Sl", {
     IHidden      = { fg = col.bright_gray },
     ASL          = { fg = pal.bg1 },
     ASR          = { fg = pal.bg1 },
-    IText        = { fg = pal.fg0 },
     AText        = { bg = pal.bg1, fg = pal.fg0 },
+    IText        = { fg = pal.fg0 },
     AGrapple     = { bg = pal.bg1, fg = col.magenta },
     IGrapple     = { fg = col.magenta },
 
+    Register     = { fg = col.magenta },
+
     Keys         = { fg = pal.fg0 },
-    Register     = { fg = col.magenta, bg = pal.bg1 },
     Error        = { fg = col.red, bg = pal.bg1 },
     Warning      = { fg = col.orange, bg = pal.bg1 },
     Info         = { fg = col.blue, bg = pal.bg1 },
     Hint         = { fg = col.light_blue, bg = pal.bg1 },
-
-    Row          = { fg = col.pink },
-    Col          = { fg = col.light_blue },
 
     DiffAdded    = { fg = col.green, bg = pal.bg1 },
     DiffChanged  = { fg = col.yellow, bg = pal.bg1 },
@@ -353,9 +351,12 @@ add_with_prefix(colorscheme, "Sl", {
     GitHash      = { fg = col.pink, bg = pal.bg1 },
     LspName      = { link = "Identifier", bg = pal.bg1 },
 
-    Search       = { fg = col.yellow, bg = pal.bg1 },
-    Words        = { fg = pal.fg2, bg = pal.bg1 },
-    Lines        = { fg = col.pink, bg = pal.bg1 },
+    Index        = { fg = col.teal },
+    Total        = { fg = col.pink },
+
+    Words        = { fg = col.yellow, bg = pal.bg1 },
+    Chars        = { fg = col.green, bg = pal.bg1 },
+    Bytes        = { fg = col.light_blue, bg = pal.bg1 },
 
     SModeNormal  = { bg = pal.bg0, fg = col.teal },
     SModeInsert  = { bg = pal.bg0, fg = col.white },
@@ -625,22 +626,23 @@ add_with_prefix(colorscheme, "git", {
 
 -- Telescope {{{
 add_with_prefix(colorscheme, "Telescope", {
-    PromptBorder   = { fg = pal.bg3 },
-    PromptTitle    = { fg = col.teal },
-    ResultsBorder  = { fg = pal.bg3 },
-    PreviewBorder  = { fg = pal.bg3 },
-    Selection      = { bg = pal.bg1 },
-    PromptPrefix   = { fg = col.teal, bold = true },
-    SelectionCaret = {},
-    Matching       = { bg = pal.bg1 },
+    PromptBorder          = { fg = pal.bg3 },
+    PromptTitle           = { fg = col.teal },
+    ResultsBorder         = { fg = pal.bg3 },
+    PreviewBorder         = { fg = pal.bg3 },
+    ResultsSpecialComment = { fg = col.pink },
+    Selection             = { bg = pal.bg1 },
+    PromptPrefix          = { fg = col.teal, bold = true },
+    SelectionCaret        = {},
+    Matching              = { bg = pal.bg1 },
 
-    PreviewExecute = { link = "OilExec" },
-    PreviewRead    = { link = "OilRead" },
-    PreviewWrite   = { link = "OilWrite" },
-    PreviewSticky  = { link = "OilSticky" },
-    PreviewLink    = { link = "OilLink" },
-    PreviewHyphen  = { link = "OilNoPerm" },
-    PreviewDate    = { fg = col.cyan },
+    PreviewExecute        = { link = "OilExec" },
+    PreviewRead           = { link = "OilRead" },
+    PreviewWrite          = { link = "OilWrite" },
+    PreviewSticky         = { link = "OilSticky" },
+    PreviewLink           = { link = "OilLink" },
+    PreviewHyphen         = { link = "OilNoPerm" },
+    PreviewDate           = { fg = col.light_cyan },
 })
 -- }}}
 

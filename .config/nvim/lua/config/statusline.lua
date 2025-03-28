@@ -151,10 +151,10 @@ local function update_macro(ev)
             return ""
         end
 
-        return " %#SlASL#" .. '%#SlRegister#@' .. last .. "%#SlASR#"
+        return ' %#SlRegister#@' .. last
     else
         local reg = vim.fn.reg_recording()
-        return " %#SlASL#" .. '%#SlRegister#"' .. reg .. " <-%#SlASR#"
+        return ' %#SlRegister#"' .. reg .. " <-"
     end
 end
 -- }}}
@@ -223,21 +223,25 @@ local function update_git()
 end
 -- }}}
 
--- Position in Words, Lines and Search {{{
-local function update_words()
-    local count = fn.wordcount()
-    local search = ""
-    if vim.v.hlsearch == 1 then
-        local ok, res = pcall(fn.searchcount, { maxcount = 999, timeout = 10 })
-        if ok and res.total then
-            search = string.format("%%#SlSearch#%2d/%2d ", res.current, res.total)
-        end
+-- {{{
+local function update_search()
+    if vim.v.hlsearch ~= 1 then
+        return ""
     end
 
+    local count = fn.searchcount { timeout = 10 }
+    return string.format("%%#Identifier#/search%%#Delimiter#: %%#SlIndex#%2d%%#Delimiter#/%%#SlTotal#%-2d ", count.current, count.total)
+end
+-- }}}
 
-    return search .. string.format("%%#SlWords#%4d/%4d",
-        count.cursor_words or count.visual_words,
-        count.words
+-- Word and Byte count {{{
+local function update_words()
+    local count = fn.wordcount()
+
+    return string.format("%%#SlWords#%2dw %%#SlChars#%2dc %%#SlBytes#%2db",
+        count.visual_words or count.words,
+        count.visual_chars or count.chars,
+        count.visual_bytes or count.bytes
     )
 end
 -- }}}
@@ -266,21 +270,23 @@ end
 -- }}}
 
 local sections
-local redraw = function()
-    vim.o.statusline = table.concat(sections)
-end
-
 local indices = {
     mode = 1,
     title = 2,
     git = 3,
     diagnostics = 4,
     macro = 5,
-    lsp_messages = 7,
-    words = 9,
-    filetype = 11,
-    lsp = 12,
+
+    search = 7,
+    lsp_messages = 8,
+    words = 10,
+    filetype = 12,
+    lsp = 13,
 }
+
+local redraw = function()
+    vim.o.statusline = table.concat(sections)
+end
 
 -- Autocommands {{{
 utils.autogroup("config.statusline", {
@@ -343,7 +349,7 @@ utils.autogroup("config.statusline", {
             sections[indices.lsp_messages] = ""
         else
             sections[indices.lsp_messages] = string.format(
-                "%%#Identifier#*%s%%#Delimiter#: %%#Normal#%s %%#Number#%02d%%%%",
+                "%%#Identifier#*%s%%#Delimiter#: %%#Normal#%s %%#Number#%02d%%%% ",
                 client.name,
                 esc(value.title),
                 value.percentage
@@ -369,6 +375,7 @@ update_timer:start(0, 100, vim.schedule_wrap(function()
         sections[indices.diagnostics] = update_diagnostics()
     end
     sections[indices.words] = update_words()
+    sections[indices.search] = update_search()
     redraw()
 end)
 )
@@ -376,20 +383,26 @@ end)
 -- prefill the line
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
-    update_mode(),  -- mode
-    update_title(), -- title of buf with modified etc
-    "",             -- git
-    "",             -- diagnostics
-    "",             -- macro
-    -- keys, position and right align
-    " %#SlRow#%3l%#Delimiter#:%#SlCol#%-3c %#SlKeys#%-3(%S%)%= ",
+    update_mode(), -- mode
+    "",            -- title of buf with modified etc
+    "",            -- git
+    "",            -- diagnostics
+    "",            -- macro register
+
+    " %#SlKeys#%-4(%S%)%=",
+    "", -- search message
     "", -- lsp messages
-    " %#SlASL#%#SlAText#",
+
+    -- right, begin of content info
+    "%#SlASL#%#SlAText#",
     "", -- words
-    -- progress
-    "%#SlLines#  %3l/%3L%#SlAText# %#SlASR# %#SlAText#",
+
+    -- end of content info, start of type info
+    "%#SlASR# %#SlAText#",
     "", -- filetype
     "", -- attached lsps
+
+    -- end of type info
     "%#SlASR# ",
 }
 
