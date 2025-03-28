@@ -48,18 +48,18 @@ The loclist per each buffer/window
 ]]
 
 -- qflist: optimized for larger lists
-map(mov, "<space>j", cmd_with_count("cnext"))
-map(mov, "<space>k", cmd_with_count("cprev"))
-map(mov, "<space>n", cmd_with_count("cnfile"))
-map(mov, "<space>N", cmd_with_count("cpfile"))
-map(mov, "<space>0", "<cmd>cfirst<cr>")
-map(mov, "<space>$", "<cmd>clast<cr>")
+map("n", "<space>j", cmd_with_count("cnext"))
+map("n", "<space>k", cmd_with_count("cprev"))
+map("n", "<space>n", cmd_with_count("cnfile"))
+map("n", "<space>N", cmd_with_count("cpfile"))
+map("n", "<space>0", "<cmd>cfirst<cr>")
+map("n", "<space>$", "<cmd>clast<cr>")
 
 -- loclist: optimized for much smaller lists
-map(mov, "<C-j>", cmd_with_count("lnext"))
-map(mov, "<C-k>", cmd_with_count("lprev"))
-map(mov, "<C-S-J>", "<cmd>llast<cr>")
-map(mov, "<C-S-K>", "<cmd>lfirst<cr>")
+map("n", "<C-j>", cmd_with_count("lnext"))
+map("n", "<C-k>", cmd_with_count("lprev"))
+map("n", "<C-S-J>", "<cmd>llast<cr>")
+map("n", "<C-S-K>", "<cmd>lfirst<cr>")
 
 -- clear them
 map("n", "<space>Qc", function()
