@@ -91,12 +91,12 @@ opt.cdpath = {
 -- }}}
 
 -- normal, o-pending, visual: block
--- replace: underscore
+-- replace, terminal: underscore
 -- insert, command: bar
 -- all except o-pending: blink
 opt.guicursor = {
     "n-o-v:block",
-    "r:hor20",
+    "r-t:hor20",
     "i-c-ci-cr:ver10",
     "n-c-ci-cr-r-v:blinkon1",
 }
@@ -211,7 +211,7 @@ require("config.commands")     -- custom commands for all buffers
 require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
 require("config.overlays")     -- specialized file operations
-require("config.lsp")     -- language servers
+require("config.lsp")          -- language servers
 -- }}}
 
 -- for some reason lazy deactivates that
