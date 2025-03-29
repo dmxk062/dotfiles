@@ -2,5 +2,7 @@ d|nvim|Neovim Configuration|~/.config/nvim/
 d:text-c|newc|New C Project|~/ws/newc
 f:text-x-lua|init.lua|Neovim Initialization File|~/.config/nvim/init.lua
 f:utilities-text-editor|bookmarks|Edit this List|~/.config/rofi/bookmarks.psv
-U:dictionary|wiktionary|Search in Wiktionary|http://en.wiktionary.org/w/wiki.phtml?search=%s
+U:dictionary|wiktionary|Search in Wiktionary|http://en.wiktionary.org/w/index.php?search=%s
+U:text-wiki|wikipedia|Search in Wikipedia|http://en.wikipedia.org/w/index.php?search=%s
 U:youtube|youtube|Search Youtube|https://www.youtube.com/results?search_query=%s
+U|duckduckgo|Search DuckDuckGo|https://duckduckgo.com/?q=%s

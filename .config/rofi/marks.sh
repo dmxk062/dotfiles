@@ -40,7 +40,7 @@ else
         case "$type" in
         U)
             printf -v url "$value" "$*"
-            run_in_background firefox $flag "$url"
+            run_in_background firefox "$url"
             ;;
         esac
     else
