@@ -201,6 +201,9 @@ vim.diagnostic.config {
     virtual_text = {
         prefix = "!",
     },
+    float = {
+        border = "rounded",
+    }
 }
 
 -- remove sign text, but keep highlights
