@@ -5,7 +5,7 @@ local M = {
 
 M.opts = {}
 
---[[ Rationale {{{
+--[[ Information {{{
 Multiple cursors for neovim:
 I generally use them as a replacement for macros and complex :g commands
 
@@ -113,13 +113,20 @@ function M.config(_, opts)
     map(vinorm, "<C-c>n", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
     map(vinorm, "<C-c>p", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
     map(vinorm, "<C-c>*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
+
+    -- really useful with syntactically aware textobjects:
+    -- <C-c>wif puts a cursor on every match in a function
+    -- <C-c>wi<space> in lua does the same for a block
     map(vinorm, "<C-c>w", function()
         mc.operator { motion = "iw" }
     end, { desc = "Cursor: New for word in" })
+
+    -- allows for things that are more than one <word>, e.g. i.
     map(vinorm, "<C-c>o", mc.operator, { desc = "Cursor: New for obj in" })
 
     map(vinorm, "<C-c>u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
 
+    -- visual selections
     map({ "x" }, "<C-c>s", mc.splitCursors, { desc = "Cursor: Split visual" })
     map({ "x" }, "<C-c>m", mc.matchCursors, { desc = "Cursor: Match visual" })
     map(vinorm, "<C-c>A", mc.alignCursors, { desc = "Cursor: Align content" })

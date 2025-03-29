@@ -5,6 +5,12 @@ local M = {
     },
 }
 
+--[[ Why Oil? {{{
+Because it's the best file editor :3
+Edits to the filesystem work the same as text files
+Additionally, it's really fast and rock solid
+}}} ]]
+
 -- Columns {{{
 local perms_hlgroups = {
     ["-"] = "OilNoPerm",

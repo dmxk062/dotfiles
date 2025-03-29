@@ -177,8 +177,8 @@ M.config = function()
 
     -- additional repeat movements for plugins
     local nd, pd = ts_repeat.make_repeatable_move_pair(
-        function() vim.diagnostic.goto_next { float = false } end,
-        function() vim.diagnostic.goto_prev { float = false } end
+        function() vim.diagnostic.jump { count = 1, float = false } end,
+        function() vim.diagnostic.jump { count = -1, float = false } end
     )
     vim.keymap.set({ "n", "x", "o" }, "]d", nd)
     vim.keymap.set({ "n", "x", "o" }, "[d", pd)
@@ -186,13 +186,13 @@ M.config = function()
 
     for _, severity in ipairs(vim.diagnostic.severity) do
         local nb, pb = ts_repeat.make_repeatable_move_pair(
-            function() vim.diagnostic.goto_next { float = false, severity = severity } end,
-            function() vim.diagnostic.goto_prev { float = false, severity = severity } end
+            function() vim.diagnostic.jump { count = 1, float = false, severity = severity } end,
+            function() vim.diagnostic.jump { count = -1, float = false, severity = severity } end
         )
 
         local key = severity:sub(1, 1):lower()
-        vim.keymap.set({"n", "x", "o"}, "]" .. key, nb)
-        vim.keymap.set({"n", "x", "o"}, "[" .. key, pb)
+        vim.keymap.set({ "n", "x", "o" }, "]" .. key, nb)
+        vim.keymap.set({ "n", "x", "o" }, "[" .. key, pb)
     end
 end
 

@@ -3,13 +3,15 @@ local M = {
     { "tpope/vim-fugitive" },
 }
 
---[[ Rationale {{{
+--[[ Information {{{
 Both fugitive and gitsigns are great git plugins
 gitsigns generally performs better for basic features,
 whereas fugitive imo provides more capabilities
 
 I prefer gitsigns' buffer monitoring and interactive features,
 but fugitive's commands and history capabilities are better
+
+TODO: give other git plugins (i.e. lazygit) a serious try
 }}} ]] --
 
 local function map_on_git_buffer(buf)
