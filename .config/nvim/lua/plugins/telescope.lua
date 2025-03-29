@@ -25,20 +25,16 @@ local M = {
 -- }}}
 
 local utils = require("config.utils")
-local strlib = require("plenary.strings")
 
---[[ Custom Layout {{{
+--[[ Custom Layouts {{{
 Place prompt at bottom of screen, list and preview above it
 ]]
 
-local MIN_FILENAME_WIDTH = 80
-local function create_layout(picker)
+local function make_windows(results_conf, preview_conf, prompt_conf)
     local Layout = require("telescope.pickers.layout")
-    ---@param enter boolean
-    ---@param opts vim.api.keyset.win_config
-    local function create_win(enter, opts)
-        local buf = vim.api.nvim_create_buf(false, true)
 
+    local function make_win(enter, opts)
+        local buf = vim.api.nvim_create_buf(false, true)
         local winopts = vim.tbl_extend("force", {
             style = "minimal",
             relative = "editor",
@@ -51,17 +47,22 @@ local function create_layout(picker)
         }
     end
 
-    local function destroy_win(win)
-        if win then
-            if vim.api.nvim_win_is_valid(win.winid) then
-                vim.api.nvim_win_close(win.winid, true)
-            end
-            if vim.api.nvim_buf_is_valid(win.bufnr) then
-                vim.api.nvim_buf_delete(win.bufnr, { force = true })
-            end
+    return make_win(false, results_conf), preview_conf and make_win(false, preview_conf), make_win(true, prompt_conf)
+end
+
+local function destroy_win(win)
+    if win then
+        if vim.api.nvim_win_is_valid(win.winid) then
+            vim.api.nvim_win_close(win.winid, true)
+        end
+        if vim.api.nvim_buf_is_valid(win.bufnr) then
+            vim.api.nvim_buf_delete(win.bufnr, { force = true })
         end
     end
+end
 
+local function create_layout(picker)
+    local Layout = require("telescope.pickers.layout")
     local layout = Layout {
         picker = picker,
         mount = function(self)
@@ -95,21 +96,19 @@ local function create_layout(picker)
 
             local row = height - view_height - 4
 
-            self.results = create_win(false, {
+            self.results, self.preview, self.prompt = make_windows({
                 row = row,
                 col = 0,
                 width = fhalf,
                 height = view_height,
                 border = { "─", "─", "─", " ", "", "", "", "" },
-            })
-            self.preview = create_win(false, {
+            }, {
                 row = row,
                 col = fhalf + 2,
                 width = shalf - 2,
                 height = view_height + 1,
                 border = { "┬", "─", "─", "", "", "", "", "│" },
-            })
-            self.prompt = create_win(true, {
+            }, {
                 width = fhalf,
                 height = 1,
                 row = height - 3,
@@ -122,12 +121,49 @@ local function create_layout(picker)
             destroy_win(self.preview)
             destroy_win(self.prompt)
         end,
-        update = function(self) end
+        update = function(self)
+        end
     }
 
     return layout
 end
 
+-- requires preview to be disabled
+local function short_layout(picker)
+    local Layout = require("telescope.pickers.layout")
+    return Layout {
+        mount = function(self)
+            local height = 8
+            local factor = 0.4
+
+            local columns = vim.o.columns
+            local width = math.floor(columns * factor)
+            local lines = vim.o.lines
+
+            self.results, _, self.prompt = make_windows({
+                row = lines - height - 5,
+                col = 0,
+                width = width,
+                height = height,
+                border = { "╭", "─", "╮", "│", "", "", "", "│" },
+            }, nil, {
+                row = lines - 4,
+                col = 0,
+                width = width,
+                height = 1,
+                border = { "│", "", "│", "─", "╯", "─", "╰", "│" },
+            })
+        end,
+        unmount = function(self)
+            destroy_win(self.results)
+            destroy_win(self.prompt)
+        end,
+        update = function(self)
+        end
+    }
+end
+
+local MIN_FILENAME_WIDTH = 80
 local path_display = function(opts, path)
     local tail = vim.fn.fnamemodify(path, ":t")
     local parendir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":~:.:h"), 6)
@@ -160,13 +196,19 @@ local path_display = function(opts, path)
 end
 -- }}}
 
--- Entry Makers {{{
+--[[ Entry Makers {{{
+Why redo them?
+Cause the builtin ones kinda suck sometimes :(
+]]
 
--- for grep
-local line_and_col_display
 local MAX_FILENAME_WIDTH = 24
 local MAX_FILEPARENT_WIDTH = 24
 local ROW_COL_WIDTH = 11
+
+--[[ Grep {{{
+File Name, Parent, Row:Col, Match
+]]
+local line_and_col_display
 local line_and_column_entry_maker = function(line)
     if not line_and_col_display then
         line_and_col_display = require("telescope.pickers.entry_display").create {
@@ -182,16 +224,15 @@ local line_and_column_entry_maker = function(line)
 
     local _, _, filename, row, col, text = string.find(line, "(..-):(%d+):(%d+):(.*)")
     row, col = tonumber(row), tonumber(col)
-    local tail = vim.fn.fnamemodify(filename, ":t")
-    local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(filename, ":~:.:h"), 6)
-    local filename_highlight = utils.highlight_fname(tail)
-    tail = strlib.truncate(tail, MAX_FILENAME_WIDTH, "~")
-    parentdir = strlib.truncate(parentdir, MAX_FILEPARENT_WIDTH, "~")
 
 
     return {
         value = line,
         display = function()
+            local tail = vim.fn.fnamemodify(filename, ":t")
+            local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(filename, ":~:.:h"), 6)
+            local filename_highlight = utils.highlight_fname(tail)
+
             return line_and_col_display {
                 { tail,                       filename_highlight },
                 { parentdir,                  "NonText" },
@@ -205,9 +246,11 @@ local line_and_column_entry_maker = function(line)
         filename = filename
     }
 end
+-- }}}
 
--- for find_files and git_files
-local file_display
+--[[ Plain File Names {{{
+Name, Parent
+]]
 local file_entry_maker = function(line)
     local max_name_width = MAX_FILENAME_WIDTH * 2
 
@@ -230,7 +273,6 @@ local file_entry_maker = function(line)
             local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(value, ":~:.:h"), 6)
             local filename_highlight = utils.highlight_fname(tail)
 
-            tail = strlib.truncate(tail, max_name_width, "~")
             return file_display {
                 { tail,      filename_highlight },
                 { parentdir, "NonText" }
@@ -240,8 +282,11 @@ local file_entry_maker = function(line)
         ordinal = line,
     }
 end
+-- }}}
 
--- lsp_symbols
+--[[ Lsp Symbols {{{
+Icon + Type, Name, File, Parent
+]]
 local lsp_entry_display
 local MAX_SYMBOL_WIDTH = 60
 local lsp_symbol_entry_maker = function(entry)
@@ -252,6 +297,7 @@ local lsp_symbol_entry_maker = function(entry)
                 { width = 8 }, -- icon and type
                 { width = MAX_SYMBOL_WIDTH },
                 { width = MAX_FILENAME_WIDTH },
+                { remaining = true }
             }
         }
     end
@@ -276,16 +322,23 @@ local lsp_symbol_entry_maker = function(entry)
             -- use same highlights as cmp
             local hl = "CmpItemKind" .. entry.kind
             local tail = vim.fn.fnamemodify(filename, ":t")
+            local parentdir = vim.fn.fnamemodify(filename, ":~:.:h")
             local file_hl = utils.highlight_fname(tail)
+
             return lsp_entry_display {
                 { utils.lsp_symbols[entry.kind] or entry.kind, hl },
-                { name,                          utils.lsp_highlights[entry.kind] },
-                { tail,                          file_hl },
+                { name,                                        utils.lsp_highlights[entry.kind] },
+                { tail,                                        file_hl },
+                { parentdir,                                   "NonText" }
             }
         end
     }
 end
+-- }}}
 
+--[[ Quickfix list {{{
+Filename, Parent, Row:Column
+]]
 local quickfix_entry_display
 local quickfix_entry_maker = function(entry)
     if not quickfix_entry_display then
@@ -314,18 +367,63 @@ local quickfix_entry_maker = function(entry)
             local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(filename, ":~:.:h"), 6)
             local filename_highlight = utils.highlight_fname(tail)
 
-            tail = strlib.truncate(tail, MAX_FILENAME_WIDTH, "~")
-            parentdir = strlib.truncate(parentdir, MAX_FILEPARENT_WIDTH, "~")
-
             return quickfix_entry_display {
-                { tail,                                   filename_highlight },
-                { parentdir,                              "NonText" },
+                { tail,                                    filename_highlight },
+                { parentdir,                               "NonText" },
                 { ("%d:%d"):format(entry.lnum, entry.col), "Number" },
                 { entry.text }
             }
         end
     }
 end
+-- }}}
+
+--[[ Buffers {{{
+
+]]
+local buffer_entry_display
+local buffer_entry_maker = function(entry)
+    if not buffer_entry_display then
+        buffer_entry_display = require("telescope.pickers.entry_display").create {
+            separator = " ",
+            items = {
+                { width = 4 },        -- shorthand number
+                { width = 4 },        -- "real" number
+                { width = 1 },        -- status.hidden
+                { width = 4 },        -- status.readonly
+                { width = 1 },        -- status.modified
+                { width = 2 },        -- buffer kind
+                { width = 4 },        -- line
+                { remaining = true }, -- buffer name
+            }
+        }
+    end
+
+    local buf = entry.bufnr
+    local shortbuf = Short_for_bufs[buf]
+    local name, kind, show_modified = utils.format_buf_name(buf)
+
+    return {
+        value = name,
+        bufnr = buf,
+        ordinal = (shortbuf or buf) .. " : " .. name,
+        display = function()
+            return buffer_entry_display {
+                { shortbuf or "nil",                    shortbuf and "Number" or "NonText" },
+                { buf,                                  "Number" },
+                { entry.info.hidden == 1 and "." or "", entry.info.hidden == 1 and "NonText" },
+                (vim.bo[buf].readonly
+                    and { "[ro]", "NonText" }
+                    or { "[rw]", "String" }),
+                { entry.info.changed == 1 and show_modified and "~" or "", "Constant" },
+                { utils.btypesymbols[kind],                                "SlI" .. utils.btypehighlights[kind] },
+                { ":" .. entry.info.lnum ~= 0 and entry.info.lnum or 1,    "Number" },
+                { name }
+            }
+        end
+    }
+end
+-- }}}
 -- }}}
 
 local default_config_tbl = {
@@ -407,6 +505,8 @@ M.opts.pickers = {
     },
     oldfiles = default_config_tbl,
     buffers = default_config {
+        entry_maker = buffer_entry_maker,
+        create_layout = short_layout,
         sort_lastused = true, -- so i can just <space><space><cr> to cycle
         previewer = false,
         mappings = {
