@@ -6,7 +6,8 @@ local picker_maps = {
     find_files = "<space>F",
     oldfiles = "<space>o",
     live_grep = "<space>/",
-    lsp_workspace_symbols = "<space>v",
+    lsp_workspace_symbols = "<space>V",
+    lsp_document_symbols = "<space>v",
     buffers = "<space><space>",
     jumplist = "<space><C-o>",
 }
@@ -23,12 +24,14 @@ local M = {
 }
 -- }}}
 
+local utils = require("config.utils")
+local strlib = require("plenary.strings")
 
 --[[ Custom Layout {{{
 Place prompt at bottom of screen, list and preview above it
 ]]
 
-local MIN_FILENAME_WIDTH = 40
+local MIN_FILENAME_WIDTH = 80
 local function create_layout(picker)
     local Layout = require("telescope.pickers.layout")
     ---@param enter boolean
@@ -104,7 +107,6 @@ local function create_layout(picker)
                 col = fhalf + 2,
                 width = shalf - 2,
                 height = view_height + 1,
-                style = "",
                 border = { "┬", "─", "─", "", "", "", "", "│" },
             })
             self.prompt = create_win(true, {
@@ -143,7 +145,7 @@ local path_display = function(opts, path)
                 0,
                 namelen,
             },
-            require("config.utils").highlight_fname(tail)
+            utils.highlight_fname(tail)
         },
         {
             {
@@ -155,6 +157,174 @@ local path_display = function(opts, path)
     }
 
     return string.format("%s %s%s ", tail, (" "):rep(padding), parendir), hls
+end
+-- }}}
+
+-- Entry Makers {{{
+
+-- for grep
+local line_and_col_display
+local MAX_FILENAME_WIDTH = 24
+local MAX_FILEPARENT_WIDTH = 24
+local ROW_COL_WIDTH = 11
+local line_and_column_entry_maker = function(line)
+    if not line_and_col_display then
+        line_and_col_display = require("telescope.pickers.entry_display").create {
+            separator = " ",
+            items = {
+                { width = MAX_FILENAME_WIDTH },
+                { width = MAX_FILEPARENT_WIDTH },
+                { width = ROW_COL_WIDTH },
+                { remaining = true }
+            }
+        }
+    end
+
+    local _, _, filename, row, col, text = string.find(line, "(..-):(%d+):(%d+):(.*)")
+    row, col = tonumber(row), tonumber(col)
+    local tail = vim.fn.fnamemodify(filename, ":t")
+    local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(filename, ":~:.:h"), 6)
+    local filename_highlight = utils.highlight_fname(tail)
+    tail = strlib.truncate(tail, MAX_FILENAME_WIDTH, "~")
+    parentdir = strlib.truncate(parentdir, MAX_FILEPARENT_WIDTH, "~")
+
+
+    return {
+        value = line,
+        display = function()
+            return line_and_col_display {
+                { tail,                       filename_highlight },
+                { parentdir,                  "NonText" },
+                { ("%d:%d"):format(row, col), "Number" },
+                { text },
+            }
+        end,
+        ordinal = line,
+        lnum = row,
+        col = col,
+        filename = filename
+    }
+end
+
+-- for find_files and git_files
+local file_display
+local file_entry_maker = function(line)
+    local max_name_width = MAX_FILENAME_WIDTH * 2
+
+    if not file_display then
+        file_display = require("telescope.pickers.entry_display").create {
+            separator = " ",
+            items = {
+                { width = max_name_width },
+                { remaining = true,      right_justify = true },
+            }
+        }
+    end
+
+    return {
+        value = line,
+        display = function(entry)
+            local value = entry.value
+
+            local tail = vim.fn.fnamemodify(value, ":t")
+            local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(value, ":~:.:h"), 6)
+            local filename_highlight = utils.highlight_fname(tail)
+
+            tail = strlib.truncate(tail, max_name_width, "~")
+            return file_display {
+                { tail,      filename_highlight },
+                { parentdir, "NonText" }
+            }
+        end,
+        filename = line,
+        ordinal = line,
+    }
+end
+
+-- lsp_symbols
+local lsp_entry_display
+local MAX_SYMBOL_WIDTH = 60
+local lsp_symbol_entry_maker = function(entry)
+    if not lsp_entry_display then
+        lsp_entry_display = require("telescope.pickers.entry_display").create {
+            separator = " ",
+            items = {
+                { width = 8 }, -- icon and type
+                { width = MAX_SYMBOL_WIDTH },
+                { width = MAX_FILENAME_WIDTH },
+            }
+        }
+    end
+
+    local buf
+    if not entry.filename then
+        buf = vim.api.nvim_get_current_buf()
+    end
+
+    local filename = entry.filename or vim.api.nvim_buf_get_name(buf)
+    local _, name = entry.text:match("^%[(.+)%]%s+(.*)")
+
+    return {
+        col = entry.col,
+        lnum = entry.lnum,
+        symbol_type = entry.kind,
+        buffer = buf,
+        filename = filename,
+        value = entry,
+        ordinal = entry.kind .. ":" .. filename .. ":" .. entry.lnum,
+        display = function()
+            -- use same highlights as cmp
+            local hl = "CmpItemKind" .. entry.kind
+            local tail = vim.fn.fnamemodify(filename, ":t")
+            local file_hl = utils.highlight_fname(tail)
+            return lsp_entry_display {
+                { utils.lsp_symbols[entry.kind] or entry.kind, hl },
+                { name,                          utils.lsp_highlights[entry.kind] },
+                { tail,                          file_hl },
+            }
+        end
+    }
+end
+
+local quickfix_entry_display
+local quickfix_entry_maker = function(entry)
+    if not quickfix_entry_display then
+        quickfix_entry_display = require("telescope.pickers.entry_display").create {
+            separator = " ",
+            items = {
+                { width = MAX_FILENAME_WIDTH },
+                { width = MAX_FILEPARENT_WIDTH },
+                { width = ROW_COL_WIDTH },
+                { remaining = true }
+            }
+        }
+    end
+
+    local filename = entry.filename or vim.api.nvim_buf_get_name(entry.buf)
+
+    return {
+        value = entry,
+        ordinal = filename .. " " .. entry.text,
+        filename = filename,
+        col = entry.col,
+        lnum = entry.lnum,
+        text = entry.text,
+        display = function()
+            local tail = vim.fn.fnamemodify(filename, ":t")
+            local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(filename, ":~:.:h"), 6)
+            local filename_highlight = utils.highlight_fname(tail)
+
+            tail = strlib.truncate(tail, MAX_FILENAME_WIDTH, "~")
+            parentdir = strlib.truncate(parentdir, MAX_FILEPARENT_WIDTH, "~")
+
+            return quickfix_entry_display {
+                { tail,                                   filename_highlight },
+                { parentdir,                              "NonText" },
+                { ("%d:%d"):format(entry.lnum, entry.col), "Number" },
+                { entry.text }
+            }
+        end
+    }
 end
 -- }}}
 
@@ -216,19 +386,24 @@ local lsp_config = default_config {
     reuse_win = true,
     layout_config = {
         preview_width = 0.6,
-    }
+    },
+    entry_maker = quickfix_entry_maker
 }
 
 M.opts.pickers = {
     lsp_definitions = lsp_config,
     lsp_references = lsp_config,
-    lsp_workspace_symbols = lsp_config,
+    lsp_workspace_symbols = default_config {
+        entry_maker = lsp_symbol_entry_maker,
+    },
+    lsp_document_symbols = default_config {
+        entry_maker = lsp_symbol_entry_maker,
+    },
     diagnostics = default_config {
         disable_coordinates = true,
     },
-    git_files = default_config_tbl,
     live_grep = default_config {
-        disable_coordinates = true,
+        entry_maker = line_and_column_entry_maker
     },
     oldfiles = default_config_tbl,
     buffers = default_config {
@@ -246,7 +421,12 @@ M.opts.pickers = {
             end
         }
     },
-    find_files = default_config_tbl,
+    find_files = default_config {
+        entry_maker = file_entry_maker
+    },
+    git_files = default_config {
+        entry_maker = file_entry_maker
+    },
     help_tags = default_config_tbl,
 }
 
@@ -263,7 +443,7 @@ M.config = function(_, opts)
     telescope.load_extension("zf-native")
 
     local builtin = require("telescope.builtin")
-    local map = require("config.utils").map
+    local map = utils.map
     for picker, keys in pairs(picker_maps) do
         map("n", keys, builtin[picker])
     end
