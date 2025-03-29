@@ -1,20 +1,6 @@
 local api = vim.api
 local terminal = require("config.terminal")
 
----@class config.cmdargs
----@field name string
----@field args string
----@field fargs string[]
----@field nargs string
----@field bang boolean
----@field line1 number
----@field line2 number
----@field range 0|1|2
----@field count number
----@field reg string
----@field mods string
----@field smods table
-
 -- Zoxide {{{
 local function get_zoxide_result(path)
     local expanded = path:gsub("~", vim.env.HOME)
@@ -45,7 +31,9 @@ vim.api.nvim_create_user_command("Zed", function(args)
         return
     end
 
-    vim.cmd.edit(dir)
+    local mods = args.smods
+    local cmd = mods.vertical and "vsplit" or (mods.horizontal and "split")
+    vim.cmd[cmd](dir)
 end, {
     nargs = 1,
     complete = complete_zoxide,
@@ -72,7 +60,6 @@ vim.api.nvim_create_user_command("Zcd", zcd_func, zcd_args)
 -- }}}
 
 -- Automatic Split {{{
----@param args config.cmdargs
 local function smart_split(args)
     local height = vim.api.nvim_win_get_height(0)
     local width = vim.api.nvim_win_get_width(0)
@@ -110,7 +97,6 @@ vim.api.nvim_create_user_command("Split", smart_split, split_cmd_opts)
 -- Shell Utils {{{
 
 ---Set qflist/loclist (with !bang) to result of command
----@param args config.cmdargs
 api.nvim_create_user_command("Csh", function(args)
     local command = args.fargs
     local exit = vim.system(command, {
@@ -142,7 +128,6 @@ api.nvim_create_user_command("Csh", function(args)
 end, { complete = "shellcmd", nargs = "+", bang = true })
 
 ---Run a single command in a floating window
----@param args config.cmdargs
 api.nvim_create_user_command("Ft", function(args)
     terminal.open_term {
         position = "float",

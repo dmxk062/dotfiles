@@ -60,7 +60,6 @@ M.popup = function()
     end)
 end
 
----@param arguments config.cmdargs
 M.spell_cmd = function(arguments)
     local args = arguments.fargs
     if args[1] == "get" then

@@ -8,7 +8,6 @@ e.g.
 }}} ]]
 
 ---@class config.overlay
----@field attach fun(buf: integer, data: config.cmdargs?): boolean success
 ---@field detach fun(buf: integer)
 ---@field state table
 
