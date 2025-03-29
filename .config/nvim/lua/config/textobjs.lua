@@ -3,10 +3,10 @@ local api = vim.api
 local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
 local ftpref = require("config.ftpref")
 
---[[ Rationale {{{
+--[[ Information {{{
 see https://github.com/chrisgrieser/nvim-various-textobjs
 
-This will be nowhere near as complex, I just want a framework to my own
+This will be nowhere near as complex, I just want a framework for my own
 see ./operators.lua as well
 
 Important ones:

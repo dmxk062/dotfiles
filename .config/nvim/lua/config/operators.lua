@@ -1,6 +1,6 @@
 local M = {}
 
---[[ Rationale {{{
+--[[ Information {{{
 Despite being able to add operators to vim, this usually needs to be redone by each plugin
 This module adds common code that can be used to create custom operators
 

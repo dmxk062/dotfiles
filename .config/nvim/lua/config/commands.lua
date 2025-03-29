@@ -1,6 +1,5 @@
 local api = vim.api
 local terminal = require("config.terminal")
-local utils = require("config.utils")
 
 ---@class config.cmdargs
 ---@field name string

@@ -1,6 +1,6 @@
 local M = {}
 
---[[ Rationale {{{
+--[[ Information {{{
 Lots of editors have a concept of persistent scratch buffers
 This module adds that to neovim, while also allowing custom behavior
 

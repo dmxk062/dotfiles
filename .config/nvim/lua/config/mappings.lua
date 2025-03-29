@@ -1,19 +1,28 @@
+--[[ Information {{{
+All mappings that are general purpose and active regardless of opened plugins
+
+TODO: find a use for
+- Insert: <C-b> <C-l> <C-s> <C-z>
+}}} ]]
+
+-- Declarations {{{
+local api = vim.api
+local fn = vim.fn
 local utils = require("config.utils")
 local ftpref = require("config.ftpref")
 local abbrev = utils.abbrev
 local map = utils.map
 local unmap = utils.unmap
-local api = vim.api
-local fn = vim.fn
 
-local obj = { "x", "o" }      -- textobjects
 local mov = { "n", "x", "o" } -- motion
+local obj = { "x", "o" }      -- textobjects
 
 -- my own custom textobjects
 local textobjs = require("config.textobjs")
 -- create custom operators easily
 local operators = require("config.operators")
 
+-- run ex command with count
 local function cmd_with_count(cmd)
     return function()
         local ok, err = pcall(api.nvim_cmd, {
@@ -27,6 +36,7 @@ local function cmd_with_count(cmd)
         end
     end
 end
+-- }}}
 
 -- Unmap Unused {{{
 map("n", "gQ", "<nop>") -- ex mode is just plain annoying
@@ -266,7 +276,6 @@ end
 
 map("n", bufleader .. '"', function() indexed_tab_command("norm! gt") end)
 map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
-
 -- }}}
 
 --[[ Scratch Buffers {{{
@@ -506,7 +515,7 @@ map(obj, "gG", textobjs.entire_buffer)
 -- evaluate lua and insert result in buffer
 operators.map_function("<space>el", function(mode, region, extra, get)
     local code = get()
-    if not code[#code]:match("^%s*return%s+%S+") then
+    if not code[#code]:match("^%s*return%s+") then
         code[#code] = "return " .. code[#code]
     end
     local exprs = table.concat(code, "\n") .. "\n"
@@ -644,9 +653,10 @@ end)
 -- allows me to repeat commands like theyre regular mappings
 operators.map_function("g:", function(mode, region, extra, get)
     if extra.repeated then
-        api.nvim_feedkeys(
-            string.format("<cmd>%d,%d%s<cr>", region[1][1], region[2][1], extra.saved.cmd),
-            "nt", false)
+        local ok, err = pcall(vim.cmd, string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
+        if not ok and err then
+            vim.notify(tostring(err), vim.log.levels.ERROR)
+        end
     else
         local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
         api.nvim_feedkeys(cmdstr, "n", false)
@@ -668,10 +678,10 @@ end)
 -- }}}
 
 -- Edit Region in Split {{{
-local region_edit_hlns = api.nvim_create_namespace("region_edit")
 
 -- edit a region of a file in a new window and buffer
 -- changes will be synced on write
+local region_edit_hlns = api.nvim_create_namespace("region_edit")
 operators.map_function("<C-w>e", function(mode, region, extra, get)
     local lines = get("line")
     local main_buffer = api.nvim_get_current_buf()
@@ -734,7 +744,7 @@ end)
 -- }}}
 
 --[[ Change Directory {{{
-Sometimes I need a quicker way to change dir than :cd, :lcd etc
+Sometimes I need a quicker way to change directory than :cd, :lcd etc
 This may benefit from being turned into a sub mode sometime
 ]]
 local cdleader = "<space>."
@@ -846,61 +856,4 @@ map("n", "gK", function()
         return "<cmd>Man " .. fn.expand("<cword>") .. "<cr>"
     end
 end, { expr = true })
-
---[[ Ideas for Unbound {{{
-- Normal {{{1
-<space>A
-<space>B
-<space>C
-<space>E
-<space>G
-<space>H
-<space>I
-<space>J
-<space>K
-<space>L
-<space>N
-<space>O
-<space>P
-<space>S
-<space>T
-<space>U
-<space>V
-<space>W
-<space>X
-<space>Y
-<space>Z
-<space>b
-<space>h
-<space>i
-<space>n
-<space>w
-<space>x
-<space>y
-gA
-gB
-gC
-gD
-gK
-gM
-gT
-gV
-gW
-gX
-gY
-gZ
-gh
-gl
-gm
-gt
-gw
-gz
-}}}
-
-- Insert: {{{1
-<C-b>
-<C-l>
-<C-s>
-<C-z>
-}}}
-}}} ]]
+-- }}}

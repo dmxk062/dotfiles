@@ -1,12 +1,23 @@
+--[[ Information {{{
+Entry point to *almost* all of my neovim configuration (barring ftplugins and after/)
+
+This file is mainly concerned with setting options
+and doing everything required for startup.
+Once it is done bootstrapping neovim, little if anything remains of it
+
+TODO: maybe use 'findfunc'?
+}}} ]]
+
 vim.cmd.colorscheme("mynord")
 
--- only open the startscreen if stdin is empty
+
+-- only open the welcome screen if stdin is empty
 -- and there are no command line arguments
-local open_start_screen = vim.fn.argc() == 0
+local should_open_start_screen = vim.fn.argc() == 0
 vim.api.nvim_create_autocmd("StdinReadPre", {
     once = true,
     callback = function(ctx)
-        open_start_screen = false
+        should_open_start_screen = false
     end
 })
 
@@ -33,6 +44,7 @@ o.undofile = true
 o.winborder = "rounded"
 -- }}}
 
+
 -- Wrapping {{{
 -- wrap at whitespace, indent wrapped lines and show an indicator
 o.wrap = true
@@ -42,7 +54,7 @@ o.breakindentopt = "sbr"
 o.showbreak = ""
 -- }}}
 
--- idk why that isn't the default, much more intuitive imo
+-- idk why this isn't the default, much more intuitive imo
 o.splitright = true
 o.splitbelow = true
 
@@ -90,15 +102,11 @@ opt.cdpath = {
 }
 -- }}}
 
--- normal, o-pending, visual: block
--- replace, terminal: underscore
--- insert, command: bar
--- all except o-pending: blink
 opt.guicursor = {
-    "n-o-v:block",
-    "r-t:hor20",
-    "i-c-ci-cr:ver10",
-    "n-c-ci-cr-r-v:blinkon1",
+    "n-o-v:block",            -- normal, o-pending, visual: block
+    "r-t:hor20",              -- replace, terminal: underscore
+    "i-c-ci-cr:ver10",        -- insert, command: bar
+    "n-c-ci-cr-r-v:blinkon1", -- all except o-pending: blink
 }
 
 -- ftplugins {{{
@@ -110,6 +118,7 @@ vim.g.ft_man_folding_enable = 1
 
 vim.g.loaded_spellfile_plugin = 1 -- use my own code instead
 
+-- not sure if this counts as a ftplugin
 vim.g.health = {
     style = "float"
 }
@@ -119,6 +128,8 @@ vim.g.health = {
 -- use lazy for the remaining config
 -- all the package definitions in ./lua/plugins/ will be loaded
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+-- bootstrap
 if not vim.uv.fs_stat(lazypath) then
     vim.system({
         "git",
@@ -143,7 +154,7 @@ require("lazy").setup("plugins", {
         colorscheme = { "mynord" },
     },
 
-    -- just plain annoying with a simpler config
+    -- just plain annoying
     change_detection = {
         enabled = false,
         notify  = false,
@@ -192,7 +203,7 @@ vim.diagnostic.config {
     },
 }
 
--- remove sign text, but keep hl
+-- remove sign text, but keep highlights
 local signs = {
     "DiagnosticSignError",
     "DiagnosticSignHint",
@@ -205,23 +216,23 @@ end
 -- }}}
 
 -- Load Config {{{
-require("config.autocommands") -- set various useful autocommands
+require("config.autocommands") -- set autocommands that don't fit anywhere else
 require("config.mappings")     -- set all the mappings
-require("config.commands")     -- custom commands for all buffers
+require("config.commands")     -- global custom commands
 require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
 require("config.overlays")     -- specialized file operations
 require("config.lsp")          -- language servers
 -- }}}
 
--- for some reason lazy deactivates that
+-- for some reason lazy deactivates it
 o.modeline = true
 
--- create this autocommand after nvim had a chance to read from stdin
+-- create this autocommand after neovim had a chance to read from stdin
 vim.api.nvim_create_autocmd("VimEnter", {
     once = true,
     callback = function(ctx)
-        if open_start_screen then
+        if should_open_start_screen then
             require("config.startscreen").show_start_screen()
         end
     end

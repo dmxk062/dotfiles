@@ -1,7 +1,6 @@
 local autocmd = vim.api.nvim_create_autocmd
 local api = vim.api
 local utils = require("config.utils")
-local ftpref = require("config.ftpref")
 
 -- Window Title {{{
 -- change the title in a more intelligent way
@@ -15,9 +14,9 @@ autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
 vim.o.titlestring = "nv: NeoVIM" -- set initial
 -- }}}
 
---[[ Mode Based Linenumber {{{
+--[[ Mode based 'number' and 'relativenumber' {{{
 change line number based on mode:
-- command mode: make it absolute for ranges etc
+- command mode: make it absolute for ranges
 - normal mode: keep relative motions fast
 ]]
 

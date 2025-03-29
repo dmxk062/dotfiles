@@ -223,7 +223,7 @@ local function update_git()
 end
 -- }}}
 
--- {{{
+-- Searchcount {{{
 local function update_search()
     if vim.v.hlsearch ~= 1 then
         return ""

@@ -1,6 +1,6 @@
---[[ Rationale {{{
-Wtf is a overlay?
-An overlay is a "mode" that transforms data in to a file
+--[[ Information {{{
+Wtf is an overlay?
+An overlay is a "mode" that transforms data in a file
 to textual data that (neo)vim can work with.
 
 e.g.
