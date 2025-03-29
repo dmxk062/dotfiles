@@ -639,7 +639,7 @@ add_with_prefix(colorscheme, "Telescope", {
     PreviewBorder         = { fg = pal.bg3 },
     ResultsSpecialComment = { fg = col.pink },
     Selection             = { bg = pal.bg1 },
-    PromptPrefix          = { fg = col.teal, bold = true },
+    PromptPrefix          = { fg = col.teal },
     SelectionCaret        = {},
     Matching              = { bg = pal.bg1 },
 

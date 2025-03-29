@@ -469,6 +469,10 @@ M.opts.defaults = {
             ["<M-k>"]  = "move_selection_previous",
             ["<Down>"] = "move_selection_next",
             ["<Up>"]   = "move_selection_previous",
+            ["<C-t>"]  = "select_tab",
+            ["<C-e>"]  = "file_edit",
+            ["<C-s>"]  = "select_horizontal",
+            ["<C-v>"]  = "select_vertical",
         }
     },
     dynamic_preview_title = true,
@@ -476,7 +480,7 @@ M.opts.defaults = {
     selection_caret = "",
     entry_prefix = "",
     multi_icon = "",
-    prompt_prefix = "ed: ",
+    prompt_prefix = ":e ",
 }
 
 local lsp_config = default_config {

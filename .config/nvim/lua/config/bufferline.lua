@@ -23,7 +23,8 @@ _G.Bufs_for_idx = {}   -- mapping of buffer indices in the buffer line to buffer
 ---@type table<integer, integer>
 _G.Tabs_for_idx = {}   -- mapping of tab indices in the buffer line to tab ids
 
-local idx_for_buf = {} -- reverse lookup for tablist
+---@type table<integer, integer>
+_G.Short_for_bufs = {} -- reverse lookup of buffer names
 local grapple_tags     -- lookup tags
 
 local sections
@@ -34,7 +35,7 @@ end
 
 local function update_buflist()
     Bufs_for_idx = {}
-    idx_for_buf = {}
+    Short_for_bufs = {}
 
     local count = 1
     local out = {}
@@ -99,7 +100,7 @@ local function update_buflist()
         table.insert(out, res)
 
         Bufs_for_idx[count] = b
-        idx_for_buf[b] = count
+        Short_for_bufs[b] = count
         count = count + 1
 
         ::continue::
@@ -125,7 +126,7 @@ local function update_tablist()
 
         local bufs_shown = {}
         for _, w in pairs(api.nvim_tabpage_list_wins(t)) do
-            local buf = idx_for_buf[api.nvim_win_get_buf(w)]
+            local buf = Short_for_bufs[api.nvim_win_get_buf(w)]
             if buf then
                 bufs_shown[buf] = true
             end

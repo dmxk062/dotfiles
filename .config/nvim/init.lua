@@ -189,7 +189,7 @@ require("lazy").setup("plugins", {
 vim.diagnostic.config {
     virtual_text = {
         prefix = "!",
-    }
+    },
 }
 
 -- remove sign text, but keep hl
