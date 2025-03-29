@@ -1,7 +1,6 @@
 
 (defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
 
-
 ;; Icons {{{
 (defvar weather-icons '{
 "01d": "weather-clear",
@@ -149,7 +148,7 @@
                     : "cold")))}"
                     :text "󰔏   ${weather.main.temp}°C")
                 (label :halign "start" :class "weather-wind"
-                    :text "   ${round(weather.wind.speed / 3.6, 1)}km/h")
+                    :text "󱪈  ${round(weather.wind.speed / 3.6, 1)}km/h")
                 (label :halign "start" :class "weather-description"
                     :text "󰋽   ${weather.weather[0].description}")))))
 
