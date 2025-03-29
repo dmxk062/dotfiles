@@ -129,9 +129,6 @@ local function line_is_blank(lnum)
 end
 
 local function indent(pos, lcount, opts)
-    local multiplier = vim.v.count > 1 and (vim.v.count - 1) or 0
-    local around = vim.o.shiftwidth * multiplier
-
     local curl = pos[1]
 
     while (line_is_blank(curl)) do
@@ -141,7 +138,12 @@ local function indent(pos, lcount, opts)
         curl = curl + 1
     end
 
-    local start_indent = vim.fn.indent(curl) - around
+    local start_indent
+    if vim.v.count > 0 then
+        start_indent = vim.v.count * vim.bo[0].shiftwidth
+    else
+        start_indent = vim.fn.indent(curl)
+    end
     if start_indent == 0 then
         return
     end

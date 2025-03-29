@@ -477,10 +477,13 @@ map(obj, "aQ", [[a']])
 --[[ indents, very useful for python or other indent based languages
  a includes one line above and below,
  except for filetypes like python or lisps where only the above line is included by default
- aI always includes the last line too, even for python et cetera,
+ aI always includes the line below too, even for python et cetera,
  useful for object literals like dicts or lists
 
- v:count specifies the amount of indent levels around the one at the cursor to select
+ if present, v:count specifies the amount of indent levels instead of the current cursor position
+ this is particularly useful for languages like python where
+ c1ii comes to mean "change in the topmost scope"
+ d2ai for example then means "delete this method"
  NOTE: this uses shiftwidth, so it's not 100% reliable for files
  that do not have the same shiftwidth or variations in its indent width ]]
 map(obj, "ii", textobjs.indent_inner)
