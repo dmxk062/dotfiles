@@ -16,6 +16,20 @@ mainbox {
     background-color: @bg0;
     orientation: horizontal;
 }
+
+left-box {
+    padding: 12px;
+    border-radius: 12px;
+    background-color: @bg0;
+    children: [imagebox];
+}
+
+imagebox {
+    background-image: url("~/.config/background/wall", height);
+    background-color: @bg0;
+    border-radius: 12px;
+}
+
 listbox {
     children: [listview, entry, mode-switcher];
     expand: true;
@@ -86,15 +100,3 @@ entry {
     margin: 0px 12px 0px 12px;
 } 
 
-left-box {
-    padding: 12px;
-    border-radius: 12px;
-    background-color: @bg0;
-    children: [imagebox];
-}
-
-imagebox {
-    background-image: url("~/.config/background/wall", height);
-    background-color: @bg0;
-    border-radius: 12px;
-}
