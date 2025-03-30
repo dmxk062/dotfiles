@@ -37,7 +37,7 @@ local function highlight_motion(cmd)
         if not isalpha or (isalpha and not lastwasword) or (iscap and not lastwascap) then
             if seen[char] == count then
                 api.nvim_buf_set_extmark(0, find_ns, cursor[1] - 1, i - 1, {
-                    hl_group = "FindFirst" .. index % 9,
+                    hl_group = "FindFirst" .. index % 10,
                     end_col = i,
                     end_line = cursor[1] - 1,
                 })
