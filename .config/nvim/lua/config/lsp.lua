@@ -92,8 +92,8 @@ local on_lsp_attached = function(ev)
 end
 
 local on_lsp_detached = function(ev)
-    utils.unmap_group(ev.buf)
-    vim.api.nvim_buf_del_user_command(ev.buf, "InlayHint")
+    pcall(utils.unmap_group, ev.buf)
+    pcall(vim.api.nvim_buf_del_user_command, ev.buf, "InlayHint")
 end
 
 utils.autogroup("config.lspconfig", {
