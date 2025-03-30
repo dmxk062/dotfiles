@@ -240,7 +240,7 @@ local line_and_column_entry_maker = function(line)
                 { text },
             }
         end,
-        ordinal = line,
+        ordinal = string.format("%s:%s:%d", text, filename, row),
         lnum = row,
         col = col,
         filename = filename
@@ -251,6 +251,7 @@ end
 --[[ Plain File Names {{{
 Name, Parent
 ]]
+local file_display
 local file_entry_maker = function(line)
     local max_name_width = MAX_FILENAME_WIDTH * 2
 
@@ -317,7 +318,7 @@ local lsp_symbol_entry_maker = function(entry)
         buffer = buf,
         filename = filename,
         value = entry,
-        ordinal = entry.kind .. ":" .. filename .. ":" .. entry.lnum,
+        ordinal = string.format("%s:%s:%s:%d", entry.kind, name, filename, entry.lnum),
         display = function()
             -- use same highlights as cmp
             local hl = "CmpItemKind" .. entry.kind
@@ -357,7 +358,7 @@ local quickfix_entry_maker = function(entry)
 
     return {
         value = entry,
-        ordinal = filename .. " " .. entry.text,
+        ordinal = string.format("%s:%s:%d", entry.text, filename, entry.lnum),
         filename = filename,
         col = entry.col,
         lnum = entry.lnum,
@@ -402,11 +403,12 @@ local buffer_entry_maker = function(entry)
     local buf = entry.bufnr
     local shortbuf = Short_for_bufs[buf]
     local name, kind, show_modified = utils.format_buf_name(buf)
+    local kindicon = utils.btypesymbols[kind]
 
     return {
         value = name,
         bufnr = buf,
-        ordinal = (shortbuf or buf) .. " : " .. name,
+        ordinal = string.format("%s:%s:%d:%d", kindicon, name, shortbuf or 0, buf),
         display = function()
             return buffer_entry_display {
                 { shortbuf or "nil",                    shortbuf and "Number" or "NonText" },
@@ -416,7 +418,7 @@ local buffer_entry_maker = function(entry)
                     and { "[ro]", "NonText" }
                     or { "[rw]", "String" }),
                 { entry.info.changed == 1 and show_modified and "~" or "", "Constant" },
-                { utils.btypesymbols[kind],                                "SlI" .. utils.btypehighlights[kind] },
+                { kindicon,                                                "SlI" .. utils.btypehighlights[kind] },
                 { ":" .. entry.info.lnum ~= 0 and entry.info.lnum or 1,    "Number" },
                 { name }
             }
