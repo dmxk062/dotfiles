@@ -36,12 +36,8 @@ local function map_on_git_buffer(buf)
     map("n", "p", gitsigns.preview_hunk_inline, { desc = "Git: Preview hunk" })
 
     -- use fugitive cause its just better :(
-    map("n", "v", "<cmd>rightbelow Gvdiffsplit<cr>", { desc = "Git: Diff with head (vertical)" })
-    map("n", "V", "<cmd>rightbelow Gvdiffsplit !<cr>", { desc = "Git: Diff with last commit (vertical)" })
-    map("n", "h", "<cmd>rightbelow Ghdiffsplit<cr>", { desc = "Git: Diff with head (horizontal)" })
-    map("n", "H", "<cmd>rightbelow Ghdiffsplit !<cr>", { desc = "Git: Diff with last commit (horizontal)" })
-    map("n", "d", "<cmd>rightbelow Gdiffsplit<cr>", { desc = "Git: Diff with head" })
-    map("n", "D", "<cmd>rightbelow Gdiffsplit !<cr>", { desc = "Git: Diff with last commit" })
+    map("n", "d", "<cmd>rightbelow Gvdiffsplit<cr>", { desc = "Git: Diff with head" })
+    map("n", "D", "<cmd>rightbelow Gvdiffsplit !<cr>", { desc = "Git: Diff with last commit" })
     map("n", "C", "<cmd>silent vertical G commit<cr>")
 
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
@@ -62,8 +58,8 @@ local function map_on_git_buffer(buf)
         function() gitsigns.nav_hunk("next") end,
         function() gitsigns.nav_hunk("prev") end
     )
-    vim.keymap.set({ "n", "x", "o" }, "]g", nh)
-    vim.keymap.set({ "n", "x", "o" }, "[g", ph)
+    utils.map({ "n", "x", "o" }, "]g", nh, { buffer = buf })
+    utils.map({ "n", "x", "o" }, "[g", ph, { buffer = buf })
 
 
     utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = buf })
@@ -128,6 +124,10 @@ M[2].config = function()
                 vim.wo[0][0].foldlevel = 0
             end, 100)
         end,
+
+        FugitiveObject = function()
+            map_on_git_buffer(vim.api.nvim_get_current_buf())
+        end
     })
 end
 
