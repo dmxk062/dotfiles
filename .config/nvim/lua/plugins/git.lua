@@ -43,10 +43,10 @@ local function map_on_git_buffer(buf)
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
     map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
 
-    map("n", "q", gitsigns.setqflist, { desc = "Git: Hunks to qflist" })
-    map("n", "l", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
-    map("n", "Q", "<cmd>0Gclog<cr>", { desc = "Git: History to qflist" })
-    map("n", "L", "<cmd>0Gllog<cr>", { desc = "Git: History to loclist" })
+    map("n", "H", gitsigns.setqflist, { desc = "Git: Hunks to qflist" })
+    map("n", "h", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
+    map("n", "L", "<cmd>0Gclog<cr>", { desc = "Git: Log to qflist" })
+    map("n", "l", "<cmd>0Gllog<cr>", { desc = "Git: Log to loclist" })
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
