@@ -643,7 +643,7 @@ add_with_prefix(colorscheme, "Telescope", {
     Selection             = { bg = pal.bg1 },
     PromptPrefix          = { fg = col.teal },
     SelectionCaret        = {},
-    Matching              = { bg = pal.bg1 },
+    Matching              = { sp = col.bright_gray, underline = true },
 
     PreviewExecute        = { link = "OilExec" },
     PreviewRead           = { link = "OilRead" },
