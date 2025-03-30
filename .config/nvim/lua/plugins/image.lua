@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "3rd/image.nvim",
     lazy = true,

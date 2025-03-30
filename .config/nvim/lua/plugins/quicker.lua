@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "stevearc/quicker.nvim",
 }

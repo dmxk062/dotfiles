@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "jake-stewart/multicursor.nvim",
     branch = "1.0",

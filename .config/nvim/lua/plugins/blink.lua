@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "saghen/blink.cmp",
     build = "cargo build --release",

@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "kevinhwang91/nvim-ufo",
     dependencies = {

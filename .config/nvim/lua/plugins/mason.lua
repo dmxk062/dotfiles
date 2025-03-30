@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "williamboman/mason.nvim",
     opts = {

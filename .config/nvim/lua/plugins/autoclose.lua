@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "m4xshen/autoclose.nvim",
     event = { "InsertEnter" },

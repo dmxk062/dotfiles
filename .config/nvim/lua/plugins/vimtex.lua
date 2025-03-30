@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "lervag/vimtex",
     ft = { "latex", "tex" },

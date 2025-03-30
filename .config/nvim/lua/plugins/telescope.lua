@@ -12,6 +12,7 @@ local picker_maps = {
     jumplist = "<space><C-o>",
 }
 
+---@type LazySpec
 local M = {
     "nvim-telescope/telescope.nvim",
     keys = vim.tbl_values(picker_maps),

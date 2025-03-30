@@ -1,3 +1,4 @@
+---@type LazySpec
 local M = {
     "kylechui/nvim-surround",
     event = "VeryLazy"
