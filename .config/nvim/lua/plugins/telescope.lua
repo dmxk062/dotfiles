@@ -220,6 +220,14 @@ local MAX_FILENAME_WIDTH = 24
 local MAX_FILEPARENT_WIDTH = 24
 local ROW_COL_WIDTH = 11
 
+local function get_names_and_hl(path)
+    local tail = vim.fn.fnamemodify(path, ":t")
+    local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(path, ":~:.:h"), 6)
+    local filename_highlight = utils.highlight_fname(tail)
+
+    return tail, parentdir, filename_highlight
+end
+
 --[[ Grep {{{
 File Name, Parent, Row:Col, Match
 ]]
@@ -244,9 +252,7 @@ local line_and_column_entry_maker = function(line)
     return {
         value = line,
         display = function()
-            local tail = vim.fn.fnamemodify(filename, ":t")
-            local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(filename, ":~:.:h"), 6)
-            local filename_highlight = utils.highlight_fname(tail)
+            local tail, parentdir, filename_highlight = get_names_and_hl(filename)
 
             return line_and_col_display {
                 { tail,                       filename_highlight },
@@ -285,9 +291,7 @@ local file_entry_maker = function(line)
         display = function(entry)
             local value = entry.value
 
-            local tail = vim.fn.fnamemodify(value, ":t")
-            local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(value, ":~:.:h"), 6)
-            local filename_highlight = utils.highlight_fname(tail)
+            local tail, parentdir, filename_highlight = get_names_and_hl(value)
 
             return file_display {
                 { tail,      filename_highlight },
@@ -337,14 +341,12 @@ local lsp_symbol_entry_maker = function(entry)
         display = function()
             -- use same highlights as cmp
             local hl = "BlinkCmpKind" .. entry.kind
-            local tail = vim.fn.fnamemodify(filename, ":t")
-            local parentdir = vim.fn.fnamemodify(filename, ":~:.:h")
-            local file_hl = utils.highlight_fname(tail)
+            local tail, parentdir, filename_highlight = get_names_and_hl(filename)
 
             return lsp_entry_display {
                 { utils.lsp_symbols[entry.kind] or entry.kind, hl },
                 { name,                                        utils.lsp_highlights[entry.kind] },
-                { tail,                                        file_hl },
+                { tail,                                        filename_highlight },
                 { parentdir,                                   "NonText" }
             }
         end
@@ -379,10 +381,7 @@ local quickfix_entry_maker = function(entry)
         lnum = entry.lnum,
         text = entry.text,
         display = function()
-            local tail = vim.fn.fnamemodify(filename, ":t")
-            local parentdir = vim.fn.pathshorten(vim.fn.fnamemodify(filename, ":~:.:h"), 6)
-            local filename_highlight = utils.highlight_fname(tail)
-
+            local tail, parentdir, filename_highlight = get_names_and_hl(filename)
             return quickfix_entry_display {
                 { tail,                                    filename_highlight },
                 { parentdir,                               "NonText" },
@@ -394,9 +393,7 @@ local quickfix_entry_maker = function(entry)
 end
 -- }}}
 
---[[ Buffers {{{
-
-]]
+-- Buffers {{{
 local buffer_entry_display
 local buffer_entry_maker = function(entry)
     if not buffer_entry_display then
@@ -438,6 +435,50 @@ local buffer_entry_maker = function(entry)
                 { name }
             }
         end
+    }
+end
+-- }}}
+
+-- Diagnostics {{{
+local diagnostics_display
+local diagnostics_entry_maker = function(entry)
+    if not diagnostics_display then
+        diagnostics_display = require("telescope.pickers.entry_display").create {
+            separator = " ",
+            items = {
+                { width = 1 },
+                { width = 60 },
+                { width = 9 },
+                { width = MAX_FILENAME_WIDTH },
+                { remaining = true }
+            }
+        }
+    end
+
+    local type = entry.type:sub(1, 1)
+    
+    -- lots of lsps suggest fixes there
+    local text = entry.text:gsub("%s*%(.*%)%s*$", "")
+
+    return {
+        value = entry,
+        filename = entry.filename,
+        type = type,
+        qf_type = type,
+        lnum = entry.lnum,
+        col = entry.col,
+        text = text,
+        ordinal = ("%s:%s:%s"):format(type, entry.filename, entry.text),
+        display = function()
+            local tail, parentdir, filename_highlight = get_names_and_hl(entry.filename)
+            return diagnostics_display {
+                { type,                                          "DiagnosticSign" .. entry.type },
+                { text },
+                { string.format("%d:%d", entry.lnum, entry.col), "Number" },
+                { tail,                                          filename_highlight },
+                { parentdir,                                     "NonText" },
+            }
+        end,
     }
 end
 -- }}}
@@ -519,7 +560,7 @@ M.opts.pickers = {
         entry_maker = lsp_symbol_entry_maker,
     },
     diagnostics = default_config {
-        disable_coordinates = true,
+        entry_maker = diagnostics_entry_maker,
     },
     live_grep = default_config {
         entry_maker = line_and_column_entry_maker
