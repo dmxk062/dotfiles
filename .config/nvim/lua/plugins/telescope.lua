@@ -136,7 +136,10 @@ local function short_layout(picker)
     local Layout = require("telescope.pickers.layout")
     return Layout {
         mount = function(self)
-            local height = 8
+            local height = picker.layout_config.height or 12
+            if type(height) == "function" then
+                height = height()
+            end
             local factor = 0.4
 
             local columns = vim.o.columns
@@ -469,7 +472,7 @@ M.opts.defaults = {
             ["q"]     = "close",
         },
         i = {
-            ["<cr>"]   = "select_drop",
+            ["<cr>"]   = "select_default",
             ["<M-j>"]  = "move_selection_next",
             ["<M-k>"]  = "move_selection_previous",
             ["<Down>"] = "move_selection_next",
@@ -543,6 +546,9 @@ M.opts.extensions = {
     ["zf-native"] = {},
     ["ui-select"] = {
         create_layout = short_layout,
+        layout_config = {
+            height = 4,
+        }
     }
 }
 
