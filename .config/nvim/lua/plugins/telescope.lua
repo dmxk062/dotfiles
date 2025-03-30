@@ -25,6 +25,14 @@ local M = {
         }
     },
 }
+
+-- HACK: lazy load the ui select provider
+M.init = function()
+    vim.ui.select = function(...)
+        require("telescope")
+        return vim.ui.select(...)
+    end
+end
 -- }}}
 
 local utils = require("config.utils")
