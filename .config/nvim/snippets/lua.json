@@ -1,0 +1,20 @@
+{
+    "require": {
+        "prefix": "req",
+        "body": ["require(\"${1}\")"],
+        "description": "Require a module"
+    },
+    "vimprint": {
+        "prefix": "pr",
+        "body": ["vim.notify(vim.inspect($1))"],
+        "description": "Pretty print in neovim"
+    },
+    "fold-comment": {
+        "prefix": "--fold",
+        "body": [
+            "--[[ $1 {{{",
+            "$0",
+            "}}} ]]"
+        ]
+    }
+}

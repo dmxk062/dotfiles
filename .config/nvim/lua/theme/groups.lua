@@ -485,6 +485,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
 
     SignatureHelpBorder = { link = "*MenuBorder" },
 
+    Kind                = { fg = col.yellow },
     KindArray           = { fg = col.light_blue },
     KindBoolean         = { link = "@boolean" },
     KindClass           = { link = "*ItemKindInterface" },

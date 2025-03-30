@@ -21,6 +21,15 @@ M.opts.signature = {
     }
 }
 
+M.opts.cmdline = {
+    completion = {
+        menu = {
+            -- incredibly useful for :find
+            auto_show = true
+        }
+    }
+}
+
 M.opts.completion = {
     list = {
         max_items = 96,
