@@ -516,26 +516,11 @@ map(obj, "gG", textobjs.entire_buffer)
 
 -- Filter with Lua {{{
 operators.map_function("<space>!", function(mode, region, extra, get, set)
-    local function maplines(lines, func)
-        local res = {}
-        for _, line in ipairs(lines) do
-            local out = func(line)
-            local replacement
-            if type(out) == "table" then
-                replacement = table.concat(out)
-            else
-                replacement = tostring(out)
-            end
-
-            table.insert(res, replacement)
-        end
-        return res
-    end
     if extra.repeated and extra.saved.func then
-        set(region, maplines(get(), extra.saved.func))
+        set(region, extra.saved.func(get()))
     else
         extra.saved.func = nil
-        local res = vim.fn.input { prompt = "= ", completion = "lua" }
+        local res = vim.fn.input { prompt = "filter= ", completion = "lua" }
         if res == "" then
             return
         end
@@ -546,9 +531,24 @@ operators.map_function("<space>!", function(mode, region, extra, get, set)
             return
         end
 
-        local filter = chunk()
-        extra.saved.func = filter
-        set(region, maplines(get(), filter))
+        local filter, do_once = chunk()
+        local func = do_once and filter or function(lines)
+            local _res = {}
+            for _, line in ipairs(lines) do
+                local out = filter(line)
+                local replacement
+                if type(out) == "table" then
+                    replacement = table.concat(out)
+                else
+                    replacement = tostring(out)
+                end
+
+                table.insert(_res, replacement)
+            end
+            return _res
+        end
+        extra.saved.func = func
+        set(region, func(get()))
     end
 end)
 -- }}}
