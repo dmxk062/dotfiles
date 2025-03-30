@@ -195,9 +195,11 @@ L.luals = {
             return
         end
 
+        -- load nvim-specific libraries only for config
         local libpaths = {
             vim.env.VIMRUNTIME,   -- runtime files
             "${3rd}/luv/library", -- vim.uv
+            vim.fn.stdpath("config") .. "/lua"
         }
 
         -- load lazy plugins for those that do use lua
@@ -208,13 +210,12 @@ L.luals = {
             end
         end
 
-        -- put config files last so plugin specs don't conflict with plugins
-        table.insert(libpaths, vim.fn.stdpath("config") .. "/lua")
-
-        -- load nvim-specific libraries only for config
         add_setting(client, "Lua", {
             runtime = {
-                version = "LuaJIT"
+                -- should hold true for any decent system
+                version = "LuaJIT",
+                -- prefer plugins over specs
+                path = { "?/init.lua", "?.lua" },
             },
             workspace = {
                 checkThirdParty = false,
