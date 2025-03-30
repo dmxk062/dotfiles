@@ -16,10 +16,10 @@ Important ones:
  - entire buffer: gG
 }}} ]]
 
----@alias point [integer, integer]
----@alias region [point, point]
+---@alias config.point [integer, integer]
+---@alias config.region [config.point, config.point]
 ---@alias seltype "line"|"char"
----@alias textobj_function fun(pos: point, lcount: integer, opts: any?): region|point?, seltype?
+---@alias textobj_function fun(pos: config.point, lcount: integer, opts: any?): config.region|config.point?, seltype?
 
 ---@param cmdstr string
 local function norm(cmdstr)
@@ -52,12 +52,12 @@ function M.create_textobj(fn, opts)
         ---@cast mode seltype
         -- motion
         if type(sel[1]) == "number" then
-            ---@cast sel point
+            ---@cast sel config.point
             api.nvim_win_set_cursor(0, sel)
 
             -- textobj
         else
-            ---@cast sel region
+            ---@cast sel config.region
             local vimode = api.nvim_get_mode().mode
             api.nvim_win_set_cursor(0, sel[1])
 
@@ -182,7 +182,7 @@ M.indent_inner = M.create_textobj(indent, { outer = false })
 M.indent_outer = M.create_textobj(indent, { outer = true })
 M.indent_outer_with_last = M.create_textobj(indent, { outer = true, always_last = true })
 
-M.entire_buffer = M.create_textobj(function(pos, lcount, outer)
+M.entire_buffer = M.create_textobj(function(_, lcount, _)
     return { { 1, 1 }, { lcount, 1 } }, "line"
 end, {})
 
@@ -238,7 +238,7 @@ local function foldmarker_object(pos, count, opts)
 
     local startpattern = vim.pesc(marker[1])
     local endpattern = vim.pesc(marker[2])
-    local line = vim.api.nvim_win_get_cursor(0)[1]
+    local line = pos[1]
     local startline, endline
     local maxlines = vim.api.nvim_buf_line_count(0)
 

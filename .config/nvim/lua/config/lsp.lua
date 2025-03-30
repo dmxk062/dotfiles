@@ -4,13 +4,6 @@ Set up LSPs
 
 local utils = require("config.utils")
 
-local signature_help_cfg = {
-    doc_lines = 6,
-    max_width = 60,
-    close_timeout = 1000,
-    hint_enable = false,
-}
-
 -- Callbacks & Mappings {{{
 local function lsp_map(buf)
     local map = utils.local_mapper(buf, { group = true })
@@ -216,6 +209,7 @@ L.luals = {
                 version = "LuaJIT",
                 -- prefer plugins over specs
                 path = { "?/init.lua", "?.lua" },
+                strictPath = true
             },
             workspace = {
                 checkThirdParty = false,

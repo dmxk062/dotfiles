@@ -9,6 +9,7 @@ e.g.
 
 ---@class config.overlay
 ---@field detach fun(buf: integer)
+---@field attach fun(buf: integer): boolean
 ---@field state table
 
 local M = {}

@@ -87,8 +87,9 @@ function M.open_term(opts)
 
     utils.win_show_buf(b, { position = opts.position, size = opts.size })
 
-    local job = fn.termopen(cmd, {
+    local job = fn.jobstart(cmd, {
         cwd = cwd,
+        term = true,
     })
 
     M.jobs_for_buffers[b] = job

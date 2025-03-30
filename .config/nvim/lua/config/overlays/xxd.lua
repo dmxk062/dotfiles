@@ -38,7 +38,7 @@ end
 M.state = {}
 
 
-function M.attach(buf, ...)
+function M.attach(buf)
     if buf == 0 then
         buf = api.nvim_get_current_buf()
     end
@@ -50,7 +50,7 @@ function M.attach(buf, ...)
 
     local lsps = vim.lsp.get_clients { bufnr = buf }
     for _, lsp in ipairs(lsps) do
-        lsp.stop()
+        lsp:stop(false)
     end
     local state = {
         prev_ft = vim.bo[buf].ft,

@@ -2,6 +2,7 @@ local api = vim.api
 local utils = require("config.utils")
 local getbufname = utils.format_buf_name
 local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
+---@module "grapple.init"
 local grapple = require("grapple")
 
 --[[ Rationale {{{
@@ -168,7 +169,7 @@ local bufcmds = {
 }
 
 utils.autogroup("config.bufferline", {
-    [bufcmds] = vim.schedule_wrap(function(ev)
+    [bufcmds] = vim.schedule_wrap(function()
         sections[1] = update_buflist()
         sections[3] = update_tablist()
         redraw()

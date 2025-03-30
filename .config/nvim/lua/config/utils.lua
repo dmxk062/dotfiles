@@ -539,14 +539,15 @@ end
 M.user_autogroup = function(name, commands)
     local group = api.nvim_create_augroup(name, { clear = true })
 
-    for ev, fn in pairs(commands) do
-        local tbl = { pattern = ev, callback = fn, group = group }
+    for ev, cb in pairs(commands) do
+        local tbl = { pattern = ev, callback = cb, group = group }
 
         api.nvim_create_autocmd("User", tbl)
     end
 end
 
----@param
+---@param group string
+---@param event string|string[]
 M.del_autocommand = function(group, event)
     local commands = api.nvim_get_autocmds { group = group, event = event }
     api.nvim_del_autocmd(commands[1].id)
