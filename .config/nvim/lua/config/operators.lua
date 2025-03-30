@@ -38,7 +38,9 @@ end
 ---@alias point [integer, integer]
 ---@alias region [point, point]
 ---@alias op_extra {saved: table, repeated: boolean}
----@alias op_function fun(mode: string, region: region, extra: op_extra, get: fun(mode: string?): string[]): string[]?, point?, point?
+---@alias config.op.get fun(mode: string?): string[]
+---@alias config.op.set fun(range: region, replacement: string[])
+---@alias config.op.cb fun(mode: string, region: region, extra: op_extra, get: config.op.get, set: config.op.set)
 
 ---@param name string
 ---@param cb function
@@ -65,6 +67,16 @@ function M.make_operator(name, cb)
             end
         end
 
+        local function set_content(reg, replacement)
+            if replacement then
+                if mode == "line" then
+                    vim.api.nvim_buf_set_lines(0, reg[1][1] - 1, reg[2][1], false, replacement)
+                else
+                    vim.api.nvim_buf_set_text(0, reg[1][1] - 1, reg[1][2], reg[2][1] - 1, reg[2][2] + 1, replacement)
+                end
+            end
+        end
+
         if not Ctx.extra_data[name] then
             Ctx.extra_data[name] = {}
         end
@@ -73,14 +85,7 @@ function M.make_operator(name, cb)
             saved = Ctx.extra_data[name],
             repeated = is_repeat,
         }
-        local replacement, startpos, endpos = cb(mode, region, extra, get_content)
-        if replacement then
-            if mode == "line" then
-                vim.api.nvim_buf_set_lines(0, startpos[1] - 1, endpos[1], false, replacement)
-            else
-                vim.api.nvim_buf_set_text(0, startpos[1] - 1, startpos[2], endpos[1] - 1, endpos[2] + 1, replacement)
-            end
-        end
+        cb(mode, region, extra, get_content, set_content)
     end
 
     Ctx.funs[name] = operator
@@ -89,7 +94,7 @@ end
 
 --- Maps a function as a visual and normal mode operator
 ---@param keys string
----@param cb op_function
+---@param cb config.op.cb
 ---@param opts {normal_only: boolean?, desc: string?}?
 function M.map_function(keys, cb, opts)
     opts = opts or {}

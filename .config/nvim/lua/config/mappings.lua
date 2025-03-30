@@ -514,9 +514,48 @@ map(obj, "a/", textobjs.create_pattern_obj("()[^/]+()/*"))
 map(obj, "gG", textobjs.entire_buffer)
 -- }}}
 
+-- Filter with Lua {{{
+operators.map_function("<space>!", function(mode, region, extra, get, set)
+    local function maplines(lines, func)
+        local res = {}
+        for _, line in ipairs(lines) do
+            local out = func(line)
+            local replacement
+            if type(out) == "table" then
+                replacement = table.concat(out)
+            else
+                replacement = tostring(out)
+            end
+
+            table.insert(res, replacement)
+        end
+        return res
+    end
+    if extra.repeated and extra.saved.func then
+        set(region, maplines(get(), extra.saved.func))
+    else
+        extra.saved.func = nil
+        local res = vim.fn.input { prompt = ":lua ", completion = "lua" }
+        if res == "" then
+            return
+        end
+
+        print(res)
+        local chunk, err = loadstring("return " .. res)
+        if not chunk then
+            vim.notify(tostring(err), vim.log.levels.ERROR)
+        end
+
+        local filter = chunk()
+        extra.saved.func = filter
+        set(region, maplines(get(), filter))
+    end
+end)
+-- }}}
+
 -- Evaluate Lua {{{
 -- evaluate lua and insert result in buffer
-operators.map_function("<space>el", function(mode, region, extra, get)
+operators.map_function("<space>el", function(mode, region, extra, get, set)
     local code = get()
     if not code[#code]:match("^%s*return%s+") then
         code[#code] = "return " .. code[#code]
@@ -535,7 +574,6 @@ operators.map_function("<space>el", function(mode, region, extra, get)
         return
     end
 
-    print(type(return_val))
     if type(return_val) == "table" then
         local concat = table.concat(return_val, "\n")
         if #concat == 0 then
@@ -551,14 +589,14 @@ operators.map_function("<space>el", function(mode, region, extra, get)
         result = { tostring(return_val) }
     end
 
-    return result, region[1], region[2]
+    set(region, result)
 end)
 -- }}}
 
 -- Evaluate Math (qalc) {{{
 -- evalute qalculate expression/math and insert result in buffer
 -- this is quite useful for e.g. unit conversion
-operators.map_function("<space>em", function(mode, region, extra, get)
+operators.map_function("<space>em", function(mode, region, extra, get, set)
     local expressions = get()
     local last_expr = expressions[#expressions]
 
@@ -572,14 +610,14 @@ operators.map_function("<space>em", function(mode, region, extra, get)
         stdin = expressions
     }):wait().stdout
     if not result then
-        return nil
+        return
     end
 
     local output = vim.split(result, "\n")
     if #(output[#output]) then
         table.remove(output, #output)
     end
-    return output, region[1], region[2]
+    set(region, output)
 end)
 -- }}}
 
@@ -607,7 +645,7 @@ local sort_functions = {
 -- charwise: csv
 -- linewise: lines
 -- preserves indent/spacing
-operators.map_function("g=", function(mode, region, extra, get)
+operators.map_function("g=", function(mode, region, extra, get, set)
     local split
     if mode == "char" then
         local content = table.concat(get(), "")
@@ -647,14 +685,14 @@ operators.map_function("g=", function(mode, region, extra, get)
         output = sorted
     end
 
-    return output, region[1], region[2]
+    set(region, output)
 end)
 -- }}}
 
 -- Command in Region {{{
 -- open a cmdline in a region specified by a textobject or motion
 -- allows me to repeat commands like theyre regular mappings
-operators.map_function("g:", function(mode, region, extra, get)
+operators.map_function("g:", function(mode, region, extra, get, set)
     if extra.repeated then
         local ok, err = pcall(vim.cmd, string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
         if not ok and err then
@@ -676,7 +714,7 @@ operators.map_function("g:", function(mode, region, extra, get)
             end
         })
     end
-    return nil
+    return
 end)
 -- }}}
 
@@ -685,7 +723,7 @@ end)
 -- edit a region of a file in a new window and buffer
 -- changes will be synced on write
 local region_edit_hlns = api.nvim_create_namespace("region_edit")
-operators.map_function("<C-w>e", function(mode, region, extra, get)
+operators.map_function("<C-w>e", function(mode, region, extra, get, set)
     local lines = get("line")
     local main_buffer = api.nvim_get_current_buf()
     local ft = vim.bo.filetype

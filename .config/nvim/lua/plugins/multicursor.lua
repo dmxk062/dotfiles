@@ -49,7 +49,7 @@ function M.config(_, opts)
     -- turns multiple cursors into another vim command more than a full mode
     -- for linewise mode or when spanning multiple lines: create one cursor for each line, at the same position as the original one
     -- for charwise mode on a single line: create a single cursor at the destination of the motion
-    operators.map_function("<M-c>", function(mode, region, extra, get)
+    operators.map_function("<M-c>", function(mode, region, extra, get, set)
         if mode == "line" or region[2][1] ~= region[1][1] then
             local original_column = vim.fn.virtcol(".")
             mc.action(function(ctx)
@@ -65,7 +65,7 @@ function M.config(_, opts)
                 cursor:setPos({ region[2][1], region[2][2] + 1 })
             end)
         end
-        return nil
+        return
     end, { normal_only = true, desc = "Cursor: New for motion" })
 
     map("x", "<M-c>", mc.visualToCursors, { desc = "Cursor: On each line" })
