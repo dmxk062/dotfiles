@@ -325,6 +325,16 @@ map("n", scratchleader .. "<space>", function()
     end)
 end)
 
+map("n", scratchleader .. "f", function()
+    vim.ui.select(scratch.complete(), { prompt = "Scratches" }, function(item, idx)
+        if not item then
+            return
+        end
+
+        scratch.open_scratch(item, { position = "float" })
+    end)
+end)
+
 -- scratch for current file
 map("n", scratchleader .. "s", function()
     scratch.open_file_scratch {

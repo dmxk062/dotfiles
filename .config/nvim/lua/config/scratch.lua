@@ -215,7 +215,7 @@ function M.complete()
 
     local res = {}
     for name, t in entries do
-        if t == "file" then
+        if t == "file" and name ~= ".luarc.json" then
             table.insert(res, name)
         end
     end
