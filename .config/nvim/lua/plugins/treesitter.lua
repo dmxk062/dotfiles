@@ -172,9 +172,9 @@ M.config = function()
     vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat.repeat_last_move_previous)
 
     -- enable it for [fFtT]
-    for _, motion in pairs({ "f", "F", "t", "T" }) do
-        vim.keymap.set({ "n", "x", "o" }, motion, ts_repeat["builtin_" .. motion .. "_expr"], { expr = true })
-    end
+    -- for _, motion in pairs({ "f", "F", "t", "T" }) do
+    --     vim.keymap.set({ "n", "x", "o" }, motion, ts_repeat["builtin_" .. motion .. "_expr"], { expr = true })
+    -- end
 
     -- additional repeat movements for plugins
     local nd, pd = ts_repeat.make_repeatable_move_pair(

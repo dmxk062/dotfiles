@@ -28,6 +28,17 @@ local colorscheme = {
     LeapMatch                   = { underline = true, fg = col.yellow },
     LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
 
+    -- my own better find
+    FindFirst1                  = { bg = col.pink, fg = pal.inverted },
+    FindFirst2                  = { bg = col.purple, fg = pal.inverted },
+    FindFirst3                  = { bg = col.blue, fg = pal.inverted },
+    FindFirst4                  = { bg = col.light_blue, fg = pal.inverted },
+    FindFirst5                  = { bg = col.teal, fg = pal.inverted },
+    FindFirst6                  = { bg = col.green, fg = pal.inverted },
+    FindFirst7                  = { bg = col.yellow, fg = pal.inverted },
+    FindFirst8                  = { bg = col.orange, fg = pal.inverted },
+    FindFirst9                  = { bg = col.red, fg = pal.inverted },
+
     SpellBad                    = { sp = col.red, undercurl = true },
     SpellRare                   = { sp = col.magenta, undercurl = true },
     SpellLocal                  = { sp = col.pink, undercurl = true },
