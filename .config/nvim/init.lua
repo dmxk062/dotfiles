@@ -16,7 +16,7 @@ vim.cmd.colorscheme("mynord")
 local should_open_start_screen = vim.fn.argc() == 0
 vim.api.nvim_create_autocmd("StdinReadPre", {
     once = true,
-    callback = function(ctx)
+    callback = function()
         should_open_start_screen = false
     end
 })
@@ -234,7 +234,7 @@ o.modeline = true
 -- create this autocommand after neovim had a chance to read from stdin
 vim.api.nvim_create_autocmd("VimEnter", {
     once = true,
-    callback = function(ctx)
+    callback = function()
         if should_open_start_screen then
             require("config.startscreen").show_start_screen()
         end
