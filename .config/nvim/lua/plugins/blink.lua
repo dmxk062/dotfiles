@@ -1,6 +1,8 @@
 local M = {
     "saghen/blink.cmp",
-    build = "cargo build --release"
+    build = "cargo build --release",
+    dependencies = {
+    }
 }
 
 M.opts = {}
@@ -73,6 +75,16 @@ M.opts.sources = {
     default = { "lsp", "path", "snippets", "buffer" },
     per_filetype = {
         oil = { "path", "buffer", "snippets" },
+    },
+    providers = {
+        path = {
+            opts = {
+                -- more useful tbh
+                get_cwd = function()
+                    return vim.fn.getcwd()
+                end
+            }
+        }
     }
 }
 

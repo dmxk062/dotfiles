@@ -482,6 +482,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     MenuSelection       = { bg = pal.bg1 },
     Label               = { link = "Normal" },
     DocBorder           = { link = "*MenuBorder" },
+    LabelMatch          = { sp = col.bright_gray, underline = true },
 
     SignatureHelpBorder = { link = "*MenuBorder" },
 
@@ -505,7 +506,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     KindNumber          = { link = "@number" },
     KindObject          = { fg = col.light_blue },
     KindPackage         = { fg = col.green },
-    KindSnippet         = { fg = col.yellow },
+    KindSnippet         = { fg = col.pink },
     KindString          = { link = "@string" },
     KindStruct          = { link = "*ItemKindInterface" },
     KindText            = { fg = pal.bg3 },
