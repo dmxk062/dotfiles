@@ -88,7 +88,7 @@ local on_lsp_attached = function(ev)
         end
     })
 
-    require("lsp_signature").on_attach(signature_help_cfg, ev.buf)
+    -- require("lsp_signature").on_attach(signature_help_cfg, ev.buf)
 end
 
 local on_lsp_detached = function(ev)

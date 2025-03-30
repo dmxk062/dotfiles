@@ -475,41 +475,41 @@ add_with_prefix(colorscheme, "OilGitStatus", {
 
 -- }}}
 
--- nvim-cmp {{{
-add_with_prefix(colorscheme, "CmpItem", {
-    Kind            = { fg = col.yellow },
+-- Blink {{{
+add_with_prefix(colorscheme, "BlinkCmp", {
+    Menu                = { link = "Normal" },
+    MenuBorder          = { fg = pal.bg3 },
+    MenuSelection       = { bg = pal.bg1 },
+    Label               = { link = "Normal" },
+    DocBorder           = { link = "*MenuBorder" },
 
-    KindArray       = { fg = col.light_blue },
-    KindBoolean     = { link = "@boolean" },
-    KindClass       = { link = "*ItemKindInterface" },
-    KindConstant    = { fg = col.yellow },
-    KindConstructor = { fg = col.magenta },
-    KindEnumMember  = { fg = col.yellow },
-    KindField       = { fg = pal.fg0 },
-    KindFile        = { fg = col.yellow },
-    KindFolder      = { fg = col.light_blue },
-    KindFunction    = { fg = col.teal },
-    KindInterface   = { fg = col.magenta },
-    KindKeyword     = { fg = pal.fg0 },
-    KindLatex       = { fg = col.green },
-    KindMethod      = { fg = col.magenta },
-    KindModule      = { fg = col.green },
-    KindNeorg       = { fg = col.light_blue },
-    KindNumber      = { link = "@number" },
-    KindObject      = { fg = col.light_blue },
-    KindPackage     = { fg = col.green },
-    KindSnippet     = { fg = col.yellow },
-    KindString      = { link = "@string" },
-    KindStruct      = { link = "*ItemKindInterface" },
-    KindText        = { fg = pal.bg3 },
-    KindVariable    = { fg = pal.fg0 },
+    SignatureHelpBorder = { link = "*MenuBorder" },
 
-    AbbrMatch       = { fg = col.magenta, bold = true },
-    AbbrMatchFuzzy  = { fg = col.magenta, bold = true },
-    Abbr            = { fg = pal.fg2 },
-    Menu            = { fg = col.green },
+    KindArray           = { fg = col.light_blue },
+    KindBoolean         = { link = "@boolean" },
+    KindClass           = { link = "*ItemKindInterface" },
+    KindConstant        = { fg = col.yellow },
+    KindConstructor     = { fg = col.magenta },
+    KindEnumMember      = { fg = col.yellow },
+    KindField           = { fg = pal.fg0 },
+    KindFile            = { fg = col.yellow },
+    KindFolder          = { fg = col.light_blue },
+    KindFunction        = { fg = col.teal },
+    KindInterface       = { fg = col.magenta },
+    KindKeyword         = { fg = pal.fg0 },
+    KindLatex           = { fg = col.green },
+    KindMethod          = { fg = col.magenta },
+    KindModule          = { fg = col.green },
+    KindNeorg           = { fg = col.light_blue },
+    KindNumber          = { link = "@number" },
+    KindObject          = { fg = col.light_blue },
+    KindPackage         = { fg = col.green },
+    KindSnippet         = { fg = col.yellow },
+    KindString          = { link = "@string" },
+    KindStruct          = { link = "*ItemKindInterface" },
+    KindText            = { fg = pal.bg3 },
+    KindVariable        = { fg = pal.fg0 },
 })
-
 -- }}}
 
 -- LSP & Diagnostics {{{

@@ -312,7 +312,7 @@ end)
 -- enter scratch name
 map("n", scratchleader .. "<space>", function()
     vim.ui.input({
-        prompt = "Scratch",
+        prompt = "Scratch: ",
         completion = "customlist,v:lua.require'config.scratch'.complete"
     }, function(value)
         if not value then
@@ -535,15 +535,15 @@ operators.map_function("<space>!", function(mode, region, extra, get, set)
         set(region, maplines(get(), extra.saved.func))
     else
         extra.saved.func = nil
-        local res = vim.fn.input { prompt = ":lua ", completion = "lua" }
+        local res = vim.fn.input { prompt = "= ", completion = "lua" }
         if res == "" then
             return
         end
 
-        print(res)
         local chunk, err = loadstring("return " .. res)
         if not chunk then
             vim.notify(tostring(err), vim.log.levels.ERROR)
+            return
         end
 
         local filter = chunk()

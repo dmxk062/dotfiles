@@ -19,6 +19,8 @@ local Ctx = {
 
 }
 
+M.Ctx = Ctx
+
 local function get_mark(mark)
     return vim.api.nvim_buf_get_mark(0, mark)
 end

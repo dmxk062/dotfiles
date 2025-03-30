@@ -20,6 +20,9 @@ local M = {
         {
             "natecraddock/telescope-zf-native.nvim"
         },
+        {
+            "nvim-telescope/telescope-ui-select.nvim"
+        }
     },
 }
 -- }}}
@@ -321,7 +324,7 @@ local lsp_symbol_entry_maker = function(entry)
         ordinal = string.format("%s:%s:%s:%d", entry.kind, name, filename, entry.lnum),
         display = function()
             -- use same highlights as cmp
-            local hl = "CmpItemKind" .. entry.kind
+            local hl = "BlinkCmpKind" .. entry.kind
             local tail = vim.fn.fnamemodify(filename, ":t")
             local parentdir = vim.fn.fnamemodify(filename, ":~:.:h")
             local file_hl = utils.highlight_fname(tail)
@@ -537,7 +540,10 @@ M.opts.pickers = {
 }
 
 M.opts.extensions = {
-    ["zf-native"] = {}
+    ["zf-native"] = {},
+    ["ui-select"] = {
+        create_layout = short_layout,
+    }
 }
 
 -- }}}
@@ -547,6 +553,7 @@ M.config = function(_, opts)
 
     telescope.setup(opts)
     telescope.load_extension("zf-native")
+    telescope.load_extension("ui-select")
 
     local builtin = require("telescope.builtin")
     local map = utils.map
