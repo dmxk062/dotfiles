@@ -10,7 +10,6 @@ local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
 local ftpref = require("config.ftpref")
-local ui = require("config.ui")
 local abbrev = utils.abbrev
 local map = utils.map
 local unmap = utils.unmap
@@ -374,10 +373,6 @@ map(mov, "gH", "H")
 
 -- more humane spell popup
 map("n", "z=", function() require("config.spell").popup() end)
-
-for _, cmd in ipairs { "f", "F", "t", "T"} do
-    map(mov, cmd, function() return ui.highlight_find(cmd) end)
-end
 -- }}}
 
 -- Give Q more purpose {{{
