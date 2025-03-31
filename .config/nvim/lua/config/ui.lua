@@ -5,7 +5,6 @@ Improvements to core nvim concepts, to enhance them while keeping functionality
 local M = {}
 local api = vim.api
 
-
 --[[ Highlighting fFtF {{{
 Welcome to the greatest HACK of my life
 ]]
@@ -16,28 +15,31 @@ local function highlight_motion(cmd)
     local cursor = api.nvim_win_get_cursor(0)
     local line = api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], false)[1]
 
-    local index = 1
+    local index = 0
     local lastwasword = false
     local lastwascap = false
 
     local seen = {}
     local count = vim.v.count1
     --[[
-    Highlight the following: 
+    Highlight the following:
         - non alphanumeric characters
         - first capital character in a sequence
         - first character of word
+        - only if it's not the first, which would be easily reachable by hl
     ]]
     for i = cursor[2] + (goes_backward and 0 or 2), (goes_backward and 1 or #line), (goes_backward and -1 or 1) do
         local char = line:sub(i, i)
         seen[char] = (seen[char] or 0) + 1
         local isalpha = char:lower() ~= char:upper()
-        local iscap = char:upper() == char
+        local iscap = isalpha and (char:upper() == char)
 
-        if not isalpha or (isalpha and not lastwasword) or (iscap and not lastwascap) then
+        if (math.abs(i - cursor[2]) > 2)                      -- is not directly adjacent
+            and (not isalpha or (isalpha and not lastwasword) -- not a letter or first letter
+                or (iscap and not lastwascap)) then           -- capital letter
             if seen[char] == count then
                 api.nvim_buf_set_extmark(0, find_ns, cursor[1] - 1, i - 1, {
-                    hl_group = "FindFirst" .. index % 10,
+                    hl_group = "FindFirst" .. (index % 9) + 1,
                     end_col = i,
                     end_line = cursor[1] - 1,
                 })
@@ -53,7 +55,7 @@ end
 M.highlight_find = function(cmd)
     highlight_motion(cmd)
 
-    -- we're in some "normal-ish" mode, no weird scheduling hacks
+    -- we're in some "normal-ish" mode, no weird hacks
     if vim.api.nvim_get_mode().mode ~= "no" then
         api.nvim_feedkeys(vim.v.count1 .. cmd, "n")
         -- as soon as the key is typed, we're done
@@ -62,14 +64,15 @@ M.highlight_find = function(cmd)
             vim.on_key(nil, find_ns)
         end, find_ns)
     else
-        -- here be dragons
+        -- WARN: here be dragons
         local op = vim.v.operator
+        -- ensure normal mode
+        api.nvim_input("<esc>")
         -- give it time to highlight
         vim.defer_fn(function()
-
             -- no better event
             api.nvim_create_autocmd("ModeChanged", {
-                callback = function(ev)
+                callback = function()
                     if vim.v.event.old_mode == "no" then
                         api.nvim_buf_clear_namespace(0, find_ns, 0, -1)
                         return true
