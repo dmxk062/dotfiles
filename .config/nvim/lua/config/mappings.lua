@@ -537,6 +537,7 @@ local sep="${5}"
 
 local result = {}
 for i = start, stop, step do
+    $0
     table.insert(result, (format):format(i))
 end
 
@@ -544,10 +545,11 @@ if #sep > 0 then
     return  {table.concat(result, sep)}, false
 else
     return result, true
-end ]==]
+end]==]
 -- templated insert
 map("n", "<space>i", function()
     luabuf.get_lua_expr({
+        name = "Template",
         type = "function",
         once = true,
         win = {

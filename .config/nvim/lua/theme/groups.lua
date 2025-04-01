@@ -333,6 +333,8 @@ add_with_prefix(colorscheme, "Sl", {
     AGit         = { bg = pal.bg1, fg = col.green },
     IRegion      = { fg = col.magenta },
     ARegion      = { bg = pal.bg1, fg = col.magenta },
+    AEval        = { bg = pal.bg1, fg = col.light_blue},
+    IEval        = { fg = col.light_blue },
 
     AChanged     = { bg = pal.bg1, fg = col.yellow },
     IChanged     = { fg = col.yellow },

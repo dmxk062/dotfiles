@@ -133,6 +133,7 @@ M.btypehighlights = {
     special = "Special",
     help = "Help",
     region = "Region",
+    luaeval = "Eval",
 }
 
 M.btypesymbols = {
@@ -146,6 +147,7 @@ M.btypesymbols = {
     special = "*",
     help = "?",
     region = ">",
+    luaeval = "λ",
 }
 
 -- }}}
