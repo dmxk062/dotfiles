@@ -533,7 +533,7 @@ local start  = ${1:1}
 local stop   = ${2}
 local step   = ${3:1}
 local format = [[${4:%d}]]
-local sep="${5}"
+local sep="${5:\\n}"
 
 local result = {}
 for i = start, stop, step do
@@ -541,10 +541,11 @@ for i = start, stop, step do
     table.insert(result, (format):format(i))
 end
 
-if #sep > 0 then
-    return  {table.concat(result, sep)}, false
+local out = vim.split(table.concat(result, sep), "\\n")
+if #out > 1 then
+    return out, true
 else
-    return result, true
+    return out, true
 end]==]
 -- templated insert
 map("n", "<space>i", function()
