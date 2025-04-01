@@ -10,6 +10,7 @@ local picker_maps = {
     lsp_document_symbols = "<space>v",
     buffers = "<space><space>",
     jumplist = "<space><C-o>",
+    help_tags = "<space>h",
 }
 
 ---@type LazySpec
@@ -456,7 +457,7 @@ local diagnostics_entry_maker = function(entry)
     end
 
     local type = entry.type:sub(1, 1)
-    
+
     -- lots of lsps suggest fixes there
     local text = entry.text:gsub("%s*%(.*%)%s*$", "")
 
@@ -523,6 +524,8 @@ M.opts.defaults = {
         },
         i = {
             ["<cr>"]   = "select_default",
+            ["<C-cr>"] = "select_vertical",
+            ["<S-cr>"] = "select_horizontal",
             ["<M-j>"]  = "move_selection_next",
             ["<M-k>"]  = "move_selection_previous",
             ["<Down>"] = "move_selection_next",
@@ -589,7 +592,11 @@ M.opts.pickers = {
     git_files = default_config {
         entry_maker = file_entry_maker
     },
-    help_tags = default_config_tbl,
+    help_tags = default_config {
+        prompt_prefix = ":h ",
+        create_layout = short_layout,
+        previewer = false,
+    },
 }
 
 M.opts.extensions = {
