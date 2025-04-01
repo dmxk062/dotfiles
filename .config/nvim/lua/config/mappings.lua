@@ -524,82 +524,56 @@ map(obj, "a/", textobjs.create_pattern_obj("()[^/]+()/*"))
 map(obj, "gG", textobjs.entire_buffer)
 -- }}}
 
--- Filter with Lua {{{
-operators.map_function("<space>!", function(mode, region, extra, get, set)
-    if extra.repeated and extra.saved.func then
-        set(region, extra.saved.func(get()))
-    else
-        extra.saved.func = nil
-        local res = vim.fn.input { prompt = "filter= ", completion = "lua" }
-        if res == "" then
+-- Lua Buffer {{{
+local luabuf = require("config.luabuffer")
+
+local insert_template = [==[
+--* NOTE: Template Lua Buffer *--
+local start  = ${1:1}
+local stop   = ${2}
+local step   = ${3:1}
+local format = [[${4:%d}]]
+local sep="${5}"
+
+local result = {}
+for i = start, stop, step do
+    table.insert(result, (format):format(i))
+end
+
+if #sep > 0 then
+    return  {table.concat(result, sep)}, false
+else
+    return result, true
+end ]==]
+-- templated insert
+map("n", "<space>i", function()
+    luabuf.get_lua_expr({
+        type = "function",
+        once = true,
+        win = {
+            size = { 1, 6 },
+            position = "horizontal",
+        },
+        template = insert_template,
+    }, function(buf, ok, chunk)
+        if not ok then
+            vim.notify("luabuf: " .. chunk, vim.log.levels.ERROR)
             return
         end
 
-        local chunk, err = loadstring("return " .. res)
-        if not chunk then
-            vim.notify(tostring(err), vim.log.levels.ERROR)
+        local ok, text, linewise = pcall(chunk)
+        if not ok then
+            vim.notify("luabuf: " .. text, vim.log.levels.ERROR)
             return
         end
 
-        local filter, do_once = chunk()
-        local func = do_once and filter or function(lines)
-            local _res = {}
-            for _, line in ipairs(lines) do
-                local out = filter(line)
-                local replacement
-                if type(out) == "table" then
-                    replacement = table.concat(out)
-                else
-                    replacement = tostring(out)
-                end
-
-                table.insert(_res, replacement)
-            end
-            return _res
-        end
-        extra.saved.func = func
-        set(region, func(get()))
-    end
-end)
--- }}}
-
--- Evaluate Lua {{{
--- evaluate lua and insert result in buffer
-operators.map_function("<space>el", function(mode, region, extra, get, set)
-    local code = get()
-    if not code[#code]:match("^%s*return%s+") then
-        code[#code] = "return " .. code[#code]
-    end
-    local exprs = table.concat(code, "\n") .. "\n"
-    local func, err = loadstring(exprs)
-    if not func then
-        vim.notify(err, vim.log.levels.ERROR)
-        return
-    end
-
-    local ok, return_val = pcall(func)
-    local result
-    if not ok then
-        vim.notify(return_val, vim.log.levels.ERROR)
-        return
-    end
-
-    if type(return_val) == "table" then
-        local concat = table.concat(return_val, "\n")
-        if #concat == 0 then
-            result = vim.split(vim.inspect(return_val), "\n")
+        local cursor = api.nvim_win_get_cursor(0)
+        if linewise then
+            api.nvim_buf_set_lines(0, cursor[1], cursor[1], false, text)
         else
-            result = return_val
+            api.nvim_buf_set_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2], text)
         end
-    elseif type(return_val) == "nil" then
-        return
-    elseif type(return_val) == "string" then
-        result = vim.split(return_val, "\n")
-    else
-        result = { tostring(return_val) }
-    end
-
-    set(region, result)
+    end)
 end)
 -- }}}
 
