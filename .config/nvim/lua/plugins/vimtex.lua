@@ -2,7 +2,6 @@
 local M = {
     "lervag/vimtex",
     ft = { "latex", "tex" },
-    dependencies = { "micangl/cmp-vimtex" }
 }
 M.config = function()
     vim.g.vimtex_view_method = "zathura"
@@ -13,24 +12,6 @@ M.config = function()
         aux_dir = ".aux",
         out_dir = "build",
     }
-
-
-    local cmp_vimtex = require("cmp_vimtex")
-    cmp_vimtex.setup {}
-
-    local cmp = require("cmp")
-    cmp.setup.filetype("tex", {
-        sources = cmp.config.sources({
-            { name = "vimtex" },
-            { name = "buffer" },
-            { name = "nvim_lsp" },
-        })
-    })
-
-    vim.keymap.set("i", "<C-/>", function()
-        require("cmp_vimtex.search").search_menu()
-    end)
-
 
     local group = vim.api.nvim_create_augroup("vimtex_events", {})
 
