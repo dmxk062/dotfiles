@@ -63,6 +63,15 @@ local on_lsp_attached = function(ev)
 
     lsp_map(buf)
 
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+    -- make the 'path' match the one of the language server
+    if client then
+        vim.opt_local.path = vim.tbl_map(function(t)
+            return vim.uri_to_fname(t.uri) .. "/**"
+        end, client.workspace_folders)
+    end
+
     vim.api.nvim_buf_create_user_command(buf, "InlayHint", function(args)
         local cmd = args.fargs[1]
         if cmd then
@@ -80,11 +89,12 @@ local on_lsp_attached = function(ev)
             return { "on", "off" }
         end
     })
-
-    -- require("lsp_signature").on_attach(signature_help_cfg, ev.buf)
 end
 
 local on_lsp_detached = function(ev)
+    -- reset the 'path'
+    vim.opt_local.path = vim.opt_global.path
+
     pcall(utils.unmap_group, ev.buf)
     pcall(vim.api.nvim_buf_del_user_command, ev.buf, "InlayHint")
 end
