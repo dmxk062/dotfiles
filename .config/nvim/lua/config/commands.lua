@@ -32,7 +32,7 @@ vim.api.nvim_create_user_command("Zed", function(args)
     end
 
     local mods = args.smods
-    local cmd = mods.vertical and "vsplit" or (mods.horizontal and "split")
+    local cmd = mods.vertical and "vsplit" or (mods.horizontal and "split" or "edit")
     vim.cmd[cmd](dir)
 end, {
     nargs = 1,
