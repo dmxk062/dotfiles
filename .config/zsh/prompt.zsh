@@ -86,7 +86,7 @@ PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b%(10V.%F{
 
 # right part of prompt, previous command status
 # HACK: draw right prompt one line higher
-RPROMPT="%{$(echotc UP 1)%}%(1j.%F{8}[& %j] %f.)%F{8}%K{8}%f󱎫 %1v %F{%11v}%k%S%12v%s%{$(echotc DO 1)%}"
+RPROMPT="%{$(echotc UP 1)%}%(1j.[& %j] .)%F{8}%K{8}%f󱎫 %1v %F{%11v}%k%S%12v%s%{$(echotc DO 1)%}"
 
 declare -A _exitcolors=(
     [0]=12
