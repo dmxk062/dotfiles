@@ -62,8 +62,14 @@ function bn {
     print -l -- "${@:t}"
 }
 
+# list recursive
 function lr {
     command lsd --tree --depth 3 --hyperlink=always "$@" | less -rFi
+}
+
+# list hierarchy
+function lh {
+    command lsd --tree --directory-only --hyperlink=always "$@" | less -rFi
 }
 
 # like pwd but takes into account all the shell magic
