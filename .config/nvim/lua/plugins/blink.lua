@@ -24,6 +24,9 @@ M.opts.signature = {
 }
 
 M.opts.cmdline = {
+    keymap = {
+        ["<S-CR>"] = { "select_accept_and_enter" },
+    },
     completion = {
         menu = {
             -- incredibly useful for :find
