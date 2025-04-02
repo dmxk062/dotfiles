@@ -2,19 +2,18 @@
 local M = {
     "saghen/blink.cmp",
     build = "cargo build --release",
-    dependencies = {
-    }
+    dependencies = {},
 }
 
 M.opts = {}
 
 M.opts.keymap = {
-    preset = "none",
-
+    preset    = "none",
     ["<C-p>"] = { "show", "select_prev", "fallback" },
     ["<C-n>"] = { "show", "select_next", "fallback" },
     ["<C-e>"] = { "cancel", "fallback" },
-    ["<cr>"] = { "accept", "fallback" },
+    ["<cr>"]  = { "accept", "fallback" },
+    ["<C-y>"] = { "accept", "fallback" },
 }
 
 M.opts.signature = {
@@ -53,7 +52,7 @@ M.opts.completion = {
             },
             components = {}
         }
-    }
+    },
 }
 
 M.opts.completion.menu.draw.components = {
