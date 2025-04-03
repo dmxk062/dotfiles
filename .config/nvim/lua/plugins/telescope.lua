@@ -146,15 +146,18 @@ local function short_layout(picker)
     local Layout = require("telescope.pickers.layout")
     return Layout {
         mount = function(self)
+            local columns = vim.o.columns
+            local lines = vim.o.lines
+
             local height = picker.layout_config.height or 12
             if type(height) == "function" then
                 height = height()
             end
-            local factor = 0.4
+            local width = picker.layout_config.width or math.floor(columns * 0.4)
+            if type(width) == "function" then
+                width = width()
+            end
 
-            local columns = vim.o.columns
-            local width = math.floor(columns * factor)
-            local lines = vim.o.lines
 
             self.results, _, self.prompt = make_windows({
                 row = lines - height - 5,
@@ -582,7 +585,11 @@ M.opts.pickers = {
         layout_config = {
             height = function()
                 local ln = vim.o.lines
-                return math.min(math.max(ln * 0.1, 8), 4)
+                return math.floor(math.min(math.max(ln * 0.1, 8), 4))
+            end,
+            width = function()
+                local col = vim.o.columns
+                return math.floor(math.min(math.max(col * 0.2, 32), 60))
             end
         }
     },
