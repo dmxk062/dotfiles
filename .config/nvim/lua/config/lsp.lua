@@ -66,7 +66,7 @@ local on_lsp_attached = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
 
     -- make the 'path' match the one of the language server
-    if client then
+    if client and client.workspace_folders then
         vim.opt_local.path = vim.tbl_map(function(t)
             return vim.uri_to_fname(t.uri) .. "/**"
         end, client.workspace_folders)
