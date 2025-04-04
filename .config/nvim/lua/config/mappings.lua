@@ -10,6 +10,7 @@ local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
 local ftpref = require("config.ftpref")
+local ui = require("config.ui")
 local abbrev = utils.abbrev
 local map = utils.map
 local unmap = utils.unmap
@@ -524,59 +525,34 @@ map(obj, "a/", textobjs.create_pattern_obj("()[^/]+()/*"))
 map(obj, "gG", textobjs.entire_buffer)
 -- }}}
 
--- Lua Buffer {{{
-local luabuf = require("config.luabuffer")
-
-local insert_template = [==[
---* NOTE: Template Lua Buffer *--
-local start  = ${1:1}
-local stop   = ${2}
-local step   = ${3:1}
-local format = [[${4:%d}]]
-local sep="${5:\\n}"
-
-local result = {}
-for i = start, stop, step do
-    $0
-    table.insert(result, (format):format(i))
-end
-
-local out = vim.split(table.concat(result, sep), "\\n")
-if #out > 1 then
-    return out, true
-else
-    return out, true
-end]==]
+-- Forms {{{
 -- templated insert
 map("n", "<space>i", function()
-    luabuf.get_lua_expr({
-        name = "Template",
-        type = "function",
-        once = true,
-        win = {
-            size = { 1, 6 },
-            position = "horizontal",
+    ui.form {
+        title = "Template Insert",
+        entries = {
+            { name = "Start Value", key = "start", type = "int",    initial = "1" },
+            { name = "Value Step",  key = "step",  type = "int",    initial = "1" },
+            { name = "End Value",   key = "stop",  type = "int",    initial = "9" },
+            { name = "Separator",   key = "sep",   type = "string", initial = "\\n" },
+            { name = "Format",      key = "fmt",   type = "string", initial = "%d." }
         },
-        template = insert_template,
-    }, function(buf, ok, chunk)
-        if not ok then
-            vim.notify("luabuf: " .. chunk, vim.log.levels.ERROR)
-            return
-        end
+        on_completed = function(values)
+            local res = {}
+            for i = values.start, values.stop, values.step do
+                table.insert(res, values.fmt:format(i))
+            end
+            local concat = table.concat(res, values.sep)
+            local lines = vim.split(concat, "\n")
 
-        local ok, text, linewise = pcall(chunk)
-        if not ok then
-            vim.notify("luabuf: " .. text, vim.log.levels.ERROR)
-            return
+            local cursor = api.nvim_win_get_cursor(0)
+            if values.sep:match("\n") then
+                api.nvim_buf_set_lines(0, cursor[1], cursor[1], false, lines)
+            else
+                api.nvim_buf_set_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2], lines)
+            end
         end
-
-        local cursor = api.nvim_win_get_cursor(0)
-        if linewise then
-            api.nvim_buf_set_lines(0, cursor[1], cursor[1], false, text)
-        else
-            api.nvim_buf_set_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2], text)
-        end
-    end)
+    }
 end)
 -- }}}
 
