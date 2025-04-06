@@ -137,6 +137,7 @@ M.form = function(opts)
 
     local win = api.nvim_open_win(buf, true, {
         title = opts.title,
+        title_pos = "center",
         relative = "cursor",
         style = "minimal",
         height = height,

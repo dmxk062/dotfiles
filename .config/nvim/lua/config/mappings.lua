@@ -677,7 +677,6 @@ operators.map_function("g:", function(mode, region, extra, get, set)
             end
         })
     end
-    return
 end)
 -- }}}
 

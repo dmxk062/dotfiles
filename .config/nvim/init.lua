@@ -196,25 +196,24 @@ require("lazy").setup("plugins", {
 -- }}}
 
 -- Diagnostics {{{
+local hlgroups = {
+    "DiagnosticSignError",
+    "DiagnosticSignWarn",
+    "DiagnosticSignInfo",
+    "DiagnosticSignHint",
+}
 vim.diagnostic.config {
     virtual_text = {
         prefix = "!",
+    },
+    signs = {
+        numhl = hlgroups,
+        text = { "", "", "", "" }
     },
     float = {
         border = "rounded",
     }
 }
-
--- remove sign text, but keep highlights
-local signs = {
-    "DiagnosticSignError",
-    "DiagnosticSignHint",
-    "DiagnosticSignInfo",
-    "DiagnosticSignWarn",
-}
-for _, sign in ipairs(signs) do
-    vim.fn.sign_define(sign, { texthl = sign, text = "", numhl = sign })
-end
 -- }}}
 
 -- Load Config {{{
