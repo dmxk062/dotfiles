@@ -151,8 +151,8 @@ local colorscheme = {
     CodeBlock                   = { bg = pal.bg1 },
     Dash                        = { fg = col.blue, bold = true },
 
-    IndentBlanklineChar         = { fg = pal.bg1 },
-    IndentBlanklineCharActive   = { fg = pal.bg3 },
+    IndentBlanklineIndent       = { fg = pal.bg1 },
+    IndentBlanklineScope        = { fg = col.bright_gray },
 
     TreesitterContext           = { bg = pal.bg1 },
     TreesitterContextLineNumber = { fg = col.teal },
@@ -333,7 +333,7 @@ add_with_prefix(colorscheme, "Sl", {
     AGit         = { bg = pal.bg1, fg = col.green },
     IRegion      = { fg = col.magenta },
     ARegion      = { bg = pal.bg1, fg = col.magenta },
-    AEval        = { bg = pal.bg1, fg = col.light_blue},
+    AEval        = { bg = pal.bg1, fg = col.light_blue },
     IEval        = { fg = col.light_blue },
 
     AChanged     = { bg = pal.bg1, fg = col.yellow },

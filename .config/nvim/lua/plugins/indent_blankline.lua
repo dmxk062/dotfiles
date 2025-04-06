@@ -4,33 +4,31 @@ local M = {
     main = "ibl",
 }
 
-M.config = function()
-    require("ibl").setup {
-        indent = {
-            highlight = {
-                "IndentBlanklineChar"
-            },
+---@type ibl.config
+M.opts = {
+    indent = {
+        highlight = {
+            "IndentBlanklineIndent"
         },
-        scope = {
-            show_end = false,
-            highlight = {
-                "IndentBlanklineCharActive",
-            },
-            include = {
-                node_type = {
-                    lua = {
-                        "return_statement",
-                        "table_constructor"
-                    },
-                }
-            }
+    },
+    scope = {
+        highlight = {
+            "IndentBlanklineScope",
         },
-        exclude = {
-            filetypes = {
-                "undotree",
+        include = {
+            node_type = {
+                lua = {
+                    "return_statement",
+                    "table_constructor"
+                },
             }
         }
+    },
+    exclude = {
+        filetypes = {
+            "undotree",
+        }
     }
-end
+}
 
 return M
