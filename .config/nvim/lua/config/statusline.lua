@@ -248,11 +248,17 @@ end
 
 -- Type of the Current Buffer and Spelling {{{
 local function update_filetype()
-    local ft = vim.bo.filetype
-    local ftstr = ft and ft ~= "" and ft or "[noft]"
+    local _ft = vim.bo.filetype
+    local ft = _ft and _ft ~= "" and _ft or "[noft]"
+
     local spell = vim.wo.spell and ("=" .. vim.bo.spelllang) or "[nospell]"
 
-    return ftstr .. " " .. spell
+    local _enc = vim.bo.fileencoding
+    local enc = _enc and _enc ~= "" and _enc or "utf-8"
+
+    return string.format("%s %s %s %s",
+        ft, enc, vim.bo.fileformat, spell
+    )
 end
 -- }}}
 
