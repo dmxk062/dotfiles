@@ -12,6 +12,7 @@ M.opts = {
         },
     },
     scope = {
+        show_end = false,
         highlight = {
             "IndentBlanklineScope",
         },
