@@ -257,7 +257,7 @@ local function update_filetype()
     local enc = _enc and _enc ~= "" and _enc or "utf-8"
 
     return string.format("%s %s %s %s",
-        ft, enc, vim.bo.fileformat, spell
+        enc, vim.bo.fileformat, spell, ft
     )
 end
 -- }}}
