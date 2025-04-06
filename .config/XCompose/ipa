@@ -1,104 +1,128 @@
 # vim: ft=xcompose
 
+# IPA using xcompose
 # use \ as the leader
-# generally try to mimic xsampa, and rather CXS
+# generally try to mimic xsampa, and rather CXS (conlang xsampa)
 
 # basic consonants and vowels
-<Multi_key> <backslash> <h> : "ɦ"
-<Multi_key> <backslash> <g> : "ɡ" # use the right g
-<Multi_key> <backslash> <j> : "ʝ"
-<Multi_key> <backslash> <l> : "ɺ"
-<Multi_key> <backslash> <p> : "ɸ"
-<Multi_key> <backslash> <r> : "ɹ"
-<Multi_key> <backslash> <s> : "ɕ"
-<Multi_key> <backslash> <v> : "ʋ"
-<Multi_key> <backslash> <x> : "ɧ"
-<Multi_key> <backslash> <z> : "ʑ"
-<Multi_key> <backslash> <u> : "ʉ" # CXS
-<Multi_key> <backslash> <A> : "ɑ"
-<Multi_key> <backslash> <B> : "β" # == <comp>@b
-<Multi_key> <backslash> <backslash> <B> : "ʙ"
-<Multi_key> <backslash> <C> : "ç" # == <comp>,c
-<Multi_key> <backslash> <D> : "ð" # == <comp>dh
-<Multi_key> <backslash> <E> : "ε" # == <comp>@e
-<Multi_key> <backslash> <F> : "ɱ"
-<Multi_key> <backslash> <G> : "ɣ"
-<Multi_key> <backslash> <backslash> <G> : "ɢ"
-<Multi_key> <backslash> <H> : "ɥ"
-<Multi_key> <backslash> <backslash> <H> : "ʜ"
-<Multi_key> <backslash> <I> : "ɪ"
-<Multi_key> <backslash> <backslash> <I> : "ᵻ"
-<Multi_key> <backslash> <J> : "ɲ"
-<Multi_key> <backslash> <backslash> <J> : "ɟ"
-<Multi_key> <backslash> <K> : "ɬ"
-<Multi_key> <backslash> <backslash> <K> : "ɮ"
-<Multi_key> <backslash> <L> : "ʎ" # != <comp>@l
-<Multi_key> <backslash> <backslash> <L> : "ʟ"
-<Multi_key> <backslash> <M> : "ɯ"
-<Multi_key> <backslash> <backslash> <M> : "ɰ"
-<Multi_key> <backslash> <N> : "ŋ" # == <comp>ng
-<Multi_key> <backslash> <backslash> <N> : "ɴ"
-<Multi_key> <backslash> <O> : "ɔ"
-<Multi_key> <backslash> <backslash> <O> : "ʘ"
-<Multi_key> <backslash> <Q> : "ɒ"
-<Multi_key> <backslash> <R> : "ʁ"
-<Multi_key> <backslash> <backslash> <R> : "ʀ"
-<Multi_key> <backslash> <S> : "ʃ"
-<Multi_key> <backslash> <T> : "θ" # == <comp>@y
-<Multi_key> <backslash> <U> : "ʊ"
-<Multi_key> <backslash> <backslash> <U> : "ᵿ"
-<Multi_key> <backslash> <V> : "ʌ"
-<Multi_key> <backslash> <W> : "ʍ"
-<Multi_key> <backslash> <X> : "χ"
-<Multi_key> <backslash> <backslash> <X> : "ħ" # == <comp>/h
-<Multi_key> <backslash> <Y> : "ʏ"
-<Multi_key> <backslash> <Z> : "ʒ"
-<Multi_key> <backslash> <at> : "ɘ" # <comp>ee is ə already, so we save one backslash
-<Multi_key> <backslash> <grave> <at> : "ɚ" # errrrrrr
-<Multi_key> <backslash> <ampersand> : "ɶ" # <comp>ae is æ already, use it like IPA, not CXS
-<Multi_key> <backslash> <1> : "ɨ" # == <comp>/i
-<Multi_key> <backslash> <2> : "ø" # == <comp>/o
-<Multi_key> <backslash> <3> : "ɜ"
-<Multi_key> <backslash> <backslash> <3> : "ɞ"
-<Multi_key> <backslash> <4> : "ɾ"
-<Multi_key> <backslash> <5> : "ɫ" # != <comp>/l
-<Multi_key> <backslash> <6> : "ɐ"
-<Multi_key> <backslash> <7> : "ɤ" # != <comp>\G (not a consonant)
-<Multi_key> <backslash> <8> : "ɵ"
-<Multi_key> <backslash> <9> : "œ" # == <comp>oe
-<Multi_key> <backslash> <question> : "ʔ"
-<Multi_key> <backslash> <backslash> <question> : "ʕ"
-<Multi_key> <backslash> <exclam> : "ǃ" # != !
-<Multi_key> <backslash> <bar> : "ǀ" # != | 
-<Multi_key> <backslash> <backslash> <bar> : "ǁ" # double | wouldnt work
-<Multi_key> <backslash> <equal> : "ǂ"
-# duplicate < and > for the fucking useless epiglottals
-<Multi_key> <backslash> <less> <less> : "ʢ"
-<Multi_key> <backslash> <greater> <greater> : "ʡ"
+# for these, the lowercase ones generally give the IPA version with a backslash
+# the capital ones also have a backslash, even though they do not in the IPA
+
+<Multi_key> <backslash> <h> : "ɦ" U0266 # voiced glottal fricative
+<Multi_key> <backslash> <g> : "ɡ" U0261 # voiced velar plosive
+<Multi_key> <backslash> <j> : "ʝ" U029d # voiced palatal fricative
+<Multi_key> <backslash> <l> : "ɺ" U027a # alveolar lateral flap
+<Multi_key> <backslash> <p> : "ɸ" U0278 # voiceless bilabial fricative
+<Multi_key> <backslash> <r> : "ɹ" U0279 # alveolar approximant
+<Multi_key> <backslash> <s> : "ɕ" U0255 # voiceless alveolo-palatal fricative
+<Multi_key> <backslash> <v> : "ʋ" U028b # labiodental approximant
+<Multi_key> <backslash> <x> : "ɧ" U0267 # voiceless palatal-velar fricative
+<Multi_key> <backslash> <z> : "ʑ" U0291 # voiced alveolo-palatal fricative
+<Multi_key> <backslash> <u> : "ʉ" U0289 # close central rounded vowel, NOTE: CXS
+<Multi_key> <backslash> <A> : "ɑ" U0251 # open back unrounded vowel
+<Multi_key> <backslash> <B> : "β" U03b2 # voiced bilabial fricative, NOTE: == @a
+<Multi_key> <backslash> <C> : "ç" U00e7 # voiceless palatal fricative
+<Multi_key> <backslash> <D> : "ð" U00f0 # voiced dental fricative, NOTE: == dh
+<Multi_key> <backslash> <E> : "ε" U03b5 # open-mid front unrounded vowel, NOTE: == @e
+<Multi_key> <backslash> <F> : "ɱ" U0271 # labiodental nasal
+<Multi_key> <backslash> <G> : "ɣ" U0263 # voiced velar fricative
+<Multi_key> <backslash> <H> : "ɥ" U0265 # labial-palatal approximant
+<Multi_key> <backslash> <I> : "ɪ" U026a # near-close front unrounded vowel
+<Multi_key> <backslash> <J> : "ɲ" U0272 # palatal nasal
+<Multi_key> <backslash> <K> : "ɬ" U026c # voiceless alveolar lateral fricative
+<Multi_key> <backslash> <L> : "ʎ" U028e # palatal lateral approximant
+<Multi_key> <backslash> <M> : "ɯ" U026f # close back unrounded vowel
+<Multi_key> <backslash> <N> : "ŋ" U014b # velar nasal, NOTE: == ng
+<Multi_key> <backslash> <O> : "ɔ" U0254 # open-mid back rounded vowel
+<Multi_key> <backslash> <Q> : "ɒ" U0252 # open back rounded vowel
+<Multi_key> <backslash> <R> : "ʁ" U0281 # voiced uvular fricative
+<Multi_key> <backslash> <S> : "ʃ" U0283 # voiceless postalveolar fricative
+<Multi_key> <backslash> <T> : "θ" U03b8 # voiceless dental fricative, NOTE: == <comp>@y
+<Multi_key> <backslash> <U> : "ʊ" U028a # near-close back rounded vowel
+<Multi_key> <backslash> <V> : "ʌ" U028c # open-mid back unrounded vowel
+<Multi_key> <backslash> <W> : "ʍ" U028d # voiceless labial-velar fricative
+<Multi_key> <backslash> <X> : "χ" U03c7 # voiceless uvular fricative
+<Multi_key> <backslash> <Y> : "ʏ" U028f # near-close front rounded vowel
+<Multi_key> <backslash> <Z> : "ʒ" U0292 # voiced postalveolar fricative
+
+# the number row
+<Multi_key> <backslash> <1> : "ɨ" U0268 # close central unrounded vowel, NOTE: == <comp>/i
+<Multi_key> <backslash> <2> : "ø" U00f8 # close-mid front rounded vowel, NOTE: == <comp>/o
+<Multi_key> <backslash> <at>: "ɘ" U0258 # close-mid central unrounded vowel, NOTE: ee is ə already, save one \
+<Multi_key> <backslash> <3> : "ɜ" U025c # open-mid central unrounded vowel
+<Multi_key> <backslash> <4> : "ɾ" U027e # alveolar flap/tap
+<Multi_key> <backslash> <5> : "ɫ" U026b # velarized alveolar lateral approximant
+<Multi_key> <backslash> <6> : "ɐ" U0250 # near-open central vowel
+<Multi_key> <backslash> <7> : "ɤ" U0264 # close-mid back unrounded vowel
+<Multi_key> <backslash> <8> : "ɵ" U0275 # close-mid central rounded vowel
+<Multi_key> <backslash> <9> : "œ" U0153 # open-mid front rounded vowel, NOTE: == <comp>oe
 
 # symbols
-<Multi_key> <backslash> <apostrophe> : "ˈ" # primary stress
-<Multi_key> <backslash> <comma> : "ˌ" # primary stress
-<Multi_key> <backslash> <colon> : "ː"
-<Multi_key> <backslash> <semicolon> : "ˑ" # not what xsampa does, but so much more logical
-<Multi_key> <backslash> <minus> : "‿" # not a dead key/combining symbol
-# for rendering, see the combining diacritics below. these don't work fully in any terminal though
-<Multi_key> <backslash> <parenleft>  : U0361 # combining tie bar above: t͡ʃ
-<Multi_key> <backslash> <parenright> : U035c # combining tie bar below: t͜ʃ
+<Multi_key> <backslash> <grave> <at> : "ɚ"              U025a # r-coloured schwa
+<Multi_key> <backslash> <ampersand> : "ɶ"               U0276 # open front rounded vowel, NOTE ae is æ already, so IPA, not CXS
+<Multi_key> <backslash> <backslash> <3> : "ɞ"           U025e # open-mid central rounded vowel
+<Multi_key> <backslash> <question> : "ʔ"                U0294 # glottal stop
+<Multi_key> <backslash> <backslash> <question> : "ʕ"    U0295 # voiced pharyngeal fricative
+<Multi_key> <backslash> <exclam> : "ǃ"                  U01c3 # postalveolar click
+<Multi_key> <backslash> <bar> : "ǀ"                     U01c0 # dental click
+<Multi_key> <backslash> <backslash> <bar> : "ǁ"         U01c1 # alveolar lateral click
+<Multi_key> <backslash> <equal> : "ǂ"                   U01c2 # palatal click
+<Multi_key> <backslash> <less> <less> : "ʢ"             U02a2 # voiced epiglottal fricative
+<Multi_key> <backslash> <greater> <greater> : "ʡ"       U02a1 # voiceless epiglottal fricative
 
-# diacritics starting with _
-<Multi_key> <backslash> <underscore> <j> : "ʲ"              # palatal: tʲ
-<Multi_key> <backslash> <underscore> <greater> : "ʼ"        # ejective: tʼ
-<Multi_key> <backslash> <underscore> <question> : "ˤ"       # pharyngeal: tˤ
-<Multi_key> <backslash> <underscore> <grave> : "˞"          # rhotacization, aka american syndrome: ə˞
-<Multi_key> <backslash> <underscore> <G> : "ˠ"              # velarized: tˠ
-<Multi_key> <backslash> <underscore> <h> : "ʰ"              # aspirated: tʰ
-<Multi_key> <backslash> <underscore> <l> : "ˡ"              # lateral release: tˡ
-<Multi_key> <backslash> <underscore> <n> : "ⁿ"              # nasal release: tⁿ
-<Multi_key> <backslash> <underscore> <w> : "ʷ"              # labialized: tʷ
+# double backslashes, those are C\ in xsampa
+<Multi_key> <backslash> <backslash> <B> : "ʙ" U0299 # bilabial trill
+<Multi_key> <backslash> <backslash> <G> : "ɢ" U0262 # voiced uvular plosive
+<Multi_key> <backslash> <backslash> <H> : "ʜ" U029c # voiceless epiglottal fricative
+<Multi_key> <backslash> <backslash> <I> : "ᵻ" U1d7b # near-close central unrounded vowel, WARN: not IPA
+<Multi_key> <backslash> <backslash> <J> : "ɟ" U025f # voiced palatal plosive
+<Multi_key> <backslash> <backslash> <K> : "ɮ" U026e # voiced alveolar lateral fricative
+<Multi_key> <backslash> <backslash> <L> : "ʟ" U029f # velar lateral approximant
+<Multi_key> <backslash> <backslash> <M> : "ɰ" U0270 # velar approximant
+<Multi_key> <backslash> <backslash> <N> : "ɴ" U0724 # uvular nasal
+<Multi_key> <backslash> <backslash> <O> : "ʘ" U0298 # bilabial click
+<Multi_key> <backslash> <backslash> <R> : "ʀ" U0280 # uvular trill
+<Multi_key> <backslash> <backslash> <U> : "ᵿ" U1d7f # near-close central rounded vowel, WARN: not IPA
+<Multi_key> <backslash> <backslash> <X> : "ħ" U0127 # voiceless pharyngeal fricative, NOTE: == /h
 
-# combining diacritics, wont show up in zsh when typing a command (either as U+<XXXX> or as whitespace)
-# they do work in neovim and when printed(thanks kitty)
+# implosives
+<Multi_key> <backslash> <less> <b> : "ɓ" U0253 # voiced bilabial implosive
+<Multi_key> <backslash> <less> <d> : "ɗ" U0257 # voiced alveolar implosive
+<Multi_key> <backslash> <less> <g> : "ɠ" U0260 # voiced velar implosive
+<Multi_key> <backslash> <less> <G> : "ʛ" U029b # voiced uvular implosive
+<Multi_key> <backslash> <less> <J> : "ʄ" U0284 # voiced palatal implosive
+
+# retroflex
+<Multi_key> <backslash> <grave> <n>  : "ɳ"              U0273 # retroflex nasal
+<Multi_key> <backslash> <grave> <r>  : "ɽ"              U027d # retroflex flap/tap
+<Multi_key> <backslash> <backslash> <grave> <r>  : "ɻ"  U027b # retroflex approximant
+<Multi_key> <backslash> <grave> <l>  : "ɭ"              U026d # retroflex lateral approximant
+<Multi_key> <backslash> <grave> <d>  : "ɖ"              U0256 # voiced retroflex plosive
+<Multi_key> <backslash> <grave> <t>  : "ʈ"              U0288 # voiceless retroflex plosive
+<Multi_key> <backslash> <grave> <s>  : "ʂ"              U0290 # voiced retroflex fricative
+<Multi_key> <backslash> <grave> <z>  : "ʐ"              U0290 # voiced retroflex fricative
+
+# symbols
+<Multi_key> <backslash> <apostrophe> : "ˈ" U02c8 # primary stress
+<Multi_key> <backslash> <comma> : "ˌ"      U02cc # secondary stress
+<Multi_key> <backslash> <colon> : "ː"      U02d0 # long
+<Multi_key> <backslash> <semicolon> : "ˑ"  U02d1 # half long, NOTE: xsampa uses :\
+<Multi_key> <backslash> <minus> : "‿"      U203f # linking mark, e.g. for liaison
+<Multi_key> <backslash> <parenleft>  :     U0361 # tie bar above: t͡ʃ
+<Multi_key> <backslash> <parenright> :     U035c # tie bar below: t͜ʃ
+
+# diacritics, starting with _
+<Multi_key> <backslash> <underscore> <j> : "ʲ"        U02b2 # palatalized: tʲ
+<Multi_key> <backslash> <underscore> <greater> : "ʼ"  U02bc # ejective: tʼ
+<Multi_key> <backslash> <underscore> <question> : "ˤ" U02e4 # pharyngeal: tˤ
+<Multi_key> <backslash> <underscore> <grave> : "˞"    U02de # rhotacized: ə˞
+<Multi_key> <backslash> <underscore> <g> : "ˠ"        U02e0 # velarized: tˠ
+<Multi_key> <backslash> <underscore> <h> : "ʰ"        U02b0 # aspirated: tʰ
+<Multi_key> <backslash> <underscore> <l> : "ˡ"        U02e1 # lateral release: tˡ
+<Multi_key> <backslash> <underscore> <n> : "ⁿ"        U207f # nasal release: tⁿ
+<Multi_key> <backslash> <underscore> <w> : "ʷ"        U02b7 # labialized: tʷ
+
+# combining diacritics
 # they go *after* the letter they modify
 <Multi_key> <backslash> <underscore> <quotedbl> : U0308     # centralized: ë
 <Multi_key> <backslash> <underscore> <x> : U033d            # mid-centralized: e̽
@@ -142,17 +166,3 @@
 # global tones
 <Multi_key> <backslash> <asciicircum> <G> <f> : "↘"         # global falling
 <Multi_key> <backslash> <asciicircum> <G> <r> : "↗"         # global rising
-
-# implosives
-<Multi_key> <backslash> <less> <b> : "ɓ"
-<Multi_key> <backslash> <less> <d> : "ɗ"
-<Multi_key> <backslash> <less> <g> : "ɠ"
-<Multi_key> <backslash> <less> <G> : "ʛ"
-<Multi_key> <backslash> <less> <J> : "ʄ"
-
-# retroflex
-<Multi_key> <backslash> <grave> <r>  : "ɽ"
-<Multi_key> <backslash> <grave> <backslash> <r>  : "ɻ" # no better way
-<Multi_key> <backslash> <grave> <l>  : "ɭ"
-<Multi_key> <backslash> <grave> <t>  : "ʈ"
-<Multi_key> <backslash> <grave> <z>  : "ʐ"
