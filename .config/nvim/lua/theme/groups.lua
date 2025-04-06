@@ -62,7 +62,7 @@ local colorscheme = {
     Visual                      = { bg = pal.bg1 },
     NonText                     = { fg = col.bright_gray },
     SpecialKey                  = { link = "NonText" },
-    MatchParen                  = { bg = blend(pal.bg0, pal.bg1, 0.5) },
+    MatchParen                  = { bg = pal.bg1, fg = col.pink },
 
     Added                       = { fg = col.green },
     Deleted                     = { fg = col.red },
@@ -570,6 +570,7 @@ add_with_prefix(colorscheme, "Diagnostic", {
     FloatingOk       = { link = "*Ok" },
 
     Deprecated       = { link = "@lsp.mod.deprecated" },
+    Unnecessary      = { undercurl = true, sp = col.bright_gray }
 })
 -- }}}
 
