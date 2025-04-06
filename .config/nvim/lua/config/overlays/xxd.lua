@@ -16,7 +16,7 @@ end
 
 local function xxd_disassemble(buf)
     M.state[buf].is_dumped = true
-    vim.cmd.undojoin()
+    pcall(vim.cmd.undojoin)
     vim.cmd { cmd = "!",
         args = { "xxd" },
         range = { 0, api.nvim_buf_line_count(buf) },
@@ -31,7 +31,7 @@ local function xxd_reassemble(buf)
         range = { 0, api.nvim_buf_line_count(buf) },
         mods = { silent = true }
     }
-    vim.cmd.undojoin()
+    pcall(vim.cmd.undojoin)
 end
 
 ---@type table<integer, {last_pos: [integer, integer], is_dumped: boolean, prev_ft: string?, augroup: integer}>
