@@ -36,7 +36,12 @@ local function print_hl_line(string, hlgroup, offset, do_newline)
     else
         api.nvim_buf_set_text(state.buf, state.cur_row, state.cur_col, state.cur_row, state.cur_col, { padded })
     end
-    api.nvim_buf_add_highlight(state.buf, state.ns, hlgroup, state.cur_row, state.cur_col, state.cur_col + width)
+
+    api.nvim_buf_set_extmark(state.buf, state.ns, state.cur_row, state.cur_col, {
+        end_col = state.cur_col + width,
+        end_row = state.cur_row,
+        hl_group = hlgroup,
+    })
 
     if do_newline then
         state.cur_col = 0
