@@ -1,21 +1,6 @@
 local M = {}
 local api = vim.api
 local fn = vim.fn
-
----@alias config.win.position
----|"replace"
----|"float"
----|"autosplit"
----|"vertical"
----|"horizontal"
----|"tab"
-
----@class config.win.opts
----@field position config.win.position?
----@field size [number, number]?
----@field direction "left"|"right"|"above"|"below"?
----@field at_cursor boolean?
-
 -- Reusable code for my entire config
 
 -- format buffer title {{{
@@ -274,19 +259,6 @@ end
 
 -- }}}
 
--- Windows {{{
----@param args {enter: boolean}
-function M.open_window_smart(buffer, args)
-    local height = api.nvim_win_get_height(0)
-    local width = api.nvim_win_get_width(0)
-
-    return api.nvim_open_win(buffer, args.enter, {
-        vertical = height * 2.6 < width
-    })
-end
-
--- }}}
-
 -- easier mapping {{{
 ---@alias nvim_mode "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"|{}
 
@@ -378,7 +350,31 @@ end
 
 -- }}}
 
--- Display a window in a variety of ways {{{
+-- Display Windows {{{
+---@param args {enter: boolean}
+function M.open_window_smart(buffer, args)
+    local height = api.nvim_win_get_height(0)
+    local width = api.nvim_win_get_width(0)
+
+    return api.nvim_open_win(buffer, args.enter, {
+        vertical = height * 2.6 < width
+    })
+end
+
+---@alias config.win.position
+---|"replace"
+---|"float"
+---|"autosplit"
+---|"vertical"
+---|"horizontal"
+---|"tab"
+
+---@class config.win.opts
+---@field position config.win.position?
+---@field size [number, number]?
+---@field direction "left"|"right"|"above"|"below"?
+---@field at_cursor boolean?
+
 ---@param b integer Buffer Number
 ---@param opts config.win.opts
 function M.win_show_buf(b, opts)
