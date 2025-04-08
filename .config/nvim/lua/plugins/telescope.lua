@@ -589,7 +589,7 @@ M.opts.pickers = {
             end,
             width = function()
                 local col = vim.o.columns
-                return math.floor(math.min(math.max(col * 0.2, 32), 60))
+                return math.floor(math.min(math.max(col * 0.3, 48), 80))
             end
         }
     },
