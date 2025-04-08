@@ -246,55 +246,53 @@ M.opts = {
     },
 
     keymaps = {
-        ["!"]         = function() open_cmd("!") end,
-        ["cm"]        = function() open_cmd("!chmod ") end,
-        ["co"]        = function() open_cmd("!chown ") end,
-        ["<CR>"]      = "actions.select",
-        ["<S-CR>"]    = "actions.select_split",
-        ["<C-CR>"]    = "actions.select_vsplit",
+        ["!"]        = function() open_cmd("!") end,
+        ["cm"]       = function() open_cmd("!chmod ") end,
+        ["co"]       = function() open_cmd("!chown ") end,
+        ["<CR>"]     = "actions.select",
+        ["<S-CR>"]   = "actions.select_split",
+        ["<C-CR>"]   = "actions.select_vsplit",
 
-        ["es"]        = "actions.select_split",
-        ["ev"]        = "actions.select_vsplit",
-        ["eo"]        = "actions.open_external",
-        ["gx"]        = "actions.open_external",
+        ["es"]       = "actions.select_split",
+        ["ev"]       = "actions.select_vsplit",
+        ["gx"]       = "actions.open_external",
 
         -- goto places
-        ["g~"]        = function() goto_dir("~") end,
-        ["gr"]        = function() require("oil").open("/") end,
-        ["g/"]        = function() require("oil").open("/") end,
-        ["gp"]        = "actions.parent",
-        ["g.."]       = "actions.parent",
-
+        ["g<space>"] = open_cd,
+        ["g~"]       = function() goto_dir("~") end,
+        ["gr"]       = function() require("oil").open("/") end,
+        ["g/"]       = function() require("oil").open("/") end,
+        ["gp"]       = "actions.parent",
+        ["g.."]      = "actions.parent",
+        ["gP"]       = { goto_git_ancestor, mode = "n" },
+        ["gG"]       = { goto_git_ancestor, mode = "n" },
         -- only applies to my machines
-        ["gw"]        = function() goto_dir("~/ws") end,
-        ["gt"]        = function() goto_dir("~/Tmp") end,
+        ["gw"]       = function() goto_dir("~/ws") end,
+        ["gt"]       = function() goto_dir("~/Tmp") end,
 
-        ["gP"]        = { goto_git_ancestor, mode = "n" },
-        ["gG"]        = { goto_git_ancestor, mode = "n" },
 
         -- toggle hidden
-        ["gh"]        = "actions.toggle_hidden",
-        ["g<space>"]  = open_cd,
+        ["gh"]       = "actions.toggle_hidden",
 
-        ["gf"]        = filter_items,
-        ["g=s"]       = function() set_sort("size") end,
-        ["g=t"]       = function() set_sort("mtime") end,
-        ["g=i"]       = function() set_sort("invert") end,
-        ["g=d"]       = function() set_sort("default") end,
+        ["gf"]       = filter_items,
+        ["g=s"]      = function() set_sort("size") end,
+        ["g=t"]      = function() set_sort("mtime") end,
+        ["g=i"]      = function() set_sort("invert") end,
+        ["g=d"]      = function() set_sort("default") end,
 
-        ["+q"] = "actions.add_to_qflist",
+        ["+q"]       = "actions.add_to_qflist",
     },
 }
 -- }}}
 
 M.config = function(_, opts)
-    local map = require("config.utils").map
+    local utils = require("config.utils")
+    local map = utils.map
     require("oil").setup(opts)
 
     -- change directory if not ssh, only for current window
-    vim.api.nvim_create_autocmd("User", {
-        pattern  = "OilEnter",
-        callback = function(bufnr)
+    utils.user_autogroup("config.oil", {
+        OilEnter = function()
             local dir = require("oil").get_current_dir()
             if dir then
                 vim.fn.chdir(dir)
@@ -302,34 +300,29 @@ M.config = function(_, opts)
         end
     })
 
-    local prefix = "<space>f"
+    -- [p]arent, why use <C-p> if k exists
+    map("n", "<C-p>", require("oil").open)
 
+    local prefix = "<space>f"
     map("n", prefix .. "f", require("oil").open)
-    map("n", prefix .. "t", function()
-        vim.api.nvim_command("tabnew")
-        require("oil").open()
-    end)
+
     map("n", prefix .. "s", function()
-        vim.api.nvim_command("split")
+        vim.cmd("split")
         require("oil").open()
     end)
     map("n", prefix .. "S", function()
-        vim.api.nvim_command("aboveleft split")
+        vim.cmd("aboveleft split")
         require("oil").open()
     end)
     map("n", prefix .. "v", function()
-        vim.api.nvim_command("vsplit")
+        vim.cmd("vsplit")
         require("oil").open()
     end)
     map("n", prefix .. "V", function()
-        vim.api.nvim_command("aboveleft vsplit")
+        vim.cmd("aboveleft vsplit")
         require("oil").open()
     end)
     map("n", prefix .. "F", require("oil").open_float)
-    map("n", prefix .. "a", function()
-        vim.api.nvim_command("Split")
-        require("oil").open()
-    end)
 
     require("oil-git-status").setup {}
 end
