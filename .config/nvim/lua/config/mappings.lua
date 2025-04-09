@@ -123,7 +123,7 @@ local function rem_qf_item(use_loclist)
 
     local new_entries = {}
     local found_to_rm = false
-    for i, entry in ipairs(items) do
+    for _, entry in ipairs(items) do
         if entry.bufnr == bufnr and entry.lnum == cursor[1] then
             found_to_rm = true
         else
@@ -327,7 +327,7 @@ map("n", scratchleader .. "<space>", function()
 end)
 
 map("n", scratchleader .. "f", function()
-    vim.ui.select(scratch.complete(), { prompt = "Scratches" }, function(item, idx)
+    vim.ui.select(scratch.complete(), { prompt = "Scratches" }, function(item, _)
         if not item then
             return
         end
@@ -559,6 +559,7 @@ end)
 -- Evaluate Math (qalc) {{{
 -- evalute qalculate expression/math and insert result in buffer
 -- this is quite useful for e.g. unit conversion
+---@diagnostic disable-next-line: unused-local
 operators.map_function("<space>em", function(mode, region, extra, get, set)
     local expressions = get()
     local last_expr = expressions[#expressions]
@@ -608,6 +609,7 @@ local sort_functions = {
 -- charwise: csv
 -- linewise: lines
 -- preserves indent/spacing
+---@diagnostic disable-next-line: unused-local
 operators.map_function("g=", function(mode, region, extra, get, set)
     local split
     if mode == "char" then
@@ -655,8 +657,10 @@ end)
 -- Command in Region {{{
 -- open a cmdline in a region specified by a textobject or motion
 -- allows me to repeat commands like theyre regular mappings
+---@diagnostic disable-next-line: unused-local
 operators.map_function("g:", function(mode, region, extra, get, set)
     if extra.repeated then
+        ---@diagnostic disable-next-line: param-type-mismatch
         local ok, err = pcall(vim.cmd, string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
         if not ok and err then
             vim.notify(tostring(err), vim.log.levels.ERROR)
@@ -685,6 +689,7 @@ end)
 -- edit a region of a file in a new window and buffer
 -- changes will be synced on write
 local region_edit_hlns = api.nvim_create_namespace("region_edit")
+---@diagnostic disable-next-line: unused-local
 operators.map_function("<C-w>e", function(mode, region, extra, get, set)
     local lines = get("line")
     local main_buffer = api.nvim_get_current_buf()
