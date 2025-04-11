@@ -95,7 +95,7 @@ end
 --- Maps a function as a visual and normal mode operator
 ---@param keys string
 ---@param cb config.op.cb
----@param opts {normal_only: boolean?, desc: string?}?
+---@param opts {normal_only: boolean?, no_repeated: boolean?, desc: string?}?
 function M.map_function(keys, cb, opts)
     opts = opts or {}
     local mapopts = {
@@ -111,7 +111,7 @@ function M.map_function(keys, cb, opts)
         vim.keymap.set("x", keys, operator, mapopts)
     end
     vim.keymap.set("n", keys, operator, mapopts)
-    if repeat_char ~= "~" then
+    if repeat_char ~= "~" and not opts.no_repeated then
         vim.keymap.set("n", keys .. repeat_char, function()
             operator()
             return "g@Vl"

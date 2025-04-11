@@ -55,9 +55,9 @@ function M.config(_, opts)
             local original_column = vim.fn.virtcol(".")
             mc.action(function(ctx)
                 for i = region[1][1] + 1, region[2][1] do
-                    local cursor = ctx:addCursor()
-                    cursor:setPos({ i, 1 })
-                    cursor:feedkeys(original_column .. "|")
+                    local feedkeys = ctx:addCursor()
+                    feedkeys:setPos({ i, 1 })
+                    feedkeys:feedkeys(original_column .. "|")
                 end
             end)
         elseif mode == "char" then
@@ -66,8 +66,7 @@ function M.config(_, opts)
                 cursor:setPos({ region[2][1], region[2][2] + 1 })
             end)
         end
-        return
-    end, { normal_only = true, desc = "Cursor: New for motion" })
+    end, { normal_only = true, no_repeated = true, desc = "Cursor: New for motion" })
 
     map("x", "<M-c>", mc.visualToCursors, { desc = "Cursor: On each line" })
 

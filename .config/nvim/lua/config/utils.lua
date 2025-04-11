@@ -124,7 +124,7 @@ M.btypehighlights = {
 M.btypesymbols = {
     term = "!",
     oil = ":",
-    scratch = "&",
+    scratch = "=",
     list = "$",
     git = "@",
     reg = "#",
