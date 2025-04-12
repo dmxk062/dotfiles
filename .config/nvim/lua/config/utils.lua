@@ -110,7 +110,6 @@ end
 M.btypehighlights = {
     term = "Term",
     oil = "Dir",
-    scratch = "Scratch",
     list = "List",
     git = "Git",
     reg = "Reg",
@@ -118,13 +117,13 @@ M.btypehighlights = {
     special = "Special",
     help = "Help",
     region = "Region",
-    luaeval = "Eval",
+    eval = "Eval",
 }
 
 M.btypesymbols = {
     term = "!",
     oil = ":",
-    scratch = "=",
+    eval = "=",
     list = "$",
     git = "@",
     reg = "#",
@@ -132,7 +131,6 @@ M.btypesymbols = {
     special = "*",
     help = "?",
     region = ">",
-    luaeval = "λ",
 }
 
 -- }}}
