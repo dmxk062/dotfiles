@@ -183,7 +183,13 @@ require("lazy").setup("plugins", {
                 "tutor",   -- I *think* I know vim well enough
 
                 "matchit", -- use matchup instead
-                "matchparen"
+                "matchparen",
+
+                "spellfile", -- use my own
+
+                -- I use neither of those
+                "netrwPlugin",
+                "rplugin",
             }
         }
     }

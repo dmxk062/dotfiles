@@ -1,6 +1,7 @@
 ---@type LazySpec
 local M = {
     "saghen/blink.cmp",
+    event = {"InsertEnter", "CmdlineEnter" },
     build = "cargo build --release",
     dependencies = {},
 }

@@ -1,8 +1,8 @@
 -- Spec {{{
 ---@type LazySpec
 local M = {
-    event = { "BufReadPost", "BufNewFile", "FileType" },
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile", "FileType" },
     dependencies = {
         "nvim-treesitter/nvim-treesitter-textobjects",
         {
