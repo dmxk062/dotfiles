@@ -162,7 +162,9 @@ local extension_highlights = {
     ["lua"]     = "Code",
     ["md"]      = "Text",
     ["mk"]      = "Build",
+    ["nu"]      = "Code",
     ["o"]       = "Bin",
+    ["odt"]     = "Ignore",
     ["pdf"]     = "Ignore",
     ["png"]     = "Ignore",
     ["py"]      = "Code",
@@ -199,6 +201,7 @@ local name_highlights = {
     [".git/"]                 = "Ignore",
     [".gitconfig"]            = "Meta",
     [".gitignore"]            = "Meta",
+    ["commit_editmsg"]        = "Git",
     ["changelog.md"]          = "Readme",
     ["compile_commands.json"] = "Ignore",
     ["go.mod"]                = "Build",
@@ -220,7 +223,7 @@ function M.highlight_fname(path, entry, is_hidden)
 
     local name = path:lower() .. (entry and (entry.type == "directory" and "/") or "")
     if name_highlights[name] then
-        return "Oil" .. name_highlights[name]
+        return "FileType" .. name_highlights[name]
     end
 
     -- dont try to override directories or links, oil handles them well
@@ -228,31 +231,31 @@ function M.highlight_fname(path, entry, is_hidden)
         if entry.type == "directory" or entry.type == "link" then
             return
         elseif entry.type == "char" then
-            return "OilCharDev"
+            return "FileTypeCharDev"
         elseif entry.type == "block" then
-            return "OilBlockDev"
+            return "FileTypeBlockDev"
         elseif entry.type == "socket" then
-            return "OilSocket"
+            return "FileTypeSocket"
         end
 
         if entry.meta.stat and bit.band(entry.meta.stat.mode, 0x49) ~= 0 then
-            return "OilExecutable"
+            return "FileTypeExecutable"
         end
     end
     local ext = path:match("%.(%w+)$")
     if ext and extension_highlights[ext] then
-        return "Oil" .. extension_highlights[ext]
+        return "FileType" .. extension_highlights[ext]
     end
 
     if name:sub(-1) == "/" then
-        return "OilDir"
+        return "Directory"
     end
 
     if is_hidden then
-        return "OilHidden"
+        return "FileTypeHidden"
     end
 
-    return "OilFile"
+    return "FileTypeNormal"
 end
 
 -- }}}

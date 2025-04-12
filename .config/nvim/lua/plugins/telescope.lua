@@ -299,8 +299,14 @@ local file_entry_maker = function(line)
 
             local tail, parentdir, filename_highlight = get_names_and_hl(value)
             local st = vim.uv.fs_stat(entry.value)
-            local mtime = os.date("%b %d %H:%M", st.mtime.sec)
-            local timehl = utils.highlight_time(st.mtime.sec)
+            local mtime, timehl
+            if not st then
+                mtime = ""
+                timehl = ""
+            else
+                mtime = os.date("%b %d %H:%M", st.mtime.sec)
+                timehl = utils.highlight_time(st.mtime.sec)
+            end
 
 
             return file_display {
@@ -355,8 +361,8 @@ local lsp_symbol_entry_maker = function(entry)
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
 
             return lsp_entry_display {
-                { utils.lsp_symbols[entry.kind] or entry.kind, hl },
-                { name,                                        utils.lsp_highlights[entry.kind] },
+                { utils.lsp_symbols[entry.kind] or entry.kind, utils.lsp_highlights[entry.kind] },
+                { name,                                        hl },
                 { tail,                                        filename_highlight },
                 { parentdir,                                   "NonText" }
             }
@@ -374,10 +380,10 @@ local quickfix_entry_maker = function(entry)
         quickfix_entry_display = require("telescope.pickers.entry_display").create {
             separator = " ",
             items = {
+                { remaining = true },
+                { width = ROW_COL_WIDTH },
                 { width = MAX_FILENAME_WIDTH },
                 { width = MAX_FILEPARENT_WIDTH },
-                { width = ROW_COL_WIDTH },
-                { remaining = true }
             }
         }
     end
@@ -394,10 +400,10 @@ local quickfix_entry_maker = function(entry)
         display = function()
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
             return quickfix_entry_display {
+                { entry.text },
+                { ("%d:%d"):format(entry.lnum, entry.col), "Number" },
                 { tail,                                    filename_highlight },
                 { parentdir,                               "NonText" },
-                { ("%d:%d"):format(entry.lnum, entry.col), "Number" },
-                { entry.text }
             }
         end
     }
@@ -578,7 +584,9 @@ M.opts.pickers = {
     live_grep = default_config {
         entry_maker = line_and_column_entry_maker
     },
-    oldfiles = default_config_tbl,
+    oldfiles = default_config {
+        entry_maker = file_entry_maker,
+    },
     buffers = default_config {
         entry_maker = buffer_entry_maker,
         create_layout = short_layout,

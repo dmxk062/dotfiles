@@ -177,22 +177,6 @@ local colorscheme = {
 
     manBold                     = { bg = pal.bg0 },
 
-    FileTimeLastHour            = { fg = col.yellow },
-    FileTimeLastDay             = { fg = col.green },
-    FileTimeLastFewDays         = { fg = col.teal },
-    FileTimeLastWeek            = { fg = col.light_cyan },
-    FileTimeLastFortnight       = { fg = col.light_blue },
-    FileTimeLastMonth           = { fg = col.blue },
-    FileTimeLastYear            = { fg = blend(col.blue, pal.bg3, 0.8) },
-    FileTimeSuperOld            = { fg = col.bright_gray },
-
-    FileSizeNone                = { fg = pal.bg3 },
-    FileSizeTiny                = { fg = col.bright_gray },
-    FileSizeSmall               = { fg = col.fg0 },
-    FileSizeMedium              = { fg = col.pink },
-    FileSizeLarge               = { fg = col.yellow },
-    FileSizeHuge                = { fg = col.orange },
-    FileSizeTooBig              = { fg = col.red },
 }
 -- }}}
 
@@ -428,6 +412,48 @@ add_with_prefix(colorscheme, "Startscreen", {
 })
 -- }}}
 
+-- Files {{{
+add_with_prefix(colorscheme, "File", {
+    TimeLastHour      = { fg = col.yellow },
+    TimeLastDay       = { fg = col.green },
+    TimeLastFewDays   = { fg = col.teal },
+    TimeLastWeek      = { fg = col.light_cyan },
+    TimeLastFortnight = { fg = col.light_blue },
+    TimeLastMonth     = { fg = col.blue },
+    TimeLastYear      = { fg = blend(col.blue, pal.bg3, 0.8) },
+    TimeSuperOld      = { fg = col.bright_gray },
+
+    SizeNone          = { fg = pal.bg3 },
+    SizeTiny          = { fg = col.bright_gray },
+    SizeSmall         = { fg = col.fg0 },
+    SizeMedium        = { fg = col.pink },
+    SizeLarge         = { fg = col.yellow },
+    SizeHuge          = { fg = col.orange },
+    SizeTooBig        = { fg = col.red },
+
+    TypeExecutable    = { fg = col.green, bold = true },
+    TypeCode          = { fg = col.light_blue },
+    TypeHeader        = { fg = col.yellow },
+    TypeMarkup        = { fg = col.magenta },
+    TypeText          = { fg = pal.fg2 },
+    TypeBin           = { fg = col.orange },
+    TypeArchive       = { fg = col.orange, bg = pal.bg1 },
+    TypeConfig        = { fg = col.purple },
+    TypeMeta          = { fg = col.light_blue, italic = true },
+    TypeBuild         = { fg = col.green },
+    TypeIgnore        = { fg = col.bright_gray },
+    TypeReadme        = { fg = col.magenta },
+    TypeStyle         = { link = "*TypeConfig" },
+    TypeGit           = { fg = col.green },
+
+    TypeSocket        = { fg = col.magenta },
+    TypeBlockDev      = { fg = col.yellow, bg = pal.bg1 },
+    TypeCharDev       = { fg = col.green, bg = pal.bg1 },
+    TypeNormal        = { link = "Normal" },
+    TypeHidden        = { fg = col.bright_gray },
+})
+-- }}}
+
 -- Oil {{{
 add_with_prefix(colorscheme, "Oil", {
     Link             = { fg = col.blue, bold = true },
@@ -437,23 +463,6 @@ add_with_prefix(colorscheme, "Oil", {
     DirHidden        = { link = "*Hidden" },
     LinkTarget       = { fg = col.blue, italic = true },
     OrphanLinkTarget = { fg = col.red, italic = true },
-    Socket           = { fg = col.magenta },
-    BlockDev         = { fg = col.yellow, bg = pal.bg1 },
-    CharDev          = { fg = col.green, bg = pal.bg1 },
-
-    Executable       = { fg = col.green, bold = true },
-    Code             = { fg = col.light_blue },
-    Header           = { fg = col.yellow },
-    Markup           = { fg = col.magenta },
-    Text             = { fg = pal.fg2 },
-    Bin              = { fg = col.orange },
-    Archive          = { fg = col.orange, bg = pal.bg1 },
-    Config           = { fg = col.purple },
-    Meta             = { fg = col.light_blue, italic = true },
-    Build            = { fg = col.green },
-    Ignore           = { fg = col.bright_gray },
-    Readme           = { fg = col.magenta },
-    Style            = { link = "*Config" },
 
     Read             = { fg = col.yellow },
     Write            = { fg = col.orange },
@@ -662,7 +671,7 @@ add_with_prefix(colorscheme, "Telescope", {
     Selection             = { bg = pal.bg1 },
     PromptPrefix          = { fg = col.teal },
     SelectionCaret        = {},
-    Matching              = { sp = col.yellow, fg = col.yellow, italic = true, underline = true },
+    Matching              = { sp = col.yellow, fg = col.yellow, underline = true },
 
     PreviewExecute        = { link = "OilExec" },
     PreviewRead           = { link = "OilRead" },
