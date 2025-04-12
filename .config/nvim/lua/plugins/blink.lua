@@ -78,6 +78,7 @@ M.opts.sources = {
     default = { "lsp", "path", "snippets", "buffer" },
     per_filetype = {
         oil = { "path", "buffer", "snippets" },
+        Input = { "omni" },
     },
     providers = {
         path = {

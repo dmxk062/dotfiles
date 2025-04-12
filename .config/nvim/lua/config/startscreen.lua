@@ -322,7 +322,7 @@ function M.show_start_screen()
     api.nvim_create_autocmd("CursorMoved", {
         buffer = state.buf,
         group = state.augroup,
-        callback = function(ctx)
+        callback = function()
             local pos = api.nvim_win_get_cursor(0)
             local row
             if pos[1] <= state.first_editable then
@@ -345,7 +345,7 @@ function M.show_start_screen()
         buffer = state.buf,
         once = true,
         group = state.augroup,
-        callback = function(ctx)
+        callback = function()
             api.nvim_del_augroup_by_id(state.augroup)
             vim.defer_fn(function()
                 api.nvim_buf_delete(state.buf, { force = true })
