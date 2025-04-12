@@ -48,6 +48,14 @@ local oil_columns = {
         end,
         format = "%b/%y %d, %H:%M"
     },
+    birthtime = {
+        "birthtime",
+        highlight = function(str)
+            local parsed_time = vim.fn.strptime("%b/%y %d, %H:%M", str)
+            return utils.highlight_time(parsed_time)
+        end,
+        format = "%b/%y %d, %H:%M"
+    },
     size = {
         "size",
         highlight = function(str)
@@ -63,6 +71,19 @@ local oil_columns = {
     }
 }
 
+local column_positions = {
+    time = 1,
+    birthtime = 2,
+    size = 3,
+    permissions = 4,
+}
+
+local enabled_columns = {
+    "time",
+    nil,
+    nil,
+    "permissions"
+}
 -- }}}
 
 -- Custom actions essentially {{{
@@ -130,6 +151,13 @@ local function set_sort(action)
     require("oil").set_sort(sort)
 end
 
+local function set_column(col, state)
+    enabled_columns[column_positions[col]] = state and col or nil
+    require("oil").set_columns(vim.tbl_map(function(c)
+        return oil_columns[c]
+    end, vim.tbl_values(enabled_columns)))
+end
+
 local function default_is_hidden(name, bufnr)
     if name then
         return name:sub(1, 1) == "." and not (name:sub(2, 2) == ".")
@@ -186,9 +214,7 @@ M.opts = {
         buflisted = true
     },
     columns = {
-        -- oil_columns.icon,
         oil_columns.time,
-        -- oil_columns.size,
         oil_columns.permissions,
     },
     constrain_cursor = "editable",
@@ -254,10 +280,19 @@ M.opts = {
         ["gh"]       = "actions.toggle_hidden",
 
         ["gf"]       = filter_items,
-        ["g=s"]      = function() set_sort("size") end,
-        ["g=t"]      = function() set_sort("mtime") end,
-        ["g=i"]      = function() set_sort("invert") end,
-        ["g=d"]      = function() set_sort("default") end,
+        ["=s"]       = function() set_sort("size") end,
+        ["=t"]       = function() set_sort("mtime") end,
+        ["=i"]       = function() set_sort("invert") end,
+        ["=d"]       = function() set_sort("default") end,
+
+        ["+s"]       = function() set_column("size", true) end,
+        ["-s"]       = function() set_column("size", false) end,
+        ["+p"]       = function() set_column("permissions", true) end,
+        ["-p"]       = function() set_column("permissions", false) end,
+        ["+t"]       = function() set_column("time", true) end,
+        ["-t"]       = function() set_column("time", false) end,
+        ["+b"]       = function() set_column("birthtime", true) end,
+        ["-b"]       = function() set_column("birthtime", false) end,
 
         ["+q"]       = "actions.add_to_qflist",
     },
