@@ -117,13 +117,13 @@ M.btypehighlights = {
     special = "Special",
     help = "Help",
     region = "Region",
-    eval = "Eval",
+    scratch = "Scratch",
 }
 
 M.btypesymbols = {
     term = "!",
     oil = ":",
-    eval = "=",
+    scratch = "=",
     list = "$",
     git = "@",
     reg = "#",

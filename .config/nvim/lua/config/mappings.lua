@@ -485,6 +485,25 @@ map("n", "<space>i", function()
 end)
 -- }}}
 
+-- Scratches {{{
+local scratch = require("config.scratch")
+map("n", "<space>sl", function()
+    scratch.show_scratch_buffer {
+        name = "eval",
+        type = "lua",
+        win = {}
+    }
+end)
+
+map("n", "<space>sn", function()
+    scratch.show_scratch_buffer {
+        name = "notes",
+        type = "markdown",
+        win = {}
+    }
+end)
+-- }}}
+
 -- Evaluate Math (qalc) {{{
 -- evalute qalculate expression/math and insert result in buffer
 -- this is quite useful for e.g. unit conversion
