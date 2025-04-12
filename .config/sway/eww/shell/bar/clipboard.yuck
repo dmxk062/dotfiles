@@ -1,0 +1,22 @@
+(deflisten secondary "wl-paste -w ~/.config/sway/eww/shell/bin/clipboard.sh")
+(defvar clipicons '{
+"image":"󰋩",
+"file":"󰈔",
+"url":"󰌷",
+"empty":"?",
+"text":""
+}')
+
+(defwidget clipboard-button [clip]
+    (button :class "button"
+        :timeout "96m"
+        :onclick {clip.type == "url" || clip.type == "file" ? "xdg-open '${clip.text}'" : ""}
+        :onrightclick "wl-paste -p|wl-copy"
+        :onmiddleclick "wl-copy ''"
+        :tooltip {clip.type != "image" ? clip.text : "[Image]"}
+        (box :space-evenly false
+            (label :class "cliptype ${clip.type}" :text {clipicons[clip.type]})
+            (label :limit-width 48 :lines 1 :text {clip.type != "image" ? clip.label : "[Image]"}))))
+
+(defwidget clipboard [] (box
+    (clipboard-button :clip secondary)))
