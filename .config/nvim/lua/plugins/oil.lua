@@ -168,6 +168,10 @@ local cur_filter_pattern
 local function filter_items()
     local function set_filter(filter)
         require("oil").set_is_hidden_file(function(fname)
+            -- HACK: prevent dir from being empty
+            if fname == ".." then
+                return false
+            end
             local ok, res = pcall(string.match, fname, filter)
             if not ok then
                 return default_is_hidden()
@@ -269,7 +273,6 @@ M.opts = {
         -- only applies to my machines
         ["gw"]       = function() goto_dir("~/ws") end,
         ["gt"]       = function() goto_dir("~/Tmp") end,
-
 
         -- toggle hidden
         ["gh"]       = "actions.toggle_hidden",

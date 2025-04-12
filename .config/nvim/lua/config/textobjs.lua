@@ -14,6 +14,7 @@ Important ones:
  - diagnostics: id, iDe, iDw, iDi, iDh
  - arbitrary single-line regexes
  - entire buffer: gG
+ - variable value: =
 }}} ]]
 
 -- Infrastructure {{{

@@ -249,7 +249,7 @@ end
 ---@param callback fun(string?)
 M.nvim_input = function(opts, callback)
     local buf = api.nvim_create_buf(false, true)
-    local title = (opts.prompt and opts.prompt:gsub("%s*:%s*", "") or "Input") .. ": "
+    local title = opts.prompt and opts.prompt:gsub("%s*:%s*", "") or "Input"
 
     if opts.default then
         api.nvim_buf_set_lines(buf, 0, 0, false, { opts.default })
@@ -277,7 +277,6 @@ M.nvim_input = function(opts, callback)
     })
 
     local augroup
-
     local clean = function()
         api.nvim_del_augroup_by_id(augroup)
         pcall(api.nvim_win_close, win, true)
