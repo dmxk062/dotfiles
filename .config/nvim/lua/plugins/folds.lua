@@ -80,7 +80,7 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
             cur_width = cur_width + text_width
         end
     end
-    table.insert(new_text, { suffix, "Comment" })
+    table.insert(new_text, { suffix, "UfoSuffix" })
     return new_text
 end
 

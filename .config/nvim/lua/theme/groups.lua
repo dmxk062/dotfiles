@@ -13,7 +13,6 @@ local function add_with_prefix(to_append, prefix, table)
     end
 end
 
-
 -- Basics {{{
 local colorscheme = {
     Normal                      = { fg = pal.fg0, bg = pal.bg0 },
@@ -54,7 +53,7 @@ local colorscheme = {
     ColorColumn                 = { bg = pal.bg1, blend = 90 },
     Tabline                     = { link = "StatusLine" },
     StatusLine                  = { bg = pal.bg0 },
-    Folded                      = { bg = col.darkest_gray },
+    Folded                      = {},
     FoldNumber                  = { fg = col.magenta, italic = true },
     FoldColumn                  = { fg = pal.bg3 },
     SignColumn                  = { fg = pal.bg3 },
@@ -186,7 +185,8 @@ add_with_prefix(colorscheme, "Ufo", {
     FoldedBg     = {},
     PreviewThumb = {},
 
-    FoldTitle    = { fg = col.teal, italic = true },
+    Suffix      = { fg = col.bright_gray, italic = true },
+    FoldTitle    = { fg = col.teal, italic = true, sp = col.bright_gray, underline = true },
 })
 -- }}}
 
