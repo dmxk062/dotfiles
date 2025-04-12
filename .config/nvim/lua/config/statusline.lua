@@ -230,18 +230,24 @@ local function update_search()
     end
 
     local count = fn.searchcount { timeout = 10 }
-    return string.format("%%#Identifier#/search%%#Delimiter#: %%#SlIndex#%2d%%#Delimiter#/%%#SlTotal#%-2d ", count.current, count.total)
+    return string.format("%%#Identifier#/search%%#Delimiter#: %%#SlIndex#%2d%%#Delimiter#/%%#SlTotal#%-2d ",
+        count.current, count.total)
 end
 -- }}}
 
--- Word and Byte count {{{
+-- Word, Char, Byte and Line -count {{{
 local function update_words()
     local count = fn.wordcount()
+    local linecount =
+        api.nvim_get_mode().mode:find("^[vV\x16]$")
+        and math.abs(fn.getpos("v")[2] - api.nvim_win_get_cursor(0)[1]) + 1
+        or api.nvim_buf_line_count(0)
 
-    return string.format("%%#SlWords#%2dw %%#SlChars#%2dc %%#SlBytes#%2db",
+    return string.format("%%#SlWords#%2dw %%#SlChars#%2dc %%#SlBytes#%2db %%#SlLines#%2dl",
         count.visual_words or count.words,
         count.visual_chars or count.chars,
-        count.visual_bytes or count.bytes
+        count.visual_bytes or count.bytes,
+        linecount
     )
 end
 -- }}}

@@ -370,6 +370,7 @@ add_with_prefix(colorscheme, "Sl", {
     Words        = { fg = col.yellow, bg = pal.bg1 },
     Chars        = { fg = col.green, bg = pal.bg1 },
     Bytes        = { fg = col.light_blue, bg = pal.bg1 },
+    Lines        = { fg = col.purple, bg = pal.bg1 },
 
     SModeNormal  = { bg = pal.bg0, fg = col.teal },
     SModeInsert  = { bg = pal.bg0, fg = col.white },
