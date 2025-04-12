@@ -817,19 +817,27 @@ end)
 map("n", "gO", function()
     local ufo = require("ufo")
     local buf = api.nvim_get_current_buf()
+
     local ok, folds = pcall(ufo.getFolds, buf, "treesitter")
     if not ok then
         folds = ufo.getFolds(buf, "indent")
     end
+    local ok, markers = pcall(ufo.getFolds, buf, "marker")
+
+    -- if we have markers, add them in
+    if ok and #markers > 0 then
+        vim.list_extend(folds, markers)
+        table.sort(folds, function(a, b)
+            return a.startLine < b.startLine
+        end)
+    end
 
     local ft = vim.bo[buf].ft
 
-    local indent_max = (ftpref[ft].toc_indent or 0) * vim.bo.shiftwidth
-
-    -- ignore folds with more indent levels
-    -- also remove duplicates
+    -- remove duplicates and transform
     local seen = {}
     folds = vim.tbl_filter(function(f)
+        -- for languages that commonly have identifiers followed by a { on the next line
         if vim.api.nvim_buf_get_lines(buf, f.startLine, f.startLine + 1, false)[1] == "{" then
             f.startLine = f.startLine - 1
             if f.startLine <= 0 then
@@ -837,10 +845,27 @@ map("n", "gO", function()
             end
         end
 
-        local show = not seen[f.startLine] and
-            vim.fn.indent(f.startLine + 1) <= indent_max
+        local show = not seen[f.startLine]
         seen[f.startLine] = true
         return show
+    end, folds)
+
+    local indents = {}
+    local at_first_level = 0
+    for _, fold in ipairs(folds) do
+        indents[fold.startLine] = vim.fn.indent(fold.startLine + 1)
+        if indents[fold.startLine] == 0 then
+            at_first_level = at_first_level + 1
+        end
+    end
+
+    local indent_max = (
+        ftpref[ft].toc_indent
+        or at_first_level > 20 and 0 or 1 -- show more detail in shorter files
+    ) * vim.bo.shiftwidth
+
+    folds = vim.tbl_filter(function(fold)
+        return indents[fold.startLine] <= indent_max
     end, folds)
 
     local items = {}
