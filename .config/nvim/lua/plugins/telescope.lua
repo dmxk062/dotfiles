@@ -80,7 +80,7 @@ local function create_layout(picker)
         picker = picker,
         mount = function(self)
             local width = vim.o.columns
-            local factor = 0.4
+            local factor = 0.45
             local fhalf = math.floor(width * (factor))
             local shalf = math.floor(width * (1 - factor))
 

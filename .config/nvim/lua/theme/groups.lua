@@ -54,7 +54,7 @@ local colorscheme = {
     ColorColumn                 = { bg = pal.bg1, blend = 90 },
     Tabline                     = { link = "StatusLine" },
     StatusLine                  = { bg = pal.bg0 },
-    Folded                      = { bg = blend(pal.bg1, pal.bg0, 0.4) },
+    Folded                      = { bg = col.darkest_gray },
     FoldNumber                  = { fg = col.magenta, italic = true },
     FoldColumn                  = { fg = pal.bg3 },
     SignColumn                  = { fg = pal.bg3 },
@@ -154,7 +154,7 @@ local colorscheme = {
     IndentBlanklineIndent       = { fg = pal.bg1 },
     IndentBlanklineScope        = { fg = col.bright_gray },
 
-    TreesitterContext           = { bg = pal.bg1 },
+    TreesitterContext           = { bg = col.darkest_gray },
     TreesitterContextLineNumber = { fg = col.teal },
     MultiCursorCursor           = { bg = pal.bg3 },
 
