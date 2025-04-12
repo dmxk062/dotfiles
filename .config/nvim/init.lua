@@ -43,7 +43,6 @@ o.undofile = true
 o.winborder = "rounded"
 -- }}}
 
-
 -- Wrapping {{{
 -- wrap at whitespace, indent wrapped lines and show an indicator
 o.wrap = true

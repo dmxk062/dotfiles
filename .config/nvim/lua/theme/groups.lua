@@ -185,7 +185,7 @@ add_with_prefix(colorscheme, "Ufo", {
     FoldedBg     = {},
     PreviewThumb = {},
 
-    Suffix      = { fg = col.bright_gray, italic = true },
+    Suffix       = { fg = col.bright_gray, italic = true },
     FoldTitle    = { fg = col.teal, italic = true, sp = col.bright_gray, underline = true },
 })
 -- }}}
