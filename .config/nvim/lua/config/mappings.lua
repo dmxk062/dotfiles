@@ -523,6 +523,9 @@ map(obj, "a/", textobjs.create_pattern_obj("()[^/]+()/*"))
 
 -- entire buffer, mirroring the motions that would achieve the same thing: VgG
 map(obj, "gG", textobjs.entire_buffer)
+
+-- a C-style variable value; ignore visual mode since = is useful there
+map("o", "=", textobjs.variable_value)
 -- }}}
 
 -- Forms {{{

@@ -16,6 +16,7 @@ Important ones:
  - entire buffer: gG
 }}} ]]
 
+-- Infrastructure {{{
 ---@alias config.point [integer, integer]
 ---@alias config.region [config.point, config.point]
 ---@alias seltype "line"|"char"
@@ -81,6 +82,9 @@ function M.create_textobj(fn, opts)
     end
 end
 
+-- }}}
+
+-- Diagnostics {{{
 ---@type textobj_function
 local function diagnostic(pos, lcount, opts)
     local args = {
@@ -122,7 +126,9 @@ M.diagnostic_error = M.create_textobj(diagnostic, { type = vim.diagnostic.severi
 M.diagnostic_warn = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.WARN })
 M.diagnostic_info = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.INFO })
 M.diagnostic_hint = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.HINT })
+-- }}}
 
+-- Indent {{{
 local function line_is_blank(lnum)
     local line = getline(lnum)
     return line:find("^%s*$") ~= nil
@@ -181,11 +187,26 @@ end
 M.indent_inner = M.create_textobj(indent, { outer = false })
 M.indent_outer = M.create_textobj(indent, { outer = true })
 M.indent_outer_with_last = M.create_textobj(indent, { outer = true, always_last = true })
+-- }}}
 
-M.entire_buffer = M.create_textobj(function(_, lcount, _)
-    return { { 1, 1 }, { lcount, 1 } }, "line"
+-- Variable assignments {{{
+M.variable_value = M.create_textobj(function(pos, lcount, opts)
+    local lnum = pos[1]
+    local line = getline(lnum)
+
+    local eq_pos = line:find("=")
+    if not eq_pos then
+        return
+    end
+
+    local _, _, prefix = line:find("(%s*).*", eq_pos + 1)
+    local eq_value_pos = eq_pos + #prefix
+    local trailing_sep = line:match("([,;]%s*)$")
+    return { { lnum, eq_value_pos }, { lnum, #line - (trailing_sep and #trailing_sep + 1 or 1) } }, "char"
 end, {})
+-- }}}
 
+-- Patterns {{{
 -- search for a pattern, use capture group to specify what to match
 -- two capture groups are necessary: an optional prefix and suffix
 -- if you don't need prefix and suffix, use ()
@@ -233,6 +254,9 @@ function M.create_pattern_obj(pattern)
     return M.create_textobj(pattern_obj, { pattern = pattern })
 end
 
+-- }}}
+
+-- Miscelaneous {{{
 local function foldmarker_object(pos, count, opts)
     local marker = vim.opt.foldmarker:get()
 
@@ -277,7 +301,12 @@ local function foldmarker_object(pos, count, opts)
     return ret, "line"
 end
 
+M.entire_buffer = M.create_textobj(function(_, lcount, _)
+    return { { 1, 1 }, { lcount, 1 } }, "line"
+end, {})
+
 M.foldmarker_outer = M.create_textobj(foldmarker_object, { outer = true })
 M.foldmarker_inner = M.create_textobj(foldmarker_object, { outer = false })
+-- }}}
 
 return M
