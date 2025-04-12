@@ -245,9 +245,13 @@ M.nvim_input_omnifunc = function(start, base)
     end
 end
 
+local last_was_insert
+
 ---@param opts {prompt: string?, default: string?, completion: string?, highlight: function}
 ---@param callback fun(string?)
 M.nvim_input = function(opts, callback)
+    last_was_insert = api.nvim_get_mode().mode:find("[it]") and true or false
+
     local buf = api.nvim_create_buf(false, true)
     local title = opts.prompt and opts.prompt:gsub("%s*:%s*", "") or "Input"
 
@@ -281,6 +285,11 @@ M.nvim_input = function(opts, callback)
         api.nvim_del_augroup_by_id(augroup)
         pcall(api.nvim_win_close, win, true)
         pcall(api.nvim_buf_delete, win, { force = true })
+        if last_was_insert then
+            vim.cmd.startinsert()
+        else
+            vim.cmd.stopinsert()
+        end
     end
     local cancel = function()
         callback(nil)
