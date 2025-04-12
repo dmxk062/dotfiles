@@ -35,7 +35,6 @@ local named_colors = {
     orange        = "#D08770",
     red           = "#BF616A",
 }
-named_colors.darkest_gray = blend(named_colors.black, named_colors.dark_gray, 0.4)
 
 local dark_palette = {
     bg0 = named_colors.black,
