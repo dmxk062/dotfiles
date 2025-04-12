@@ -140,12 +140,6 @@ local L = setmetatable({}, {
             cfg.name = name
         end
 
-        if cfg.autoinstall == false then
-            cfg.autoinstall = nil
-        else
-            utils.ensure_program_installed(cfg.cmd[1])
-        end
-
         if cfg.capabilities == false then
             cfg.capabilities = nil
         else
@@ -306,6 +300,13 @@ L.marksman = {
     filetypes = { "markdown" },
     cmd = { "marksman", "server" },
     root_markers = { ".marksman.toml", ".git" },
+}
+
+L.typos = {
+    cmd = { "typos-lsp" },
+    init_options = {
+        diagnosticSeverity = "Hint"
+    }
 }
 -- }}}
 

@@ -245,7 +245,7 @@ M.nvim_input_omnifunc = function(start, base)
     end
 end
 
----@param opts {prompt: string?, default: string?, completion: string?, highlight: function()}
+---@param opts {prompt: string?, default: string?, completion: string?, highlight: function}
 ---@param callback fun(string?)
 M.nvim_input = function(opts, callback)
     local buf = api.nvim_create_buf(false, true)
