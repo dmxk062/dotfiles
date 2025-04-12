@@ -361,8 +361,8 @@ local lsp_symbol_entry_maker = function(entry)
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
 
             return lsp_entry_display {
-                { utils.lsp_symbols[entry.kind] or entry.kind, utils.lsp_highlights[entry.kind] },
-                { name,                                        hl },
+                { utils.lsp_symbols[entry.kind] or entry.kind, hl },
+                { name,                                        utils.lsp_highlights[entry.kind] },
                 { tail,                                        filename_highlight },
                 { parentdir,                                   "NonText" }
             }
