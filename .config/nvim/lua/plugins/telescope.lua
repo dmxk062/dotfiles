@@ -1,16 +1,18 @@
 -- Spec {{{
 local picker_maps = {
+    buffers = "<space><space>",
     diagnostics = "<space>D",
+    find_files = "<space>F",
     git_files = "<space>gf",
     git_status = "<space>gi",
-    find_files = "<space>F",
-    oldfiles = "<space>o",
-    live_grep = "<space>/",
-    lsp_workspace_symbols = "<space>V",
-    lsp_document_symbols = "<space>v",
-    buffers = "<space><space>",
-    jumplist = "<space><C-o>",
     help_tags = "<space>h",
+    jumplist = "<space><C-o>",
+    live_grep = "<space>/",
+    lsp_document_symbols = "<space>v",
+    lsp_workspace_symbols = "<space>V",
+    man_pages = "<space>H",
+    oldfiles = "<space>o",
+    search_history = "<space>?",
 }
 
 ---@type LazySpec
@@ -380,10 +382,10 @@ local quickfix_entry_maker = function(entry)
         quickfix_entry_display = require("telescope.pickers.entry_display").create {
             separator = " ",
             items = {
-                { remaining = true },
-                { width = ROW_COL_WIDTH },
                 { width = MAX_FILENAME_WIDTH },
                 { width = MAX_FILEPARENT_WIDTH },
+                { width = ROW_COL_WIDTH },
+                { remaining = true },
             }
         }
     end
@@ -400,10 +402,10 @@ local quickfix_entry_maker = function(entry)
         display = function()
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
             return quickfix_entry_display {
-                { entry.text },
-                { ("%d:%d"):format(entry.lnum, entry.col), "Number" },
                 { tail,                                    filename_highlight },
                 { parentdir,                               "NonText" },
+                { ("%d:%d"):format(entry.lnum, entry.col), "Number" },
+                { entry.text },
             }
         end
     }
@@ -569,9 +571,14 @@ local lsp_config = default_config {
     entry_maker = quickfix_entry_maker
 }
 
+local qfconfig = default_config {
+    entry_maker = quickfix_entry_maker
+}
+
 M.opts.pickers = {
     lsp_definitions = lsp_config,
     lsp_references = lsp_config,
+    loclist = qfconfig,
     lsp_workspace_symbols = default_config {
         entry_maker = lsp_symbol_entry_maker,
     },
@@ -619,6 +626,12 @@ M.opts.pickers = {
         create_layout = short_layout,
         previewer = false,
     },
+    man_pages = default_config {
+        prompt_prefix = ":man ",
+    },
+    search_history = default_config {
+        create_layout = short_layout,
+    }
 }
 
 M.opts.extensions = {
