@@ -45,7 +45,7 @@ local dark_palette = {
 
     fg0 = named_colors.white,
     fg1 = named_colors.darker_white,
-    fg2 = named_colors.darkest_white,
+    fg2 = named_colors.dark_white,
 
     inverted = named_colors.black,
 }
