@@ -550,4 +550,47 @@ M.del_autocommand = function(group, event)
 end
 -- }}}
 
+-- Format {{{
+M.highlight_time = function(secs)
+    local cur_time = os.time()
+    local diff = cur_time - secs
+
+    if diff < 3600 then
+        return "FileTimeLastHour"
+    elseif diff < 86400 then
+        return "FileTimeLastDay"
+    elseif diff < 259200 then
+        return "FileTimeLastFewDays"
+    elseif diff < 604800 then
+        return "FileTimeLastWeek"
+    elseif diff < 1209600 then
+        return "FileTimeLastFortnight"
+    elseif diff < 2592000 then
+        return "FileTimeLastMonth"
+    elseif diff < 22896000 then
+        return "FileTimeLastYear"
+    else
+        return "FileTimeSuperOld"
+    end
+end
+
+M.highlight_size = function(bytes)
+    if bytes == 0 then
+        return "FileSizeNone"
+    elseif bytes < 2048 then
+        return "FileSizeTiny"
+    elseif bytes < 4096 then
+        return "FileSizeSmall"
+    elseif bytes < 32768 then
+        return "FileSizeMedium"
+    elseif bytes < 131072 then
+        return "FileSizeLarge"
+    elseif bytes < 134217728 then
+        return "FileSizeHuge"
+    else
+        return "FileSizeTooBig"
+    end
+end
+-- }}}
+
 return M

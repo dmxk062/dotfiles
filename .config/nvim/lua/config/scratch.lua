@@ -132,23 +132,8 @@ local lua_attach_to_eval_buffer = function(scratch)
     update(false)
 end
 
-local codeblock_query = vim.treesitter.query.parse("markdown", [[((fenced_code_block) @markdown.code_block)]])
 ---@param scratch config.scratch.buf
 local markdown_attach_to_buffer = function(scratch)
-    vim.keymap.set("n", "<cr>", function()
-        local current_block
-        local cursor = api.nvim_win_get_cursor(scratch.win)
-        local root = vim.treesitter.get_parser(scratch.buf):parse()[1]:root()
-        for id, node, metadata, _ in codeblock_query:iter_captures(root, scratch.buf, 0, -1) do
-            local srow, scol, erow, ecol = vim.treesitter.get_node_range(node)
-            if srow < cursor[1] and erow >= cursor[1] then
-                current_block = node
-                break
-            end
-        end
-
-        vim.notify(vim.inspect(current_block))
-    end, { buffer = scratch.buf })
 end
 -- }}}
 

@@ -285,10 +285,12 @@ local file_entry_maker = function(line)
             separator = " ",
             items = {
                 { width = max_name_width },
+                { width = 12 },
                 { remaining = true,      right_justify = true },
             }
         }
     end
+
 
     return {
         value = line,
@@ -296,9 +298,14 @@ local file_entry_maker = function(line)
             local value = entry.value
 
             local tail, parentdir, filename_highlight = get_names_and_hl(value)
+            local st = vim.uv.fs_stat(entry.value)
+            local mtime = os.date("%b %d %H:%M", st.mtime.sec)
+            local timehl = utils.highlight_time(st.mtime.sec)
+
 
             return file_display {
                 { tail,      filename_highlight },
+                { mtime,     timehl },
                 { parentdir, "NonText" }
             }
         end,

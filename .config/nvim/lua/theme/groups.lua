@@ -176,6 +176,23 @@ local colorscheme = {
     helpExample                 = { link = "Normal" },
 
     manBold                     = { bg = pal.bg0 },
+
+    FileTimeLastHour            = { fg = col.yellow },
+    FileTimeLastDay             = { fg = col.green },
+    FileTimeLastFewDays         = { fg = col.teal },
+    FileTimeLastWeek            = { fg = col.light_cyan },
+    FileTimeLastFortnight       = { fg = col.light_blue },
+    FileTimeLastMonth           = { fg = col.blue },
+    FileTimeLastYear            = { fg = blend(col.blue, pal.bg3, 0.8) },
+    FileTimeSuperOld            = { fg = col.bright_gray },
+
+    FileSizeNone                = { fg = pal.bg3 },
+    FileSizeTiny                = { fg = col.bright_gray },
+    FileSizeSmall               = { fg = col.fg0 },
+    FileSizeMedium              = { fg = col.pink },
+    FileSizeLarge               = { fg = col.yellow },
+    FileSizeHuge                = { fg = col.orange },
+    FileSizeTooBig              = { fg = col.red },
 }
 -- }}}
 
@@ -450,19 +467,6 @@ add_with_prefix(colorscheme, "Oil", {
     Move             = { fg = col.orange },
     Copy             = { fg = col.yellow },
     Change           = { fg = col.magenta },
-
-    TimeLastHour     = { fg = col.green },
-    TimeLastDay      = { fg = col.teal },
-    TimeLastWeek     = { fg = col.light_blue },
-    TimeLastMonth    = { fg = col.blue },
-    TimeLastYear     = { fg = blend(col.blue, pal.bg3, 0.8) },
-    TimeSuperOld     = { fg = pal.bg3 },
-
-    SizeNone         = { fg = pal.bg3 },
-    SizeSmall        = { fg = pal.fg0 },
-    SizeMedium       = { fg = col.yellow },
-    SizeLarge        = { fg = col.orange },
-    SizeHuge         = { fg = col.red },
 })
 
 

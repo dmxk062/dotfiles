@@ -5,6 +5,7 @@ local M = {
         "refractalize/oil-git-status.nvim"
     },
 }
+local utils = require("config.utils")
 
 --[[ Why Oil? {{{
 Because it's the best file editor :3
@@ -42,25 +43,10 @@ local oil_columns = {
     time = {
         "mtime",
         highlight = function(str)
-            local parsed_time = vim.fn.strptime("%H:%M %d-%m-%y", str)
-            local cur_time = os.time()
-            local diff = cur_time - parsed_time
-
-            if diff < (3600) then
-                return "OilTimeLastHour"
-            elseif diff < (86400) then
-                return "OilTimeLastDay"
-            elseif diff < (604800) then
-                return "OilTimeLastWeek"
-            elseif diff < (2592000) then
-                return "OilTimeLastMonth"
-            elseif diff < (22896000) then
-                return "OilTimeLastYear"
-            else
-                return "OilTimeSuperOld" -- older than that
-            end
+            local parsed_time = vim.fn.strptime("%b/%y %d, %H:%M", str)
+            return utils.highlight_time(parsed_time)
         end,
-        format = "%H:%M %d-%m-%y"
+        format = "%b/%y %d, %H:%M"
     },
     size = {
         "size",
@@ -72,18 +58,7 @@ local oil_columns = {
             }
             local factor = suffixes[str:sub(-1, -1)] or 1
             local size = factor * tonumber(str:match("^%d+"))
-
-            if size == 0 then
-                return "OilSizeNone"
-            elseif size < 4096 then
-                return "OilSizeSmall"
-            elseif size < 4194304 then
-                return "OilSizeMedium"
-            elseif size < 134217728 then
-                return "OilSizeLarge"
-            else
-                return "OilSizeHuge"
-            end
+            return utils.highlight_size(size)
         end
     }
 }
@@ -200,6 +175,7 @@ end
 -- }}}
 
 -- Options {{{
+---@type oil.setupOpts
 M.opts = {
     default_file_explorer = true,
     win_options = {
@@ -211,8 +187,8 @@ M.opts = {
     },
     columns = {
         -- oil_columns.icon,
-        -- oil_columns.size,
         oil_columns.time,
+        -- oil_columns.size,
         oil_columns.permissions,
     },
     constrain_cursor = "editable",
@@ -245,7 +221,7 @@ M.opts = {
         natural_order = true,
         sort = sort,
         highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan)
-            return require("config.utils").highlight_fname(nil, entry, is_hidden)
+            return utils.highlight_fname(nil, entry, is_hidden)
         end
     },
 
@@ -289,7 +265,6 @@ M.opts = {
 -- }}}
 
 M.config = function(_, opts)
-    local utils = require("config.utils")
     local map = utils.map
     require("oil").setup(opts)
 
