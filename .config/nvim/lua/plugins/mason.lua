@@ -18,7 +18,8 @@ local install_package = function(pkg, is_update)
         vim.notify(("Mason: %s '%s'"):format(is_update and "updated" or "installed", pkg.name))
     end))
     pkg:once("install:failed", vim.schedule_wrap(function()
-        vim.notify(("Mason: failed to %s '%s'"):format(is_update and "update" or "install", pkg.name), vim.log.levels.ERROR)
+        vim.notify(("Mason: failed to %s '%s'"):format(is_update and "update" or "install", pkg.name),
+            vim.log.levels.ERROR)
     end))
 
     pkg:install()
