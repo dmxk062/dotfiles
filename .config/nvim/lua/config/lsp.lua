@@ -70,6 +70,8 @@ local on_lsp_attached = function(ev)
         vim.opt_local.path = vim.tbl_map(function(t)
             return vim.uri_to_fname(t.uri) .. "/**"
         end, client.workspace_folders)
+
+        vim.fn.chdir(vim.uri_to_fname(client.workspace_folders[1].uri))
     end
 
     vim.api.nvim_buf_create_user_command(buf, "InlayHint", function(args)

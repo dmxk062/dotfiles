@@ -47,11 +47,11 @@ utils.autogroup("config.cmdline_linenr", {
 })
 -- }}}
 
--- Smarter :h 'autocd' {{{
+-- Smarter :h 'autochdir' {{{
 -- when opening a file, automatically lcd to its git repo ancestor
 -- if already in a repo, behave somewhat like autocd
 
-autocmd("BufReadPost", {
+autocmd("BufWinEnter", {
     callback = function(ev)
         if vim.bo[ev.buf].filetype == "help" then
             return
@@ -62,8 +62,6 @@ autocmd("BufReadPost", {
         local pwd = vim.fn.getcwd()
         if git_root and not vim.startswith(pwd, git_root) then
             vim.cmd.lcd(git_root)
-        else
-            pcall(vim.cmd.lcd, vim.fn.expand("%:p:h"))
         end
     end
 })
