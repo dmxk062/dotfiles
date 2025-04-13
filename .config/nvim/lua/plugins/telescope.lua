@@ -579,6 +579,7 @@ M.opts.pickers = {
     lsp_definitions = lsp_config,
     lsp_references = lsp_config,
     loclist = qfconfig,
+    quickfix = qfconfig,
     lsp_workspace_symbols = default_config {
         entry_maker = lsp_symbol_entry_maker,
     },
@@ -631,6 +632,7 @@ M.opts.pickers = {
     },
     search_history = default_config {
         create_layout = short_layout,
+        prompt_prefix = "/ ",
     }
 }
 
@@ -638,6 +640,7 @@ M.opts.extensions = {
     ["zf-native"] = {},
     ["ui-select"] = {
         create_layout = short_layout,
+        prompt_prefix = ":",
         layout_config = {
             height = 4,
         }
