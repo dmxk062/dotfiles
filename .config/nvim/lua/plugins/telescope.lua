@@ -549,7 +549,7 @@ local register_entry_maker = function(entry)
     local isnum = byte >= 48 and byte <= 57
 
     local description = ischar and "regular" or (isnum and "numeric" or register_descs[entry])
-    local text = type(content) == "string" and vim.trim(content:gsub("\n", "\\n")) or content
+    local text = type(content) == "string" and vim.trim(content:gsub("\n", "\x0d")) or content
     local texthl
     if #content == 0 then
         text = "[empty]"
