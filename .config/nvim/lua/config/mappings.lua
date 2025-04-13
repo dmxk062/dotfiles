@@ -205,12 +205,6 @@ the j is required so that this applies when on the fold start ]]
 map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]] })
 -- }}}
 
--- Snippets {{{
--- move between snippet fields
-map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
-map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
--- }}}
-
 -- Buffers & Windows {{{
 local bufleader = "'"
 map("n", bufleader, "<nop>")      -- there still is ` for marks, ' is on the home row, soooo nice
@@ -340,8 +334,6 @@ map(mov, "gH", "H")
 
 -- more humane spell popup
 map("n", "z=", function() require("config.spell").popup() end)
--- fix spelling error ahead
-map("i", "<C-s>", "<esc>[sz=", { remap = true })
 map("n", "z<space>", "<cmd>Spell toggle<cr>")
 -- }}}
 
@@ -433,6 +425,26 @@ Well, on my keyboard tapping L/R Shift yields BS/Del,
 so tapping one shift key while holding the other makes sense ]]
 map("i", "<S-BS>", "<C-w>")
 map("i", "<S-Del>", "<c-o>\"_dw")
+
+-- fix spelling error ahead
+map("i", "<C-s>", "<esc>[sz=", { remap = true })
+
+-- surprisingly fast and nice
+map("i", "<M-l>", "<C-o>w")
+map("i", "<M-h>", "<C-o>b")
+map("i", "<M-j>", "<C-o>j")
+map("i", "<M-k>", "<C-o>k")
+
+-- move between arguments, that's one of the only things i actually do in insert mode
+-- [f]orward, [b]ackward
+map("i", "<M-f>", "<C-o>]a", { remap = true })
+map("i", "<M-b>", "<C-o>[a", { remap = true })
+-- }}}
+
+-- Snippets {{{
+-- move between snippet fields
+map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
+map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 
 -- Diagnostics {{{
