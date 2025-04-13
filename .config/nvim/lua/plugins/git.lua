@@ -40,12 +40,12 @@ local function map_on_git_buffer(buf)
         git_relative_buf = buf
         vim.cmd("Git")
     end, { desc = "Git: Status" })
-    map("n", "p", gitsigns.preview_hunk_inline, { desc = "Git: Preview hunk" })
 
     -- use fugitive cause its just better :(
     map("n", "d", "<cmd>rightbelow Gvdiffsplit<cr>", { desc = "Git: Diff with head" })
     map("n", "D", "<cmd>rightbelow Gvdiffsplit !<cr>", { desc = "Git: Diff with last commit" })
-    map("n", "C", "<cmd>silent G commit<cr>")
+    map("n", "C", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
+    map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
 
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
     map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
@@ -57,7 +57,7 @@ local function map_on_git_buffer(buf)
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
-    map("n", "S", gitsigns.stage_buffer)
+    map("n", "S", gitsigns.stage_buffer, { desc = "Git: Stage Buffer" })
     mapboth("s", gitsigns.stage_hunk, "Git: Toggle stage")
     mapboth("U", gitsigns.reset_hunk, "Git: Reset")
 
