@@ -51,8 +51,8 @@ utils.autogroup("config.cmdline_linenr", {
 -- when opening a file, automatically lcd to its git repo ancestor
 -- if already in a repo, behave somewhat like autocd
 
-autocmd("BufWinEnter", {
-    callback = function(ev)
+utils.autogroup("config.chdir", {
+    BufWinEnter = function(ev)
         if vim.bo[ev.buf].filetype == "help" then
             return
         end
@@ -63,7 +63,13 @@ autocmd("BufWinEnter", {
         if git_root and not vim.startswith(pwd, git_root) then
             vim.cmd.lcd(git_root)
         end
-    end
+    end,
+
+    -- show when the dir changes
+    DirChanged = vim.schedule_wrap(function()
+        local name = utils.expand_home(vim.fn.getcwd(0, 0))
+        api.nvim_echo({ { "pwd: ", "NonText" }, { name, "Directory" } }, false, {})
+    end)
 })
 -- }}}
 
