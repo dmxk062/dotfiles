@@ -15,6 +15,8 @@ but fugitive's commands and history capabilities are better
 TODO: give other git plugins (i.e. lazygit) a serious try
 }}} ]] --
 
+
+local git_relative_buf
 local function map_on_git_buffer(buf)
     local gitsigns = require("gitsigns")
     local utils = require("config.utils")
@@ -34,12 +36,16 @@ local function map_on_git_buffer(buf)
         map("v", keys, vimap(fn), tbl)
     end
 
+    map("n", "g", function()
+        git_relative_buf = buf
+        vim.cmd("Git")
+    end, { desc = "Git: Status" })
     map("n", "p", gitsigns.preview_hunk_inline, { desc = "Git: Preview hunk" })
 
     -- use fugitive cause its just better :(
     map("n", "d", "<cmd>rightbelow Gvdiffsplit<cr>", { desc = "Git: Diff with head" })
     map("n", "D", "<cmd>rightbelow Gvdiffsplit !<cr>", { desc = "Git: Diff with last commit" })
-    map("n", "C", "<cmd>silent vertical G commit<cr>")
+    map("n", "C", "<cmd>silent G commit<cr>")
 
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
     map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
@@ -51,6 +57,7 @@ local function map_on_git_buffer(buf)
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
+    map("n", "S", gitsigns.stage_buffer)
     mapboth("s", gitsigns.stage_hunk, "Git: Toggle stage")
     mapboth("U", gitsigns.reset_hunk, "Git: Reset")
 
@@ -87,7 +94,7 @@ M[1].opts = {
         delay = 200,
     },
 
-    current_line_blame_formatter = "<author>, <author_time:%Y/%m/%d> - <summary>",
+    current_line_blame_formatter = "<author>, <author_time:%b/%y, %d %H:%M> - <summary>",
 
     diff_opts = {
         vertical = true,
@@ -111,7 +118,30 @@ M[2].config = function()
             -- show the relevant fold immediately
             -- this will be staged if there is one,
             -- otherwise it'll be unstaged
-            vim.cmd.normal("Gzo[zzz")
+            vim.cmd.normal("Gzo[z")
+
+
+            -- try to jump to the relevant file, if that file is not in the listing,
+            -- try the cwd
+            local ok
+            local gitdir = vim.fn.FugitiveGitDir(ev.buf):gsub("%.git$", "")
+            if git_relative_buf then
+                local name = vim.api.nvim_buf_get_name(git_relative_buf)
+                if vim.startswith(name, gitdir) then
+                    name = name:sub(#gitdir + 1)
+                end
+                ok = vim.fn.search(name) ~= 0
+            end
+
+            if not ok then
+                local cwd = vim.fn.getcwd()
+                if vim.startswith(cwd, gitdir) then
+                    cwd = cwd:sub(#gitdir + 1)
+                end
+                ok = vim.fn.search(cwd) ~= 0
+            end
+            git_relative_buf = nil
+            vim.cmd.normal("zz")
         end,
 
         -- make G blame etc appear in the buffer list
