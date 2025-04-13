@@ -66,24 +66,33 @@ map("n", "<space>N", cmd_with_count("cpfile"))
 map("n", "<space>0", "<cmd>cfirst<cr>")
 map("n", "<space>$", "<cmd>clast<cr>")
 
+
 -- loclist: optimized for much smaller lists
 map("n", "<C-j>", cmd_with_count("lnext"))
 map("n", "<C-k>", cmd_with_count("lprev"))
-map("n", "<C-S-J>", "<cmd>llast<cr>")
-map("n", "<C-S-K>", "<cmd>lfirst<cr>")
 
 -- clear them
-map("n", "<space>Qc", function()
+map("n", "<space>qc", function()
     fn.setqflist({}, "r")
     require("quicker").close()
 end)
-map("n", "<space>Lc", function()
+map("n", "<space>lc", function()
     fn.setloclist(0, {}, "r")
     require("quicker").close { loclist = true }
 end)
 
+-- move through the histories
+map("n", "<space>qn", cmd_with_count("cnewer"))
+map("n", "<space>ln", cmd_with_count("lnewer"))
+map("n", "<space>qN", cmd_with_count("colder"))
+map("n", "<space>lN", cmd_with_count("lolder"))
+
+-- error numbers
+map("n", "<space>Q", cmd_with_count("cc"))
+map("n", "<space>L", cmd_with_count("ll"))
+
 -- vertical view
-map("n", "<space>Qv", function()
+map("n", "<space>qv", function()
     local qfwin = fn.getqflist { winid = true }.winid
     if qfwin == 0 then
         require("quicker").open()
@@ -98,7 +107,7 @@ map("n", "<space>Qv", function()
     vim.wo[qfwin][0].number = true
 end)
 
-map("n", "<space>Lv", function()
+map("n", "<space>lv", function()
     local locwin = fn.getloclist(0, { winid = true }).winid
     if locwin == 0 then
         require("quicker").open { loclist = true }
@@ -114,8 +123,8 @@ map("n", "<space>Lv", function()
 end)
 
 -- set lists to diagnostics
-map("n", "<space>Qd", function() vim.diagnostic.setqflist { open = true } end)
-map("n", "<space>Ld", function() vim.diagnostic.setloclist { open = true } end)
+map("n", "<space>qd", function() vim.diagnostic.setqflist { open = true } end)
+map("n", "<space>ld", function() vim.diagnostic.setloclist { open = true } end)
 
 -- add current line to list
 local function add_qf_item(use_loclist)
@@ -177,12 +186,12 @@ map("n", "+l", function() add_qf_item(true) end)
 map("n", "-q", function() rem_qf_item() end)
 map("n", "-l", function() rem_qf_item(true) end)
 
-map("n", "<space>Qr", function() require("quicker").refresh() end)
-map("n", "<space>Lr", function() require("quicker").refresh(0) end)
+map("n", "<space>qr", function() require("quicker").refresh() end)
+map("n", "<space>lr", function() require("quicker").refresh(0) end)
 
 -- toggle them
-map("n", "<space>q", function() require("quicker").toggle { min_height = 8 } end)
-map("n", "<space>l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
+map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
+map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
 -- }}}
 
 -- Navigation {{{
