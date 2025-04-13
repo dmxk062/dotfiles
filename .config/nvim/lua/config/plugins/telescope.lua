@@ -348,12 +348,12 @@ end
 local buffer_entry_display = t_entry_display.create {
     separator = " ",
     items = {
-        { width = 4 },        -- shorthand number
-        { width = 4 },        -- "real" number
+        { width = 2 },        -- shorthand number
+        { width = 3 },        -- "real" number
         { width = 1 },        -- status.hidden
         { width = 4 },        -- status.readonly
         { width = 1 },        -- status.modified
-        { width = 2 },        -- buffer kind
+        { width = 1 },        -- buffer kind
         { width = 4 },        -- line
         { remaining = true }, -- buffer name
     }
