@@ -88,12 +88,12 @@ autocmd("TextYankPost", {
     end
 })
 
--- show current directory
-local function printdir()
-    local name = utils.expand_home(vim.fn.getcwd(0, 0))
-    api.nvim_echo({ { "pwd: ", "NonText" }, { name, "Directory" } }, false, {})
-end
-
-autocmd("DirChanged", {
-    callback = vim.schedule_wrap(printdir)
+-- set the primary selection to the last register on window focus loss
+-- saves me from having to go back when I forgot to specify "+
+-- when working in more than one terminal window
+-- TODO: maybe even do this for "+?
+autocmd("FocusLost", {
+    callback = function()
+        vim.fn.setreg("*", vim.fn.getreg("\""))
+    end
 })
