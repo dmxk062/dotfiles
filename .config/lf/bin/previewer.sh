@@ -103,7 +103,7 @@ function preview_video {
             IFS=$'\t' read -r audio_format audio_bitrate video_format video_bitrate video_resolution video_framerate video_duration < <(mediainfo --output=JSON "$1" \
                 | jq -r '([.media.track|.[]|select(."@type" == "Video")][0]) as $video 
                     | ([.media.track|.[]|select(."@type" == "Audio")][0]) as $audio 
-                    | "\($audio.Format)\t\($audio.BitRate)\t\($video.Format)\t\($video.BitRate)\t\($video.Width)x\($video.Height)\t\($video.FrameRate)\t\($video.Duration)"'
+                    | "\($audio.Format)\t\($audio.BitRate)\t\($video.Format)\t\($video.BitRate)\t\($video.Width)x\($video.Height)\t\($video.FrameRate // "variable ")\t\($video.Duration)"'
             )
             seconds="${video_duration%.*}"
             minutes=$[seconds / 60]
