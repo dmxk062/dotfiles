@@ -40,7 +40,7 @@ local function lsp_map(buf)
     map("n", "gr", function() require("telescope.builtin").lsp_references() end)
     map("n", "gi", function() require("telescope.builtin").lsp_implementations() end)
 
-    -- go to the thing in a split and use the qflist to disambiguate instead of telescope
+    -- go to the thing in a split and use the loclist to disambiguate instead of telescope
     map("n", "<C-w>gd", function()
         utils.open_window_smart(0, { enter = true })
         vim.lsp.buf.definition { reuse_win = false, loclist = true }
