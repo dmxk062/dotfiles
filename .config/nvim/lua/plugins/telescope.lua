@@ -607,11 +607,11 @@ M.opts.pickers = {
         layout_config = {
             height = function()
                 local ln = vim.o.lines
-                return math.floor(math.min(math.max(ln * 0.1, 8), 4))
+                return math.floor(math.min(math.max(ln * 0.2, 12), 32))
             end,
             width = function()
                 local col = vim.o.columns
-                return math.floor(math.min(math.max(col * 0.3, 48), 80))
+                return math.floor(math.min(math.max(col * 0.3, 48), 60))
             end
         }
     },

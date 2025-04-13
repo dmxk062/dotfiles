@@ -340,6 +340,9 @@ map(mov, "gH", "H")
 
 -- more humane spell popup
 map("n", "z=", function() require("config.spell").popup() end)
+-- fix spelling error ahead
+map("i", "<C-s>", "<esc>[sz=", { remap = true })
+map("n", "z<space>", "<cmd>Spell toggle<cr>")
 -- }}}
 
 -- Give Q more purpose {{{

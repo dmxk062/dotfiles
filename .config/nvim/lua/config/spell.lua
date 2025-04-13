@@ -69,6 +69,8 @@ M.spell_cmd = function(arguments)
     elseif args[1] == "set" then
         vim.bo.spelllang = args[2] or "en_us"
         vim.wo.spell = true
+    elseif args[1] == "toggle" then
+        vim.wo.spell = not vim.wo.spell
     elseif args[1] == "off" then
         vim.wo.spell = false
     end
@@ -96,7 +98,8 @@ api.nvim_create_autocmd("SpellFileMissing", {
 local spell_toplevel = {
     "set",
     "get",
-    "off"
+    "off",
+    "toggle"
 }
 
 -- non authoritative list
@@ -164,7 +167,7 @@ M.spell_cmd_complete = function(lead, line, cpos)
 
     if arg == "" then
         return spell_toplevel
-    elseif arg == "off" then
+    elseif arg == "off" or arg == "toggle" then
         return
     elseif arg == "set" or vim.startswith(arg, "get") then
         return spell_languages

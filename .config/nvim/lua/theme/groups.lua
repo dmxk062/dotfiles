@@ -55,7 +55,7 @@ local colorscheme = {
     StatusLine                  = { bg = pal.bg0 },
     Folded                      = {},
     FoldNumber                  = { fg = col.magenta, italic = true },
-    FoldColumn                  = { fg = pal.bg3 },
+    FoldColumn                  = { fg = col.bright_gray },
     SignColumn                  = { fg = pal.bg3 },
     EndOfBuffer                 = { fg = pal.bg1 },
     Visual                      = { bg = pal.bg1 },
