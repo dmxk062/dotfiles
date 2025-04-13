@@ -1,18 +1,18 @@
 local builtin_picker_maps = {
+    ["custom.jumplist"] = "<space><C-o>",
     buffers = "<space><space>",
     diagnostics = "<space>D",
     find_files = "<space>F",
     git_files = "<space>gf",
     git_status = "<space>gi",
     grep_string = "<space>*",
-    registers = "\"<space>",
     help_tags = "<space>h",
-    jumplist = "<space><C-o>",
     live_grep = "<space>/",
     lsp_document_symbols = "<space>v",
     lsp_workspace_symbols = "<space>V",
     man_pages = "<space>H",
     oldfiles = "<space>o",
+    registers = "\"<space>",
     search_history = "<space>?",
 }
 
@@ -218,7 +218,11 @@ M.config = function()
     local builtin = require("telescope.builtin")
     local map = utils.map
     for picker, keys in pairs(builtin_picker_maps) do
-        map("n", keys, builtin[picker])
+        if vim.startswith(picker, "custom.") then
+            map("n", keys, custom[picker:sub(#"custom." + 1)])
+        else
+            map("n", keys, builtin[picker])
+        end
     end
 end
 -- }}}

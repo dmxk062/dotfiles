@@ -186,9 +186,17 @@ local ROW_COL_WIDTH = 11
 
 -- Helpers {{{1
 local get_names_and_hl = function(path)
-    local tail = fn.fnamemodify(path, ":t")
-    local parentdir = fn.pathshorten(fn.fnamemodify(path, ":~:.:h"), 6)
-    local filename_highlight = utils.highlight_fname(tail)
+    local tail, parentdir, filename_highlight
+    if vim.startswith(path, "oil://") then
+        path = path:sub(#"oil://" + 1, -2)
+        tail = fn.fnamemodify(path, ":t") .. "/"
+        parentdir = fn.pathshorten(fn.fnamemodify(path, ":~:.:h"), 6)
+        filename_highlight = "Directory"
+    else
+        tail = fn.fnamemodify(path, ":t")
+        parentdir = fn.pathshorten(fn.fnamemodify(path, ":~:.:h"), 6)
+        filename_highlight = utils.highlight_fname(tail)
+    end
 
     return tail, parentdir, filename_highlight
 end
@@ -322,6 +330,7 @@ local quickfix_entry_display = t_entry_display.create {
         { remaining = true },
     }
 }
+
 M.quickfix_entries = function(entry)
     local filename = entry.filename or vim.api.nvim_buf_get_name(entry.buf)
     return {
@@ -514,6 +523,41 @@ M.select_register = function(buf)
     local reg = selection.value
 
     api.nvim_feedkeys("\"" .. reg, "n")
+end
+-- }}}
+
+-- Pickers {{{
+local t_pickers = require("telescope.pickers")
+local t_finders = require("telescope.finders")
+local t_config = require("telescope.config").values
+
+
+M.jumplist = function(opts)
+    opts = opts or {}
+    local jumplist = fn.getjumplist()[1]
+
+    local list = {}
+    for i = #jumplist, 1, -1 do
+        local jump = jumplist[i]
+        table.insert(list, {
+            buf = jump.bufnr,
+            col = jump.col,
+            lnum = jump.lnum,
+            text = (api.nvim_buf_is_valid(jump.bufnr)
+                and api.nvim_buf_get_lines(jump.bufnr, jump.lnum - 1, jump.lnum, false)[1]
+                or "")
+        })
+    end
+
+    t_pickers.new(opts, {
+        prompt_title = "Jumplist",
+        sorter = t_config.generic_sorter(opts),
+        previewer = t_config.qflist_previewer(opts),
+        finder = t_finders.new_table {
+            entry_maker = M.quickfix_entries,
+            results = list
+        }
+    }):find()
 end
 -- }}}
 
