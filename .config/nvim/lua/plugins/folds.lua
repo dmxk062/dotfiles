@@ -51,7 +51,7 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
     -- try to find a foldmarker
     local _, _, title, marker, level = first_line:find(".-%s+(.-)%s+(" .. marker_start() .. ")(%d*)")
 
-    local suffix = (" -> [%d lines]"):format(end_row - row)
+    local suffix = ("[%d lines]"):format(end_row - row)
 
     -- it's a marked fold, pretty print the marker label and (if it is there) level
     if marker and title then
@@ -80,6 +80,8 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
             cur_width = cur_width + text_width
         end
     end
+
+    table.insert(new_text, { " ", "" })
     table.insert(new_text, { suffix, "UfoSuffix" })
     return new_text
 end
