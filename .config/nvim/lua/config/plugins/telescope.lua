@@ -1,0 +1,509 @@
+local M = {}
+
+local api = vim.api
+local fn = vim.fn
+local utils = require("config.utils")
+
+-- Layouts {{{
+local t_layout = require("telescope.pickers.layout")
+
+-- Helpers {{{1
+local make_win = function(enter, opts)
+    local buf = api.nvim_create_buf(false, true)
+    local winopts = vim.tbl_extend("force", {
+        style = "minimal",
+        relative = "editor",
+    }, opts)
+    local win = api.nvim_open_win(buf, enter, winopts)
+
+    return t_layout.Window {
+        bufnr = buf,
+        winid = win,
+    }
+end
+
+local make_windows = function(results_conf, preview_conf, prompt_conf)
+    return make_win(false, results_conf), preview_conf and make_win(false, preview_conf), make_win(true, prompt_conf)
+end
+
+local destroy_win = function(win)
+    if win then
+        if api.nvim_win_is_valid(win.winid) then
+            api.nvim_win_close(win.winid, true)
+        end
+        if api.nvim_buf_is_valid(win.bufnr) then
+            api.nvim_buf_delete(win.bufnr, { force = true })
+        end
+    end
+end
+
+local get_layout = function(value, full, percentage, min, max)
+    if value then
+        if type(value) == "function" then
+            return value()
+        else
+            return value
+        end
+    end
+
+    local val = math.floor(percentage * (full))
+    return math.max(min, math.min(max, val))
+end
+-- }}}
+
+-- Bottom Pane, Similar to Ivy {{{1
+M.bottom_pane_layout = function(picker)
+    local layout = t_layout {
+        picker = picker,
+        mount = function(self)
+            local width = vim.o.columns
+            local factor = 0.45
+            local fhalf = math.floor(width * (factor))
+            local shalf = math.floor(width * (1 - factor))
+
+            if (fhalf + shalf) ~= width then
+                fhalf = fhalf + 1
+            end
+
+            local height = vim.o.lines
+            local view_height = get_layout(self.picker.layout_config.height, height - 4, 0.4, 8, 30)
+
+            local row = height - view_height - 4
+
+            self.results, self.preview, self.prompt = make_windows({
+                row = row,
+                col = 0,
+                width = fhalf,
+                height = view_height,
+                border = { "─", "─", "─", " ", "", "", "", "" },
+            }, {
+                row = row,
+                col = fhalf + 2,
+                width = shalf - 2,
+                height = view_height + 1,
+                border = { "┬", "─", "─", "", "", "", "", "│" },
+            }, {
+                width = fhalf,
+                height = 1,
+                row = height - 3,
+                col = 0,
+                border = "none",
+            })
+        end,
+        unmount = function(self)
+            destroy_win(self.results)
+            destroy_win(self.preview)
+            destroy_win(self.prompt)
+        end,
+        update = function(self)
+        end
+    }
+
+    return layout
+end
+-- }}}
+
+-- Smaller, for use without preview {{{
+M.short_layout = function(picker)
+    return t_layout {
+        mount = function(self)
+            local columns = vim.o.columns
+            local lines = vim.o.lines
+
+            local height = picker.layout_config.height or 12
+            if type(height) == "function" then
+                height = height()
+            end
+
+            local width = get_layout(picker.layout_config.width, columns, 0.4, 32, 80)
+
+            self.results, _, self.prompt = make_windows({
+                row = lines - height - 5,
+                col = 0,
+                width = width,
+                height = height,
+                border = { "╭", "─", "╮", "│", "", "", "", "│" },
+            }, nil, {
+                row = lines - 4,
+                col = 0,
+                width = width,
+                height = 1,
+                border = { "│", "", "│", "─", "╯", "─", "╰", "│" },
+            })
+        end,
+        unmount = function(self)
+            destroy_win(self.results)
+            destroy_win(self.prompt)
+        end,
+        update = function(self)
+        end
+    }
+end
+-- }}}
+-- }}}
+
+-- Path Highlighting {{{
+local MIN_FILENAME_WIDTH = 80
+
+M.path_display = function(opts, path)
+    local tail = fn.fnamemodify(path, ":t")
+    local parendir = fn.pathshorten(fn.fnamemodify(path, ":~:.:h"), 6)
+
+    local namelen = #tail
+    local namewidth = fn.strdisplaywidth(tail)
+    local dirlen = #parendir
+    local dirwidth = fn.strdisplaywidth(parendir)
+
+    local padding = math.max(MIN_FILENAME_WIDTH - (namewidth + dirwidth), 0)
+
+    local hls = {
+        {
+            {
+                0,
+                namelen,
+            },
+            utils.highlight_fname(tail)
+        },
+        {
+            {
+                namelen + 1 + padding,
+                namelen + dirlen + 1 + padding,
+            },
+            "NonText"
+        }
+    }
+
+    return string.format("%s %s%s ", tail, (" "):rep(padding), parendir), hls
+end
+-- }}}
+
+-- Entry Makers {{{
+local t_entry_display = require("telescope.pickers.entry_display")
+local MAX_FILENAME_WIDTH = 24
+local MAX_SYMBOL_WIDTH = 60
+local MAX_FILEPARENT_WIDTH = 24
+local ROW_COL_WIDTH = 11
+
+-- Helpers {{{1
+local get_names_and_hl = function(path)
+    local tail = fn.fnamemodify(path, ":t")
+    local parentdir = fn.pathshorten(fn.fnamemodify(path, ":~:.:h"), 6)
+    local filename_highlight = utils.highlight_fname(tail)
+
+    return tail, parentdir, filename_highlight
+end
+-- }}}
+
+-- Grep-Style {{{1
+local line_and_column_display = t_entry_display.create {
+    separator = " ",
+    items = {
+        { width = MAX_FILENAME_WIDTH },
+        { width = MAX_FILEPARENT_WIDTH },
+        { width = ROW_COL_WIDTH },
+        { remaining = true }
+    }
+}
+M.line_and_column_entries = function(line)
+    local _, _, filename, row, col, text = string.find(line, "(..-):(%d+):(%d+):(.*)")
+    row, col = tonumber(row), tonumber(col)
+
+    return {
+        value = line,
+        display = function()
+            local tail, parentdir, filename_highlight = get_names_and_hl(filename)
+
+            return line_and_column_display {
+                { tail,                       filename_highlight },
+                { parentdir,                  "NonText" },
+                { ("%d:%d"):format(row, col), "Number" },
+                { text },
+            }
+        end,
+        ordinal = string.format("%s:%s:%d", text, filename, row),
+        lnum = row,
+        col = col,
+        filename = filename
+    }
+end
+-- }}}
+
+-- Plain File Names {{{1
+local file_display = t_entry_display.create {
+    separator = " ",
+    items = {
+        { width = MAX_FILENAME_WIDTH * 2 },
+        { width = 12 },
+        { remaining = true,              right_justify = true },
+    }
+}
+M.file_entries = function(line)
+    return {
+        value = line,
+        display = function(entry)
+            local value = entry.value
+
+            local tail, parentdir, filename_highlight = get_names_and_hl(value)
+            local st = vim.uv.fs_stat(entry.value)
+            local mtime, timehl
+            if not st then
+                mtime = ""
+                timehl = ""
+            else
+                mtime = os.date("%b %d %H:%M", st.mtime.sec)
+                timehl = utils.highlight_time(st.mtime.sec)
+            end
+
+
+            return file_display {
+                { tail,      filename_highlight },
+                { mtime,     timehl },
+                { parentdir, "NonText" }
+            }
+        end,
+        filename = line,
+        ordinal = line,
+    }
+end
+-- }}}
+
+-- LSP Symbols {{{1
+local lsp_entry_display = t_entry_display.create {
+    separator = " ",
+    items = {
+        { width = 8 }, -- icon and type
+        { width = MAX_SYMBOL_WIDTH },
+        { width = MAX_FILENAME_WIDTH },
+        { remaining = true }
+    }
+}
+M.lsp_symbol_entries = function(entry)
+    local buf
+    if not entry.filename then
+        buf = vim.api.nvim_get_current_buf()
+    end
+
+    local filename = entry.filename or vim.api.nvim_buf_get_name(buf)
+    local _, name = entry.text:match("^%[(.+)%]%s+(.*)")
+
+    return {
+        col = entry.col,
+        lnum = entry.lnum,
+        symbol_type = entry.kind,
+        buffer = buf,
+        filename = filename,
+        value = entry,
+        ordinal = string.format("%s:%s:%s:%d", entry.kind, name, filename, entry.lnum),
+        display = function()
+            -- use same highlights as completion
+            local hl = "BlinkCmpKind" .. entry.kind
+            local tail, parentdir, filename_highlight = get_names_and_hl(filename)
+
+            return lsp_entry_display {
+                { utils.lsp_symbols[entry.kind] or entry.kind, hl },
+                { name,                                        utils.lsp_highlights[entry.kind] },
+                { tail,                                        filename_highlight },
+                { parentdir,                                   "NonText" }
+            }
+        end
+    }
+end
+-- }}}
+
+-- Quickfix List {{{1
+local quickfix_entry_display = t_entry_display.create {
+    separator = " ",
+    items = {
+        { width = MAX_FILENAME_WIDTH },
+        { width = MAX_FILEPARENT_WIDTH },
+        { width = ROW_COL_WIDTH },
+        { remaining = true },
+    }
+}
+M.quickfix_entries = function(entry)
+    local filename = entry.filename or vim.api.nvim_buf_get_name(entry.buf)
+    return {
+        value = entry,
+        ordinal = ("%s:%s:%d"):format(entry.text, filename, entry.lnum),
+        filename = filename,
+        col = entry.col,
+        lnum = entry.lnum,
+        text = entry.text,
+        display = function()
+            local tail, parentdir, filename_highlight = get_names_and_hl(filename)
+            return quickfix_entry_display {
+                { tail,                                    filename_highlight },
+                { parentdir,                               "NonText" },
+                { ("%d:%d"):format(entry.lnum, entry.col), "Number" },
+                { entry.text },
+            }
+        end
+    }
+end
+-- }}}
+
+-- Buffer List {{{1
+local buffer_entry_display = t_entry_display.create {
+    separator = " ",
+    items = {
+        { width = 4 },        -- shorthand number
+        { width = 4 },        -- "real" number
+        { width = 1 },        -- status.hidden
+        { width = 4 },        -- status.readonly
+        { width = 1 },        -- status.modified
+        { width = 2 },        -- buffer kind
+        { width = 4 },        -- line
+        { remaining = true }, -- buffer name
+    }
+}
+M.buffer_entries = function(entry)
+    local buf = entry.bufnr
+    local shortbuf = Short_for_bufs[buf]
+    local name, kind, show_modified = utils.format_buf_name(buf)
+    local kindicon = utils.btypesymbols[kind]
+
+    return {
+        value = name,
+        bufnr = buf,
+        ordinal = string.format("%s:%s:%d:%d", kindicon, name, shortbuf or 0, buf),
+        display = function()
+            return buffer_entry_display {
+                { shortbuf or "nil",                    shortbuf and "Number" or "NonText" },
+                { buf,                                  "Number" },
+                { entry.info.hidden == 1 and "." or "", entry.info.hidden == 1 and "NonText" },
+                (vim.bo[buf].readonly
+                    and { "[ro]", "NonText" }
+                    or { "[rw]", "String" }),
+                { entry.info.changed == 1 and show_modified and "~" or "", "Constant" },
+                { kindicon,                                                "SlI" .. utils.btypehighlights[kind] },
+                { ":" .. entry.info.lnum ~= 0 and entry.info.lnum or 1,    "Number" },
+                { name }
+            }
+        end
+    }
+end
+-- }}}
+
+-- Diagnostics {{{1
+local diagnostics_display = t_entry_display.create {
+    separator = " ",
+    items = {
+        { width = 1 },                -- symbol: W|H|I|E etc
+        { width = MAX_SYMBOL_WIDTH }, -- message
+        { width = 9 },                -- row:col
+        { width = MAX_FILENAME_WIDTH },
+        { remaining = true }
+    }
+}
+M.diagnostics_entries = function(entry)
+    local type = entry.type:sub(1, 1)
+
+    -- lots of lsps suggest fixes there
+    local text = entry.text:gsub("%s*%(.*%)%s*$", "")
+
+    return {
+        value = entry,
+        filename = entry.filename,
+        type = type,
+        qf_type = type,
+        lnum = entry.lnum,
+        col = entry.col,
+        text = text,
+        ordinal = ("%s:%s:%s"):format(type, entry.filename, entry.text),
+        display = function()
+            local tail, parentdir, filename_highlight = get_names_and_hl(entry.filename)
+            return diagnostics_display {
+                { type,                                          "DiagnosticSign" .. entry.type },
+                { text },
+                { string.format("%d:%d", entry.lnum, entry.col), "Number" },
+                { tail,                                          filename_highlight },
+                { parentdir,                                     "NonText" },
+            }
+        end,
+    }
+end
+-- }}}
+
+-- Registers {{{1
+local register_display = t_entry_display.create {
+    separator = " ",
+    items = {
+        { width = 1 },       -- name
+        { width = 14 },      -- description
+        { remaining = true } -- content
+    }
+}
+local register_descs = {
+    ["%"] = "current file",
+    ["#"] = "alternate file",
+    [":"] = "last command",
+    ["/"] = "last search",
+    ["."] = "last inserted",
+    ["="] = "expression",
+    ["+"] = "clipboard",
+    ["*"] = "selection",
+    ['"'] = "default",
+    ["-"] = "small delete",
+}
+M.register_entries = function(entry)
+    local content = vim.fn.getreg(entry, 1)
+    local byte = string.byte(entry)
+    local ischar = byte >= 65 and byte <= 90
+    if ischar then
+        entry = entry:lower()
+    end
+    local isnum = byte >= 48 and byte <= 57
+
+    local description = ischar and "regular" or (isnum and "numeric" or register_descs[entry])
+    local text = type(content) == "string" and vim.trim(content:gsub("\n", "\x0d")) or content
+    local texthl
+    if #content == 0 then
+        text = "[empty]"
+        texthl = "NonText"
+    end
+
+    return {
+        value = entry,
+        ordinal = ("%s %s %s"):format(entry, description, text),
+        content = content,
+        display = function()
+            return register_display {
+                { entry,       ischar and "String" or (isnum and "Number" or "Identifier") },
+                { description, "Comment" },
+                { text,        texthl }
+            }
+        end
+    }
+end
+-- }}}
+-- }}}
+
+-- Actions {{{
+local t_actions = require("telescope.actions")
+local t_action_state = require("telescope.actions.state")
+local t_builtins = require("telescope.builtin")
+
+M.edit_register = function(buf)
+    t_actions.close(buf)
+
+    local selection = t_action_state.get_selected_entry()
+    local text = selection.content:gsub("\n", "\x0d")
+    local reg = selection.value
+
+    local edit_buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(edit_buf, 0, -1, false, vim.split(text, "\n", { plain = true }))
+    local win = utils.win_show_buf(edit_buf, {
+        position = "float",
+        title = "Edit \"" .. reg
+    })
+
+    vim.keymap.set("n", "<cr>", function()
+        local new_text = vim.api.nvim_buf_get_lines(edit_buf, 0, -1, false)
+        vim.api.nvim_win_close(win, true)
+        vim.fn.setreg(reg, new_text)
+        t_builtins.registers()
+    end, { buffer = edit_buf })
+end
+-- }}}
+
+return M
