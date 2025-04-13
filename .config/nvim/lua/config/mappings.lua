@@ -2,7 +2,7 @@
 All mappings that are general purpose and active regardless of opened plugins
 
 TODO: find a use for
-- Insert: <C-b> <C-l> <C-s> <C-z>
+- Insert: <C-b> <C-l> <C-z>
 }}} ]]
 
 -- Declarations {{{
@@ -35,6 +35,19 @@ local function cmd_with_count(cmd)
         if not ok then
             vim.notify(err, vim.log.levels.ERROR)
         end
+    end
+end
+
+local function run_cmd(cmd, args)
+    local ok, err = pcall(api.nvim_cmd, {
+        cmd = cmd,
+        args = args,
+        mods = {
+        }
+    }, { output = false })
+
+    if not ok then
+        vim.notify(err, vim.log.levels.ERROR)
     end
 end
 -- }}}
@@ -885,11 +898,22 @@ end)
 
 -- view information in manpage or help
 -- this is also meant to be overridden if necessary, which is why it's here
-map("n", "gK", function()
+map({ "v", "n" }, "gK", function()
+    local cmd
     if vim.startswith(vim.fn.expand("%:p"), vim.fn.stdpath("config")) then
-        return "<cmd>h " .. vim.fn.expand("<cword>") .. "<cr>"
+        cmd = "help"
     else
-        return "<cmd>Man " .. fn.expand("<cword>") .. "<cr>"
+        cmd = "Man"
     end
-end, { expr = true })
+
+    local searchtext
+    local mode = api.nvim_get_mode().mode
+    if mode:find("^[vV\x16]$") then
+        searchtext = table.concat(fn.getregion(fn.getpos("v"), fn.getpos("."), { type = mode }), "\n")
+    else
+        searchtext = fn.expand("<cword>")
+    end
+
+    run_cmd(cmd, { searchtext })
+end)
 -- }}}
