@@ -5,7 +5,7 @@ local builtin_picker_maps = {
     git_files = "<space>gf",
     git_status = "<space>gi",
     grep_string = "<space>*",
-    registers = "<space>\"",
+    registers = "\"<space>",
     help_tags = "<space>h",
     jumplist = "<space><C-o>",
     live_grep = "<space>/",
@@ -169,8 +169,15 @@ M.config = function()
                 end,
             },
             mappings = {
-                n = { ["e"] = custom.edit_register },
-                i = { ["<C-e>"] = custom.edit_register },
+                n = {
+                    ["e"] = custom.edit_register,
+                    ["\""] = custom.select_register,
+                    ["<S-cr>"] = custom.select_register
+                },
+                i = {
+                    ["<C-e>"] = custom.edit_register,
+                    ["<S-cr>"] = custom.select_register
+                },
             }
         },
         find_files = default_config {

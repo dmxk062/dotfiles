@@ -237,30 +237,32 @@ local file_display = t_entry_display.create {
         { remaining = true,              right_justify = true },
     }
 }
+
+local file_entry_display = function(entry)
+    local value = entry.value
+
+    local tail, parentdir, filename_highlight = get_names_and_hl(value)
+    local st = vim.uv.fs_stat(entry.value)
+    local mtime, timehl
+    if not st then
+        mtime = ""
+        timehl = ""
+    else
+        mtime = os.date("%b %d %H:%M", st.mtime.sec)
+        timehl = utils.highlight_time(st.mtime.sec)
+    end
+
+    return file_display {
+        { tail,      filename_highlight },
+        { mtime,     timehl },
+        { parentdir, "NonText" }
+    }
+end
+
 M.file_entries = function(line)
     return {
         value = line,
-        display = function(entry)
-            local value = entry.value
-
-            local tail, parentdir, filename_highlight = get_names_and_hl(value)
-            local st = vim.uv.fs_stat(entry.value)
-            local mtime, timehl
-            if not st then
-                mtime = ""
-                timehl = ""
-            else
-                mtime = os.date("%b %d %H:%M", st.mtime.sec)
-                timehl = utils.highlight_time(st.mtime.sec)
-            end
-
-
-            return file_display {
-                { tail,      filename_highlight },
-                { mtime,     timehl },
-                { parentdir, "NonText" }
-            }
-        end,
+        display = file_entry_display,
         filename = line,
         ordinal = line,
     }
@@ -503,6 +505,15 @@ M.edit_register = function(buf)
         vim.fn.setreg(reg, new_text)
         t_builtins.registers()
     end, { buffer = edit_buf })
+end
+
+M.select_register = function(buf)
+    t_actions.close(buf)
+
+    local selection = t_action_state.get_selected_entry()
+    local reg = selection.value
+
+    api.nvim_feedkeys("\"" .. reg, "n")
 end
 -- }}}
 
