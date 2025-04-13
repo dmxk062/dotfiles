@@ -9,5 +9,5 @@ type: (
     if $text == "" then "empty"
     elif $mimes|any(startswith("image/")) then "image"
     elif $mimes|any(. == "application/vnd.portal.files") then "file"
-    elif $text|test("https?://"; null) then "url"
+    elif $text|test("^https?://"; null) then "url"
     else "text" end)})'
