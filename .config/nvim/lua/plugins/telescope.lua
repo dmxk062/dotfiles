@@ -10,6 +10,7 @@ local picker_maps = {
     git_files = "<space>gf",
     git_status = "<space>gi",
     grep_string = "<space>*",
+    registers = "<space>\"",
     help_tags = "<space>h",
     jumplist = "<space><C-o>",
     live_grep = "<space>/",
@@ -512,6 +513,87 @@ local diagnostics_entry_maker = function(entry)
     }
 end
 -- }}}
+
+-- Registers {{{
+local register_display
+local register_descs = {
+    ["%"] = "current file",
+    ["#"] = "alternate file",
+    [":"] = "last command",
+    ["/"] = "last search",
+    ["."] = "last inserted",
+    ["="] = "expression",
+    ["+"] = "clipboard",
+    ["*"] = "selection",
+    ['"'] = "default",
+    ["-"] = "small delete",
+}
+local register_entry_maker = function(entry)
+    if not register_display then
+        register_display = require("telescope.pickers.entry_display").create {
+            separator = " ",
+            items = {
+                { width = 1 },       -- name
+                { width = 14 },      -- flags
+                { remaining = true } -- content
+            }
+        }
+    end
+
+    local content = vim.fn.getreg(entry, 1)
+    local byte = string.byte(entry)
+    local ischar = byte >= 65 and byte <= 90
+    if ischar then
+        entry = entry:lower()
+    end
+    local isnum = byte >= 48 and byte <= 57
+
+    local description = ischar and "regular" or (isnum and "numeric" or register_descs[entry])
+    local text = type(content) == "string" and vim.trim(content:gsub("\n", "\\n")) or content
+    local texthl
+    if #content == 0 then
+        text = "[empty]"
+        texthl = "NonText"
+    end
+
+    return {
+        value = entry,
+        ordinal = ("%s %s %s"):format(entry, description, text),
+        content = content,
+        display = function()
+            return register_display {
+                { entry,       ischar and "String" or (isnum and "Number" or "Identifier") },
+                { description, "Comment" },
+                { text,        texthl }
+            }
+        end
+    }
+end
+
+local edit_register = function(buf)
+    require("telescope.actions").close(buf)
+
+    local action_state = require("telescope.actions.state")
+    local selection = action_state.get_selected_entry()
+    local text = selection.content:gsub("\n", "\x0d")
+    local reg = selection.value
+
+    local edit_buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(edit_buf, 0, -1, false, vim.split(text, "\n", { plain = true }))
+    local win = utils.win_show_buf(edit_buf, {
+        position = "float",
+        title = "Edit \"" .. reg
+    })
+
+    vim.keymap.set("n", "<cr>", function()
+        local new_text = vim.api.nvim_buf_get_lines(edit_buf, 0, -1, false)
+        vim.api.nvim_win_close(win, true)
+        vim.fn.setreg(reg, new_text)
+        require("telescope.builtin").registers()
+    end, { buffer = edit_buf})
+end
+-- }}}
+
 -- }}}
 
 local default_config_tbl = {
@@ -631,6 +713,24 @@ M.opts.pickers = {
             end
         }
     },
+    registers = default_config {
+        entry_maker = register_entry_maker,
+        create_layout = short_layout,
+        prompt_prefix = ":p ",
+        layout_config = {
+            height = function()
+                return math.min(vim.o.lines - 4, 32)
+            end,
+        },
+        mappings = {
+            n = {
+                ["e"] = edit_register
+            },
+            i = {
+                ["<C-e>"] = edit_register
+            }
+        }
+    },
     find_files = default_config {
         entry_maker = file_entry_maker
     },
@@ -648,7 +748,7 @@ M.opts.pickers = {
     search_history = default_config {
         create_layout = short_layout,
         prompt_prefix = "/ ",
-    }
+    },
 }
 
 M.opts.extensions = {

@@ -376,6 +376,7 @@ end
 ---@field size [number, number]?
 ---@field direction "left"|"right"|"above"|"below"?
 ---@field at_cursor boolean?
+---@field title string?
 
 ---@param b integer Buffer Number
 ---@param opts config.win.opts
@@ -415,6 +416,8 @@ function M.win_show_buf(b, opts)
         end
 
         api.nvim_open_win(b, true, {
+            title = opts.title,
+            title_pos = "center",
             relative = opts.at_cursor and "cursor" or "editor",
             width = width,
             height = height,
