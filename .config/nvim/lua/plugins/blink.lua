@@ -1,11 +1,12 @@
 ---@type LazySpec
 local M = {
     "saghen/blink.cmp",
-    event = {"InsertEnter", "CmdlineEnter" },
+    event = { "InsertEnter", "CmdlineEnter" },
     build = "cargo build --release",
     dependencies = {},
 }
 
+---@type blink.cmp.Config
 M.opts = {}
 
 M.opts.keymap = {
@@ -26,6 +27,14 @@ M.opts.signature = {
 
 M.opts.cmdline = {
     keymap = {
+        -- mapping <left> and <right> is not what I ever want
+        preset     = "none",
+
+        ["<Tab>"]  = { "show_and_insert", "select_next" },
+        ["<C-n>"]  = { "select_next", "fallback" },
+        ["<C-p>"]  = { "select_prev", "fallback" },
+        ["<C-e>"]  = { "cancel" },
+        ["<C-y>"]  = { "select_and_accept" },
         ["<S-CR>"] = { "select_accept_and_enter" },
     },
     completion = {
