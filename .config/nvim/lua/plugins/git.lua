@@ -52,8 +52,10 @@ local function map_on_git_buffer(buf)
 
     map("n", "H", gitsigns.setqflist, { desc = "Git: Hunks to qflist" })
     map("n", "h", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
-    map("n", "L", "<cmd>0Gclog<cr>", { desc = "Git: Log to qflist" })
+    map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
     map("n", "l", "<cmd>0Gllog<cr>", { desc = "Git: Log to loclist" })
+    map("n", "L", "<cmd>Git log<cr>", { desc = "Git: Log to buffer" })
+    map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
