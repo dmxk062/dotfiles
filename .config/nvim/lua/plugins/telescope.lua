@@ -1,10 +1,15 @@
 -- Spec {{{
 local picker_maps = {
+    -- custom ones
+    "<space>#",
+
+    -- builtins
     buffers = "<space><space>",
     diagnostics = "<space>D",
     find_files = "<space>F",
     git_files = "<space>gf",
     git_status = "<space>gi",
+    grep_string = "<space>*",
     help_tags = "<space>h",
     jumplist = "<space><C-o>",
     live_grep = "<space>/",
@@ -13,6 +18,12 @@ local picker_maps = {
     man_pages = "<space>H",
     oldfiles = "<space>o",
     search_history = "<space>?",
+}
+
+local custom = {
+    function()
+        require("telescope.builtin").grep_string { search = "TODO|FIXME|HACK|WARN" }
+    end
 }
 
 ---@type LazySpec
@@ -592,6 +603,10 @@ M.opts.pickers = {
     live_grep = default_config {
         entry_maker = line_and_column_entry_maker
     },
+    grep_string = default_config {
+        word_match = "-w",
+        entry_maker = line_and_column_entry_maker
+    },
     oldfiles = default_config {
         entry_maker = file_entry_maker,
     },
@@ -659,7 +674,11 @@ M.config = function(_, opts)
     local builtin = require("telescope.builtin")
     local map = utils.map
     for picker, keys in pairs(picker_maps) do
-        map("n", keys, builtin[picker])
+        if type(picker) == "number" then
+            map("n", keys, custom[picker])
+        else
+            map("n", keys, builtin[picker])
+        end
     end
 end
 
