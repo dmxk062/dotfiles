@@ -82,6 +82,37 @@ map("n", "<space>Lc", function()
     require("quicker").close { loclist = true }
 end)
 
+-- vertical view
+map("n", "<space>Qv", function()
+    local qfwin = fn.getqflist { winid = true }.winid
+    if qfwin == 0 then
+        require("quicker").open()
+        qfwin = fn.getqflist { winid = true }.winid
+    end
+
+    api.nvim_win_set_config(qfwin, {
+        split = "left",
+        width = 72,
+        vertical = true
+    })
+    vim.wo[qfwin][0].number = true
+end)
+
+map("n", "<space>Lv", function()
+    local locwin = fn.getloclist(0, { winid = true }).winid
+    if locwin == 0 then
+        require("quicker").open { loclist = true }
+        locwin = fn.getloclist(0, { winid = true }).winid
+    end
+
+    api.nvim_win_set_config(locwin, {
+        split = "left",
+        width = 72,
+        vertical = true
+    })
+    vim.wo[locwin][0].number = true
+end)
+
 -- set lists to diagnostics
 map("n", "<space>Qd", function() vim.diagnostic.setqflist { open = true } end)
 map("n", "<space>Ld", function() vim.diagnostic.setloclist { open = true } end)
