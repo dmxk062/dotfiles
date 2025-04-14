@@ -235,7 +235,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
     once = true,
     callback = function()
         if should_open_start_screen then
-            require("config.startscreen").show_start_screen()
+            require("config.welcome").show()
         end
     end
 })

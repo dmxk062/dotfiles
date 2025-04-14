@@ -388,27 +388,31 @@ add_with_prefix(colorscheme, "Sl", {
 -- }}}
 
 -- Startscreen {{{
-add_with_prefix(colorscheme, "Startscreen", {
-    Title0  = { fg = col.purple },
-    Title1  = { fg = col.red },
-    Title2  = { fg = col.orange },
-    Title3  = { fg = col.yellow },
-    Title4  = { fg = col.green },
-    Title5  = { fg = col.teal },
-    Title6  = { fg = col.light_blue },
-    Title7  = { fg = col.blue },
+add_with_prefix(colorscheme, "Welcome", {
+    Title1     = { fg = col.red },
+    Title2     = { fg = col.orange },
+    Title3     = { fg = col.yellow },
+    Title4     = { fg = col.green },
+    Title5     = { fg = col.teal },
+    Title6     = { fg = col.light_blue },
 
-    Text    = {},
+    Category   = { fg = col.pink, italic = true },
+    Property   = { fg = col.blue, italic = true },
+    Time       = { fg = col.yellow },
+    Message    = { italic = true },
 
-    Files   = { fg = col.teal },
-    Git     = { fg = col.green },
-    Search  = { fg = col.light_blue },
-    History = { fg = col.blue },
-    Lazy    = { fg = col.yellow },
-    Mason   = { fg = col.orange },
-    Quit    = { fg = col.red },
-    New     = { fg = col.purple },
-    Shell   = { fg = col.pink },
+    NewShell   = { fg = col.pink },
+    NewBuffer  = { fg = col.purple },
+    FindFiles  = { fg = col.blue },
+    LuaScratch = { fg = col.light_blue },
+    EditFiles  = { fg = col.teal },
+    GitStatus  = { fg = col.green },
+    Lazy       = { fg = col.yellow },
+    Mason      = { fg = col.orange },
+    Quit       = { fg = col.red },
+
+    Recents    = { fg = col.pink, bg = col.darkest_gray, italic = true },
+    File       = { fg = col.light_blue },
 })
 -- }}}
 
