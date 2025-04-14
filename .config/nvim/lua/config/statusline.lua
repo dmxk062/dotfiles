@@ -257,13 +257,16 @@ local function update_filetype()
     local _ft = vim.bo.filetype
     local ft = _ft and _ft ~= "" and _ft or "[noft]"
 
-    local spell = vim.wo.spell and ("=" .. vim.bo.spelllang) or "[nospell]"
+    local spell = vim.wo.spell and ("=" .. vim.bo.spelllang) or "[nospl]"
 
     local _enc = vim.bo.fileencoding
     local enc = _enc and _enc ~= "" and _enc or "utf-8"
 
+    local _ff = vim.bo.fileformat
+    local ff = _ff == "dos" and "crlf" or (_ff == "mac" and "cr" or "lf")
+
     return string.format("%s %s %s %s",
-        enc, vim.bo.fileformat, spell, ft
+        enc, ff, spell, ft
     )
 end
 -- }}}
