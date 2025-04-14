@@ -411,6 +411,7 @@ add_with_prefix(colorscheme, "Welcome", {
     Mason      = { fg = col.orange },
     Quit       = { fg = col.red },
 
+    Git        = { fg = col.green, bg = col.darkest_gray, italic = true },
     Recents    = { fg = col.pink, bg = col.darkest_gray, italic = true },
     File       = { fg = col.light_blue },
 })

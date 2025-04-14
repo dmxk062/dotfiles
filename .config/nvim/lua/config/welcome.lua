@@ -16,6 +16,9 @@ local M = {}
 ---@field first_row integer
 ---@field constrain ({start: integer, stop: integer, col: integer})[]
 ---@field actions function[]
+---@field files string[]
+---@field left_pad integer?
+---@field start_spaces string?
 
 ---@type config.welcome.state
 local State = {
@@ -23,6 +26,7 @@ local State = {
     first_row = 2,
     constrain = {},
     actions = {},
+    files = {}
 }
 
 -- Helpers {{{
@@ -271,13 +275,6 @@ local Actions = {
         hl = "WelcomeEditFiles"
     },
     {
-        "Git Status",
-        desc = "Fugitive :G",
-        key = "S",
-        on_click = vim.cmd.Git,
-        hl = "WelcomeGitStatus"
-    },
-    {
         "Plugins",
         desc = "Lazy",
         key = "L",
@@ -310,16 +307,14 @@ local Action_lines = vim.tbl_map(function(action)
 end, Actions)
 
 local Buttons = function()
-    local left_pad = get_center_padding(BUTTON_WIDTH)
     table.insert(State.constrain, {
         start = State.draw_row,
         stop = State.draw_row + #Actions,
-        col = left_pad + 1,
+        col = State.left_pad + 1,
     })
 
-    local pad_spaces = (" "):rep(left_pad)
     for i, act in ipairs(Action_lines) do
-        act[1] = { pad_spaces }
+        act[1] = { State.start_spaces }
         State.actions[State.draw_row + i] = Actions[i].on_click
     end
     insert_text(Action_lines)
@@ -343,11 +338,11 @@ for _, file in ipairs(vim.v.oldfiles) do
         end
 
         local mtime = st.mtime.sec
-        local timestring = os.date("%b/%y %d, %H:%M ", mtime)
+        local timestring = os.date("%b/%y %d, %H:%M  ", mtime)
         local timehl = utils.highlight_time(mtime)
 
         local tail = fn.fnamemodify(file, ":t")
-        local head = utils.expand_home(fn.fnamemodify(file, ":h"), 4)
+        local head = utils.expand_home(fn.fnamemodify(file, ":h"), 6)
         local text = { nil, { tail, highlight }, nil, { timestring, timehl }, { head, "NonText" } }
 
         local namewidth = strwidth(tail)
@@ -369,8 +364,6 @@ local Recents = function()
         return
     end
 
-    local initial_pad = get_center_padding(BUTTON_WIDTH)
-    local start_spaces = (" "):rep(initial_pad)
     insert_heading("[r] Recent Files", "WelcomeRecents", Recents_show_all)
 
     local how_many = Recents_show_all
@@ -380,39 +373,156 @@ local Recents = function()
     table.insert(State.constrain, {
         start = State.draw_row,
         stop = State.draw_row + how_many,
-        col = initial_pad + 1,
+        col = State.left_pad + 1,
     })
 
     local lines = {}
     for i = 1, how_many do
         local file = Oldfiles[i]
 
-        local prefix = { start_spaces }
+        local prefix = { State.start_spaces }
         if i <= 10 then
-            prefix = { start_spaces .. ("[%d] "):format(i - 1), "Number" }
+            prefix = { State.start_spaces .. ("[%d] "):format(i - 1), "Number" }
         end
         local center_pad = (" "):rep(MAX_FILE_NAME - file.namewidth - (i <= 10 and 4 or 0))
 
         file.text[1] = prefix
         file.text[3] = { center_pad }
-        State.actions[State.draw_row + i] = function()
-            vim.cmd.edit(file.path)
-        end
+        State.files[State.draw_row + i] = file.path
         table.insert(lines, file.text)
     end
+
     insert_text(lines)
 end
 
 -- }}}
 
+-- Git Section {{{
+local git_highlights = {
+    M = "Changed",
+    D = "Deleted",
+    A = "Added",
+    ["."] = "NonText",
+    R = "Label"
+}
+local MAX_GIT_NAME = BUTTON_WIDTH - 20
+---@param entry config.git.item
+local git_format_line = function(entry)
+    local file = entry.path
+    local filehl = utils.highlight_fname(file)
+    local tail = fn.fnamemodify(file, ":t")
+    local head = fn.fnamemodify(file, ":h")
+
+    local namewidth = strwidth(tail) + 10
+    if namewidth > MAX_GIT_NAME then
+        MAX_GIT_NAME = namewidth
+    end
+
+    local line = { nil, -- leave padding
+        { entry.skind, git_highlights[entry.skind] },
+        { entry.kind,  git_highlights[entry.kind] },
+        { " " },
+        { tail,        filehl },
+        nil,
+        { " " .. head, "NonText" },
+    }
+
+    return { text = line, width = namewidth, entry = entry }
+end
+
+
+---@type config.git.info?
+local Git_info
+local Git_staged_lines
+local Git_unstaged_lines
+local Git_ignored_lines
+local update_git = function(cb)
+    utils.git_get_status({ cwd = vim.fn.getcwd() }, function(res)
+        Git_staged_lines = {}
+        Git_unstaged_lines = {}
+        for _, e in pairs(res.modified) do
+            table.insert(e.staged and Git_staged_lines or Git_unstaged_lines, git_format_line(e))
+        end
+
+        Git_info = res
+        if cb then
+            vim.schedule(cb)
+        end
+    end)
+end
+
+local git_insert_entries = function(entries)
+    local lines = {}
+    for i, entry in ipairs(entries) do
+        local center_pad = (" "):rep(MAX_GIT_NAME - entry.width)
+        entry.text[1] = { State.start_spaces }
+        entry.text[6] = { center_pad }
+        table.insert(lines, entry.text)
+        State.files[State.draw_row + i] = entry.entry.path
+    end
+    insert_text(lines)
+end
+
+Git_expanded = false
+local Git_section = function()
+    if not Git_info then
+        return
+    end
+    insert_heading("[S] Git Status", "WelcomeGit", Git_expanded)
+
+    local how_many = (Git_expanded and #Git_unstaged_lines or 0) + #Git_staged_lines + 4
+    table.insert(State.constrain, {
+        start = State.draw_row,
+        stop = State.draw_row + how_many,
+        col = State.left_pad,
+    })
+
+    insert_text {
+        { { State.start_spaces }, { "Branch: ", "WelcomeProperty" }, { Git_info.head, "Identifier" },
+            { " +" .. Git_info.ahead, "Added" }, { " -" .. Git_info.behind, "Deleted" },
+            { " -> ", "NonText" }, { Git_info.upstream, "Identifier" } },
+        {
+            { State.start_spaces },
+            { "Untracked: ",     "fugitiveUntrackedHeading" }, { tostring(#Git_info.untracked), "Number" },
+            { ", " }, { "Unstaged: ", "fugitiveUnstagedHeading" }, { tostring(#Git_unstaged_lines), "Number" },
+            { ", " }, { "Staged: ", "fugitiveStagedHeading" }, { tostring(#Git_staged_lines), "Number" }
+        },
+    }
+    State.actions[State.draw_row] = function()
+        vim.cmd.Git()
+    end
+    set_virt_lines(State.draw_row - 1, { { { "" } } })
+
+    git_insert_entries(Git_staged_lines)
+
+    if not Git_expanded then
+        return
+    end
+
+    git_insert_entries(Git_unstaged_lines)
+end
+-- }}}
+
 local update_size = function()
     State.width = api.nvim_win_get_width(State.win)
     State.height = api.nvim_win_get_height(State.win)
+    State.left_pad = get_center_padding(BUTTON_WIDTH)
+    State.start_spaces = (" "):rep(State.left_pad)
+end
+
+local Cursor
+local save_cursor = function()
+    Cursor = api.nvim_win_get_cursor(State.win)
+end
+local restore_cursor = function()
+    api.nvim_win_set_cursor(State.win, Cursor)
 end
 
 local do_redraw = function()
+    save_cursor()
     State.constrain = {}
     State.actions = {}
+    State.files = {}
     State.draw_row = 0
     State.drawable = State.height
     local buf = State.buf or 0
@@ -427,9 +537,11 @@ local do_redraw = function()
 
     State.first_row = State.draw_row + 1
     Buttons()
+    Git_section()
     Recents()
 
     vim.bo[buf].modifiable = false
+    restore_cursor()
 end
 
 M.show = function()
@@ -448,8 +560,10 @@ M.show = function()
     wo.statuscolumn = ""
 
     update_size()
+    update_git(do_redraw)
     do_redraw()
 
+    -- Set handlers for events {{{
     autocmd("WinResized", {
         buffer = buf,
         callback = function()
@@ -504,6 +618,11 @@ M.show = function()
         if action then
             action()
         end
+
+        local file = State.files[line]
+        if file then
+            vim.cmd.edit(file)
+        end
     end)
 
     for _, action in ipairs(Actions) do
@@ -514,15 +633,21 @@ M.show = function()
         Recents_show_all = not Recents_show_all
         do_redraw()
     end)
+    map("n", "S", function()
+        Git_expanded = not Git_expanded
+        do_redraw()
+    end)
 
     for i = 0, 9 do
         map("n", tostring(i), function()
-            local file = Oldfiles[i+1].path
+            local file = Oldfiles[i + 1].path
             if file then
                 vim.cmd.edit(file)
             end
         end)
     end
+
+    -- }}}
 end
 
 return M

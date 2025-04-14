@@ -600,4 +600,118 @@ M.highlight_size = function(bytes)
 end
 -- }}}
 
+-- Git {{{
+
+---@class config.git.item
+---@field staged boolean
+---@field kind "M"|"T"|"A"|"D"|"R"|"C"|"."
+---@field skind "M"|"T"|"A"|"D"|"R"|"C"|"."
+---@field path string
+---@field old_path string?
+---@field old_mode number
+---@field new_mode number
+
+---@class config.git.info
+---@field ahead integer
+---@field behind integer
+---@field head string
+---@field commit string
+---@field upstream string
+---@field modified config.git.item[]
+---@field untracked string[]
+
+---@param opts {cwd: string}
+---@param on_done fun(res: config.git.info?)
+M.git_get_status = function(opts, on_done)
+    opts = opts or {}
+
+    local untracked = {}
+    ---@type config.git.item[]
+    local modified = {}
+    local commit, head, upstream
+    local ahead = 0
+    local behind = 0
+
+    vim.system(
+        { "git", "status", "--untracked-files=yes", "--porcelain=v2", "--branch", opts.cwd or "." }, {
+            stdout = function(err, text)
+                if err or not text then
+                    return
+                end
+
+                local lines = vim.split(text, "\n", { plain = true })
+                for _, line in ipairs(lines) do
+                    local kind = line:sub(1, 1)
+                    if kind == "?" then
+                        table.insert(untracked, line:sub(3))
+                    elseif kind == "#" then
+                        local fields = vim.split(line:sub(3), " ", { plain = true })
+                        if fields[1] == "branch.oid" then
+                            commit = fields[2]
+                        elseif fields[1] == "branch.head" then
+                            head = fields[2]
+                        elseif fields[1] == "branch.upstream" then
+                            upstream = fields[2]
+                        elseif fields[1] == "branch.ab" then
+                            for i = 2, #fields do
+                                local val = tonumber(fields[i])
+                                if val < 0 then
+                                    behind = math.abs(val or 0)
+                                elseif val > 0 then
+                                    ahead = val or 0
+                                end
+                            end
+                        end
+                    elseif kind == "1" then
+                        local split = vim.split(line:sub(3), " ", { plain = true })
+                        local staged, unstaged = split[1]:sub(1, 1), split[1]:sub(2, 2)
+                        local is_staged = staged ~= "."
+
+                        ---@type config.git.item
+                        local entry = {
+                            staged = is_staged,
+                            skind = staged,
+                            kind = unstaged,
+                            old_mode = tonumber(split[3], 8),
+                            new_mode = tonumber(split[4], 8),
+                            path = table.concat(split, " ", 8),
+                        }
+                        table.insert(modified, entry)
+                    elseif kind == "2" then
+                        local split = vim.split(line:sub(3), " ", { plain = true })
+                        local staged, unstaged = split[1]:sub(1, 1), split[1]:sub(2, 2)
+                        local path = vim.split(table.concat(split, " ", 9), "\x09")
+
+                        ---@type config.git.item
+                        local entry = {
+                            staged = true,
+                            kind = unstaged,
+                            skind = staged,
+                            old_mode = tonumber(split[3], 8),
+                            new_mode = tonumber(split[4], 8),
+                            path = path[1],
+                            old_path = path[2]
+                        }
+                        table.insert(modified, entry)
+                    end
+                end
+            end,
+        }, function(out)
+            if out.code ~= 0 then
+                on_done(nil)
+            end
+
+            on_done {
+                ahead = ahead,
+                behind = behind,
+                head = head,
+                commit = commit,
+                upstream = upstream,
+                modified = modified,
+                untracked = untracked,
+            }
+        end)
+end
+-- }}}
+
 return M
