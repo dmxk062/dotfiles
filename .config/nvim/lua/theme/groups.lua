@@ -406,7 +406,7 @@ add_with_prefix(colorscheme, "Welcome", {
     FindFiles  = { fg = col.blue },
     LuaScratch = { fg = col.light_blue },
     EditFiles  = { fg = col.teal },
-    GitStatus  = { fg = col.green },
+    GitFiles   = { fg = col.green },
     Lazy       = { fg = col.yellow },
     Mason      = { fg = col.orange },
     Quit       = { fg = col.red },

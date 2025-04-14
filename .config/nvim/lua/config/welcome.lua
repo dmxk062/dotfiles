@@ -14,7 +14,7 @@ local M = {}
 ---@field drawable integer?
 ---@field draw_row integer
 ---@field first_row integer
----@field constrain ({start: integer, stop: integer, col: integer})[]
+---@field set_col integer
 ---@field actions function[]
 ---@field files string[]
 ---@field left_pad integer?
@@ -24,6 +24,7 @@ local M = {}
 local State = {
     draw_row = 0,
     first_row = 2,
+    set_col = 1,
     constrain = {},
     actions = {},
     files = {}
@@ -275,6 +276,15 @@ local Actions = {
         hl = "WelcomeEditFiles"
     },
     {
+        "Git Files",
+        desc = "List Tracked Files",
+        key = "G",
+        on_click = function()
+            require("telescope.builtin").git_files()
+        end,
+        hl = "WelcomeGitFiles"
+    },
+    {
         "Plugins",
         desc = "Lazy",
         key = "L",
@@ -307,12 +317,6 @@ local Action_lines = vim.tbl_map(function(action)
 end, Actions)
 
 local Buttons = function()
-    table.insert(State.constrain, {
-        start = State.draw_row,
-        stop = State.draw_row + #Actions,
-        col = State.left_pad + 1,
-    })
-
     for i, act in ipairs(Action_lines) do
         act[1] = { State.start_spaces }
         State.actions[State.draw_row + i] = Actions[i].on_click
@@ -360,21 +364,11 @@ end
 
 local Recents_show_all = false
 local Recents = function()
-    if State.drawable < 4 then
-        return
-    end
-
-    insert_heading("[r] Recent Files", "WelcomeRecents", Recents_show_all)
+    insert_heading("[R] Recent Files", "WelcomeRecents", Recents_show_all)
 
     local how_many = Recents_show_all
         and #Oldfiles
-        or math.min(State.drawable, #Oldfiles, 10)
-
-    table.insert(State.constrain, {
-        start = State.draw_row,
-        stop = State.draw_row + how_many,
-        col = State.left_pad + 1,
-    })
+        or math.min(#Oldfiles, 10)
 
     local lines = {}
     for i = 1, how_many do
@@ -435,7 +429,6 @@ end
 local Git_info
 local Git_staged_lines
 local Git_unstaged_lines
-local Git_ignored_lines
 local update_git = function(cb)
     utils.git_get_status({ cwd = vim.fn.getcwd() }, function(res)
         if not res then
@@ -475,17 +468,20 @@ local Git_section = function()
     end
     insert_heading("[S] Git Status", "WelcomeGit", Git_expanded)
 
-    local how_many = (Git_expanded and #Git_unstaged_lines or 0) + #Git_staged_lines + 2
-    table.insert(State.constrain, {
-        start = State.draw_row,
-        stop = State.draw_row + how_many,
-        col = State.left_pad,
-    })
-
+    State.actions[State.draw_row + 1] = function()
+        vim.cmd("Git push")
+    end
+    State.actions[State.draw_row + 2] = function()
+        vim.cmd("silent Git commit")
+    end
+    State.actions[State.draw_row + 3] = function()
+        vim.cmd.Git()
+    end
     insert_text {
         { { State.start_spaces }, { "Branch: ", "WelcomeProperty" }, { Git_info.head, "Identifier" },
             { " +" .. Git_info.ahead, "Added" }, { " -" .. Git_info.behind, "Deleted" },
             { " -> ", "NonText" }, { Git_info.upstream, "Identifier" } },
+        { { State.start_spaces }, { "Commit: ", "WelcomeProperty" }, { Git_info.commit, "Identifier" } },
         {
             { State.start_spaces },
             { "Untracked: ",     "fugitiveUntrackedHeading" }, { tostring(#Git_info.untracked), "Number" },
@@ -493,17 +489,17 @@ local Git_section = function()
             { ", " }, { "Staged: ", "fugitiveStagedHeading" }, { tostring(#Git_staged_lines), "Number" }
         },
     }
-    State.actions[State.draw_row] = function()
-        vim.cmd.Git()
-    end
-    set_virt_lines(State.draw_row - 1, { { { "" } } })
 
-    git_insert_entries(Git_staged_lines)
+    set_virt_lines(State.draw_row - 1, { { { "" } } })
 
     if not Git_expanded then
         return
     end
 
+    git_insert_entries(Git_staged_lines)
+    if #Git_staged_lines > 0 then
+        set_virt_lines(State.draw_row - 1, { { { "" } } })
+    end
     git_insert_entries(Git_unstaged_lines)
 end
 -- }}}
@@ -541,12 +537,112 @@ local do_redraw = function()
     insert_empty(1)
 
     State.first_row = State.draw_row + 1
+    State.set_col = State.left_pad + 1
     Buttons()
     Git_section()
     Recents()
 
     vim.bo[buf].modifiable = false
     restore_cursor()
+end
+
+local set_autocommands = function(buf)
+    autocmd("WinResized", {
+        buffer = buf,
+        callback = function()
+            update_size()
+            do_redraw()
+        end
+    })
+
+    autocmd("User", {
+        pattern = "LazyLoad",
+        callback = function()
+            update_lazy()
+            do_redraw()
+        end
+    })
+
+    autocmd("User", {
+        pattern = "FugitiveChanged",
+        callback = function()
+            update_git(do_redraw)
+        end
+    })
+
+    autocmd({ "BufWinLeave", "BufHidden" }, {
+        buffer = buf,
+        once = true,
+        callback = function()
+            api.nvim_del_augroup_by_id(State.autogroup)
+            vim.defer_fn(function()
+                api.nvim_buf_delete(buf, { force = true })
+            end, 10)
+        end
+    })
+
+    autocmd("CursorMoved", {
+        buffer = buf,
+        callback = function()
+            local pos = api.nvim_win_get_cursor(State.win)
+            if pos[1] <= State.first_row then
+                pos[1] = State.first_row
+            end
+
+            if pos[2] ~= State.set_col then
+                pos[2] = State.set_col
+            end
+
+            api.nvim_win_set_cursor(State.win, pos)
+        end
+    })
+end
+
+local set_mappings = function()
+    map("n", "<cr>", function()
+        local line = api.nvim_win_get_cursor(State.win)[1]
+        local action = State.actions[line]
+        if action then
+            action()
+        end
+
+        local file = State.files[line]
+        if file then
+            vim.cmd.edit(file)
+        end
+    end)
+
+    for _, action in ipairs(Actions) do
+        map("n", action.key, action.on_click)
+    end
+
+    map("n", "R", function()
+        Recents_show_all = not Recents_show_all
+        do_redraw()
+    end)
+    map("n", "S", function()
+        Git_expanded = not Git_expanded
+        do_redraw()
+    end)
+    map("n", ":", function()
+        local line = api.nvim_win_get_cursor(State.win)[1]
+        local file = State.files[line]
+        api.nvim_feedkeys(":", "n")
+        if file then
+            vim.schedule(function()
+                fn.setcmdline(" " .. fn.fnameescape(file), 1)
+            end)
+        end
+    end)
+
+    for i = 0, 9 do
+        map("n", tostring(i), function()
+            local file = Oldfiles[i + 1].path
+            if file then
+                vim.cmd.edit(file)
+            end
+        end)
+    end
 end
 
 M.show = function()
@@ -567,92 +663,8 @@ M.show = function()
     update_size()
     update_git(do_redraw)
     do_redraw()
-
-    -- Set handlers for events {{{
-    autocmd("WinResized", {
-        buffer = buf,
-        callback = function()
-            update_size()
-            do_redraw()
-        end
-    })
-
-    autocmd("User", {
-        pattern = "LazyLoad",
-        callback = function()
-            update_lazy()
-            do_redraw()
-        end
-    })
-
-    autocmd({ "BufWinLeave", "BufHidden" }, {
-        buffer = buf,
-        once = true,
-        callback = function()
-            api.nvim_del_augroup_by_id(State.autogroup)
-            vim.defer_fn(function()
-                api.nvim_buf_delete(buf, { force = true })
-            end, 10)
-        end
-    })
-
-    autocmd("CursorMoved", {
-        buffer = buf,
-        callback = function()
-            local pos = api.nvim_win_get_cursor(State.win)
-            local row = pos[1]
-
-            if row < State.first_row then
-                row = State.first_row
-            end
-
-            for _, region in ipairs(State.constrain) do
-                if row >= region.start and row <= region.stop then
-                    if pos[2] ~= region.col then
-                        pcall(api.nvim_win_set_cursor, State.win, { row, region.col })
-                    end
-                    return
-                end
-            end
-        end
-    })
-
-    map("n", "<cr>", function()
-        local line = api.nvim_win_get_cursor(State.win)[1]
-        local action = State.actions[line]
-        if action then
-            action()
-        end
-
-        local file = State.files[line]
-        if file then
-            vim.cmd.edit(file)
-        end
-    end)
-
-    for _, action in ipairs(Actions) do
-        map("n", action.key, action.on_click)
-    end
-
-    map("n", "r", function()
-        Recents_show_all = not Recents_show_all
-        do_redraw()
-    end)
-    map("n", "S", function()
-        Git_expanded = not Git_expanded
-        do_redraw()
-    end)
-
-    for i = 0, 9 do
-        map("n", tostring(i), function()
-            local file = Oldfiles[i + 1].path
-            if file then
-                vim.cmd.edit(file)
-            end
-        end)
-    end
-
-    -- }}}
+    set_autocommands(buf)
+    set_mappings()
 end
 
 return M
