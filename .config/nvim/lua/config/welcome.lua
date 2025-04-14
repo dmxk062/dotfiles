@@ -490,12 +490,12 @@ local Git_section = function()
         },
     }
 
-    set_virt_lines(State.draw_row - 1, { { { "" } } })
 
     if not Git_expanded then
         return
     end
 
+    set_virt_lines(State.draw_row - 1, { { { "" } } })
     git_insert_entries(Git_staged_lines)
     if #Git_staged_lines > 0 then
         set_virt_lines(State.draw_row - 1, { { { "" } } })
