@@ -438,6 +438,11 @@ local Git_unstaged_lines
 local Git_ignored_lines
 local update_git = function(cb)
     utils.git_get_status({ cwd = vim.fn.getcwd() }, function(res)
+        if not res then
+            Git_info = nil
+            return
+        end
+
         Git_staged_lines = {}
         Git_unstaged_lines = {}
         for _, e in pairs(res.modified) do
@@ -465,7 +470,7 @@ end
 
 Git_expanded = false
 local Git_section = function()
-    if not Git_info then
+    if not Git_info or not Git_info.head then
         return
     end
     insert_heading("[S] Git Status", "WelcomeGit", Git_expanded)
