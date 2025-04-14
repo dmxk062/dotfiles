@@ -401,6 +401,7 @@ map("n", termleader .. "v", function() terminal.open_term { position = "vertical
 map("n", termleader .. "x", function() terminal.open_term { position = "replace" } end)
 map("n", termleader .. "f", function() terminal.open_term { position = "float" } end)
 map("n", termleader .. "a", function() terminal.open_term { position = "autosplit" } end)
+map("n", termleader .. "t", function() terminal.open_term { position = "autosplit" } end)
 
 -- lf integrates nicely by calling nvr when it needs to open stuff
 map("n", termleader .. "l", function()
