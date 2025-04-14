@@ -475,7 +475,7 @@ local Git_section = function()
     end
     insert_heading("[S] Git Status", "WelcomeGit", Git_expanded)
 
-    local how_many = (Git_expanded and #Git_unstaged_lines or 0) + #Git_staged_lines + 4
+    local how_many = (Git_expanded and #Git_unstaged_lines or 0) + #Git_staged_lines + 2
     table.insert(State.constrain, {
         start = State.draw_row,
         stop = State.draw_row + how_many,
@@ -520,7 +520,7 @@ local save_cursor = function()
     Cursor = api.nvim_win_get_cursor(State.win)
 end
 local restore_cursor = function()
-    api.nvim_win_set_cursor(State.win, Cursor)
+    pcall(api.nvim_win_set_cursor, State.win, Cursor)
 end
 
 local do_redraw = function()
