@@ -528,9 +528,9 @@ map("n", "<space>i", function()
     ui.form {
         title = "Template Insert",
         entries = {
-            { name = "Start Value", key = "start", type = "int",    initial = "1" },
-            { name = "Value Step",  key = "step",  type = "int",    initial = "1" },
-            { name = "End Value",   key = "stop",  type = "int",    initial = "9" },
+            { name = "Start Value", key = "start", type = "float",  initial = "1" },
+            { name = "Value Step",  key = "step",  type = "float",  initial = "1" },
+            { name = "End Value",   key = "stop",  type = "float",  initial = "9" },
             { name = "Separator",   key = "sep",   type = "string", initial = "\\n" },
             { name = "Format",      key = "fmt",   type = "string", initial = "%d." }
         },
