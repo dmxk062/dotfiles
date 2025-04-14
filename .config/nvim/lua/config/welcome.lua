@@ -468,7 +468,7 @@ local git_insert_entries = function(entries)
     insert_text(lines)
 end
 
-Git_expanded = false
+Git_expanded = true
 local Git_section = function()
     if not Git_info or not Git_info.head then
         return
