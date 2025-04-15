@@ -240,7 +240,7 @@ end
 local Actions = {
     {
         "Find Files",
-        desc = "Search by Filename",
+        desc = "Search by Filename (Telescope)",
         key = "F",
         on_click = function()
             require("telescope.builtin").find_files()
@@ -249,7 +249,7 @@ local Actions = {
     },
     {
         "List Files",
-        desc = "Edit Filesystem as Buffer",
+        desc = "Edit Filesystem as Buffer (Oil)",
         key = "f",
         on_click = function()
             require("oil").open()
@@ -258,7 +258,7 @@ local Actions = {
     },
     {
         "Live Grep",
-        desc = "Search by Content",
+        desc = "Search by Content (Telescope)",
         key = "*",
         on_click = function()
             require("telescope.builtin").live_grep()
@@ -267,7 +267,7 @@ local Actions = {
     },
     {
         "Git Files",
-        desc = "List Tracked Files",
+        desc = "List Tracked Files (Telescope)",
         key = "G",
         on_click = function()
             require("telescope.builtin").git_files()
@@ -276,48 +276,53 @@ local Actions = {
     },
     {
         "Plugins",
-        desc = "Lazy",
+        desc = "List and Update (Lazy.nvim)",
         key = "L",
         on_click = vim.cmd.Lazy,
         hl = "WelcomeLazy"
     },
     {
         "Packages",
-        desc = "Mason",
+        desc = "Update and Install (Mason.nvim)",
         key = "M",
         on_click = vim.cmd.Mason,
         hl = "WelcomeMason"
     },
     {
         "Quit NeoVIM",
-        desc = "Goodbye :3",
+        desc = "Goodbye :3 (Yes, it is possible)",
         key = "q",
         on_click = vim.cmd.quit,
         hl = "WelcomeQuit"
     }
 }
-local BUTTON_WIDTH = 60
+local BUTTON_WIDTH = 50
 local Action_lines = vim.tbl_map(function(action)
-    local textwidth = strwidth(action[1])
-    local descwidth = strwidth(action.desc)
-    local missing_pad = BUTTON_WIDTH - (textwidth + descwidth + 5)
-    local text = ("[%s] %s%s%s"):format(action.key, action[1], (" "):rep(missing_pad), action.desc)
+    local text = ("[%s] %s"):format(action.key, action[1])
 
-    return { nil, { text, action.hl } }
+    return {
+        width = strwidth(text),
+        text = { nil, { text, action.hl }, nil, { action.desc, "Comment" } }
+    }
 end, Actions)
 
 local Buttons = function()
+    local lines = {}
     for i, act in ipairs(Action_lines) do
-        act[1] = { State.start_spaces }
+        local padding = (" "):rep(BUTTON_WIDTH - (act.width))
+        act.text[1] = { State.start_spaces }
+        act.text[3] = { padding }
         State.actions[State.draw_row + i] = Actions[i].on_click
+
+        table.insert(lines, act.text)
     end
-    insert_text(Action_lines)
+    insert_text(lines)
 end
 -- }}}
 
 -- Oldfiles List {{{
 local Oldfiles = {}
-local MAX_FILE_NAME = BUTTON_WIDTH - 20
+local MAX_FILE_NAME = BUTTON_WIDTH
 for _, file in ipairs(vim.v.oldfiles) do
     local is_oil = vim.startswith(file, "oil://")
     local highlight
@@ -336,18 +341,31 @@ for _, file in ipairs(vim.v.oldfiles) do
         local timehl = utils.highlight_time(mtime)
 
         local tail = fn.fnamemodify(file, ":t")
-        local head = utils.expand_home(fn.fnamemodify(file, ":h"), 6)
-        local text = { nil, { tail, highlight }, nil, { timestring, timehl }, { head, "NonText" } }
+        local tailwidth = strwidth(tail)
+        local head = utils.expand_home(fn.fnamemodify(file, ":h"), 2)
+        if head ~= "/" then
+            head = head .. "/"
+        end
+        local headwith = strwidth(head)
 
-        local namewidth = strwidth(tail)
-        if namewidth + 5 > MAX_FILE_NAME then
-            MAX_FILE_NAME = namewidth + 5
+        local width = headwith + tailwidth
+
+        if width > BUTTON_WIDTH then
+            head = "..." .. fn.fnamemodify(file, ":h:t") .. "/"
+            headwith = strwidth(head)
+            width = headwith + tailwidth
+        end
+        local text = { nil, { head, "NonText" }, { tail, highlight }, nil, { timestring, timehl } }
+
+
+        if width > MAX_FILE_NAME then
+            MAX_FILE_NAME = width
         end
 
         table.insert(Oldfiles, {
             path = file,
             text = text,
-            namewidth = namewidth
+            width = width
         })
     end
 end
@@ -368,17 +386,16 @@ local Recents = function()
         if i <= 10 then
             prefix = { State.start_spaces .. ("[%d] "):format(i - 1), "Label" }
         end
-        local center_pad = (" "):rep(MAX_FILE_NAME - file.namewidth - (i <= 10 and 4 or 0))
+        local center_pad = (" "):rep(MAX_FILE_NAME - file.width - (i <= 10 and 4 or 0))
 
         file.text[1] = prefix
-        file.text[3] = { center_pad }
+        file.text[4] = { center_pad }
         State.files[State.draw_row + i] = file.path
         table.insert(lines, file.text)
     end
 
     insert_text(lines)
 end
-
 -- }}}
 
 -- Git Section {{{
@@ -389,7 +406,8 @@ local git_highlights = {
     ["."] = "NonText",
     R = "Label"
 }
-local MAX_GIT_NAME = BUTTON_WIDTH - 20
+
+local MAX_GIT_NAME = BUTTON_WIDTH
 ---@param entry config.git.item
 local git_format_line = function(entry)
     local file = entry.path
@@ -500,7 +518,7 @@ local switcher = require("projections.switcher")
 local sessions = require("projections.session")
 local Projects
 
-local MAX_PROJECT_NAME = BUTTON_WIDTH - 20
+local MAX_PROJECT_NAME = BUTTON_WIDTH
 local update_projects = function()
     Projects = {}
     for _, ws in ipairs(workspaces.get_workspaces()) do
@@ -508,11 +526,11 @@ local update_projects = function()
         for _, proj in pairs(projects) do
             local name = proj.name
             local path = ws.path.path .. "/" .. proj.name
-            local nicepath = utils.expand_home(path, 8)
+            local head = utils.expand_home(fn.fnamemodify(path, ":h"), 8) .. "/"
 
-            local width = strwidth(name)
-            if width + 6 > MAX_PROJECT_NAME then
-                MAX_PROJECT_NAME = width + 6
+            local width = strwidth(name) + strwidth(head) + 6
+            if width > MAX_PROJECT_NAME then
+                MAX_PROJECT_NAME = width
             end
 
             local last_access
@@ -533,12 +551,12 @@ local update_projects = function()
                 last_access = { "(Not yet opened)  ", "Comment" }
             end
 
-            local line = { nil, { name, "Identifier" }, nil, last_access, { nicepath, "NonText" } }
+            local line = { nil, { head, "NonText" }, { name, "Identifier" }, nil, last_access }
             table.insert(Projects, {
                 name = name,
                 mtime = mtime or 0,
                 text = line,
-                width = strwidth(name),
+                width = width,
                 activate = function()
                     switcher.switch(path)
                 end
@@ -570,7 +588,7 @@ local Project_section = function()
         if i <= 10 then
             local shortcut = "<M-" .. i - 1 .. ">"
             prefix = { State.start_spaces .. ("%s "):format(shortcut), "Constant" }
-            infix = { (" "):rep(MAX_PROJECT_NAME - project.width - 6) }
+            infix = { (" "):rep(MAX_PROJECT_NAME - project.width) }
             unmap("n", shortcut)
             map("n", shortcut, project.activate)
         else
@@ -579,7 +597,7 @@ local Project_section = function()
         end
 
         project.text[1] = prefix
-        project.text[3] = infix
+        project.text[4] = infix
         State.actions[State.draw_row + i] = project.activate
 
         table.insert(lines, project.text)
