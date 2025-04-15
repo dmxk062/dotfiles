@@ -53,7 +53,7 @@ end
 
 -- Bottom Pane, Similar to Ivy {{{1
 M.bottom_pane_layout = function(picker)
-    local layout = t_layout {
+    return t_layout {
         picker = picker,
         mount = function(self)
             local width = vim.o.columns
@@ -98,8 +98,6 @@ M.bottom_pane_layout = function(picker)
         update = function(self)
         end
     }
-
-    return layout
 end
 -- }}}
 
