@@ -15,8 +15,9 @@ but fugitive's commands and history capabilities are better
 TODO: give other git plugins (i.e. lazygit) a serious try
 }}} ]] --
 
-
+-- last buffer for :G, to be relative to the current file with <space>gg
 local git_relative_buf
+
 local function map_on_git_buffer(buf)
     local gitsigns = require("gitsigns")
     local utils = require("config.utils")
@@ -122,7 +123,6 @@ M[2].config = function()
             -- otherwise it'll be unstaged
             vim.cmd.normal("Gzo[z")
 
-
             -- try to jump to the relevant file, if that file is not in the listing,
             -- try the cwd
             local ok
@@ -143,7 +143,7 @@ M[2].config = function()
                 ok = vim.fn.search(cwd) ~= 0
             end
             git_relative_buf = nil
-            vim.cmd.normal("zz")
+            vim.cmd.normal("0zz")
         end,
 
         -- make G blame etc appear in the buffer list
