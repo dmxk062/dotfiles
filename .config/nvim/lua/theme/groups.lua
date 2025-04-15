@@ -514,7 +514,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     MenuSelection       = { bg = pal.bg1 },
     Label               = { link = "Normal" },
     DocBorder           = { link = "*MenuBorder" },
-    LabelMatch          = { sp = col.bright_gray, underline = true },
+    LabelMatch          = { sp = col.bright_gray, underline = true, fg = col.pink },
 
     SignatureHelpBorder = { link = "*MenuBorder" },
 
@@ -532,6 +532,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     KindInterface       = { fg = col.magenta },
     KindKeyword         = { fg = pal.fg0 },
     KindLatex           = { fg = col.green },
+    KindProperty        = { fg = pal.fg0 },
     KindMethod          = { fg = col.magenta },
     KindModule          = { fg = col.green },
     KindNeorg           = { fg = col.light_blue },
@@ -676,7 +677,7 @@ add_with_prefix(colorscheme, "Telescope", {
     Selection             = { bg = pal.bg1 },
     PromptPrefix          = { fg = col.teal },
     SelectionCaret        = {},
-    Matching              = { sp = col.yellow, fg = col.yellow, underline = true },
+    Matching              = { link = "BlinkCmpLabelMatch" },
 
     PreviewExecute        = { link = "OilExec" },
     PreviewRead           = { link = "OilRead" },
