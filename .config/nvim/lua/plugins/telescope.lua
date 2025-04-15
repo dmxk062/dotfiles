@@ -62,24 +62,25 @@ local lsp_config = default_config {
     layout_config = {
         preview_width = 0.6,
     },
-    entry_maker = custom("quickfix_entries")
+    entry_maker = custom "quickfix_entries"
 }
 local qfconfig = default_config {
-    entry_maker = custom("quickfix_entries")
+    entry_maker = custom "quickfix_entries"
 }
 
 -- Configuration {{{
 local opts = {}
 opts.defaults = {
-    create_layout = custom("bottom_pane_layout"),
-    path_display = custom("path_display"),
+    create_layout = custom "bottom_pane_layout",
+    path_display = custom "path_display",
     default_mappings = {
         n = {
-            ["<cr>"]  = "select_default",
+            ["<cr>"]  = custom "select_all_or_one",
             ["t"]     = "select_tab",
             ["e"]     = "file_edit",
             ["s"]     = "select_horizontal",
             ["v"]     = "select_vertical",
+            ["<tab>"] = "toggle_selection",
 
             ["j"]     = "move_selection_next",
             ["k"]     = "move_selection_previous",
@@ -98,6 +99,8 @@ opts.defaults = {
             ["q"]     = "close",
         },
         i = {
+            ["<tab>"]  = "toggle_selection",
+
             ["<cr>"]   = "select_default",
             ["<C-cr>"] = "select_vertical",
             ["<S-cr>"] = "select_horizontal",
@@ -113,9 +116,9 @@ opts.defaults = {
     },
     dynamic_preview_title = true,
     results_title = false,
-    selection_caret = "",
-    entry_prefix = "",
-    multi_icon = "",
+    selection_caret = " ",
+    entry_prefix = " ",
+    multi_icon = "+",
     prompt_prefix = ":e ",
 }
 
@@ -125,27 +128,27 @@ opts.pickers = {
     loclist = qfconfig,
     quickfix = qfconfig,
     lsp_workspace_symbols = default_config {
-        entry_maker = custom("lsp_symbol_entries"),
+        entry_maker = custom "lsp_symbol_entries",
     },
     lsp_document_symbols = default_config {
-        entry_maker = custom("lsp_symbol_entries"),
+        entry_maker = custom "lsp_symbol_entries",
     },
     diagnostics = default_config {
-        entry_maker = custom("diagnostics_entries"),
+        entry_maker = custom "diagnostics_entries",
     },
     live_grep = default_config {
-        entry_maker = custom("line_and_column_entries"),
+        entry_maker = custom "line_and_column_entries",
     },
     grep_string = default_config {
         word_match = "-w",
-        entry_maker = custom("line_and_column_entries"),
+        entry_maker = custom "line_and_column_entries",
     },
     oldfiles = default_config {
-        entry_maker = custom("file_entries"),
+        entry_maker = custom "file_entries",
     },
     buffers = default_config {
-        entry_maker = custom("buffer_entries"),
-        create_layout = custom("bottom_pane_layout"),
+        entry_maker = custom "buffer_entries",
+        create_layout = custom "bottom_pane_layout",
         sort_lastused = true, -- so i can just <space><space><cr> to cycle
         mappings = {
             n = {
@@ -164,8 +167,8 @@ opts.pickers = {
         }
     },
     registers = default_config {
-        entry_maker = custom("register_entries"),
-        create_layout = custom("short_layout"),
+        entry_maker = custom "register_entries",
+        create_layout = custom "short_layout",
         prompt_prefix = "\" ",
         layout_config = {
             height = function()
@@ -174,28 +177,28 @@ opts.pickers = {
         },
         mappings = {
             n = {
-                ["<C-e>"] = custom("edit_register"),
+                ["<C-e>"] = custom "edit_register",
                 ["<S-cr>"] = "select_default",
-                ["<cr>"] = custom("select_register"),
-                ["\""] = custom("select_register"),
+                ["<cr>"] = custom "select_register",
+                ["\""] = custom "select_register",
                 ["p"] = "select_default",
             },
             i = {
-                ["<C-e>"] = custom("edit_register"),
-                ["<S-cr>"] = custom("select_register"),
-                ["<cr>"] = custom("select_register"),
+                ["<C-e>"] = custom "edit_register",
+                ["<S-cr>"] = custom "select_register",
+                ["<cr>"] = custom "select_register",
             },
         }
     },
     find_files = default_config {
-        entry_maker = custom("file_entries"),
+        entry_maker = custom "file_entries",
     },
     git_files = default_config {
-        entry_maker = custom("file_entries"),
+        entry_maker = custom "file_entries",
     },
     help_tags = default_config {
         prompt_prefix = ":h ",
-        create_layout = custom("short_layout"),
+        create_layout = custom "short_layout",
         previewer = false,
     },
     man_pages = default_config {
@@ -203,7 +206,7 @@ opts.pickers = {
         sections = { "ALL" },
     },
     search_history = default_config {
-        create_layout = custom("short_layout"),
+        create_layout = custom "short_layout",
         prompt_prefix = "/ ",
     },
 }
@@ -211,12 +214,12 @@ opts.pickers = {
 opts.extensions = {
     ["zf-native"] = {},
     ["ui-select"] = {
-        create_layout = custom("short_layout"),
+        create_layout = custom "short_layout",
         prompt_prefix = ":",
         layout_config = {
             height = 4,
         }
-    }
+    },
 }
 -- }}}
 

@@ -679,7 +679,9 @@ add_with_prefix(colorscheme, "Telescope", {
     ResultsSpecialComment = { fg = col.pink },
     Selection             = { bg = pal.bg1 },
     PromptPrefix          = { fg = col.teal },
-    SelectionCaret        = {},
+    SelectionCaret        = { bg = pal.bg1 },
+    MultiSelection        = { bg = col.darkest_gray },
+    MultiIcon             = { bg = col.yellow, fg = col.yellow },
     Matching              = { link = "BlinkCmpLabelMatch" },
 
     PreviewExecute        = { link = "OilExec" },
