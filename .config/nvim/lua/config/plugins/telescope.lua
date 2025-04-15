@@ -374,17 +374,16 @@ M.buffer_entries = function(entry)
 
     local tail, parent, hl = name, "", ""
 
-    if vim.bo[buf].buftype == "" and name then
-        tail, parent, hl = get_names_and_hl(name)
-    elseif not name then
-        tail = "[-]"
-        hl = "NonText"
-    end
     if kind == "oil" then
         local bname = api.nvim_buf_get_name(buf):gsub("^oil://", "")
         tail = utils.expand_home(bname, 8)
         parent = bname
         hl = "Directory"
+    elseif vim.bo[buf].buftype == "" and name then
+        tail, parent, hl = get_names_and_hl(name)
+    elseif not name then
+        tail = "[-]"
+        hl = "NonText"
     end
 
     local filename = entry.info.name ~= "" and entry.info.name or nil
