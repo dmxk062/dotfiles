@@ -166,7 +166,7 @@ opts.pickers = {
     registers = default_config {
         entry_maker = custom("register_entries"),
         create_layout = custom("short_layout"),
-        prompt_prefix = ":p ",
+        prompt_prefix = "\" ",
         layout_config = {
             height = function()
                 return math.min(vim.o.lines - 4, 32)
@@ -174,13 +174,16 @@ opts.pickers = {
         },
         mappings = {
             n = {
-                ["e"] = custom("edit_register"),
+                ["<C-e>"] = custom("edit_register"),
+                ["<S-cr>"] = "select_default",
+                ["<cr>"] = custom("select_register"),
                 ["\""] = custom("select_register"),
-                ["<S-cr>"] = custom("select_register")
+                ["p"] = "select_default",
             },
             i = {
                 ["<C-e>"] = custom("edit_register"),
-                ["<S-cr>"] = custom("select_register")
+                ["<S-cr>"] = custom("select_register"),
+                ["<cr>"] = custom("select_register"),
             },
         }
     },
