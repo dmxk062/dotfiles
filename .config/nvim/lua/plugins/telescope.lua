@@ -33,6 +33,8 @@ local M = {
 
 -- HACK: lazy load the ui select provider
 M.init = function()
+    --- vim.ui.select is meant to be overridden
+    ---@diagnostic disable-next-line: duplicate-set-field
     vim.ui.select = function(...)
         require("telescope")
         return vim.ui.select(...)
