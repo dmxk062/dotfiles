@@ -143,9 +143,8 @@ opts.pickers = {
     },
     buffers = default_config {
         entry_maker = custom("buffer_entries"),
-        create_layout = custom("short_layout"),
+        create_layout = custom("bottom_pane_layout"),
         sort_lastused = true, -- so i can just <space><space><cr> to cycle
-        previewer = false,
         mappings = {
             n = {
                 ["dd"] = "delete_buffer",

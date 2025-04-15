@@ -355,14 +355,15 @@ end
 local buffer_entry_display = t_entry_display.create {
     separator = " ",
     items = {
-        { width = 2 },        -- shorthand number
-        { width = 3 },        -- "real" number
-        { width = 1 },        -- status.hidden
-        { width = 4 },        -- status.readonly
-        { width = 1 },        -- status.modified
-        { width = 1 },        -- buffer kind
-        { width = 4 },        -- line
-        { remaining = true }, -- buffer name
+        { width = 2 },                  -- shorthand number
+        { width = 3 },                  -- "real" number
+        { width = 1 },                  -- status.hidden
+        { width = 4 },                  -- status.readonly
+        { width = 1 },                  -- status.modified
+        { width = 1 },                  -- buffer kind
+        { width = 4 },                  -- line
+        { width = MAX_FILENAME_WIDTH }, -- buffer name
+        { remaining = true },           -- directory
     }
 }
 M.buffer_entries = function(entry)
@@ -371,8 +372,28 @@ M.buffer_entries = function(entry)
     local name, kind, show_modified = utils.format_buf_name(buf)
     local kindicon = utils.btypesymbols[kind]
 
+    local tail, parent, hl = name, "", ""
+
+    if vim.bo[buf].buftype == "" and name then
+        tail, parent, hl = get_names_and_hl(name)
+    elseif not name then
+        tail = "[-]"
+        hl = "NonText"
+    end
+    if kind == "oil" then
+        local bname = api.nvim_buf_get_name(buf):gsub("^oil://", "")
+        tail = utils.expand_home(bname, 8)
+        parent = bname
+        hl = "Directory"
+    end
+
+    local filename = entry.info.name ~= "" and entry.info.name or nil
+    local lnum = entry.info.lnum ~= 0 and entry.info.lnum or 1
+
     return {
         value = name,
+        path = filename,
+        lnum = lnum,
         bufnr = buf,
         ordinal = string.format("%s:%s:%d:%d", kindicon, name, shortbuf or 0, buf),
         display = function()
@@ -385,8 +406,9 @@ M.buffer_entries = function(entry)
                     or { "[rw]", "String" }),
                 { entry.info.changed == 1 and show_modified and "~" or "", "Constant" },
                 { kindicon,                                                "SlI" .. utils.btypehighlights[kind] },
-                { ":" .. entry.info.lnum ~= 0 and entry.info.lnum or 1,    "Number" },
-                { name }
+                { ":" .. lnum,                                             "Number" },
+                { tail,                                                    hl },
+                { parent,                                                  "NonText" }
             }
         end
     }
