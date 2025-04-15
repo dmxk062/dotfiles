@@ -2,6 +2,7 @@
 local M = {
     "cbochs/grapple.nvim"
 }
+
 --[[ Rationale {{{
 Builtin neovim marks just don't cut it anymore
 Grapple makes everything a *lot* nicer
@@ -44,45 +45,68 @@ local on_window_open = function(window)
     end
 end
 
+local colorized_display = function(entry, content)
+    local path = require("grapple.path")
+
+    local name = entry.tag.path
+    local is_dir = vim.startswith(name, "oil://")
+    if is_dir then
+        name = name:gsub("^oil://", "")
+    end
+
+    local relative = path.relative(content.scope.path, name)
+    if not relative then
+        return
+    end
+
+    local tail, full, hl
+    if is_dir then
+        tail = vim.fn.fnamemodify(relative, ":t") .. "/"
+        full = relative
+        hl = "Directory"
+    else
+        tail = vim.fn.fnamemodify(relative, ":t")
+        full = vim.fn.fnamemodify(relative, ":h") .. "/"
+        hl = require("config.utils").highlight_fname(name)
+    end
+
+    local marks = {}
+    table.insert(marks, {
+        hl_group = hl,
+        end_col = vim.fn.strdisplaywidth(tail) + 5,
+        virt_text = { { full, "NonText" } },
+        virt_text_pos = "eol_right_align",
+    })
+
+    return {
+        display = tail,
+        marks = marks
+    }
+end
+
+local opts = {
+    scope = "lsp",
+    icons = false,
+    win_opts = {
+        width = 48,
+        height = 0.3,
+        row = 0.5,
+        col = 0.5,
+
+        border = "rounded",
+        footer = "",
+    },
+    tag_hook = on_window_open,
+    style = "colorized",
+    styles = {
+        colorized = colorized_display,
+    }
+}
+
 M.config = function()
     local grapple = require("grapple")
 
-    grapple.setup {
-        scope = "lsp",
-        icons = false,
-        win_opts = {
-            width = 48,
-            height = 0.3,
-            row = 0.5,
-            col = 0.5,
-
-            border = "rounded",
-            footer = "",
-        },
-        tag_hook = on_window_open,
-        style = "colorized",
-        styles = {
-            colorized = function(entry, content)
-                local path = require("grapple.path")
-
-                local name = path.fs_relative(content.scope.path, entry.tag.path:gsub("^oil://", ""))
-                local highlight = require("config.utils").highlight_fname(entry.tag.path)
-
-                local marks = {}
-                local end_col = vim.fn.strdisplaywidth(name) + 5 -- compensate for the ID grapple places there
-                table.insert(marks, {
-                    hl_mode = "combine",
-                    end_col = end_col,
-                    hl_group = highlight,
-                })
-
-                return {
-                    display = name,
-                    marks = marks
-                }
-            end
-        }
-    }
+    grapple.setup(opts)
 
     local utils = require("config.utils")
     local map = utils.map
@@ -114,7 +138,7 @@ M.config = function()
     -- the file position is obvious anyways
     map("n", '<C-g>', function()
         if vim.v.count == 0 then
-            grapple.cycle_tags("next")
+            grapple.open_tags()
         else
             grapple.select { index = vim.v.count }
         end
