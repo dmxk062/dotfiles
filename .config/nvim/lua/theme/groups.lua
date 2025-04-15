@@ -411,8 +411,9 @@ add_with_prefix(colorscheme, "Welcome", {
     Mason      = { fg = col.orange },
     Quit       = { fg = col.red },
 
+    Grapple    = { fg = col.light_blue, bg = col.darkest_gray, italic = true },
     Git        = { fg = col.green, bg = col.darkest_gray, italic = true },
-    Recents    = { fg = col.pink, bg = col.darkest_gray, italic = true },
+    Recents    = { fg = col.yellow, bg = col.darkest_gray, italic = true },
     File       = { fg = col.light_blue },
 })
 -- }}}
@@ -533,7 +534,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     KindKeyword         = { fg = pal.fg0 },
     KindLatex           = { fg = col.green },
     KindProperty        = { fg = pal.fg0 },
-    KindMethod          = { fg = col.magenta },
+    KindMethod          = { fg = col.teal },
     KindModule          = { fg = col.green },
     KindNeorg           = { fg = col.light_blue },
     KindNumber          = { link = "@number" },

@@ -37,6 +37,13 @@ local map = function(mode, lhs, rhs, opts)
 
     vim.keymap.set(mode, lhs, rhs, opts)
 end
+local unmap = function(mode, lhs, opts)
+    opts = opts or {}
+    opts.buffer = State.buf
+
+    pcall(vim.keymap.del, mode, lhs, opts)
+end
+
 local strwidth = require("plenary.strings").strdisplaywidth
 local linewidth = function(line)
     local width = 0
@@ -350,8 +357,8 @@ for _, file in ipairs(vim.v.oldfiles) do
         local text = { nil, { tail, highlight }, nil, { timestring, timehl }, { head, "NonText" } }
 
         local namewidth = strwidth(tail)
-        if namewidth > MAX_FILE_NAME then
-            MAX_FILE_NAME = namewidth
+        if namewidth + 5 > MAX_FILE_NAME then
+            MAX_FILE_NAME = namewidth + 5
         end
 
         table.insert(Oldfiles, {
@@ -376,7 +383,7 @@ local Recents = function()
 
         local prefix = { State.start_spaces }
         if i <= 10 then
-            prefix = { State.start_spaces .. ("[%d] "):format(i - 1), "Number" }
+            prefix = { State.start_spaces .. ("[%d] "):format(i - 1), "Label" }
         end
         local center_pad = (" "):rep(MAX_FILE_NAME - file.namewidth - (i <= 10 and 4 or 0))
 
@@ -504,6 +511,81 @@ local Git_section = function()
 end
 -- }}}
 
+-- Grapple Projects {{{
+local Grapple_scopes
+
+local MAX_GRAPPLE_NAME = BUTTON_WIDTH - 20
+local update_grapple = function()
+    Grapple_scopes = {}
+    local cwd = vim.fn.getcwd()
+    for _, scope in ipairs(require("grapple").app():list_containers()) do
+        local path = scope.id
+        local dir = utils.expand_home(path, 8)
+        local tail = fn.fnamemodify(path, ":t")
+
+        local width = strwidth(tail) + 5
+        if width > MAX_GRAPPLE_NAME then
+            MAX_GRAPPLE_NAME = width
+        end
+
+        if vim.uv.fs_stat(path) and path ~= cwd then
+            table.insert(Grapple_scopes, {
+                text = { nil, { tail, "Identifier" }, nil, { dir, "Directory" } },
+                width = width,
+                path = path,
+            })
+        end
+    end
+end
+update_grapple()
+
+local Grapple_expanded = true
+local Grapple = function()
+    if #Grapple_scopes < 1 then
+        return
+    end
+
+    insert_heading("[P] Scopes & Projects", "WelcomeGrapple", Grapple_expanded)
+    if not Grapple_expanded then
+        insert_text { { { "" } } }
+        return
+    end
+
+    local lines = {}
+    local scope_chars = {
+        "a", "b", "c", "d", "e",
+        "v", "w", "x", "y", "z",
+    }
+    for i, scope in ipairs(Grapple_scopes) do
+        local action = function()
+            vim.cmd.edit(scope.path)
+            vim.schedule(function()
+                require("grapple").open_tags { id = scope.path }
+            end)
+        end
+
+        local prefix
+        if i <= #scope_chars then
+            local shortcut = scope_chars[i]
+            prefix = { State.start_spaces .. ("[%s] "):format(shortcut), "Label" }
+            unmap("n", shortcut)
+            map("n", shortcut, action)
+        else
+            prefix = { State.start_spaces }
+        end
+
+        local center_pad = (" "):rep(MAX_GRAPPLE_NAME - scope.width)
+        scope.text[1] = prefix
+        scope.text[3] = { center_pad }
+        table.insert(lines, scope.text)
+        State.actions[State.draw_row + i] = action
+    end
+
+    insert_text(lines)
+end
+
+-- }}}
+
 local update_size = function()
     State.width = api.nvim_win_get_width(State.win)
     State.height = api.nvim_win_get_height(State.win)
@@ -539,6 +621,7 @@ local do_redraw = function()
     State.first_row = State.draw_row + 1
     State.set_col = State.left_pad + 1
     Buttons()
+    Grapple()
     Git_section()
     Recents()
 
@@ -559,6 +642,14 @@ local set_autocommands = function(buf)
         pattern = "LazyLoad",
         callback = function()
             update_lazy()
+            do_redraw()
+        end
+    })
+
+    autocmd("User", {
+        pattern = "GrappleUpdate",
+        callback = function()
+            update_grapple()
             do_redraw()
         end
     })
@@ -616,6 +707,10 @@ local set_mappings = function()
         map("n", action.key, action.on_click)
     end
 
+    map("n", "P", function()
+        Grapple_expanded = not Grapple_expanded
+        do_redraw()
+    end)
     map("n", "R", function()
         Recents_show_all = not Recents_show_all
         do_redraw()
@@ -662,6 +757,7 @@ M.show = function()
     wo.wrap = false
 
     update_size()
+    update_grapple()
     update_git(do_redraw)
     do_redraw()
     set_autocommands(buf)
