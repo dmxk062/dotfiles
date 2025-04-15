@@ -401,7 +401,7 @@ M.buffer_entries = function(entry)
         ordinal = string.format("%s:%s:%d:%d", kindicon, name, shortbuf or 0, buf),
         display = function()
             return buffer_entry_display {
-                { shortbuf or "nil",                    shortbuf and "Number" or "NonText" },
+                { shortbuf or "nil",                    shortbuf and "Identifier" or "NonText" },
                 { buf,                                  "Number" },
                 { entry.info.hidden == 1 and "." or "", entry.info.hidden == 1 and "NonText" },
                 (vim.bo[buf].readonly
