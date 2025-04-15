@@ -170,21 +170,19 @@ local cur_filter_pattern
 
 local function filter_items()
     local function set_filter(filter)
-        require("oil").set_is_hidden_file(function(fname)
+        require("oil").set_is_hidden_file(function(fname, buf)
             -- HACK: prevent dir from being empty
             if fname == ".." then
                 return false
             end
-            local ok, res = pcall(string.match, fname, filter)
-            if not ok then
-                return default_is_hidden()
-            end
-            return not res or default_is_hidden(fname)
+
+            return vim.regex(filter):match_str(fname) == nil
         end)
     end
     vim.ui.input({
         default = cur_filter_pattern,
-        prompt = "Enter filter pattern (lua)",
+        prompt = "Filter Regex",
+        _ts_lang = "regex",
         -- abuse it to update continuously
         highlight = function(pattern)
             set_filter(pattern)

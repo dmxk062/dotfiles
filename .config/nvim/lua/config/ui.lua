@@ -247,7 +247,12 @@ end
 
 local last_was_insert
 
----@param opts {prompt: string?, default: string?, completion: string?, highlight: function}
+--[[ vim.ui.input implementation
+WARNING: This is *not* 100% what neovim says it should be, instead I add my own private features,
+starting with an underscore:
+  _ts_lang: highlight the buffer using that treesitter language
+]]--
+---@param opts {prompt: string?, default: string?, completion: string?, highlight: function, _ts_lang: string?}
 ---@param callback fun(string?)
 M.nvim_input = function(opts, callback)
     last_was_insert = api.nvim_get_mode().mode:find("[it]") and true or false
@@ -279,6 +284,11 @@ M.nvim_input = function(opts, callback)
         width = math.max(40, math.min(16, math.floor(columns * 0.3))),
         height = 1,
     })
+
+    -- HACK: add my own extension
+    if opts._ts_lang then
+        require("nvim-treesitter.highlight").attach(buf, opts._ts_lang)
+    end
 
     local augroup
     local clean = function()
