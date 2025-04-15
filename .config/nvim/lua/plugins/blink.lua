@@ -58,6 +58,7 @@ M.opts.completion = {
     },
     menu = {
         scrollbar = false,
+        max_height = 24,
         draw = {
             columns = {
                 { "label",    "label_description", gap = 1 },
