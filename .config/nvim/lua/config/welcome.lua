@@ -327,7 +327,7 @@ end
 
 -- Oldfiles List {{{
 local Oldfiles = {}
-local MAX_FILE_NAME = 0
+local MAX_FILE_NAME = BUTTON_WIDTH - 30
 for _, file in ipairs(vim.v.oldfiles) do
     local is_oil = vim.startswith(file, "oil://")
     local highlight
@@ -659,6 +659,7 @@ M.show = function()
     wo.relativenumber = false
     wo.foldenable = false
     wo.statuscolumn = ""
+    wo.wrap = false
 
     update_size()
     update_git(do_redraw)
