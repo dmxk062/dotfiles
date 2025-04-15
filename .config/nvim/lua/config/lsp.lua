@@ -9,10 +9,14 @@ local function lsp_map(buf)
     local map = utils.local_mapper(buf, { group = true })
     map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
 
-    -- rename using a vim operator in visual mode
+    -- renaming: three ways
+    -- the classic way that uses vim.ui.input, useful if more than one edit needs to be made
+    map("n", "<space>r", vim.lsp.buf.rename)
+
+    -- using a vim operator in visual mode
     -- this allows things the default rename behavior just makes harder
     -- e.g. you can just <space>rgU to capitalize a symbol
-    map("n", "<space>r", function()
+    map("n", "<space>gr", function()
         local old_name = vim.fn.expand("<cword>")
         vim.cmd("normal! viw")
         vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
@@ -20,7 +24,6 @@ local function lsp_map(buf)
             once = true,
             callback = function()
                 local new_name = vim.fn.expand("<cword>")
-
                 if new_name == old_name then
                     return
                 end
@@ -30,10 +33,10 @@ local function lsp_map(buf)
             end
         })
     end)
-    map("n", "<space>c", "<space>rc", { remap = true })
 
-    -- keep the classic rename around, useful for symbols that aren't exactly a <cword>
-    map("n", "<space>R", vim.lsp.buf.rename)
+    -- fully replace the symbol
+    map("n", "<space>C", "<space>rc", { remap = true })
+
 
     -- list lsp things and use telescope to disambiguate
     map("n", "gd", function() require("telescope.builtin").lsp_definitions() end)
@@ -115,7 +118,7 @@ capabilities.textDocument.foldingRange = {
 }
 
 ---@param client vim.lsp.Client
-local function add_setting(client, k, v)
+local add_setting = function(client, k, v)
     if not client.settings then
         client.settings = {}
     end
