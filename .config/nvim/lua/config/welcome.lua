@@ -533,7 +533,7 @@ local update_projects = function()
                 last_access = { "(Not yet opened)  ", "Comment" }
             end
 
-            local line = { nil, { name, "Identifier" }, nil, last_access, { nicepath, "Directory" } }
+            local line = { nil, { name, "Identifier" }, nil, last_access, { nicepath, "NonText" } }
             table.insert(Projects, {
                 name = name,
                 mtime = mtime or 0,
