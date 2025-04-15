@@ -562,7 +562,9 @@ M.highlight_time = function(secs)
     local cur_time = os.time()
     local diff = cur_time - secs
 
-    if diff < 3600 then
+    if diff < 60 then
+        return "FileTimeLastMinute"
+    elseif diff < 3600 then
         return "FileTimeLastHour"
     elseif diff < 86400 then
         return "FileTimeLastDay"
@@ -579,6 +581,10 @@ M.highlight_time = function(secs)
     else
         return "FileTimeSuperOld"
     end
+end
+
+M.format_date_default = function(secs)
+    return os.date("%b/%y %d, %H:%M", secs)
 end
 
 M.highlight_size = function(bytes)
@@ -736,7 +742,7 @@ end
 M.get_range = function()
     local mode = fn.mode(1)
     if mode == "v" or mode == "V" then
-        local vline   = fn.getpos("v")[2]
+        local vline = fn.getpos("v")[2]
         local cline = fn.getpos(".")[2]
 
         if vline > cline then
