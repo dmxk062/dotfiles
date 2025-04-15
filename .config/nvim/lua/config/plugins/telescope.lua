@@ -361,7 +361,7 @@ local buffer_entry_display = t_entry_display.create {
         { width = 4 },                  -- status.readonly
         { width = 1 },                  -- status.modified
         { width = 1 },                  -- buffer kind
-        { width = 4 },                  -- line
+        { width = 5 },                  -- line
         { width = MAX_FILENAME_WIDTH }, -- buffer name
         { remaining = true },           -- directory
     }
