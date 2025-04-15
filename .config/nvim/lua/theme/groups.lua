@@ -389,41 +389,44 @@ add_with_prefix(colorscheme, "Sl", {
 
 -- Startscreen {{{
 add_with_prefix(colorscheme, "Welcome", {
-    Title1     = { fg = col.red },
-    Title2     = { fg = col.orange },
-    Title3     = { fg = col.yellow },
-    Title4     = { fg = col.green },
-    Title5     = { fg = col.teal },
-    Title6     = { fg = col.light_blue },
+    Title1    = { fg = col.red },
+    Title2    = { fg = col.orange },
+    Title3    = { fg = col.yellow },
+    Title4    = { fg = col.green },
+    Title5    = { fg = col.teal },
+    Title6    = { fg = col.light_blue },
 
-    Category   = { fg = col.pink, italic = true },
-    Property   = { fg = col.blue, italic = true },
-    Time       = { fg = col.yellow },
-    Message    = { italic = true },
+    Category  = { fg = col.pink, italic = true },
+    Property  = { fg = col.blue, italic = true },
+    Time      = { fg = col.yellow },
+    Message   = { italic = true },
 
-    FindFiles  = { fg = col.blue },
-    EditFiles  = { fg = col.light_blue },
-    GrepFiles  = { fg = col.teal },
-    GitFiles   = { fg = col.green },
-    Lazy       = { fg = col.yellow },
-    Mason      = { fg = col.orange },
-    Quit       = { fg = col.red },
+    FindFiles = { fg = col.blue },
+    EditFiles = { fg = col.light_blue },
+    GrepFiles = { fg = col.teal },
+    GitFiles  = { fg = col.green },
+    Lazy      = { fg = col.yellow },
+    Mason     = { fg = col.orange },
+    Quit      = { fg = col.red },
 
-    Projects   = { fg = col.light_blue, bg = col.darkest_gray, italic = true },
-    Git        = { fg = col.green, bg = col.darkest_gray, italic = true },
-    Recents    = { fg = col.yellow, bg = col.darkest_gray, italic = true },
-    File       = { fg = col.light_blue },
+    Projects  = { fg = col.light_blue, bg = col.darkest_gray, italic = true },
+    Git       = { fg = col.green, bg = col.darkest_gray, italic = true },
+    Recents   = { fg = col.yellow, bg = col.darkest_gray, italic = true },
+    File      = { fg = col.light_blue },
 })
 -- }}}
 
 -- Files {{{
 add_with_prefix(colorscheme, "File", {
+
+    -- use brighter colors for newer files,
+    -- they're more relevant most of the time
     TimeLastMinute    = { fg = col.yellow },
     TimeLastHour      = { fg = col.green },
     TimeLastDay       = { fg = col.teal },
-    TimeLastFewDays   = { fg = col.light_cyan },
-    TimeLastWeek      = { fg = col.light_blue },
-    TimeLastFortnight = { fg = col.blue },
+    TimeLastFewDays   = { fg = col.light_blue },
+    TimeLastWeek      = { fg = col.blue },
+    TimeLastFortnight = { fg = blend(col.blue, col.purple, 0.5) },
     TimeLastMonth     = { fg = col.purple },
     TimeLastYear      = { fg = blend(col.purple, pal.bg3, 0.8) },
     TimeSuperOld      = { fg = col.bright_gray },
