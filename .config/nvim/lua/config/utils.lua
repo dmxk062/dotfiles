@@ -728,4 +728,27 @@ M.git_get_status = function(opts, on_done)
 end
 -- }}}
 
+-- Ranges {{{
+M.getmark = function(mark)
+    return api.nvim_buf_get_mark(0, mark)
+end
+
+M.get_range = function()
+    local mode = fn.mode(1)
+    if mode == "v" or mode == "V" then
+        local vline   = fn.getpos("v")[2]
+        local cline = fn.getpos(".")[2]
+
+        if vline > cline then
+            return cline, vline
+        else
+            return vline, cline
+        end
+    end
+
+    local lnum = api.nvim_win_get_cursor(0)[1]
+    return lnum, lnum
+end
+-- }}}
+
 return M

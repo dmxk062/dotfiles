@@ -92,8 +92,21 @@ local function goto_dir(path)
 end
 
 local function open_cmd(cmd)
-    require("oil.actions").open_cmdline.callback()
-    vim.api.nvim_input(cmd)
+    local oil = require("oil")
+    local startl, endl = utils.get_range()
+
+    local line = { cmd }
+    for i = startl, endl do
+        local e = oil.get_entry_on_line(0, i)
+        if e then
+            table.insert(line, vim.fn.fnameescape(e.name))
+        end
+    end
+
+    vim.api.nvim_feedkeys(":", "n")
+    vim.schedule(function()
+        vim.fn.setcmdline(table.concat(line, " "), #cmd + 1)
+    end)
 end
 
 local function open_cd()
