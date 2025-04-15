@@ -417,7 +417,7 @@ function M.win_show_buf(b, opts)
 
         api.nvim_open_win(b, true, {
             title = opts.title,
-            title_pos = "center",
+            title_pos = opts.title and "center" or nil,
             relative = opts.at_cursor and "cursor" or "editor",
             width = width,
             height = height,
@@ -597,6 +597,20 @@ M.highlight_size = function(bytes)
     else
         return "FileSizeTooBig"
     end
+end
+
+M.format_size = function(bytes)
+    local sizes = {
+        "B", "K", "M", "G", "T"
+    }
+
+    local i = 1
+    while bytes >= 1024 do
+        bytes = bytes / 1024
+        i = i + 1
+    end
+
+    return ("%.2f%s"):format(bytes, sizes[i])
 end
 -- }}}
 
