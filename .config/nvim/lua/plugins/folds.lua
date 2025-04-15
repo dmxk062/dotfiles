@@ -58,7 +58,7 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
         title = title:gsub("%s*$", "")
         local hlgroup = "UfoFoldTitle"
 
-        table.insert(new_text, { first_line_indent .. "> " .. title, hlgroup })
+        table.insert(new_text, { first_line_indent .. "# " .. title, hlgroup })
         if #level > 0 then
             table.insert(new_text, { " :" .. level, "Number" })
         end
