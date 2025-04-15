@@ -200,6 +200,7 @@ opts.pickers = {
     },
     man_pages = default_config {
         prompt_prefix = ":man ",
+        sections = { "ALL" },
     },
     search_history = default_config {
         create_layout = custom("short_layout"),
