@@ -401,17 +401,15 @@ add_with_prefix(colorscheme, "Welcome", {
     Time       = { fg = col.yellow },
     Message    = { italic = true },
 
-    NewShell   = { fg = col.pink },
-    NewBuffer  = { fg = col.purple },
     FindFiles  = { fg = col.blue },
-    LuaScratch = { fg = col.light_blue },
-    EditFiles  = { fg = col.teal },
+    EditFiles  = { fg = col.light_blue },
+    GrepFiles  = { fg = col.teal },
     GitFiles   = { fg = col.green },
     Lazy       = { fg = col.yellow },
     Mason      = { fg = col.orange },
     Quit       = { fg = col.red },
 
-    Grapple    = { fg = col.light_blue, bg = col.darkest_gray, italic = true },
+    Projects   = { fg = col.light_blue, bg = col.darkest_gray, italic = true },
     Git        = { fg = col.green, bg = col.darkest_gray, italic = true },
     Recents    = { fg = col.yellow, bg = col.darkest_gray, italic = true },
     File       = { fg = col.light_blue },
@@ -420,13 +418,14 @@ add_with_prefix(colorscheme, "Welcome", {
 
 -- Files {{{
 add_with_prefix(colorscheme, "File", {
-    TimeLastHour      = { fg = col.yellow },
-    TimeLastDay       = { fg = col.green },
-    TimeLastFewDays   = { fg = col.teal },
-    TimeLastWeek      = { fg = col.light_cyan },
-    TimeLastFortnight = { fg = col.light_blue },
-    TimeLastMonth     = { fg = col.blue },
-    TimeLastYear      = { fg = blend(col.blue, pal.bg3, 0.8) },
+    TimeLastMinute    = { fg = col.yellow },
+    TimeLastHour      = { fg = col.green },
+    TimeLastDay       = { fg = col.teal },
+    TimeLastFewDays   = { fg = col.light_cyan },
+    TimeLastWeek      = { fg = col.light_blue },
+    TimeLastFortnight = { fg = col.blue },
+    TimeLastMonth     = { fg = col.purple },
+    TimeLastYear      = { fg = blend(col.purple, pal.bg3, 0.8) },
     TimeSuperOld      = { fg = col.bright_gray },
 
     SizeNone          = { fg = pal.bg3 },

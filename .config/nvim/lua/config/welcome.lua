@@ -119,7 +119,7 @@ local set_virt_lines = function(row, lines, before)
 end
 
 local insert_heading = function(title, hl, expanded)
-    local text = string.format("%s %s ", title, expanded and "" or "")
+    local text = string.format("%s %s ", title, expanded and "(collapse)" or "(expand)")
     local width = strwidth(text)
     local remaining_width = State.width - width
     local half_width = math.floor(remaining_width / 2)
@@ -216,10 +216,13 @@ local update_lazy = function()
         { ", " }, { ("%.2fms"):format(Lazy_stats.times.UIEnter or 0), "WelcomeTime" }, { " in total" },
     }
 end
-update_lazy()
 
 local Current_message = get_random_message()
 local Message = function()
+    if not Lazy_message then
+        return
+    end
+
     local width = strwidth(Current_message)
     Lazy_message[1] = nil
     Lazy_message[1] = { get_center_spaces(linewidth(Lazy_message)) }
@@ -236,24 +239,8 @@ end
 -- Shortcuts {{{
 local Actions = {
     {
-        "Shell",
-        desc = "New Terminal",
-        key = "!",
-        on_click = function()
-            require("config.terminal").open_term { position = "autosplit" }
-        end,
-        hl = "WelcomeNewShell"
-    },
-    {
-        "Open Buffer",
-        desc = "Empty Buffer",
-        key = "o",
-        on_click = vim.cmd.new,
-        hl = "WelcomeNewBuffer"
-    },
-    {
         "Find Files",
-        desc = "Using 'fd'",
+        desc = "Search by Filename",
         key = "F",
         on_click = function()
             require("telescope.builtin").find_files()
@@ -261,26 +248,22 @@ local Actions = {
         hl = "WelcomeFindFiles"
     },
     {
-        "Lua Eval",
-        desc = "Lua Scratch Buffer",
-        key = "E",
-        on_click = function()
-            require("config.scratch").show_scratch_buffer {
-                name = "eval",
-                type = "lua",
-                win = {}
-            }
-        end,
-        hl = "WelcomeLuaScratch"
-    },
-    {
-        "Edit Filesystem",
-        desc = "Oil Buffer",
+        "List Files",
+        desc = "Edit Filesystem as Buffer",
         key = "f",
         on_click = function()
             require("oil").open()
         end,
         hl = "WelcomeEditFiles"
+    },
+    {
+        "Live Grep",
+        desc = "Search by Content",
+        key = "*",
+        on_click = function()
+            require("telescope.builtin").live_grep()
+        end,
+        hl = "WelcomeGrepFiles"
     },
     {
         "Git Files",
@@ -334,7 +317,7 @@ end
 
 -- Oldfiles List {{{
 local Oldfiles = {}
-local MAX_FILE_NAME = BUTTON_WIDTH - 30
+local MAX_FILE_NAME = BUTTON_WIDTH - 20
 for _, file in ipairs(vim.v.oldfiles) do
     local is_oil = vim.startswith(file, "oil://")
     local highlight
@@ -349,7 +332,7 @@ for _, file in ipairs(vim.v.oldfiles) do
         end
 
         local mtime = st.mtime.sec
-        local timestring = os.date("%b/%y %d, %H:%M  ", mtime)
+        local timestring = utils.format_date_default(mtime) .. "  "
         local timehl = utils.highlight_time(mtime)
 
         local tail = fn.fnamemodify(file, ":t")
@@ -414,7 +397,7 @@ local git_format_line = function(entry)
     local tail = fn.fnamemodify(file, ":t")
     local head = fn.fnamemodify(file, ":h")
 
-    local namewidth = strwidth(tail) + 10
+    local namewidth = strwidth(tail) + 3
     if namewidth > MAX_GIT_NAME then
         MAX_GIT_NAME = namewidth
     end
@@ -425,7 +408,7 @@ local git_format_line = function(entry)
         { " " },
         { tail,        filehl },
         nil,
-        { " " .. head, "NonText" },
+        { head, "NonText" },
     }
 
     return { text = line, width = namewidth, entry = entry }
@@ -468,7 +451,7 @@ local git_insert_entries = function(entries)
     insert_text(lines)
 end
 
-Git_expanded = true
+Git_expanded = false
 local Git_section = function()
     if not Git_info or not Git_info.head then
         return
@@ -511,6 +494,101 @@ local Git_section = function()
 end
 -- }}}
 
+-- Projects {{{
+local workspaces = require("projections.workspace")
+local switcher = require("projections.switcher")
+local sessions = require("projections.session")
+local Projects
+
+local MAX_PROJECT_NAME = BUTTON_WIDTH - 20
+local update_projects = function()
+    Projects = {}
+    for _, ws in ipairs(workspaces.get_workspaces()) do
+        local projects = ws:projects()
+        for _, proj in pairs(projects) do
+            local name = proj.name
+            local path = ws.path.path .. "/" .. proj.name
+            local nicepath = utils.expand_home(path, 8)
+
+            local width = strwidth(name)
+            if width + 6 > MAX_PROJECT_NAME then
+                MAX_PROJECT_NAME = width + 6
+            end
+
+            local last_access
+            local session = sessions.info(path)
+            local mtime
+            if session and session.path then
+                local st = vim.uv.fs_stat(session.path.path)
+                if st then
+                    mtime = st.mtime.sec
+                    local datestring = utils.format_date_default(mtime) .. "  "
+                    local datehl = utils.highlight_time(mtime)
+
+                    last_access = { datestring, datehl }
+                end
+            end
+
+            if not last_access then
+                last_access = { "(Not yet opened)  ", "Comment" }
+            end
+
+            local line = { nil, { name, "Identifier" }, nil, last_access, { nicepath, "Directory" } }
+            table.insert(Projects, {
+                name = name,
+                mtime = mtime or 0,
+                text = line,
+                width = strwidth(name),
+                activate = function()
+                    switcher.switch(path)
+                end
+            })
+        end
+        table.sort(Projects, function(p1, p2)
+            return p1.mtime > p2.mtime
+        end)
+    end
+end
+
+local Projects_expanded = false
+local Project_section = function()
+    if not Projects or #Projects < 1 then
+        return
+    end
+
+    insert_heading("[P] Projects", "WelcomeProjects", Projects_expanded)
+    local how_many = Projects_expanded
+        and #Projects
+        or math.min(#Projects, 10)
+
+    local lines = {}
+    for i = 1, how_many do
+        local project = Projects[i]
+
+        local prefix
+        local infix
+        if i <= 10 then
+            local shortcut = "<M-" .. i - 1 .. ">"
+            prefix = { State.start_spaces .. ("%s "):format(shortcut), "Constant" }
+            infix = { (" "):rep(MAX_PROJECT_NAME - project.width - 6) }
+            unmap("n", shortcut)
+            map("n", shortcut, project.activate)
+        else
+            prefix = { State.start_spaces }
+            infix = { (" "):rep(MAX_PROJECT_NAME - project.width) }
+        end
+
+        project.text[1] = prefix
+        project.text[3] = infix
+        State.actions[State.draw_row + i] = project.activate
+
+        table.insert(lines, project.text)
+    end
+
+    insert_text(lines)
+end
+-- }}}
+
 local update_size = function()
     State.width = api.nvim_win_get_width(State.win)
     State.height = api.nvim_win_get_height(State.win)
@@ -546,6 +624,7 @@ local do_redraw = function()
     State.first_row = State.draw_row + 1
     State.set_col = State.left_pad + 1
     Buttons()
+    Project_section()
     Git_section()
     Recents()
 
@@ -623,6 +702,10 @@ local set_mappings = function()
         map("n", action.key, action.on_click)
     end
 
+    map("n", "P", function()
+        Projects_expanded = not Projects_expanded
+        do_redraw()
+    end)
     map("n", "R", function()
         Recents_show_all = not Recents_show_all
         do_redraw()
@@ -671,6 +754,7 @@ M.show = function()
     update_size()
     update_git(do_redraw)
     do_redraw()
+    update_projects()
     set_autocommands(buf)
     set_mappings()
 end
