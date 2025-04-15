@@ -18,7 +18,24 @@ TODO: give other git plugins (i.e. lazygit) a serious try
 -- last buffer for :G, to be relative to the current file with <space>gg
 local git_relative_buf
 
-local function map_on_git_buffer(buf)
+local global_git_maps = function()
+    local map = function(mode, lhs, rhs, opts)
+        vim.keymap.set(mode, "<space>g" .. lhs, rhs, opts)
+    end
+
+    map("n", "L", "<cmd>Git log<cr>", { desc = "Git: Log to buffer" })
+    map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
+    map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
+    map("n", "C", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
+    map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
+
+    map("n", "g", function()
+        git_relative_buf = vim.api.nvim_get_current_buf()
+        vim.cmd("Git")
+    end, { desc = "Git: Status" })
+end
+
+local map_on_git_buffer = function(buf)
     local gitsigns = require("gitsigns")
     local utils = require("config.utils")
 
@@ -37,26 +54,16 @@ local function map_on_git_buffer(buf)
         map("v", keys, vimap(fn), tbl)
     end
 
-    map("n", "g", function()
-        git_relative_buf = buf
-        vim.cmd("Git")
-    end, { desc = "Git: Status" })
-
     -- use fugitive cause its just better :(
     map("n", "d", "<cmd>rightbelow Gvdiffsplit<cr>", { desc = "Git: Diff with head" })
     map("n", "D", "<cmd>rightbelow Gvdiffsplit !<cr>", { desc = "Git: Diff with last commit" })
-    map("n", "C", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
-    map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
 
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
     map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
 
     map("n", "H", gitsigns.setqflist, { desc = "Git: Hunks to qflist" })
     map("n", "h", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
-    map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
     map("n", "l", "<cmd>0Gllog<cr>", { desc = "Git: Log to loclist" })
-    map("n", "L", "<cmd>Git log<cr>", { desc = "Git: Log to buffer" })
-    map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
@@ -109,6 +116,8 @@ M[1].opts = {
 
 -- fugitive {{{
 M[2].config = function()
+    global_git_maps()
+
     vim.g.fugitive_dynamic_colors = false
     local utils = require("config.utils")
 

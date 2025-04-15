@@ -668,7 +668,7 @@ add_with_prefix(colorscheme, "git", {
     IdentityKeyword = { link = "@property" },
     File            = { link = "diffFile" },
 })
--- }}
+-- }}}
 
 -- Telescope {{{
 add_with_prefix(colorscheme, "Telescope", {
@@ -691,6 +691,11 @@ add_with_prefix(colorscheme, "Telescope", {
     PreviewLink           = { link = "OilLink" },
     PreviewHyphen         = { link = "OilNoPerm" },
     PreviewDate           = { fg = col.light_cyan },
+
+    ResultsDiffAdd        = { fg = col.green },
+    ResultsDiffChange     = { fg = col.yellow },
+    ResultsDiffDelete     = { fg = col.red },
+    ResultsDiffUntracked  = { fg = col.bright_gray },
 })
 -- }}}
 

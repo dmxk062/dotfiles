@@ -3,8 +3,6 @@ local builtin_picker_maps = {
     buffers = "<space><space>",
     diagnostics = "<space>D",
     find_files = "<space>F",
-    git_files = "<space>gf",
-    git_status = "<space>gi",
     grep_string = "<space>*",
     help_tags = "<space>h",
     live_grep = "<space>/",
@@ -14,6 +12,12 @@ local builtin_picker_maps = {
     oldfiles = "<space>o",
     registers = "\"<space>",
     search_history = "<space>?",
+
+    -- git ones, under the same prefix as the fugitive & gitsigns mappings
+    git_files = "<space>gf",
+    git_status = "<space>gi", -- <space>gs is taken for stage already
+    git_commits = "<space>g/",
+    git_bcommits = "<space>g?",
 }
 
 ---@type LazySpec
@@ -193,9 +197,6 @@ opts.pickers = {
     find_files = default_config {
         entry_maker = custom "file_entries",
     },
-    git_files = default_config {
-        entry_maker = custom "file_entries",
-    },
     help_tags = default_config {
         prompt_prefix = ":h ",
         create_layout = custom "short_layout",
@@ -209,6 +210,21 @@ opts.pickers = {
         create_layout = custom "short_layout",
         prompt_prefix = "/ ",
     },
+    git_files = default_config {
+        entry_maker = custom "file_entries",
+    },
+    git_status = default_config {
+        -- I don't like this deviating from the convention used everywhere else
+        git_icons = {
+            added = "A",
+            changed = "M",
+            copied = "C",
+            deleted = "D",
+            renamed = "R",
+            unmerged = "U",
+            untracked = "?",
+        }
+    }
 }
 
 opts.extensions = {

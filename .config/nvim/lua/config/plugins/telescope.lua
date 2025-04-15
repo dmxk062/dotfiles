@@ -153,6 +153,10 @@ M.path_display = function(opts, path)
     local dirwidth = fn.strdisplaywidth(parendir)
 
     local padding = math.max(MIN_FILENAME_WIDTH - (namewidth + dirwidth), 0)
+    local hl = utils.highlight_fname(tail)
+    if hl == "FileTypeNormal" then
+        hl = nil
+    end
 
     local hls = {
         {
@@ -160,7 +164,7 @@ M.path_display = function(opts, path)
                 0,
                 namelen,
             },
-            utils.highlight_fname(tail)
+            ""
         },
         {
             {
