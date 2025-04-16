@@ -140,8 +140,12 @@ end
 -- }}}
 -- }}}
 
+local MAX_FILENAME_WIDTH = 24
+local MAX_SYMBOL_WIDTH = 60
+local MAX_FILEPARENT_WIDTH = 24
+local ROW_COL_WIDTH = 11
+
 -- Path Highlighting {{{
-local MIN_FILENAME_WIDTH = 80
 
 M.path_display = function(opts, path)
     local tail = fn.fnamemodify(path, ":t")
@@ -150,9 +154,8 @@ M.path_display = function(opts, path)
     local namelen = #tail
     local namewidth = fn.strdisplaywidth(tail)
     local dirlen = #parendir
-    local dirwidth = fn.strdisplaywidth(parendir)
 
-    local padding = math.max(MIN_FILENAME_WIDTH - (namewidth + dirwidth), 0)
+    local padding = math.max(MAX_FILENAME_WIDTH*2 - namewidth, 0)
     local hl = utils.highlight_fname(tail)
     if hl == "FileTypeNormal" then
         hl = nil
@@ -181,11 +184,6 @@ end
 
 -- Entry Makers {{{
 local t_entry_display = require("telescope.pickers.entry_display")
-local MAX_FILENAME_WIDTH = 24
-local MAX_SYMBOL_WIDTH = 60
-local MAX_FILEPARENT_WIDTH = 24
-local ROW_COL_WIDTH = 11
-
 -- Helpers {{{1
 local get_names_and_hl = function(path)
     local tail, parentdir, filename_highlight
