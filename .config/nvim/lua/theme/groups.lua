@@ -153,7 +153,7 @@ local colorscheme = {
     IndentBlanklineIndent       = { fg = pal.bg1 },
     IndentBlanklineScope        = { fg = col.bright_gray },
 
-    TreesitterContext           = { bg = col.darkest_gray },
+    TreesitterContext           = { bg = pal.bg01 },
     TreesitterContextLineNumber = { fg = col.teal },
     MultiCursorCursor           = { bg = pal.bg3 },
 
@@ -186,7 +186,7 @@ add_with_prefix(colorscheme, "Ufo", {
     PreviewThumb = {},
 
     Suffix       = { fg = col.bright_gray, },
-    FoldTitle    = { fg = col.teal, bg = col.darkest_gray },
+    FoldTitle    = { fg = col.teal, bg = pal.bg01 },
 })
 -- }}}
 
@@ -409,9 +409,9 @@ add_with_prefix(colorscheme, "Welcome", {
     Mason     = { fg = col.orange },
     Quit      = { fg = col.red },
 
-    Projects  = { fg = col.light_blue, bg = col.darkest_gray, italic = true },
-    Git       = { fg = col.green, bg = col.darkest_gray, italic = true },
-    Recents   = { fg = col.yellow, bg = col.darkest_gray, italic = true },
+    Projects  = { fg = col.light_blue, bg = pal.bg01, italic = true },
+    Git       = { fg = col.green, bg = pal.bg01, italic = true },
+    Recents   = { fg = col.yellow, bg = pal.bg01, italic = true },
     File      = { fg = col.light_blue },
 })
 -- }}}
@@ -680,7 +680,7 @@ add_with_prefix(colorscheme, "Telescope", {
     Selection             = { bg = pal.bg1 },
     PromptPrefix          = { fg = col.teal },
     SelectionCaret        = { bg = pal.bg1 },
-    MultiSelection        = { bg = col.darkest_gray },
+    MultiSelection        = { bg = pal.bg01 },
     MultiIcon             = { bg = col.yellow, fg = col.yellow },
     Matching              = { link = "BlinkCmpLabelMatch" },
 
