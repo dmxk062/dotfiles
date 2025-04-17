@@ -1,3 +1,4 @@
+-- TODO: evaluate https://github.com/stevearc/resession.nvim
 ---@type LazySpec
 local M = {
     "GnikDroy/projections.nvim",

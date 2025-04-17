@@ -266,7 +266,7 @@ end
 
 -- }}}
 
--- Miscelaneous {{{
+-- Miscellaneous {{{
 local function foldmarker_object(pos, count, opts)
     local marker = vim.opt.foldmarker:get()
 
