@@ -555,7 +555,7 @@ add_with_prefix(colorscheme, "Lsp", {
     InlayHint       = { fg = col.bright_gray, italic = true },
     InfoBorder      = { fg = pal.bg3 },
     StaticMethod    = { fg = col.magenta },
-    ReferenceTarget = { link = "Visual" },
+    ReferenceTarget = { },
     ReferenceText   = { link = "Substitute" },
     ReferenceRead   = { link = "Substitute" },
     ReferenceWrite  = { link = "Substitute" },
