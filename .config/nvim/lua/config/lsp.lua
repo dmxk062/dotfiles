@@ -309,11 +309,17 @@ L.marksman = {
     root_markers = { ".marksman.toml", ".git" },
 }
 
-L.typos = {
-    cmd = { "typos-lsp" },
-    init_options = {
-        diagnosticSeverity = "Hint"
-    }
+-- L.typos = {
+--     cmd = { "typos-lsp" },
+--     init_options = {
+--         diagnosticSeverity = "Hint"
+--     }
+-- }
+
+L.typst_ls = {
+    filetypes = { "typst" },
+    cmd = { "typst-lsp" },
+    root_markers = { ".git" },
 }
 -- }}}
 
