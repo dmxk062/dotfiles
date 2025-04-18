@@ -1,0 +1,13 @@
+# vim: ft=swayconfig
+
+mode "clipboard" {
+    bindsym Escape mode "default"
+    bindsym Y exec wl-paste -p | wl-copy; mode "default"
+    bindsym Mod1+Y exec wl-paste | wl-copy -p; mode "default"
+    bindsym E exec $sc/clipedit.sh; mode "default"
+    bindsym Mod1+E exec $sc/clipedit.sh -p; mode "default"
+    bindsym C exec wl-copy ""; mode "default"
+    bindsym Mod1+C exec wl-copy -p ""; mode "default"
+}
+
+bindsym $mod+Y mode "clipboard"

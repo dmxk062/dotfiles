@@ -3,6 +3,7 @@
 "normal": "normal",
 "media": "media",
 "screenshot": "print",
+"clipboard":"clip",
 "config":"config"
 }')
 
@@ -45,6 +46,12 @@
     {"keys": "<S-*>", "action": "Move"},
     {"keys": "f", "action": "Fullscreen"},
     {"keys": "d", "action": "Detach"}
+],
+"clipboard": [
+    {"keys": "<M-*>", "action": "Operate on Selection"},
+    {"keys": "Y", "action": "Copy other"},
+    {"keys": "E", "action": "Edit"},
+    {"keys": "C", "action": "Clear"}
 ]
 }')
 

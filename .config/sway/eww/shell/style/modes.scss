@@ -32,6 +32,13 @@
     &:hover { background-color: fade($yellow); }
 }
 
+.mode-clipboard {
+    @extend .mode;
+    color: $inv;
+    background-color: $pink;
+    &:hover { background-color: fade($pink); }
+}
+
 .mode-keys {
     color: $lblue;
     /* font-style: italic; */
