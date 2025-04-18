@@ -446,6 +446,7 @@ local update_git = function(cb)
 
         Git_staged_lines = {}
         Git_unstaged_lines = {}
+
         for _, e in pairs(res.modified) do
             table.insert(e.staged and Git_staged_lines or Git_unstaged_lines, git_format_line(e))
         end
@@ -474,6 +475,7 @@ local Git_section = function()
     if not Git_info or not Git_info.head then
         return
     end
+
     insert_heading("[S] Git Status", "WelcomeGit", Git_expanded)
 
     State.actions[State.draw_row + 1] = function()
@@ -488,8 +490,8 @@ local Git_section = function()
     insert_text {
         { { State.start_spaces }, { "Branch: ", "WelcomeProperty" }, { Git_info.head, "Identifier" },
             { " +" .. Git_info.ahead, "Added" }, { " -" .. Git_info.behind, "Deleted" },
-            { " -> ", "NonText" }, { Git_info.upstream, "Identifier" } },
-        { { State.start_spaces }, { "Commit: ", "WelcomeProperty" }, { Git_info.commit, "Identifier" } },
+            { " -> ", "NonText" }, { Git_info.upstream or "No Upstream", Git_info.upstream and "Identifier" or "NonText" } },
+        { { State.start_spaces }, { "Commit: ", "WelcomeProperty" }, { Git_info.commit or "", "Identifier" } },
         {
             { State.start_spaces },
             { "Untracked: ",     "fugitiveUntrackedHeading" }, { tostring(#Git_info.untracked), "Number" },
@@ -500,6 +502,10 @@ local Git_section = function()
 
 
     if not Git_expanded then
+        return
+    end
+
+    if not Git_info then
         return
     end
 
