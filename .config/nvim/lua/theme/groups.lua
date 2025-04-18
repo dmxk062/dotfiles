@@ -267,15 +267,18 @@ add_with_prefix(colorscheme, "@", {
     ["tag.builtin"]                  = { fg = col.light_blue },
     ["tag.delimiter"]                = { fg = col.bright_gray },
 
-    ["markup.heading"]               = { fg = col.teal, bold = true },
-    ["markup.heading.1"]             = { fg = col.yellow, bold = true },
-    ["markup.heading.2"]             = { fg = col.green, bold = true },
-    ["markup.heading.3"]             = { fg = col.teal, bold = true },
-    ["markup.heading.4"]             = { fg = col.light_cyan, bold = true },
-    ["markup.heading.5"]             = { fg = col.light_blue, bold = true },
-    ["markup.heading.6"]             = { fg = col.blue, bold = true },
-    ["markup.heading.7"]             = { fg = col.blue, bold = true },
-    ["markup.heading.8"]             = { fg = col.blue, bold = true },
+    ["markup.heading"]               = { link = "*markup.heading.4" },
+    ["markup.heading.1"]             = { fg = col.yellow, bold = true, underline = true },
+    ["markup.heading.2"]             = { fg = col.green, bold = true, underline = true },
+    ["markup.heading.3"]             = { fg = col.teal, bold = true, underline = true },
+    ["markup.heading.4"]             = { fg = col.light_cyan, underline = true },
+    ["markup.heading.5"]             = { fg = col.light_blue, underline = true },
+    ["markup.heading.6"]             = { fg = col.blue, underline = true },
+
+    -- those already have a prominent line above them
+    ["markup.heading.1.vimdoc"]      = { fg = col.yellow, bold = true },
+    ["markup.heading.2.vimdoc"]      = { fg = col.green, bold = true, underline = true },
+
     ["markup.math"]                  = { italic = true },
     ["markup.raw.markdown_inline"]   = { bg = pal.bg1 },
     ["markup.raw.block.markdown"]    = { bg = pal.bg0 },
