@@ -217,6 +217,7 @@ vim.diagnostic.config {
 -- }}}
 
 -- Load Config {{{
+require("config.treesitter")   -- custom treesitter features
 require("config.autocommands") -- set autocommands that don't fit anywhere else
 require("config.mappings")     -- set all the mappings
 require("config.commands")     -- global custom commands
