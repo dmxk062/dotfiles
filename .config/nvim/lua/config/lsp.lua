@@ -35,7 +35,7 @@ local function lsp_map(buf)
     end)
 
     -- fully replace the symbol
-    map("n", "<space>C", "<space>rc", { remap = true })
+    map("n", "<space>C", "<space>grc", { remap = true })
 
 
     -- list lsp things and use telescope to disambiguate
