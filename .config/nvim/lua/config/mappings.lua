@@ -279,12 +279,26 @@ map("n", bufleader .. "f", function() open_buf_in("float") end)
 map("n", bufleader .. "a", function() open_buf_in("autosplit") end)
 map("n", bufleader .. "r", function() open_buf_in("replace") end)
 
+
+local delete_buffer = function(buf)
+    local ok = pcall(api.nvim_buf_delete, buf, {})
+    if not ok then
+        local short = Short_for_bufs[buf]
+        local name = utils.format_buf_name(buf) or "[-]"
+        local msg = ("Buffer %s%d (%s) is modified, force delete? [y/N] "):format(short and "#" or ".", short, name)
+        local response = vim.fn.input { prompt = msg }
+        if response:lower() == "y" then
+            api.nvim_buf_delete(buf, { force = true })
+        end
+    end
+end
+
 -- delete buffer
 map("n", bufleader .. "d", function()
     local target = get_buf_idx()
     if not target then return end
 
-    api.nvim_buf_delete(target, {})
+    delete_buffer(target)
 end)
 
 -- close the first window that the buffer is shown in
@@ -302,9 +316,9 @@ end)
 
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
-    for _, b in ipairs(api.nvim_list_bufs()) do
-        if vim.bo[b].buflisted and fn.bufwinid(b) == -1 then
-            api.nvim_buf_delete(b, {})
+    for _, buf in ipairs(api.nvim_list_bufs()) do
+        if vim.bo[buf].buflisted and fn.bufwinid(buf) == -1 then
+            delete_buffer(buf)
         end
     end
 end)
