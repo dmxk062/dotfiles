@@ -9,7 +9,7 @@ local PACKAGES = {
     ["typos-lsp"]                   = "typos-lsp",
     ["vscode-json-language-server"] = "json-lsp",
     ["yaml-language-server"]        = "yaml-language-server",
-    ["typst-lsp"]                   = "typst-lsp",
+    ["tinymist"]                    = "tinymist",
 }
 
 ---@param pkg Package

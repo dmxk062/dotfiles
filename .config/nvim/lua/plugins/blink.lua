@@ -82,6 +82,9 @@ M.opts.completion.menu.draw.components = {
     },
     label = {
         width = { fill = true, max = 40 },
+    },
+    label_description = {
+        width = { max = 20 }
     }
 }
 
