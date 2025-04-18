@@ -574,7 +574,7 @@ end)
 -- }}}
 
 -- Evaluate Math (qalc) {{{
--- evalute qalculate expression/math and insert result in buffer
+-- evaluate qalculate expression/math and insert result in buffer
 -- this is quite useful for e.g. unit conversion
 ---@diagnostic disable-next-line: unused-local
 operators.map_function("<space>em", function(mode, region, extra, get, set)
@@ -582,7 +582,7 @@ operators.map_function("<space>em", function(mode, region, extra, get, set)
     local last_expr = expressions[#expressions]
 
     -- convert to decimals by default, unless specified otherwise
-    -- makes it nicer for programming languages that probably dont want fractions
+    -- makes it nicer for programming languages that probably don't want fractions
     if not last_expr:match("to fraction") then
         expressions[#expressions] = last_expr .. " to decimals"
     end
@@ -673,7 +673,7 @@ end)
 
 -- Command in Region {{{
 -- open a cmdline in a region specified by a textobject or motion
--- allows me to repeat commands like theyre regular mappings
+-- allows me to repeat commands like they're regular mappings
 ---@diagnostic disable-next-line: unused-local
 operators.map_function("g:", function(mode, region, extra, get, set)
     if extra.repeated then

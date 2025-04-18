@@ -182,6 +182,7 @@ local extension_highlights = {
     ["toml"]    = "Config",
     ["ts"]      = "Code",
     ["txt"]     = "Text",
+    ["typ"]     = "Markup",
     ["vim"]     = "Code",
     ["xhtml"]   = "Markup",
     ["xml"]     = "Markup",

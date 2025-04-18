@@ -4,21 +4,32 @@ local M = {
     event = { "InsertEnter" },
 }
 
+local text_types = {
+    "text",
+    "markdown",
+    "typst"
+}
+
+local xml_types = {
+    "xml",
+    "html"
+}
+
 M.opts = {
     keys = {
         ["("] = { escape = false, close = true, pair = "()" },
         ["["] = { escape = false, close = true, pair = "[]" },
         ["{"] = { escape = false, close = true, pair = "{}" },
-        ["<"] = { escape = false, close = true, pair = "<>", enabled_filetypes = { "xml", "html" } },
+        ["<"] = { escape = false, close = true, pair = "<>", enabled_filetypes = xml_types },
 
         [")"] = { escape = true, close = false, pair = "()" },
         ["]"] = { escape = true, close = false, pair = "[]" },
         ["}"] = { escape = true, close = false, pair = "{}" },
-        [">"] = { escape = true, close = false, pair = "<>", enabled_filetypes = { "xml", "html" } },
+        [">"] = { escape = true, close = false, pair = "<>", enabled_filetypes = xml_types },
 
         ['"'] = { escape = true, close = true, pair = '""' },
         -- don't mess up my apostrophes
-        ["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = { "text", "markdown" } },
+        ["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = text_types },
         ["`"] = { escape = true, close = true, pair = "``" },
         ["$"] = { escape = true, close = true, pair = "$$", enabled_filetypes = { "latex" } },
     },
