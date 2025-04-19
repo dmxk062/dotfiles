@@ -81,8 +81,8 @@ map("n", "<space>$", "<cmd>clast<cr>")
 
 
 -- loclist: optimized for much smaller lists
-map("n", "<C-j>", cmd_with_count("lnext"))
-map("n", "<C-k>", cmd_with_count("lprev"))
+map("n", "<M-j>", cmd_with_count("lnext"))
+map("n", "<M-k>", cmd_with_count("lprev"))
 
 -- clear them
 map("n", "<space>qc", function()
