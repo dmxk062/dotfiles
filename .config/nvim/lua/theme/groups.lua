@@ -267,7 +267,7 @@ add_with_prefix(colorscheme, "@", {
     ["tag.builtin"]                  = { fg = col.light_blue },
     ["tag.delimiter"]                = { fg = col.bright_gray },
 
-    ["markup.heading"]               = { link = "*markup.heading.4" },
+    ["markup.heading"]               = { fg = col.teal, bold = true },
     ["markup.heading.1"]             = { fg = col.yellow, bold = true, underline = true },
     ["markup.heading.2"]             = { fg = col.green, bold = true, underline = true },
     ["markup.heading.3"]             = { fg = col.teal, bold = true, underline = true },
@@ -278,6 +278,9 @@ add_with_prefix(colorscheme, "@", {
     -- those already have a prominent line above them
     ["markup.heading.1.vimdoc"]      = { fg = col.yellow, bold = true },
     ["markup.heading.2.vimdoc"]      = { fg = col.green, bold = true, underline = true },
+
+    -- why
+    ["markup.heading.gitcommit"]    = {},
 
     ["markup.math"]                  = { italic = true },
     ["markup.raw.markdown_inline"]   = { bg = pal.bg1 },
