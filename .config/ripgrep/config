@@ -1,0 +1,6 @@
+--colors
+line:fg:magenta
+--colors
+path:fg:cyan
+--colors
+match:fg:yellow

@@ -108,6 +108,8 @@ source "$ZCACHEDIR/zoxide_init.zsh"
 # null: gray; false, true: teal; numbers: magenta; strings: green; array, object separators: gray; keys: blue
 export JQ_COLORS="0;90:0;36:0;36:0;35:0;32:0;90:0;90:1;34"
 
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
+
 if [[ -n "$NVIM" ]]; then
     source "$ZDOTDIR/nvim.zsh"
 fi
