@@ -71,9 +71,9 @@ The qflist is generally used for workspace wide things
 The loclist per each buffer/window
 ]]
 
--- qflist: optimized for larger lists
-map("n", "<space>j", cmd_with_count("cnext"))
-map("n", "<space>k", cmd_with_count("cprev"))
+-- qflist: more mappings, larger lists
+map("n", "<C-j>", cmd_with_count("cnext"))
+map("n", "<C-k>", cmd_with_count("cprev"))
 map("n", "<space>n", cmd_with_count("cnfile"))
 map("n", "<space>N", cmd_with_count("cpfile"))
 map("n", "<space>0", "<cmd>cfirst<cr>")
