@@ -79,6 +79,10 @@ map("n", "<space>N", cmd_with_count("cpfile"))
 map("n", "<space>0", "<cmd>cfirst<cr>")
 map("n", "<space>$", "<cmd>clast<cr>")
 
+-- list all TODOs, only when followed by a comment
+map("n", "<space>qt", "<cmd>silent grep '\\bTODO:'|cwin<cr>")
+map("n", "<space>lt", "<cmd>silent lvimgrep /\\<TODO:/ %|lwin<cr>")
+
 
 -- loclist: optimized for much smaller lists
 map("n", "<M-j>", cmd_with_count("lnext"))
