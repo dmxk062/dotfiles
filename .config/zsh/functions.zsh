@@ -17,7 +17,7 @@ compdef @alt=eval
 function chars2codes {
     local char
     while read -u0 -k1 -r char; do
-        printf "%x\n" "'$char"
+        printf "%02x\n" "'$char"
     done
 }
 
