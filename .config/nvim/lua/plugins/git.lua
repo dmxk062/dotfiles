@@ -23,7 +23,12 @@ local global_git_maps = function()
         vim.keymap.set(mode, "<space>g" .. lhs, rhs, opts)
     end
 
-    map("n", "L", "<cmd>Git log<cr>", { desc = "Git: Log to buffer" })
+    -- limit max commit count to count * 100, use 99 to get all for most repos
+    map("n", "L", function()
+        local max = vim.v.count > 0 and vim.v.count * 100 or 100
+        local cmd = "log --stat --max-count=" .. max
+        vim.cmd.Git(cmd)
+    end, { desc = "Git: Log" })
     map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
     map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
     map("n", "C", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
