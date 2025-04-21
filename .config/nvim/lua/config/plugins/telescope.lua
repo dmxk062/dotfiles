@@ -336,7 +336,7 @@ local quickfix_entry_display = t_entry_display.create {
 }
 
 M.quickfix_entries = function(entry)
-    local filename = entry.filename or vim.api.nvim_buf_get_name(entry.buf)
+    local filename = entry.filename or vim.api.nvim_buf_get_name(entry.buf or 0)
     return {
         value = entry,
         ordinal = ("%s:%s:%d"):format(entry.text, filename, entry.lnum),
