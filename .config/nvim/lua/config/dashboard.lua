@@ -522,6 +522,7 @@ M.show = function()
 
     api.nvim_create_autocmd("User", {
         pattern = "LazyLoad",
+        group = augroup,
         callback = function()
             do_draw()
         end
