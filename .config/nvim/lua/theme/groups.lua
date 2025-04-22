@@ -280,7 +280,7 @@ add_with_prefix(colorscheme, "@", {
     ["markup.heading.2.vimdoc"]      = { fg = col.green, bold = true, underline = true },
 
     -- why
-    ["markup.heading.gitcommit"]    = {},
+    ["markup.heading.gitcommit"]     = {},
 
     ["markup.math"]                  = { italic = true },
     ["markup.raw.markdown_inline"]   = { bg = pal.bg1 },
@@ -394,7 +394,7 @@ add_with_prefix(colorscheme, "Sl", {
 -- }}}
 
 -- Startscreen {{{
-add_with_prefix(colorscheme, "Welcome", {
+add_with_prefix(colorscheme, "Dashboard", {
     Title1    = { fg = col.red },
     Title2    = { fg = col.orange },
     Title3    = { fg = col.yellow },
@@ -402,9 +402,7 @@ add_with_prefix(colorscheme, "Welcome", {
     Title5    = { fg = col.teal },
     Title6    = { fg = col.light_blue },
 
-    Category  = { fg = col.pink, italic = true },
     Property  = { fg = col.blue, italic = true },
-    Time      = { fg = col.yellow },
     Message   = { italic = true },
 
     FindFiles = { fg = col.blue },
@@ -415,10 +413,9 @@ add_with_prefix(colorscheme, "Welcome", {
     Mason     = { fg = col.orange },
     Quit      = { fg = col.red },
 
+    Actions   = { fg = col.purple, bg = pal.bg01, italic = true },
     Projects  = { fg = col.light_blue, bg = pal.bg01, italic = true },
-    Git       = { fg = col.green, bg = pal.bg01, italic = true },
-    Recents   = { fg = col.yellow, bg = pal.bg01, italic = true },
-    File      = { fg = col.light_blue },
+    Recents   = { fg = col.green, bg = pal.bg01, italic = true },
 })
 -- }}}
 

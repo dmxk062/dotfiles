@@ -4,7 +4,8 @@ This file is mainly concerned with setting options
 and doing everything required for startup.
 Once it is done bootstrapping neovim, little if anything remains of it
 
-TODO: maybe use 'findfunc'?
+TODO: figure out note-taking solution
+TODO: should I remove vimtex?
 }}} ]]
 
 vim.cmd.colorscheme("mynord")
@@ -232,11 +233,12 @@ vim.ui.input = require("config.ui").nvim_input
 o.modeline = true
 
 -- create this autocommand after neovim had a chance to read from stdin
-vim.api.nvim_create_autocmd("VimEnter", {
+vim.api.nvim_create_autocmd("User", {
+    pattern = "LazyVimStarted",
     once = true,
     callback = function()
         if should_open_start_screen then
-            require("config.welcome").show()
+            require("config.dashboard").show()
         end
     end
 })
