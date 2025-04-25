@@ -293,10 +293,9 @@ local indices = {
     macro = 5,
 
     search = 7,
-    lsp_messages = 8,
-    words = 10,
-    filetype = 12,
-    lsp = 13,
+    words = 9,
+    filetype = 11,
+    lsp = 12,
 }
 
 local redraw = function()
@@ -351,28 +350,6 @@ utils.autogroup("config.statusline", {
             redraw()
         end),
 
-    LspProgress = function(ev)
-        local data = ev.data
-        local client = vim.lsp.get_client_by_id(data.client_id)
-        if not client then
-            return
-        end
-
-        local value = data.params.value
-
-        if value.kind == "end" then
-            sections[indices.lsp_messages] = ""
-        else
-            sections[indices.lsp_messages] = string.format(
-                "%%#Identifier#*%s%%#Delimiter#: %%#Normal#%s %%#Number#%02d%%%% ",
-                client.name,
-                esc(value.title),
-                value.percentage
-            )
-        end
-        redraw()
-    end,
-
     User = {
         pattern = { "FugitiveChanged", "FugitiveObject", "GitSignsUpdate" },
         callback = vim.schedule_wrap(function()
@@ -406,7 +383,6 @@ sections = {
 
     " %#SlKeys#%-4(%S%)%=",
     "", -- search message
-    "", -- lsp messages
 
     -- right, begin of content info
     "%#SlASL#%#SlAText#",

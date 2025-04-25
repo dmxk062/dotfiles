@@ -104,9 +104,33 @@ local on_lsp_detached = function(ev)
     pcall(vim.api.nvim_buf_del_user_command, ev.buf, "InlayHint")
 end
 
-utils.autogroup("config.lspconfig", {
+utils.autogroup("config.lsp", {
     LspAttach = on_lsp_attached,
     LspDetach = on_lsp_detached,
+    LspProgress = function(ev)
+        local data = ev.data
+        local client = vim.lsp.get_client_by_id(data.client_id)
+        if not client then
+            return
+        end
+
+        local value = data.params.value
+
+        local message = {
+            { client.name, "Identifier" },
+            { ": ",        "Delimiter" },
+        }
+
+        if value.kind == "end" then
+            table.insert(message, { "Finished " })
+            table.insert(message, { value.title })
+        else
+            table.insert(message, { value.title })
+            table.insert(message, { (" %02d%%"):format(value.percentage), "Number" })
+        end
+
+        vim.api.nvim_echo(message, false, {})
+    end,
 })
 -- }}}
 

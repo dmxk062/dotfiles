@@ -251,7 +251,7 @@ local last_was_insert
 WARNING: This is *not* 100% what neovim says it should be, instead I add my own private features,
 starting with an underscore:
   _ts_lang: highlight the buffer using that treesitter language
-]]--
+]] --
 ---@param opts {prompt: string?, default: string?, completion: string?, highlight: function, _ts_lang: string?}
 ---@param callback fun(string?)
 M.nvim_input = function(opts, callback)

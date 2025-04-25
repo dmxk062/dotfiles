@@ -226,7 +226,10 @@ require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
 require("config.overlays")     -- specialized file operations
 require("config.lsp")          -- language servers
-vim.ui.input = require("config.ui").nvim_input
+
+-- load ui components
+local ui = require("config.ui")
+vim.ui.input = ui.nvim_input
 -- }}}
 
 -- for some reason lazy deactivates it
