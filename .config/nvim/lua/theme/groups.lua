@@ -530,7 +530,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     Kind                = { fg = col.yellow },
     KindArray           = { fg = col.light_blue },
     KindBoolean         = { link = "@boolean" },
-    KindClass           = { link = "*ItemKindInterface" },
+    KindClass           = { fg = col.magenta },
     KindConstant        = { fg = col.yellow },
     KindConstructor     = { fg = col.magenta },
     KindEnumMember      = { fg = pal.fg0 },
@@ -551,7 +551,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     KindPackage         = { fg = col.green },
     KindSnippet         = { fg = col.pink },
     KindString          = { link = "@string" },
-    KindStruct          = { link = "*ItemKindInterface" },
+    KindStruct          = { link = "*ItemKindClass" },
     KindText            = { fg = pal.bg3 },
     KindVariable        = { fg = pal.fg0 },
 })

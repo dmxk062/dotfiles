@@ -155,7 +155,7 @@ M.path_display = function(opts, path)
     local namewidth = fn.strdisplaywidth(tail)
     local dirlen = #parendir
 
-    local padding = math.max(MAX_FILENAME_WIDTH*2 - namewidth, 0)
+    local padding = math.max(MAX_FILENAME_WIDTH * 2 - namewidth, 0)
     local hl = utils.highlight_fname(tail)
     if hl == "FileTypeNormal" then
         hl = nil
@@ -299,6 +299,19 @@ M.lsp_symbol_entries = function(entry)
 
     local filename = entry.filename or vim.api.nvim_buf_get_name(buf)
     local _, name = entry.text:match("^%[(.+)%]%s+(.*)")
+
+    -- ignore
+    if
+        name:match("^%[?%d+%]?$")      -- indices in arrays
+        or name == "(anonymous union)" -- thx clangd...
+        or name == "(anonymous struct)"
+        or entry.kind == "Null"        -- wtf
+        or entry.kind == "Package"
+        or entry.kind == "Field"       -- fields in structures
+        or entry.kind == "EnumMember"  -- members of enums
+    then
+        return
+    end
 
     return {
         col = entry.col,
