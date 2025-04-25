@@ -37,12 +37,10 @@ local ensure_packages_installed = function()
 
         local pack = registry.get_package(package)
         if pack:is_installed() then
-            pack:check_new_version(function(has_new_ver, ver)
-                if not has_new_ver then
-                    return
-                end
+            local latest = pack:get_latest_version()
+            if latest ~= pack:get_installed_version() then
                 install_package(pack, true)
-            end)
+            end
         else
             install_package(pack)
         end
@@ -68,6 +66,7 @@ local opts = {
 ---@type LazySpec
 local M = {
     "williamboman/mason.nvim",
+    branch = "v2.x",
     event = { "VeryLazy" },
     init = function()
         -- make packages available before Mason is actually loaded
