@@ -223,8 +223,8 @@ add_with_prefix(colorscheme, "@", {
     ["variable.builtin"]             = { fg = pal.fg0, italic = true },
     ["variable.parameter.builtin"]   = { fg = col.light_blue, italic = true },
 
-    ["constant"]                     = { fg = col.yellow },
-    ["constant.builtin"]             = { fg = pal.fg2 },
+    ["constant"]                     = { fg = col.fg3 },
+    ["constant.builtin"]             = { fg = col.fg3 },
 
     ["type"]                         = { fg = col.magenta },
     ["type.builtin"]                 = { fg = col.purple },
@@ -302,10 +302,13 @@ add_with_prefix(colorscheme, "@", {
 })
 -- }}}
 
--- LSP overrides {{{
+-- LSP semantic highlights {{{
 add_with_prefix(colorscheme, "@lsp.", {
     ["type.macro"]                      = { link = "@macro" },
+    ["type.enum"]                       = { fg = col.yellow, },
+
     ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
+
     ["typemod.function.defaultLibrary"] = { link = "@function.builtin" },
     -- so --HACK etc work
     ["type.comment"]                    = {},
@@ -530,7 +533,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     KindClass           = { link = "*ItemKindInterface" },
     KindConstant        = { fg = col.yellow },
     KindConstructor     = { fg = col.magenta },
-    KindEnumMember      = { fg = col.yellow },
+    KindEnumMember      = { fg = pal.fg0 },
     KindField           = { fg = pal.fg0 },
     KindFile            = { fg = col.yellow },
     KindFolder          = { fg = col.light_blue },

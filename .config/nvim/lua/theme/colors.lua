@@ -45,6 +45,7 @@ local dark_palette = {
     fg0 = named_colors.white,
     fg1 = named_colors.darker_white,
     fg2 = named_colors.dark_white,
+    fg3 = named_colors.darkest_white,
 
     bg01 = named_colors.darkest_gray,
     inverted = named_colors.black,
@@ -57,8 +58,9 @@ local light_palette = {
     bg3 = named_colors.darkest_white,
 
     fg0 = named_colors.black,
-    fg1 = named_colors.dark_gray,
-    fg2 = named_colors.bright_gray,
+    fg1 = named_colors.darkest_gray,
+    fg2 = named_colors.dark_gray,
+    fg3 = named_colors.bright_gray,
 
     bg01 = named_colors.darker_white,
     inverted = named_colors.black,
