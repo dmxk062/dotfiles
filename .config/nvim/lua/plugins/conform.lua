@@ -14,12 +14,14 @@ local M = {
     }
 }
 
+---@type conform.setupOpts
 M.opts = {
     formatters_by_ft = {
         lua  = { "stylua" },
         c    = { "clang-format" },
         json = { "jq" },
         bash = { "shfmt" },
+        _    = { "trim_whitespace" },
     },
     default_format_opts = {
         lsp_format = "fallback"
@@ -44,10 +46,10 @@ M.opts = {
         shfmt = {
             inherit = true,
             append_args = function(self, ctx)
-                if vim.bo[ctx.buf].expandtab then 
-                    return ctx.shiftwidth
+                if vim.bo[ctx.buf].expandtab then
+                    return tostring(ctx.shiftwidth)
                 else
-                    return 0
+                    return "0"
                 end
             end
         }

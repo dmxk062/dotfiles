@@ -1,6 +1,7 @@
 local builtin_picker_maps = {
     ["custom.jumplist"] = "<space><C-o>",
     buffers = "<space><space>",
+    command_history = "<space>:",
     diagnostics = "<space>D",
     find_files = "<space>F",
     grep_string = "<space>*",
@@ -205,6 +206,10 @@ opts.pickers = {
     man_pages = default_config {
         prompt_prefix = ":man ",
         sections = { "ALL" },
+    },
+    command_history = default_config {
+        create_layout = custom "short_layout",
+        prompt_prefix = ": ",
     },
     search_history = default_config {
         create_layout = custom "short_layout",
