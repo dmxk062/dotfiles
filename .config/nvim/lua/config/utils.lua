@@ -118,6 +118,7 @@ M.btypehighlights = {
     help = "Help",
     region = "Region",
     scratch = "Scratch",
+    overlay = "Overlay",
 }
 
 M.btypesymbols = {
@@ -131,6 +132,7 @@ M.btypesymbols = {
     special = "*",
     help = "?",
     region = ">",
+    overlay = "_",
 }
 
 -- }}}

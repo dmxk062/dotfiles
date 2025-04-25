@@ -8,8 +8,11 @@ e.g.
 }}} ]]
 
 ---@class config.overlay
----@field detach fun(buf: integer)
----@field attach fun(buf: integer): boolean
+---@field name string
+---@field writeable boolean
+---@field detach fun(realbuf: integer, drawbuf: integer)
+---@field attach fun(realbuf: integer, drawbuf: integer): boolean
+---@field write fun(realbuf: integer, drawbuf: integer): boolean
 ---@field state table
 
 local M = {}
@@ -17,16 +20,23 @@ local api = vim.api
 
 local function attach_to_buf(buf, name, args)
     local overlay = require("config.overlays." .. name)
-    local ok = overlay.attach(buf, args)
+    local drawbuf = api.nvim_create_buf(true, false)
+    api.nvim_set_current_buf(drawbuf)
+
+    local ok = overlay.attach(buf, drawbuf)
 
     if not ok then
+        api.nvim_buf_delete(drawbuf, { force = true })
         return
     end
 
+    vim.b[drawbuf].special_buftype = "overlay"
+
     -- quit the overlay
-    api.nvim_buf_create_user_command(buf, "Oq", function()
-        api.nvim_buf_del_user_command(buf, "Oq")
-        overlay.detach(buf)
+    api.nvim_buf_create_user_command(drawbuf, "Oq", function()
+        api.nvim_buf_del_user_command(drawbuf, "Oq")
+        overlay.detach(buf, drawbuf)
+        api.nvim_buf_delete(drawbuf, { force = true })
     end, { desc = "Quit Overlay" })
 end
 
@@ -45,20 +55,21 @@ local function buf_match_magic(buf, max_length, magic)
 end
 
 -- magic numbers for which to use xxd
-M.binary_magic_numbers = {
+M.elf_magic_numbers = {
     ELF = "\x7fELF",
 }
 
 api.nvim_create_autocmd("BufReadPost", {
     callback = function(ev)
-        if buf_match_magic(ev.buf, 10, M.binary_magic_numbers) then
-            attach_to_buf(ev.buf, "xxd")
+        if buf_match_magic(ev.buf, 10, M.elf_magic_numbers) then
+            attach_to_buf(ev.buf, "objdump")
         end
     end
 })
 
 local modes = {
-    "xxd"
+    "xxd",
+    "objdump"
 }
 
 api.nvim_create_user_command("Overlay", function(args)
