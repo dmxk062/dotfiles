@@ -224,7 +224,6 @@ require("config.mappings")     -- set all the mappings
 require("config.commands")     -- global custom commands
 require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
-require("config.overlays")     -- specialized file operations
 require("config.lsp")          -- language servers
 
 -- load ui components
