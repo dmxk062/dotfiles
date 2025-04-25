@@ -203,8 +203,8 @@ map("n", "+l", function() add_qf_item(true) end)
 map("n", "-q", function() rem_qf_item() end)
 map("n", "-l", function() rem_qf_item(true) end)
 
-map("n", "<space>qr", function() require("quicker").refresh() end)
-map("n", "<space>lr", function() require("quicker").refresh(0) end)
+map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true}) end)
+map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true}) end)
 
 -- toggle them
 map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)

@@ -102,7 +102,15 @@ local lua_attach_to_eval_buffer = function(scratch)
         api.nvim_buf_clear_namespace(scratch.buf, ns, 0, -1)
         vim.diagnostic.reset(ns, scratch.buf)
         local lines = api.nvim_buf_get_lines(scratch.buf, 0, -1, false)
-        if not lines[1]:match("!autoeval") and not mapping then
+
+        local autoeval = false
+        for i = 1, math.max(#lines or 9) do
+            if lines[i]:match("%[x]%s*autoeval") then
+                autoeval = true
+                break
+            end
+        end
+        if not autoeval then
             return
         end
 
@@ -143,10 +151,12 @@ local filetypes = {
     lua = {
         ext = ".lua",
         template = {
-            "--* INFO: !autoeval, delete to disable *--",
-            "local map, filter, extend = vim.tbl_map, vim.tbl_filter, vim.tbl_extend",
-            "local api, fn, env = vim.api, vim.fn, vim.env",
-            "--* INFO: Lua Scratch-Eval Buffer *--",
+            "---@diagnostic disable-next-line: unused-local",
+            "local api, fn, env, map, filter, extend = vim.api, vim.fn, vim.env, vim.tbl_map, vim.tbl_filter, vim.tbl_extend",
+            "--[[ INFO: Lua Scratch-Eval Buffer",
+            "[x] autoeval",
+            "--]]",
+            "",
             "",
         },
         attach = lua_attach_to_eval_buffer
@@ -182,6 +192,7 @@ M.show_scratch_buffer = function(opts)
 
     local bo = vim.bo[buf]
     bo.buflisted = true
+    bo.swapfile = false
 
     vim.b[buf].special_buftype = "scratch"
 
