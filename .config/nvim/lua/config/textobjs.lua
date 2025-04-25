@@ -207,7 +207,9 @@ M.variable_value = M.create_textobj(function(pos, lcount, opts)
     local node = vim.treesitter.get_node { bufnr = 0, pos = { lnum - 1, eq_value_pos } }
     if node then
         local sline, scol, eline, ecol = vim.treesitter.get_node_range(node)
-        return { { sline + 1, scol }, { eline + 1, ecol - 1 } }, "char"
+        if eline > lnum then -- don't try to use treesitter if it's only a part of the line
+            return { { sline + 1, scol }, { eline + 1, ecol - 1 } }, "char"
+        end
     end
 
     -- otherwise at least try to avoid common suffixes
