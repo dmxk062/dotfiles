@@ -7,7 +7,13 @@ local M = {
 local text_types = {
     "text",
     "markdown",
-    "typst"
+    "typst",
+    "latex",
+}
+
+local markup_types = {
+    "typst",
+    "markdown"
 }
 
 local xml_types = {
@@ -31,10 +37,11 @@ M.opts = {
         -- don't mess up my apostrophes
         ["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = text_types },
         ["`"] = { escape = true, close = true, pair = "``" },
-        ["$"] = { escape = true, close = true, pair = "$$", enabled_filetypes = { "latex" } },
+        ["$"] = { escape = true, close = true, pair = "$$", enabled_filetypes = markup_types },
     },
     options = {
         disable_when_touch = true,
+        touch_regex = "[%w(%[{\"]",
         pair_spaces = false,
         disabled_filetypes = {
         },
