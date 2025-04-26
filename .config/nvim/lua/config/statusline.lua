@@ -243,11 +243,15 @@ local function update_words()
         and math.abs(fn.getpos("v")[2] - api.nvim_win_get_cursor(0)[1]) + 1
         or api.nvim_buf_line_count(0)
 
-    return string.format("%%#SlWords#%2dw %%#SlChars#%2dc %%#SlBytes#%2db %%#SlLines#%2dl",
-        count.visual_words or count.words,
-        count.visual_chars or count.chars,
-        count.visual_bytes or count.bytes,
-        linecount
+    local words = count.visual_words or count.words
+    local chars = count.visual_chars or count.chars
+    local bytes = count.visual_bytes or count.bytes
+
+    return string.format("%%#SlWords#%sw %%#SlChars#%sc %%#SlBytes#%sb %%#SlLines#%sl",
+        utils.format_count(words),
+        utils.format_count(chars),
+        utils.format_count(bytes),
+        utils.format_count(linecount)
     )
 end
 -- }}}

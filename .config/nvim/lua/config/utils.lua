@@ -621,6 +621,25 @@ M.format_size = function(bytes)
 
     return ("%.2f%s"):format(bytes, sizes[i])
 end
+
+--- Things other than byte sizes, e.g. kilo-lines
+M.format_count = function(count)
+    if count < 1000 then
+        return tostring(count)
+    end
+
+    local sizes = {
+        "", "k", "m", "g", "t"
+    }
+
+    local i = 1
+    while count >= 1000 do
+        count = count / 1000
+        i = i + 1
+    end
+
+    return ("%.1f%s"):format(count, sizes[i])
+end
 -- }}}
 
 -- Git {{{
