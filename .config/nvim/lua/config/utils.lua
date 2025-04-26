@@ -609,6 +609,10 @@ M.highlight_size = function(bytes)
 end
 
 M.format_size = function(bytes)
+    if bytes < 1024 then
+        return bytes .. "b"
+    end
+
     local sizes = {
         "b", "kb", "mb", "gb", "tb"
     }
@@ -619,7 +623,7 @@ M.format_size = function(bytes)
         i = i + 1
     end
 
-    return ("%.2f%s"):format(bytes, sizes[i])
+    return ("%.1f%s"):format(bytes, sizes[i])
 end
 
 --- Things other than byte sizes, e.g. kilo-lines
