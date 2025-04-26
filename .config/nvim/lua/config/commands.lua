@@ -149,5 +149,5 @@ end, {
 -- }}}
 
 api.nvim_create_user_command("Dash", function(args)
-    require("config.welcome").show()
+    require("config.dashboard").show()
 end, {})
