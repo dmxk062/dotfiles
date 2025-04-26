@@ -29,7 +29,7 @@ local builtin_validators = {
         return str:match("^%-?%s*%d+%s*$") and true or false
     end,
     float = function(str)
-        return str:match("^%s*%-?%d+%.?%d*%s*$") and true or false
+        return tonumber(str) ~= nil
     end,
     bool = function(str)
         local keywords = {
@@ -73,6 +73,8 @@ local function form_highlight_and_validate(state, validate, start, stop)
         if not validate or builtin_validators[typ](line) then
             hlgroup = type_hl_groups[typ]
             state.values[entry.key] = line
+        else
+            state.values[entry.key] = nil
         end
 
         api.nvim_buf_set_extmark(buf, hlns, row, 0, {
@@ -85,7 +87,7 @@ end
 
 local parsers = {
     int = function(s)
-        return math.floor(tonumber(s, 10))
+        return math.floor(tonumber(s))
     end,
     float = tonumber,
     bool = function(s)
@@ -106,7 +108,11 @@ local parsers = {
 local function form_parse_values(state)
     local res = {}
     for _, entry in ipairs(state.entries) do
-        res[entry.key] = parsers[entry.type](state.values[entry.key])
+        local value = parsers[entry.type](state.values[entry.key])
+        if not value then
+            error("Invalid value")
+        end
+        res[entry.key] = value
     end
 
     return res
