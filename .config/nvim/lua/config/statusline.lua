@@ -247,10 +247,10 @@ local function update_words()
     local chars = count.visual_chars or count.chars
     local bytes = count.visual_bytes or count.bytes
 
-    return string.format("%%#SlWords#%sw %%#SlChars#%sc %%#SlBytes#%sb %%#SlLines#%sl",
+    return string.format("%%#SlWords#%sw %%#SlChars#%sc %%#SlBytes#%s %%#SlLines#%sl",
         utils.format_count(words),
         utils.format_count(chars),
-        utils.format_count(bytes),
+        utils.format_size(bytes),
         utils.format_count(linecount)
     )
 end
