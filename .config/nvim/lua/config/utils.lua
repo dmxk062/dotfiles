@@ -610,7 +610,7 @@ end
 
 M.format_size = function(bytes)
     local sizes = {
-        "B", "K", "M", "G", "T"
+        "b", "kb", "mb", "gb", "tb"
     }
 
     local i = 1
