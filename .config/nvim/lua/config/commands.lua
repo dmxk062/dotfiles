@@ -1,5 +1,6 @@
 local api = vim.api
 local terminal = require("config.terminal")
+local command = api.nvim_create_user_command
 
 -- Zoxide {{{
 local function get_zoxide_result(path)
@@ -23,7 +24,7 @@ local function complete_zoxide(l, line, cpos)
 end
 
 -- Use zoxide to edit a directory using oil
-vim.api.nvim_create_user_command("Zed", function(args)
+command("Zed", function(args)
     local name = args.fargs[1]
     local dir = get_zoxide_result(name)
     if not dir or dir == "" then
@@ -37,7 +38,7 @@ vim.api.nvim_create_user_command("Zed", function(args)
 end, {
     nargs = 1,
     complete = complete_zoxide,
-    desc = "Use zoxide to open dir in an oil buffer"
+    desc = "Use zoxide to open DIR in an oil buffer"
 })
 
 local zcd_func = function(args)
@@ -55,8 +56,8 @@ local zcd_args = {
     complete = complete_zoxide,
     desc = ":lcd using zoxide"
 }
-vim.api.nvim_create_user_command("Z", zcd_func, zcd_args)
-vim.api.nvim_create_user_command("Zcd", zcd_func, zcd_args)
+command("Z", zcd_func, zcd_args)
+command("Zcd", zcd_func, zcd_args)
 -- }}}
 
 -- Automatic Split {{{
@@ -85,19 +86,20 @@ local function smart_split(args)
 end
 
 local split_cmd_opts = {
+    desc = "Split based on spiral layout",
     complete = "file",
     nargs = "?",
     count = 0,
 }
 
-vim.api.nvim_create_user_command("Sp", smart_split, split_cmd_opts)
-vim.api.nvim_create_user_command("Split", smart_split, split_cmd_opts)
+command("Sp", smart_split, split_cmd_opts)
+command("Split", smart_split, split_cmd_opts)
 -- }}}
 
 -- Shell Utils {{{
 
 ---Set qflist/loclist (with !bang) to result of command
-api.nvim_create_user_command("Csh", function(args)
+command("Csh", function(args)
     local command = args.fargs
     local exit = vim.system(command, {
         text = true
@@ -125,22 +127,33 @@ api.nvim_create_user_command("Csh", function(args)
     else
         vim.fn.setqflist(items)
     end
-end, { complete = "shellcmd", nargs = "+", bang = true })
+end, {
+    desc = "Populate qflist (or loclist with !) with shell command",
+    complete = "shellcmd",
+    nargs = "+",
+    bang = true
+})
 
 ---Run a single command in a floating window
-api.nvim_create_user_command("Ft", function(args)
+command("Ft", function(args)
     terminal.open_term {
         position = "float",
         cmd = #args.fargs > 0 and args.fargs or nil,
         autoclose = args.bang,
     }
-end, { complete = "shellcmd", nargs = "*", bang = true })
+end, {
+    desc = "Run CMD in floating terminal",
+    complete = "shellcmd",
+    nargs = "*",
+    bang = true
+})
 -- }}}
 
 -- Spell {{{
-api.nvim_create_user_command("Spell", function(args)
+command("Spell", function(args)
     return require("config.spell").spell_cmd(args)
 end, {
+    desc = "Set spelling",
     complete = function(...)
         return require("config.spell").spell_cmd_complete(...)
     end,
@@ -148,6 +161,81 @@ end, {
 })
 -- }}}
 
-api.nvim_create_user_command("Dash", function(args)
+-- LSP {{{
+local lsp_complete_clients = function()
+    return vim.tbl_map(function(client)
+        return client.name
+    end, vim.lsp.get_clients { bufnr = 0 })
+end
+
+local iter_clients = function(buf, name)
+    return ipairs(vim.lsp.get_clients { bufnr = buf, name = name })
+end
+
+command("LspStop", function(args)
+    local buf = api.nvim_get_current_buf()
+    for _, client in iter_clients(buf, args.fargs[1]) do
+        client:stop()
+    end
+end, {
+    desc = "Stop LSP servers",
+    nargs = "*",
+    complete = lsp_complete_clients,
+})
+
+command("LspRestart", function(args)
+    local buf = api.nvim_get_current_buf()
+    for _, client in iter_clients(buf, args.fargs[1]) do
+        local bufs = vim.deepcopy(client.attached_buffers)
+        client:stop()
+        vim.wait(20000, function()
+            return vim.lsp.get_client_by_id(client.id) == nil
+        end)
+
+        local new_id = vim.lsp.start(client.config)
+        if new_id then
+            for b in pairs(bufs) do
+                vim.lsp.buf_attach_client(b, new_id)
+            end
+        end
+    end
+end, {
+    desc = "Restart LSP servers",
+    nargs = "*",
+    complete = lsp_complete_clients,
+})
+
+command("LspInfo", function(args)
+    local buf = api.nvim_get_current_buf()
+    for _, client in iter_clients(buf, args.fargs[1]) do
+        local buffers = { table.concat(vim.tbl_keys(client.attached_buffers), ", "), "Number" }
+        local cmd = { vim.inspect(client.config.cmd) }
+        local rootdir = { client.root_dir or "nil", client.root_dir and "Directory" or "NonText" }
+
+        local message = {
+            { "\n" .. client.name, "Title" },
+            { "\nBuffers: ",       "@property" }, buffers,
+            { "\nCommand: ", "@property" }, cmd,
+            { "\nRoot: ",    "@property" }, rootdir,
+        }
+
+        if client.server_info then
+            vim.list_extend(message, {
+                { "\nName: ",    "@property" }, { client.server_info.name, "Identifier" },
+                { "\nVersion: ", "@property" }, { client.server_info.version, "SpecialChar" }
+            })
+        end
+
+        api.nvim_echo(message, false, {})
+    end
+end, {
+    desc = "Show LSP servers",
+    nargs = "*",
+    complete = lsp_complete_clients
+})
+
+-- }}}
+
+command("Dash", function(args)
     require("config.dashboard").show()
-end, {})
+end, { desc = "Open dashboard" })
