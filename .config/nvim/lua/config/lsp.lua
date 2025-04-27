@@ -94,6 +94,8 @@ local on_lsp_attached = function(ev)
             return { "on", "off" }
         end
     })
+
+    require("workspace-diagnostics").populate_workspace_diagnostics(client, buf)
 end
 
 local on_lsp_detached = function(ev)
