@@ -246,7 +246,7 @@ local function get_buf_idx()
     return target
 end
 
--- go to the buffer given in count
+-- go to the buffer given in v:count
 local goto_buf = function()
     if vim.v.count == 0 then
         vim.cmd.bnext()
@@ -290,7 +290,6 @@ map("n", bufleader .. "t", function() open_buf_in("tab") end)
 map("n", bufleader .. "f", function() open_buf_in("float") end)
 map("n", bufleader .. "a", function() open_buf_in("autosplit") end)
 map("n", bufleader .. "r", function() open_buf_in("replace") end)
-
 
 local delete_buffer = function(buf)
     local ok = pcall(api.nvim_buf_delete, buf, {})
