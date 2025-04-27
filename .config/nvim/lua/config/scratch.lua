@@ -20,8 +20,7 @@ local M = {}
 ---@type table<string, config.scratch.buf>
 local state = {}
 
-
--- Evaluators {{{
+-- Lua {{{
 local ns = api.nvim_create_namespace("config.scratch")
 
 ---@param scratch config.scratch.buf
@@ -98,19 +97,21 @@ local lua_attach_to_eval_buffer = function(scratch)
         })
     end
 
-    local function update(mapping)
+    local function update(force)
         api.nvim_buf_clear_namespace(scratch.buf, ns, 0, -1)
         vim.diagnostic.reset(ns, scratch.buf)
         local lines = api.nvim_buf_get_lines(scratch.buf, 0, -1, false)
 
-        local autoeval = false
-        for i = 1, math.max(#lines or 9) do
-            if lines[i]:match("%[x]%s*autoeval") then
-                autoeval = true
-                break
+        local do_eval = force
+        if not do_eval then
+            for i = 1, math.max(#lines or 9) do
+                if lines[i]:match("%[x]%s*autoeval") then
+                    do_eval = true
+                    break
+                end
             end
         end
-        if not autoeval then
+        if not do_eval then
             return
         end
 
@@ -139,7 +140,9 @@ local lua_attach_to_eval_buffer = function(scratch)
     vim.keymap.set("n", "<cr>", function() update(true) end, { buffer = scratch.buf })
     update(false)
 end
+-- }}}
 
+-- Markdown {{{
 ---@param scratch config.scratch.buf
 local markdown_attach_to_buffer = function(scratch)
 end
@@ -202,8 +205,8 @@ M.show_scratch_buffer = function(opts)
         api.nvim_buf_set_lines(buf, 0, -1, false, template)
         bo.modified = false
     end
-    api.nvim_win_set_cursor(win, { #template, 0 })
 
+    api.nvim_win_set_cursor(win, { math.min(#template, api.nvim_buf_line_count(buf)), 0 })
 
     local instance = {
         buf = buf,
