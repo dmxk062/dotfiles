@@ -203,8 +203,8 @@ map("n", "+l", function() add_qf_item(true) end)
 map("n", "-q", function() rem_qf_item() end)
 map("n", "-l", function() rem_qf_item(true) end)
 
-map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true}) end)
-map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true}) end)
+map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true }) end)
+map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true }) end)
 
 -- toggle them
 map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
@@ -419,6 +419,7 @@ map("n", termleader .. "v", function() terminal.open_term { position = "vertical
 map("n", termleader .. "x", function() terminal.open_term { position = "replace" } end)
 map("n", termleader .. "f", function() terminal.open_term { position = "float" } end)
 map("n", termleader .. "a", function() terminal.open_term { position = "autosplit" } end)
+map("n", "<C-;>", function() terminal.open_term { position = "autosplit" } end)
 map("n", termleader .. "t", function() terminal.open_term { position = "autosplit" } end)
 
 -- lf integrates nicely by calling nvr when it needs to open stuff

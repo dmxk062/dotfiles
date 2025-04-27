@@ -312,12 +312,13 @@ M.opts = {
 
 M.config = function(_, opts)
     local map = utils.map
-    require("oil").setup(opts)
+    local oil = require("oil")
+    oil.setup(opts)
 
     -- change directory if not ssh, only for current window
     utils.user_autogroup("config.oil", {
         OilEnter = function()
-            local dir = require("oil").get_current_dir()
+            local dir = oil.get_current_dir()
             if dir then
                 vim.fn.chdir(dir)
             end
@@ -325,28 +326,33 @@ M.config = function(_, opts)
     })
 
     -- [p]arent, why use <C-p> if k exists
-    map("n", "<C-p>", require("oil").open)
+    map("n", "<C-p>", oil.open)
 
     local prefix = "<space>f"
-    map("n", prefix .. "f", require("oil").open)
+    map("n", prefix .. "f", oil.open)
+
+    map("n", "<C-'>", function()
+        vim.cmd("Split")
+        oil.open()
+    end)
 
     map("n", prefix .. "s", function()
         vim.cmd("split")
-        require("oil").open()
+        oil.open()
     end)
     map("n", prefix .. "S", function()
         vim.cmd("aboveleft split")
-        require("oil").open()
+        oil.open()
     end)
     map("n", prefix .. "v", function()
         vim.cmd("vsplit")
-        require("oil").open()
+        oil.open()
     end)
     map("n", prefix .. "V", function()
         vim.cmd("aboveleft vsplit")
-        require("oil").open()
+        oil.open()
     end)
-    map("n", prefix .. "F", require("oil").open_float)
+    map("n", prefix .. "F", oil.open_float)
 
     require("oil-git-status").setup {}
 end
