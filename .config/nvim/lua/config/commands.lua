@@ -233,7 +233,49 @@ end, {
     nargs = "*",
     complete = lsp_complete_clients
 })
+-- }}}
 
+-- Utilities {{{
+local SHEBANG_NAMES = {
+    awk = "/usr/bin/env -S awk -f",
+    bash = "/usr/bin/env bash",
+    lua = "/usr/bin/env luajit",
+    python = "/usr/bin/env python",
+    sh = "/bin/sh",
+    zsh = "/usr/bin/env zsh",
+}
+
+command("Shebang", function(args)
+    local shebang
+    if args.fargs[1] then
+        shebang = SHEBANG_NAMES[args.args] or ("/usr/bin/env " .. args.args)
+    else
+        shebang = SHEBANG_NAMES[vim.bo.ft]
+    end
+
+    if not shebang then
+        vim.notify("No shebang for " .. vim.bo.ft, vim.log.levels.ERROR)
+        return
+    end
+
+    api.nvim_buf_set_lines(0, 0, 0, false, {
+        "#!" .. shebang,
+        ""
+    })
+
+    -- make the file executable when it's first written
+    api.nvim_create_autocmd("BufWritePost", {
+        command = "silent !chmod u+x %",
+        buffer = 0,
+        once = true,
+    })
+end, {
+    desc = "Add a SHEBANG for the current buffer",
+    nargs = "*",
+    complete = function()
+        return vim.tbl_keys(SHEBANG_NAMES)
+    end
+})
 -- }}}
 
 command("Dash", function(args)
