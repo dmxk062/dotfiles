@@ -247,7 +247,12 @@ local function get_buf_idx()
 end
 
 -- go to the buffer given in count
-map("n", bufleader .. bufleader, function()
+local goto_buf = function()
+    if vim.v.count == 0 then
+        vim.cmd.bnext()
+        return
+    end
+
     local target = get_buf_idx()
     if not target then return end
 
@@ -261,7 +266,10 @@ map("n", bufleader .. bufleader, function()
     if not ok then
         vim.cmd.bprevious()
     end
-end)
+end
+
+map("n", "<cr>", goto_buf)
+map("n", bufleader .. bufleader, goto_buf)
 
 ---@param dir config.win.position
 ---@param opts config.win.opts?
@@ -413,13 +421,14 @@ abbrev("c", "s!", "horizontal") -- same for consistency
 
 -- Terminal {{{
 local terminal = require("config.terminal")
+map("n", "<C-;>", function() terminal.open_term { position = "autosplit" } end)
+
 local termleader = "<space>t"
 map("n", termleader .. "s", function() terminal.open_term { position = "horizontal" } end)
 map("n", termleader .. "v", function() terminal.open_term { position = "vertical" } end)
 map("n", termleader .. "x", function() terminal.open_term { position = "replace" } end)
 map("n", termleader .. "f", function() terminal.open_term { position = "float" } end)
 map("n", termleader .. "a", function() terminal.open_term { position = "autosplit" } end)
-map("n", "<C-;>", function() terminal.open_term { position = "autosplit" } end)
 map("n", termleader .. "t", function() terminal.open_term { position = "autosplit" } end)
 
 -- lf integrates nicely by calling nvr when it needs to open stuff
