@@ -224,9 +224,12 @@ map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]]
 
 -- Buffers & Windows {{{
 local bufleader = "'"
-map("n", bufleader, "<nop>")      -- there still is ` for marks, ' is on the home row, soooo nice
 
-map("n", "<C-s>", "<cmd>b #<cr>") -- faster altfile, mnemonic: [s]econd, also allows remapping <C-6>
+-- there still is ` for marks, ' is on the home row, soooo nice
+map("n", bufleader, "<nop>")
+
+-- faster altfile, mnemonic: [s]econd, also allows remapping <C-6>
+map("n", "<C-s>", "<cmd>b #<cr>")
 map("n", bufleader .. "j", "<cmd>bnext<cr>")
 map("n", bufleader .. "k", "<cmd>bprev<cr>")
 
