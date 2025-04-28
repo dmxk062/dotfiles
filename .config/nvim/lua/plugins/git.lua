@@ -18,28 +18,6 @@ TODO: give other git plugins (i.e. lazygit) a serious try
 -- last buffer for :G, to be relative to the current file with <space>gg
 local git_relative_buf
 
-local global_git_maps = function()
-    local map = function(mode, lhs, rhs, opts)
-        vim.keymap.set(mode, "<space>g" .. lhs, rhs, opts)
-    end
-
-    -- limit max commit count to count * 100, use 99 to get all for most repos
-    map("n", "L", function()
-        local max = vim.v.count > 0 and vim.v.count * 100 or 100
-        local cmd = "log --stat --max-count=" .. max
-        vim.cmd.Git(cmd)
-    end, { desc = "Git: Log" })
-    map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
-    map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
-    map("n", "C", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
-    map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
-
-    map("n", "g", function()
-        git_relative_buf = vim.api.nvim_get_current_buf()
-        vim.cmd("Git")
-    end, { desc = "Git: Status" })
-end
-
 local map_on_git_buffer = function(buf)
     local gitsigns = require("gitsigns")
     local utils = require("config.utils")
@@ -121,7 +99,25 @@ M[1].opts = {
 
 -- fugitive {{{
 M[2].config = function()
-    global_git_maps()
+    local map = function(mode, lhs, rhs, opts)
+        vim.keymap.set(mode, "<space>g" .. lhs, rhs, opts)
+    end
+
+    -- limit max commit count to count * 100, use 99 to get all for most repos
+    map("n", "L", function()
+        local max = vim.v.count > 0 and vim.v.count * 100 or 100
+        local cmd = "log --stat --max-count=" .. max
+        vim.cmd.Git(cmd)
+    end, { desc = "Git: Log" })
+    map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
+    map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
+    map("n", "C", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
+    map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
+
+    map("n", "g", function()
+        git_relative_buf = vim.api.nvim_get_current_buf()
+        vim.cmd("Git")
+    end, { desc = "Git: Status" })
 
     vim.g.fugitive_dynamic_colors = false
     local utils = require("config.utils")
