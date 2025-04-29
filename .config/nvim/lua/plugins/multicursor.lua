@@ -14,8 +14,6 @@ Ways to add cursors:
 - motion: <M-c><motion>
 - search: /<search term><cr><C-c>/
 - word match (like *):
-    - next: <C-n>
-    - prev: <C-p>
     - all: <C-c>*
     - in scope: <C-c>w<motion>
     - custom match in scope: <C-c>o<motion><motion>
