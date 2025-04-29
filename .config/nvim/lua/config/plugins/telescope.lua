@@ -140,7 +140,7 @@ end
 -- }}}
 -- }}}
 
-local MAX_FILENAME_WIDTH = 24
+local MAX_FILENAME_WIDTH = 32
 local MAX_SYMBOL_WIDTH = 60
 local MAX_FILEPARENT_WIDTH = 24
 local ROW_COL_WIDTH = 11
