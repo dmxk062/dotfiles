@@ -313,7 +313,7 @@ do
     for _, action in ipairs(actions) do
         table.insert(Actions.items, {
             map = action.key,
-            left = { { " " .. action.key .. " ", "Constant" }, { action[1], "Dashboard" .. action.hl } },
+            left = { { " " .. action.key .. " ", "SpecialChar" }, { action[1], "Dashboard" .. action.hl } },
             right = { { action.desc, "Comment" } },
             data = {},
             callback = action.on_click,
