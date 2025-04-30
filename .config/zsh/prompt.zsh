@@ -79,10 +79,10 @@ function _update_git_status {
 
 
 # left part of prompt, git part
-PROMPT="%F{8}╭%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
+PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
 # left part of prompt, current directory
 PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b%(10V.%F{8} [ro] .)
-%F{8}╰╴%f "
+ "
 
 # right part of prompt, previous command status
 # HACK: draw right prompt one line higher
@@ -175,8 +175,8 @@ function TRAPUSR1 {
 PS2="%F{8}%_ │%f "
 
 # sudo prompt
-print -P -v SUDO_PROMPT "\n%F{8}╭%B%F{red}%S sudo%s%f%b
-%F{8}╰╴%f "
+print -P -v SUDO_PROMPT "\n%B%F{red}%S sudo%s%f%b
+"
 export SUDO_PROMPT
 
 # only the default, i have a couple more functions planed for this
