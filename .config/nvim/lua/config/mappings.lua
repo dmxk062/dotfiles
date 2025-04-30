@@ -832,7 +832,7 @@ map("n", cdleader .. "l", function()
             elem = elem + 1
         end
 
-        vim.cmd.lcd(spath[elem])
+        vim.cmd.lcd("./" .. spath[elem])
     end
 end)
 
