@@ -183,22 +183,42 @@ end, {
     complete = lsp_complete_clients,
 })
 
-command("LspRestart", function(args)
-    local buf = api.nvim_get_current_buf()
-    for _, client in iter_clients(buf, args.fargs[1]) do
-        local bufs = vim.deepcopy(client.attached_buffers)
-        client:stop()
-        vim.wait(20000, function()
-            return vim.lsp.get_client_by_id(client.id) == nil
-        end)
+command("LspStart", function(args)
+    vim.lsp.start(vim.lsp.config[args.args])
+end, {
+    desc = "Manually start LSP server",
+    nargs = 1,
+    complete = function()
+        return vim.tbl_keys(vim.lsp._enabled_configs)
+    end
+})
 
-        local new_id = vim.lsp.start(client.config)
-        if new_id then
-            for b in pairs(bufs) do
-                vim.lsp.buf_attach_client(b, new_id)
+command("LspRestart", function(args)
+    local detached = {}
+    for _, client in iter_clients(api.nvim_get_current_buf(), args.fargs[1]) do
+        if vim.tbl_count(client.attached_buffers) > 0 then
+            detached[client.name] = { client, vim.lsp.get_buffers_by_client_id(client.id) }
+        end
+        client:stop()
+    end
+    local timer = assert(vim.uv.new_timer())
+    timer:start(500, 100, vim.schedule_wrap(function()
+        for name, info in pairs(detached) do
+            ---@type vim.lsp.Client, integer[]
+            local client, buffers = unpack(info)
+            if client:is_stopped() then
+                local new_id = assert(vim.lsp.start(client.config, { attach = false }))
+                for _, buf in pairs(buffers) do
+                    vim.lsp.buf_attach_client(buf, new_id)
+                end
+                detached[name] = nil
             end
         end
-    end
+
+        if next(detached) == nil and not timer:is_closing() then
+            timer:close()
+        end
+    end))
 end, {
     desc = "Restart LSP servers",
     nargs = "*",
