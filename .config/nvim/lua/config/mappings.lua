@@ -559,33 +559,28 @@ map("o", "=", textobjs.variable_value)
 
 -- Forms {{{
 -- templated insert
-map("n", "<space>i", function()
-    ui.form {
-        title = "Template Insert",
-        entries = {
-            { name = "Start Value", key = "start", type = "float",  initial = "1" },
-            { name = "Value Step",  key = "step",  type = "float",  initial = "1" },
-            { name = "End Value",   key = "stop",  type = "float",  initial = "9" },
-            { name = "Separator",   key = "sep",   type = "string", initial = "\\n" },
-            { name = "Format",      key = "fmt",   type = "string", initial = "%d." }
-        },
-        on_completed = function(values)
-            local res = {}
-            for i = values.start, values.stop, values.step do
-                table.insert(res, values.fmt:format(i))
-            end
-            local concat = table.concat(res, values.sep)
-            local lines = vim.split(concat, "\n")
+local iterative_insert = [[
+local result = {}
 
-            local cursor = api.nvim_win_get_cursor(0)
-            if values.sep:match("\n") then
-                api.nvim_buf_set_lines(0, cursor[1], cursor[1], false, lines)
-            else
-                api.nvim_buf_set_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2], lines)
-            end
+for i = ${1:1}, ${2:10}, ${3:1} do
+    local value = ("${4:%d}"):format(i)
+    table.insert(result, value)
+end
+
+return table.concat(result, "\n")]]
+map("n", "<space>i", function()
+    local res = ui.evaluate_lua {
+        template = iterative_insert,
+        type = "string",
+        layout = {
+            direction = "below",
+        },
+        callback = function(value)
+            vim.paste(vim.split(value, "\n"), -1)
         end
     }
 end)
+
 -- }}}
 
 -- Scratches {{{

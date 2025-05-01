@@ -1,4 +1,5 @@
 local M = {}
+local fn = vim.fn
 local api = vim.api
 local ns = api.nvim_create_namespace("config.ui.ui")
 local hlns = api.nvim_create_namespace("config.ui.hl")
@@ -232,9 +233,9 @@ M.nvim_input_omnifunc = function(start, base)
                 return {}
             end
 
-            ret = luafunc(base, base, vim.fn.strlen(base))
+            ret = luafunc(base, base, fn.strlen(base))
         else
-            ret = vim.fn[func](base, base, vim.fn.strlen(base))
+            ret = fn[func](base, base, fn.strlen(base))
         end
         if parts[1] == "custom" then
             ret = vim.split(ret, "\n", { plain = true })
@@ -243,7 +244,7 @@ M.nvim_input_omnifunc = function(start, base)
         return ret
     end
 
-    local ok, result = pcall(vim.fn.getcompletion, base, compl)
+    local ok, result = pcall(fn.getcompletion, base, compl)
     if ok then
         return result
     else
@@ -326,7 +327,7 @@ M.nvim_input = function(opts, callback)
             if type(opts.highlight) == "function" then
                 hls = opts.highlight(txt)
             elseif opts.highlight then
-                hls = vim.fn[opts.highlight](txt)
+                hls = fn[opts.highlight](txt)
             end
 
             api.nvim_buf_clear_namespace(buf, ns, 0, -1)
@@ -354,5 +355,75 @@ M.nvim_input = function(opts, callback)
     end
 end
 -- }}}
+
+
+--[[ Minibuffer {{{
+Get lua code input from the user
+Pressing
+ <cr> in normal mode
+ or :w
+will return the buffer content's result if evaluated
+]]
+---@param opts {template: string, callback: fun(res: any), layout: config.win.opts?, type: type}
+M.evaluate_lua = function(opts)
+    local buf = api.nvim_create_buf(false, true)
+    local bo = vim.bo[buf]
+    bo.filetype = "lua"
+    bo.swapfile = false
+    bo.buftype = "acwrite"
+
+    vim.b[buf].special_buftype = "luaeval"
+    api.nvim_buf_set_name(buf, "eval")
+
+    local lua_ls = vim.lsp.get_clients { name = "luals" }[1]
+    local client_id
+    if not lua_ls then
+        local config = vim.deepcopy(vim.lsp.config.luals)
+        config.root_dir = fn.stdpath("config")
+        client_id = vim.lsp.start(config)
+    else
+        client_id = lua_ls.id
+    end
+
+    if client_id then
+        vim.lsp.buf_attach_client(buf, client_id)
+    end
+
+    local win = utils.win_show_buf(buf, opts.layout or {})
+    api.nvim_win_call(win, function()
+        vim.snippet.expand(opts.template)
+    end)
+
+    local try_evaluate = function()
+        local text = table.concat(api.nvim_buf_get_lines(buf, 0, -1, false), "\n")
+        local chunk, err = loadstring(text)
+        if err or not chunk then
+            vim.notify(err or "Failed to load lua", vim.log.levels.ERROR)
+            return
+        end
+
+        local ok, result = pcall(chunk)
+        if not ok then
+            vim.notify(result, vim.log.levels.ERROR)
+            return
+        end
+
+        local return_type = type(result)
+        if return_type ~= opts.type then
+            vim.notify(("Expected to get '%s', not '%s'"):format(opts.type, return_type), vim.log.levels.ERROR)
+            return
+        end
+
+        api.nvim_win_close(win, true)
+        api.nvim_buf_delete(buf, { force = true })
+        opts.callback(result)
+    end
+
+    utils.autogroup("config.minibuffer", {
+        BufWriteCmd = function()
+            try_evaluate()
+        end
+    }, { buf = buf })
+end
 
 return M

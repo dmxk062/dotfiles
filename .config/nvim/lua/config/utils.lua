@@ -108,29 +108,31 @@ function M.format_buf_name(buf, short)
 end
 
 M.btypehighlights = {
-    term = "Term",
-    oil = "Dir",
-    list = "List",
-    git = "Git",
-    reg = "Reg",
     empty = "Reg",
-    special = "Special",
+    git = "Git",
     help = "Help",
+    list = "List",
+    luaeval = "Scratch",
+    oil = "Dir",
+    reg = "Reg",
     region = "Region",
     scratch = "Scratch",
+    special = "Special",
+    term = "Term",
 }
 
 M.btypesymbols = {
-    term = "!",
-    oil = ":",
-    scratch = "=",
-    list = "$",
-    git = "@",
-    reg = "#",
     empty = "#",
-    special = "*",
+    git = "@",
     help = "?",
+    list = "$",
+    luaeval = "λ",
+    oil = ":",
+    reg = "#",
     region = ">",
+    scratch = "=",
+    special = "*",
+    term = "!",
 }
 
 -- }}}
