@@ -293,11 +293,11 @@ add_with_prefix(colorscheme, "@", {
     ["markup.list.unchecked"]        = { fg = col.yellow, bg = pal.bg1 },
 
     ["character.printf"]             = {},
-    ["number.printf"]                = { fg = col.magenta, bg = pal.bg1 },
-    ["constant.printf"]              = { fg = col.yellow, bg = pal.bg1 },
-    ["float.printf"]                 = { fg = col.magenta, bg = pal.bg1 },
-    ["symbol.printf"]                = { fg = col.light_blue, bg = pal.bg1 },
-    ["string.printf"]                = { fg = col.green, bg = pal.bg1 },
+    ["number.printf"]                = { fg = col.magenta, sp = col.magenta, underline = true },
+    ["constant.printf"]              = { fg = col.yellow, sp = col.yellow, underline = true },
+    ["float.printf"]                 = { fg = col.magenta, sp = col.magenta, underline = true },
+    ["symbol.printf"]                = { fg = col.light_blue, sp = col.light_blue, underline = true },
+    ["string.printf"]                = { fg = col.green, sp = col.green, underline = true },
 })
 -- }}}
 
