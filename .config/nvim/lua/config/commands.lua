@@ -100,14 +100,14 @@ command("Split", smart_split, split_cmd_opts)
 
 ---Set qflist/loclist (with !bang) to result of command
 command("Csh", function(args)
-    local command = args.fargs
-    local exit = vim.system(command, {
+    local cmd = args.fargs
+    local exit = vim.system(cmd, {
         text = true
     }):wait()
 
     if exit.code ~= 0 then
         vim.notify(("%s: %s exited with code %d:\n%s")
-            :format(args.name, vim.inspect(command), exit.code, exit.stderr),
+            :format(args.name, vim.inspect(cmd), exit.code, exit.stderr),
             vim.log.levels.ERROR)
         return
     end
@@ -142,7 +142,7 @@ command("Ft", function(args)
         autoclose = args.bang,
     }
 end, {
-    desc = "Run CMD in floating terminal",
+    desc = "Run shell command in floating terminal",
     complete = "shellcmd",
     nargs = "*",
     bang = true
