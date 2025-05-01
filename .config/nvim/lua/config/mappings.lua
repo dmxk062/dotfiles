@@ -569,7 +569,7 @@ end
 
 return table.concat(result, "\n")]]
 map("n", "<space>i", function()
-    local res = ui.evaluate_lua {
+    ui.evaluate_lua {
         template = iterative_insert,
         type = "string",
         layout = {
@@ -581,6 +581,33 @@ map("n", "<space>i", function()
     }
 end)
 
+local filter_through_lua = [[
+---@param line string
+---@return string?
+return function(line)
+    $0
+end]]
+operators.map_function("<space>!", function(mode, region, extra, get, set)
+    ui.evaluate_lua {
+        template = filter_through_lua,
+        type = "function",
+        layout = {
+            direction = "below",
+        },
+        callback = function(fn)
+            local lines = get()
+            local output = {}
+            for _, line in ipairs(lines) do
+                local filtered = fn(line)
+                if filtered then
+                    table.insert(output, filtered)
+                end
+            end
+
+            set(region, output)
+        end
+    }
+end)
 -- }}}
 
 -- Scratches {{{

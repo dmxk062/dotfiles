@@ -356,12 +356,9 @@ M.nvim_input = function(opts, callback)
 end
 -- }}}
 
-
 --[[ Minibuffer {{{
 Get lua code input from the user
-Pressing
- <cr> in normal mode
- or :w
+Using :w
 will return the buffer content's result if evaluated
 ]]
 ---@param opts {template: string, callback: fun(res: any), layout: config.win.opts?, type: type}
@@ -371,6 +368,7 @@ M.evaluate_lua = function(opts)
     bo.filetype = "lua"
     bo.swapfile = false
     bo.buftype = "acwrite"
+    bo.bufhidden = "delete"
 
     vim.b[buf].special_buftype = "luaeval"
     api.nvim_buf_set_name(buf, "eval")
@@ -425,5 +423,6 @@ M.evaluate_lua = function(opts)
         end
     }, { buf = buf })
 end
+-- }}}
 
 return M
