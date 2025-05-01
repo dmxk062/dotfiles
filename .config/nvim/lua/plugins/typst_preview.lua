@@ -1,6 +1,8 @@
 ---@type LazySpec
 local M = {
     "chomosuke/typst-preview.nvim",
+    ft = { "typst" },
+    cmd = { "TypstPreview" },
     opts = {
         open_cmd = "firefox %s >/dev/null 2>&1",
         dependencies_bin = {
