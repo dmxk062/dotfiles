@@ -378,7 +378,7 @@ M.evaluate_lua = function(opts)
     if not lua_ls then
         local config = vim.deepcopy(vim.lsp.config.luals)
         config.root_dir = fn.stdpath("config")
-        client_id = vim.lsp.start(config)
+        client_id = vim.lsp.start(config, { attach = false })
     else
         client_id = lua_ls.id
     end
