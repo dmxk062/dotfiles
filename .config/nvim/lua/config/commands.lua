@@ -98,7 +98,8 @@ command("Split", smart_split, split_cmd_opts)
 
 -- Shell Utils {{{
 
----Set qflist/loclist (with !bang) to result of command
+-- Set qflist/loclist (with !bang) to result of command
+-- Useful for e.g. ':Csh fd -e lua' or ':Csh git diff --name-only'
 command("Csh", function(args)
     local cmd = args.fargs
     local exit = vim.system(cmd, {
@@ -115,17 +116,24 @@ command("Csh", function(args)
     -- errorfmt is too complex for this, a simple list of names works
     local items = vim.tbl_map(function(line)
         local path, rest = line:match("([^:]+):?(.*)")
+        if not path or path == "" then
+            return
+        end
         local row, col, ctx
         if rest then
             row, col, ctx = rest:match("(%d+):(%d+):(.*)")
+            row = row and tonumber(row)
+            col = col and tonumber(col)
         end
-        return { filename = path, row = row, col = col, text = ctx or path }
+        return { filename = path, lnum = row or 1, col = col or 1, text = ctx or "" }
     end, vim.split(exit.stdout, "\n"))
 
     if args.bang then
         vim.fn.setloclist(0, items)
+        vim.cmd.lwindow()
     else
         vim.fn.setqflist(items)
+        vim.cmd.cwindow()
     end
 end, {
     desc = "Populate qflist (or loclist with !) with shell command",
