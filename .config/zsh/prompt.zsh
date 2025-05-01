@@ -82,7 +82,7 @@ function _update_git_status {
 PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
 # left part of prompt, current directory
 PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b%(10V.%F{8} [ro] .)
- "
+%f "
 
 # right part of prompt, previous command status
 # HACK: draw right prompt one line higher
