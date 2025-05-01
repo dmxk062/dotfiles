@@ -102,39 +102,39 @@ command("Split", smart_split, split_cmd_opts)
 -- Useful for e.g. ':Csh fd -e lua' or ':Csh git diff --name-only'
 command("Csh", function(args)
     local cmd = args.fargs
-    local exit = vim.system(cmd, {
+    vim.system(cmd, {
         text = true
-    }):wait()
-
-    if exit.code ~= 0 then
-        vim.notify(("%s: %s exited with code %d:\n%s")
-            :format(args.name, vim.inspect(cmd), exit.code, exit.stderr),
-            vim.log.levels.ERROR)
-        return
-    end
-
-    -- errorfmt is too complex for this, a simple list of names works
-    local items = vim.tbl_map(function(line)
-        local path, rest = line:match("([^:]+):?(.*)")
-        if not path or path == "" then
+    }, vim.schedule_wrap(function(out)
+        if out.code ~= 0 then
+            vim.notify(("%s: %s exited with code %d:\n%s")
+                :format(args.name, vim.inspect(cmd), out.code, out.stderr),
+                vim.log.levels.ERROR)
             return
         end
-        local row, col, ctx
-        if rest then
-            row, col, ctx = rest:match("(%d+):(%d+):(.*)")
-            row = row and tonumber(row)
-            col = col and tonumber(col)
-        end
-        return { filename = path, lnum = row or 1, col = col or 1, text = ctx or "" }
-    end, vim.split(exit.stdout, "\n"))
 
-    if args.bang then
-        vim.fn.setloclist(0, items)
-        vim.cmd.lwindow()
-    else
-        vim.fn.setqflist(items)
-        vim.cmd.cwindow()
-    end
+        -- errorfmt is too complex for this, a simple list of names works
+        local items = vim.tbl_map(function(line)
+            local path, rest = line:match("([^:]+):?(.*)")
+            if not path or path == "" then
+                return
+            end
+            local row, col, ctx
+            if rest then
+                row, col, ctx = rest:match("(%d+):(%d+):(.*)")
+                row = row and tonumber(row)
+                col = col and tonumber(col)
+            end
+            return { filename = path, lnum = row or 1, col = col or 1, text = ctx or "" }
+        end, vim.split(out.stdout, "\n"))
+
+        if args.bang then
+            vim.fn.setloclist(0, items)
+            vim.cmd.lwindow()
+        else
+            vim.fn.setqflist(items)
+            vim.cmd.cwindow()
+        end
+    end))
 end, {
     desc = "Populate qflist (or loclist with !) with shell command",
     complete = "shellcmd",
