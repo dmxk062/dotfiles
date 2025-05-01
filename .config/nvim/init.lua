@@ -24,6 +24,8 @@ vim.api.nvim_create_autocmd("StdinReadPre", {
 local opt = vim.opt
 local o = vim.o
 
+vim.g.localleader = "\\"
+
 -- Basic options {{{
 o.cursorline = true
 o.cursorlineopt = "number"
@@ -53,7 +55,7 @@ o.breakindentopt = "sbr"
 o.showbreak = ""
 -- }}}
 
--- idk why this isn't the default, much more intuitive imo
+-- i don't know why this isn't the default, much more intuitive in my opinion
 o.splitright = true
 o.splitbelow = true
 
@@ -63,7 +65,7 @@ opt.shortmess:append("q") -- hide macro
 
 -- Characters {{{
 opt.fillchars = {
-    -- its visible from the gaps anyways
+    -- it's visible from the gaps anyways
     diff = " ",
     lastline = "",
 }
@@ -74,7 +76,6 @@ opt.listchars = {
     space = "·",
     multispace = " · ",
 }
-
 -- }}}
 
 opt.diffopt = {
