@@ -7,7 +7,7 @@ local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
 
 -- my own statusline
 -- this should be faster than lualine
--- generally, only redraw things using autocmds unless there isnt a good one for the event
+-- generally, only redraw things using autocmds unless there isn't a good one for the event
 
 -- Utility functions {{{
 local function esc(str)
@@ -164,9 +164,6 @@ end
 local function get_fugitive_info()
     local res = {}
     local head = fn.FugitiveHead(8)
-    if head and head ~= "" then
-        table.insert(res, string.format("%%#SlGitHead#󰘬 %s", head))
-    end
 
     ---@type string
     local object = fn["fugitive#Object"](api.nvim_buf_get_name(0))
@@ -176,7 +173,7 @@ local function get_fugitive_info()
         elseif object:match("^%x+$") then
             object = object:sub(0, 7)
         elseif object:match("^%x+:.*$") then
-            object = "@" .. object:sub(0, 7)
+            object = "#" .. object:sub(0, 7)
         elseif object == ":" then
             object = "status"
         else
@@ -186,6 +183,9 @@ local function get_fugitive_info()
             end
         end
         table.insert(res, string.format("%%#SlGitHash#%s", object))
+    end
+    if head and head ~= "" then
+        table.insert(res, string.format("%%#SlGitHead#%s", head))
     end
 
     return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
@@ -202,10 +202,6 @@ local function update_git()
     local status = vim.b[0].gitsigns_status_dict
 
     local res = {}
-    if status.head then
-        table.insert(res, string.format("%%#SlGitHead#󰘬 %s", status.head))
-    end
-
     if status.added and status.added > 0 then
         table.insert(res, string.format("%%#SlDiffAdded#+%d", status.added))
     end
@@ -215,23 +211,15 @@ local function update_git()
     if status.removed and status.removed > 0 then
         table.insert(res, string.format("%%#SlDiffRemoved#-%d", status.removed))
     end
+    if status.head then
+        table.insert(res, string.format("%%#SlGitHead#%s", status.head))
+    end
+
     if #res == 0 then
         return ""
     end
 
     return " %#SlASL#" .. table.concat(res, " ") .. "%#SlASR#"
-end
--- }}}
-
--- Searchcount {{{
-local function update_search()
-    if vim.v.hlsearch ~= 1 then
-        return ""
-    end
-
-    local count = fn.searchcount { timeout = 10 }
-    return string.format("%%#Identifier#/search%%#Delimiter#: %%#SlIndex#%2d%%#Delimiter#/%%#SlTotal#%-2d ",
-        count.current, count.total)
 end
 -- }}}
 
@@ -281,7 +269,7 @@ local function update_lsp_servers()
 
     ---@param c vim.lsp.Client
     local display = vim.tbl_map(function(c)
-        return "%#SlHint#*" .. c.name
+        return "%#SlHint#!" .. c.name
     end, clients)
 
     return " " .. table.concat(display, ", ")
@@ -296,10 +284,9 @@ local indices = {
     diagnostics = 4,
     macro = 5,
 
-    search = 7,
-    words = 9,
-    filetype = 11,
-    lsp = 12,
+    words = 7,
+    filetype = 9,
+    lsp = 10,
 }
 
 local redraw = function()
@@ -371,7 +358,6 @@ update_timer:start(0, 100, vim.schedule_wrap(function()
         sections[indices.diagnostics] = update_diagnostics()
     end
     sections[indices.words] = update_words()
-    sections[indices.search] = update_search()
     redraw()
 end)
 )
@@ -380,24 +366,19 @@ end)
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
     update_mode(), -- mode
-    "",            -- title of buf with modified etc
+    "",            -- title of buffer with modified etc
     "",            -- git
     "",            -- diagnostics
     "",            -- macro register
 
-    " %#SlKeys#%-4(%S%)%=",
-    "", -- search message
-
-    -- right, begin of content info
-    "%#SlASL#%#SlAText#",
-    "", -- words
-
-    -- end of content info, start of type info
+    -- current typed command, right align, start of counts
+    " %#SlKeys#%-4(%S%)%=%#SlASL#%#SlAText#",
+    "", -- counts
+    -- end of counts, start of filetype info
     "%#SlASR# %#SlAText#",
     "", -- filetype
-    "", -- attached lsps
-
-    -- end of type info
+    "", -- attached LSPs
+    -- end filetype info
     "%#SlASR# ",
 }
 
