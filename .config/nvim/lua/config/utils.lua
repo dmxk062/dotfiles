@@ -588,9 +588,20 @@ M.highlight_time = function(secs)
     end
 end
 
-M.format_date_default = function(secs)
-    return os.date("%b/%y %d, %H:%M", secs)
+local datefmt = {}
+datefmt.short = "%b %d, %H:%M"
+datefmt.fmt_short = function(secs)
+    return os.date(datefmt.short, secs)
 end
+datefmt.short_len = #datefmt.fmt_short(0)
+
+datefmt.long = "%b/%y %d, %H:%M"
+datefmt.fmt_long = function(secs)
+    return os.date(datefmt.long, secs)
+end
+datefmt.long_len = #datefmt.fmt_long(0)
+
+M.datefmt = datefmt
 
 M.highlight_size = function(bytes)
     if bytes == 0 then

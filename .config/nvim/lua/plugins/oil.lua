@@ -24,6 +24,11 @@ local perms_hlgroups = {
     ["s"] = "OilSetuid",
 }
 
+local datefmt = utils.datefmt.long
+local highlight_date = function(str)
+    local parsed_time = vim.fn.strptime(datefmt, str)
+    return utils.highlight_time(parsed_time)
+end
 local oil_columns = {
     icon = {
         "icon",
@@ -42,19 +47,13 @@ local oil_columns = {
     },
     time = {
         "mtime",
-        highlight = function(str)
-            local parsed_time = vim.fn.strptime("%b/%y %d, %H:%M", str)
-            return utils.highlight_time(parsed_time)
-        end,
-        format = "%b/%y %d, %H:%M"
+        highlight = highlight_date,
+        format = datefmt,
     },
     birthtime = {
         "birthtime",
-        highlight = function(str)
-            local parsed_time = vim.fn.strptime("%b/%y %d, %H:%M", str)
-            return utils.highlight_time(parsed_time)
-        end,
-        format = "%b/%y %d, %H:%M"
+        highlight = highlight_date,
+        format = datefmt,
     },
     size = {
         "size",

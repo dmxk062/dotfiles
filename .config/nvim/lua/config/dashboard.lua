@@ -1,4 +1,5 @@
 --[[
+
 My *third* attempt at a handcrafted dashboard
 ]]
 
@@ -163,7 +164,7 @@ do
                 local st = uv.fs_stat(session.path.path)
                 if st then
                     mtime = st.mtime.sec
-                    local date = utils.format_date_default(mtime)
+                    local date = utils.datefmt.fmt_short(mtime)
                     local datehl = utils.highlight_time(mtime)
 
                     last_access = { date, datehl }
@@ -219,7 +220,7 @@ do
             end
 
             local mtime = st.mtime.sec
-            local timestring = utils.format_date_default(mtime)
+            local timestring = utils.datefmt.fmt_short(mtime)
             local timehl = utils.highlight_time(mtime)
 
             local tail = fn.fnamemodify(file, ":t")

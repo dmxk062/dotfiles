@@ -245,7 +245,7 @@ local file_display = t_entry_display.create {
     separator = " ",
     items = {
         { width = MAX_FILENAME_WIDTH * 2 },
-        { width = 12 },
+        { width = utils.datefmt.short_len },
         { remaining = true,              right_justify = true },
     }
 }
@@ -260,7 +260,7 @@ local file_entry_display = function(entry)
         mtime = ""
         timehl = ""
     else
-        mtime = os.date("%b %d %H:%M", st.mtime.sec)
+        mtime = utils.datefmt.fmt_short(st.mtime.sec)
         timehl = utils.highlight_time(st.mtime.sec)
     end
 
