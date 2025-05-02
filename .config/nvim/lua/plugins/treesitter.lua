@@ -166,14 +166,17 @@ M.config = function()
         }
     }
 
+    local utils = require("config.utils")
+    local map = utils.map
+    local modes = { "n", "x", "o" }
     -- use the builtin repeat
     local ts_repeat = require("nvim-treesitter.textobjects.repeatable_move")
-    vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat.repeat_last_move_next)
-    vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat.repeat_last_move_previous)
+    map(modes, ";", ts_repeat.repeat_last_move_next)
+    map(modes, ",", ts_repeat.repeat_last_move_previous)
 
     -- enable it for [fFtT]
     -- for _, motion in pairs({ "f", "F", "t", "T" }) do
-    --     vim.keymap.set({ "n", "x", "o" }, motion, ts_repeat["builtin_" .. motion .. "_expr"], { expr = true })
+    --     map(modes, motion, ts_repeat["builtin_" .. motion .. "_expr"], { expr = true })
     -- end
 
     -- additional repeat movements for plugins
@@ -181,9 +184,8 @@ M.config = function()
         function() vim.diagnostic.jump { count = 1, float = false } end,
         function() vim.diagnostic.jump { count = -1, float = false } end
     )
-    vim.keymap.set({ "n", "x", "o" }, "]d", nd)
-    vim.keymap.set({ "n", "x", "o" }, "[d", pd)
-
+    map(modes, "]d", nd)
+    map(modes, "[d", pd)
 
     for _, severity in ipairs(vim.diagnostic.severity) do
         local nb, pb = ts_repeat.make_repeatable_move_pair(
@@ -192,8 +194,35 @@ M.config = function()
         )
 
         local key = severity:sub(1, 1):lower()
-        vim.keymap.set({ "n", "x", "o" }, "]" .. key, nb)
-        vim.keymap.set({ "n", "x", "o" }, "[" .. key, pb)
+        map(modes, "]" .. key, nb)
+        map(modes, "[" .. key, pb)
+    end
+
+    local builtin_brackets = {
+        "s", -- spelling errors
+        "z", -- folds
+    }
+    local bracket_with_count = function(command)
+        return function()
+            local ok, err = pcall(vim.api.nvim_cmd, {
+                cmd = "normal",
+                bang = true,
+                args = { vim.v.count1 .. command }
+            }, { output = false })
+            if not ok then
+                vim.notify(err, vim.log.levels.ERROR)
+            end
+        end
+    end
+    for _, key in pairs(builtin_brackets) do
+        local fwd = "]" .. key
+        local bwd = "[" .. key
+        local nb, pb = ts_repeat.make_repeatable_move_pair(
+            bracket_with_count(fwd),
+            bracket_with_count(bwd)
+        )
+        map(modes, fwd, nb)
+        map(modes, bwd, pb)
     end
 end
 
