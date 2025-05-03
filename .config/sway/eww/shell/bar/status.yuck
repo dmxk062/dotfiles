@@ -35,10 +35,11 @@
             :class {!bt-meta.powered ? "inactive" : ""}
             :text {bt-meta.powered ? "󰂯" : "󰂲"})
         (status-valent :dev {valent.connected?.[0] ?: ""})
-        (label 
+        (button 
+            :onclick {vpn.active ? "nmcli connection down '${vpn.name}'" : "nmcli connection up '${default-vpn}'"}
             :class {!vpn.active ? "inactive" : ""}
             :tooltip "${vpn.active ? "Connected via `${vpn.name}`" : "No VPN active"}"
-            :text "󰒄")
+            "󰒄")
         (label
             :class {!wifi.powered ? "inactive" : ""}
             :tooltip {wifi.connected ? "Connected to ${wifi.ssid}" : "No Connection"}
