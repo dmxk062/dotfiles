@@ -15,6 +15,9 @@
 (defvar vpn-revealed false)
 (defvar valent-revealed false)
 
+(defvar pref-mpris-shown true)
+(defvar pref-clipboard-shown true)
+
 (defwidget battery-circle [percentage charging]
     (circular-progress :visible {(percentage) > 0} :thickness 6 :value {percentage}
         :tooltip "${percentage}% - ${charging ? "Charging" : "Discharging"}"

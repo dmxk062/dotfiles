@@ -10,7 +10,7 @@
 "powersave": "󰾆   Efficiency"
 }')
 
-(defwidget toggle-panel [] 
+(defwidget toggle-panel []
     (box :space-evenly false :orientation "vertical"
         (box
             (button :class "cbutton ${look-nightlight ? "active" : ""}"
@@ -20,20 +20,20 @@
                 :onclick "./bin/color.sh"
                 :timeout "128s"
                 "${look-theme == "light" ? "" : "󰖔"}   Colorscheme"))
-        
+
         (box
             (button :class "cbutton ${service-swayidle ? "active" : ""}"
                 :onclick "killall swayidle && ${EWW_CMD} update service-swayidle=false || { ${EWW_CMD} update service-swayidle=true; swayidle -w& }"
                 "${service-swayidle ? "󰒲" : "󰒳"}   Swayidle")
 
-            
+
             (box :class "dual-cbutton${cpu-governor == "performance" ? " active" : ""}" :space-evenly false
                 (button :hexpand true
                     :onclick "./bin/cpu_governor.sh ${cpu-governor == "performance" ? "powersave" : "performance"}; ${EWW_CMD} update cpu-governor=$(< /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
                     :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
                     :timeout "16s"
                     {cpu-governor-names[cpu-governor]})
-                (button 
+                (button
                     :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
                     {perf-revealed ? "" : "" })))))
 
@@ -54,21 +54,38 @@
             :onchecked "${command}& ${EWW_CMD} update ${var}=true")
         (label :class "text" :text {text})))
 
+(defwidget pref-toggle [enabled name text]
+    (box :space-evenly false :halign "start" :style "margin-left: 1rem; padding: .2rem;"
+        (checkbox :checked {enabled}
+            :timeout "16s"
+            :onunchecked "${EWW_CMD} update ${name}=false"
+            :onchecked "${EWW_CMD} update ${name}=true")
+        (label :class "text" :text {text})
+    ))
+
 (defwidget tray-processes []
     (box :space-evenly false :orientation "vertical" :class "section" :style "padding: .8rem;"
-        (pid-toggle 
-            :running service-blueman 
-            :var "service-blueman" 
+        (pref-toggle
+            :enabled pref-mpris-shown
+            :name "pref-mpris-shown"
+            :text "Media Widget")
+        (pref-toggle
+            :enabled pref-clipboard-shown
+            :name "pref-clipboard-shown"
+            :text "Show Clipboard Content")
+        (pid-toggle
+            :running service-blueman
+            :var "service-blueman"
             :to-kill "blueman-applet"
-            :command "blueman-applet" 
+            :command "blueman-applet"
             :text "Blueman Applet")
-        (pid-toggle 
+        (pid-toggle
             :running service-networkmanager
             :var "service-networkmanager"
             :to-kill "nm-applet"
             :command "nm-applet"
             :text "Networkmanager Applet")
-        (pid-toggle 
+        (pid-toggle
             :running service-fcitx5
             :var "service-fcitx5"
             :to-kill "fcitx5"

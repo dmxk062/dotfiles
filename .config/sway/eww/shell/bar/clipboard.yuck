@@ -18,5 +18,5 @@
             (label :class "cliptype ${clip.type}" :text {clipicons[clip.type]})
             (label :limit-width 48 :lines 1 :text {clip.type != "image" ? clip.label : "[Image]"}))))
 
-(defwidget clipboard [] (box
+(defwidget clipboard [] (box :visible pref-clipboard-shown
     (clipboard-button :clip secondary)))
