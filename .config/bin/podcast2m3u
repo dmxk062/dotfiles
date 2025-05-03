@@ -1,0 +1,20 @@
+#!/bin/bash
+
+podcast="$1"
+PLAYDIR="${2:-$HOME/Media/Playlists}"
+
+read -r -d '' XQ_QUERY << 'JQ'
+.rss.channel as $chan |
+$chan.title
+, "#EXTM3U"
+, "#EXTALBUMARTURL:\($chan.image.url)"
+    , $chan.item[] as $elem 
+        | "#EXTINF:\($elem.enclosure."@length" | tonumber / 10000 | round), \($elem.title)" 
+        , $elem.enclosure."@url"
+JQ
+
+curl -s "$podcast" \
+    | xq "$XQ_QUERY" -r | {
+        read -r filename
+        cat > "$PLAYDIR/$filename.m3u"
+    }
