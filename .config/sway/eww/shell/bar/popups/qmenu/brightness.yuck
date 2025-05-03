@@ -9,7 +9,12 @@
 (defwidget qmenu-brightness-slider []
     (box :space-evenly false :halign "start" :hexpand true
         (label
-            :text "󰃠   ${brightness}%"
+            :text "${brightness < 10 ? "󰃛" 
+                : (brightness < 20 ? "󰃜" 
+                : (brightness < 40 ? "󰃝"
+                : (brightness < 60 ? "󰃞"
+                : (brightness < 80 ? "󰃟"
+                : "󰃠"))))}   ${brightness}%"
             :class "sbutton"
             :style "min-width: 3.8rem;")
         (box :space-evenly false (scale :hexpand false
