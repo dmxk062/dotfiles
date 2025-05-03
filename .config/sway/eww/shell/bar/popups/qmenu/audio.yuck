@@ -1,3 +1,4 @@
+(include "./bar/popups/qmenu/brightness.yuck")
 (deflisten audio "./bin/volume.sh")
 
 (defvar audio-out-revealed false)
@@ -43,6 +44,7 @@
 
 (defwidget audio-panel []
     (box :space-evenly false :class "section" :orientation "v"
+        (qmenu-brightness-slider)
         (box :space-evenly false 
             (button :style "min-width: 3.8rem;"
                 :class "sbutton ${!audio.out.mute ? "active" : ""}"

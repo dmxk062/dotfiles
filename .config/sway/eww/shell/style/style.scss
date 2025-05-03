@@ -19,6 +19,22 @@
         background-color: $bg2;
     }
 
+    &.tiny-circle {
+        background-color: $bg2;
+        border-radius: 50%;
+        padding: unset;
+        margin: unset;
+        margin: 0.2rem;
+        min-height: 18px;
+        min-width: 18px;
+        &:hover {
+            background-color: $bg3;
+        }
+        &.active {
+            background-color: $accent;
+        }
+    }
+
     &.simple {
         padding: unset;
         margin-right: .9rem;
@@ -374,6 +390,12 @@ tooltip{
             &:hover {
                 background-color: $snow2;
             }
+        }
+    }
+    &.shorter {
+        trough {
+            min-width: unset;
+            min-width: 11rem;
         }
     }
     &.disabled {

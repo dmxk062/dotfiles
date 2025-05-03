@@ -1,0 +1,23 @@
+(defwidget brightness-dot [level stop]
+    (box :vexpand true :orientation "v" :valign "center" (box :space-evenly false :vexpand false
+        (button :class "button tiny-circle ${(brightness < stop && brightness >= level) ? "active" : ""}"
+            :tooltip "${level}%"
+            :onclick "~/.config/sway/scripts/brightness.sh rawset ${level}"
+            :timeout "128s"
+            ""))))
+
+(defwidget qmenu-brightness-slider []
+    (box :space-evenly false :halign "start" :hexpand true
+        (label
+            :text "󰃠   ${brightness}%"
+            :class "sbutton"
+            :style "min-width: 3.8rem;")
+        (box :space-evenly false (scale :hexpand false
+            :class "slider with-handle shorter"
+            :value {brightness}
+            :timeout "128s"
+            :onchange "~/.config/sway/scripts/brightness.sh rawset {}"))
+       (box
+            (brightness-dot :level 10 :stop 50)
+            (brightness-dot :level 50 :stop 100)
+            (brightness-dot :level 100 :stop 102))))
