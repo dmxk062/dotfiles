@@ -1,0 +1,70 @@
+# vim: ft=conf
+# Mpd {{{
+mpd_host = localhost
+mpd_port = 6600
+mpd_music_dir = ~/Music
+lyrics_directory ~/.local/share/mpd/lyrics
+lyrics_fetchers = tags, genius, internet
+visualizer_data_source = ~/.cache/.mpd.fifo
+visualizer_output_name = preview_fifo
+visualizer_in_stereo = yes
+# }}}
+
+# Startup {{{
+startup_screen = playlist
+# }}}
+
+# Visualizer {{{
+visualizer_look = %/
+visualizer_type = spectrum
+visualizer_spectrum_smooth_look = no
+visualizer_color = 5, 13, 15, 7, 3, 4, 4, 10, 2
+# }}}
+
+# Format {{{
+song_list_format = "$(13)%N $(magenta)%l $8{%t}|{%f}$0"
+song_window_title_format = "ncmcpp: {%a - }{%t}|{%f}"
+song_columns_list_format = "(6f)[13]{NE:Nr} (7f)[magenta]{l:Length} (50)[white]{t|f:Name} (20)[green]{a} (20)[14]{b}"
+song_status_format = "{%t}|{%f}{$(9) - $3%a $(9)/ $(14)%b}{ $(13)%y}{ %C}$0"
+browser_playlist_prefix = $(12)[=list] $9
+browser_display_mode = columns
+search_engine_display_mode = columns
+# }}}
+
+# Colors {{{
+player_state_color = 13
+statusbar_time_color = magenta
+progressbar_color = 9
+progressbar_elapsed_color = yellow:b
+progressbar_look = =>-
+state_line_color = black
+empty_tag_color = white:i
+empty_tag_marker = [nil]
+main_window_color = white
+volume_color = blue
+window_border_color = 9
+active_window_border = 1
+current_item_prefix = $(white_9)
+color1 = white
+color2 = green
+selected_item_prefix = $i
+selected_item_suffix = $/i
+discard_colors_if_item_is_selected = no
+# }}}
+
+# Behavior {{{
+block_search_constraints_change_if_items_found = no
+ignore_diacritics = yes
+follow_now_playing_lyrics = yes
+seek_time = 10
+external_editor = nvim
+use_console_editor = yes
+# }}}
+
+# UI Elements {{{
+titles_visibility = no
+playlist_shorten_total_times = yes
+display_bitrate = yes
+message_delay_time = 1
+connected_message_on_startup = no
+# }}}

@@ -1,0 +1,97 @@
+# vim: ft=conf
+
+# Navigation {{{
+def_key "h" 
+    previous_column
+def_key "j" 
+    scroll_down
+def_key "k" 
+    scroll_up
+def_key "l" 
+    next_column
+def_key "g"
+    move_home
+def_key "G"
+    move_end
+def_key "n"
+    next_found_item
+def_key "N"
+    previous_found_item
+# }}}
+
+# Editing {{{
+def_key "D"
+    delete_stored_playlist
+def_key "d"
+    delete_playlist_items
+def_key "="
+    sort_playlist
+def_key "u"
+    remove_selection 
+def_key "V"
+    select_range
+# }}}
+
+# Search {{{
+# [f]ind
+def_key "ctrl-f"
+    show_search_engine
+    move_home
+    push_character "enter"
+# [a]rtist
+def_key "ctrl-a"
+    show_search_engine
+    move_home
+    push_characters "j"
+    push_character "enter"
+# al[b]um
+def_key "ctrl-b"
+    show_search_engine
+    move_home
+    push_characters "jjjj"
+    push_character "enter"
+# [t]itle
+def_key "ctrl-t"
+    show_search_engine
+    move_home
+    push_characters "jjj"
+    push_character "enter"
+# }}}
+
+# Views {{{
+def_key "tab"
+    show_browser
+def_key "q"
+    show_playlist
+def_key "H"
+    previous_screen
+def_key "L"
+    next_screen
+def_key "P"
+    show_visualizer
+def_key "%"
+    jump_to_position_in_song
+
+def_key "J"
+    move_sort_order_down
+def_key "K"
+    move_sort_order_up
+
+def_key "T"
+    show_lyrics
+# }}}
+
+# Playback {{{
+def_key " " 
+    pause
+def_key ">"
+    seek_forward
+def_key "<"
+    seek_backward
+# }}}
+
+# Commands {{{
+def_command "q" [deferred]
+    quit
+
+# }}}
