@@ -1,8 +1,5 @@
 --[[ Information {{{
 All mappings that are general purpose and active regardless of opened plugins
-
-TODO: find a use for
-- Insert: <C-b> <C-l> <C-z>
 }}} ]]
 
 -- Declarations {{{
@@ -477,16 +474,10 @@ map("i", "<S-Del>", "<c-o>\"_dw")
 -- fix spelling error ahead
 map("i", "<C-s>", "<esc>[sz=", { remap = true })
 
--- surprisingly fast and nice
-map("i", "<M-l>", "<C-o>w")
-map("i", "<M-h>", "<C-o>b")
-map("i", "<M-j>", "<C-o>j")
-map("i", "<M-k>", "<C-o>k")
-
 -- move between arguments, that's one of the only things i actually do in insert mode
 -- [f]orward, [b]ackward
-map("i", "<M-f>", "<C-o>]a", { remap = true })
-map("i", "<M-b>", "<C-o>[a", { remap = true })
+map("i", "<C-f>", "<C-o>]a", { remap = true })
+map("i", "<C-b>", "<C-o>[a", { remap = true })
 -- }}}
 
 -- Snippets {{{
