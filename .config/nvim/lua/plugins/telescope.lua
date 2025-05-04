@@ -1,5 +1,5 @@
 local builtin_picker_maps = {
-    ["custom.jumplist"] = "<space><C-o>",
+    ["custom.jumplist"] = "<space>j",
     buffers = "<space><space>",
     command_history = "<space>:",
     diagnostics = "<space>D",

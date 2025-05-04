@@ -19,6 +19,7 @@ M.opts = {
     formatters_by_ft = {
         lua  = { "stylua" },
         c    = { "clang-format" },
+        go   = { "gofmt" },
         json = { "jq" },
         bash = { "shfmt" },
         _    = { "trim_whitespace" },

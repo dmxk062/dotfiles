@@ -224,7 +224,7 @@ require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
 require("config.lsp")          -- language servers
 
--- load ui components
+-- load UI components
 local ui = require("config.ui")
 vim.ui.input = ui.nvim_input
 -- }}}

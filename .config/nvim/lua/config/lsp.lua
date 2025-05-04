@@ -126,7 +126,7 @@ utils.autogroup("config.lsp", {
         if value.kind == "end" then
             table.insert(message, { "Finished " })
             table.insert(message, { value.title })
-        else
+        elseif value.percentage then
             table.insert(message, { value.title })
             table.insert(message, { (" %02d%%"):format(value.percentage), "Number" })
         end
@@ -339,6 +339,12 @@ L.tinymist = {
     filetypes = { "typst" },
     cmd = { "tinymist" },
     root_markers = { ".git" },
+}
+
+L.gopls = {
+    filetypes = { "go", "gomod", "gowork", "gotmpl" },
+    cmd = { "gopls" },
+    root_markers = { "go.mod", "go.work", ".git" },
 }
 -- }}}
 
