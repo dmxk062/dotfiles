@@ -142,6 +142,9 @@ capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true
 }
+vim.lsp.config("*", {
+    capabilities = capabilities
+})
 
 ---@param client vim.lsp.Client
 local add_setting = function(client, k, v)
@@ -169,12 +172,6 @@ local L = setmetatable({}, {
     __newindex = function(t, name, cfg)
         if not cfg.name then
             cfg.name = name
-        end
-
-        if cfg.capabilities == false then
-            cfg.capabilities = nil
-        else
-            cfg.capabilities = capabilities
         end
 
         vim.lsp.config[name] = cfg

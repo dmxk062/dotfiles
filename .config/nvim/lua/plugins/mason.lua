@@ -65,8 +65,7 @@ local opts = {
 
 ---@type LazySpec
 local M = {
-    "williamboman/mason.nvim",
-    branch = "v2.x",
+    "mason-org/mason.nvim",
     event = { "VeryLazy" },
     init = function()
         -- make packages available before Mason is actually loaded
