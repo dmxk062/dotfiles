@@ -277,7 +277,7 @@ add_with_prefix(colorscheme, "@", {
 
     -- those already have a prominent line above them
     ["markup.heading.1.vimdoc"]      = { fg = col.yellow, bold = true },
-    ["markup.heading.2.vimdoc"]      = { fg = col.green, bold = true, underline = true },
+    ["markup.heading.2.vimdoc"]      = { fg = col.green, bold = true },
 
     -- why
     ["markup.heading.gitcommit"]     = {},
