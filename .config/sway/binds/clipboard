@@ -4,10 +4,12 @@ mode "clipboard" {
     bindsym Escape mode "default"
     bindsym Y exec wl-paste -p | wl-copy; mode "default"
     bindsym Mod1+Y exec wl-paste | wl-copy -p; mode "default"
-    bindsym E exec $sc/clipedit.sh; mode "default"
-    bindsym Mod1+E exec $sc/clipedit.sh -p; mode "default"
+    bindsym E exec $sc/edit_clipboard.sh; mode "default"
+    bindsym Mod1+E exec $sc/edit_clipboard.sh -p; mode "default"
     bindsym C exec wl-copy ""; mode "default"
     bindsym Mod1+C exec wl-copy -p ""; mode "default"
+    bindsym P exec $sc/print_clipboard.sh
+    bindsym Mod1+P exec $sc/print_clipboard.sh -p
 }
 
 bindsym $mod+Y mode "clipboard"

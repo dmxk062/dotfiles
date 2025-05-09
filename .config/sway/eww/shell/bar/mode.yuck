@@ -49,6 +49,7 @@
 ],
 "clipboard": [
     {"keys": "<M-*>", "action": "Operate on Selection"},
+    {"keys": "P", "action": "Print"},
     {"keys": "Y", "action": "Copy other"},
     {"keys": "E", "action": "Edit"},
     {"keys": "C", "action": "Clear"}
