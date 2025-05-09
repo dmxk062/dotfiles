@@ -4,7 +4,6 @@
 (include "./bar/workspace.yuck")
 (include "./bar/status.yuck")
 (include "./bar/mode.yuck")
-(include "./bar/clipboard.yuck")
 (include "./bar/mpris.yuck")
 (include "./bar/notifications.yuck")
 (include "./bar/clock.yuck")
@@ -30,8 +29,7 @@
     (centerbox :class "top-bar"
     (box :space-evenly false
         (mode-symbol)
-        (mode-hints)
-        (clipboard))
+        (mode-hints))
     (box :space-evenly false
         (workspace-list)
         (notifications))

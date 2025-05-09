@@ -176,16 +176,6 @@
     }
 }
 
-.cliptype {
-    margin-right: .6rem;
-    &.image { color: $pink; }
-    &.url { color: $lblue; }
-    &.file { color: $yellow; }
-    &.text { margin-right: unset; }
-    &.empty {color: $polar4;}
-}
-
-
 .text {
     color: $fg0;
 }

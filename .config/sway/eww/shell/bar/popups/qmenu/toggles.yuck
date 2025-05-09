@@ -69,10 +69,6 @@
             :enabled pref-mpris-shown
             :name "pref-mpris-shown"
             :text "Media Widget")
-        (pref-toggle
-            :enabled pref-clipboard-shown
-            :name "pref-clipboard-shown"
-            :text "Show Clipboard Content")
         (pid-toggle
             :running service-blueman
             :var "service-blueman"
