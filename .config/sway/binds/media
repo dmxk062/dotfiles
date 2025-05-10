@@ -63,8 +63,6 @@ mode "media" {
 
     Shift+M exec ~/.config/rofi/applets/mute/run.sh; mode "default"
 
-    Return  exec pavucontrol; mode "default"
-
     # Mappings for number keys {{{
     1 exec $sc/audio_popup.sh DEFAULT_SINK set 0.1
     2 exec $sc/audio_popup.sh DEFAULT_SINK set 0.2
