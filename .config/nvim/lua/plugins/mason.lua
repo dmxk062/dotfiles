@@ -50,7 +50,9 @@ local ensure_packages_installed = function()
 end
 
 
+---@type MasonSettings
 local opts = {
+    PATH = "skip", -- it's already added to $PATH when loading the plugin spec
     ui = {
         width = 0.8,
         height = 0.8,
