@@ -22,6 +22,7 @@ M.opts = {
         go   = { "gofmt" },
         json = { "jq" },
         sh   = { "shfmt" },
+        xml  = { "xmllint" },
         _    = { "trim_whitespace" },
     },
     default_format_opts = {
@@ -44,6 +45,18 @@ M.opts = {
                 end
             end
         },
+        xmllint = {
+            inherit = true,
+            env = function(self, ctx)
+                if vim.bo[ctx.buf].expandtab then
+                    return {
+                        XMLLINT_INDENT = (" "):rep(ctx.shiftwidth)
+                    }
+                else
+                    return {}
+                end
+            end
+        }
     }
 }
 
