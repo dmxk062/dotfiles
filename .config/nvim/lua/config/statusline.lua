@@ -53,7 +53,7 @@ local mode_to_name = {
     ---@format disable
     ["n"]    = "n",
     ["no"]   = "o",
-    ["nov"]  = "o",
+    ["nov"]  = "_o",
     ["noV"]  = "O",
     ["no"] = "^O",
 
