@@ -42,6 +42,10 @@ local on_window_open = function(window)
         window:map("n", ("%d"):format(i), function()
             window:perform_close(actions.select, { index = i })
         end)
+
+        window:map("n", ("<M-%d>"):format(i), function()
+            window:perform_close(actions.select, { index = i, command = vim.cmd.Split })
+        end)
     end
 end
 
