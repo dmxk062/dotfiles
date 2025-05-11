@@ -332,7 +332,7 @@ M.opts = {
         ["+q"]        = "actions.add_to_qflist",
 
         ["<space>gs"] = function() git_command("add") end,
-        ["<space>gU"] = function() git_command("reset") end,
+        ["<space>gu"] = function() git_command("reset --") end,
     },
 }
 -- }}}
