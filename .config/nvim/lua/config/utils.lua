@@ -116,7 +116,6 @@ M.btypehighlights = {
     oil = "Dir",
     reg = "Reg",
     region = "Region",
-    scratch = "Scratch",
     special = "Special",
     term = "Term",
 }
@@ -130,7 +129,6 @@ M.btypesymbols = {
     oil = ":",
     reg = "#",
     region = ">",
-    scratch = "=",
     special = "*",
     term = "!",
 }

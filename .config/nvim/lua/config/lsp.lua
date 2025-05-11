@@ -217,8 +217,7 @@ L.luals = {
             end
         end
         if not is_in_rtp
-            and not vim.startswith(path, vim.fn.stdpath("data"))
-            and not vim.startswith(path, vim.fn.expand("~/ws/scratch")) then
+            and not vim.startswith(path, vim.fn.stdpath("data")) then
             return
         end
 
