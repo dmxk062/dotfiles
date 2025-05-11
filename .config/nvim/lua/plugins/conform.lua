@@ -21,7 +21,7 @@ M.opts = {
         c    = { "clang-format" },
         go   = { "gofmt" },
         json = { "jq" },
-        bash = { "shfmt" },
+        sh   = { "shfmt" },
         _    = { "trim_whitespace" },
     },
     default_format_opts = {
@@ -44,16 +44,6 @@ M.opts = {
                 end
             end
         },
-        shfmt = {
-            inherit = true,
-            append_args = function(self, ctx)
-                if vim.bo[ctx.buf].expandtab then
-                    return tostring(ctx.shiftwidth)
-                else
-                    return "0"
-                end
-            end
-        }
     }
 }
 
