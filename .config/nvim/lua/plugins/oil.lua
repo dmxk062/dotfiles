@@ -1,9 +1,6 @@
 ---@type LazySpec
 local M = {
     "stevearc/oil.nvim",
-    dependencies = {
-        "refractalize/oil-git-status.nvim"
-    },
 }
 local utils = require("config.utils")
 
@@ -86,25 +83,32 @@ local enabled_columns = {
 -- }}}
 
 -- Custom actions essentially {{{
+local function get_entries()
+    local oil = require("oil")
+
+    local ret = {}
+    local startl, endl = utils.get_range()
+    for i = startl, endl do
+        local e = oil.get_entry_on_line(0, i)
+        if e then
+            table.insert(ret, e)
+        end
+    end
+
+    return ret
+end
 local function goto_dir(path)
     require("oil").open(vim.fn.expand(path))
 end
 
 local function open_cmd(cmd)
-    local oil = require("oil")
-    local startl, endl = utils.get_range()
-
-    local line = { cmd }
-    for i = startl, endl do
-        local e = oil.get_entry_on_line(0, i)
-        if e then
-            table.insert(line, vim.fn.fnameescape(e.name))
-        end
-    end
+    local files = vim.tbl_map(function(e)
+        return vim.fn.fnameescape(e.name)
+    end, get_entries())
 
     vim.api.nvim_feedkeys(":", "n")
     vim.schedule(function()
-        vim.fn.setcmdline(table.concat(line, " "), #cmd + 1)
+        vim.fn.setcmdline(cmd .. " " .. table.concat(files, " "), #cmd + 1)
     end)
 end
 
@@ -210,6 +214,27 @@ local function filter_items()
     end)
 end
 
+--- Calls vim.cmd
+---@param command string
+local function git_command(command)
+    local dir = require("oil").get_current_dir(0)
+    if not dir then
+        vim.notify("Oil: Cannot run git command on non-local fs", vim.log.levels.WARN)
+        return
+    end
+
+    local files = vim.tbl_map(function(e)
+        return vim.fn.fnameescape(dir .. "/" .. e.name)
+    end, get_entries())
+
+    vim.cmd {
+        cmd = "Git",
+        mods = {
+            silent = true,
+        },
+        args = { command .. " " .. table.concat(files, " ") }
+    }
+end
 -- }}}
 
 -- Options {{{
@@ -262,49 +287,52 @@ M.opts = {
     },
 
     keymaps = {
-        ["!"]        = function() open_cmd("!") end,
-        ["cm"]       = function() open_cmd("!chmod ") end,
-        ["co"]       = function() open_cmd("!chown ") end,
-        ["<CR>"]     = "actions.select",
-        ["<S-CR>"]   = "actions.select_split",
-        ["<C-CR>"]   = "actions.select_vsplit",
+        ["!"]         = function() open_cmd("!") end,
+        ["cm"]        = function() open_cmd("!chmod ") end,
+        ["co"]        = function() open_cmd("!chown ") end,
+        ["<CR>"]      = "actions.select",
+        ["<S-CR>"]    = "actions.select_split",
+        ["<C-CR>"]    = "actions.select_vsplit",
 
-        ["es"]       = "actions.select_split",
-        ["ev"]       = "actions.select_vsplit",
-        ["gx"]       = "actions.open_external",
+        ["es"]        = "actions.select_split",
+        ["ev"]        = "actions.select_vsplit",
+        ["gx"]        = "actions.open_external",
 
         -- goto places
-        ["g<space>"] = open_cd,
-        ["g~"]       = function() goto_dir("~") end,
-        ["gr"]       = function() require("oil").open("/") end,
-        ["g/"]       = function() require("oil").open("/") end,
-        ["gp"]       = "actions.parent",
-        ["g.."]      = "actions.parent",
-        ["gP"]       = { goto_git_ancestor, mode = "n" },
-        ["gG"]       = { goto_git_ancestor, mode = "n" },
+        ["g<space>"]  = open_cd,
+        ["g~"]        = function() goto_dir("~") end,
+        ["gr"]        = function() require("oil").open("/") end,
+        ["g/"]        = function() require("oil").open("/") end,
+        ["gp"]        = "actions.parent",
+        ["g.."]       = "actions.parent",
+        ["gP"]        = { goto_git_ancestor, mode = "n" },
+        ["gG"]        = { goto_git_ancestor, mode = "n" },
         -- only applies to my machines
-        ["gw"]       = function() goto_dir("~/ws") end,
-        ["gt"]       = function() goto_dir("~/Tmp") end,
+        ["gw"]        = function() goto_dir("~/ws") end,
+        ["gt"]        = function() goto_dir("~/Tmp") end,
 
         -- toggle hidden
-        ["gh"]       = "actions.toggle_hidden",
+        ["gh"]        = "actions.toggle_hidden",
 
-        ["gf"]       = filter_items,
-        ["=s"]       = function() set_sort("size") end,
-        ["=t"]       = function() set_sort("mtime") end,
-        ["=i"]       = function() set_sort("invert") end,
-        ["=d"]       = function() set_sort("default") end,
+        ["gf"]        = filter_items,
+        ["=s"]        = function() set_sort("size") end,
+        ["=t"]        = function() set_sort("mtime") end,
+        ["=i"]        = function() set_sort("invert") end,
+        ["=d"]        = function() set_sort("default") end,
 
-        ["+s"]       = function() set_column("size", true) end,
-        ["-s"]       = function() set_column("size", false) end,
-        ["+p"]       = function() set_column("permissions", true) end,
-        ["-p"]       = function() set_column("permissions", false) end,
-        ["+t"]       = function() set_column("time", true) end,
-        ["-t"]       = function() set_column("time", false) end,
-        ["+b"]       = function() set_column("birthtime", true) end,
-        ["-b"]       = function() set_column("birthtime", false) end,
+        ["+s"]        = function() set_column("size", true) end,
+        ["-s"]        = function() set_column("size", false) end,
+        ["+p"]        = function() set_column("permissions", true) end,
+        ["-p"]        = function() set_column("permissions", false) end,
+        ["+t"]        = function() set_column("time", true) end,
+        ["-t"]        = function() set_column("time", false) end,
+        ["+b"]        = function() set_column("birthtime", true) end,
+        ["-b"]        = function() set_column("birthtime", false) end,
 
-        ["+q"]       = "actions.add_to_qflist",
+        ["+q"]        = "actions.add_to_qflist",
+
+        ["<space>gs"] = function() git_command("add") end,
+        ["<space>gU"] = function() git_command("reset") end,
     },
 }
 -- }}}
@@ -314,9 +342,12 @@ M.config = function(_, opts)
     local oil = require("oil")
     oil.setup(opts)
 
+    local git_status = require("config.plugins.oil_git")
+
     -- change directory if not ssh, only for current window
     utils.user_autogroup("config.oil", {
-        OilEnter = function()
+        OilEnter = function(ev)
+            git_status.attach(ev.buf)
             local dir = oil.get_current_dir()
             if dir then
                 vim.fn.chdir(dir)
@@ -352,8 +383,6 @@ M.config = function(_, opts)
         oil.open()
     end)
     map("n", prefix .. "F", oil.open_float)
-
-    require("oil-git-status").setup {}
 end
 
 return M

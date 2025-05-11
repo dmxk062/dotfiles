@@ -494,23 +494,23 @@ add_with_prefix(colorscheme, "Oil", {
 
 add_with_prefix(colorscheme, "OilGitStatus", {
     IndexIgnored           = { fg = pal.bg3 },
-    WorkingTreeIgnored     = { link = "*IndexIgnored" },
+    WorktreeIgnored     = { link = "*IndexIgnored" },
     IndexUntracked         = { fg = pal.fg2 },
-    WorkingTreeUntracked   = { link = "*IndexUntracked" },
+    WorktreeUntracked   = { link = "*IndexUntracked" },
     IndexAdded             = { fg = col.green },
-    WorkingTreeAdded       = { link = "*IndexAdded" },
+    WorktreeAdded       = { link = "*IndexAdded" },
     IndexCopied            = { fg = col.green },
-    WorkingTreeCopied      = { link = "*IndexCopied" },
+    WorktreeCopied      = { link = "*IndexCopied" },
     IndexDeleted           = { fg = col.red },
-    WorkingTreeDeleted     = { link = "*IndexDeleted" },
+    WorktreeDeleted     = { link = "*IndexDeleted" },
     IndexModified          = { fg = col.yellow },
-    WorkingTreeModified    = { link = "*IndexModified" },
+    WorktreeModified    = { link = "*IndexModified" },
     IndexRenamed           = { fg = col.light_blue },
-    WorkingTreeRenamed     = { link = "*IndexRenamed" },
+    WorktreeRenamed     = { link = "*IndexRenamed" },
     IndexTypeChanged       = { fg = col.orange },
-    WorkingTreeTypeChanged = { link = "*IndexTypeChanged" },
+    WorktreeTypeChanged = { link = "*IndexTypeChanged" },
     IndexUnmerged          = { fg = pal.fg0 },
-    WorkingTreeUnmerged    = { link = "*IndexUnmerged" },
+    WorktreeUnmerged    = { link = "*IndexUnmerged" },
 })
 
 -- }}}

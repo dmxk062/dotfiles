@@ -1,4 +1,4 @@
----@type LazySpec
+--@type LazySpec
 local M = {
     "luukvbaal/statuscol.nvim",
 }
@@ -34,14 +34,6 @@ M.config = function()
                     builtin.not_empty
                 },
                 click = "v:lua.ScLa",
-            },
-            {
-                -- HACK: dont show the second column
-                sign = {
-                    namespace = { "oil.*" },
-                    maxwidth = 1,
-                    auto = true
-                },
             },
             {
                 -- for qf list
