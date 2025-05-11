@@ -28,6 +28,20 @@ function codes2chars {
     done
 }
 
+function hex2chars {
+    printf '0: %s' "$@" | xxd -r
+}
+
+function unicharrange {
+    local start=$(($1))
+    local stop=$(($2))
+    local codep hex
+    for ((codep=start; codep <= stop; codep++)); do
+        printf -v hex "%x" "$codep"
+        printf "\\U$hex"
+    done
+}
+
 function lcd {
     cd "$(command lf -print-last-dir "$@")"
 }
