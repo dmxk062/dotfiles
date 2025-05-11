@@ -1,9 +1,14 @@
 #!/bin/sh
 
+if [ -z "$1" ]; then
 TMPDIR="$HOME/.cache/yt-mpd"
 [ ! -d "$TMPDIR" ] && mkdir -p "$TMPDIR"
 
 OUTDIR="$TMPDIR/$(date +%s)"
+else
+    OUTDIR="$1"
+fi
+
 mkdir -p "$OUTDIR"
 cd "$OUTDIR" || exit 1
 
