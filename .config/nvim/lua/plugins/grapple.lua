@@ -65,12 +65,12 @@ local colorized_display = function(entry, content)
 
     local tail, full, hl
     if is_dir then
-        tail = vim.fn.fnamemodify(relative, ":t") .. "/"
+        tail = vim.fs.basename(relative) .. "/"
         full = relative
         hl = "Directory"
     else
-        tail = vim.fn.fnamemodify(relative, ":t")
-        full = vim.fn.fnamemodify(relative, ":h") .. "/"
+        tail = vim.fs.basename(relative)
+        full = vim.fs.dirname(relative)
         hl = require("config.utils").highlight_fname(name)
     end
 
