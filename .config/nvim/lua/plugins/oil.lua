@@ -347,10 +347,10 @@ M.config = function(_, opts)
     -- change directory if not ssh, only for current window
     utils.user_autogroup("config.oil", {
         OilEnter = function(ev)
-            git_status.attach(ev.buf)
             local dir = oil.get_current_dir()
             if dir then
                 vim.fn.chdir(dir)
+                git_status.attach(ev.buf)
             end
         end
     })
