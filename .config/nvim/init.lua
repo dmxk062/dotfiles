@@ -85,17 +85,27 @@ opt.diffopt = {
     "context:4", -- 6 is a bit too much for me
 }
 
--- Paths {{{
+-- Search {{{
 -- current directory, children and parent
 opt.path = {
     ".",
     "*",
     "../*",
 }
+
 opt.cdpath = {
     ".",
     "*",
     "../*",
+}
+
+opt.wildignore = {
+    -- output formats
+    "*.o",
+    "*.pdf",
+
+    -- no need to edit directly
+    ".git",
 }
 -- }}}
 
