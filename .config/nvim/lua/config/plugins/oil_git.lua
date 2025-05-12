@@ -171,7 +171,7 @@ M.attach = function(buf)
         buffer = buf,
         group = group,
         callback = function()
-            buffer_status[buf] = false
+            buffer_status[buf] = nil
             api.nvim_del_augroup_by_id(group)
         end
     })
