@@ -1,10 +1,14 @@
 -- only load it for these filetypes
-local fts = { "css", "scss", "sass", "html" }
+local filetypes = { "css", "scss", "sass", "html" }
 
-return {
-    "NvChad/nvim-colorizer.lua",
-    ft = fts,
+---@type LazySpec
+local M = {
+    "catgoose/nvim-colorizer.lua",
+    ft = filetypes,
     cmd = { "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers", "ColorizerToggle" },
+    keys = {
+        { "<space>ch", "<cmd>ColorizerToggle<cr>", desc = "Highlight color values" },
+    },
     opts = {
         filetypes = { "*" },
         user_default_options = {
@@ -25,3 +29,5 @@ return {
         bufftypes = {},
     }
 }
+
+return M
