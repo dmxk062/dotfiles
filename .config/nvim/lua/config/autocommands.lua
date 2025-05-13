@@ -5,7 +5,7 @@ local utils = require("config.utils")
 -- Window Title {{{
 -- change the title in a more intelligent way
 autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
-    callback = function(args)
+    callback = function()
         local name, _, _ = utils.format_buf_name(api.nvim_get_current_buf(), true)
 
         vim.o.titlestring = "nv: " .. (name or "[-]")
@@ -26,7 +26,7 @@ local cmdline_debounce_timer
 
 utils.autogroup("config.cmdline_linenr", {
     CmdlineEnter = function()
-        cmdline_debounce_timer = vim.uv.new_timer()
+        cmdline_debounce_timer = assert(vim.uv.new_timer())
         cmdline_debounce_timer:start(100, 0, vim.schedule_wrap(function()
             if vim.o.number then
                 vim.o.relativenumber = false
@@ -83,8 +83,8 @@ autocmd("VimResized", {
 
 -- highlight yanked text
 autocmd("TextYankPost", {
-    callback = function(ev)
-        vim.highlight.on_yank { timeout = 120, higroup = "Yanked" }
+    callback = function()
+        vim.hl.on_yank { timeout = 120, higroup = "Yanked" }
     end
 })
 
