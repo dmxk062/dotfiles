@@ -15,7 +15,8 @@ local function lsp_map(buf)
 
     -- using a vim operator in visual mode
     -- this allows things the default rename behavior just makes harder
-    -- e.g. you can just <space>rgU to capitalize a symbol
+    -- e.g. you can just <space>RU to capitalize a symbol
+    -- or <space>R"xgs to replace the name of a symbol with a register's content
     map("n", "<space>R", function()
         local old_name = vim.fn.expand("<cword>")
         vim.cmd("normal! viw")

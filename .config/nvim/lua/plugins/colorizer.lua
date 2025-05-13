@@ -7,7 +7,7 @@ local M = {
     ft = filetypes,
     cmd = { "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers", "ColorizerToggle" },
     keys = {
-        { "<space>ch", "<cmd>ColorizerToggle<cr>", desc = "Highlight color values" },
+        { "<space>cc", "<cmd>ColorizerToggle<cr>", desc = "Highlight color values" },
     },
     opts = {
         filetypes = { "*" },

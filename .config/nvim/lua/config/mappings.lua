@@ -376,7 +376,30 @@ map(mov, "gH", "H")
 
 -- more humane spell popup
 map("n", "z=", function() require("config.spell").popup() end)
-map("n", "z<space>", "<cmd>Spell toggle<cr>")
+-- }}}
+
+-- Set options {{{
+-- [c]onfigure
+map("n", "<space>cs", "<cmd>Spell toggle<cr>", { desc = "Toggle 'spell'" })
+map("n", "<space>cg", "<cmd>Spell set de<cr>", { desc = "German spelling" })
+map("n", "<space>ce", "<cmd>Spell set en<cr>", { desc = "English spelling" })
+map("n", "<space>cl", "<cmd>set list!<cr>", { desc = "Toggle 'list'" })
+map("n", "<space>cw", "<cmd>set wrap!<cr>", { desc = "Toggle 'wrap'" })
+map("n", "<space>c|", function()
+    if vim.o.colorcolumn == "" then
+        if vim.o.textwidth ~= 0 then
+            vim.o.colorcolumn = "+1"
+        else
+            if vim.o.columns >= 120 then
+                vim.o.colorcolumn = "120"
+            else
+                vim.o.colorcolumn = "80"
+            end
+        end
+    else
+        vim.o.colorcolumn = ""
+    end
+end, { desc = "Cycle 'colorcolumn'" })
 -- }}}
 
 -- Give Q more purpose {{{
