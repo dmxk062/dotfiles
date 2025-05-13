@@ -376,6 +376,19 @@ map(mov, "gH", "H")
 
 -- more humane spell popup
 map("n", "z=", function() require("config.spell").popup() end)
+
+-- allow modifying count in o-pending mode
+local modify_operator_count = function(delta)
+    local keys = ("\x1b%s%d"):format(vim.v.operator, math.max(1, vim.v.count + delta))
+    api.nvim_feedkeys(keys, "")
+end
+
+map("o", "<C-a>", function()
+    modify_operator_count(1)
+end)
+map("o", "<C-x>", function()
+    modify_operator_count(-1)
+end)
 -- }}}
 
 -- Set options {{{
