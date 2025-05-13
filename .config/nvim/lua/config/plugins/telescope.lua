@@ -562,6 +562,14 @@ M.select_register = function(buf)
 
     api.nvim_feedkeys("\"" .. reg, "n")
 end
+
+--- View a commit in fugitive
+M.fugitive_commit = function(buf)
+    local selection = t_action_state.get_selected_entry()
+    t_actions.close(buf)
+
+    vim.cmd.Gedit(selection.value)
+end
 -- }}}
 
 -- Pickers {{{

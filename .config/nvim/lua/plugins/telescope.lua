@@ -73,6 +73,17 @@ local qfconfig = default_config {
     entry_maker = custom "quickfix_entries"
 }
 
+local git_commit = default_config {
+    mappings = {
+        i = {
+            ["<cr>"] = custom "fugitive_commit"
+        },
+        n = {
+            ["<cr>"] = custom "fugitive_commit"
+        }
+    }
+}
+
 -- Configuration {{{
 local opts = {}
 opts.defaults = {
@@ -229,7 +240,9 @@ opts.pickers = {
             unmerged = "U",
             untracked = "?",
         }
-    }
+    },
+    git_commits = git_commit,
+    git_bcommits = git_commit,
 }
 
 opts.extensions = {
