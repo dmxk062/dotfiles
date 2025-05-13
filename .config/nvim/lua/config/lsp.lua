@@ -16,7 +16,7 @@ local function lsp_map(buf)
     -- using a vim operator in visual mode
     -- this allows things the default rename behavior just makes harder
     -- e.g. you can just <space>rgU to capitalize a symbol
-    map("n", "<space>gr", function()
+    map("n", "<space>R", function()
         local old_name = vim.fn.expand("<cword>")
         vim.cmd("normal! viw")
         vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
@@ -33,10 +33,6 @@ local function lsp_map(buf)
             end
         })
     end)
-
-    -- fully replace the symbol
-    map("n", "<space>C", "<space>grc", { remap = true })
-
 
     -- list lsp things and use telescope to disambiguate
     map("n", "gd", function() require("telescope.builtin").lsp_definitions() end)
