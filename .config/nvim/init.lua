@@ -73,8 +73,8 @@ opt.fillchars = {
 opt.listchars = {
     eol = "",
     tab = "󰌒 ",
-    space = "·",
-    multispace = " · ",
+    trail = "·",
+    nbsp = "󱁐"
 }
 -- }}}
 
