@@ -1,4 +1,4 @@
---@type LazySpec
+---@type LazySpec
 local M = {
     "luukvbaal/statuscol.nvim",
 }
