@@ -4,8 +4,6 @@ local M = {
     branch = "1.0",
 }
 
-M.opts = {}
-
 --[[ Information {{{
 Multiple cursors for neovim:
 I generally use them as a replacement for macros and complex :g commands
@@ -27,9 +25,9 @@ Actions to perform on cursors:
 - Align the text after/on cursors: <C-c>A
 }}} --]]
 
-function M.config(_, opts)
+function M.config()
     local mc = require("multicursor-nvim")
-    mc.setup(opts)
+    mc.setup()
 
     local map = require("config.utils").map
     local operators = require("config.operators")
