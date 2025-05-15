@@ -132,6 +132,18 @@ function M.config(_, opts)
     -- replace default I and A for visual mode
     map("x", "I", mc.insertVisual)
     map("x", "A", mc.appendVisual)
+
+    mc.addKeymapLayer(function(set)
+        set("n", "\\i", function()
+            mc.action(function(ctx)
+                ctx:forEachCursor(function(cursor, i, t)
+                    cursor:feedkeys(("i%d\x1b"):format(i), {
+                        remap = false
+                    })
+                end)
+            end)
+        end, { desc = "Cursor: Insert index" })
+    end)
 end
 
 return M
