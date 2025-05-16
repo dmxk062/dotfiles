@@ -176,7 +176,7 @@ local colorscheme = {
 
     Yanked                      = { bg = pal.bg1 },
 
-    GrappleName                 = { fg = col.pink, italic = true },
+    GrappleName                 = { fg = pal.fg0, italic = true },
     GrappleBold                 = { link = "Identifier" },
     GrappleCurrent              = { fg = col.teal },
 

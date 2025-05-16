@@ -133,16 +133,6 @@ utils.autogroup("config.lsp", {
 })
 -- }}}
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.foldingRange = {
-    dynamicRegistration = false,
-    lineFoldingOnly = true
-}
-vim.lsp.config("*", {
-    capabilities = capabilities
-})
-
 ---@param client vim.lsp.Client
 local add_setting = function(client, k, v)
     if not client.settings then
