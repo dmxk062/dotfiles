@@ -361,11 +361,6 @@ M.config = function(_, opts)
     local prefix = "<space>f"
     map("n", prefix .. "f", oil.open)
 
-    map("n", "<C-'>", function()
-        vim.cmd("Split")
-        oil.open()
-    end)
-
     map("n", prefix .. "s", function()
         vim.cmd("split")
         oil.open()

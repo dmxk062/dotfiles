@@ -268,11 +268,6 @@ local goto_buf = function()
     end
 end
 
-map("n", "<cr>", function()
-    if vim.v.count > 0 then
-        goto_buf()
-    end
-end)
 map("n", bufleader .. bufleader, goto_buf)
 
 ---@param dir config.win.position
@@ -460,7 +455,6 @@ abbrev("c", "s!", "horizontal") -- same for consistency
 
 -- Terminal {{{
 local terminal = require("config.terminal")
-map("n", "<C-;>", function() terminal.open_term { position = "autosplit" } end)
 
 local termleader = "<space>t"
 map("n", termleader .. "s", function() terminal.open_term { position = "horizontal" } end)
