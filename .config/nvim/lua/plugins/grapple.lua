@@ -10,6 +10,7 @@ Grapple makes everything a *lot* nicer
 
 local on_window_open = function(window)
     local actions = require("grapple.tag_actions")
+    local app = require("grapple").app()
 
     window:map("n", "<cr>", function()
         local cursor = window:cursor()
@@ -38,12 +39,12 @@ local on_window_open = function(window)
         window:perform_close(actions.quickfix)
     end)
 
-    for i = 1, 9 do
-        window:map("n", ("%d"):format(i), function()
+    for i, quick in ipairs(app.settings:quick_select()) do
+        window:map("n", quick, function()
             window:perform_close(actions.select, { index = i })
         end)
 
-        window:map("n", ("<M-%d>"):format(i), function()
+        window:map("n", ("<M-%s>"):format(quick), function()
             window:perform_close(actions.select, { index = i, command = vim.cmd.Split })
         end)
     end
@@ -75,10 +76,15 @@ local colorized_display = function(entry, content)
     end
 
     local marks = {}
+
+    local virt_text = {
+        { full, "NonText" },
+    }
+
     table.insert(marks, {
         hl_group = hl,
         end_col = vim.fn.strdisplaywidth(tail) + 5,
-        virt_text = { { full, "NonText" } },
+        virt_text = virt_text,
         virt_text_pos = "eol_right_align",
     })
 
@@ -101,6 +107,8 @@ local opts = {
         footer = "",
     },
     tag_hook = on_window_open,
+    -- allow for more at once
+    quick_select = "1234567890,.-_()[]{}<>",
     style = "colorized",
     styles = {
         colorized = colorized_display,
