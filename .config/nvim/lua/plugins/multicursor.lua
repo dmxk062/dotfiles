@@ -114,6 +114,7 @@ function M.config()
     -- <C-c>wif puts a cursor on every match in a function
     -- <C-c>wi<space> in lua does the same for a block
     map(vinorm, "<C-c>w", function()
+        ---@diagnostic disable-next-line: missing-fields
         mc.operator { motion = "iw" }
     end, { desc = "Cursor: New for word in" })
 
@@ -132,7 +133,7 @@ function M.config()
     map("x", "A", mc.appendVisual)
 
     mc.addKeymapLayer(function(set)
-        set("n", "\\i", function()
+        set("n", "<C-c>i", function()
             mc.action(function(ctx)
                 ctx:forEachCursor(function(cursor, i, t)
                     cursor:feedkeys(("i%d\x1b"):format(i), {

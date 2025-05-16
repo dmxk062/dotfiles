@@ -369,6 +369,8 @@ add_with_prefix(colorscheme, "Sl", {
     AGrapple     = { bg = pal.bg1, fg = col.magenta },
     IGrapple     = { fg = col.magenta },
 
+    Delim        = { bg = pal.bg1, fg = col.bright_gray },
+
     Register     = { fg = col.magenta },
 
     Keys         = { fg = pal.fg0 },
@@ -382,15 +384,14 @@ add_with_prefix(colorscheme, "Sl", {
     DiffRemoved  = { fg = col.red, bg = pal.bg1 },
     GitHead      = { fg = col.light_blue, bg = pal.bg1 },
     GitHash      = { fg = col.pink, bg = pal.bg1 },
-    LspName      = { link = "Identifier", bg = pal.bg1 },
 
     Index        = { fg = col.teal },
     Total        = { fg = col.pink },
 
     Words        = { fg = col.yellow, bg = pal.bg1 },
     Chars        = { fg = col.green, bg = pal.bg1 },
+    Lines        = { fg = col.teal, bg = pal.bg1 },
     Bytes        = { fg = col.light_blue, bg = pal.bg1 },
-    Lines        = { fg = col.purple, bg = pal.bg1 },
 
     SModeNormal  = { bg = pal.bg0, fg = col.teal },
     SModeInsert  = { bg = pal.bg0, fg = col.white },

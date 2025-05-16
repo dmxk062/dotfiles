@@ -226,8 +226,7 @@ end
 -- Word, Char, Byte and Line -count {{{
 local function update_words()
     local count = fn.wordcount()
-    local linecount =
-        api.nvim_get_mode().mode:find("^[vV\x16]$")
+    local linecount = api.nvim_get_mode().mode:find("^[vV\x16]$")
         and math.abs(fn.getpos("v")[2] - api.nvim_win_get_cursor(0)[1]) + 1
         or api.nvim_buf_line_count(0)
 
@@ -235,11 +234,11 @@ local function update_words()
     local chars = count.visual_chars or count.chars
     local bytes = count.visual_bytes or count.bytes
 
-    return string.format("%%#SlWords#%sw %%#SlChars#%sc %%#SlBytes#%s %%#SlLines#%sl",
+    return string.format("%%#SlWords#%sw %%#SlChars#%sc %%#SlLines#%sl %%#SlBytes#%s",
         utils.format_count(words),
         utils.format_count(chars),
-        utils.format_size(bytes),
-        utils.format_count(linecount)
+        utils.format_count(linecount),
+        utils.format_size(bytes)
     )
 end
 -- }}}
@@ -249,13 +248,12 @@ local function update_filetype()
     local _ft = vim.bo.filetype
     local ft = _ft and _ft ~= "" and _ft or "[noft]"
 
-    local spell = vim.wo.spell and ("=" .. vim.bo.spelllang) or "[nospl]"
+    local spell = vim.wo.spell and ("*" .. vim.bo.spelllang) or "[nospl]"
 
     local _enc = vim.bo.fileencoding
     local enc = _enc and _enc ~= "" and _enc or "utf-8"
 
-    local _ff = vim.bo.fileformat
-    local ff = _ff == "dos" and "crlf" or (_ff == "mac" and "cr" or "lf")
+    local ff = vim.bo.fileformat
 
     return string.format("%s %s %s %s",
         enc, ff, spell, ft
@@ -268,11 +266,11 @@ local function update_lsp_servers()
     local clients = vim.lsp.get_clients { bufnr = 0 }
 
     ---@param c vim.lsp.Client
-    local display = vim.tbl_map(function(c)
-        return "%#SlHint#!" .. c.name
+    local names = vim.tbl_map(function(c)
+        return "%#SlHint#" .. c.name .. "%#SlDelim#"
     end, clients)
 
-    return " " .. table.concat(display, ", ")
+    return #clients > 0 and ("%%#SlDelim#{%s%%#SlDelim#}"):format(table.concat(names, ", ")) or ""
 end
 -- }}}
 
@@ -352,7 +350,7 @@ utils.autogroup("config.statusline", {
 -- }}}
 
 -- only updates in normal mode
-local update_timer = vim.uv.new_timer()
+local update_timer = assert(vim.uv.new_timer())
 update_timer:start(0, 100, vim.schedule_wrap(function()
     if api.nvim_get_mode().mode:sub(1, 1) == "n" then
         sections[indices.diagnostics] = update_diagnostics()
