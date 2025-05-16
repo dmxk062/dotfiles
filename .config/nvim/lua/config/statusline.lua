@@ -253,10 +253,12 @@ local function update_filetype()
     local _enc = vim.bo.fileencoding
     local enc = _enc and _enc ~= "" and _enc or "utf-8"
 
-    local ff = vim.bo.fileformat
+    local indent = vim.bo.expandtab
+        and ("=%d"):format(vim.bo.shiftwidth)
+        or "tab"
 
-    return string.format("%s %s %s %s",
-        enc, ff, spell, ft
+    return string.format("%s %s %s %s %s",
+        enc, vim.bo.fileformat, indent, spell, ft
     )
 end
 -- }}}
@@ -320,7 +322,7 @@ utils.autogroup("config.statusline", {
         end),
 
     OptionSet = {
-        pattern = { "spell", "spellang" },
+        pattern = { "spell", "spellang", "shiftwidth", "expandtab" },
         callback = function()
             sections[indices.filetype] = update_filetype()
             redraw()
