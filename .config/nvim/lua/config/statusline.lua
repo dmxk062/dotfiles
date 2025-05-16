@@ -203,13 +203,13 @@ local function update_git()
 
     local res = {}
     if status.added and status.added > 0 then
-        table.insert(res, string.format("%%#SlDiffAdded#+%d", status.added))
+        table.insert(res, string.format("%%#SlDiffAdded#%d+", status.added))
     end
     if status.changed and status.changed > 0 then
-        table.insert(res, string.format("%%#SlDiffChanged#~%d", status.changed))
+        table.insert(res, string.format("%%#SlDiffChanged#%d~", status.changed))
     end
     if status.removed and status.removed > 0 then
-        table.insert(res, string.format("%%#SlDiffRemoved#-%d", status.removed))
+        table.insert(res, string.format("%%#SlDiffRemoved#%d-", status.removed))
     end
     if status.head then
         table.insert(res, string.format("%%#SlGitHead#%s", status.head))
@@ -269,10 +269,10 @@ local function update_lsp_servers()
 
     ---@param c vim.lsp.Client
     local names = vim.tbl_map(function(c)
-        return "%#SlHint#" .. c.name .. "%#SlDelim#"
+        return " +" .. c.name
     end, clients)
 
-    return #clients > 0 and ("%%#SlDelim#{%s%%#SlDelim#}"):format(table.concat(names, ", ")) or ""
+    return #clients > 0 and table.concat(names, "") or ""
 end
 -- }}}
 
