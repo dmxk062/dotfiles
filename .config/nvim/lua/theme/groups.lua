@@ -316,6 +316,7 @@ add_with_prefix(colorscheme, "@", {
 add_with_prefix(colorscheme, "@lsp.", {
     ["type.macro"]                      = { link = "@macro" },
     ["type.enum"]                       = { fg = col.yellow, },
+    ["type.escape"]                     = { link = "@string.escape"},
 
     ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
 
