@@ -243,7 +243,7 @@ local function update_words()
 end
 -- }}}
 
--- Type of the Current Buffer and Spelling {{{
+-- Buffer and window local options {{{
 local function update_filetype()
     local _ft = vim.bo.filetype
     local ft = _ft and _ft ~= "" and _ft or "[noft]"
@@ -257,8 +257,23 @@ local function update_filetype()
         and ("sw:%d"):format(vim.bo.shiftwidth)
         or "tab"
 
-    return string.format("%s %s %s %s %s",
-        enc, vim.bo.fileformat, indent, spell, ft
+    local concealcursor = vim.wo.concealcursor
+    if concealcursor == "nvic" then
+        concealcursor = "*"
+    elseif concealcursor == "" then
+        concealcursor = "_"
+    end
+
+    local conceallevel = vim.wo.conceallevel
+    local conceal = conceallevel > 0 and ("conceal:%s "):format(concealcursor) or ""
+
+    return string.format("%s %s %s %s%s %s",
+        enc,
+        vim.bo.fileformat,
+        indent,
+        conceal,
+        spell,
+        ft
     )
 end
 -- }}}
@@ -322,7 +337,7 @@ utils.autogroup("config.statusline", {
         end),
 
     OptionSet = {
-        pattern = { "spell", "spellang", "shiftwidth", "expandtab" },
+        pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor" },
         callback = function()
             sections[indices.filetype] = update_filetype()
             redraw()
