@@ -393,6 +393,7 @@ map("n", "<space>cg", "<cmd>Spell set de<cr>", { desc = "German spelling" })
 map("n", "<space>ce", "<cmd>Spell set en<cr>", { desc = "English spelling" })
 map("n", "<space>cl", "<cmd>set list!<cr>", { desc = "Toggle 'list'" })
 map("n", "<space>cw", "<cmd>set wrap!<cr>", { desc = "Toggle 'wrap'" })
+
 map("n", "<space>c|", function()
     if vim.o.colorcolumn == "" then
         if vim.o.textwidth ~= 0 then
@@ -408,6 +409,23 @@ map("n", "<space>c|", function()
         vim.o.colorcolumn = ""
     end
 end, { desc = "Cycle 'colorcolumn'" })
+
+map("n", "<space>ci", function()
+    local needs_reindent = false
+    local count = vim.v.count
+    if count > 0 then
+        vim.bo.expandtab = true
+        needs_reindent = count ~= vim.bo.shiftwidth
+        vim.bo.shiftwidth = count
+    else
+        vim.bo.expandtab = not vim.bo.expandtab
+    end
+
+    vim.cmd("retab!")
+    if needs_reindent then
+        vim.cmd("normal! mzgg=G'z")
+    end
+end, { desc = "Cycle Indent" })
 -- }}}
 
 -- Give Q more purpose {{{
