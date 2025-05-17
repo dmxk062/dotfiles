@@ -34,6 +34,15 @@ application/pdf)
     zathura -- $fx &
     disown
     ;;
+image/*)
+    imv_pid="$(pgrep imv || echo)"
+    if [[ -z "$imv_pid" ]]; then
+        echo "$fx" | imv
+    else
+        imv-msg "$imv_pid" close all
+        imv-msg "$imv_pid" open "$fx"
+    fi
+    ;;
 text/* | application/json | inode/x-empty | application/javascript | application/x-wine-extension-ini)
     # just let neovim deal with everything
     if [[ -n "$NVIM" ]]; then
