@@ -281,7 +281,11 @@ command("Shebang", function(args)
     if args.fargs[1] then
         shebang = SHEBANG_NAMES[args.args] or ("/usr/bin/env " .. args.args)
     else
-        shebang = SHEBANG_NAMES[vim.bo.ft]
+        local ft = vim.bo.ft
+        if ft == "sh" and vim.b.is_bash then
+            ft = "bash"
+        end
+        shebang = SHEBANG_NAMES[ft]
     end
 
     if not shebang then
@@ -289,10 +293,13 @@ command("Shebang", function(args)
         return
     end
 
-    api.nvim_buf_set_lines(0, 0, 0, false, {
-        "#!" .. shebang,
-        ""
-    })
+    -- if there is a shebang already, replace it
+    if api.nvim_buf_get_lines(0, 0, 1, false)[1]:match("^#!.*") then
+        api.nvim_buf_set_lines(0, 0, 1, false, { "#!" .. shebang })
+    else
+        api.nvim_buf_set_lines(0, 0, 1, false, { "#!" .. shebang, "" })
+    end
+
 
     -- make the file executable when it's first written
     api.nvim_create_autocmd("BufWritePost", {
