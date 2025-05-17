@@ -426,6 +426,21 @@ map("n", "<space>ci", function()
         vim.cmd("normal! mzgg=G'z")
     end
 end, { desc = "Cycle Indent" })
+
+map("n", "<space>cc", function()
+    vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
+end, { desc = "Toggle Conceal" })
+
+map("n", "<space>cC", function()
+    local cur = vim.opt_local.concealcursor:get()
+    if cur.n and cur.i then
+        vim.wo.concealcursor = ""
+    elseif cur.n then
+        vim.wo.concealcursor = "nvic"
+    else
+        vim.wo.concealcursor = "n"
+    end
+end, { desc = "Cycle Concealcursor" })
 -- }}}
 
 -- Give Q more purpose {{{
