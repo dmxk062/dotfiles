@@ -295,9 +295,9 @@ add_with_prefix(colorscheme, "@", {
 
     ["markup.math"]                  = { italic = true },
     ["markup.raw.markdown_inline"]   = { bg = pal.bg1 },
-    ["markup.link"]                  = { underline = true, fg = col.blue },
-    ["markup.link.url"]              = { fg = col.blue, nocombine = true },
-    ["markup.link.label"]            = { fg = col.blue, underline = true },
+    ["markup.link"]                  = { fg = col.blue },
+    ["markup.link.url"]              = { fg = col.blue, underline = true, nocombine = true },
+    ["markup.link.label"]            = { fg = col.light_blue },
     ["markup.quote"]                 = { italic = true },
     ["markup.list"]                  = { fg = col.light_blue },
     ["markup.list.checked"]          = { fg = col.bright_gray },
