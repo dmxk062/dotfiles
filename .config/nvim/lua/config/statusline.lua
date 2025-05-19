@@ -339,6 +339,9 @@ utils.autogroup("config.statusline", {
     OptionSet = {
         pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor" },
         callback = function()
+            if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
+                return
+            end
             sections[indices.filetype] = update_filetype()
             redraw()
         end
