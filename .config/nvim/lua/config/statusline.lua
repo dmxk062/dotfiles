@@ -329,7 +329,8 @@ utils.autogroup("config.statusline", {
     [{ "BufEnter", "FileType", "BufLeave" }] =
         vim.schedule_wrap(function()
             -- prevent completion etc
-            if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
+            local mode = api.nvim_get_mode().mode:sub(1, 1)
+            if not (mode == "n" or mode == "c") then
                 return
             end
             sections[indices.filetype] = update_filetype()
@@ -339,7 +340,8 @@ utils.autogroup("config.statusline", {
     OptionSet = {
         pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor" },
         callback = function()
-            if api.nvim_get_mode().mode:sub(1, 1) ~= "n" then
+            local mode = api.nvim_get_mode().mode:sub(1, 1)
+            if not (mode == "n" or mode == "c") then
                 return
             end
             sections[indices.filetype] = update_filetype()
