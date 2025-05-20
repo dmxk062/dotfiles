@@ -13,7 +13,7 @@ local utils = require("config.utils")
 ---@field left [string, string][]
 ---@field right [string, string][]
 ---@field data table
----@field callback fun(data: table)
+---@field callback fun()
 ---@field map string?
 
 ---@class dashboard.section
