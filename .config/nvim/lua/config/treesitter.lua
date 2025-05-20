@@ -56,6 +56,8 @@ local typst_symbol_names = {
     dot      = "⋅",
     dots     = "…",
     approx   = "≈",
+    degree   = "°",
+    slash    = "/",
 }
 
 vim.treesitter.query.add_directive("typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)

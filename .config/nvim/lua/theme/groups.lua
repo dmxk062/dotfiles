@@ -536,6 +536,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     Label               = { link = "Normal" },
     DocBorder           = { link = "*MenuBorder" },
     LabelMatch          = { sp = col.bright_gray, underline = true, fg = col.pink },
+    Index               = { fg = col.teal },
 
     SignatureHelpBorder = { link = "*MenuBorder" },
 

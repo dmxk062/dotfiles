@@ -18,6 +18,13 @@ M.opts.keymap = {
     ["<C-y>"] = { "accept", "fallback" },
 }
 
+-- quick accept with <C-number>
+for i = 1, 9 do
+    M.opts.keymap[("<C-%d>"):format(i)] = { function(cmp)
+        cmp.accept { index = i }
+    end }
+end
+
 M.opts.signature = {
     enabled = true,
     trigger = {
@@ -61,6 +68,7 @@ M.opts.completion = {
         max_height = 24,
         draw = {
             columns = {
+                { "index" },
                 { "label",    "label_description", gap = 1 },
                 { "kind_icon" },
             },
@@ -70,6 +78,12 @@ M.opts.completion = {
 }
 
 M.opts.completion.menu.draw.components = {
+    index = {
+        text = function(ctx)
+            return ctx.idx > 9 and "" or tostring(ctx.idx)
+        end,
+        highlight = "BlinkCmpIndex",
+    },
     kind_icon = {
         text = function(ctx)
             local utils = require("config.utils")
