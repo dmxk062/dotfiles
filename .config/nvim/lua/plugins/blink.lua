@@ -18,13 +18,6 @@ M.opts.keymap = {
     ["<C-y>"] = { "accept", "fallback" },
 }
 
--- quick accept with <C-number>
-for i = 1, 9 do
-    M.opts.keymap[("<C-%d>"):format(i)] = { function(cmp)
-        cmp.accept { index = i }
-    end }
-end
-
 M.opts.signature = {
     enabled = true,
     trigger = {
@@ -51,6 +44,19 @@ M.opts.cmdline = {
         }
     }
 }
+
+-- quick accept with <C-number>
+for i = 1, 9 do
+    local action = {
+        function(cmp)
+            cmp.accept { index = i }
+        end
+    }
+    local key = ("<C-%d>"):format(i)
+
+    M.opts.keymap[key] = action
+    M.opts.cmdline.keymap[key] = action
+end
 
 M.opts.completion = {
     list = {
