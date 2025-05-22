@@ -155,7 +155,7 @@ M.path_display = function(opts, path)
     local namewidth = fn.strdisplaywidth(tail)
     local dirlen = #parendir
 
-    local padding = math.max(MAX_FILENAME_WIDTH * 2 - namewidth, 0)
+    local padding = math.max(MAX_FILENAME_WIDTH * 1.5 - namewidth, 0)
     local hl = utils.highlight_fname(tail)
     if hl == "FileTypeNormal" then
         hl = nil
@@ -244,7 +244,7 @@ end
 local file_display = t_entry_display.create {
     separator = " ",
     items = {
-        { width = MAX_FILENAME_WIDTH * 2 },
+        { width = MAX_FILENAME_WIDTH * 1.5 },
         { width = utils.datefmt.short_len },
         { remaining = true,              right_justify = true },
     }
