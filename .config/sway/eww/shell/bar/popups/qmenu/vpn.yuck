@@ -3,6 +3,7 @@
 (defpoll vpns :run-while vpn-revealed :interval "16s" "./bin/vpn.sh list")
 
 (defpoll public-ip :run-while vpn-revealed :interval "10m" "curl --fail -s ipinfo.io")
+(defpoll local-ips :run-while vpn-revealed :interval "10m" `ip route | jq --slurp --raw-input 'split("\\n")|map(split(" ")|select(.[0] == "default")| { dev: .[4], via: .[2], ip: .[8]})'`)
 
 (defwidget vpn-toggle-button []
     (box :class "dual-cbutton${vpn.active ? " active" : ""}" :space-evenly false
@@ -20,7 +21,13 @@
         (box :space-evenly false
             (button :class "sbutton"
                 :onclick "wl-copy '${public-ip.ip}'"
-                "󰆏   ${public-ip.ip}"))
+                :tooltip "${public-ip}"
+                "󰇧   public: ${public-ip.ip}, ${public-ip.city} ${public-ip.country}"))
+        (box :space-evenly false :orientation "v" :halign "start" (for local in local-ips
+            (box :space-evenly false :hexpand true (button :class "sbutton"
+                :onclick "wl-copy '${local.ip}'"
+                :tooltip "${local.dev}: ${local.ip} via ${local.via}"
+                "󰛳   ${local.dev}: ${local.ip}"))))
         (scroll :style "min-height: 14rem; margin-top: .6rem;"
             :vscroll true :hexpand true 
             (box :orientation "v" :hexpand true :space-evenly false
