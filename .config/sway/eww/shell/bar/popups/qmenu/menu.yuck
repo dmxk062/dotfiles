@@ -11,6 +11,7 @@
 ;; (defvar settings-section 0)
 (defvar bt-revealed false)
 (defvar wifi-revealed false)
+(defvar tasks-revealed false)
 (defvar perf-revealed false)
 (defvar vpn-revealed false)
 (defvar valent-revealed false)
@@ -36,6 +37,7 @@
                 (status-panel)
                 (audio-panel)
                 (toggle-panel)
+                (revealer :reveal {tasks-revealed} :transition "slidedown" (tasks-panel))
                 (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))
                 (box 
                     (bt-toggle-button) 

@@ -29,7 +29,6 @@
 
 (defwidget performance-panel []
     (box :hexpand true :space-evenly false :orientation "v"
-        (tray-processes)
         (box :orientation "v" :hexpand true :class "section" :space-evenly false
             (label :class "text" :text "${perf-pcount} Processes")
             (colored-scale 

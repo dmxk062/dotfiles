@@ -150,6 +150,8 @@
                 (label :halign "start" :class "weather-wind"
                     :text "󱪈  ${round(weather.wind.speed / 3.6, 1)}km/h")
                 (label :halign "start" :class "weather-description"
+                    :tooltip {weather.weather[0].description}
+                    :limit-width 16
                     :text "󰋽   ${weather.weather[0].description}")))))
 
 (defwidget status-panel []
