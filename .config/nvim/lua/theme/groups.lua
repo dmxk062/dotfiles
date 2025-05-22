@@ -205,12 +205,12 @@ add_with_prefix(colorscheme, "@", {
     float                            = { fg = col.magenta },
     macro                            = {},
     character                        = { fg = col.green },
-    conditional                      = { fg = col.light_blue },
     boolean                          = { fg = col.teal },
     property                         = { fg = col.blue },
     constructor                      = { link = "*function" },
     operator                         = { fg = col.teal },
     symbol                           = { fg = col.magenta },
+    module                           = { fg = col.yellow },
 
     ["comment"]                      = { fg = col.bright_gray, italic = true },
     ["comment.todo"]                 = { fg = col.yellow, italic = true, underline = true },
@@ -219,13 +219,14 @@ add_with_prefix(colorscheme, "@", {
     ["comment.note"]                 = { fg = col.light_blue, italic = true, underline = true },
 
     ["string"]                       = { fg = col.green },
-    ["string.csv"]                   = { link = "Normal" },
-    ["string.psv"]                   = { link = "Normal" },
-    ["string.tsv"]                   = { link = "Normal" },
     ["string.documentation"]         = { link = "*comment" },
     ["string.special.path"]          = { fg = col.teal },
     ["string.regex"]                 = { fg = col.orange },
     ["string.escape"]                = { fg = col.yellow },
+    -- separated formats: highlight strings like words
+    ["string.csv"]                   = { link = "Normal" },
+    ["string.psv"]                   = { link = "Normal" },
+    ["string.tsv"]                   = { link = "Normal" },
 
     ["variable"]                     = { fg = pal.fg2 },
     ["variable.member"]              = { link = "*property" },
@@ -251,9 +252,9 @@ add_with_prefix(colorscheme, "@", {
 
     ["keyword"]                      = { fg = col.light_blue },
     ["keyword.return"]               = { fg = col.light_blue, italic = true },
+    ["keyword.import"]               = { fg = col.light_blue },
     ["keyword.repeat"]               = { fg = col.light_blue, italic = true },
     ["keyword.conditional"]          = { fg = col.light_blue, italic = true },
-    ["keyword.import"]               = { fg = col.light_blue },
     ["keyword.function"]             = { link = "*function" },
     ["keyword.operator"]             = { link = "*operator" },
 
@@ -316,7 +317,7 @@ add_with_prefix(colorscheme, "@", {
 add_with_prefix(colorscheme, "@lsp.", {
     ["type.macro"]                      = { link = "@macro" },
     ["type.enum"]                       = { fg = col.yellow, },
-    ["type.escape"]                     = { link = "@string.escape"},
+    ["type.escape"]                     = { link = "@string.escape" },
 
     ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
 
