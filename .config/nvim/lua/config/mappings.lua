@@ -55,7 +55,7 @@ map("n", "gQ", "<nop>") -- ex mode is just plain annoying
 -- ZZ and ZQ are not that short and often just annoying
 map("n", "Z", "<nop>")
 
--- i dont like the lsp mappings
+-- i don't like the lsp mappings
 unmap("n", "grn") -- rename
 unmap("n", "gra") -- actions
 unmap("n", "grr") -- references
@@ -225,7 +225,7 @@ local bufleader = "'"
 -- there still is ` for marks, ' is on the home row, soooo nice
 map("n", bufleader, "<nop>")
 
--- faster altfile, mnemonic: [s]econd, also allows remapping <C-6>
+-- faster alternate file, mnemonic: [s]econd, also allows remapping <C-6>
 map("n", "<C-s>", "<cmd>b #<cr>")
 map("n", bufleader .. "j", "<cmd>bnext<cr>")
 map("n", bufleader .. "k", "<cmd>bprev<cr>")
@@ -444,7 +444,7 @@ end, { desc = "Cycle Concealcursor" })
 -- }}}
 
 -- Give Q more purpose {{{
--- use <C-q> for macros instead, i dont use them that often
+-- use <C-q> for macros instead, i don't use them that often
 -- use "reg, like other vim commands, defaulting to "q
 map("n", "<C-q>", function()
     if fn.reg_recording() ~= "" then
@@ -482,7 +482,7 @@ abbrev("c", "st", "horizontal terminal")
 abbrev("c", "vG", "vertical Git")
 abbrev("c", "sG", "horizontal Git")
 
-abbrev("c", "v!", "vertical")   -- :v doesnt take !bang anyways
+abbrev("c", "v!", "vertical")   -- :v doesn't take !bang anyways
 abbrev("c", "s!", "horizontal") -- same for consistency
 -- }}}
 
