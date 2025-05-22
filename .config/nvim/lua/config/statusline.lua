@@ -248,7 +248,7 @@ local function update_filetype()
     local _ft = vim.bo.filetype
     local ft = _ft and _ft ~= "" and _ft or "[noft]"
 
-    local spell = vim.wo.spell and ("spl:" .. vim.bo.spelllang) or "[nospl]"
+    local spell = vim.wo.spell and ("spl:%s "):format(vim.bo.spelllang) or ""
 
     local _enc = vim.bo.fileencoding
     local enc = _enc and _enc ~= "" and _enc or "utf-8"
@@ -267,7 +267,7 @@ local function update_filetype()
     local conceallevel = vim.wo.conceallevel
     local conceal = conceallevel > 0 and ("conceal:%s "):format(concealcursor) or ""
 
-    return string.format("%s %s %s %s%s %s",
+    return string.format("%s %s %s %s%s%s",
         enc,
         vim.bo.fileformat,
         indent,
