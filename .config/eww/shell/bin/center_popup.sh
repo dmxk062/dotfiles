@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 PIDFILE="/tmp/.eww_popup"
-EWW="$XDG_CONFIG_HOME/sway/eww/shell"
+EWW="$XDG_CONFIG_HOME/eww/shell"
 
 declare -A WIDGETS=(
 [audio]=0

@@ -24,7 +24,7 @@ function recompile_scss {
 }
 
 gsettings set org.gnome.desktop.interface color-scheme "prefer-$target" &
-sed -i "s/$old.scss/$target.scss/" "$XDG_CONFIG_HOME/sway/eww/style/color.scss" &
+sed -i "s/$old.scss/$target.scss/" "$XDG_CONFIG_HOME/eww/style/color.scss" &
 sed -i "s/$old/$target/" "$XDG_CONFIG_HOME/rofi/style/color.rasi" &
 relink_file "$XDG_CONFIG_HOME/swaylock" config.$target config &
 relink_file "$XDG_CONFIG_HOME/sway" $target color &
@@ -38,7 +38,7 @@ recompile_scss "$XDG_CONFIG_HOME/gtklock/"
 
 wait
 sleep 0.1
-eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" reload &
+eww -c "$XDG_CONFIG_HOME/eww/shell/" reload &
 swaync-client -rs >/dev/null &
 swaymsg reload >/dev/null &
 wait

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-EWW="$XDG_CONFIG_HOME/sway/eww/shell"
+EWW="$XDG_CONFIG_HOME/eww/shell"
 
 function get_active {
     nmcli -g TYPE,ACTIVE,UUID,NAME connection show \

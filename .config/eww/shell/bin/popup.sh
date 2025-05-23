@@ -4,7 +4,7 @@
 # $2 : variable to check if open
 # $3 : action: open|close
 
-EWW="$XDG_CONFIG_HOME/sway/eww/shell"
+EWW="$XDG_CONFIG_HOME/eww/shell"
 
 value="$(eww -c "$EWW" get "$2")"
 if [ "$value" = true ] || [ "$3" = close ]; then

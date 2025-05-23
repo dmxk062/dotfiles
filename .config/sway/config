@@ -5,7 +5,7 @@ set $term kitty
 set $sc ~/.config/sway/scripts
 set $mainS DP-1
 set $leftS DP-3
-set $eww ~/.config/sway/eww
+set $eww ~/.config/eww
 
 # emulate spiral layout
 # for_window [app_id=".*"] split toggle
