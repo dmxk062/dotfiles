@@ -28,10 +28,10 @@ if [[ "$1" == "start" ]]; then
     wf-recorder -o $screen  $extra "$region" -c hevc_vaapi -d /dev/dri/renderD128 -f "$path" -r 60 &
     pid=$!
     printf -v struct '{"start":%s, "pid":%s, "path":"%s"}' $EPOCHSECONDS $pid "$path"
-    eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" update recording=true recording-info="$struct"
+    eww -c "$XDG_CONFIG_HOME/eww/shell/" update recording=true recording-info="$struct"
 
     wait $pid
-    eww -c "$XDG_CONFIG_HOME/sway/eww/shell/" update recording=false recording-info='{}'
+    eww -c "$XDG_CONFIG_HOME/eww/shell/" update recording=false recording-info='{}'
 
     CACHEFILE="$XDG_CACHE_HOME/.thumb_$EPOCHSECONDS"
     ffmpegthumbnailer -m -i "$path" -o "$CACHEFILE"
