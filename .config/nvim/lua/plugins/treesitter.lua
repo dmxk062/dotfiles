@@ -193,7 +193,7 @@ M.config = function()
             function() vim.diagnostic.jump { count = -1, float = false, severity = severity } end
         )
 
-        local key = severity:sub(1, 1):lower()
+        local key = severity --[[@as string]]:sub(1, 1):lower()
         map(modes, "]" .. key, nb)
         map(modes, "[" .. key, pb)
     end

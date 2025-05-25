@@ -245,7 +245,7 @@ add_with_prefix(colorscheme, "@", {
     ["punctuation.bracket"]          = { fg = col.bright_gray },
     ["punctuation.special"]          = { fg = col.light_cyan },
     ["punctuation.special.markdown"] = { fg = col.light_gray },
-    ["punctuation.delimiter"]        = { fg = col.light_gray },
+    ["punctuation.delimiter"]        = { fg = col.bright_gray },
 
     ["attribute"]                    = { fg = col.yellow },
     ["attribute.builtin"]            = { fg = col.yellow },
@@ -318,6 +318,7 @@ add_with_prefix(colorscheme, "@lsp.", {
     ["type.macro"]                      = { link = "@macro" },
     ["type.enum"]                       = { fg = col.yellow, },
     ["type.escape"]                     = { link = "@string.escape" },
+    ["type.delim"]                      = { link = "@punctuation.delimiter" },
 
     ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
 

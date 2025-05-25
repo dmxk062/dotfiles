@@ -141,7 +141,7 @@ end
 -- }}}
 
 local MAX_FILENAME_WIDTH = 32
-local MAX_SYMBOL_WIDTH = 60
+local MAX_SYMBOL_WIDTH = 30
 local MAX_FILEPARENT_WIDTH = 24
 local ROW_COL_WIDTH = 11
 
@@ -285,8 +285,8 @@ end
 local lsp_entry_display = t_entry_display.create {
     separator = " ",
     items = {
-        { width = 8 }, -- icon and type
         { width = MAX_SYMBOL_WIDTH },
+        { width = 8 }, -- icon and type
         { width = MAX_FILENAME_WIDTH },
         { remaining = true }
     }
@@ -327,8 +327,8 @@ M.lsp_symbol_entries = function(entry)
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
 
             return lsp_entry_display {
-                { utils.lsp_symbols[entry.kind] or entry.kind, hl },
                 { name,                                        utils.lsp_highlights[entry.kind] },
+                { utils.lsp_symbols[entry.kind] or entry.kind, hl },
                 { tail,                                        filename_highlight },
                 { parentdir,                                   "NonText" }
             }
@@ -482,18 +482,6 @@ local register_display = t_entry_display.create {
         { remaining = true } -- content
     }
 }
-local register_descs = {
-    ["%"] = "current file",
-    ["#"] = "alternate file",
-    [":"] = "last command",
-    ["/"] = "last search",
-    ["."] = "last inserted",
-    ["="] = "expression",
-    ["+"] = "clipboard",
-    ["*"] = "selection",
-    ['"'] = "default",
-    ["-"] = "small delete",
-}
 M.register_entries = function(entry)
     local content = vim.fn.getreg(entry, 1)
     local byte = string.byte(entry)
@@ -503,7 +491,6 @@ M.register_entries = function(entry)
     end
     local isnum = byte >= 48 and byte <= 57
 
-    local description = ischar and "regular" or (isnum and "numeric" or register_descs[entry])
     local text = type(content) == "string" and vim.trim(content:gsub("\n", "\x0d")) or content
     local texthl
     if #content == 0 then
@@ -518,7 +505,7 @@ M.register_entries = function(entry)
         display = function()
             return register_display {
                 { entry,       ischar and "String" or (isnum and "Number" or "Identifier") },
-                { description, "Comment" },
+                -- { description, "Comment" },
                 { text,        texthl }
             }
         end
