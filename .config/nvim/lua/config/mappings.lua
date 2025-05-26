@@ -200,6 +200,65 @@ map("n", "+l", function() add_qf_item(true) end)
 map("n", "-q", function() rem_qf_item() end)
 map("n", "-l", function() rem_qf_item(true) end)
 
+local spell_severity_mapping = {
+    ["bad"] = "E",
+    ["caps"] = "W",
+    ["rare"] = "H",
+    ["local"] = "I"
+
+}
+local get_spelling_errors = function()
+    if not vim.wo.spell then
+        vim.notify("'spell' is not set", vim.log.levels.ERROR)
+        return {}
+    end
+
+    ---@type vim.quickfix.entry
+    local entries = {}
+
+    local save = api.nvim_win_get_cursor(0)
+
+    local bufnr = api.nvim_get_current_buf()
+    local linecount = api.nvim_buf_line_count(0)
+    -- TODO: find a better way to get spelling errors
+    for i = 1, linecount do
+        api.nvim_win_set_cursor(0, { i, 0 })
+
+        local last_col = 0
+        while true do
+            local badword = fn.spellbadword()
+            if badword[1] == "" then
+                break
+            end
+
+            local cursor = api.nvim_win_get_cursor(0)
+            if last_col == cursor[2] then
+                break
+            end
+            last_col = cursor[2]
+            api.nvim_win_set_cursor(0, { i, cursor[2] + #badword[1] + 1 })
+
+            ---@type vim.quickfix.entry
+            local entry = {
+                bufnr = bufnr,
+                text = badword[1],
+                col = last_col + 1,
+                lnum = i,
+                type = spell_severity_mapping[badword[2]]
+            }
+            table.insert(entries, entry)
+        end
+    end
+
+    api.nvim_win_set_cursor(0, save)
+
+    return entries
+end
+
+map("n", "<space>ls", function()
+    fn.setloclist(0, get_spelling_errors())
+end)
+
 map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true }) end)
 map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true }) end)
 
