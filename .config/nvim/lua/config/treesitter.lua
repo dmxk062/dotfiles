@@ -50,6 +50,13 @@ local typst_symbol_names = {
     Omega    = "Ω",
     omega    = "ω",
 
+    -- other letters
+    CC       = "ℂ",
+    NN       = "ℕ",
+    QQ       = "ℚ",
+    RR       = "ℝ",
+    ZZ       = "ℤ",
+
     -- symbols
     infinity = "∞",
     times    = "×",
@@ -58,6 +65,8 @@ local typst_symbol_names = {
     approx   = "≈",
     degree   = "°",
     slash    = "/",
+    ["in"]   = "∈",
+
 }
 
 vim.treesitter.query.add_directive("typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)
