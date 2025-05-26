@@ -226,7 +226,7 @@ M.line_and_column_entries = function(line)
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
 
             return line_and_column_display {
-                { text },
+                { vim.trim(text) },
                 { tail,                       filename_highlight },
                 { ("%d:%d"):format(row, col), "Number" },
                 { parentdir,                  "NonText" },
