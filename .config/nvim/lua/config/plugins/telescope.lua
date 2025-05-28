@@ -500,7 +500,7 @@ M.register_entries = function(entry)
 
     return {
         value = entry,
-        ordinal = ("%s %s %s"):format(entry, description, text),
+        ordinal = ("%s %s"):format(entry, text),
         content = content,
         display = function()
             return register_display {
