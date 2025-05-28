@@ -478,7 +478,6 @@ local register_display = t_entry_display.create {
     separator = " ",
     items = {
         { width = 1 },       -- name
-        { width = 14 },      -- description
         { remaining = true } -- content
     }
 }
