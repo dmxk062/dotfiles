@@ -34,7 +34,7 @@ local lsp_mappings = {
         { desc = "LSP: Code action" }
     },
 
-    -- renaming: three ways
+    -- renaming: two ways
     -- the classic way that uses vim.ui.input, useful if more than one edit needs to be made
     {
         "n", "<space>r",
