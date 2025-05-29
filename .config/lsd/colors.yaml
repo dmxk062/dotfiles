@@ -1,4 +1,4 @@
-user: magenta
+user: yellow
 group: dark_blue
 permission:
   exec: green
@@ -13,12 +13,12 @@ permission:
   acl: green
   context: green
 date:
-  hour-old: blue
-  day-old: dark_blue
+  hour-old: green
+  day-old: blue
   older: dark_grey
 size:
   none: green
-  small: dark_grey
+  small: white
   medium: yellow
   large: red
 inode:

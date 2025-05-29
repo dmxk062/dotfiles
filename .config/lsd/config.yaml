@@ -1,19 +1,16 @@
 classic: false
 blocks:
-  - permission
   - user
-  - group
-  - size
+  - permission
   - date
   - name
 color:
   when: always
   theme: custom
-date: '+%H:%M %d/%m/%y'
+date: '+%b %d'
 icons:
-  when: always
-  seperator: " "
+  when: never
 sorting:
-    dir-grouping: first
+  dir-grouping: first
 symlink-arrow: ->
 size: short
