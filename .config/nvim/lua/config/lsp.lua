@@ -136,10 +136,15 @@ local on_lsp_attached = function(ev)
     local client = lsp.get_client_by_id(ev.data.client_id)
 
     -- make the 'path' match the one of the language server
+    -- NOTE: don't replace the whole 'path', since that might be set by ftplugins
     if client and client.workspace_folders then
-        vim.opt_local.path = vim.tbl_map(function(t)
+        local workspace_path = vim.tbl_map(function(t)
             return vim.uri_to_fname(t.uri) .. "/**"
         end, client.workspace_folders)
+
+        -- remove all the basic wildcards
+        vim.opt_local.path:remove { "*", "../*" }
+        vim.opt_local.path:prepend(workspace_path)
 
         vim.fn.chdir(vim.uri_to_fname(client.workspace_folders[1].uri))
     end
