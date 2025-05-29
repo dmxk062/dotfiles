@@ -4,14 +4,15 @@ Set up LSPs
 
 local M = {}
 
+local api = vim.api
 local utils = require("config.utils")
 local lsp = vim.lsp
 
 local rename_visually = function()
     local old_name = vim.fn.expand("<cword>")
     vim.cmd("normal! viw")
-    vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-        buffer = vim.api.nvim_get_current_buf(),
+    api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+        buffer = api.nvim_get_current_buf(),
         once = true,
         callback = function()
             local new_name = vim.fn.expand("<cword>")
@@ -116,6 +117,61 @@ local lsp_mappings = {
     },
 }
 
+---@param args vim.api.keyset.create_user_command.command_args
+local inlay_hint_command = function(args)
+    local cmd = args.fargs[1]
+    if cmd then
+        if cmd == "on" then
+            lsp.inlay_hint.enable(true)
+        elseif cmd == "off" then
+            lsp.inlay_hint.enable(false)
+        end
+    else
+        lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled())
+    end
+end
+
+---@param args vim.api.keyset.create_user_command.command_args
+local sdo_command = function(args)
+    lsp.buf.references(nil, {
+        on_list = function(res)
+            for _, elem in ipairs(res.items) do
+                local buf = vim.fn.bufadd(elem.filename)
+                vim.fn.bufload(buf)
+                api.nvim_buf_call(buf, function()
+                    api.nvim_win_set_cursor(0, { elem.lnum, elem.col - 1 })
+                    vim.cmd(args.args)
+                end)
+                if vim.bo[buf].modified then
+                    vim.bo[buf].buflisted = true
+                end
+            end
+        end
+    })
+end
+
+---@type table<string, [fun(args: vim.api.keyset.create_user_command.command_args), vim.api.keyset.user_command]>
+local lsp_commands = {
+    InlayHint = {
+        inlay_hint_command,
+        {
+            nargs = "?",
+            desc = "LSP: Set Inlay-Hints",
+            complete = function()
+                return { "on", "off" }
+            end
+        }
+    },
+    Sdo = {
+        sdo_command,
+        {
+            desc = "LSP: Execute CMD for every occurence of the symbol",
+            complete = "command",
+            nargs = "+",
+        }
+    }
+}
+
 ---Add a mapping for when LSP is active
 ---@param mode nvim_mode
 ---@param keys string
@@ -149,23 +205,9 @@ local on_lsp_attached = function(ev)
         vim.fn.chdir(vim.uri_to_fname(client.workspace_folders[1].uri))
     end
 
-    vim.api.nvim_buf_create_user_command(buf, "InlayHint", function(args)
-        local cmd = args.fargs[1]
-        if cmd then
-            if cmd == "on" then
-                lsp.inlay_hint.enable(true)
-            elseif cmd == "off" then
-                lsp.inlay_hint.enable(false)
-            end
-        else
-            lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled())
-        end
-    end, {
-        nargs = "?",
-        complete = function()
-            return { "on", "off" }
-        end
-    })
+    for cmd, action in pairs(lsp_commands) do
+        api.nvim_buf_create_user_command(buf, cmd, action[1], action[2])
+    end
 
     require("workspace-diagnostics").populate_workspace_diagnostics(client, buf)
 end
@@ -175,7 +217,9 @@ local on_lsp_detached = function(ev)
     vim.opt_local.path = vim.opt_global.path
 
     pcall(utils.unmap_group, ev.buf)
-    pcall(vim.api.nvim_buf_del_user_command, ev.buf, "InlayHint")
+    for cmd, _ in pairs(lsp_commands) do
+        pcall(api.nvim_buf_del_user_command, ev.buf, cmd)
+    end
 end
 
 utils.autogroup("config.lsp", {
@@ -203,7 +247,7 @@ utils.autogroup("config.lsp", {
             table.insert(message, { (" %02d%%"):format(value.percentage), "Number" })
         end
 
-        vim.api.nvim_echo(message, false, {})
+        api.nvim_echo(message, false, {})
     end,
 })
 -- }}}
