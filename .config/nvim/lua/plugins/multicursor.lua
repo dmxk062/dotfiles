@@ -67,26 +67,29 @@ function M.config()
     map("x", "<M-c>", mc.visualToCursors, { desc = "Cursor: On each line" })
 
     -- put one cursor at each current search result
-    map("n", "<C-c>/", function()
-        local search_pattern = vim.fn.getreg("/")
-        local main_pos = vim.api.nvim_win_get_cursor(0)
-        local matches = {}
-        vim.api.nvim_win_set_cursor(0, { 1, 1 })
+    map("n", "<C-c>/", mc.searchAllAddCursors, { desc = "Cursor: New for /" })
 
-        local match = vim.fn.searchpos(search_pattern, "W")
-        while match[1] ~= 0 do
-            table.insert(matches, match)
-            match = vim.fn.searchpos(search_pattern, "W")
-        end
-
-        vim.api.nvim_win_set_cursor(0, main_pos)
+    map("n", "<C-c>s", function()
+        local fname = vim.api.nvim_buf_get_name(0)
+        local first = true
         mc.action(function(ctx)
-            for _, pos in ipairs(matches) do
-                local cursor = ctx:addCursor()
-                cursor:setPos(pos)
-            end
+            vim.lsp.buf.references(nil, {
+                on_list = function(res)
+                    for _, item in ipairs(res.items) do
+                        if item.filename == fname then
+                            if not first then
+                                local cursor = ctx:addCursor()
+                                cursor:setPos { item.lnum, item.col }
+                            else
+                                vim.api.nvim_win_set_cursor(0, { item.lnum, item.col - 1 })
+                                first = false
+                            end
+                        end
+                    end
+                end
+            })
         end)
-    end, { desc = "Cursor: New for /" })
+    end, { desc = "Cursor: New for symbol" })
 
     -- align cursors: all to same column
     map({ "n", "x" }, "<C-c>a", function()
@@ -131,6 +134,7 @@ function M.config()
     -- replace default I and A for visual mode
     map("x", "I", mc.insertVisual)
     map("x", "A", mc.appendVisual)
+
 
     mc.addKeymapLayer(function(set)
         set("n", "<C-c>i", function()
