@@ -13,7 +13,7 @@ if pkill wf-recorder; then
 fi
 
 screen="$(swaymsg -t get_outputs | jq -r '.[]|select(.focused).name')"
-if [[ "$2" == "select" ]]; then
+if [[ "$1" == "select" ]]; then
     region="$(slurp -w 0 -b '#4c566acc' -s '#ffffff00')"
     if [[ -z "$region" ]]; then
         exit
