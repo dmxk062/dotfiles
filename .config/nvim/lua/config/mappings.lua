@@ -77,8 +77,8 @@ map("n", "<space>0", "<cmd>cfirst<cr>")
 map("n", "<space>$", "<cmd>clast<cr>")
 
 -- list all TODOs, only when followed by a comment
-map("n", "<space>qt", "<cmd>silent grep '\\bTODO:'|cwin<cr>")
-map("n", "<space>lt", "<cmd>silent lvimgrep /\\<TODO:/ %|lwin<cr>")
+map("n", "<space>qt", "<cmd>silent grep '\\bTODO:'|cwin<cr>", { desc = "Qflist: TODOs" })
+map("n", "<space>lt", "<cmd>silent lvimgrep /\\<TODO:/ %|lwin<cr>", { desc = "Loclist: TODOs" })
 
 
 -- loclist: optimized for much smaller lists
@@ -89,11 +89,11 @@ map("n", "<M-k>", cmd_with_count("lprev"))
 map("n", "<space>qc", function()
     fn.setqflist({}, "r")
     require("quicker").close()
-end)
+end, { desc = "Qflist: Clear" })
 map("n", "<space>lc", function()
     fn.setloclist(0, {}, "r")
     require("quicker").close { loclist = true }
-end)
+end, { desc = "Loclist: Clear" })
 
 -- move through the histories
 map("n", "<space>qn", cmd_with_count("cnewer"))
@@ -119,7 +119,7 @@ map("n", "<space>qv", function()
         vertical = true
     })
     vim.wo[qfwin][0].number = true
-end)
+end, { desc = "Qflist: Vertical" })
 
 map("n", "<space>lv", function()
     local locwin = fn.getloclist(0, { winid = true }).winid
@@ -134,11 +134,11 @@ map("n", "<space>lv", function()
         vertical = true
     })
     vim.wo[locwin][0].number = true
-end)
+end, { desc = "Loclist: Vertical" })
 
 -- set lists to diagnostics
-map("n", "<space>qd", function() vim.diagnostic.setqflist { open = true } end)
-map("n", "<space>ld", function() vim.diagnostic.setloclist { open = true } end)
+map("n", "<space>qd", function() vim.diagnostic.setqflist { open = true } end, { desc = "Qflist: Diagnostics" })
+map("n", "<space>ld", function() vim.diagnostic.setloclist { open = true } end, { desc = "Loclist: Diagnostics" })
 
 -- add current line to list
 local function add_qf_item(use_loclist)
