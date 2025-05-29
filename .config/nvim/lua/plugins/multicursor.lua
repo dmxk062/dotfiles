@@ -69,7 +69,7 @@ function M.config()
     -- put one cursor at each current search result
     map("n", "<C-c>/", mc.searchAllAddCursors, { desc = "Cursor: New for /" })
 
-    map("n", "<C-c>s", function()
+    require("config.lsp").lsp_map("n", "<C-c>s", function()
         local fname = vim.api.nvim_buf_get_name(0)
         local first = true
         mc.action(function(ctx)

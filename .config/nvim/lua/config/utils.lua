@@ -351,6 +351,9 @@ function M.abbrev(mode, keys, string)
     end
 end
 
+M.mode_action = { "n", "v" }
+M.mode_motion = { "n", "x", "o" }
+M.mode_object = { "x", "o" }
 -- }}}
 
 -- Display Windows {{{

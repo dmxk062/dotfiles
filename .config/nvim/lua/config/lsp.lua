@@ -2,68 +2,138 @@
 Set up LSPs
 ]]
 
+local M = {}
+
 local utils = require("config.utils")
+local lsp = vim.lsp
+
+local rename_visually = function()
+    local old_name = vim.fn.expand("<cword>")
+    vim.cmd("normal! viw")
+    vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+        buffer = vim.api.nvim_get_current_buf(),
+        once = true,
+        callback = function()
+            local new_name = vim.fn.expand("<cword>")
+            if new_name == old_name then
+                return
+            end
+
+            vim.cmd.undo()
+            lsp.buf.rename(new_name)
+        end
+    })
+end
 
 -- Callbacks & Mappings {{{
-local function lsp_map(buf)
-    local map = utils.local_mapper(buf, { group = true })
-    map({ "n", "v" }, "<space>a", vim.lsp.buf.code_action)
+---@type [nvim_mode, string, function|string, vim.keymap.set.Opts?][]
+local lsp_mappings = {
+    {
+        utils.mode_action, "<space>a",
+        lsp.buf.code_action,
+        { desc = "LSP: Code action" }
+    },
 
     -- renaming: three ways
     -- the classic way that uses vim.ui.input, useful if more than one edit needs to be made
-    map("n", "<space>r", vim.lsp.buf.rename)
+    {
+        "n", "<space>r",
+        lsp.buf.rename,
+        { desc = "LSP: Rename symbol" }
+    },
 
     -- using a vim operator in visual mode
     -- this allows things the default rename behavior just makes harder
-    -- e.g. you can just <space>RU to capitalize a symbol
+    -- e.g. we can just <space>RU to capitalize a symbol
     -- or <space>R"xgs to replace the name of a symbol with a register's content
-    map("n", "<space>R", function()
-        local old_name = vim.fn.expand("<cword>")
-        vim.cmd("normal! viw")
-        vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-            buffer = vim.api.nvim_get_current_buf(),
-            once = true,
-            callback = function()
-                local new_name = vim.fn.expand("<cword>")
-                if new_name == old_name then
-                    return
-                end
+    {
+        "n", "<space>R",
+        rename_visually,
+        { desc = "LSP: Rename symbol visually" }
+    },
 
-                vim.cmd.undo()
-                vim.lsp.buf.rename(new_name)
-            end
-        })
-    end)
+    -- Select using telescope
+    {
+        "n", "gd",
+        function() require("telescope.builtin").lsp_definitions() end,
+        { desc = "LSP: Select Definitions" }
+    },
+    {
+        "n", "gr",
+        function() require("telescope.builtin").lsp_references() end,
+        { desc = "LSP: Select References" }
+    },
+    {
+        "n", "gi",
+        function() require("telescope.builtin").lsp_implementations() end,
+        { desc = "LSP: Select Implementations" }
+    },
 
-    -- list lsp things and use telescope to disambiguate
-    map("n", "gd", function() require("telescope.builtin").lsp_definitions() end)
-    map("n", "gr", function() require("telescope.builtin").lsp_references() end)
-    map("n", "gi", function() require("telescope.builtin").lsp_implementations() end)
+    -- List in the location list
+    {
+        "n", "gld",
+        function() lsp.buf.definition { loclist = true } end,
+        { desc = "LSP: List Definitions" }
+    },
+    {
+        "n", "glr",
+        function() lsp.buf.references(nil, { loclist = true }) end,
+        { desc = "LSP: List References" }
+    },
+    {
+        "n", "gli",
+        function() lsp.buf.implementation { loclist = true } end,
+        { desc = "LSP: List Implementations" }
+    },
 
-    -- go to the thing in a split and use the loclist to disambiguate instead of telescope
-    map("n", "<C-w>gd", function()
-        utils.open_window_smart(0, { enter = true })
-        vim.lsp.buf.definition { reuse_win = false, loclist = true }
-        vim.cmd.normal("zz")
-    end)
-    map("n", "<C-w>gr", function()
-        utils.open_window_smart(0, { enter = true })
-        vim.lsp.buf.references(nil, { loclist = true })
-        vim.cmd.normal("zz")
-    end)
-    map("n", "<C-w>gi", function()
-        utils.open_window_smart(0, { enter = true })
-        vim.lsp.buf.implementation { reuse_win = false, loclist = true }
-        vim.cmd.normal("zz")
-    end)
+    -- Open in a split
+    {
+        "n", "<C-w>gd",
+        function()
+            utils.open_window_smart(0, { enter = true })
+            lsp.buf.definition { reuse_win = false, loclist = true }
+            vim.cmd.normal("zz")
+        end,
+        { desc = "LSP: (other Window) Definitions" }
+    },
+    {
+        "n", "<C-w>gr",
+        function()
+            utils.open_window_smart(0, { enter = true })
+            lsp.buf.references(nil, { loclist = true })
+            vim.cmd.normal("zz")
+        end,
+        { desc = "LSP: (other Window) References" }
+    },
+    {
+        "n", "<C-w>gi",
+        function()
+            utils.open_window_smart(0, { enter = true })
+            lsp.buf.implementation { reuse_win = false, loclist = true }
+            vim.cmd.normal("zz")
+        end,
+        { desc = "LSP: (other Window) Implementations" }
+    },
+}
+
+---Add a mapping for when LSP is active
+---@param mode nvim_mode
+---@param keys string
+---@param action string|function
+---@param opts vim.keymap.set.Opts?
+M.lsp_map = function(mode, keys, action, opts)
+    table.insert(lsp_mappings, { mode, keys, action, opts })
 end
 
 local on_lsp_attached = function(ev)
     local buf = ev.buf
 
-    lsp_map(buf)
+    local map = utils.local_mapper(buf, { group = true })
+    for _, action in ipairs(lsp_mappings) do
+        map(action[1], action[2], action[3], action[4])
+    end
 
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local client = lsp.get_client_by_id(ev.data.client_id)
 
     -- make the 'path' match the one of the language server
     if client and client.workspace_folders then
@@ -78,12 +148,12 @@ local on_lsp_attached = function(ev)
         local cmd = args.fargs[1]
         if cmd then
             if cmd == "on" then
-                vim.lsp.inlay_hint.enable(true)
+                lsp.inlay_hint.enable(true)
             elseif cmd == "off" then
-                vim.lsp.inlay_hint.enable(false)
+                lsp.inlay_hint.enable(false)
             end
         else
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+            lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled())
         end
     end, {
         nargs = "?",
@@ -108,7 +178,7 @@ utils.autogroup("config.lsp", {
     LspDetach = on_lsp_detached,
     LspProgress = function(ev)
         local data = ev.data
-        local client = vim.lsp.get_client_by_id(data.client_id)
+        local client = lsp.get_client_by_id(data.client_id)
         if not client then
             return
         end
@@ -161,7 +231,7 @@ local L = setmetatable({}, {
             cfg.name = name
         end
 
-        vim.lsp.config[name] = cfg
+        lsp.config[name] = cfg
         rawset(t, name, true)
     end
 })
@@ -248,7 +318,7 @@ L.clangd = {
 
         -- goto header
         map("n", "gh", function()
-            local params = vim.lsp.util.make_text_document_params(buf)
+            local params = lsp.util.make_text_document_params(buf)
             client:request("textDocument/switchSourceHeader", params, function(err, res)
                 if err then
                     vim.notify(tostring(err), vim.log.levels.ERROR)
@@ -331,4 +401,6 @@ L.gopls = {
 }
 -- }}}
 
-vim.lsp.enable(vim.tbl_keys(L))
+lsp.enable(vim.tbl_keys(L))
+
+return M
