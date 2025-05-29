@@ -125,6 +125,7 @@ M.config = function()
             "jsonc",
             "latex",
             "lua",
+            "luadoc",
             "markdown",
             "markdown_inline",
             "printf",
