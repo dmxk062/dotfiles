@@ -184,6 +184,7 @@ local colorscheme = {
     helpExample                 = { link = "Normal" },
 
     manBold                     = { bg = pal.bg0 },
+    manReference                = { link = "@markup.link" },
 
 }
 -- }}}
