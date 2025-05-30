@@ -48,12 +48,12 @@ function M.config()
     -- for charwise mode on a single line: create a single cursor at the destination of the motion
     operators.map_function("<M-c>", function(mode, region, extra, get, set)
         if mode == "line" or region[2][1] ~= region[1][1] then
-            local original_column = vim.fn.virtcol(".")
+            local original_column = vim.fn.charcol(".")
             mc.action(function(ctx)
                 for i = region[1][1] + 1, region[2][1] do
-                    local feedkeys = ctx:addCursor()
-                    feedkeys:setPos({ i, 1 })
-                    feedkeys:feedkeys(original_column .. "|")
+                    local cursor = ctx:addCursor()
+                    cursor:setPos({ i, original_column })
+                    cursor:feedkeys(original_column .. "|")
                 end
             end)
         elseif mode == "char" then
@@ -94,9 +94,11 @@ function M.config()
     -- align cursors: all to same column
     map({ "n", "x" }, "<C-c>a", function()
         mc.action(function(ctx)
-            local maincol = ctx:mainCursor():getPos()[2]
-            ctx:forEachCursor(function(cursor, i, all)
-                cursor:feedkeys(maincol .. "|")
+            local maincol = vim.fn.charcol(".")
+            ctx:forEachCursor(function(cursor)
+                if not cursor:isMainCursor() then
+                    cursor:feedkeys(maincol .. "|")
+                end
             end)
         end)
     end, { desc = "Cursor: Align column" })
