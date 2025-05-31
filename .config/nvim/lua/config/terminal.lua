@@ -5,19 +5,67 @@ local fn = vim.fn
 
 M.last_term = 0
 
+---@alias TermUrl [integer, integer, integer, integer, string]
+---@type TermUrl[]
+M.urls_for_buffers = {}
+local last_osc8_start
+local last_osc8_path
+
 -- General autocommands {{{
 -- remove the builtin handler
 utils.del_autocommand("nvim.terminal", "TermClose")
 
+---@param buf integer
+---@param fun fun(res: {pos: [integer, integer], url: TermUrl})
+local function operate_on_urls(buf, fun)
+    local info = vim.fn.getwininfo(api.nvim_get_current_win())[1]
+    local first = info.topline
+    local last = info.botline
+
+    local targets = {}
+    for _, url in ipairs(M.urls_for_buffers[buf]) do
+        if url[1] >= first then
+            table.insert(targets, {
+                pos = { url[1], url[2] + 1 },
+                url = url
+            })
+        elseif url[1] > last then
+            break
+        end
+    end
+    require("leap.main").leap {
+        targets = targets,
+        action = fun
+    }
+end
+
 utils.autogroup("config.terminal_mode", {
     -- saner options
-    TermOpen = function()
+    TermOpen = function(ev)
         vim.wo[0][0].number = false
         vim.wo[0][0].relativenumber = false
         vim.wo[0][0].statuscolumn = ""
         vim.wo[0][0].signcolumn = "no"
         -- immediately hand over control
         vim.cmd.startinsert()
+
+        M.urls_for_buffers[ev.buf] = {}
+
+        local map = utils.local_mapper(ev.buf)
+
+        local split_path = function()
+            operate_on_urls(ev.buf, function(res)
+                vim.cmd.Split(res.url[5])
+            end)
+        end
+
+        map("n", "<localleader>f", split_path)
+        map("t", "<M-p>", split_path)
+        map("t", "<M-i>", function()
+            operate_on_urls(ev.buf, function(res)
+                vim.api.nvim_paste(vim.fn.shellescape(res.url[5]), false, -1)
+            end)
+        end)
     end,
 
     -- automatically close interactive term buffers
@@ -32,6 +80,8 @@ utils.autogroup("config.terminal_mode", {
                 api.nvim_win_close(0, true)
                 api.nvim_buf_delete(ev.buf, { force = true })
             end
+
+            M.urls_for_buffers[ev.buf] = nil
         end
     },
 
@@ -43,6 +93,35 @@ utils.autogroup("config.terminal_mode", {
             M.last_term = ev.buf
         end
     end,
+
+    -- allow doing things with osc-8 file urls in the buffer
+    TermRequest = function(ev)
+        ---@type string
+        local escape = ev.data.sequence
+        ---@type [integer, integer]
+        local cursor = ev.data.cursor
+        if escape:sub(1, 3) ~= "\x1b]8" then
+            return
+        end
+
+        if last_osc8_start then
+            table.insert(M.urls_for_buffers[ev.buf], {
+                last_osc8_start[1],
+                last_osc8_start[2],
+                cursor[1],
+                cursor[2],
+                last_osc8_path,
+            })
+            last_osc8_start = nil
+            return
+        end
+
+        local uri = escape:gsub("^\x1b]8;.-;", "")
+        if vim.startswith(uri, "file:///") then
+            last_osc8_path = vim.uri_to_fname(uri)
+            last_osc8_start = cursor
+        end
+    end
 })
 -- }}}
 
@@ -87,38 +166,16 @@ function M.open_term(opts)
 
     utils.win_show_buf(b, { position = opts.position, size = opts.size })
 
-    local job = fn.jobstart(cmd, {
+    fn.jobstart(cmd, {
         cwd = cwd,
         term = true,
     })
 
-    M.jobs_for_buffers[b] = job
     M.last_term = b
-
-    api.nvim_create_autocmd("BufDelete", {
-        buffer = b,
-        once = true,
-        callback = function()
-            M.jobs_for_buffers[b] = nil
-        end
-    })
 
     if opts.title then
         vim.b[0].term_title = opts.title
     end
 end
 
-M.jobs_for_buffers = {}
-
----@param buffer integer
----@param text string[]
-function M.enter_text(buffer, text)
-    local jobid = M.jobs_for_buffers[buffer]
-    if not jobid then
-        vim.notify("No job in that buffer", vim.log.levels.ERROR)
-        return
-    end
-
-    fn.chansend(jobid, text)
-end
 return M
