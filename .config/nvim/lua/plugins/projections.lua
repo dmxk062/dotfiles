@@ -3,6 +3,7 @@
 local M = {
     "GnikDroy/projections.nvim",
     branch = "dev",
+    keys = {},
     opts = {
         workspaces = {
             { path = "~/ws/",     patterns = { ".git" } },
