@@ -1,0 +1,34 @@
+(defwindow background
+    :monitor '["DP-1", "eDP-1", 0]'
+    :geometry (geometry
+        :width "100%"
+        :height "100%"
+        :anchor "center center")
+    :stacking "bg"
+    :namespace "eww-background"
+    (background-window))
+
+(defwidget background-calendar []
+    (calendar
+        :class "background-calendar"
+        :show-details true))
+
+(defwidget background-window []
+    (box :hexpand true :vexpand true :space-evenly false :orientation "v"
+        :halign "start" :valign "center" :class "background-widgets"
+        :spacing 40
+        (background-clock)
+        (background-calendar)))
+
+(defwidget background-clock []
+    (box :orientation "v" :space-evenly false
+        (box :halign "start" :space-evenly false
+            (label :text {formattime(EWW_TIME, "%H:%M")} :class "background-time")
+            (circular-progress
+                :class "background-seconds"
+                :thickness 6
+                :value {(EWW_TIME % 60) / 0.6}
+                :clockwise true
+                :start-at 75
+                (label :text {formattime(EWW_TIME, ":%S")})))
+        (box :halign "start" (label :text {formattime(EWW_TIME, "%A, %d. %B")} :class "background-date"))))

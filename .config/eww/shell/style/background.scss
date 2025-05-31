@@ -1,0 +1,46 @@
+.background-widgets {
+    margin-left: 3rem;
+}
+
+.background-time {
+    color: $fg0;
+    font-size: 8rem;
+}
+
+.background-date {
+    color: $fg0;
+    font-size: 5rem;
+}
+
+.background-seconds {
+    margin-left: 3rem;
+    color: $fg0;
+    label {
+        min-width: 3rem;
+        padding: 2.5rem;
+        font-size: 1.8rem;
+    }
+}
+
+.background-calendar {
+    color: $fg0;
+    font-size: 1.3rem;
+
+    &.highlight {
+        color: $fg0;
+    }
+    &.button {
+        background-color: unset;
+        color: $fg0;
+    }
+    &:indeterminate {
+        color: rgba($fg0, 0.2);
+    }
+    &:selected {
+        background-color: $fg0;
+        color: $inv;
+        border-radius: 12px;
+    }
+    &.header {
+    }
+}

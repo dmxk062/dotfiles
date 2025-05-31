@@ -18,3 +18,5 @@
     :hexpand false
     :vexpand false
     (top-bar))
+
+(include "./background/eww.yuck")

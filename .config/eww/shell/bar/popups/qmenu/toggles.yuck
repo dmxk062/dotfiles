@@ -27,7 +27,7 @@
                 :onclick "killall swayidle && ${EWW_CMD} update service-swayidle=false || { ${EWW_CMD} update service-swayidle=true; swayidle -w& }"
                     :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
                     :timeout "16s"
-                "${service-swayidle ? "󰒲" : "󰒳"}   Swayidle")
+                "${service-swayidle ? "󰒲" : "󰒳"}    Go to Sleep")
                 (button
                     :onclick "${EWW_CMD} update tasks-revealed=${!tasks-revealed}"
                     {tasks-revealed ? "" : "" }))
