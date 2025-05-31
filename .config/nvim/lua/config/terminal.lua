@@ -121,7 +121,7 @@ utils.autogroup("config.terminal_mode", {
         local uri = escape:gsub("^\x1b]8;.-;", "")
         if vim.startswith(uri, "file://") then
             local host = uri:match("^file://(.-)/")
-            if host then
+            if host and host ~= "" then
                 if host == hostname then
                     last_osc8_path = vim.uri_to_fname(uri:gsub("^file://.-/", "file:///"))
                 end
