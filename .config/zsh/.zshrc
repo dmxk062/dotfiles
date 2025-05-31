@@ -10,7 +10,7 @@ fi
 fpath+=("$ZDOTDIR/comp")
 
 declare -A ZSH_COLORS_RGB=(
-    ["orange"]="#d08770"
+    orange "#d08770"
 )
 
 setopt combiningchars   # handle combining unicode chars

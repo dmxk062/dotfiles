@@ -17,11 +17,11 @@ psvar=(
 # change the color of the prompt based on mode
 function zvm_after_select_vi_mode {
     local -A mode_colors=(
-        ["$ZVM_MODE_NORMAL"]="cyan"
-        ["$ZVM_MODE_INSERT"]="cyan"
-        ["$ZVM_MODE_VISUAL"]="12"
-        ["$ZVM_MODE_VISUAL_LINE"]="12"
-        ["$ZVM_MODE_REPLACE"]="red"
+        "$ZVM_MODE_NORMAL" "cyan"
+        "$ZVM_MODE_INSERT" "cyan"
+        "$ZVM_MODE_VISUAL" "12"
+        "$ZVM_MODE_VISUAL_LINE" "12"
+        "$ZVM_MODE_REPLACE" "red"
     )
     psvar[2]="$mode_colors[$ZVM_MODE]"
 }
@@ -33,14 +33,15 @@ function _update_git_status {
     if (($? == 1)); then
         local type gstatus submod file
         local modified="" deleted="" added="" renamed="" smodified="" sdeleted="" sadded="" _branch branch="" remote="" ahead="" behind=""
-        git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null | while read -r type gstatus submod _ _ _ file; do
-            case "$type" in 
-                (\#) 
-                    case "$gstatus" in 
+        git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null \
+            | while read -r type gstatus submod _ _ _ file; do
+            case "$type" in
+                (\#)
+                    case "$gstatus" in
                         (branch.oid);;
                         (branch.head) branch="$submod";;
                         (branch.upstream) upstream="$submod";;
-                        (branch.ab) 
+                        (branch.ab)
                             ahead="$submod"
                             behind="$hname"
                             ahead="${ahead#+}"
@@ -53,7 +54,7 @@ function _update_git_status {
                     esac
                     ;;
                 (1)
-                    case "$gstatus" in 
+                    case "$gstatus" in
                         (.A) ((added++));;
                         (.D) ((deleted++));;
                         (.M) ((modified++));;
@@ -72,7 +73,7 @@ function _update_git_status {
 
         printf "%s;%s;%s;%s;%s;%s;%s\n" \
             "$branch" "$modified$smodified" "$deleted$sdeleted" "$added$sadded" "$renamed" "$ahead" "$behind"
-    else 
+    else
         echo
     fi
 }
@@ -120,7 +121,7 @@ function precmd {
         local signame="${signals[exitc-127]:l}"
         signame="${signame:-$exitc}"
         psvar[12]="! $signame"
-    else 
+    else
         if ((! exitc)); then
             psvar[12]="󰄬 0"
         else
