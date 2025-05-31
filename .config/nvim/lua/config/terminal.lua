@@ -11,6 +11,8 @@ M.urls_for_buffers = {}
 local last_osc8_start
 local last_osc8_path
 
+local hostname = fn.hostname()
+
 -- General autocommands {{{
 -- remove the builtin handler
 utils.del_autocommand("nvim.terminal", "TermClose")
@@ -18,7 +20,7 @@ utils.del_autocommand("nvim.terminal", "TermClose")
 ---@param buf integer
 ---@param fun fun(res: {pos: [integer, integer], url: TermUrl})
 local function operate_on_urls(buf, fun)
-    local info = vim.fn.getwininfo(api.nvim_get_current_win())[1]
+    local info = fn.getwininfo(api.nvim_get_current_win())[1]
     local first = info.topline
     local last = info.botline
 
@@ -63,7 +65,7 @@ utils.autogroup("config.terminal_mode", {
         map("t", "<M-p>", split_path)
         map("t", "<M-i>", function()
             operate_on_urls(ev.buf, function(res)
-                vim.api.nvim_paste(vim.fn.shellescape(res.url[5]), false, -1)
+                vim.api.nvim_paste(fn.shellescape(res.url[5]), false, -1)
             end)
         end)
     end,
@@ -117,8 +119,15 @@ utils.autogroup("config.terminal_mode", {
         end
 
         local uri = escape:gsub("^\x1b]8;.-;", "")
-        if vim.startswith(uri, "file:///") then
-            last_osc8_path = vim.uri_to_fname(uri)
+        if vim.startswith(uri, "file://") then
+            local host = uri:match("^file://(.-)/")
+            if host then
+                if host == hostname then
+                    last_osc8_path = vim.uri_to_fname(uri:gsub("^file://.-/", "file:///"))
+                end
+            else
+                last_osc8_path = vim.uri_to_fname(uri)
+            end
             last_osc8_start = cursor
         end
     end
