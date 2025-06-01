@@ -428,6 +428,11 @@ map(mov, "H", "^")
 map(mov, "gL", "L")
 map(mov, "gH", "H")
 
+-- % is annoying to press, [m]atching
+map(obj, "m", "<plug>(matchup-%)")
+map(obj, "im", "<plug>(matchup-i%)")
+map(obj, "am", "<plug>(matchup-a%)")
+
 -- more humane spell popup
 map("n", "z=", function() require("config.spell").popup() end)
 
