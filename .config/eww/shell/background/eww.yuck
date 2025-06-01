@@ -15,10 +15,12 @@
 
 (defwidget background-window []
     (box :hexpand true :vexpand true :space-evenly false :orientation "v"
-        :halign "start" :valign "center" :class "background-widgets"
+        :halign "${background-calendar-h}" :valign "${background-calendar-v}" :class "background-widgets"
         :spacing 40
         (background-clock)
         (background-calendar)))
+
+
 
 (defwidget background-clock []
     (box :orientation "v" :space-evenly false
