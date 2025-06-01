@@ -21,16 +21,35 @@
         (background-calendar)))
 
 
-
 (defwidget background-clock []
     (box :orientation "v" :space-evenly false
         (box :halign "start" :space-evenly false
             (label :text {formattime(EWW_TIME, "%H:%M")} :class "background-time")
             (circular-progress
-                :class "background-seconds"
+                :class "background-timer"
                 :thickness 6
                 :value {(EWW_TIME % 60) / 0.6}
                 :clockwise true
                 :start-at 75
-                (label :text {formattime(EWW_TIME, ":%S")})))
+                (button 
+                    :onclick "wl-copy ${EWW_TIME}"     
+                    {formattime(EWW_TIME, ":%S")}))
+            (background-timer))
         (box :halign "start" (label :text {formattime(EWW_TIME, "%A, %d. %B")} :class "background-date"))))
+
+(defvar timer-time 0)
+(defvar timer-start 0)
+
+(defwidget background-timer []
+    (circular-progress
+        :class "background-timer stopwatch"
+        :thickness 6
+        :value {100 - (((EWW_TIME - timer-start) / (timer-time - timer-start))) * 100}
+        :clockwise true
+        :start-at 75
+        (button :timeout "4h"
+            :onclick {timer-time != 0 ? "${EWW_CMD} update timer-time=0 timer-start=0; pkill -f set_timer.sh" : "./bin/set_timer.sh"}
+            {timer-time > 0 ?
+                ((timer-time - EWW_TIME > 3600) ? formattime(timer-time - EWW_TIME, "*%H:%M", "UTC")
+                : formattime(timer-time - EWW_TIME, "%M:%S"))
+                : "Timer"})))

@@ -12,13 +12,23 @@
     font-size: 5rem;
 }
 
-.background-seconds {
+.background-timer {
     margin-left: 3rem;
     color: $fg0;
     label {
         min-width: 3rem;
         padding: 2.5rem;
         font-size: 1.8rem;
+    }
+
+    &.stopwatch {
+        color: $yellow;
+    }
+
+    > button {
+        &:hover {
+            background-color: rgba($fg0, 0.1);
+        }
     }
 }
 
