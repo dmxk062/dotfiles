@@ -104,26 +104,16 @@ end
 
 -- Diagnostics {{{
 local function update_diagnostics()
-    local err, warn, hint, info = 0, 0, 0, 0
-    local diags = vim.diagnostic.get(0)
-
-    if not diags or #diags == 0 then
+    local sev = vim.diagnostic.severity
+    local count = vim.diagnostic.count(0)
+    if vim.tbl_count(count) == 0 then
         return ""
     end
 
-    local sev = vim.diagnostic.severity
-
-    for _, diag in ipairs(diags) do
-        if diag.severity == sev.ERROR then
-            err = err + 1
-        elseif diag.severity == sev.WARN then
-            warn = warn + 1
-        elseif diag.severity == sev.HINT then
-            hint = hint + 1
-        else
-            info = info + 1
-        end
-    end
+    local err = count[sev.ERROR] or 0
+    local warn = count[sev.WARN] or 0
+    local hint = count[sev.HINT] or 0
+    local info = count[sev.INFO] or 0
 
     local res = {}
     if err > 0 then
