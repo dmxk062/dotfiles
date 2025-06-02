@@ -1,11 +1,8 @@
-user: yellow
+user: magenta
 group: dark_blue
 permission:
   exec: green
-  write: 
-    - 208
-    - 135
-    - 112
+  write: [ 208, 135, 112]
   read: yellow
   exec-sticky: red
   no-access: dark_grey
