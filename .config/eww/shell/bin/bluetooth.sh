@@ -2,7 +2,11 @@
 
 function list_devices {
     buffer=""
-    { while read -r _ mac dname; do
+    { while read -r type mac dname; do
+        if [[ "$type" != "Device" ]]; then
+            continue 
+        fi
+
         battery=""
         if [[ -z "$buffer" ]]; then
             buffer="["
