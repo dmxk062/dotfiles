@@ -590,7 +590,7 @@ M.highlight_time = function(secs)
 end
 
 local datefmt = {}
-datefmt.short = "%b %d, %H:%M"
+datefmt.short = "%b %d %H:%M"
 datefmt.fmt_short = function(secs)
     return os.date(datefmt.short, secs)
 end

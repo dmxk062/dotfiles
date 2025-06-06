@@ -705,7 +705,7 @@ add_with_prefix(colorscheme, "Telescope", {
     SelectionCaret        = { bg = pal.bg1 },
     MultiSelection        = { bg = pal.bg01 },
     MultiIcon             = { bg = col.yellow, fg = col.yellow },
-    Matching              = { link = "BlinkCmpLabelMatch" },
+    Matching              = { fg = col.yellow, underline = true },
 
     PreviewExecute        = { link = "OilExec" },
     PreviewRead           = { link = "OilRead" },

@@ -52,7 +52,7 @@ M.config = function()
         -- delimiters
         "[", "]", "(", ")", "{", "}", "'", '"', "`", "<", ">", "b", "t", "q", "Q", "B",
         -- treesitter
-        "f", "a", "c", "l", "s", "?", "<space>",
+        "f", "a", "c", "l", "k", "?", "<space>", "F",
         -- my own
         "i", "o", "-", ".", "/", "z"
     }
