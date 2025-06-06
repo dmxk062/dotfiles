@@ -728,35 +728,6 @@ operators.map_function("<space>!", function(mode, region, extra, get, set)
 end)
 -- }}}
 
--- Evaluate Math (qalc) {{{
--- evaluate qalculate expression/math and insert result in buffer
--- this is quite useful for e.g. unit conversion
----@diagnostic disable-next-line: unused-local
-operators.map_function("<space>em", function(mode, region, extra, get, set)
-    local expressions = get()
-    local last_expr = expressions[#expressions]
-
-    -- convert to decimals by default, unless specified otherwise
-    -- makes it nicer for programming languages that probably don't want fractions
-    if not last_expr:match("to fraction") then
-        expressions[#expressions] = last_expr .. " to decimals"
-    end
-
-    local result = vim.system({ "qalc", "-t", "-f", "-" }, {
-        stdin = expressions
-    }):wait().stdout
-    if not result then
-        return
-    end
-
-    local output = vim.split(result, "\n")
-    if #(output[#output]) then
-        table.remove(output, #output)
-    end
-    set(region, output)
-end)
--- }}}
-
 -- Sort Region {{{
 local sort_functions = {
     numeric = function(x, y)
