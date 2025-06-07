@@ -1,15 +1,16 @@
 local mason_PATH = vim.fn.stdpath("data") .. "/mason/bin"
 local PACKAGES = {
     ["asm-lsp"]                     = "asm-lsp",
+    ["ast-grep"]                    = "ast-grep",
     ["bash-language-server"]        = "bash-language-server",
     ["clangd"]                      = "clangd",
     ["jedi-language-server"]        = "jedi-language-server",
     ["lua-language-server"]         = "lua-language-server",
     ["marksman"]                    = "marksman",
+    ["tinymist"]                    = "tinymist",
     ["typos-lsp"]                   = "typos-lsp",
     ["vscode-json-language-server"] = "json-lsp",
     ["yaml-language-server"]        = "yaml-language-server",
-    ["tinymist"]                    = "tinymist",
 }
 
 ---@param pkg Package
