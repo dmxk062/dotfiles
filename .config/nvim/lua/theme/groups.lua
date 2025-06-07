@@ -722,4 +722,11 @@ add_with_prefix(colorscheme, "Telescope", {
 })
 -- }}}
 
+-- Grug-Far {{{
+add_with_prefix(colorscheme, "GrugFar", {
+    InputLabel = { fg = col.teal, italic = true },
+    ResultsPath = { link = "Directory" },
+})
+-- }}}
+
 return colorscheme
