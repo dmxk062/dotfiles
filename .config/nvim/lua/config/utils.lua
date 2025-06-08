@@ -11,6 +11,7 @@ local nomodified_names = {
     checkhealth = { "[health]" },
     lazy = { "[lazy]" },
     mason = { "[mason]" },
+    ["grug-far"] = { "[grug-far]" }
 }
 
 local modified_names = {

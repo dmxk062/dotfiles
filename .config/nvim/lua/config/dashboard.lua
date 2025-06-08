@@ -1,6 +1,5 @@
 --[[
-
-My *third* attempt at a handcrafted dashboard
+ My *third* attempt at a handcrafted dashboard
 ]]
 
 local fn = vim.fn
