@@ -11,6 +11,7 @@ alias \
     rm="rm -i" \
     ls='ls --color=auto --hyperlink=auto' \
     ll='lsd -l --hyperlink=auto' \
+    lls='lsd -lA --blocks=size,name --total-size --sort=size' \
     lla='lsd -lA --hyperlink=auto' \
     llo='lsd -l --permission=octal --hyperlink=auto' \
     llao='lsd -lA --permission=octal --hyperlink=auto' \
