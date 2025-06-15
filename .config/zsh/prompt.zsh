@@ -80,14 +80,15 @@ function _update_git_status {
 
 
 # left part of prompt, git part
-PROMPT="%(3V.%F{8}%K{8}%F{white}󰘬 %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
+PROMPT="%B%F{%2v}%S%k%(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b"
+PROMPT+=" %(3V.%(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
 # left part of prompt, current directory
-PROMPT+="%B%F{%2v}%S%k󰉋 %(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b%(10V.%F{8} [ro] .)
+PROMPT+="%(10V.%F{8} [ro].)%(1j. %F{12}&%j.)
 %f "
 
 # right part of prompt, previous command status
 # HACK: draw right prompt one line higher
-RPROMPT="%{$(echotc UP 1)%}%(1j.[& %j] .)%F{8}%K{8}%f󱎫 %1v %F{%11v}%k%S%12v%s%{$(echotc DO 1)%}"
+RPROMPT="%{$(echotc UP 1)%}%F{8}ran%f %1v%F{8}, %F{%11v}%12v%{$(echotc DO 1)%}"
 
 declare -A _exitcolors=(
     [0]=12
@@ -119,13 +120,16 @@ function precmd {
 
     if ((exitc > 128 && exitc < 256)); then
         local signame="${signals[exitc-127]:l}"
-        signame="${signame:-$exitc}"
-        psvar[12]="! $signame"
+        if [[ -n "$signame" ]]; then
+            psvar[12]="!$signame: $exitc"
+        else
+            psvar[12]="!$exitc"
+        fi
     else
         if ((! exitc)); then
-            psvar[12]="󰄬 0"
+            psvar[12]="ok"
         else
-            psvar[12]="󰅖 $exitc"
+            psvar[12]="err: $exitc"
         fi
     fi
     psvar[11]="${_exitcolors[$exitc]}"
@@ -176,8 +180,7 @@ function TRAPUSR1 {
 PS2="%F{8}%_ │%f "
 
 # sudo prompt
-print -P -v SUDO_PROMPT "\n%B%F{red}%S sudo%s%f%b
-"
+print -P -v SUDO_PROMPT "%B%F{red}!sudo%f%b %F{13}%%p %F{8}->%f %%U%F{8}:%f"
 export SUDO_PROMPT
 
 # only the default, i have a couple more functions planed for this
