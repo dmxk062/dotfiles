@@ -68,7 +68,6 @@ textobjects.move = {
         ["]k"] = "@class.outer",
         ["]v"] = "@assignment.lhs",
         ["]l"] = "@loop.outer",
-        ["]["] = "@block.outer",
     },
     goto_previous_start = {
         ["[a"] = "@parameter.inner",
@@ -78,20 +77,17 @@ textobjects.move = {
         ["[k"] = "@class.outer",
         ["[v"] = "@assignment.lhs",
         ["[l"] = "@loop.outer",
-        ["[]"] = "@block.outer",
     },
 
     goto_next_end = {
         ["]A"] = "@parameter.inner",
         ["]F"] = "@function.outer",
         ["]M"] = "@method.outer",
-        ["]]"] = "@block.inner",
     },
     goto_previous_end = {
         ["[A"] = "@parameter.inner",
         ["[F"] = "@function.outer",
         ["[M"] = "@method.outer",
-        ["[["] = "@block.inner",
     },
 }
 -- }}}
