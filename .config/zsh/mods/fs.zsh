@@ -8,7 +8,8 @@ if [[ "$1" == "unload" ]]; then
     unfunction rgf mcd rp bn rcd \
         pwf \
         r .. \
-        root
+        root \
+        mimefind
 
     unalias md ft bft zcp zln
 
@@ -120,6 +121,11 @@ function root {
 # cd to a directory containing a file
 function rcd {
     cd "$(root "$1")"
+}
+
+function mimefind {
+    fd -t f "${@:2}" -X file --mime-type -n00 \
+        | awk 'BEGIN { RS="\0" } NR % 2 == 1 { lastfile=$0 } NR % 2 == 0 && $0 ~ '/"$1"/' { print lastfile }'
 }
 
 autoload -Uz zmv
