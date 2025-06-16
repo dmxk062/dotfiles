@@ -109,6 +109,10 @@ unlink "$ZCACHEDIR/prompt_$$" &!
 function preexec {
     _PROMPTTIMER=$EPOCHREALTIME
     print -n "\e]133;C\a"
+
+    # show current cmd in title
+    local cmd=(${(z)1})
+    print -Pn "\e]0;${1}\a"
 }
 
 function precmd {
@@ -156,6 +160,8 @@ function precmd {
         }
         psvar[1]=$elapsed
     fi
+    # set the title
+    print -Pn "\e]0;zsh%(1j. %j&.): %~\a"
     if [[ ! -w "$PWD" ]]; then
         psvar[10]=1
     else
