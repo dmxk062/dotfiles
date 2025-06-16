@@ -589,6 +589,22 @@ end)
 -- exit terminal mode with a single chord instead of 2
 map("t", "<M-Esc>", "<C-\\><C-n>")
 map("t", "<C-w>", "<C-\\><C-n><C-w>")
+
+map("n", termleader .. "p", function()
+    local termbuf = vim.b[0].terminal_buffer or terminal.last_term
+    if not termbuf then
+        return
+    end
+    local outputs = terminal.command_output_for_buffers[termbuf]
+    local selected = #outputs - vim.v.count
+    local region = outputs[selected]
+    if region then
+        api.nvim_paste(
+            table.concat(api.nvim_buf_get_lines(termbuf, region[1], region[2] - 1, false), "\n"),
+            false, -1
+        )
+    end
+end, { desc = "Terminal: Paste command output" })
 -- }}}
 
 -- Insert Mode {{{

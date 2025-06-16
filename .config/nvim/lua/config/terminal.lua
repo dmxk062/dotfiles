@@ -1,19 +1,10 @@
 local M = {}
 local api = vim.api
-local utils = require("config.utils")
 local fn = vim.fn
+local utils = require("config.utils")
 
 M.last_term = 0
 
----@alias TermUrl [integer, integer, integer, integer, string]
----@type TermUrl[]
-M.urls_for_buffers = {}
-local last_osc8_start
-local last_osc8_path
-
-local hostname = fn.hostname()
-
--- General autocommands {{{
 -- remove the builtin handler
 utils.del_autocommand("nvim.terminal", "TermClose")
 
@@ -41,6 +32,75 @@ local function operate_on_urls(buf, fun)
     }
 end
 
+---@type table<string, fun(ev: vim.api.keyset.create_autocmd.callback_args)>
+local osc_handlers = {}
+
+-- OSC 8, operate on URIs {{{
+---@alias TermUrl [integer, integer, integer, integer, string]
+---@type table<integer, TermUrl>
+M.urls_for_buffers = {}
+
+local last_osc8_start
+local last_osc8_path
+local hostname = fn.hostname()
+
+osc_handlers["8"] = function(ev)
+    ---@type [integer, integer]
+    local cursor = ev.data.cursor
+
+    if last_osc8_start then
+        table.insert(M.urls_for_buffers[ev.buf], {
+            last_osc8_start[1],
+            last_osc8_start[2],
+            cursor[1],
+            cursor[2],
+            last_osc8_path,
+        })
+        last_osc8_start = nil
+        return
+    end
+
+    local uri = ev.data.sequence:gsub("^\x1b]8;.-;", "")
+    if vim.startswith(uri, "file://") then
+        local host = uri:match("^file://(.-)/")
+        if host and host ~= "" then
+            if host == hostname then
+                last_osc8_path = vim.uri_to_fname(uri:gsub("^file://.-/", "file:///"))
+            end
+        else
+            last_osc8_path = vim.uri_to_fname(uri)
+        end
+        last_osc8_start = cursor
+    end
+end
+-- }}}
+
+-- OSC 133, Capture command output {{{
+---@alias TermCommandOutput [integer, integer]
+---@type table<integer, TermCommandOutput>
+M.command_output_for_buffers = {}
+
+local last_osc133_start
+
+osc_handlers["133"] = function(ev)
+    local cursor = ev.data.cursor
+    local code = ev.data.sequence:sub(7)
+    ---@type "A"|"B"|"C"|"D"
+    local subtype = code:sub(1, 1)
+    if subtype == "C" then
+        last_osc133_start = cursor[1]
+    elseif subtype == "D" then
+        if last_osc133_start then
+            table.insert(M.command_output_for_buffers[ev.buf], {
+                last_osc133_start,
+                cursor[1],
+            })
+            last_osc133_start = nil
+        end
+    end
+end
+-- }}}
+
 utils.autogroup("config.terminal_mode", {
     -- saner options
     TermOpen = function(ev)
@@ -52,6 +112,7 @@ utils.autogroup("config.terminal_mode", {
         vim.cmd.startinsert()
 
         M.urls_for_buffers[ev.buf] = {}
+        M.command_output_for_buffers[ev.buf] = {}
 
         local map = utils.local_mapper(ev.buf)
 
@@ -84,6 +145,7 @@ utils.autogroup("config.terminal_mode", {
             end
 
             M.urls_for_buffers[ev.buf] = nil
+            M.command_output_for_buffers[ev.buf] = nil
         end
     },
 
@@ -96,43 +158,21 @@ utils.autogroup("config.terminal_mode", {
         end
     end,
 
-    -- allow doing things with osc-8 file urls in the buffer
+    -- Handle OSC sequences
     TermRequest = function(ev)
         ---@type string
         local escape = ev.data.sequence
-        ---@type [integer, integer]
-        local cursor = ev.data.cursor
-        if escape:sub(1, 3) ~= "\x1b]8" then
+        if escape:sub(1, 2) ~= "\x1b]" then
             return
         end
 
-        if last_osc8_start then
-            table.insert(M.urls_for_buffers[ev.buf], {
-                last_osc8_start[1],
-                last_osc8_start[2],
-                cursor[1],
-                cursor[2],
-                last_osc8_path,
-            })
-            last_osc8_start = nil
-            return
-        end
-
-        local uri = escape:gsub("^\x1b]8;.-;", "")
-        if vim.startswith(uri, "file://") then
-            local host = uri:match("^file://(.-)/")
-            if host and host ~= "" then
-                if host == hostname then
-                    last_osc8_path = vim.uri_to_fname(uri:gsub("^file://.-/", "file:///"))
-                end
-            else
-                last_osc8_path = vim.uri_to_fname(uri)
-            end
-            last_osc8_start = cursor
+        local code = escape:match("^\x1b](.-);")
+        local handler = osc_handlers[code]
+        if handler then
+            handler(ev)
         end
     end
 })
--- }}}
 
 local function get_cmd_and_cwd(bufname, opts)
     local cmd = {}
@@ -167,7 +207,8 @@ end
 
 ---@param opts {position: config.win.position, cmd: string[]|nil, cwd: string|nil, title: string|nil, size: [number, number], autoclose: boolean?}
 function M.open_term(opts)
-    local bname = api.nvim_buf_get_name(0)
+    local curbuf = api.nvim_get_current_buf()
+    local bname = api.nvim_buf_get_name(curbuf)
     local cmd, cwd = get_cmd_and_cwd(bname, opts)
 
     local b = api.nvim_create_buf(true, false)
@@ -181,6 +222,7 @@ function M.open_term(opts)
     })
 
     M.last_term = b
+    vim.b[curbuf].terminal_buffer = b
 
     if opts.title then
         vim.b[0].term_title = opts.title
