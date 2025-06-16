@@ -118,15 +118,26 @@ zsh_directory_name_functions+=(_clipboard_directory_name)
 
 
 # ignore short commands
-function _hist_ignore_short_commands {
+function _ignore_irrelevant_history {
     local cmd="${1%%$'\n'}"
     cmd="${cmd%%[[:space:]]#}"
-    if [[ ${#cmd} -lt 4 ]]; then
+    local len=${#cmd}
+
+    # ignore super short commands
+    if [[ $len -lt 4 ]]; then
+        return 2
+    fi
+
+    # don't ignore pipelines
+    [[ "$cmd" == *"|"* ]] && return 0
+
+    # ignore short cds
+    if [[ ( "$cmd" == "cd"* || "$cmd" == "z"* ) && $len -lt 12 ]]; then
         return 2
     fi
 }
 
-zshaddhistory_functions+=(_hist_ignore_short_commands)
+zshaddhistory_functions+=(_ignore_irrelevant_history)
 
 function zle-isearch-update {
     # display that line, even if we're manually overwriting it
