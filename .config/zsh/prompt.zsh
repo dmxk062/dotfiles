@@ -80,18 +80,14 @@ function _update_git_status {
 
 
 # left part of prompt, git part
-PROMPT="%B%F{%2v}%S%k%(6~|%-1~/…/%24<..<%3~%<<|%6~)%s%f%b"
-PROMPT+=" %(3V.%(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{white}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.) .)"
+PROMPT="%B%F{%2v}%S%k%(6~|%-1~/…/%24<..<%3~%<<|%6~)%(10V. [ro].)%s%f%b"
+PROMPT+="%(3V. %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{12}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.)%F{8} | .)"
 # left part of prompt, current directory
-PROMPT+="%(10V.%F{8} [ro].)%(1j. %F{12}&%j.)
-%f "
-
-# right part of prompt, previous command status
-# HACK: draw right prompt one line higher
-RPROMPT="%{$(echotc UP 1)%}%F{8}ran%f %1v%F{8}, %F{%11v}%12v%{$(echotc DO 1)%}"
+PROMPT+="%(1j.%F{12}&%j .)%f%1v%F{8}, %F{%11v}%12v %F{8}| %F{cyan}%D{%b %d %H:%M}
+%F{13}%n%F{8}%#%f "
 
 declare -A _exitcolors=(
-    [0]=12
+    [0]=green
     [130]=yellow
     [147]=blue
     [148]=blue
