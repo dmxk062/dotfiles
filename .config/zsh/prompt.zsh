@@ -67,16 +67,19 @@ function _update_git_status {
 
 
 PROMPT=$'%{\e]133;A\a%}' # OSC133 start
-# current working directory
-PROMPT+="%F{cyan}%(6~|%-1~/…/%24<..<%3~%<<|%6~)%(9V. %F{11}[ro].)"
+# current working directory [ro]
+PROMPT+="%F{cyan}%(6~|%-1~/…/%24<..<%3~%<<|%6~)%u%(9V. %F{11}[ro].)"
 # git status: [+ahead] [-behind] HEAD [+added] [~changed] [-removed] [->moved]
-PROMPT+="%(2V.%F{8} /%(7V.%F{green}+%7v .)%(8V.%F{red}-%8v .)%F{12}%2v%(5V. %F{green}+%5v.)%(3V. %F{yellow}~%3v.)%(4V. %F{red}-%4v.)%(6V. %F{magenta}->%6v.).)"
+PROMPT+="%(2V.%F{8} /%(7V.%F{green}+%7v .)%(8V.%F{red}-%8v .)%F{white}%2v%(5V. %F{green}+%5v.)%(3V. %F{yellow}~%3v.)%(4V. %F{red}-%4v.)%(6V. %F{magenta}->%6v.).)"
 # processes, time taken, date
-PROMPT+="%F{8} |%(1j. %F{12}&%j.) %f%1v%F{8}, %F{%10v}%11v %F{8}| %F{13}%D{%b %d} %F{12}%D{%H:%M}"
-# history number, symbol
+PROMPT+="%F{8} |%(1j. %F{12}&%j.) %f%1v%F{8}, %F{%10v}%11v"
+# prompt symbol
 PROMPT+="
 %F{cyan}%#%f "
 PROMPT+=$'%{\e]133;B\a%}' # OSC133 end
+
+# #history-number Jan 1 00:00
+RPROMPT="%{$(echotc UP 1)%}%F{magenta}#%h %F{13}%D{%b %d} %F{12}%D{%H:%M}%{$(echotc DO 1)%}"
 
 declare -A _exitcolors=(
     [0]=green
