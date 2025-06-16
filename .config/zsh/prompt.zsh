@@ -79,12 +79,16 @@ function _update_git_status {
 }
 
 
-# left part of prompt, git part
-PROMPT="%B%F{%2v}%S%k%(6~|%-1~/…/%24<..<%3~%<<|%6~)%(10V. [ro].)%s%f%b"
-PROMPT+="%(3V. %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{12}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.)%F{8} | .)"
-# left part of prompt, current directory
-PROMPT+="%(1j.%F{12}&%j .)%f%1v%F{8}, %F{%11v}%12v %F{8}| %F{cyan}%D{%b %d %H:%M}
+PROMPT=$'%{\e]133;A\a%}' # OSC133 start
+# current working directory
+PROMPT+="%B%F{%2v}%S%k%(6~|%-1~/…/%24<..<%3~%<<|%6~)%(10V. [ro].)%s%f%b"
+# git status
+PROMPT+="%(3V. %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{12}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.)%F{8} |.)"
+# processes, time taken, date
+# processes, time taken, date
+PROMPT+="%(1j. %F{12}&%j.) %f%1v%F{8}, %F{%11v}%12v %F{8}| %F{cyan}%D{%b %d %H:%M}
 %F{13}%n%F{8}%#%f "
+PROMPT+=$'%{\e]133;B\a%}' # OSC133 end
 
 declare -A _exitcolors=(
     [0]=green
@@ -102,8 +106,14 @@ mkfifo "$ZCACHEDIR/prompt_$$"
 exec {_PROMPTFD}<> "$ZCACHEDIR/prompt_$$"
 unlink "$ZCACHEDIR/prompt_$$" &!
 
+function preexec {
+    _PROMPTTIMER=$EPOCHREALTIME
+    print -n "\e]133;C\a"
+}
+
 function precmd {
     local exitc=$?
+    print -n "\e]133;D;$exitc\a"
 
     if ((_PROMPTPROC != 0)); then
         kill -s HUP $_PROMPTPROC >/dev/null 2>&1 || :
@@ -146,8 +156,6 @@ function precmd {
         }
         psvar[1]=$elapsed
     fi
-    # set the title
-    print -Pn "\e]0;zsh%(1j. %j&.): %~\a"
     if [[ ! -w "$PWD" ]]; then
         psvar[10]=1
     else
@@ -159,13 +167,13 @@ function precmd {
 function TRAPUSR1 {
     local -a tmp
     IFS=";" read -u $_PROMPTFD -rA tmp
-    psvar[3]=$tmp[1]
-    psvar[4]=$tmp[2]
-    psvar[5]=$tmp[3]
-    psvar[6]=$tmp[4]
-    psvar[7]=$tmp[5]
-    psvar[8]=$tmp[6]
-    psvar[9]=$tmp[7]
+    psvar[3]=${tmp[1]}
+    psvar[4]=${tmp[2]}
+    psvar[5]=${tmp[3]}
+    psvar[6]=${tmp[4]}
+    psvar[7]=${tmp[5]}
+    psvar[8]=${tmp[6]}
+    psvar[9]=${tmp[7]}
 
     _PROMPTPROC=0
 

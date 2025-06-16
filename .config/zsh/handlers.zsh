@@ -1,10 +1,3 @@
-function preexec {
-    _PROMPTTIMER=$EPOCHREALTIME
-    # show current cmd in title
-    local cmd=(${(z)1})
-    print -Pn "\e]0;${1}\a"
-}
-
 function command_not_found_handler {
     # early return if not in tty
     printf "zsh: command not found: '%s'" "$1" >&2
