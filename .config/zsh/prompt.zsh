@@ -1,30 +1,17 @@
 psvar=(
     0             # 1 time of previous command
-    "cyan"        # 2 color of prompt
-    ""            # 3 git branch
-    ""            # 4 git modified
-    ""            # 5 git deleted
-    ""            # 6 git added
-    ""            # 7 git renamed
-    ""            # 8 git ahead
-    ""            # 9 git behind
-    ""            # 10 current dir readable
-    "12"          # 11 color based on return status
-    ""            # 12 symbol/text to be used for return status
+    ""            # 2 git branch
+    ""            # 3 git modified
+    ""            # 4 git deleted
+    ""            # 5 git added
+    ""            # 6 git renamed
+    ""            # 7 git ahead
+    ""            # 8 git behind
+    ""            # 9 current dir readable
+    "12"          # 10 color based on return status
+    ""            # 11 symbol/text to be used for return status
 )
 
-
-# change the color of the prompt based on mode
-function zvm_after_select_vi_mode {
-    local -A mode_colors=(
-        "$ZVM_MODE_NORMAL" "cyan"
-        "$ZVM_MODE_INSERT" "cyan"
-        "$ZVM_MODE_VISUAL" "12"
-        "$ZVM_MODE_VISUAL_LINE" "12"
-        "$ZVM_MODE_REPLACE" "red"
-    )
-    psvar[2]="$mode_colors[$ZVM_MODE]"
-}
 
 function _update_git_status {
     # only update if inside a git dir that isnt ignored
@@ -81,13 +68,14 @@ function _update_git_status {
 
 PROMPT=$'%{\e]133;A\a%}' # OSC133 start
 # current working directory
-PROMPT+="%B%F{%2v}%S%k%(6~|%-1~/…/%24<..<%3~%<<|%6~)%(10V. [ro].)%s%f%b"
-# git status
-PROMPT+="%(3V. %(8V.%F{green}+%8v .)%(9V.%F{red}-%9v .)%F{12}%3v%(6V. %F{green}+%6v.)%(4V. %F{yellow}~%4v.)%(5V. %F{red}-%5v.)%(7V. %F{magenta}->%7v.)%F{8} |.)"
+PROMPT+="%F{cyan}%(6~|%-1~/…/%24<..<%3~%<<|%6~)%(9V. [ro].)"
+# git status: [+ahead] [-behind] HEAD [+added] [~changed] [-removed] [->moved]
+PROMPT+="%(2V.%F{8} /%(7V.%F{green}+%7v .)%(8V.%F{red}-%8v .)%F{12}%2v%(5V. %F{green}+%5v.)%(3V. %F{yellow}~%3v.)%(4V. %F{red}-%4v.)%(6V. %F{magenta}->%6v.).)"
 # processes, time taken, date
-# processes, time taken, date
-PROMPT+="%(1j. %F{12}&%j.) %f%1v%F{8}, %F{%11v}%12v %F{8}| %F{cyan}%D{%b %d %H:%M}
-%F{13}%n%F{8}%#%f "
+PROMPT+="%F{8} |%(1j. %F{12}&%j.) %f%1v%F{8}, %F{%10v}%11v %F{8}| %F{cyan}%D{%b %d %H:%M}"
+# history number, symbol
+PROMPT+="
+%F{magenta}%h%F{8}%#%f "
 PROMPT+=$'%{\e]133;B\a%}' # OSC133 end
 
 declare -A _exitcolors=(
@@ -131,20 +119,20 @@ function precmd {
     if ((exitc > 128 && exitc < 256)); then
         local signame="${signals[exitc-127]:l}"
         if [[ -n "$signame" ]]; then
-            psvar[12]="!$signame: $exitc"
+            psvar[11]="!$signame: $exitc"
         else
-            psvar[12]="!$exitc"
+            psvar[11]="!$exitc"
         fi
     else
         if ((! exitc)); then
-            psvar[12]="ok"
+            psvar[11]="ok"
         else
-            psvar[12]="err: $exitc"
+            psvar[11]="err: $exitc"
         fi
     fi
-    psvar[11]="${_exitcolors[$exitc]}"
+    psvar[10]="${_exitcolors[$exitc]}"
     if [[ -z "${psvar[11]}" ]]; then
-        psvar[11]=red
+        psvar[10]=red
     fi
 
     # dont print a new time on every single <cr>, just if a command ran
@@ -163,9 +151,9 @@ function precmd {
     # set the title
     print -Pn "\e]0;zsh%(1j. %j&.): %~\a"
     if [[ ! -w "$PWD" ]]; then
-        psvar[10]=1
+        psvar[9]=1
     else
-        psvar[10]=""
+        psvar[9]=""
     fi
     _PROMPTTIMER=0
 }
@@ -173,13 +161,13 @@ function precmd {
 function TRAPUSR1 {
     local -a tmp
     IFS=";" read -u $_PROMPTFD -rA tmp
-    psvar[3]=${tmp[1]}
-    psvar[4]=${tmp[2]}
-    psvar[5]=${tmp[3]}
-    psvar[6]=${tmp[4]}
-    psvar[7]=${tmp[5]}
-    psvar[8]=${tmp[6]}
-    psvar[9]=${tmp[7]}
+    psvar[2]=${tmp[1]}
+    psvar[3]=${tmp[2]}
+    psvar[4]=${tmp[3]}
+    psvar[5]=${tmp[4]}
+    psvar[6]=${tmp[5]}
+    psvar[7]=${tmp[6]}
+    psvar[8]=${tmp[7]}
 
     _PROMPTPROC=0
 
