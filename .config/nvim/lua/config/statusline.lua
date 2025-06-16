@@ -161,9 +161,9 @@ local function get_fugitive_info()
         if vim.startswith(object, "/tmp") then
             object = "log"
         elseif object:match("^%x+$") then
-            object = object:sub(0, 7)
+            object = object:sub(0, 8)
         elseif object:match("^%x+:.*$") then
-            object = "#" .. object:sub(0, 7)
+            object = "#" .. object:sub(0, 8)
         elseif object == ":" then
             object = "status"
         else
