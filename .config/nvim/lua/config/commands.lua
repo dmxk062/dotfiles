@@ -314,6 +314,22 @@ end, {
         return vim.tbl_keys(SHEBANG_NAMES)
     end
 })
+
+command("Number", function(args)
+    local format = (args.args ~= "" and args.args or "%d ") .. "%s"
+
+    local lines = api.nvim_buf_get_lines(0, args.line1 - 1, args.line2, false)
+    local output = {}
+    for i = 1, #lines do
+        table.insert(output, format:format(i, lines[i]))
+    end
+
+    api.nvim_buf_set_lines(0, args.line1 - 1, args.line2, false, output)
+end, {
+    desc = "Number lines in range",
+    range = true,
+    nargs = "*",
+})
 -- }}}
 
 command("Dash", function(args)
