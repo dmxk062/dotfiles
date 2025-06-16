@@ -15,12 +15,12 @@ function procmem {
 
     function get_mem_from_proc {
         local value
-            if [[ -r "/proc/$1/status" ]]; then
-                read -r _ value _ <<< $(grep "VmRSS" "/proc/$1/status")
-                print -- ${value:-0}
-            else
-                print 
-            fi
+        if [[ -r "/proc/$1/status" ]]; then
+            read -r _ value _ <<<$(grep "VmRSS" "/proc/$1/status")
+            print -- ${value:-0}
+        else
+            print
+        fi
     }
 
     if (($# == 0)); then
@@ -35,14 +35,14 @@ function procmem {
 }
 
 function proccmd {
-    local pid 
+    local pid
     function get_cmd_from_proc {
         local value
         if [[ -r "/proc/$1/cmdline" ]]; then
             value="$(< /proc/$1/cmdline)"
             print -- ${value//$'\0'/' '}
         else
-            print 
+            print
         fi
 
     }

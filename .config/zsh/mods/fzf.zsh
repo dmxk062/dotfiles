@@ -1,5 +1,4 @@
 #!/bin/false
-# vim: ft=zsh
 
 # wrappers around fzf for my most common use cases
 

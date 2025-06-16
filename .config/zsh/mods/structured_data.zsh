@@ -25,7 +25,7 @@ fi
 # so no binary or even more complex structured data formats
 # just generalized forms of structured data
 # json is here due to its widespread use in networking, that's it
-# 
+#
 # compared to other data format handling in e.g. fancy object oriented shells,
 # this keeps with the *stream* as the primary datatype of a shell.
 # fields in that format are newline or delimiter separated, not following to some syntax tree
@@ -36,18 +36,18 @@ fi
 # table:
 #   a list of newline delimited entries with fixed, delimiter based fields
 #   it may optionally have a header line giving the names of the fields
-#   csv is a type of "table", but a table may not contain *any* occurrence of their separators, 
+#   csv is a type of "table", but a table may not contain *any* occurrence of their separators,
 #   with no escaping of separators to simplify handling so smth like \t or \0 should be used
 #   e.g. /etc/passwd
 #
-# hash: 
+# hash:
 #   a built in zsh hashtable, mainly used as the final step in a pipeline
 #   meant to be used to examine data in more detail
 #
-# json: 
+# json:
 #   arbitrary json arrays or maps. json is mainly used for maps however
 #
-# props: 
+# props:
 #   a series of "blocks" or a single "block", delimitted by blank lines. lines match a key: value pattern
 #   the delimiter is ":" by default, but may be anything in reality
 #   this format is comparable to a table, however fields can contain ordered sub fields using a second delimiter
@@ -91,7 +91,7 @@ function json.table {
 
 function json.props {
     local sep="${1:-:	}"
-    jq --arg sep "$sep" -r 'to_entries|map("\(.key)\($sep)\(.value)")[]' 
+    jq --arg sep "$sep" -r 'to_entries|map("\(.key)\($sep)\(.value)")[]'
 }
 
 
@@ -102,7 +102,7 @@ function json.props {
 function table.props {
     local outsep="${1:=": "}"
     read -rA header
-    
+
     local fields i
     while read -rA fields; do
         for ((i = 1; i <= $#fields; i++)); do
@@ -128,7 +128,7 @@ function table.json {
 
     if (($# <= 1)); then
         IFS="$sep" read -rA columns
-    else 
+    else
         columns=("$@")
     fi
 
@@ -195,7 +195,7 @@ function props.table {
     local had_keys=0
 
     local line key rest value=""
-    while IFS="$insep" read -r key rest; do 
+    while IFS="$insep" read -r key rest; do
         key=${key%"${key##*[![:space:]]}"}
         if [[ "$key" == "" ]]; then
             if ((!had_keys)); then
@@ -277,7 +277,7 @@ function props.filter {
     done
 
 
-    while IFS="$insep" read -r key rest; do 
+    while IFS="$insep" read -r key rest; do
         if [[ "$key" == "" ]]; then
             if eval "$1"; then
                 print -l -- "${cur[@]}" ""
@@ -303,7 +303,7 @@ function props.filter {
 function props.slice {
     local insep=":" outsep=":	"
     local num_read=1
-    local start=${1:-0} 
+    local start=${1:-0}
     local end=${2:-$1}
 
     while getopts "i:s:" flag; do
@@ -315,7 +315,7 @@ function props.slice {
 
     local -a cur
     local key rest value
-    while IFS="$insep" read -r key rest; do 
+    while IFS="$insep" read -r key rest; do
         key=${key%"${key##*[![:space:]]}"}
         if [[ "$key" == "" ]]; then
             if ((num_read <= end && num_read >= start)); then
@@ -347,7 +347,7 @@ function props.map {
     done
 
 
-    while IFS="$insep" read -r key rest; do 
+    while IFS="$insep" read -r key rest; do
         if [[ "$key" == "" ]]; then
             eval "$1"
             obj=()

@@ -3,7 +3,6 @@
 
 if [[ "$1" == "unload" ]]; then
     unalias sparse-clone sparse-add unstage
-    unfunction gac
 
     return
 fi

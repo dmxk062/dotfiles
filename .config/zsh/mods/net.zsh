@@ -9,7 +9,7 @@ if [[ "$1" == "unload" ]]; then
         ip-local \
         ncsend ncrecv ncsenddir ncrecvdir
 
-    unalias req 
+    unalias req
 
     zmodload -u zsh/net/socket
 
@@ -25,7 +25,9 @@ alias req="noglob curl -s"
 zmodload zsh/net/socket
 
 function fupload {
-    curl -sF file="@$1" "${2:-"https://0x0.st"}"
+    local url="$(curl -sF file="@$1" "${2:-"https://0x0.st"}")"
+    URL="$url"
+    echo "$url"
 }
 
 function urlenc {
@@ -40,7 +42,7 @@ function urlenc {
         fi
 
         print -n "$prefix"
-        print -n -- "$urlpath"|jq -sRr @uri|sed 's/%2F/\//g'
+        print -n -- "$urlpath" | jq -sRr @uri | sed 's/%2F/\//g'
     done
 }
 
@@ -64,7 +66,7 @@ function ip-local {
 }
 
 function makeqr {
-    qrencode --size=2 --margin=2 --type=ANSIUTF8 --output=- 
+    qrencode --size=2 --margin=2 --type=ANSIUTF8 --output=-
 }
 
 function ncsend {
