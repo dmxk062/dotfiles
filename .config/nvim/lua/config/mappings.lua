@@ -194,11 +194,11 @@ local function rem_qf_item(use_loclist)
     end
 end
 
-map("n", "+q", function() add_qf_item() end)
-map("n", "+l", function() add_qf_item(true) end)
+map("n", "<space>+q", function() add_qf_item() end)
+map("n", "<space>+l", function() add_qf_item(true) end)
 
-map("n", "-q", function() rem_qf_item() end)
-map("n", "-l", function() rem_qf_item(true) end)
+map("n", "<space>-q", function() rem_qf_item() end)
+map("n", "<space>-l", function() rem_qf_item(true) end)
 
 local spell_severity_mapping = {
     ["bad"] = "E",

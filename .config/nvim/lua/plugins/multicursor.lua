@@ -8,21 +8,23 @@ local M = {
 Multiple cursors for neovim:
 I generally use them as a replacement for macros and complex :g commands
 
+Leader Key: -
+
 Ways to add cursors:
-- motion: <M-c><motion>
-- search: /<search term><cr><C-c>/
+- motion: --<motion>
+- search: /<search term><cr>-/
 - word match (like *):
-    - all: <C-c>*
-    - in scope: <C-c>w<motion>
-    - custom match in scope: <C-c>o<motion><motion>
+    - all: -*
+    - in scope: -w<motion>
+    - custom match in scope: -o<motion><motion>
 - splitting / matching a visual selection:
-    - split: <C-c>s<regex><cr>
-    - match: <C-c>m<regex><cr>
+    - split: -s<regex><cr>
+    - match: -m<regex><cr>
 
 Actions to perform on cursors:
 - Perform *completely normal* vim edits
 - Each cursor has its own undo, registers &c
-- Align the text after/on cursors: <C-c>A
+- Align the text after/on cursors: -A
 }}} --]]
 
 function M.config()
@@ -46,7 +48,7 @@ function M.config()
     -- turns multiple cursors into another vim command more than a full mode
     -- for linewise mode or when spanning multiple lines: create one cursor for each line, at the same position as the original one
     -- for charwise mode on a single line: create a single cursor at the destination of the motion
-    operators.map_function("<M-c>", function(mode, region, extra, get, set)
+    operators.map_function("--", function(mode, region, extra, get, set)
         if mode == "line" or region[2][1] ~= region[1][1] then
             local original_column = vim.fn.charcol(".")
             mc.action(function(ctx)
@@ -67,9 +69,9 @@ function M.config()
     map("x", "<M-c>", mc.visualToCursors, { desc = "Cursor: On each line" })
 
     -- put one cursor at each current search result
-    map("n", "<C-c>/", mc.searchAllAddCursors, { desc = "Cursor: New for /" })
+    map("n", "-/", mc.searchAllAddCursors, { desc = "Cursor: New for /" })
 
-    require("config.lsp").lsp_map("n", "<C-c>s", function()
+    require("config.lsp").lsp_map("n", "-s", function()
         local fname = vim.api.nvim_buf_get_name(0)
         local first = true
         mc.action(function(ctx)
@@ -92,7 +94,7 @@ function M.config()
     end, { desc = "Cursor: New for symbol" })
 
     -- align cursors: all to same column
-    map({ "n", "x" }, "<C-c>a", function()
+    map({ "n", "x" }, "-a", function()
         mc.action(function(ctx)
             local maincol = vim.fn.charcol(".")
             ctx:forEachCursor(function(cursor)
@@ -105,33 +107,33 @@ function M.config()
 
     local vinorm = { "n", "x" }
 
-    map(vinorm, "<C-c>x", mc.deleteCursor, { desc = "Cursor: Delete current" })
-    map(vinorm, "<C-c>j", mc.nextCursor, { desc = "Cursor: Next below" })
-    map(vinorm, "<C-c>k", mc.prevCursor, { desc = "Cursor: Next above" })
-    map(vinorm, "<C-c>$", mc.lastCursor, { desc = "Cursor: Last" })
-    map(vinorm, "<C-c>0", mc.firstCursor, { desc = "Cursor: First" })
+    map(vinorm, "-x", mc.deleteCursor, { desc = "Cursor: Delete current" })
+    map(vinorm, "-j", mc.nextCursor, { desc = "Cursor: Next below" })
+    map(vinorm, "-k", mc.prevCursor, { desc = "Cursor: Next above" })
+    map(vinorm, "-$", mc.lastCursor, { desc = "Cursor: Last" })
+    map(vinorm, "-0", mc.firstCursor, { desc = "Cursor: First" })
 
-    map(vinorm, "<C-c>n", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
-    map(vinorm, "<C-c>p", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
-    map(vinorm, "<C-c>*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
+    map(vinorm, "-n", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
+    map(vinorm, "-p", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
+    map(vinorm, "-*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
 
     -- really useful with syntactically aware textobjects:
-    -- <C-c>wif puts a cursor on every match in a function
-    -- <C-c>wi<space> in lua does the same for a block
-    map(vinorm, "<C-c>w", function()
+    -- -wif puts a cursor on every match in a function
+    -- -wi<space> in lua does the same for a block
+    map(vinorm, "-w", function()
         ---@diagnostic disable-next-line: missing-fields
         mc.operator { motion = "iw" }
     end, { desc = "Cursor: New for word in" })
 
     -- allows for things that are more than one <word>, e.g. i.
-    map(vinorm, "<C-c>o", mc.operator, { desc = "Cursor: New for obj in" })
+    map(vinorm, "-o", mc.operator, { desc = "Cursor: New for obj in" })
 
-    map(vinorm, "<C-c>u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
+    map(vinorm, "-u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
 
     -- visual selections
-    map({ "x" }, "<C-c>s", mc.splitCursors, { desc = "Cursor: Split visual" })
-    map({ "x" }, "<C-c>m", mc.matchCursors, { desc = "Cursor: Match visual" })
-    map(vinorm, "<C-c>A", mc.alignCursors, { desc = "Cursor: Align content" })
+    map({ "x" }, "-s", mc.splitCursors, { desc = "Cursor: Split visual" })
+    map({ "x" }, "-m", mc.matchCursors, { desc = "Cursor: Match visual" })
+    map(vinorm, "-A", mc.alignCursors, { desc = "Cursor: Align content" })
 
     -- replace default I and A for visual mode
     map("x", "I", mc.insertVisual)
@@ -139,7 +141,7 @@ function M.config()
 
 
     mc.addKeymapLayer(function(set)
-        set("n", "<C-c>i", function()
+        set("n", "-i", function()
             mc.action(function(ctx)
                 ctx:forEachCursor(function(cursor, i, t)
                     cursor:feedkeys(("i%d\x1b"):format(i), {

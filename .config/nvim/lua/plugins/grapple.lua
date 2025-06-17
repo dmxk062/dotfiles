@@ -140,8 +140,8 @@ M.config = function()
     end
 
     map("n", "<C-t>", add_grapple)
-    map("n", "+g", add_grapple)
-    map("n", "-g", rm_grapple)
+    map("n", "<space>+g", add_grapple)
+    map("n", "<space>-g", rm_grapple)
 
     -- use the same prefix as the buffer maps
     map("n", "'g", function() grapple.open_tags() end)
