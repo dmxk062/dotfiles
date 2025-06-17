@@ -1,3 +1,14 @@
+--[[
+Custom predicates and directives for Treesitter
+
+Mostly to avoid expensive operations within treesitter-scheme itself or as an
+escape hatch to do things treesitter wasn't made to do (e.g. selecting characters).
+
+All predicates and directives should have a jhk- prefix
+to avoid collisions with those added by e.g. nvim-treesitter.
+]]
+
+
 -- Conceal Symbol Names in Typst {{{
 local typst_symbol_names = {
     -- greek alphabet
