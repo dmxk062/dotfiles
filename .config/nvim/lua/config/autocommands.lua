@@ -112,6 +112,12 @@ local url_transforms = {
 
 local ns = api.nvim_create_namespace("config.webview")
 
+Jhk.WebIncludeExpr = function()
+    local path = vim.v.fname
+    local base_url = api.nvim_buf_get_name(0)
+    return base_url .. path
+end
+
 autocmd("BufReadCmd", {
     pattern = { "https://*", "http://*" },
     callback = function(ev)
@@ -167,6 +173,9 @@ autocmd("BufReadCmd", {
             bo.filetype = ft or "http"
             bo.modified = false
             bo.buftype = "nowrite"
+
+            -- resolve paths relative to the site
+            bo.includeexpr = "v:lua.Jhk.WebIncludeExpr()"
         end))
     end
 })
