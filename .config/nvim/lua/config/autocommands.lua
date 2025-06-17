@@ -104,10 +104,17 @@ local url_transforms = {
     -- use raw versions for files from github
     function(url)
         if vim.startswith(url, "https://github.com") then
-            local raw = url:gsub("github%.com", "raw.githubusercontent.com"):gsub("/blob/", "/")
-            return raw
+            local suburl = url:gsub("^https://github.com/", "")
+            local repo = suburl:match("([^/]/[^/]+)")
+            local path = suburl:sub(#repo)
+            if suburl == repo then           -- README for plain repo
+                return ("https://raw.githubusercontent.com/%s/master/README.md"):format(suburl)
+            elseif path:match("/blob/") then -- files
+                local raw = url:gsub("github%.com", "raw.githubusercontent.com"):gsub("/blob/", "/")
+                return raw
+            end
         end
-    end
+    end,
 }
 
 local ns = api.nvim_create_namespace("config.webview")
