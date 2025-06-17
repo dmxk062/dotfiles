@@ -59,6 +59,7 @@ local typst_symbol_names = {
 
     -- symbols
     infinity = "∞",
+    arrow    = "→",
     times    = "×",
     dot      = "⋅",
     dots     = "…",
@@ -66,7 +67,6 @@ local typst_symbol_names = {
     degree   = "°",
     slash    = "/",
     ["in"]   = "∈",
-
 }
 
 vim.treesitter.query.add_directive("typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)
