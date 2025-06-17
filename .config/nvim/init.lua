@@ -8,6 +8,9 @@ TODO: figure out note-taking solution
 TODO: should I remove vimtex?
 }}} ]]
 
+-- Global namespace for functions that need to be callable from vimscript
+_G.Jhk = {}
+
 vim.cmd.colorscheme("mynord")
 
 
