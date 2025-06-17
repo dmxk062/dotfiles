@@ -97,3 +97,77 @@ autocmd("FocusLost", {
         vim.fn.setreg("*", vim.fn.getreg("\""))
     end
 })
+
+-- View files on the internet {{{
+---@type [fun(url: string): string?]
+local url_transforms = {
+    -- use raw versions for files from github
+    function(url)
+        if vim.startswith(url, "https://github.com") then
+            local raw = url:gsub("github%.com", "raw.githubusercontent.com"):gsub("/blob/", "/")
+            return raw
+        end
+    end
+}
+
+local ns = api.nvim_create_namespace("config.webview")
+
+autocmd("BufReadCmd", {
+    pattern = { "https://*", "http://*" },
+    callback = function(ev)
+        local buf = ev.buf
+        local bo = vim.bo[buf]
+        bo.swapfile = false
+        bo.undofile = false
+
+        local url = api.nvim_buf_get_name(buf):gsub("/$", "")
+        api.nvim_buf_set_name(buf, url) -- normalize URLs ending in /
+        for _, transform in ipairs(url_transforms) do
+            local res = transform(url)
+            if res then
+                url = res
+                break
+            end
+        end
+        api.nvim_buf_set_extmark(buf, ns, 0, 0, {
+            virt_text = {
+                { "Curl-ing buffer from " }, { url, "Underlined" }, { "...", "NonText" }
+            }
+        })
+
+        vim.system({ "curl", "--silent", "--fail-with-body", "--", url }, {
+
+        }, vim.schedule_wrap(function(out)
+            api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+            local ft
+            if out.code ~= 0 then
+                ft = "markdown"
+                local message = {
+                    "# Error",
+                    ("Failed to get [%s](%s)"):format(url, url),
+                    "",
+                    ("# Curl exited with %d"):format(out.code),
+                }
+                vim.list_extend(message, vim.split(out.stdout, "\n"))
+                api.nvim_buf_set_lines(buf, 0, -1, false, message)
+
+                vim.wo[0].conceallevel = 2
+                vim.wo[0].concealcursor = "nvic"
+            else
+                api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(out.stdout, "\n"))
+
+                ft = vim.filetype.match {
+                    filename = url:gsub("^.-://", ""),
+                    buf = buf,
+                }
+            end
+
+            utils.buf_drop_undo(buf)
+
+            bo.filetype = ft or "http"
+            bo.modified = false
+            bo.buftype = "nowrite"
+        end))
+    end
+})
+-- }}}
