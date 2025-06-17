@@ -27,11 +27,6 @@ local highlight_date = function(str)
     return utils.highlight_time(parsed_time)
 end
 local oil_columns = {
-    icon = {
-        "icon",
-        default_file = "󰈔",
-        directory = "",
-    },
     permissions = {
         "permissions",
         highlight = function(str)
@@ -167,8 +162,13 @@ local function set_sort(action)
     require("oil").set_sort(sort)
 end
 
-local function set_column(col, state)
-    enabled_columns[column_positions[col]] = state and col or nil
+local function toggle_column(col)
+    local pos = column_positions[col]
+    if enabled_columns[pos] then
+        enabled_columns[pos] = nil
+    else
+        enabled_columns[pos] = col
+    end
     require("oil").set_columns(vim.tbl_map(function(c)
         return oil_columns[c]
     end, vim.tbl_values(enabled_columns)))
@@ -287,52 +287,42 @@ M.opts = {
     },
 
     keymaps = {
-        ["!"]         = function() open_cmd("!") end,
-        ["cm"]        = function() open_cmd("!chmod ") end,
-        ["co"]        = function() open_cmd("!chown ") end,
-        ["<CR>"]      = "actions.select",
-        ["<S-CR>"]    = "actions.select_split",
-        ["<C-CR>"]    = "actions.select_vsplit",
+        ["!"]              = function() open_cmd("!") end,
+        ["cm"]             = function() open_cmd("!chmod ") end,
+        ["co"]             = function() open_cmd("!chown ") end,
+        ["<CR>"]           = "actions.select",
+        ["<S-CR>"]         = "actions.select_split",
+        ["<C-CR>"]         = "actions.select_vsplit",
 
-        ["es"]        = "actions.select_split",
-        ["ev"]        = "actions.select_vsplit",
-        ["gx"]        = "actions.open_external",
+        ["es"]             = "actions.select_split",
+        ["ev"]             = "actions.select_vsplit",
+        ["gx"]             = "actions.open_external",
 
-        -- goto places
-        ["g<space>"]  = open_cd,
-        ["g~"]        = function() goto_dir("~") end,
-        ["gr"]        = function() require("oil").open("/") end,
-        ["g/"]        = function() require("oil").open("/") end,
-        ["gp"]        = "actions.parent",
-        ["g.."]       = "actions.parent",
-        ["gP"]        = { goto_git_ancestor, mode = "n" },
-        ["gG"]        = { goto_git_ancestor, mode = "n" },
+        -- goto repository
+        ["gr"]             = { goto_git_ancestor, mode = "n" },
         -- only applies to my machines
-        ["gw"]        = function() goto_dir("~/ws") end,
-        ["gt"]        = function() goto_dir("~/Tmp") end,
+        ["gw"]             = function() goto_dir("~/ws") end,
+        ["gt"]             = function() goto_dir("~/Tmp") end,
 
         -- toggle hidden
-        ["gh"]        = "actions.toggle_hidden",
+        ["gh"]             = "actions.toggle_hidden",
 
-        ["gf"]        = filter_items,
-        ["=s"]        = function() set_sort("size") end,
-        ["=t"]        = function() set_sort("mtime") end,
-        ["=i"]        = function() set_sort("invert") end,
-        ["=d"]        = function() set_sort("default") end,
+        ["gf"]             = filter_items,
+        ["=s"]             = function() set_sort("size") end,
+        ["=t"]             = function() set_sort("mtime") end,
+        ["=i"]             = function() set_sort("invert") end,
+        ["=d"]             = function() set_sort("default") end,
 
-        ["+s"]        = function() set_column("size", true) end,
-        ["-s"]        = function() set_column("size", false) end,
-        ["+p"]        = function() set_column("permissions", true) end,
-        ["-p"]        = function() set_column("permissions", false) end,
-        ["+t"]        = function() set_column("time", true) end,
-        ["-t"]        = function() set_column("time", false) end,
-        ["+b"]        = function() set_column("birthtime", true) end,
-        ["-b"]        = function() set_column("birthtime", false) end,
+        ["<localleader>p"] = "actions.preview",
+        ["<localleader>s"] = function() toggle_column("size") end,
+        ["<localleader>m"] = function() toggle_column("permissions") end,
+        ["<localleader>t"] = function() toggle_column("time") end,
+        ["<localleader>b"] = function() toggle_column("birthtime") end,
 
-        ["+q"]        = "actions.add_to_qflist",
+        ["<space>+q"]      = "actions.add_to_qflist",
 
-        ["<space>gs"] = function() git_command("add") end,
-        ["<space>gu"] = function() git_command("reset --") end,
+        ["<space>gs"]      = function() git_command("add") end,
+        ["<space>gu"]      = function() git_command("reset --") end,
     },
 }
 -- }}}
