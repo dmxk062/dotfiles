@@ -85,3 +85,22 @@ vim.treesitter.query.add_directive("typst-set-symbol-conceal!", function(match, 
     metadata[id].conceal = typst_symbol_names[text]
 end, {})
 -- }}}
+
+-- Only select n initial characters of a node {{{
+vim.treesitter.query.add_directive("set-length!", function(match, pattern, source, predicate, metadata)
+    local id = predicate[2]
+    local node = match[id]
+    if not node then
+        return
+    end
+
+    if not metadata[id] then
+        metadata[id] = {}
+    end
+    if not metadata[id].range then
+        local srow, scol, erow, ecol = vim.treesitter.get_node_range(node)
+        metadata[id].range = { srow, scol, erow, ecol }
+    end
+    metadata[id].range[4] = metadata[id].range[2] + tonumber(predicate[3])
+end, {})
+-- }}}

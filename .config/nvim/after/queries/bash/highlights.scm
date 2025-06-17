@@ -16,5 +16,6 @@
     [ (string) (number) ((word) @property) ]
     (word) @punctuation.delimiter
     (word) @operator
-  (#eq? @operator "=")
+  (#lua-match? @operator "^=")
+  (#set-length! @operator 1)
   (#any-of? @punctuation.delimiter "]" "[")))
