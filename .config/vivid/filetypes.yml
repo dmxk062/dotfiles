@@ -526,7 +526,7 @@ unimportant:
       - .o
       - .la
       - .lo
-      - compile-commands.json
+      - compile_commands.json
     cmake:
       - CMakeCache.txt
     automake:

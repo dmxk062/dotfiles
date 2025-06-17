@@ -479,7 +479,7 @@ add_with_prefix(colorscheme, "File", {
     TypeBlockDev      = { fg = col.yellow, bg = pal.bg1 },
     TypeCharDev       = { fg = col.green, bg = pal.bg1 },
     TypeNormal        = { link = "Normal" },
-    TypeHidden        = { fg = col.bright_gray },
+    TypeHidden        = { fg = pal.fg1 },
 })
 -- }}}
 
@@ -488,8 +488,8 @@ add_with_prefix(colorscheme, "Oil", {
     Link             = { fg = col.blue, bold = true },
     OrphanLink       = { fg = col.blue },
     Dir              = { fg = col.teal, bold = true },
-    Hidden           = { fg = col.bright_gray },
-    DirHidden        = { link = "*Hidden" },
+    Hidden           = { link = "FileHidden" },
+    DirHidden        = { link = "*Dir" },
     LinkTarget       = { fg = col.blue, italic = true },
     OrphanLinkTarget = { fg = col.red, italic = true },
 
