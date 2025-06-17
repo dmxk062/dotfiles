@@ -17,5 +17,5 @@
     (word) @punctuation.delimiter
     (word) @operator
   (#lua-match? @operator "^=")
-  (#set-length! @operator 1)
+  (#jhk-set-length! @operator 1)
   (#any-of? @punctuation.delimiter "]" "[")))

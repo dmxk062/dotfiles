@@ -69,7 +69,7 @@ local typst_symbol_names = {
     ["in"]   = "∈",
 }
 
-vim.treesitter.query.add_directive("typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)
+vim.treesitter.query.add_directive("jhk-typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)
     local id = predicate[2]
     local node = match[id]
     if not node then
@@ -87,7 +87,7 @@ end, {})
 -- }}}
 
 -- Only select n initial characters of a node {{{
-vim.treesitter.query.add_directive("set-length!", function(match, pattern, source, predicate, metadata)
+vim.treesitter.query.add_directive("jhk-set-length!", function(match, pattern, source, predicate, metadata)
     local id = predicate[2]
     local node = match[id]
     if not node then
