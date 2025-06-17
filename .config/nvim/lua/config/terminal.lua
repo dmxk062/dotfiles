@@ -37,7 +37,7 @@ local osc_handlers = {}
 
 -- OSC 8, operate on URIs {{{
 ---@alias TermUrl [integer, integer, integer, integer, string]
----@type table<integer, TermUrl>
+---@type table<integer, TermUrl[]>
 M.urls_for_buffers = {}
 
 local last_osc8_start
@@ -123,6 +123,17 @@ utils.autogroup("config.terminal_mode", {
         end
 
         map("n", "<localleader>f", split_path)
+        map("n", "gf", function()
+            local osc8_files = M.urls_for_buffers[ev.buf]
+            local cursor = api.nvim_win_get_cursor(0)
+            for _, file in ipairs(osc8_files) do
+                if file[1] <= cursor[1] and file[3] >= cursor[2] and file[2] <= cursor[2] and file[4] >= cursor[2] then
+                    vim.cmd.edit(file[5])
+                    return
+                end
+            end
+            return "gf"
+        end, { expr = true })
         map("t", "<M-p>", split_path)
         map("t", "<M-i>", function()
             operate_on_urls(ev.buf, function(res)
