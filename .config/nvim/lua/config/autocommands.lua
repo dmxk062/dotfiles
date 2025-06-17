@@ -105,8 +105,9 @@ local url_transforms = {
     function(url)
         if vim.startswith(url, "https://github.com") then
             local suburl = url:gsub("^https://github.com/", "")
-            local repo = suburl:match("([^/]/[^/]+)")
-            local path = suburl:sub(#repo)
+            local repo = suburl:match("([^/]+/[^/]+)")
+            local path = repo and suburl:sub(#repo) or ""
+
             if suburl == repo then           -- README for plain repo
                 return ("https://raw.githubusercontent.com/%s/master/README.md"):format(suburl)
             elseif path:match("/blob/") then -- files
@@ -180,7 +181,7 @@ autocmd("BufReadCmd", {
 
             utils.buf_drop_undo(buf)
 
-            bo.filetype = ft or "http"
+            bo.filetype = ft or "html"
             bo.modified = false
             bo.buftype = "nowrite"
 
