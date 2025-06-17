@@ -466,7 +466,7 @@ add_with_prefix(colorscheme, "File", {
     TypeMarkup        = { fg = col.magenta },
     TypeText          = { fg = pal.fg2 },
     TypeBin           = { fg = col.orange },
-    TypeArchive       = { fg = col.orange, bg = pal.bg1 },
+    TypeArchive       = { fg = col.orange },
     TypeConfig        = { fg = col.purple },
     TypeMeta          = { fg = col.light_blue, italic = true },
     TypeBuild         = { fg = col.green },
