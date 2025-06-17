@@ -146,6 +146,7 @@ autocmd("BufReadCmd", {
         }, vim.schedule_wrap(function(out)
             api.nvim_buf_clear_namespace(buf, ns, 0, -1)
             local ft
+            local lines = vim.split(out.stdout, "\n")
             if out.code ~= 0 then
                 ft = "markdown"
                 local message = {
@@ -154,18 +155,20 @@ autocmd("BufReadCmd", {
                     "",
                     ("# Curl exited with %d"):format(out.code),
                 }
-                vim.list_extend(message, vim.split(out.stdout, "\n"))
+                vim.list_extend(message, lines)
                 api.nvim_buf_set_lines(buf, 0, -1, false, message)
 
                 vim.wo[0].conceallevel = 2
                 vim.wo[0].concealcursor = "nvic"
             else
-                api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(out.stdout, "\n"))
+                api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
-                ft = vim.filetype.match {
-                    filename = url:gsub("^.-://", ""),
-                    buf = buf,
-                }
+                -- only try name-based filetypes when header etc based ones fail
+                -- if we don't do this, common TLDs like .org or .com will break a lot of sites
+                ft = vim.filetype.match { contents = lines }
+                if not ft then
+                    ft = vim.filetype.match { filename = url }
+                end
             end
 
             utils.buf_drop_undo(buf)
