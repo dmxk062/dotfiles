@@ -13,7 +13,7 @@ local Ctx = {
     funs = {},
     extra_data = {},
     was_repeat = {},
-    cb = nil,
+    last = nil,
     -- HACK: preserve last cursor before going into O-pending mode
     last_cursor = nil,
 
@@ -33,8 +33,8 @@ local function get_op_region(mode)
     end
 end
 
-function M.opfunc(mode)
-    Ctx.funs[Ctx.cb](mode)
+function Jhk.opfunc(mode)
+    Ctx.funs[Ctx.last](mode)
 end
 
 ---@alias op_extra {saved: table, repeated: boolean}
@@ -48,9 +48,9 @@ function M.make_operator(name, cb)
     local function operator(mode)
         local is_repeat = true
         if mode == nil then
-            Ctx.cb = name
+            Ctx.last = name
             Ctx.was_repeat[name] = false
-            vim.o.operatorfunc = "v:lua.require'config.operators'.opfunc"
+            vim.o.operatorfunc = "v:lua.Jhk.opfunc"
             return "g@"
         elseif not Ctx.was_repeat[name] then
             Ctx.was_repeat[name] = true
@@ -102,7 +102,7 @@ function M.map_function(keys, cb, opts)
         expr = true,
         desc = opts.desc
     }
-    local id = keys .. "_operator"
+    local id = keys
     local operator = M.make_operator(id, cb)
     -- use last char of string to indicate repeat for one line
     local repeat_char = keys:sub(-1, -1)
