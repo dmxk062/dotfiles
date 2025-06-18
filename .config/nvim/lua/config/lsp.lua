@@ -70,23 +70,6 @@ local lsp_mappings = {
         { desc = "LSP: Select Implementations" }
     },
 
-    -- List in the location list
-    {
-        "n", "gld",
-        function() lsp.buf.definition { loclist = true } end,
-        { desc = "LSP: List Definitions" }
-    },
-    {
-        "n", "glr",
-        function() lsp.buf.references(nil, { loclist = true }) end,
-        { desc = "LSP: List References" }
-    },
-    {
-        "n", "gli",
-        function() lsp.buf.implementation { loclist = true } end,
-        { desc = "LSP: List Implementations" }
-    },
-
     -- Open in a split
     {
         "n", "<C-w>gd",
@@ -114,6 +97,33 @@ local lsp_mappings = {
             vim.cmd.normal("zz")
         end,
         { desc = "LSP: (other Window) Implementations" }
+    },
+
+    -- List in the location list
+    {
+        "n", "gld",
+        function() lsp.buf.definition { loclist = true } end,
+        { desc = "LSP: List Definitions" }
+    },
+    {
+        "n", "glr",
+        function() lsp.buf.references(nil, { loclist = true }) end,
+        { desc = "LSP: List References" }
+    },
+    {
+        "n", "gli",
+        function() lsp.buf.implementation { loclist = true } end,
+        { desc = "LSP: List Implementations" }
+    },
+    {
+        "n", "glc",
+        function() lsp.buf.incoming_calls() end,
+        { desc = "LSP: List Callsites (qflist)" }
+    },
+    {
+        "n", "glC",
+        function() lsp.buf.outgoing_calls() end,
+        { desc = "LSP: List Called functions (qflist)" }
     },
 }
 
