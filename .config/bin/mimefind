@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+REGEX="${1//\//\\/}"
+
+fd -t f "${@:2}" -X \
+    file --mime-type -N -00 \
+    | awk 'BEGIN { RS="\0" } NR % 2 == 1 { lastfile=$0 } NR % 2 == 0 && $0 ~ '/"$REGEX"/' { print lastfile }'
