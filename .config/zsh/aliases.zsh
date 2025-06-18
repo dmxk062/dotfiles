@@ -9,12 +9,10 @@ alias \
     q="exit" \
     x="exit" \
     rm="rm -i" \
-    ls='ls --color=auto --hyperlink=auto' \
     ll='lsd -l --hyperlink=auto' \
-    lls='lsd -lA --blocks=size,name --total-size --sort=size' \
+    lls='lsd -l --blocks=size,name --total-size --sort=size' \
     lla='lsd -lA --hyperlink=auto' \
-    llo='lsd -l --permission=octal --hyperlink=auto' \
-    llao='lsd -lA --permission=octal --hyperlink=auto' \
+    llv='lsd -l --hyperlink=auto --blocks=group,user,permission,git,date,size,links,name'\
     la='lsd -A --hyperlink=auto' \
     l='lsd --hyperlink=auto' \
     grep='grep --color=auto' \
@@ -33,8 +31,6 @@ alias \
     -g "@out2err"=">&2" \
     -g '@noerr'="2>/dev/null" \
     -g "@noout"=">/dev/null" \
-    -g "@ap"="| less -rFi" \
-    -g "@pg"="| less -ri" \
     -g "@help"='--help 2>&1 | bat -l help -p' \
 
 
@@ -47,5 +43,3 @@ alias \
     ':eq'="IFS='='"
 
 TAB=$'\t'
-FALSE=1
-TRUE=0

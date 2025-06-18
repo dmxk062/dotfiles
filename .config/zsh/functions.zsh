@@ -1,6 +1,6 @@
 # faster, way faster than proper `clear`
 function c {
-    print -n "[H[2J"
+    print -n "\e[H\e[2J"
 }
 
 # run program in alternate screen
@@ -30,16 +30,6 @@ function codes2chars {
 
 function hex2chars {
     printf '0: %s' "$@" | xxd -r
-}
-
-function unicharrange {
-    local start=$(($1))
-    local stop=$(($2))
-    local codep hex
-    for ((codep=start; codep <= stop; codep++)); do
-        printf -v hex "%x" "$codep"
-        printf "\\U$hex"
-    done
 }
 
 function lcd {

@@ -124,7 +124,7 @@ function rcd {
 }
 
 function mimefind {
-    fd -t f "${@:2}" -X file --mime-type -n00 \
+    fd -t f "${@:2}" -X file --mime-type -00 \
         | awk 'BEGIN { RS="\0" } NR % 2 == 1 { lastfile=$0 } NR % 2 == 0 && $0 ~ '/"$1"/' { print lastfile }'
 }
 

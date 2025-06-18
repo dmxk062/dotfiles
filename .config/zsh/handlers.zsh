@@ -142,7 +142,7 @@ zshaddhistory_functions+=(_ignore_irrelevant_history)
 function zle-isearch-update {
     # display that line, even if we're manually overwriting it
     zle -M " "
-    print -nP "%F{8}^%F{12}$[HISTCMD - HISTNO]%f cmds ago"
+    print -nP "%F{8}^%F{magenta}$[HISTCMD - HISTNO]%f cmds ago"
 }
 
 function zle-isearch-exit {
