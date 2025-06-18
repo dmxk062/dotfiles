@@ -2,7 +2,6 @@ local M = {}
 local fn = vim.fn
 local api = vim.api
 local ns = api.nvim_create_namespace("config.ui.ui")
-local hlns = api.nvim_create_namespace("config.ui.hl")
 local utils = require("config.utils")
 
 -- vim.ui.input {{{
@@ -148,75 +147,6 @@ M.nvim_input = function(opts, callback)
     if not opts.default then
         vim.cmd.startinsert()
     end
-end
--- }}}
-
---[[ Minibuffer {{{
-Get lua code input from the user
-Using :w
-will return the buffer content's result if evaluated
-]]
----@param opts {template: string, callback: fun(res: any), layout: config.win.opts?, type: type}
-M.evaluate_lua = function(opts)
-    local buf = api.nvim_create_buf(false, true)
-    local bo = vim.bo[buf]
-    bo.filetype = "lua"
-    bo.swapfile = false
-    bo.buftype = "acwrite"
-    bo.bufhidden = "delete"
-
-    vim.b[buf].special_buftype = "luaeval"
-    api.nvim_buf_set_name(buf, "eval")
-
-    local lua_ls = vim.lsp.get_clients { name = "luals" }[1]
-    local client_id
-    if not lua_ls then
-        local config = vim.deepcopy(vim.lsp.config.luals)
-        config.root_dir = fn.stdpath("config")
-        client_id = vim.lsp.start(config, { attach = false })
-    else
-        client_id = lua_ls.id
-    end
-
-    if client_id then
-        vim.lsp.buf_attach_client(buf, client_id)
-    end
-
-    local win = utils.win_show_buf(buf, opts.layout or {})
-    api.nvim_win_call(win, function()
-        vim.snippet.expand(opts.template)
-    end)
-
-    local try_evaluate = function()
-        local text = table.concat(api.nvim_buf_get_lines(buf, 0, -1, false), "\n")
-        local chunk, err = loadstring(text)
-        if err or not chunk then
-            vim.notify(err or "Failed to load lua", vim.log.levels.ERROR)
-            return
-        end
-
-        local ok, result = pcall(chunk)
-        if not ok then
-            vim.notify(result, vim.log.levels.ERROR)
-            return
-        end
-
-        local return_type = type(result)
-        if return_type ~= opts.type then
-            vim.notify(("Expected to get '%s', not '%s'"):format(opts.type, return_type), vim.log.levels.ERROR)
-            return
-        end
-
-        api.nvim_win_close(win, true)
-        api.nvim_buf_delete(buf, { force = true })
-        opts.callback(result)
-    end
-
-    utils.autogroup("config.minibuffer", {
-        BufWriteCmd = function()
-            try_evaluate()
-        end
-    }, { buf = buf })
 end
 -- }}}
 
