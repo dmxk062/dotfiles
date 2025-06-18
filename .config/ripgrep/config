@@ -4,3 +4,5 @@ line:fg:magenta
 path:fg:cyan
 --colors
 match:fg:yellow
+--hyperlink-format
+file
