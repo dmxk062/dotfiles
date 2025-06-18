@@ -8,8 +8,8 @@ read -r -d '' XQ_QUERY << 'JQ'
 $chan.title
 , "#EXTM3U"
 , "#EXTALBUMARTURL:\($chan.image.url)"
-    , $chan.item[] as $elem 
-        | "#EXTINF:\($elem.enclosure."@length" | tonumber / 10000 | round), \($elem.title)" 
+    , $chan.item[] as $elem
+        | "#EXTINF:\($elem.enclosure."@length" | tonumber / 10000 | round), \($elem.title)"
         , $elem.enclosure."@url"
 JQ
 
