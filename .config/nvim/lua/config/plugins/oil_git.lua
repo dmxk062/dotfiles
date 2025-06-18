@@ -2,7 +2,7 @@ local M = {}
 
 --[[
 Show git status of a file as virtual text
-]] --
+]]
 
 local api = vim.api
 local oil = require("oil")

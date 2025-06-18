@@ -9,7 +9,7 @@
     },
     "blink.cmp": {
         "branch": "main",
-        "commit": "9c5d82370cf2e5f28c27437f4a88d315ace1844f"
+        "commit": "9bcb14b43852a6f2bfd5ac9ef29cb5cf09b1b39b"
     },
     "conform.nvim": {
         "branch": "master",
@@ -113,7 +113,7 @@
     },
     "schemastore.nvim": {
         "branch": "main",
-        "commit": "8e4bade719270663d726a0a781c7555da5d28721"
+        "commit": "45fd6c22f30487586c771072dc8c5230931e4c7b"
     },
     "statuscol.nvim": {
         "branch": "main",

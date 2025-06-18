@@ -4,4 +4,4 @@ read -r width height refresh < <(swaymsg -t get_outputs \
     | jq -r --arg name "$NAME" \
     '.[]|select(.focused).current_mode | "\(.width) \(.height) \(.refresh / 1000|round)"')
 
-gamescope -W "$width" -H "$height" -r "$refresh" -f -e -- "$@"
+gamescope -W "$width" -H "$height" -r "$refresh" -f -- "$@"

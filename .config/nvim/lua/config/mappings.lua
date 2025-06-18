@@ -7,7 +7,6 @@ local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
 local ftpref = require("config.ftpref")
-local ui = require("config.ui")
 local abbrev = utils.abbrev
 local map = utils.map
 local unmap = utils.unmap
