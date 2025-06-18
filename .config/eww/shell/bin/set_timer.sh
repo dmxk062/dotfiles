@@ -24,5 +24,5 @@ eww -c "$XDG_CONFIG_HOME/eww/shell" update timer-start=0 timer-time=0
 
 mpv --loop=yes /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga &
 pid=$!
-notify-send "Timer Done" -w
+notify-send "Timer Done" -w --icon=alarm-symbolic
 kill $pid

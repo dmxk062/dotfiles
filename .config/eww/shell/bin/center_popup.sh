@@ -3,9 +3,9 @@ PIDFILE="/tmp/.eww_popup"
 EWW="$XDG_CONFIG_HOME/eww/shell"
 
 declare -A WIDGETS=(
-[audio]=0
-[bright]=1
-[lock]=2
+    [audio]=0
+    [bright]=1
+    [lock]=2
 )
 
 if [[ "$1" == close ]]; then
