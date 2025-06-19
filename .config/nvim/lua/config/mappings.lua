@@ -29,7 +29,7 @@ local function cmd_with_count(cmd)
             }
         }, { output = false })
         if not ok then
-            vim.notify(err, vim.log.levels.ERROR)
+            utils.error("Mappings", err)
         end
     end
 end
@@ -43,7 +43,7 @@ local function run_cmd(cmd, args)
     }, { output = false })
 
     if not ok then
-        vim.notify(err, vim.log.levels.ERROR)
+        utils.error("Mappings", err)
     end
 end
 -- }}}
@@ -147,7 +147,7 @@ local spell_severity_mapping = {
 }
 local get_spelling_errors = function()
     if not vim.wo.spell then
-        vim.notify("'spell' is not set", vim.log.levels.ERROR)
+        utils.error("Spell", "'spell' is not set")
         return {}
     end
 
@@ -256,7 +256,7 @@ local function get_buf_idx()
         target = Bufs_for_idx[count]
     end
     if not target or not api.nvim_buf_is_valid(target) then
-        vim.notify("No Buffer " .. count, vim.log.levels.ERROR)
+        utils.error("Mappings", "No Buffer " .. count)
         return
     end
 
@@ -335,7 +335,7 @@ map("n", bufleader .. "h", function()
 
     local win = fn.bufwinid(target)
     if win == -1 then
-        vim.notify("No open Window for Buffer " .. vim.v.count, vim.log.levels.ERROR)
+        utils.error("Mappings", "No open Window for Buffer ")
         return
     end
     api.nvim_win_close(win, false)

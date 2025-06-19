@@ -1,3 +1,4 @@
+local utils = require "config.utils"
 ---@type LazySpec
 local M = {
     "stevearc/conform.nvim",
@@ -36,7 +37,7 @@ M.opts = {
                 if vim.bo[ctx.buf].expandtab then
                     local width = ctx.shiftwidth
                     if width > 7 then
-                        vim.notify("Jq only supports up to 7 spaces indent", vim.log.levels.WARN)
+                        utils.warn("Conform", "Jq only supports up to 7 spaces indent, reducing to 7")
                         width = 7
                     end
                     return { "--indent", tostring(width) }

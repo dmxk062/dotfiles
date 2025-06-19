@@ -120,7 +120,7 @@ local function goto_git_ancestor()
     local git_ancestor = vim.fs.root(path, ".git")
 
     if not git_ancestor then
-        vim.notify("oil: Not in a git repo", vim.log.levels.WARN)
+        utils.warn("Oil", "Not in a git repo")
         return
     end
 
@@ -219,7 +219,7 @@ end
 local function git_command(command)
     local dir = require("oil").get_current_dir(0)
     if not dir then
-        vim.notify("Oil: Cannot run git command on non-local fs", vim.log.levels.WARN)
+        utils.warn("Oil", "Cannot run git command on non-local fs")
         return
     end
 

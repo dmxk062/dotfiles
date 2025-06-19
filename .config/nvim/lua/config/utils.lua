@@ -692,4 +692,29 @@ M.buf_drop_undo = function(buf)
     bo.undolevels = oldlevels
 end
 
+-- Messages {{{
+---@param subsystem string
+---@param message string
+M.message = function(subsystem, message)
+    api.nvim_echo({
+        { ("[%s]"):format(subsystem), "Identifier" }, { ": ", "NonText" }, { message }
+    }, false, {})
+end
+
+---@param subsystem string
+---@param message string
+M.warn = function(subsystem, message)
+    api.nvim_echo({
+        { ("[%s]"):format(subsystem), "WarningMsg" }, { ": ", "NonText" }, { message }
+    }, false, {})
+end
+---@param subsystem string
+---@param message string
+M.error = function(subsystem, message)
+    api.nvim_echo({
+        { ("[%s]"):format(subsystem), "ErrorMsg" }, { ": ", "NonText" }, { message }
+    }, false, {})
+end
+-- }}}
+
 return M

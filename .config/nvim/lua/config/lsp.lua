@@ -380,7 +380,7 @@ L.clangd = {
             local params = lsp.util.make_text_document_params(buf)
             client:request("textDocument/switchSourceHeader", params, function(err, res)
                 if err then
-                    vim.notify(tostring(err), vim.log.levels.ERROR)
+                    utils.error("Lsp", tostring(err))
                     return
                 end
 

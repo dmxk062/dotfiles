@@ -1,3 +1,4 @@
+local utils = require "config.utils"
 --[[ Replacement for spellfile.vim {{{
 Partially replicate what spellfile.vim does, just in a more modern way
 
@@ -39,10 +40,12 @@ local download_spellfile = function(lang)
             vim.uv.fs_unlink(sugpath)
 
             vim.schedule(function()
-                vim.notify("Spell: failed to spellfiles for " .. lang, vim.log.levels.ERROR)
+                utils.error("Spell", "Failed to get spellfiles for " .. lang)
             end)
         else
-            print("Spell: fetched " .. lang)
+            vim.schedule(function()
+                utils.message("Spell", "Fetched " .. lang)
+            end)
         end
     end)
 end

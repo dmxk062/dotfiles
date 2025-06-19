@@ -1,5 +1,6 @@
 local api = vim.api
 local terminal = require("config.terminal")
+local utils = require("config.utils")
 local command = api.nvim_create_user_command
 
 -- Zoxide {{{
@@ -28,7 +29,7 @@ command("Zed", function(args)
     local name = args.fargs[1]
     local dir = get_zoxide_result(name)
     if not dir or dir == "" then
-        vim.notify("Zoxide: could not find " .. name, vim.log.levels.ERROR)
+        utils.error("Zoxided", "Could not find " .. name)
         return
     end
 
@@ -106,9 +107,8 @@ command("Csh", function(args)
         text = true
     }, vim.schedule_wrap(function(out)
         if out.code ~= 0 then
-            vim.notify(("%s: %s exited with code %d:\n%s")
-                :format(args.name, vim.inspect(cmd), out.code, out.stderr),
-                vim.log.levels.ERROR)
+            utils.error("Csh",
+                ("%s: %s exited with code %d:\n%s"):format(args.name, vim.inspect(cmd), out.code, out.stderr))
             return
         end
 
@@ -289,7 +289,7 @@ command("Shebang", function(args)
     end
 
     if not shebang then
-        vim.notify("No shebang for " .. vim.bo.ft, vim.log.levels.ERROR)
+        utils.error("Shebang", "No #! for " .. vim.bo.ft)
         return
     end
 

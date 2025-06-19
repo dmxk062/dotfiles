@@ -1,3 +1,4 @@
+local utils = require "config.utils"
 local mason_PATH = vim.fn.stdpath("data") .. "/mason/bin"
 local PACKAGES = {
     ["asm-lsp"]                     = "asm-lsp",
@@ -15,13 +16,12 @@ local PACKAGES = {
 
 ---@param pkg Package
 local install_package = function(pkg, is_update)
-    vim.notify(("Mason: %s '%s'"):format(is_update and "updating" or "installing", pkg.name))
+    utils.message("Mason", ("%s '%s"):format(is_update and "updating" or "installing", pkg.name))
     pkg:once("install:success", vim.schedule_wrap(function()
-        vim.notify(("Mason: %s '%s'"):format(is_update and "updated" or "installed", pkg.name))
+        utils.message("Mason", ("%s '%s"):format(is_update and "updated" or "installed", pkg.name))
     end))
     pkg:once("install:failed", vim.schedule_wrap(function()
-        vim.notify(("Mason: failed to %s '%s'"):format(is_update and "update" or "install", pkg.name),
-            vim.log.levels.ERROR)
+        utils.error("Mason", ("Failed to %s '%s'"):format(is_update and "update" or "install", pkg.name))
     end))
 
     pkg:install()
