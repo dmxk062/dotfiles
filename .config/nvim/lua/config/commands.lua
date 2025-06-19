@@ -46,7 +46,7 @@ local zcd_func = function(args)
     local name = args.fargs[1]
     local dir = get_zoxide_result(name)
     if not dir or dir == "" then
-        vim.notify("Zoxide: could not find " .. name, vim.log.levels.ERROR)
+        utils.error("Zoxide", "Could not find " .. name)
         return
     end
 

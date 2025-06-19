@@ -380,12 +380,12 @@ L.clangd = {
             local params = lsp.util.make_text_document_params(buf)
             client:request("textDocument/switchSourceHeader", params, function(err, res)
                 if err then
-                    utils.error("Lsp", tostring(err))
+                    utils.error("Lsp/Clangd", tostring(err))
                     return
                 end
 
                 if not res then
-                    vim.notify("Clangd: Could not determine corresponding header/implementation file")
+                    utils.error("Lsp/Clangd", "Could not determine header/implementation for file")
                     return
                 end
 
