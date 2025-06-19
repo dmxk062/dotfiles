@@ -75,11 +75,6 @@ map("n", "<space>N", cmd_with_count("cpfile"))
 map("n", "<space>0", "<cmd>cfirst<cr>")
 map("n", "<space>$", "<cmd>clast<cr>")
 
--- list all TODOs, only when followed by a comment
-map("n", "<space>qt", "<cmd>silent grep '\\bTODO:'|cwin<cr>", { desc = "Qflist: TODOs" })
-map("n", "<space>lt", "<cmd>silent lvimgrep /\\<TODO:/ %|lwin<cr>", { desc = "Loclist: TODOs" })
-
-
 -- loclist: optimized for much smaller lists
 map("n", "<M-j>", cmd_with_count("lnext"))
 map("n", "<M-k>", cmd_with_count("lprev"))
@@ -95,10 +90,10 @@ map("n", "<space>lc", function()
 end, { desc = "Loclist: Clear" })
 
 -- move through the histories
-map("n", "<space>qn", cmd_with_count("cnewer"))
-map("n", "<space>ln", cmd_with_count("lnewer"))
-map("n", "<space>qN", cmd_with_count("colder"))
-map("n", "<space>lN", cmd_with_count("lolder"))
+map("n", "<space>qn", cmd_with_count("cnewer"), { desc = "Qflist: Newer"})
+map("n", "<space>qo", cmd_with_count("colder"), { desc = "Qflist: Older"})
+map("n", "<space>ln", cmd_with_count("lnewer"), { desc = "Loclist: Newer"})
+map("n", "<space>lo", cmd_with_count("lolder"), { desc = "Loclist: Older"})
 
 -- error numbers
 map("n", "<space>Q", cmd_with_count("cc"))
@@ -135,69 +130,13 @@ map("n", "<space>lv", function()
     vim.wo[locwin][0].number = true
 end, { desc = "Loclist: Vertical" })
 
+-- Reuse [g]o [l]ist prefix, Uppercase for qflist
 -- set lists to diagnostics
-map("n", "<space>qd", function() vim.diagnostic.setqflist { open = true } end, { desc = "Qflist: Diagnostics" })
-map("n", "<space>ld", function() vim.diagnostic.setloclist { open = true } end, { desc = "Loclist: Diagnostics" })
-
--- add current line to list
-local function add_qf_item(use_loclist)
-    local bufnr = api.nvim_get_current_buf()
-    local cursor = api.nvim_win_get_cursor(0)
-    local text = api.nvim_buf_get_lines(bufnr, cursor[1] - 1, cursor[1], false)[1]
-
-    local listfunc = use_loclist
-        and function(...) return fn.setloclist(bufnr, ...) end
-        or fn.setqflist
-
-    listfunc({}, "a", {
-        items = { {
-            bufnr = bufnr,
-            lnum = cursor[1],
-            col = cursor[2] + 1,
-            text = text,
-            valid = true,
-        } }
-    })
-end
-
--- remove entry on current line from list
-local function rem_qf_item(use_loclist)
-    local bufnr = api.nvim_get_current_buf()
-    local cursor = api.nvim_win_get_cursor(0)
-
-    local getfn = use_loclist
-        and function(...) return fn.getloclist(bufnr, ...) end
-        or fn.getqflist
-
-    local items = getfn()
-    if #items == 0 then
-        return
-    end
-
-    local new_entries = {}
-    local found_to_rm = false
-    for _, entry in ipairs(items) do
-        if entry.bufnr == bufnr and entry.lnum == cursor[1] then
-            found_to_rm = true
-        else
-            table.insert(new_entries, entry)
-        end
-    end
-
-    if found_to_rm then
-        local setfn = use_loclist
-            and function(...) return fn.setloclist(bufnr, ...) end
-            or fn.setqflist
-
-        setfn({}, "r", { items = new_entries })
-    end
-end
-
-map("n", "<space>+q", function() add_qf_item() end)
-map("n", "<space>+l", function() add_qf_item(true) end)
-
-map("n", "<space>-q", function() rem_qf_item() end)
-map("n", "<space>-l", function() rem_qf_item(true) end)
+map("n", "glE", function() vim.diagnostic.setqflist { open = true } end, { desc = "Qflist: Diagnostics ([E]rrors)" })
+map("n", "gle", function() vim.diagnostic.setloclist { open = true } end, { desc = "Loclist: Diagnostics ([E]rrors)" })
+-- list all TODOs, only when followed by a description
+map("n", "glT", "<cmd>silent grep '\\bTODO:'|cwin<cr>", { desc = "Qflist: TODOs" })
+map("n", "glt", "<cmd>silent lvimgrep /\\<TODO:/ %|lwin<cr>", { desc = "Loclist: TODOs" })
 
 local spell_severity_mapping = {
     ["bad"] = "E",
@@ -254,7 +193,7 @@ local get_spelling_errors = function()
     return entries
 end
 
-map("n", "<space>ls", function()
+map("n", "gls", function()
     fn.setloclist(0, get_spelling_errors())
 end)
 
