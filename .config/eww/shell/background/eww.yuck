@@ -42,7 +42,7 @@
 
 (defwidget background-timer []
     (circular-progress
-        :class "background-timer stopwatch"
+        :class "background-timer"
         :thickness 6
         :value {100 - (((EWW_TIME - timer-start) / (timer-time - timer-start))) * 100}
         :clockwise true
