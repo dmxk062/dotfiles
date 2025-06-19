@@ -352,8 +352,11 @@ function M.abbrev(mode, keys, string)
     end
 end
 
+-- Mappings that perform an action on a region
 M.mode_action = { "n", "v" }
+-- Mappings that define a movement
 M.mode_motion = { "n", "x", "o" }
+-- Mappings that define a textobject region
 M.mode_object = { "x", "o" }
 -- }}}
 

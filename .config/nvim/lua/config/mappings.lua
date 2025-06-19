@@ -11,8 +11,8 @@ local abbrev = utils.abbrev
 local map = utils.map
 local unmap = utils.unmap
 
-local mov = { "n", "x", "o" } -- motion
-local obj = { "x", "o" }      -- textobjects
+local mov = utils.mode_motion
+local obj = utils.mode_object
 
 -- my own custom textobjects
 local textobjs = require("config.textobjs")
@@ -90,10 +90,10 @@ map("n", "<space>lc", function()
 end, { desc = "Loclist: Clear" })
 
 -- move through the histories
-map("n", "<space>qn", cmd_with_count("cnewer"), { desc = "Qflist: Newer"})
-map("n", "<space>qo", cmd_with_count("colder"), { desc = "Qflist: Older"})
-map("n", "<space>ln", cmd_with_count("lnewer"), { desc = "Loclist: Newer"})
-map("n", "<space>lo", cmd_with_count("lolder"), { desc = "Loclist: Older"})
+map("n", "<space>qn", cmd_with_count("cnewer"), { desc = "Qflist: Newer" })
+map("n", "<space>qo", cmd_with_count("colder"), { desc = "Qflist: Older" })
+map("n", "<space>ln", cmd_with_count("lnewer"), { desc = "Loclist: Newer" })
+map("n", "<space>lo", cmd_with_count("lolder"), { desc = "Loclist: Older" })
 
 -- error numbers
 map("n", "<space>Q", cmd_with_count("cc"))
@@ -195,7 +195,27 @@ end
 
 map("n", "gls", function()
     fn.setloclist(0, get_spelling_errors())
-end)
+end, { desc = "Loclist: Spelling" })
+
+map("n", "glS", function()
+    local errors = {}
+    for _, b in ipairs(api.nvim_list_bufs()) do
+        local errs = api.nvim_buf_call(b, function()
+            local spell_save = vim.opt_local.spell
+            vim.opt_local.spell = true
+            local ret = get_spelling_errors()
+            vim.opt_local.spell = spell_save
+            return ret
+        end)
+
+        vim.list_extend(errors, vim.tbl_map(function(value)
+            value.bufnr = b
+            return value
+        end, errs))
+    end
+
+    fn.setqflist(errors)
+end, { desc = "Qflist: Spelling" })
 
 map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true }) end)
 map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true }) end)
@@ -366,7 +386,7 @@ map(mov, "H", "^")
 map(mov, "gL", "L")
 map(mov, "gH", "H")
 
--- % is annoying to press, [m]atching
+-- % is annoying to press, [m]atching, this takes some inspiration from helix
 map(obj, "m", "<plug>(matchup-%)")
 map(obj, "im", "<plug>(matchup-i%)")
 map(obj, "am", "<plug>(matchup-a%)")
