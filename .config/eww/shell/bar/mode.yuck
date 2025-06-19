@@ -35,6 +35,7 @@
     {"keys": "n", "action": "Nighlight"},
     {"keys": "t", "action": "Theme"},
     {"keys": "b", "action": "Toggle Bar"},
+    {"keys": "c", "action": "Toggle Clock"},
     {"keys": "m", "action": "Mirror Screen"}
 ],
 "normal": [
