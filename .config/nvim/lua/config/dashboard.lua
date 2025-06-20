@@ -18,7 +18,7 @@ local utils = require("config.utils")
 ---@class dashboard.section
 ---@field title string
 ---@field titlehl string
----@field map string
+---@field map string?
 ---@field items dashboard.entry[]
 
 -- Helpers {{{
@@ -191,19 +191,25 @@ do
 end
 
 ---@type dashboard.section
-local Recents = {
+local Oldfiles = {
     title = "Old Files",
     titlehl = "DashboardRecents",
     map = "o",
     items = {}
 }
 
-local MAX_OLDFILES = 24
+local MAX_OLDFILES = 32
 do
+    local helpdir = vim.env.VIMRUNTIME .. "/doc/"
     local index = 0
     for _, file in ipairs(vim.v.oldfiles) do
         if index > MAX_OLDFILES then
             break
+        end
+
+        -- ignore :h
+        if vim.startswith(file, helpdir) then
+            goto continue
         end
 
         local is_oil = vim.startswith(file, "oil://")
@@ -228,7 +234,7 @@ do
                 head = head .. "/"
             end
 
-            table.insert(Recents.items, {
+            table.insert(Oldfiles.items, {
                 data = {},
                 left = { { ("%2d. "):format(index), "Number" }, { head, "NonText" }, { tail, highlight } },
                 right = { { timestring, timehl } },
@@ -239,14 +245,15 @@ do
 
             index = index + 1
         end
+
+        ::continue::
     end
 end
 
 ---@type dashboard.section
 local Actions = {
-    title = "Actions",
+    title = "Quick Actions",
     titlehl = "DashboardActions",
-    map = "&",
     items = {}
 }
 do
@@ -324,7 +331,7 @@ end
 local Sections = {
     Actions,
     Projects,
-    Recents
+    Oldfiles
 }
 -- }}}
 
@@ -406,17 +413,20 @@ local draw_sections = function()
     local initial_padding = (" "):rep(start_offset)
 
     for _, section in ipairs(Sections) do
-        local title = (" %s - %s "):format(section.title, section.map)
+        local suffix = section.map and (" - [count]%s"):format(section.map) or ""
+        local title = (" %s%s "):format(section.title, suffix)
         local titlewidth = strwidth(title)
         local remaining = State.width - titlewidth
         local half = math.floor(remaining / 2)
 
-        vim.keymap.set("n", section.map, function()
-            local item = section.items[vim.v.count + 1]
-            if item then
-                item.callback()
-            end
-        end, { buffer = State.buf })
+        if section.map then
+            vim.keymap.set("n", section.map, function()
+                local item = section.items[vim.v.count + 1]
+                if item then
+                    item.callback()
+                end
+            end, { buffer = State.buf })
+        end
 
         table.insert(State.sections, { State.current, section })
 
