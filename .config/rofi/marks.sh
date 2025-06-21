@@ -2,16 +2,10 @@
 
 # Bookmark file format {{{
 # Each line is a |-separated list of fields which are as follows:
-#   - type: single character describing what type it is
-#    - optionally followed by :icon-name
-#       - f: file
-#       - d: directory
-#       - u: url to open
-#       - U: url with format parameter
-#       - F: files matching a fd query
+#   - icon-name, defaults to web browser
 #   - name: short name
 #   - desc: description
-#   - value: the value, for U it should contain a single %s
+#   - value: URL with %s placeholder
 # }}}
 
 function run_in_background {
@@ -23,34 +17,18 @@ BOOKMARKS_FILE="$XDG_CONFIG_HOME/rofi/bookmarks.psv"
 
 if ((ROFI_RETV == 0)); then
     echo -en "\0delim\x1f\t\n"
-    sort "$BOOKMARKS_FILE" | while IFS="|" read -r type name desc value; do
-        IFS=":" read -r type icon <<<"$type"
+    while IFS="|" read -r icon name desc value; do
         if [[ -z "$icon" ]]; then
-            case "$type" in
-            d) icon="file-manager" ;;
-            f) icon="application-text" ;;
-            U | u) icon="internet-web-browser" ;;
-            esac
+            icon="internet-web-browser"
         fi
         printf "%s\n%s\0icon\x1f%s\x1finfo\x1f%s:%s\t" "$name" "$desc" "$icon" "$type" "$value"
-    done
+    done < "$BOOKMARKS_FILE"
 else
     if [[ -n "$ROFI_DATA" ]]; then
-        IFS=":" read -r type value <<<"$ROFI_DATA"
-        case "$type" in
-        U)
-            printf -v url "$value" "$*"
-            run_in_background firefox "$url"
-            ;;
-        esac
+        printf -v url "$ROFI_DATA" "$*"
+        run_in_background firefox "$url"
     else
         IFS=":" read -r type value <<<"$ROFI_INFO"
-        value="${value//\~/$HOME}"
-        case "$type" in
-        d) run_in_background kitty --directory "$value" ;;
-        f) run_in_background xdg-open "$value" ;;
-        u) run_in_background firefox "$value" ;;
-        U) printf "\0data\x1f%s:%s\t%s\0icon\x1ffsearch\x1fnonselectable\x1ftrue\t" "$type" "$value" "$1" ;;
-        esac
+        printf "\0data\x1f%s\t%s\0icon\x1ffsearch\x1fnonselectable\x1ftrue\t" "$value" "$1"
     fi
 fi
