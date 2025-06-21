@@ -82,7 +82,7 @@ local colorscheme = {
     DiffText                    = { bg = pal.bg1, fg = col.yellow, italic = true },
     diffFile                    = { link = "Directory" },
 
-    Question                    = { fg = col.bright_gray },
+    Question                    = { fg = col.fg0 },
     Warnings                    = { fg = col.orange },
     ErrorMsg                    = { fg = col.red },
     MoreMSg                     = { fg = col.bright_gray },
