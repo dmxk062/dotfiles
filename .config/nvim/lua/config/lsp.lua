@@ -284,7 +284,7 @@ local lazy_schemastore = function(type)
 end
 
 ---@type table<string, vim.lsp.Config>
-local L = setmetatable({}, {
+local Configs = setmetatable({}, {
     __newindex = function(t, name, cfg)
         if not cfg.name then
             cfg.name = name
@@ -296,7 +296,7 @@ local L = setmetatable({}, {
 })
 
 --- Configs {{{
-L.jsonls = {
+Configs.jsonls = {
     cmd = { "vscode-json-language-server", "--stdio" },
     filetypes = { "json", "jsonc" },
     init_options = {
@@ -306,7 +306,7 @@ L.jsonls = {
     on_init = lazy_schemastore("json")
 }
 
-L.yamlls = {
+Configs.yamlls = {
     filetypes = { "yaml" },
     cmd = { "yaml-language-server", "--stdio" },
     root_markers = { ".git" },
@@ -314,7 +314,7 @@ L.yamlls = {
     on_init = lazy_schemastore("yaml"),
 }
 
-L.luals = {
+Configs.luals = {
     filetypes = { "lua" },
     cmd = { "lua-language-server" },
     root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", ".git" },
@@ -368,7 +368,7 @@ L.luals = {
     end
 }
 
-L.clangd = {
+Configs.clangd = {
     filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
     cmd = { "clangd" },
     root_markers = { ".clangd", ".clang-tidy", ".clang-format", "compile_commands.json", "Makefile", ".git" },
@@ -395,25 +395,25 @@ L.clangd = {
     end
 }
 
-L.asm_lsp = {
+Configs.asm_lsp = {
     filetypes = { "asm", "vmasm" },
     cmd = { "asm-lsp" },
     root_markers = { ".asm-lsp.toml", ".git" },
 }
 
-L.bashls = {
+Configs.bashls = {
     filetypes = { "bash", "sh" },
     cmd = { "bash-language-server", "start" },
     root_markers = { ".git" },
 }
 
-L.ts_ls = {
+Configs.ts_ls = {
     filetypes = { "javascript", "typescript" },
     cmd = { "typescript-language-server", "--stdio" },
     root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
 }
 
-L.html_ls = {
+Configs.html_ls = {
     filetypes = { "html" },
     cmd = { "vscode-html-language-server", "--stdio" },
     init_options = {
@@ -423,43 +423,54 @@ L.html_ls = {
     }
 }
 
-L.jedi_ls = {
+Configs.jedi_ls = {
     filetypes = { "python" },
     cmd = { "jedi-language-server" },
     root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" },
 }
 
-L.ruff = {
+Configs.ruff = {
     filetypes = { "python" },
     cmd = { "ruff", "server" },
     root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml" }
 }
 
-L.taplo = {
+Configs.taplo = {
     filetypes = { "toml" },
     cmd = { "taplo", "lsp", "stdio" },
     root_markers = { ".git" },
 }
 
-L.marksman = {
-    filetypes = { "markdown" },
-    cmd = { "marksman", "server" },
-    root_markers = { ".marksman.toml", ".git" },
-}
-
-L.tinymist = {
+Configs.tinymist = {
     filetypes = { "typst" },
     cmd = { "tinymist" },
     root_markers = { ".git" },
 }
 
-L.gopls = {
+Configs.gopls = {
     filetypes = { "go", "gomod", "gowork", "gotmpl" },
     cmd = { "gopls" },
     root_markers = { "go.mod", "go.work", ".git" },
 }
+
+Configs.harper = {
+    cmd = { "harper-ls", "--stdio" },
+    root_markers = { ".git" },
+    --[[ NOTE: Only manually start it for "real" programming languages,
+    otherwise it quickly becomes too annoying
+    builtin 'spell' is much more appropriate (and less distracting) in those cases ]]
+    filetypes = { "markdown", "typst" },
+    on_attach = function(client, bufnr)
+        -- NOTE: harper-ls does *not* support any language other than English right now
+        if not vim.bo[bufnr].spelllang:find("en") then
+            vim.defer_fn(function()
+                lsp.buf_detach_client(bufnr, client.id)
+            end, 1000)
+        end
+    end
+}
 -- }}}
 
-lsp.enable(vim.tbl_keys(L))
+lsp.enable(vim.tbl_keys(Configs))
 
 return M
