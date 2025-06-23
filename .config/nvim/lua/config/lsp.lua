@@ -465,18 +465,10 @@ Configs.gopls = {
 Configs.harper = {
     cmd = { "harper-ls", "--stdio" },
     root_markers = { ".git" },
-    --[[ NOTE: Only manually start it for "real" programming languages,
-    otherwise it quickly becomes too annoying
-    builtin 'spell' is much more appropriate (and less distracting) in those cases ]]
-    filetypes = { "markdown", "typst" },
-    on_attach = function(client, bufnr)
-        -- NOTE: harper-ls does *not* support any language other than English right now
-        if not vim.bo[bufnr].spelllang:find("en") then
-            vim.defer_fn(function()
-                lsp.buf_detach_client(bufnr, client.id)
-            end, 1000)
-        end
-    end
+    -- harper-ls is mostly a situational thing, nothing wrong with just using
+    -- :LspStart harper
+    -- when it's *actually* needed
+    filetypes = {},
 }
 -- }}}
 
