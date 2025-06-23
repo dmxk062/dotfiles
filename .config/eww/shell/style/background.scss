@@ -3,18 +3,18 @@
 }
 
 .background-time {
-    color: $fg0;
+    color: $snow0;
     font-size: 8rem;
 }
 
 .background-date {
-    color: $fg0;
+    color: $snow0;
     font-size: 5rem;
 }
 
 .background-timer {
     margin-left: 3rem;
-    color: $fg0;
+    color: $snow0;
     label {
         min-width: 3rem;
         padding: 2.5rem;
@@ -27,27 +27,27 @@
 
     > button {
         &:hover {
-            background-color: rgba($fg0, 0.1);
+            background-color: rgba($snow0, 0.1);
         }
     }
 }
 
 .background-calendar {
-    color: $fg0;
+    color: $snow0;
     font-size: 1.3rem;
 
     &.highlight {
-        color: $fg0;
+        color: $snow0;
     }
     &.button {
         background-color: unset;
-        color: $fg0;
+        color: $snow0;
     }
     &:indeterminate {
-        color: rgba($fg0, 0.2);
+        color: rgba($snow0, 0.2);
     }
     &:selected {
-        background-color: $fg0;
+        background-color: $snow0;
         color: $inv;
         border-radius: 12px;
     }
