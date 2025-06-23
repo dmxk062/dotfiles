@@ -271,7 +271,7 @@ local add_setting = function(client, k, v)
         client.settings[k] = {}
     end
 
-    client.settings[k] = v
+    client.settings[k] = vim.tbl_extend("force", client.settings[k] --[[@as table]], v)
 end
 
 -- load schemastore on launch only
@@ -318,6 +318,15 @@ Configs.luals = {
     filetypes = { "lua" },
     cmd = { "lua-language-server" },
     root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", ".git" },
+    settings = {
+        Lua = {
+            semantic = {
+                -- Luadoc highlighting is much better handled by treesitter
+                -- e.g. <.> between elements of an object chain
+                annotation = false
+            }
+        }
+    },
     on_init = function(client)
         if not client.workspace_folders then
             return
