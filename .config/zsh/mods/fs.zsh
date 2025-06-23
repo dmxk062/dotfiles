@@ -98,9 +98,11 @@ function .. {
 
 # find the parent directory containing a file or dir
 # e.g. `root .git` or `root compile_commands.json`
+# if further arguments are given, it evaluates the rest in that place
 function root {
     local pattern="$1"
     local cwd="$PWD"
+    local root
 
     while [[ "$cwd" != "" && ! -e "$cwd/$pattern" ]]; do
         cwd="${cwd%/*}"
@@ -108,12 +110,18 @@ function root {
 
     if [[ "$cwd" == "" ]]; then
         if [[ -e "/$pattern" ]]; then
-            print "/"
+            root="/"
         else
-            return 1
+            root="."
         fi
     else
-        print "$cwd"
+        root="$cwd"
+    fi
+
+    if [[ $# -gt 1 ]]; then
+        (cd "$root"; eval "${@:2}")
+    else
+        cd "$root"
     fi
 }
 
