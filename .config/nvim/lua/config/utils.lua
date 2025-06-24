@@ -662,10 +662,30 @@ M.format_count = function(count)
 
     return ("%.1f%s"):format(count, sizes[i])
 end
+
+---@param num integer num > 0
+---@param upper boolean Use Uppercase
+---@return string Roman Numeral
+M.format_roman = function(num, upper)
+    local arabic = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 }
+    local roman = { "m", "cm", "d", "cd", "c", "xc", "l", "xl", "x", "ix", "v", "iv", "i" }
+
+    local res = require("string.buffer").new(100)
+    for i = 1, #arabic do
+        while arabic[i] <= num do
+            num = num - arabic[i]
+            res:put(roman[i])
+        end
+    end
+
+    local out = res:tostring()
+    return upper and out:upper() or out
+end
+
 -- }}}
 
 -- Ranges {{{
-M.get_range = function()
+M.get_cur_line_range = function()
     local mode = fn.mode(1)
     if mode == "v" or mode == "V" then
         local vline = fn.getpos("v")[2]

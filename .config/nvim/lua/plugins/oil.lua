@@ -82,7 +82,7 @@ local function get_entries()
     local oil = require("oil")
 
     local ret = {}
-    local startl, endl = utils.get_range()
+    local startl, endl = utils.get_cur_line_range()
     for i = startl, endl do
         local e = oil.get_entry_on_line(0, i)
         if e then
