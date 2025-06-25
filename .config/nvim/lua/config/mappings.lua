@@ -392,7 +392,18 @@ map(obj, "im", "<plug>(matchup-i%)")
 map(obj, "am", "<plug>(matchup-a%)")
 
 -- more humane spell popup
-map("n", "z=", function() require("config.spell").popup() end)
+map("n", "z=", function()
+    local word = fn.expand("<cWORD>")
+    local suggestions = fn.spellsuggest(word, 32)
+    vim.ui.select(suggestions, { prompt = "Spell" }, function(replacement)
+        if not replacement then
+            return
+        end
+
+        vim.cmd([[normal! "_diW]])
+        api.nvim_paste(replacement, false, -1)
+    end)
+end)
 
 -- allow modifying count in o-pending mode
 local modify_operator_count = function(delta)

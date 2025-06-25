@@ -50,19 +50,6 @@ local download_spellfile = function(lang)
     end)
 end
 
-M.popup = function()
-    local word = fn.expand("<cWORD>")
-    local suggestions = fn.spellsuggest(word, 32)
-    vim.ui.select(suggestions, { prompt = "Spell" }, function(replacement)
-        if not replacement then
-            return
-        end
-
-        vim.cmd('normal! "_ciW' .. replacement)
-        vim.cmd.stopinsert()
-    end)
-end
-
 M.spell_cmd = function(arguments)
     local args = arguments.fargs
     if args[1] == "get" then

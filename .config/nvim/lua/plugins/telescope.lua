@@ -211,8 +211,8 @@ opts.pickers = {
     },
     help_tags = default_config {
         prompt_prefix = ":h ",
-        create_layout = custom "short_layout",
-        previewer = false,
+        -- create_layout = custom "short_layout",
+        -- previewer = false,
     },
     man_pages = default_config {
         prompt_prefix = ":man ",
