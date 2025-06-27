@@ -51,7 +51,7 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
     -- try to find a foldmarker
     local _, _, title, marker, level = first_line:find(".-%s+(.-)%s+(" .. marker_start() .. ")(%d*)")
 
-    local suffix = ("[%d lines]"):format(end_row - row)
+    local suffix = ("[%d lines]"):format(end_row - row + 1)
 
     -- it's a marked fold, pretty print the marker label and (if it is there) level
     if marker and title then
