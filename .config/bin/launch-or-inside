@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+APPID="$1"
+PROGRAM="$2"
+IF_NONE="$3"
+shift 3
+
+IFS=$'\t' read -r output workspace < <(swaymsg -t get_workspaces | jq -r '.[]|select(.focused)|"\(.output)\t\(.name)"')
+if [[ -z $(
+    swaymsg -t get_tree |
+        jq --arg ws "$workspace" --arg out "$output" --arg class "$APPID" \
+            '.nodes.[]
+            | select(.name == $out).nodes.[]
+            | select(.name == $ws) | ..
+            | ((.nodes? // empty) + (.floating_nodes? // empty))[]
+            | select((.type == "con" or .type == "floating_con") and .name)
+            | select(.app_id == $class).id'
+) ]]; then
+    "$PROGRAM" "$IF_NONE" "$@"
+else
+    "$PROGRAM" "$@"
+fi
