@@ -246,7 +246,7 @@ local file_display = t_entry_display.create {
     items = {
         { width = MAX_FILENAME_WIDTH * 1.4 },
         { width = utils.datefmt.short_len },
-        { remaining = true,              right_justify = true },
+        { remaining = true,                right_justify = true },
     }
 }
 
@@ -503,9 +503,60 @@ M.register_entries = function(entry)
         content = content,
         display = function()
             return register_display {
-                { entry,       ischar and "String" or (isnum and "Number" or "Identifier") },
+                { entry, ischar and "String" or (isnum and "Number" or "Identifier") },
                 -- { description, "Comment" },
-                { text,        texthl }
+                { text,  texthl }
+            }
+        end
+    }
+end
+-- }}}
+
+-- Treesitter {{{1
+local treesitter_display = t_entry_display.create {
+    separator = " ",
+    items = {
+        { width = MAX_SYMBOL_WIDTH },
+        { width = ROW_COL_WIDTH },
+        { width = 8 },
+        { remaining = true }
+    }
+}
+
+local ts_to_lsp_kind = {
+    ["associated"] = "Object",
+    ["parameter"]  = "Variable",
+    ["var"]        = "Variable",
+}
+
+local last_ts_tuple = {}
+M.treesitter_entries = function(entry)
+    local srow, scol, erow, ecol = vim.treesitter.get_node_range(entry.node)
+
+    local buf = api.nvim_get_current_buf()
+    if last_ts_tuple[1] ~= buf then
+        last_ts_tuple[1] = buf
+        last_ts_tuple[2] = api.nvim_buf_get_name(buf)
+    end
+
+    local text = vim.treesitter.get_node_text(entry.node, buf)
+
+    local lsp_kind = ts_to_lsp_kind[entry.kind] or (entry.kind:sub(1, 1):upper() .. entry.kind:sub(2))
+    return {
+        value = entry.node,
+        kind = lsp_kind,
+        ordinal = text .. " " .. (entry.kind or "unknown"),
+        lnum = srow + 1,
+        buf = last_ts_tuple[1],
+        filename = last_ts_tuple[2],
+        col = scol,
+        start = srow,
+        finish = erow,
+        display = function()
+            return treesitter_display {
+                { text,                                      utils.lsp_highlights[lsp_kind] },
+                { ("%d:%d"):format(srow, scol),              "Number" },
+                { utils.lsp_symbols[lsp_kind] or entry.kind, "BlinkCmpKind" .. (lsp_kind or "a") },
             }
         end
     }

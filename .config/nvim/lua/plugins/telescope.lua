@@ -13,6 +13,7 @@ local builtin_picker_maps = {
     oldfiles = "<space>o",
     registers = "\"<space>",
     search_history = "<space>?",
+    treesitter = "<space>s",
 
     -- git ones, under the same prefix as the fugitive & gitsigns mappings
     git_files = "<space>gf",
@@ -225,6 +226,9 @@ opts.pickers = {
     search_history = default_config {
         create_layout = custom "short_layout",
         prompt_prefix = "/ ",
+    },
+    treesitter = default_config {
+        entry_maker = custom "treesitter_entries",
     },
     git_files = default_config {
         entry_maker = custom "file_entries",

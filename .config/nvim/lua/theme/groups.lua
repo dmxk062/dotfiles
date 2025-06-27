@@ -719,6 +719,7 @@ add_with_prefix(colorscheme, "Telescope", {
     ResultsDiffChange     = { fg = col.yellow },
     ResultsDiffDelete     = { fg = col.red },
     ResultsDiffUntracked  = { fg = col.bright_gray },
+    ResultsLineNr         = { fg = col.magenta },
 })
 -- }}}
 
