@@ -41,6 +41,7 @@ local mode_to_name = {
     ["nov"]    = "_o",
     ["noV"]    = "O",
     ["no\x16"] = "^O",
+    ["c"]      = "C",
 
     ["v"]      = "v",
     ["V"]      = "V",
@@ -98,16 +99,16 @@ local function update_diagnostics()
 
     local res = {}
     if err > 0 then
-        table.insert(res, string.format("%%#SlError#!%d", err))
+        table.insert(res, string.format("%%#DiagnosticError#!%d", err))
     end
     if warn > 0 then
-        table.insert(res, string.format("%%#SlWarning#!%d", warn))
+        table.insert(res, string.format("%%#DiagnosticWarn#!%d", warn))
     end
     if hint > 0 then
-        table.insert(res, string.format("%%#SlHint#?%d", hint))
+        table.insert(res, string.format("%%#DiagnosticHint#?%d", hint))
     end
     if info > 0 then
-        table.insert(res, string.format("%%#SlInfo#.%d", info))
+        table.insert(res, string.format("%%#DiagnosticInfo#.%d", info))
     end
 
     return delim .. table.concat(res, " ")

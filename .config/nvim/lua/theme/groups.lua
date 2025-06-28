@@ -375,11 +375,6 @@ add_with_prefix(colorscheme, "Sl", {
 
     Delim       = { fg = col.bright_gray },
 
-    Error       = { fg = col.red, bg = pal.bg1 },
-    Warning     = { fg = col.orange, bg = pal.bg1 },
-    Info        = { fg = col.blue, bg = pal.bg1 },
-    Hint        = { fg = col.light_blue, bg = pal.bg1 },
-
     DiffAdded   = { fg = col.green, bg = pal.bg1 },
     DiffChanged = { fg = col.yellow, bg = pal.bg1 },
     DiffRemoved = { fg = col.red, bg = pal.bg1 },
