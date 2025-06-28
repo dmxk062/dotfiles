@@ -14,7 +14,7 @@ local function esc(str)
     return str:gsub("%%", "%%%%")
 end
 
-local delim = " %#SlDelim#| "
+local delim = " %#SlDelim#| %*"
 -- }}}
 
 -- Mode Element {{{
@@ -47,7 +47,13 @@ local mode_to_name = {
     ["V"]      = "V",
     ["\x16"]   = "^V",
     ["\x13"]   = "^S",
+}
 
+local no_showcmd_modes = {
+    i = true,
+    t = true,
+    c = true,
+    R = true
 }
 
 local function update_mode()
@@ -56,10 +62,27 @@ local function update_mode()
     local short = mode:sub(1, 1)
     local hl = mode_to_hl_group[short]
 
-    return string.format("%%#SlISL#%%#SlMode%s#%-2s%%#SlTyped#",
+    return string.format("%%#SlISL#%%#SlMode%s#%-2s%s",
         hl,
-        (has_multicursor and "C-" or "") .. (mode_to_name[mode] or short)
+        (has_multicursor and "C-" or "") .. (mode_to_name[mode] or short),
+        (no_showcmd_modes[short] and "" or "%#SlTyped#%-5(%S%)")
     )
+end
+-- }}}
+
+-- Current Macro {{{
+local function update_macro(ev)
+    if ev == "RecordingLeave" then
+        local last = vim.fn.reg_recording()
+        if last == "" then
+            return ""
+        end
+
+        return ("%%#SlMacro#@%s "):format(last)
+    else
+        local reg = vim.fn.reg_recording()
+        return ('%%#SlMacro#>%s '):format(reg)
+    end
 end
 -- }}}
 
@@ -72,7 +95,7 @@ local function update_title()
     local changed = vim.bo[buf].modified
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
 
-    return string.format("%%#SlI%s# %s %%#SlIText#%s%s%s",
+    return string.format("%%#SlI%s#%s %%#SlIText#%s%s%s",
         btypehighlights[kind],
         btypesymbols[kind],
         (name or "[-]"),
@@ -81,6 +104,71 @@ local function update_title()
             and (changed and "%#SlIChanged##" or (" "))
             or "")
     )
+end
+-- }}}
+
+-- Git {{{
+-- extra info for fugitive buffers
+local function get_fugitive_info()
+    local res = {}
+
+    local head = fn.FugitiveHead(8)
+    if head and head ~= "" then
+        table.insert(res, string.format("%s", head))
+    end
+
+    ---@type string
+    local object = fn["fugitive#Object"](api.nvim_buf_get_name(0))
+    if object then
+        if vim.startswith(object, "/tmp") then
+            object = "log"
+        elseif object:match("^%x+$") then
+            object = object:sub(0, 8)
+        elseif object:match("^%x+:.*$") then
+            object = "#" .. object:sub(0, 8)
+        elseif object == ":" then
+            object = "status"
+        else
+            local ago = object:match("^:(%d+):.*")
+            if ago == "0" then
+                object = "HEAD"
+            end
+        end
+        table.insert(res, string.format("%%#Identifier#%s", object))
+    end
+
+    return delim .. table.concat(res, " ")
+end
+
+local function update_git()
+    if vim.b[0].fugitive_type then
+        return get_fugitive_info()
+    end
+
+    if not vim.b[0].gitsigns_status_dict then
+        return ""
+    end
+    local status = vim.b[0].gitsigns_status_dict
+
+    local res = {}
+    if status.head then
+        table.insert(res, string.format("%s", status.head))
+    end
+    if status.added and status.added > 0 then
+        table.insert(res, string.format("%%#Added#+%d", status.added))
+    end
+    if status.changed and status.changed > 0 then
+        table.insert(res, string.format("%%#Changed#~%d", status.changed))
+    end
+    if status.removed and status.removed > 0 then
+        table.insert(res, string.format("%%#Removed#-%d", status.removed))
+    end
+
+    if #res == 0 then
+        return ""
+    end
+
+    return delim .. table.concat(res, " ")
 end
 -- }}}
 
@@ -115,83 +203,26 @@ local function update_diagnostics()
 end
 -- }}}
 
--- Current Macro {{{
-local function update_macro(ev)
-    if ev == "RecordingLeave" then
-        local last = vim.fn.reg_recording()
-        if last == "" then
-            return ""
-        end
-
-        return (" @%s "):format(last)
-    else
-        local reg = vim.fn.reg_recording()
-        return ('->@%s '):format(reg)
-    end
-end
--- }}}
-
--- Git {{{
--- extra info for fugitive buffers
-local function get_fugitive_info()
-    local res = {}
-    local head = fn.FugitiveHead(8)
-
-    ---@type string
-    local object = fn["fugitive#Object"](api.nvim_buf_get_name(0))
-    if object then
-        if vim.startswith(object, "/tmp") then
-            object = "log"
-        elseif object:match("^%x+$") then
-            object = object:sub(0, 8)
-        elseif object:match("^%x+:.*$") then
-            object = "#" .. object:sub(0, 8)
-        elseif object == ":" then
-            object = "status"
-        else
-            local ago = object:match("^:(%d+):.*")
-            if ago == "0" then
-                object = "HEAD"
-            end
-        end
-        table.insert(res, string.format("%%#SlGitHash#%s", object))
-    end
-    if head and head ~= "" then
-        table.insert(res, string.format("%%#SlGitHead#%s", head))
-    end
-
-    return table.concat(res, " ")
-end
-
-local function update_git()
-    if vim.b[0].fugitive_type then
-        return get_fugitive_info()
-    end
-
-    if not vim.b[0].gitsigns_status_dict then
-        return ""
-    end
-    local status = vim.b[0].gitsigns_status_dict
-
-    local res = {}
-    if status.head then
-        table.insert(res, string.format("%%#SlGitHead#%s", status.head))
-    end
-    if status.added and status.added > 0 then
-        table.insert(res, string.format("%%#SlDiffAdded#+%d", status.added))
-    end
-    if status.changed and status.changed > 0 then
-        table.insert(res, string.format("%%#SlDiffChanged#~%d", status.changed))
-    end
-    if status.removed and status.removed > 0 then
-        table.insert(res, string.format("%%#SlDiffRemoved#-%d", status.removed))
-    end
-
-    if #res == 0 then
+-- Searchcount {{{
+local update_searchcount = function()
+    if vim.v.hlsearch == 0 then
         return ""
     end
 
-    return delim .. table.concat(res, " ")
+    local ok, res = pcall(fn.searchcount, { maxcount = 999, timeout = 500 })
+    if not ok or next(res) == nil then
+        return ""
+    end
+
+    if res.total == 0 then
+        return delim .. "0 matches"
+    end
+
+    return ("%s%s%d%%* of %d"):format(delim,
+        res.exact_match == 1 and "%#SlOnSearch#" or "",
+        res.current,
+        res.total
+    )
 end
 -- }}}
 
@@ -206,11 +237,11 @@ local function update_words()
     local chars = count.visual_chars or count.chars
     local bytes = count.visual_bytes or count.bytes
 
-    return string.format("%%#SlWords#%sw %%#SlChars#%sc %%#SlLines#%sl %%#SlBytes#%s",
-        utils.format_count(words),
-        utils.format_count(chars),
-        utils.format_count(linecount),
-        utils.format_size(bytes)
+    return string.format("%s%%#SlWords#W %%*%s%%#SlChars#C %%*%s%%#SlLines#L %%*%s%%#SlBytes#B",
+        utils.format_size(words),
+        utils.format_size(chars),
+        utils.format_size(linecount),
+        utils.format_size(bytes, 1024)
     )
 end
 -- }}}
@@ -230,7 +261,9 @@ local function update_filetype()
         or "tab"
 
     local concealcursor = vim.wo.concealcursor
-    if concealcursor == "nvic" then
+    local cc = vim.opt_local.concealcursor:get()
+
+    if cc.n and cc.v and cc.i and cc.c then
         concealcursor = "*"
     elseif concealcursor == "" then
         concealcursor = "_"
@@ -239,7 +272,7 @@ local function update_filetype()
     local conceallevel = vim.wo.conceallevel
     local conceal = conceallevel > 0 and ("conceal:%s "):format(concealcursor) or ""
 
-    return delim .. string.format("%%#StatusLine#%s %s %s %s%s%s",
+    return delim .. string.format("%%*%s %s %s %s%s%s",
         enc,
         vim.bo.fileformat,
         indent,
@@ -265,15 +298,16 @@ end
 
 local sections
 local indices = {
-    mode = 1,
-    macro = 3,
-    title = 4,
-    git = 5,
-    diagnostics = 6,
+    mode        = 1,
+    macro       = 2,
+    title       = 3,
+    git         = 4,
+    diagnostics = 5,
+    search      = 6,
 
-    words = 8,
-    filetype = 9,
-    lsp = 10,
+    words       = 8,
+    filetype    = 9,
+    lsp         = 10,
 }
 
 local redraw = function()
@@ -350,6 +384,7 @@ update_timer:start(0, 100, vim.schedule_wrap(function()
         sections[indices.diagnostics] = update_diagnostics()
     end
     sections[indices.words] = update_words()
+    sections[indices.search] = update_searchcount()
     redraw()
 end)
 )
@@ -358,11 +393,11 @@ end)
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
     update_mode(),                 -- mode
-    " %-5(%S%)",                   -- typed keys
     "",                            -- macro register
     "",                            -- title of buffer with modified etc
     "",                            -- git
     "",                            -- diagnostics
+    "",                            -- searchcount
 
     delim .. "%<%*%P %3l:%-3c%= ", -- center: cursor position
     "",                            -- counts
