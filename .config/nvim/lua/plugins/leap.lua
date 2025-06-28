@@ -41,46 +41,6 @@ M.config = function()
             })
         end
     })
-
-
-    -- additionally, for textobjects just
-    -- d<a,i>r<thing> works too
-    -- easier to remember, more vim
-    local textobjects_ai = {
-        -- builtins
-        "w", "W", "p",
-        -- delimiters
-        "[", "]", "(", ")", "{", "}", "'", '"', "`", "<", ">", "b", "t", "q", "Q", "B",
-        -- treesitter
-        "f", "a", "c", "l", "k", "?", "<space>", "F",
-        -- my own
-        "i", "o", "-", ".", "/", "z"
-    }
-
-    -- not full pairs
-    local textobjects_full = {
-        -- treesitter
-        "iv", "aA", "iN", "in",
-        -- my own
-        "id", "iDe", "iDw", "iDi", "iDh", "aI", "gG"
-    }
-
-    for _, obj in ipairs(textobjects_ai) do
-        map({ "x", "o" }, "ir" .. obj, function()
-            require("leap.remote").action { input = "i" .. obj }
-        end)
-        map({ "x", "o" }, "ar" .. obj, function()
-            require("leap.remote").action { input = "a" .. obj }
-        end)
-    end
-
-    for _, obj in ipairs(textobjects_full) do
-        local scope = obj:sub(1, 1)
-
-        map({ "x", "o" }, scope .. "r" .. obj:sub(2), function()
-            require("leap.remote").action { input =  obj }
-        end)
-    end
 end
 
 return M
