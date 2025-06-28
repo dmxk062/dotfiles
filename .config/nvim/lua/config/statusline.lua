@@ -56,7 +56,7 @@ local function update_mode()
     local short = mode:sub(1, 1)
     local hl = mode_to_hl_group[short]
 
-    return string.format("%%#SlASL#%%#SlMode%s#%-2s%%#SlTyped#",
+    return string.format("%%#SlISL#%%#SlMode%s#%-2s%%#SlTyped#",
         hl,
         (has_multicursor and "C-" or "") .. (mode_to_name[mode] or short)
     )
@@ -72,13 +72,13 @@ local function update_title()
     local changed = vim.bo[buf].modified
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
 
-    return string.format("%%#SlA%s# %s %%#SlAText#%s%s%s",
+    return string.format("%%#SlI%s# %s %%#SlIText#%s%s%s",
         btypehighlights[kind],
         btypesymbols[kind],
         (name or "[-]"),
-        (readonly and show_modified and "%#SlAReadonly#[ro]" or ""),
+        (readonly and show_modified and "%#SlIReadonly#[ro]" or ""),
         (show_modified and not readonly
-            and (changed and "%#SlAChanged##" or (" "))
+            and (changed and "%#SlIChanged##" or (" "))
             or "")
     )
 end
@@ -368,7 +368,7 @@ sections = {
     "",                            -- counts
     "",                            -- filetype
     "",                            -- attached LSPs
-    "%#SlASR# ",
+    "%#SlISR# ",
 }
 
 vim.o.laststatus = 3

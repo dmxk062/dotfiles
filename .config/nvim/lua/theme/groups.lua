@@ -61,7 +61,7 @@ local colorscheme = {
     CursorColumn                = { bg = pal.bg1 },
     ColorColumn                 = { bg = pal.bg1, blend = 90 },
     Tabline                     = {},
-    StatusLine                  = { bg = pal.bg1 },
+    StatusLine                  = { bg = pal.bg01 },
     Folded                      = {},
     FoldNumber                  = { fg = col.magenta, italic = true },
     FoldColumn                  = { fg = pal.bg3 },
@@ -368,6 +368,8 @@ add_with_prefix(colorscheme, "Sl", {
     IHidden     = { fg = col.bright_gray },
     ASL         = { fg = pal.bg1, bg = pal.bg0 },
     ASR         = { fg = pal.bg1, bg = pal.bg0 },
+    ISL         = { fg = pal.bg01, bg = pal.bg0 },
+    ISR         = { fg = pal.bg01, bg = pal.bg0 },
     AText       = { bg = pal.bg1, fg = pal.fg0 },
     IText       = { fg = pal.fg0 },
     AGrapple    = { bg = pal.bg1, fg = col.magenta },
@@ -375,16 +377,16 @@ add_with_prefix(colorscheme, "Sl", {
 
     Delim       = { fg = col.bright_gray },
 
-    DiffAdded   = { fg = col.green, bg = pal.bg1 },
-    DiffChanged = { fg = col.yellow, bg = pal.bg1 },
-    DiffRemoved = { fg = col.red, bg = pal.bg1 },
-    GitHead     = { fg = col.light_blue, bg = pal.bg1 },
-    GitHash     = { fg = col.pink, bg = pal.bg1 },
+    DiffAdded   = { fg = col.green },
+    DiffChanged = { fg = col.yellow },
+    DiffRemoved = { fg = col.red },
+    GitHead     = { fg = col.light_blue },
+    GitHash     = { fg = col.pink },
 
-    Words       = { fg = col.yellow, bg = pal.bg1 },
-    Chars       = { fg = col.green, bg = pal.bg1 },
-    Lines       = { fg = col.teal, bg = pal.bg1 },
-    Bytes       = { fg = col.light_blue, bg = pal.bg1 },
+    Words       = { fg = col.yellow },
+    Chars       = { fg = col.green },
+    Lines       = { fg = col.teal },
+    Bytes       = { fg = col.light_blue },
 
     Typed       = { fg = pal.fg0 },
 
