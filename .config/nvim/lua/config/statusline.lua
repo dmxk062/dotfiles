@@ -62,7 +62,7 @@ local function update_mode()
     local short = mode:sub(1, 1)
     local hl = mode_to_hl_group[short]
 
-    return string.format("%%#SlISL#%%#SlMode%s#%-2s%s",
+    return string.format("%%#SlMode%s#%-2s%s",
         hl,
         (has_multicursor and "C-" or "") .. (mode_to_name[mode] or short),
         (no_showcmd_modes[short] and "" or "%#SlTyped#%-5(%S%)")
@@ -298,16 +298,16 @@ end
 
 local sections
 local indices = {
-    mode        = 1,
-    macro       = 2,
-    title       = 3,
-    git         = 4,
-    diagnostics = 5,
-    search      = 6,
+    mode        = 2,
+    macro       = 3,
+    title       = 4,
+    git         = 5,
+    diagnostics = 6,
+    search      = 7,
 
-    words       = 8,
-    filetype    = 9,
-    lsp         = 10,
+    words       = 9,
+    filetype    = 10,
+    lsp         = 11,
 }
 
 local redraw = function()
@@ -392,6 +392,7 @@ end)
 -- prefill the line
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
+    "%#SlISL#",
     update_mode(),                 -- mode
     "",                            -- macro register
     "",                            -- title of buffer with modified etc
