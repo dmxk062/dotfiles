@@ -1,4 +1,3 @@
--- Spec {{{
 ---@type LazySpec
 local M = {
     "nvim-treesitter/nvim-treesitter",
@@ -14,7 +13,6 @@ local M = {
         },
     },
 }
--- }}}
 
 -- Textobjects {{{
 local textobjects = {}
@@ -141,15 +139,6 @@ M.config = function()
 
         highlight = {
             enable = true,
-
-            disable = function(lang, buf)
-                local max_filesize = 4 * 1024 * 1024
-                local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
-                if ok and stats and stats.size > max_filesize then
-                    return true
-                end
-            end,
-
             additional_vim_regex_highlighting = false,
         },
 
@@ -208,7 +197,7 @@ M.config = function()
                 args = { vim.v.count1 .. command }
             }, { output = false })
             if not ok then
-                vim.notify(err, vim.log.levels.ERROR)
+                utils.error("Map/" .. command, err:gsub("^Vim:E%d+:%s*", ""))
             end
         end
     end
