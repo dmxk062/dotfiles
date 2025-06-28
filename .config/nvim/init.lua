@@ -5,7 +5,7 @@ and doing everything required for startup.
 Once it is done bootstrapping neovim, little if anything remains of it
 
 TODO: figure out note-taking solution
-TODO: should I remove vimtex?
+TODO: repl
 }}} ]]
 
 -- Global namespace for functions that need to be callable from vimscript
