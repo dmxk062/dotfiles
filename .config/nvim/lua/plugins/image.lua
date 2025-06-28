@@ -11,13 +11,12 @@ local M = {
         window_overlap_clear_enabled = true,
         window_overlap_clear_ft_ignore = {},
         max_width = 80,
-        max_height = 6, -- don't show too many lines
-        -- i dont care about using nvim as a file viewer, also makes lazy loading possible
+        max_height = 6,
         hijack_file_patterns = {},
         integrations = {
             markdown = {
-                -- otherwise quickly becomes annoying or slow
-                only_render_image_at_cursor = true,
+                -- do not show them by default
+                enabled = false,
             }
         }
     }
