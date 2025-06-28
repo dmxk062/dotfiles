@@ -358,16 +358,11 @@ local draw_lazy = function()
     local took_time = stats.times.LazyDone - stats.times.LazyStart
     local message = {
         { "" },
-        { "Lazy:",                                     "DashboardProperty" },
-        { " loaded " },
-        { ("%d"):format(stats.loaded),                 "Number" },
-        { " of " },
-        { ("%d"):format(stats.count),                  "Number" },
-        { " plugins in " },
-        { ("%.2fms"):format(took_time),                "SpecialChar" },
-        { ", " },
-        { ("%.2fms"):format(stats.times.UIEnter or 0), "SpecialChar" },
-        { " in total" }
+        { ("Loaded %d of %d plugins in "):format(stats.loaded, stats.count) },
+        { ("%.2fms"):format(took_time),                                      "SpecialChar" },
+        { " took " },
+        { ("%.2fms"):format(stats.times.UIEnter or 0),                       "SpecialChar" },
+        { " in total" },
     }
     local padding = get_center_spaces(linewidth(message))
     message[1] = { padding }
