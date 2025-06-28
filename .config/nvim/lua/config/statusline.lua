@@ -240,7 +240,7 @@ local function update_words()
 
     local ts_locals = require("nvim-treesitter.locals")
     local functions, types = 0, 0
-    for _, definition in ipairs(ts_locals.get_definitions(0)) do
+    for _, definition in ipairs(ts_locals.get_definitions(api.nvim_get_current_buf())) do
         if definition["function"] then
             functions = functions + 1
         elseif definition["type"] then
