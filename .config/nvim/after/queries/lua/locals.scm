@@ -5,3 +5,9 @@
       name: (identifier) @local.definition.function)
   (expression_list
     value: (function_definition))))
+
+(assignment_statement
+  (variable_list
+    name: (dot_index_expression) @local.definition.function)
+  (expression_list
+    value: (function_definition)))
