@@ -122,6 +122,7 @@ M.config = function()
             "latex",
             "lua",
             "luadoc",
+            "luap",
             "markdown",
             "markdown_inline",
             "printf",

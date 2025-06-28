@@ -2,11 +2,13 @@
 ---@type LazySpec
 local M = {
     "MagicDuck/grug-far.nvim",
-    cmd = "GrugFar",
 }
 
 ---@type grug.far.OptionsOverride
 M.opts = {
+    folding = {
+        enabled = false,
+    },
     helpLine = {
         enabled = false,
     },
@@ -14,9 +16,9 @@ M.opts = {
         enabled = false
     },
     resultLocation = {
-        showNumberLabel = false,
+        numberLabelFormat = " [%2d]",
     },
-    keymaps = { }
+    keymaps = {}
 }
 
 return M

@@ -195,7 +195,7 @@ local function get_cmd_and_cwd(bufname, opts)
         local addr, remote_path = bufname:match("//(.-)(/.*)")
         vim.list_extend(cmd, { "ssh", "-t", addr, "--", "cd", remote_path:sub(2, -1), ";", "exec", "${SHELL:-/bin/sh}" })
     elseif vim.startswith(bufname, "oil://") then
-        cwd = require("oil").get_current_dir()
+        cwd = assert(require("oil").get_current_dir())
     elseif opts.cwd then
         cwd = opts.cwd
     else
