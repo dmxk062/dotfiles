@@ -116,7 +116,6 @@ M.btypehighlights = {
     luaeval = "Scratch",
     oil = "Dir",
     reg = "Reg",
-    region = "Region",
     special = "Special",
     term = "Term",
 }
@@ -129,7 +128,6 @@ M.btypesymbols = {
     luaeval = "λ",
     oil = ":",
     reg = "#",
-    region = ">",
     special = "*",
     term = "!",
 }
@@ -628,27 +626,10 @@ M.highlight_size = function(bytes)
     end
 end
 
-M.format_size = function(bytes)
-    if bytes < 1024 then
-        return bytes .. "b"
-    end
-
-    local sizes = {
-        "b", "kb", "mb", "gb", "tb"
-    }
-
-    local i = 1
-    while bytes >= 1024 do
-        bytes = bytes / 1024
-        i = i + 1
-    end
-
-    return ("%.1f%s"):format(bytes, sizes[i])
-end
-
 --- Things other than byte sizes, e.g. kilo-lines
-M.format_count = function(count)
-    if count < 1000 then
+M.format_size = function(count, size)
+    size = size or 1000
+    if count < size then
         return tostring(count)
     end
 
@@ -657,8 +638,8 @@ M.format_count = function(count)
     }
 
     local i = 1
-    while count >= 1000 do
-        count = count / 1000
+    while count >= size do
+        count = count / size
         i = i + 1
     end
 

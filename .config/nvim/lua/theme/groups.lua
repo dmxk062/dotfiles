@@ -355,8 +355,6 @@ add_with_prefix(colorscheme, "Sl", {
     AList       = { bg = pal.bg1, fg = col.magenta },
     IGit        = { fg = col.green },
     AGit        = { bg = pal.bg1, fg = col.green },
-    IRegion     = { fg = col.magenta },
-    ARegion     = { bg = pal.bg1, fg = col.magenta },
     AEval       = { bg = pal.bg1, fg = col.light_blue },
     IEval       = { fg = col.light_blue },
 
@@ -377,18 +375,14 @@ add_with_prefix(colorscheme, "Sl", {
 
     Delim       = { fg = col.bright_gray },
 
-    DiffAdded   = { fg = col.green },
-    DiffChanged = { fg = col.yellow },
-    DiffRemoved = { fg = col.red },
-    GitHead     = { fg = col.light_blue },
-    GitHash     = { fg = col.pink },
-
     Words       = { fg = col.yellow },
     Chars       = { fg = col.green },
     Lines       = { fg = col.teal },
-    Bytes       = { fg = col.light_blue },
+    Bytes       = { fg = col.magenta },
 
     Typed       = { fg = pal.fg0 },
+    Macro       = { fg = col.yellow },
+    OnSearch    = { bg = pal.bg2, fg = col.yellow },
 
     ModeNormal  = { fg = col.teal },
     ModeInsert  = { fg = col.white },
