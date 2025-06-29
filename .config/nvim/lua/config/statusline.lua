@@ -345,11 +345,11 @@ local group = api.nvim_create_augroup("config.statusline", { clear = true })
 
 ---@param event string|string[]
 ---@param tbl vim.api.keyset.create_autocmd
-local redraw_on = function(event, tbl)
+local redraw_on = function(event, tbl, always)
     local fun = tbl.callback
     tbl.group = group
     tbl.callback = function(ev)
-        if ev.buf ~= current_buf then
+        if not always and ev.buf ~= current_buf then
             return
         end
         fun(ev)
@@ -374,8 +374,8 @@ redraw_on("ModeChanged", {
         redraw()
     end
 })
-redraw_on({ "BufEnter", "BufLeave", }, {
-    callback = vim.schedule_wrap(function(ev)
+redraw_on({ "BufEnter", "BufLeave", "CmdlineLeave" }, {
+    callback = vim.schedule_wrap(function()
         sections[indices.title] = update_title()
         sections[indices.git] = update_git()
         sections[indices.lsp] = update_lsp_servers()
@@ -397,6 +397,7 @@ redraw_on({ "TextChanged", "TextChangedI" }, {
         redraw()
     end
 })
+Events = {}
 redraw_on("OptionSet", {
     pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor", "filetype" },
     callback = function()
@@ -407,7 +408,7 @@ redraw_on("OptionSet", {
         sections[indices.filetype] = update_filetype()
         redraw()
     end
-})
+}, true)
 redraw_on({ "RecordingEnter", "RecordingLeave" }, {
     callback = function(ev)
         sections[indices.macro] = update_macro(ev.event)
