@@ -27,11 +27,49 @@ Actions to perform on cursors:
 - Align the text after/on cursors: -A
 }}} --]]
 
+---@param ctx mc.CursorContext
+---@param capture string
+---@param field string
+---@param range [integer, integer, integer, integer]
+local cursor_for_ts_node = function(ctx, capture, field, range)
+    local query = require("nvim-treesitter.query")
+    local matches = query.get_capture_matches_recursively(0, capture, "textobjects")
+    local main = ctx:mainCursor()
+
+    for _, match in pairs(matches) do
+        local node
+        if match[field] then
+            node = match[field].node
+        end
+        if not node then
+            goto continue
+        end
+        local srow, scol, erow, ecol = vim.treesitter.get_node_range(node)
+        if vim.treesitter._range.contains(range, { srow, scol, erow, ecol }) then
+            main:clone():setMode("v"):setVisual({ erow + 1, ecol }, { srow + 1, scol + 1 })
+        end
+
+        ::continue::
+    end
+
+    main:delete()
+end
+
+local map_select_operator = function(keys, capture, field, desc)
+    require("config.operators").map_function(keys, function(mode, region, extra, get, set)
+        require("multicursor-nvim").action(function(ctx)
+            cursor_for_ts_node(ctx, capture, field, { region[1][1] - 1, region[1][2], region[2][1], region[2][2] })
+        end)
+    end, { desc = desc })
+end
+
 function M.config()
     local mc = require("multicursor-nvim")
     mc.setup()
 
-    local map = require("config.utils").map
+    local utils = require("config.utils")
+    local map = utils.map
+    local action = utils.mode_action
     local operators = require("config.operators")
 
     map("n", "<esc>", function()
@@ -94,7 +132,7 @@ function M.config()
     end, { desc = "Cursor: New for symbol" })
 
     -- align cursors: all to same column
-    map({ "n", "x" }, "-a", function()
+    map(action, "-a", function()
         mc.action(function(ctx)
             local maincol = vim.fn.charcol(".")
             ctx:forEachCursor(function(cursor)
@@ -105,40 +143,47 @@ function M.config()
         end)
     end, { desc = "Cursor: Align column" })
 
-    local vinorm = { "n", "x" }
+    map(action, "-x", mc.deleteCursor, { desc = "Cursor: Delete current" })
+    map(action, "-j", mc.nextCursor, { desc = "Cursor: Next below" })
+    map(action, "-k", mc.prevCursor, { desc = "Cursor: Next above" })
+    map(action, "-$", mc.lastCursor, { desc = "Cursor: Last" })
+    map(action, "-0", mc.firstCursor, { desc = "Cursor: First" })
 
-    map(vinorm, "-x", mc.deleteCursor, { desc = "Cursor: Delete current" })
-    map(vinorm, "-j", mc.nextCursor, { desc = "Cursor: Next below" })
-    map(vinorm, "-k", mc.prevCursor, { desc = "Cursor: Next above" })
-    map(vinorm, "-$", mc.lastCursor, { desc = "Cursor: Last" })
-    map(vinorm, "-0", mc.firstCursor, { desc = "Cursor: First" })
-
-    map(vinorm, "-n", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
-    map(vinorm, "-p", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
-    map(vinorm, "-*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
+    map(action, "-n", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
+    map(action, "-p", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
+    map(action, "-*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
 
     -- really useful with syntactically aware textobjects:
     -- -wif puts a cursor on every match in a function
     -- -wi<space> in lua does the same for a block
-    map(vinorm, "-w", function()
+    map(action, "-w", function()
         ---@diagnostic disable-next-line: missing-fields
         mc.operator { motion = "iw" }
     end, { desc = "Cursor: New for word in" })
 
     -- allows for things that are more than one <word>, e.g. i.
-    map(vinorm, "-o", mc.operator, { desc = "Cursor: New for obj in" })
+    map(action, "-o", mc.operator, { desc = "Cursor: New for obj in" })
 
-    map(vinorm, "-u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
+    map(action, "-u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
 
     -- visual selections
-    map({ "x" }, "-s", mc.splitCursors, { desc = "Cursor: Split visual" })
-    map({ "x" }, "-m", mc.matchCursors, { desc = "Cursor: Match visual" })
-    map(vinorm, "-A", mc.alignCursors, { desc = "Cursor: Align content" })
+    map( "x" , "-s", mc.splitCursors, { desc = "Cursor: Split visual" })
+    map( "x" , "-m", mc.matchCursors, { desc = "Cursor: Match visual" })
+    map("x", "->", function() mc.transposeCursors(1) end, { desc = "Cursor: Rotate forwards"})
+    map("x", "-<", function() mc.transposeCursors(-1) end, { desc = "Cursor: Rotate backwards"})
+    map("x", "-l", function() mc.swapCursors(1) end, { desc = "Cursor: Swap forwards"})
+    map("x", "-h", function() mc.swapCursors(-1) end, { desc = "Cursor: Swap backwards"})
+    map(action, "-A", mc.alignCursors, { desc = "Cursor: Align content" })
 
     -- replace default I and A for visual mode
     map("x", "I", mc.insertVisual)
     map("x", "A", mc.appendVisual)
 
+    map_select_operator("-ff", "@function", "outer", "Cursor: Select functions")
+    map_select_operator("-fF", "@call", "inner", "Cursor: Select calls")
+    map_select_operator("-fa", "@parameter", "inner", "Cursor: Select arguments")
+    map_select_operator("-fv", "@assignment", "outer", "Cursor: Select variables")
+    map_select_operator("-fn", "@assignment", "lhs", "Cursor: Select names")
 
     mc.addKeymapLayer(function(set)
         set("n", "-i", function()
