@@ -83,6 +83,18 @@ function M.config()
         end
     end)
 
+    map(action, "-x", mc.deleteCursor, { desc = "Cursor: Delete current" })
+    map(action, "-u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
+    map(action, "-j", mc.nextCursor, { desc = "Cursor: Next below" })
+    map(action, "-k", mc.prevCursor, { desc = "Cursor: Next above" })
+    map(action, "-$", mc.lastCursor, { desc = "Cursor: Last" })
+    map(action, "-0", mc.firstCursor, { desc = "Cursor: First" })
+
+    -- Creating new cursors {{{
+    map(action, "-n", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
+    map(action, "-p", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
+    map(action, "-*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
+
     -- turns multiple cursors into another vim command more than a full mode
     -- for linewise mode or when spanning multiple lines: create one cursor for each line, at the same position as the original one
     -- for charwise mode on a single line: create a single cursor at the destination of the motion
@@ -104,32 +116,9 @@ function M.config()
         end
     end, { normal_only = true, no_repeated = true, desc = "Cursor: New for motion" })
 
-    map("x", "<M-c>", mc.visualToCursors, { desc = "Cursor: On each line" })
-
+    map("x", "--", mc.visualToCursors, { desc = "Cursor: On each line" })
     -- put one cursor at each current search result
     map("n", "-/", mc.searchAllAddCursors, { desc = "Cursor: New for /" })
-
-    require("config.lsp").lsp_map("n", "-s", function()
-        local fname = vim.api.nvim_buf_get_name(0)
-        local first = true
-        mc.action(function(ctx)
-            vim.lsp.buf.references(nil, {
-                on_list = function(res)
-                    for _, item in ipairs(res.items) do
-                        if item.filename == fname then
-                            if not first then
-                                local cursor = ctx:addCursor()
-                                cursor:setPos { item.lnum, item.col }
-                            else
-                                vim.api.nvim_win_set_cursor(0, { item.lnum, item.col - 1 })
-                                first = false
-                            end
-                        end
-                    end
-                end
-            })
-        end)
-    end, { desc = "Cursor: New for symbol" })
 
     -- align cursors: all to same column
     map(action, "-a", function()
@@ -143,47 +132,86 @@ function M.config()
         end)
     end, { desc = "Cursor: Align column" })
 
-    map(action, "-x", mc.deleteCursor, { desc = "Cursor: Delete current" })
-    map(action, "-j", mc.nextCursor, { desc = "Cursor: Next below" })
-    map(action, "-k", mc.prevCursor, { desc = "Cursor: Next above" })
-    map(action, "-$", mc.lastCursor, { desc = "Cursor: Last" })
-    map(action, "-0", mc.firstCursor, { desc = "Cursor: First" })
-
-    map(action, "-n", function() mc.matchAddCursor(1) end, { desc = "Cursor: New on next *" })
-    map(action, "-p", function() mc.matchAddCursor(-1) end, { desc = "Cursor: New on prev *" })
-    map(action, "-*", mc.matchAllAddCursors, { desc = "Cursor: New on all *" })
-
     -- really useful with syntactically aware textobjects:
-    -- -wif puts a cursor on every match in a function
-    -- -wi<space> in lua does the same for a block
+    -- `-wif` puts a cursor on every match in a function
+    -- `-wi<space>` in lua does the same for a block
+    -- this can be a real alternative to the lsp based one
     map(action, "-w", function()
         ---@diagnostic disable-next-line: missing-fields
-        mc.operator { motion = "iw" }
+        mc.operator { motion = "iw", visual = true }
     end, { desc = "Cursor: New for word in" })
 
     -- allows for things that are more than one <word>, e.g. i.
     map(action, "-o", mc.operator, { desc = "Cursor: New for obj in" })
 
-    map(action, "-u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
-
-    -- visual selections
-    map( "x" , "-s", mc.splitCursors, { desc = "Cursor: Split visual" })
-    map( "x" , "-m", mc.matchCursors, { desc = "Cursor: Match visual" })
-    map("x", "->", function() mc.transposeCursors(1) end, { desc = "Cursor: Rotate forwards"})
-    map("x", "-<", function() mc.transposeCursors(-1) end, { desc = "Cursor: Rotate backwards"})
-    map("x", "-l", function() mc.swapCursors(1) end, { desc = "Cursor: Swap forwards"})
-    map("x", "-h", function() mc.swapCursors(-1) end, { desc = "Cursor: Swap backwards"})
-    map(action, "-A", mc.alignCursors, { desc = "Cursor: Align content" })
-
-    -- replace default I and A for visual mode
-    map("x", "I", mc.insertVisual)
-    map("x", "A", mc.appendVisual)
-
+    -- treesitter aware, put a cursor on each capture with the field that is *fully* inside the motion:
+    -- `-faa` to match all function arguments on the current line
+    -- `-faiF` to match all arguments to a function call
+    -- `-fvip` to match all assignments in the current paragraph
     map_select_operator("-ff", "@function", "outer", "Cursor: Select functions")
     map_select_operator("-fF", "@call", "inner", "Cursor: Select calls")
     map_select_operator("-fa", "@parameter", "inner", "Cursor: Select arguments")
     map_select_operator("-fv", "@assignment", "outer", "Cursor: Select variables")
     map_select_operator("-fn", "@assignment", "lhs", "Cursor: Select names")
+
+    -- a cursor on/selecting each reference of the symbol under the cursor
+    require("config.lsp").lsp_map("n", "-r", function()
+        local fname = vim.api.nvim_buf_get_name(0)
+        vim.lsp.buf.references(nil, {
+            on_list = function(res)
+                mc.action(function(ctx)
+                    local main = ctx:mainCursor():setMode("v")
+                    for _, item in ipairs(res.items) do
+                        if item.filename == fname then
+                            main:clone():setMode("v"):setVisual({ item.end_lnum, item.end_col - 1 },
+                                { item.lnum, item.col })
+                        end
+                    end
+                    main:delete()
+                end)
+            end
+        })
+    end, { desc = "Cursor: Select references" })
+    -- }}}
+
+    -- Visual Selections {{{
+    map("x", "-s", mc.splitCursors, { desc = "Cursor: Split visual" })
+    map("x", "-m", mc.matchCursors, { desc = "Cursor: Match visual" })
+
+    map("x", "-?", function()
+        local filter = vim.fn.input {
+            prompt = "Regex: ",
+        }
+
+        local inverse = false
+        if filter:sub(1,1) == "!" then
+            inverse = true
+            filter = filter:sub(2)
+        end
+
+        local re = vim.regex(filter)
+
+        mc.action(function(ctx)
+            ctx:forEachCursor(function(cursor)
+                local selection = table.concat(cursor:getVisualLines(), "\n")
+                local matches = re:match_str(selection) ~= nil
+                if (inverse and matches) or (not inverse and not matches) then
+                    cursor:delete()
+                end
+            end)
+        end)
+    end, { desc = "Cursor: Filter by regex" })
+
+    map("x", "->", function() mc.transposeCursors(1) end, { desc = "Cursor: Rotate forwards" })
+    map("x", "-<", function() mc.transposeCursors(-1) end, { desc = "Cursor: Rotate backwards" })
+    map("x", "-l", function() mc.swapCursors(1) end, { desc = "Cursor: Swap forwards" })
+    map("x", "-h", function() mc.swapCursors(-1) end, { desc = "Cursor: Swap backwards" })
+    map(action, "-A", mc.alignCursors, { desc = "Cursor: Align content" })
+    -- }}}
+
+    -- replace default I and A for visual mode
+    map("x", "I", mc.insertVisual)
+    map("x", "A", mc.appendVisual)
 
     mc.addKeymapLayer(function(set)
         set("n", "-i", function()
