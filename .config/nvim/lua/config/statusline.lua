@@ -8,6 +8,7 @@ local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
 -- my own statusline
 -- this should be faster than lualine
 -- generally, only redraw things using autocmds unless there isn't a good one for the event
+-- also, schedule autocommand based redraws
 
 -- Utility functions {{{
 local function esc(str)
@@ -206,12 +207,12 @@ end
 -- Searchcount {{{
 local update_searchcount = function()
     if vim.v.hlsearch == 0 then
-        return ""
+        return nil
     end
 
     local ok, res = pcall(fn.searchcount, { maxcount = 999, timeout = 500 })
     if not ok or next(res) == nil then
-        return ""
+        return nil
     end
 
     if res.total == 0 then
@@ -330,82 +331,134 @@ local indices = {
     lsp         = 11,
 }
 
+local last_update = 0
 local redraw = function()
-    vim.o.statusline = table.concat(sections)
+    local now = vim.uv.now()
+    if now - last_update > 100 then
+        vim.o.statusline = table.concat(sections)
+    end
 end
 
 -- Autocommands {{{
-utils.autogroup("config.statusline", {
-    ModeChanged = function(ev)
+local current_buf = nil
+local group = api.nvim_create_augroup("config.statusline", { clear = true })
+
+---@param event string|string[]
+---@param tbl vim.api.keyset.create_autocmd
+local redraw_on = function(event, tbl)
+    local fun = tbl.callback
+    tbl.group = group
+    tbl.callback = function(ev)
+        if ev.buf ~= current_buf then
+            return
+        end
+        fun(ev)
+    end
+    api.nvim_create_autocmd(event, tbl)
+end
+
+api.nvim_create_autocmd("BufEnter", {
+    group = group,
+    callback = function(ev)
+        current_buf = ev.buf
+    end
+})
+
+redraw_on("ModeChanged", {
+    callback = function(ev)
         -- stop flickering
         if vim.bo[ev.buf].filetype == "TelescopePrompt" then
             return
         end
         sections[indices.mode] = update_mode()
         redraw()
-    end,
-    [{ "BufEnter", "BufLeave", "WinEnter", "BufModifiedSet", "FileChangedRO", "TermRequest" }] =
-        vim.schedule_wrap(function()
-            sections[indices.title] = update_title()
-            sections[indices.git] = update_git()
-            sections[indices.lsp] = update_lsp_servers()
-            redraw()
-        end),
-
-    [{ "BufEnter", "FileType", "BufLeave" }] =
-        vim.schedule_wrap(function()
-            -- prevent completion etc
-            local mode = api.nvim_get_mode().mode:sub(1, 1)
-            if not (mode == "n" or mode == "c") then
-                return
-            end
-            sections[indices.filetype] = update_filetype()
-            redraw()
-        end),
-
-    OptionSet = {
-        pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor" },
-        callback = function()
-            local mode = api.nvim_get_mode().mode:sub(1, 1)
-            if not (mode == "n" or mode == "c") then
-                return
-            end
-            sections[indices.filetype] = update_filetype()
-            redraw()
+    end
+})
+redraw_on({ "BufEnter", "BufLeave", }, {
+    callback = vim.schedule_wrap(function(ev)
+        sections[indices.title] = update_title()
+        sections[indices.git] = update_git()
+        sections[indices.lsp] = update_lsp_servers()
+        sections[indices.diagnostics] = update_diagnostics()
+        sections[indices.filetype] = update_filetype()
+        sections[indices.words] = update_words()
+        redraw()
+    end)
+})
+redraw_on({ "BufModifiedSet", "FileChangedRO", "TermRequest" }, {
+    callback = function()
+        sections[indices.title] = update_title()
+        redraw()
+    end
+})
+redraw_on({ "TextChanged", "TextChangedI" }, {
+    callback = function()
+        sections[indices.words] = update_words()
+        redraw()
+    end
+})
+redraw_on("OptionSet", {
+    pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor", "filetype" },
+    callback = function()
+        local mode = api.nvim_get_mode().mode:sub(1, 1)
+        if not (mode == "n" or mode == "c") then
+            return
         end
-    },
+        sections[indices.filetype] = update_filetype()
+        redraw()
+    end
+})
+redraw_on({ "RecordingEnter", "RecordingLeave" }, {
+    callback = function(ev)
+        sections[indices.macro] = update_macro(ev.event)
+        redraw()
+    end
+})
+redraw_on({ "LspAttach", "LspDetach" }, {
+    callback = vim.schedule_wrap(function()
+        sections[indices.lsp] = update_lsp_servers()
+        redraw()
+    end)
+})
+redraw_on("User", {
 
-    [{ "RecordingEnter", "RecordingLeave" }] =
-        function(ev)
-            sections[indices.macro] = update_macro(ev.event)
-            redraw()
-        end,
+    pattern = { "FugitiveChanged", "FugitiveObject", "GitSignsUpdate" },
+    callback = vim.schedule_wrap(function()
+        sections[indices.git] = update_git()
+        redraw()
+    end)
+})
 
-    [{ "LspAttach", "LspDetach" }] =
-        vim.schedule_wrap(function()
-            sections[indices.lsp] = update_lsp_servers()
-            redraw()
-        end),
-
-    User = {
-        pattern = { "FugitiveChanged", "FugitiveObject", "GitSignsUpdate" },
-        callback = vim.schedule_wrap(function()
-            sections[indices.git] = update_git()
-            redraw()
-        end)
-    },
+redraw_on("DiagnosticChanged", {
+    callback = function()
+        sections[indices.diagnostics] = update_diagnostics()
+        redraw()
+    end
 })
 -- }}}
 
--- only updates in normal mode
 local update_timer = assert(vim.uv.new_timer())
-update_timer:start(0, 100, vim.schedule_wrap(function()
-    if api.nvim_get_mode().mode:sub(1, 1) == "n" then
-        sections[indices.diagnostics] = update_diagnostics()
+local last_hlsearch
+update_timer:start(0, 200, vim.schedule_wrap(function()
+    local mode = api.nvim_get_mode().mode:sub(1, 1)
+    local should_redraw = false
+    if mode == "v" or mode == "V" or mode == "\x16" then
+        -- the selection might have changed
+        sections[indices.words] = update_words()
+        should_redraw = true
     end
-    sections[indices.words] = update_words()
-    sections[indices.search] = update_searchcount()
-    redraw()
+
+    local new = update_searchcount()
+    if new or last_hlsearch then
+        sections[indices.search] = new or ""
+        -- redraw if the state changed or hlsearch is active
+        should_redraw = true
+    end
+    last_hlsearch = new
+
+    if should_redraw then
+        redraw()
+    end
 end)
 )
 
