@@ -83,6 +83,8 @@ function M.config()
         end
     end)
 
+    map("n", "-", "<nop>")
+
     map(action, "-x", mc.deleteCursor, { desc = "Cursor: Delete current" })
     map(action, "-u", mc.restoreCursors, { desc = "Cursor: Undo clear" })
     map(action, "-j", mc.nextCursor, { desc = "Cursor: Next below" })
@@ -184,7 +186,7 @@ function M.config()
         }
 
         local inverse = false
-        if filter:sub(1,1) == "!" then
+        if filter:sub(1, 1) == "!" then
             inverse = true
             filter = filter:sub(2)
         end
