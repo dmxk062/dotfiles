@@ -427,6 +427,9 @@ map("n", "<space>ce", "<cmd>Spell set en<cr>", { desc = "English spelling" })
 map("n", "<space>cl", "<cmd>set list!<cr>", { desc = "Toggle 'list'" })
 map("n", "<space>cw", "<cmd>set wrap!<cr>", { desc = "Toggle 'wrap'" })
 
+map("n", "<space>cW", function()
+    vim.o.textwidth = vim.v.count * 10
+end)
 map("n", "<space>c|", function()
     if vim.o.colorcolumn == "" then
         if vim.o.textwidth ~= 0 then

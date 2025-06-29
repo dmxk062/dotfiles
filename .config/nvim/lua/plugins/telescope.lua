@@ -7,13 +7,13 @@ local builtin_picker_maps = {
     grep_string = "<space>*",
     help_tags = "<space>h",
     live_grep = "<space>/",
-    lsp_document_symbols = "<space>v",
-    lsp_workspace_symbols = "<space>V",
+    lsp_document_symbols = "<space>s",
+    lsp_workspace_symbols = "<space>S",
     man_pages = "<space>H",
     oldfiles = "<space>o",
     registers = "\"<space>",
     search_history = "<space>?",
-    treesitter = "<space>s",
+    treesitter = "<space>v",
 
     -- git ones, under the same prefix as the fugitive & gitsigns mappings
     git_files = "<space>gf",

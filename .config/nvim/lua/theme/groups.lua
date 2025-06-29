@@ -22,7 +22,7 @@ local colorscheme = {
 
     Search                      = { bg = pal.bg1 },
     CurSearch                   = { bg = pal.bg3 },
-    IncSearch                   = { bg = pal.bg3 },
+    IncSearch                   = { bg = col.yellow, fg = pal.inverted },
     Substitute                  = { bg = col.yellow, fg = pal.inverted },
     LeapMatch                   = { underline = true, fg = col.yellow },
     LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
@@ -59,7 +59,7 @@ local colorscheme = {
     Cursor                      = { reverse = true },
     CursorLine                  = { bg = pal.bg1 },
     CursorColumn                = { bg = pal.bg1 },
-    ColorColumn                 = { bg = pal.bg1, blend = 90 },
+    ColorColumn                 = { bg = pal.bg01, blend = 90 },
     Tabline                     = {},
     StatusLine                  = { bg = pal.bg01 },
     Folded                      = {},
