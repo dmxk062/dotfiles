@@ -19,6 +19,10 @@ M.init = function()
         xml = { tagnameonly = 1 },
         html = { tagnameonly = 1 },
     }
+
+    vim.g.matchup_matchparen_offscreen = {
+        method = "none", -- treesitter context usually shows it
+    }
 end
 
 return M
