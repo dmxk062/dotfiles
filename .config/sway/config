@@ -64,10 +64,11 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 # autotiling layout
 exec_always pkill -f "python.*layout.py"
-exec_always $sc/layout.py
+exec_always sleep 1 && $sc/layout.py
 
+# directional resizing
 exec_always pkill -f "python.*smart_resize.py"
-exec_always $sc/smart_resize.py
+exec_always sleep 1 && $sc/smart_resize.py
 
 # handle effects for rofi in the compositor, much nicer and more consistent
 layer_effects "rofi" shadows enable; corner_radius 18; blur disable
