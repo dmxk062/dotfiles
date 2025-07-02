@@ -12,7 +12,7 @@
             :onrightclick "${EWW_CMD} update vpn-revealed=${!vpn-revealed}"
             :timeout "16s"
             "${vpn.active ? "󰒄" : "󰲝"}   ${vpn.active ? vpn.name : "No VPN"}")
-        (button 
+        (button
             :onclick "${EWW_CMD} update vpn-revealed=${!vpn-revealed}"
             {vpn-revealed ? "" : "" })))
 
@@ -22,16 +22,17 @@
             (button :class "sbutton"
                 :onclick "wl-copy '${public-ip.ip}'"
                 :tooltip "${public-ip}"
-                "󰇧   public: ${public-ip.ip}, ${public-ip.city} ${public-ip.country}"))
+                (label :limit-width 32
+                    :text "󰇧   public: ${public-ip.ip}, ${public-ip.city} ${public-ip.country}" )))
         (box :space-evenly false :orientation "v" :halign "start" (for local in local-ips
             (box :space-evenly false :hexpand true (button :class "sbutton"
                 :onclick "wl-copy '${local.ip}'"
                 :tooltip "${local.dev}: ${local.ip} via ${local.via}"
                 "󰛳   ${local.dev}: ${local.ip}"))))
         (scroll :style "min-height: 14rem; margin-top: .6rem;"
-            :vscroll true :hexpand true 
+            :vscroll true :hexpand true
             (box :orientation "v" :hexpand true :space-evenly false
-                (for vpn-con in vpns 
+                (for vpn-con in vpns
                     (box :hexpand true :space-evenly false :halign "start"
                         (box :space-evenly false :style "margin-left: 1rem; padding: .2rem;"
                             (checkbox :checked {vpn-con.uuid == vpn.uuid} :class "select"
