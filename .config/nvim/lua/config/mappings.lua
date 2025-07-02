@@ -417,6 +417,10 @@ end)
 map("o", "<C-x>", function()
     modify_operator_count(-1)
 end)
+
+map("o", "*", function()
+    return "*N" .. vim.v.operator .. "gn"
+end, { expr = true })
 -- }}}
 
 -- Set options {{{
