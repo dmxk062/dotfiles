@@ -421,6 +421,22 @@ end)
 map("o", "*", function()
     return "\x1b*N" .. vim.v.operator .. "gn"
 end, { expr = true })
+
+-- like (now-default) []<space>, but for characters inside a line, e.g. to separate words
+local insert_spaces = function(direction)
+    local spaces = (" "):rep(vim.v.count1)
+    local cursor = api.nvim_win_get_cursor(0)
+    local row = cursor[1] - 1
+    local col = direction < 0 and cursor[2] or cursor[2] + 1
+    api.nvim_buf_set_text(0, row, col, row, col, { spaces })
+end
+
+map("n", "<<space>", function()
+    insert_spaces(-1)
+end)
+map("n", "><space>", function()
+    insert_spaces(1)
+end)
 -- }}}
 
 -- Set options {{{
