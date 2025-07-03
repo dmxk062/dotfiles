@@ -6,7 +6,6 @@ This is much nicer while also supporting more node types
 ---@type LazySpec
 local M = {
     "andymass/vim-matchup",
-    event = { "BufReadPost", "BufNewFile", "FileType" },
 }
 
 M.init = function()
