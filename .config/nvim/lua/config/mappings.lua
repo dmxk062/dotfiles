@@ -419,7 +419,7 @@ map("o", "<C-x>", function()
 end)
 
 map("o", "*", function()
-    return "*N" .. vim.v.operator .. "gn"
+    return "\x1b*N" .. vim.v.operator .. "gn"
 end, { expr = true })
 -- }}}
 
