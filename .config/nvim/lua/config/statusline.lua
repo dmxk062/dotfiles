@@ -58,14 +58,16 @@ local no_showcmd_modes = {
 }
 
 local function update_mode()
-    local has_multicursor = require("multicursor-nvim").hasCursors()
+    local mc = require("multicursor-nvim")
+    local has_multicursor = mc.hasCursors()
+
     local mode = api.nvim_get_mode().mode
     local short = mode:sub(1, 1)
     local hl = mode_to_hl_group[short]
 
     return string.format("%%#SlMode%s#%-2s%s",
         hl,
-        (has_multicursor and "C-" or "") .. (mode_to_name[mode] or short),
+        (has_multicursor and mc.numCursors() or "") .. (mode_to_name[mode] or short),
         (no_showcmd_modes[short] and "" or "%#SlTyped#%-5(%S%)")
     )
 end
@@ -352,7 +354,7 @@ local redraw_on = function(event, tbl, always)
         if not always and ev.buf ~= current_buf then
             return
         end
-        fun(ev)
+        fun --[[@as function]](ev)
     end
     api.nvim_create_autocmd(event, tbl)
 end
