@@ -162,7 +162,7 @@ function M.config()
         vim.lsp.buf.references(nil, {
             on_list = function(res)
                 mc.action(function(ctx)
-                    local main = ctx:mainCursor():setMode("v")
+                    local main = ctx:mainCursor()
                     for _, item in ipairs(res.items) do
                         if item.filename == fname then
                             main:clone():setMode("v"):setVisual({ item.end_lnum, item.end_col - 1 },
@@ -218,7 +218,7 @@ function M.config()
     mc.addKeymapLayer(function(set)
         set("n", "-i", function()
             mc.action(function(ctx)
-                ctx:forEachCursor(function(cursor, i, t)
+                ctx:forEachCursor(function(cursor, i)
                     cursor:feedkeys(("i%d\x1b"):format(i), {
                         remap = false
                     })

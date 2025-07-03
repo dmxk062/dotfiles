@@ -72,10 +72,10 @@ local map_on_git_buffer = function(buf)
 
     utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = buf })
 
-    map(utils.mode_action, "y", "<cmd>GitLink browse<cr>", { desc = "Git: Copy URL"})
-    map(utils.mode_action, "Y", "<cmd>GitLink blame<cr>", { desc = "Git: Copy Blame URL"})
-    map(utils.mode_action, "x", "<cmd>GitLink! browse<cr>", { desc = "Git: Open URL"})
-    map(utils.mode_action, "X", "<cmd>GitLink! blame<cr>", { desc = "Git: Open Blame URL"})
+    map(utils.mode_action, "y", "<cmd>GitLink browse<cr>", { desc = "Git: Copy URL" })
+    map(utils.mode_action, "Y", "<cmd>GitLink blame<cr>", { desc = "Git: Copy Blame URL" })
+    map(utils.mode_action, "x", "<cmd>GitLink! browse<cr>", { desc = "Git: Open URL" })
+    map(utils.mode_action, "X", "<cmd>GitLink! blame<cr>", { desc = "Git: Open Blame URL" })
 end
 
 -- gitsigns {{{
