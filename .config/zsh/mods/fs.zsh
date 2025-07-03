@@ -7,7 +7,6 @@ if [[ "$1" == "unload" ]]; then
 
     unfunction rgf mcd rp bn rcd \
         pwf \
-        r .. \
         root
 
     unalias md ft bft zcp zln

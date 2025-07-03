@@ -45,12 +45,17 @@ function __complete_galias {
 
 #completion opts
 zstyle ':completion:*' completer __complete_galias _complete _expand _approximate
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} "ma=100;94"
+
+# By default, use LS_COLORS
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS};ma=100;94"
+# For options, 
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' menu select=30
-zstyle ':completion:*' select-prompt"%B%F{cyan}%S %l%s%f%b"
-zstyle ':completion:*' list-prompt "%B%F{cyan}%S %l%s%f%b"
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt"%F{cyan}%l l%F{8} -m%F{yellow}%m m"
+zstyle ':completion:*' list-prompt "%F{cyan}%l l%F{8} - %F{yellow}%m m"
 zstyle ':completion:*' verbose false
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '%F{yellow}= %d%f'
 zstyle ':completion:*:manuals'    separate-sections true
 zstyle ':completion:*:manuals:*'  insert-sections   true
 
