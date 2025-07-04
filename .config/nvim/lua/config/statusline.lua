@@ -1,4 +1,3 @@
-local M = {}
 local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
@@ -399,7 +398,7 @@ redraw_on({ "TextChanged", "TextChangedI" }, {
         redraw()
     end
 })
-Events = {}
+
 redraw_on("OptionSet", {
     pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor", "filetype" },
     callback = function()
@@ -485,6 +484,3 @@ sections = {
 
 vim.o.laststatus = 3
 vim.o.showcmdloc = "statusline"
-redraw()
-
-return M
