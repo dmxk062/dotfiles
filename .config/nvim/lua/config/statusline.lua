@@ -1,4 +1,3 @@
-local M = {}
 local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
