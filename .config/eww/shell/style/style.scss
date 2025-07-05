@@ -460,3 +460,12 @@ check {
     margin-right: 2rem;
     min-height: 2px;
 }
+
+.scrollbar slider {
+    min-height: .2rem;
+    border-radius: 12px;
+    background-color: rgba($fg0, 0.5);
+    &:hover {
+        background-color: rgba($fg2, 0.9);
+    }
+}
