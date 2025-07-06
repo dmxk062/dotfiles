@@ -178,7 +178,7 @@
                 (button :class "sbutton" 
                     :timeout "60s"
                     :tooltip "${weather-city}"
-                    :onclick `${EWW_CMD} update weather-city=$(zenity --title=weather --entry --text="Chose Location" --entry-text=Graz) && ${EWW_CMD} poll weather`
+                    :onclick `${EWW_CMD} update weather-city=$(zenity --title=weather --entry --text="Chose Location" --entry-text=${weather-city} || echo ${weather-city}) && ${EWW_CMD} poll weather`
                     "")))
        (scroll :class "scrollbar" :hexpand true :style "min-height: 3.3rem;" :vscroll false (box :space-evenly false
             (for hour in {weather.weather[0].hourly}
