@@ -6,16 +6,17 @@
   (#eq? @punctuation.delimiter "--"))
 
 ; Highlight associative array declarations
-; TODO: highlight simple forms, e.g.
-; declare -A array=(
-;   [val]=1
-; )
 (array
-  (concatenation 
+  (concatenation
     (word) @punctuation.delimiter
     [ (string) (number) ((word) @property) ]
     (word) @punctuation.delimiter
     (word) @operator
-  (#lua-match? @operator "^=")
-  (#jhk-set-length! @operator 1)
-  (#any-of? @punctuation.delimiter "]" "[")))
+    (#lua-match? @operator "^=")
+    (#jhk-set-length! @operator 1)
+    (#any-of? @punctuation.delimiter "]" "[")))
+
+; make bash "keywords" behave like other languages
+((command
+   name: (command_name (word)) @keyword.return
+   (#any-of? @keyword.return "return" "exit" "break")))
