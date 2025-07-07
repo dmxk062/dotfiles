@@ -375,6 +375,13 @@ redraw_on("ModeChanged", {
         redraw()
     end
 })
+redraw_on("ModeChanged", {
+    pattern = "v:*,V:*,\x16:*",
+    callback = function()
+        sections[indices.words]  = update_words()
+        redraw()
+    end
+})
 redraw_on({ "BufEnter", "BufLeave", "CmdlineLeave" }, {
     callback = vim.schedule_wrap(function()
         sections[indices.title] = update_title()
@@ -423,7 +430,6 @@ redraw_on({ "LspAttach", "LspDetach" }, {
     end)
 })
 redraw_on("User", {
-
     pattern = { "FugitiveChanged", "FugitiveObject", "GitSignsUpdate" },
     callback = vim.schedule_wrap(function()
         sections[indices.git] = update_git()
@@ -475,7 +481,7 @@ sections = {
     "",                            -- diagnostics
     "",                            -- searchcount
 
-    delim .. "%*%P %3l:%-3c%= %<", -- center: cursor position
+    delim .. "%*%P %3l,%-3c%= %<", -- center: cursor position
     "",                            -- counts
     "",                            -- filetype
     "",                            -- attached LSPs
