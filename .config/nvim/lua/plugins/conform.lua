@@ -23,6 +23,7 @@ M.opts = {
         go   = { "gofmt" },
         json = { "jq" },
         sh   = { "shfmt" },
+        toml = { "taplo" },
         xml  = { "xmllint" },
         _    = { "trim_whitespace" },
     },
@@ -33,7 +34,7 @@ M.opts = {
         jq = {
             inherit = true,
             -- make jq respect shiftwidth
-            append_args = function(self, ctx)
+            append_args = function(_, ctx)
                 if vim.bo[ctx.buf].expandtab then
                     local width = ctx.shiftwidth
                     if width > 7 then
@@ -46,9 +47,22 @@ M.opts = {
                 end
             end
         },
+        taplo = {
+            inherit = true,
+            append_args = function(_, ctx)
+                local indent
+                if vim.bo[ctx.buf].expandtab then
+                    indent = (" "):rep(ctx.shiftwidth)
+                else
+                    indent = "\t"
+                end
+
+                return { "-o", "indent_string=" .. indent }
+            end
+        },
         xmllint = {
             inherit = true,
-            env = function(self, ctx)
+            env = function(_, ctx)
                 if vim.bo[ctx.buf].expandtab then
                     return {
                         XMLLINT_INDENT = (" "):rep(ctx.shiftwidth)
