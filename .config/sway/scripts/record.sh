@@ -34,10 +34,10 @@ wait $pid
 eww -c "$XDG_CONFIG_HOME/eww/shell/" update recording=false recording-info='{}'
 
 CACHEFILE="$XDG_CACHE_HOME/.thumb_$EPOCHSECONDS"
-ffmpegthumbnailer -m -i "$path" -o "$CACHEFILE"
+ffmpegthumbnailer -s 512 -m -i "$path" -o "$CACHEFILE"
 reply="$(
-    notify-send "Finished recording video" "$path" \
-        -i "$CACHEFILE" \
+    notify-send "Finished recording video" -i screen-recorder \
+        "<img src=\"$CACHEFILE\" alt=\"Screenshot\">"\
         --action=open="Open" \
         --action=del="Delete" \
         --action=copy="Copy"

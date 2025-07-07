@@ -15,7 +15,7 @@ function notify {
         disown
         message="Copied to clipboard"
     fi
-    response="$(notify-send "$message" -c "screenshot" "$image_format" \
+    response="$(notify-send "$message" -c "screenshot" "$image_format" -i accessories-screenshot \
         --action=open="Open" \
         --action=edit="Edit" \
         --action=del="Delete")"
