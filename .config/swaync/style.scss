@@ -109,7 +109,7 @@ window {
         margin-top: 0.5rem;
         margin-left: 1rem;
         margin-right: 1rem;
-        
+
     }
     .body-image {
         color: $fg0;
@@ -259,6 +259,7 @@ window {
 
     }
     .notification {
+        min-height: 4rem;
     }
 }
 
