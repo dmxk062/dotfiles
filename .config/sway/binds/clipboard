@@ -10,6 +10,8 @@ mode "clipboard" {
     bindsym Mod1+C exec wl-copy -p ""; mode "default"
     bindsym P exec $sc/print_clipboard.sh
     bindsym Mod1+P exec $sc/print_clipboard.sh -p
+    bindsym T exec $sc/translate.sh; mode "default"
+    bindsym Mod1+T exec $sc/translate.sh -p; mode "default"
 }
 
 bindsym $mod+Y mode "clipboard"

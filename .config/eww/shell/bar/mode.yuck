@@ -53,6 +53,7 @@
     {"keys": "P", "action": "Print"},
     {"keys": "Y", "action": "Copy other"},
     {"keys": "E", "action": "Edit"},
+    {"keys": "T", "action": "Translate"},
     {"keys": "C", "action": "Clear"}
 ]
 }')

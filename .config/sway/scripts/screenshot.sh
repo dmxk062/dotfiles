@@ -6,23 +6,23 @@ if [[ ! -d "$CACHEDIR" ]]; then
     mkdir "$CACHEDIR"
 fi
 
-
 function notify {
     local image_format
     printf -v image_format '<img src="%s" alt="Screenshot">' "$2"
     message="Saved screenshot"
     if [[ "$1" == "clip" ]]; then
-	wl-copy < "$REPLY" & disown
-	message="Copied to clipboard"
+        wl-copy <"$REPLY" &
+        disown
+        message="Copied to clipboard"
     fi
     response="$(notify-send "$message" -c "screenshot" "$image_format" \
-	--action=open="Open" \
-	--action=edit="Edit" \
-	--action=del="Delete")"
-    case "$response" in 
-	open) xdg-open "$2" ;;
-	del) rm "$2";;
-	edit ) swappy -f "$2" -o "$2";;
+        --action=open="Open" \
+        --action=edit="Edit" \
+        --action=del="Delete")"
+    case "$response" in
+    open) xdg-open "$2" ;;
+    del) rm "$2" ;;
+    edit) swappy -f "$2" -o "$2" ;;
     esac
 }
 
@@ -40,7 +40,7 @@ function screen {
     screen="$(swaymsg -t get_outputs | jq -r '.[]|select(.focused).name')"
     eval create_"$1"
     if ! grim -o "$screen" "$REPLY"; then
-	exit
+        exit
     fi
     notify "$2" "$REPLY"
 }
@@ -50,7 +50,7 @@ function region {
     eval create_"$1"
     sleep 0.1
     if ! grim -g "$region" "$REPLY"; then
-	exit
+        exit
     fi
     notify "$2" "$REPLY"
 }
@@ -61,19 +61,19 @@ function window {
 	    |"\(.x),\(.y) \(.width)x\(.height)"')"
     eval create_"$1"
     if ! grim -g "$window" "$REPLY"; then
-	exit
+        exit
     fi
     notify "$2" "$REPLY"
 }
 
 case "$1" in
-    window)
-	window "$2" "$3"
-	;;
-    region)
-	region "$2" "$3"
-	;;
-    screen)
-	screen "$2" "$3"
-	;;
+window)
+    window "$2" "$3"
+    ;;
+region)
+    region "$2" "$3"
+    ;;
+screen)
+    screen "$2" "$3"
+    ;;
 esac
