@@ -220,9 +220,10 @@ local update_searchcount = function()
         return delim .. "0 matches"
     end
 
-    return ("%s%s%d%%* of %d"):format(delim,
+    return ("%s%s%s%%* of %s%d"):format(delim,
         res.exact_match == 1 and "%#SlOnSearch#" or "",
-        res.current,
+        res.current > 999 and "?" or res.current,
+        res.incomplete == 2 and ">" or "",
         res.total
     )
 end
@@ -241,6 +242,7 @@ local function update_words()
     local out = {}
 
     local ts_locals = require("nvim-treesitter.locals")
+    -- TODO: make these exclusive to the visual selection too
     local functions, types = 0, 0
     for _, definition in ipairs(ts_locals.get_definitions(api.nvim_get_current_buf())) do
         if definition["function"] then

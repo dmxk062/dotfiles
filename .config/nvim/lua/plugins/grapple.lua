@@ -64,21 +64,21 @@ local colorized_display = function(entry, content)
         return
     end
 
-    local tail, full, hl
+    local tail, parent, hl
     if is_dir then
         tail = vim.fs.basename(relative) .. "/"
-        full = relative
+        parent = relative
         hl = "Directory"
     else
         tail = vim.fs.basename(relative)
-        full = vim.fs.dirname(relative)
+        parent = vim.fs.dirname(relative)
         hl = require("config.utils").highlight_fname(name)
     end
 
     local marks = {}
 
     local virt_text = {
-        { full, "NonText" },
+        { parent, "NonText" },
     }
 
     table.insert(marks, {
@@ -94,16 +94,18 @@ local colorized_display = function(entry, content)
     }
 end
 
+---@type grapple.options
 local opts = {
     scope = "lsp",
     icons = false,
     win_opts = {
         width = 48,
-        height = 0.3,
+        height = 20,
         row = 0.5,
         col = 0.5,
 
         border = "rounded",
+        relative = "editor",
         footer = "",
     },
     tag_hook = on_window_open,

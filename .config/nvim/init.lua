@@ -27,7 +27,8 @@ vim.api.nvim_create_autocmd("StdinReadPre", {
 local opt = vim.opt
 local o = vim.o
 
-vim.g.localleader = "\\"
+vim.g.mapleader = "\\"
+vim.g.maplocalleader = "\\"
 
 -- Basic options {{{
 o.cursorline = true

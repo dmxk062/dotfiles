@@ -21,12 +21,6 @@ M.config = function()
             click = "v:lua.ScSa",
         },
         {
-            sign = {
-                namespace = { ".*" },
-                auto = true
-            }
-        },
-        {
             text = {
                 builtin.lnumfunc,
                 " "
@@ -36,6 +30,13 @@ M.config = function()
             },
             click = "v:lua.ScLa",
         },
+        {
+            -- for qf list
+            sign = {
+                namespace = { "quicker.*" },
+                auto = true,
+            }
+        }
     }
     require("statuscol").setup {
         ft_ignore = {

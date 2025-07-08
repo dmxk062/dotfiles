@@ -21,8 +21,7 @@ local fn = vim.fn
 local api = vim.api
 
 local download_spellfile = function(lang)
-    -- TODO: handle other encodings
-    -- but tbh, utf-8 is the only real modern encoding
+    -- utf-8 is the only real modern encoding
     local name = lang .. ".utf-8"
 
     local spl = name .. ".spl"
