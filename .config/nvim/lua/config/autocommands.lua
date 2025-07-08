@@ -20,7 +20,7 @@ change line number based on mode:
 - normal mode: keep relative motions fast
 ]]
 
--- debounce cmdline enter events to make sure we dont have flickering for non user cmdline use
+-- debounce cmdline enter events to make sure we don't have flickering for non user cmdline use
 -- e.g. mappings using : instead of <cmd>
 local cmdline_debounce_timer
 
@@ -98,7 +98,7 @@ autocmd("FocusLost", {
 })
 
 -- View files on the internet {{{
----@type [fun(url: string): string?]
+---@type (fun(url: string): string?)[]
 local url_transforms = {
     -- use raw versions for files from github
     function(url)

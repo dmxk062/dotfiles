@@ -213,6 +213,32 @@ local name_highlights = {
     ["readme.txt"]            = "Readme",
     ["todo.md"]               = "Readme",
 }
+
+
+---@param path string
+---@param length integer?
+---@return string name
+---@return string parent
+---@return string highlight
+M.format_filepath = function(path, length)
+    local is_oil = vim.startswith(path, "oil://")
+    local highlight
+    if is_oil then
+        path = path:sub(7, -2)
+        highlight = "Directory"
+    end
+    local parent = M.expand_home(vim.fs.dirname(path), length)
+    if parent ~= "/" then
+        parent = parent .. "/"
+    end
+
+    if not highlight then
+        highlight = M.highlight_fname(path)
+    end
+    local name = vim.fs.basename(path)
+
+    return name, parent, highlight
+end
 -- }}}
 
 function M.highlight_fname(path, entry, is_hidden)
@@ -711,7 +737,11 @@ M.warn = function(subsystem, message)
 end
 ---@param subsystem string
 ---@param message string
-M.error = function(subsystem, message)
+---@param drop_errno boolean?
+M.error = function(subsystem, message, drop_errno)
+    if drop_errno then
+        message = message:gsub("^Vim:E%d+:%s*", "")
+    end
     api.nvim_echo({
         { ("[%s]"):format(subsystem), "ErrorMsg" }, { ": ", "NonText" }, { message }
     }, false, {})
