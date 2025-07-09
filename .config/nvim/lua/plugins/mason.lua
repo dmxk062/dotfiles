@@ -1,17 +1,20 @@
 local utils = require "config.utils"
 local mason_PATH = vim.fn.stdpath("data") .. "/mason/bin"
-local PACKAGES = {
-    ["asm-lsp"]                     = "asm-lsp",
-    ["ast-grep"]                    = "ast-grep",
-    ["bash-language-server"]        = "bash-language-server",
-    ["clangd"]                      = "clangd",
-    ["harper-ls"]                   = "harper-ls",
-    ["jedi-language-server"]        = "jedi-language-server",
-    ["lua-language-server"]         = "lua-language-server",
-    ["tinymist"]                    = "tinymist",
-    ["typos-lsp"]                   = "typos-lsp",
-    ["vscode-json-language-server"] = "json-lsp",
-    ["yaml-language-server"]        = "yaml-language-server",
+
+---@type table<string, string|false>
+---All the programs that need to be available
+local needed_programs = {
+    ["asm-lsp"] = false,
+    ["bash-language-server"] = false,
+    ["clangd"] = false,
+    ["harper-ls"] = false,
+    ["jedi-language-server"] = false,
+    ["json-lsp"] = false,
+    ["lua-language-server"] = false,
+    ["tinymist"] = false,
+    ["typos-lsp"] = false,
+    ["yaml-language-server"] = false,
+    ["zls"] = false,
 }
 
 ---@param pkg Package
@@ -27,29 +30,33 @@ local install_package = function(pkg, is_update)
     pkg:install()
 end
 
-local ensure_packages_installed = function()
-    local registry = require("mason-registry")
-    for program, package in pairs(PACKAGES) do
-        local path = vim.fn.exepath(program)
-        -- package is installed via the system, do not touch it
-        if path ~= "" and not vim.startswith(path, mason_PATH) then
-            goto continue
-        end
+---@param program string The executable that needs to be installed
+---@param package_name string? Alternative package name
+local ensure_program_installed = function(program, package_name)
+    local path = vim.fn.exepath(program)
+    -- package is installed via the system, do not touch it
+    if path ~= "" and not vim.startswith(path, mason_PATH) then
+        return
+    end
 
-        local pack = registry.get_package(package)
-        if pack:is_installed() then
-            local latest = pack:get_latest_version()
-            if latest ~= pack:get_installed_version() then
-                install_package(pack, true)
-            end
-        else
-            install_package(pack)
+    local package = require("mason-registry").get_package(package_name or program)
+    if package:is_installed() then
+        local latest = package:get_latest_version()
+        if latest ~= package:get_installed_version() then
+            install_package(package, true)
         end
-
-        ::continue::
+    else
+        install_package(package)
     end
 end
 
+Jhk.ensure_program = ensure_program_installed
+
+local ensure_all_installed = function()
+    for prog, pkg in pairs(needed_programs) do
+        ensure_program_installed(prog, pkg)
+    end
+end
 
 ---@type MasonSettings
 local opts = {
@@ -69,6 +76,7 @@ local opts = {
 ---@type LazySpec
 local M = {
     "mason-org/mason.nvim",
+    cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog", "MasonUpdate" },
     event = { "VeryLazy" },
     init = function()
         -- make packages available before Mason is actually loaded
@@ -76,7 +84,7 @@ local M = {
     end,
     config = function()
         require("mason").setup(opts)
-        vim.defer_fn(ensure_packages_installed, 300)
+        vim.defer_fn(ensure_all_installed, 600)
     end
 }
 

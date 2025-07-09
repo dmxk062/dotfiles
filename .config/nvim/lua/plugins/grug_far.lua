@@ -21,4 +21,8 @@ M.opts = {
     keymaps = {}
 }
 
+M.init = function()
+    Jhk.ensure_program("ast-grep")
+end
+
 return M
