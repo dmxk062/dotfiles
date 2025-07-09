@@ -62,8 +62,7 @@ local map_on_git_buffer = function(buf)
     mapboth("U", gitsigns.reset_hunk, "Git: Reset Hunk")
     mapboth("R", gitsigns.reset_buffer, "Git: Reset Buffer")
 
-    local ts_repeat = require("nvim-treesitter.textobjects.repeatable_move")
-    local nh, ph = ts_repeat.make_repeatable_move_pair(
+    local nh, ph = utils.make_mov_pair(
         function() gitsigns.nav_hunk("next") end,
         function() gitsigns.nav_hunk("prev") end
     )

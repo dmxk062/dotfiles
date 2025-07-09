@@ -380,6 +380,28 @@ M.mode_action = { "n", "v" }
 M.mode_motion = { "n", "x", "o" }
 -- Mappings that define a textobject region
 M.mode_object = { "x", "o" }
+
+---@param fwd function
+---@param bwd function
+---@return function
+---@return function
+function M.make_mov_pair(fwd, bwd)
+    local fun = require("nvim-treesitter-textobjects.repeatable_move").make_repeatable_move(function(opts)
+        if opts.forward then
+            fwd()
+        else
+            bwd()
+        end
+    end)
+    return
+        function()
+            fun { forward = true }
+        end,
+        function()
+            fun { forward = false }
+        end
+end
+
 -- }}}
 
 -- Display Windows {{{

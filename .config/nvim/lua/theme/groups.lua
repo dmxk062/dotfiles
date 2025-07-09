@@ -24,8 +24,6 @@ local colorscheme = {
     CurSearch                   = { bg = pal.bg3 },
     IncSearch                   = { bg = col.yellow, fg = pal.inverted },
     Substitute                  = { bg = col.yellow, fg = pal.inverted },
-    LeapMatch                   = { underline = true, fg = col.yellow },
-    LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
 
     -- my own better find
     BlinkenFind1                = { bg = col.pink, fg = pal.inverted },

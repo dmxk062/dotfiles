@@ -229,7 +229,7 @@ local update_searchcount = function()
 end
 -- }}}
 
--- Types, Functions, Word, Char, Byte and Line -count {{{
+-- Word, Char, Byte and Line -count {{{
 local function update_words()
     local count = fn.wordcount()
     local linecount = api.nvim_get_mode().mode:find("^[vV\x16]$")
@@ -240,24 +240,6 @@ local function update_words()
     local chars = count.visual_chars or count.chars
     local bytes = count.visual_bytes or count.bytes
     local out = {}
-
-    local ts_locals = require("nvim-treesitter.locals")
-    -- TODO: make these exclusive to the visual selection too
-    local functions, types = 0, 0
-    for _, definition in ipairs(ts_locals.get_definitions(api.nvim_get_current_buf())) do
-        if definition["function"] then
-            functions = functions + 1
-        elseif definition["type"] then
-            types = types + 1
-        end
-    end
-
-    if types > 0 then
-        table.insert(out, ("%d%%#Type#T%%*"):format(types))
-    end
-    if functions > 0 then
-        table.insert(out, ("%d%%#Function#F%%*"):format(functions))
-    end
 
     table.insert(out, string.format("%s%%#SlWords#W%%* %s%%#SlChars#C%%* %s%%#SlLines#L%%* %s%%#SlBytes#B",
         utils.format_size(words),

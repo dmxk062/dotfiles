@@ -263,7 +263,7 @@ utils.autogroup("config.lsp", {
 -- }}}
 
 ---@param client vim.lsp.Client
----@param category
+---@param category string
 ---@param v any
 M.add_setting = function(client, category, v)
     if not client.settings then
@@ -286,6 +286,7 @@ M.lazy_schemastore = function(type)
     end
 end
 
+-- Enable all configured servers
 local servers = {}
 for _, file in pairs(api.nvim_get_runtime_file("lsp/*.lua", true)) do
     local server = vim.fn.fnamemodify(file, ":t:r")
