@@ -1,5 +1,5 @@
 --[[ LSP-Configuration
-Set up LSPs
+Utilities and mappings for LSPs
 ]]
 
 local M = {}
@@ -263,215 +263,36 @@ utils.autogroup("config.lsp", {
 -- }}}
 
 ---@param client vim.lsp.Client
-local add_setting = function(client, k, v)
+---@param category
+---@param v any
+M.add_setting = function(client, category, v)
     if not client.settings then
         client.settings = {}
     end
-    if not client.settings[k] then
-        client.settings[k] = {}
+    if not client.settings[category] then
+        client.settings[category] = {}
     end
 
-    client.settings[k] = vim.tbl_extend("force", client.settings[k] --[[@as table]], v)
+    client.settings[category] = vim.tbl_extend("force", client.settings[category] --[[@as table]], v)
 end
 
 -- load schemastore on launch only
-local lazy_schemastore = function(type)
+---@param type "json"|"yaml"
+M.lazy_schemastore = function(type)
     ---@param client vim.lsp.Client
     return function(client)
         ---@diagnostic disable-next-line: undefined-field
-        add_setting(client, "json", { schemas = require("schemastore")[type].schemas() })
+        M.add_setting(client, "json", { schemas = require("schemastore")[type].schemas() })
     end
 end
 
----@type table<string, vim.lsp.Config>
-local Configs = setmetatable({}, {
-    __newindex = function(t, name, cfg)
-        if not cfg.name then
-            cfg.name = name
-        end
+local servers = {}
+for _, file in pairs(api.nvim_get_runtime_file("lsp/*.lua", true)) do
+    local server = vim.fn.fnamemodify(file, ":t:r")
+    table.insert(servers, server)
+end
 
-        lsp.config[name] = cfg
-        rawset(t, name, true)
-    end
-})
+vim.lsp.enable(servers)
 
---- Configs {{{
-Configs.jsonls = {
-    cmd = { "vscode-json-language-server", "--stdio" },
-    filetypes = { "json", "jsonc" },
-    init_options = {
-        provideFormatter = true
-    },
-    root_markers = { ".git" },
-    on_init = lazy_schemastore("json")
-}
-
-Configs.yamlls = {
-    filetypes = { "yaml" },
-    cmd = { "yaml-language-server", "--stdio" },
-    root_markers = { ".git" },
-    settings = { redhat = { telemetry = { enabled = false } } },
-    on_init = lazy_schemastore("yaml"),
-}
-
-Configs.luals = {
-    filetypes = { "lua" },
-    cmd = { "lua-language-server" },
-    root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", ".git" },
-    settings = {
-        Lua = {
-            semantic = {
-                -- Luadoc highlighting is much better handled by treesitter
-                -- e.g. <.> between elements of an object chain
-                annotation = false
-            }
-        }
-    },
-    on_init = function(client)
-        if not client.workspace_folders then
-            return
-        end
-
-        local path = client.workspace_folders[1].name
-
-        local is_in_rtp = false
-        for _, elem in pairs(vim.opt.runtimepath:get()) do
-            if vim.startswith(path, elem) then
-                is_in_rtp = true
-                break
-            end
-        end
-        if not is_in_rtp
-            and not vim.startswith(path, vim.fn.stdpath("data")) then
-            return
-        end
-
-        -- load nvim-specific libraries only for config
-        local libpaths = {
-            vim.env.VIMRUNTIME,   -- runtime files
-            "${3rd}/luv/library", -- vim.uv
-            vim.fn.stdpath("config") .. "/lua"
-        }
-
-        -- load lazy plugins for those that do use lua
-        for _, plug in pairs(require("lazy").plugins()) do
-            local dir = plug.dir .. "/lua"
-            if vim.uv.fs_stat(dir) then
-                table.insert(libpaths, dir)
-            end
-        end
-
-        add_setting(client, "Lua", {
-            runtime = {
-                -- should hold true for any decent system
-                version = "LuaJIT",
-                -- prefer plugins over specs
-                path = { "?/init.lua", "?.lua" },
-                strictPath = true
-            },
-            workspace = {
-                checkThirdParty = false,
-                library = libpaths,
-            }
-        })
-    end
-}
-
-Configs.clangd = {
-    filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
-    cmd = { "clangd" },
-    root_markers = { ".clangd", ".clang-tidy", ".clang-format", "compile_commands.json", "Makefile", ".git" },
-    on_attach = function(client, buf)
-        local map = utils.local_mapper(buf, { group = true })
-
-        -- goto header
-        map("n", "gh", function()
-            local params = lsp.util.make_text_document_params(buf)
-            client:request("textDocument/switchSourceHeader", params, function(err, res)
-                if err then
-                    utils.error("Lsp/Clangd", tostring(err))
-                    return
-                end
-
-                if not res then
-                    utils.error("Lsp/Clangd", "Could not determine header/implementation for file")
-                    return
-                end
-
-                vim.cmd.edit(vim.uri_to_fname(res))
-            end)
-        end)
-    end
-}
-
-Configs.asm_lsp = {
-    filetypes = { "asm", "vmasm" },
-    cmd = { "asm-lsp" },
-    root_markers = { ".asm-lsp.toml", ".git" },
-}
-
-Configs.bashls = {
-    filetypes = { "bash", "sh" },
-    cmd = { "bash-language-server", "start" },
-    root_markers = { ".git" },
-}
-
-Configs.ts_ls = {
-    filetypes = { "javascript", "typescript" },
-    cmd = { "typescript-language-server", "--stdio" },
-    root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
-}
-
-Configs.html_ls = {
-    filetypes = { "html" },
-    cmd = { "vscode-html-language-server", "--stdio" },
-    init_options = {
-        provideFormatter = true,
-        embeddedLanguages = { css = true, javascript = true },
-        configurationSection = { "html", "css", "javascript" },
-    }
-}
-
-Configs.jedi_ls = {
-    filetypes = { "python" },
-    cmd = { "jedi-language-server" },
-    root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" },
-}
-
-Configs.ruff = {
-    filetypes = { "python" },
-    cmd = { "ruff", "server" },
-    root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml" }
-}
-
-Configs.taplo = {
-    filetypes = { "toml" },
-    cmd = { "taplo", "lsp", "stdio" },
-    root_markers = { ".git" },
-}
-
-Configs.tinymist = {
-    filetypes = { "typst" },
-    cmd = { "tinymist" },
-    root_markers = { ".git" },
-}
-
-Configs.gopls = {
-    filetypes = { "go", "gomod", "gowork", "gotmpl" },
-    cmd = { "gopls" },
-    root_markers = { "go.mod", "go.work", ".git" },
-}
-
-Configs.harper = {
-    cmd = { "harper-ls", "--stdio" },
-    root_markers = { ".git" },
-    -- harper-ls is mostly a situational thing, nothing wrong with just using
-    -- :LspStart harper
-    -- when it's *actually* needed
-    filetypes = {},
-}
--- }}}
-
-lsp.enable(vim.tbl_keys(Configs))
 
 return M
