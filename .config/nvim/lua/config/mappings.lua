@@ -246,8 +246,8 @@ map("n", bufleader, "<nop>")
 
 -- faster alternate file, mnemonic: [s]econd, also allows remapping <C-6>
 map("n", "<C-s>", "<cmd>b #<cr>")
-map("n", bufleader .. "j", "<cmd>bnext<cr>")
-map("n", bufleader .. "k", "<cmd>bprev<cr>")
+map("n", bufleader .. "j", "<cmd>bnext<cr>", { desc = "Buffer: Next" })
+map("n", bufleader .. "k", "<cmd>bprev<cr>", { desc = "Buffer: Prev" })
 
 local function get_buf_idx()
     local target
@@ -287,27 +287,29 @@ local goto_buf = function()
     end
 end
 
-map("n", bufleader .. bufleader, goto_buf)
+map("n", bufleader .. bufleader, goto_buf, { desc = "Buffer: Show" })
 
 ---@param dir config.win.position
 ---@param opts config.win.opts?
 local function open_buf_in(dir, opts)
-    local target = get_buf_idx()
-    if not target then return end
+    return function()
+        local target = get_buf_idx()
+        if not target then return end
 
-    utils.win_show_buf(target, vim.tbl_extend("force", { position = dir }, opts or {}))
+        utils.win_show_buf(target, vim.tbl_extend("force", { position = dir }, opts or {}))
+    end
 end
 
 -- show a buffer by its index in the statusbar
 -- 'v, 's are equivalent to <C-w>v and <C-w>s
-map("n", bufleader .. "v", function() open_buf_in("vertical") end)
-map("n", bufleader .. "s", function() open_buf_in("horizontal") end)
-map("n", bufleader .. "V", function() open_buf_in("vertical", { direction = "left" }) end)
-map("n", bufleader .. "S", function() open_buf_in("horizontal", { direction = "above" }) end)
-map("n", bufleader .. "t", function() open_buf_in("tab") end)
-map("n", bufleader .. "f", function() open_buf_in("float") end)
-map("n", bufleader .. "a", function() open_buf_in("autosplit") end)
-map("n", bufleader .. "r", function() open_buf_in("replace") end)
+map("n", bufleader .. "v", open_buf_in("vertical"), { desc = "Buffer: Show vsplit" })
+map("n", bufleader .. "s", open_buf_in("horizontal"), { desc = "Buffer: Show split" })
+map("n", bufleader .. "V", open_buf_in("vertical", { direction = "left" }), { desc = "Buffer: Show vsplit (before)" })
+map("n", bufleader .. "S", open_buf_in("horizontal", { direction = "above" }), { desc = "Buffer: Show split (before)" })
+map("n", bufleader .. "t", open_buf_in("tab"), { desc = "Buffer: Show tab" })
+map("n", bufleader .. "f", open_buf_in("float"), { desc = "Buffer: Show float" })
+map("n", bufleader .. "a", open_buf_in("autosplit"), { desc = "Buffer: Show auto" })
+map("n", bufleader .. "r", open_buf_in("replace"), { desc = "Buffer: Replace current" })
 
 local delete_buffer = function(buf)
     local ok = pcall(api.nvim_buf_delete, buf, {})
@@ -328,7 +330,7 @@ map("n", bufleader .. "d", function()
     if not target then return end
 
     delete_buffer(target)
-end)
+end, { desc = "Buffer: Delete" })
 
 -- close the first window that the buffer is shown in
 map("n", bufleader .. "h", function()
@@ -341,7 +343,7 @@ map("n", bufleader .. "h", function()
         return
     end
     api.nvim_win_close(win, false)
-end)
+end, { desc = "Buffer: Hide win" })
 
 -- clear hidden buffers
 map("n", bufleader .. "C", function()
@@ -350,7 +352,7 @@ map("n", bufleader .. "C", function()
             delete_buffer(buf)
         end
     end
-end)
+end, { desc = "Buffer: Clear hidden" })
 
 ---run cmd with the effective tab target as an argument
 local function indexed_tab_command(cmd)
@@ -365,8 +367,8 @@ local function indexed_tab_command(cmd)
     vim.cmd(cmd .. " " .. target)
 end
 
-map("n", bufleader .. '"', function() indexed_tab_command("norm! gt") end)
-map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end)
+map("n", bufleader .. '"', function() indexed_tab_command("norm! gt") end, { desc = "Tab: Show" })
+map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end, { desc = "Tab: Delete" })
 -- }}}
 
 -- Improve Builtin Mappings {{{
