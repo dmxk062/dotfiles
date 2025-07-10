@@ -60,20 +60,24 @@ local oil_columns = {
             local size = factor * tonumber(str:match("^%d+"))
             return utils.highlight_size(size)
         end
-    }
+    },
 }
 
 local column_positions = {
     time = 1,
     birthtime = 2,
     size = 3,
-    permissions = 4,
+    group = 4,
+    user = 5,
+    permissions = 6,
 }
 
 local enabled_columns = {
     "time",
     nil,
     nil,
+    nil,
+    "user",
     "permissions"
 }
 -- }}}
@@ -168,7 +172,7 @@ local function toggle_column(col)
         enabled_columns[pos] = col
     end
     require("oil").set_columns(vim.tbl_map(function(c)
-        return oil_columns[c]
+        return oil_columns[c] or c
     end, vim.tbl_values(enabled_columns)))
 end
 
@@ -245,10 +249,9 @@ M.opts = {
     buf_options = {
         buflisted = true
     },
-    columns = {
-        oil_columns.time,
-        oil_columns.permissions,
-    },
+    columns = vim.tbl_map(function(c)
+        return oil_columns[c] or c
+    end, vim.tbl_values(enabled_columns)),
     constrain_cursor = "editable",
     skip_confirm_for_simple_edits = true,
 
@@ -314,6 +317,8 @@ M.opts = {
         ["<localleader>m"] = function() toggle_column("permissions") end,
         ["<localleader>t"] = function() toggle_column("time") end,
         ["<localleader>b"] = function() toggle_column("birthtime") end,
+        ["<localleader>u"] = function() toggle_column("user") end,
+        ["<localleader>g"] = function() toggle_column("group") end,
         ["<localleader>f"] = filter_items,
 
         ["<space>+q"]      = "actions.add_to_qflist",
@@ -324,10 +329,16 @@ M.opts = {
 }
 -- }}}
 
+
 M.config = function(_, opts)
     local map = utils.map
     local oil = require("oil")
     oil.setup(opts)
+
+    local my_columns = require("config.plugins.oil_owner")
+    local columns = require("oil.columns")
+    columns.register("user", my_columns.user)
+    columns.register("group", my_columns.group)
 
     local git_status = require("config.plugins.oil_git")
 

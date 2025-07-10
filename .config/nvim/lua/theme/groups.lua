@@ -24,6 +24,7 @@ local colorscheme = {
     CurSearch                   = { bg = pal.bg3 },
     IncSearch                   = { bg = col.yellow, fg = pal.inverted },
     Substitute                  = { bg = col.yellow, fg = pal.inverted },
+    LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
 
     -- my own better find
     BlinkenFind1                = { bg = col.pink, fg = pal.inverted },
@@ -478,6 +479,8 @@ add_with_prefix(colorscheme, "Oil", {
     Setuid           = { fg = col.red, bold = true },
     Sticky           = { fg = col.blue, bold = true },
     NoPerm           = { fg = pal.bg3 },
+    User             = { fg = col.purple },
+    Group            = { fg = col.blue },
 
     Delete           = { fg = col.red, bold = true },
     Create           = { fg = col.green },
