@@ -6,6 +6,9 @@ local M = {
 
 ---@type grug.far.OptionsOverride
 M.opts = {
+    showCompactInputs = true,
+    showInputsTopPadding = false,
+    showInputsBottomPadding = false,
     folding = {
         enabled = false,
     },
@@ -16,8 +19,10 @@ M.opts = {
         enabled = false
     },
     resultLocation = {
-        numberLabelFormat = " [%2d]",
+        numberLabelPosition = "right_align",
+        numberLabelFormat = " <%d>",
     },
+    resultsSeparatorLineChar = "─",
     keymaps = {}
 }
 

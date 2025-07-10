@@ -1,14 +1,14 @@
+--[[ Rationale
+Oil allows edits to the filesystem to work the same as text files
+Additionally, it's really fast and rock solid
+Exensibility is pretty good too
+]]
+
 ---@type LazySpec
 local M = {
     "stevearc/oil.nvim",
 }
 local utils = require("config.utils")
-
---[[ Why Oil? {{{
-Because it's the best file editor :3
-Edits to the filesystem work the same as text files
-Additionally, it's really fast and rock solid
-}}} ]]
 
 -- Columns {{{
 local perms_hlgroups = {
@@ -26,6 +26,7 @@ local highlight_date = function(str)
     local parsed_time = vim.fn.strptime(datefmt, str)
     return utils.highlight_time(parsed_time)
 end
+
 local oil_columns = {
     permissions = {
         "permissions",
@@ -92,6 +93,7 @@ local function get_entries()
 
     return ret
 end
+
 local function goto_dir(path)
     require("oil").open(vim.fn.expand(path))
 end
@@ -105,10 +107,6 @@ local function open_cmd(cmd)
     vim.schedule(function()
         vim.fn.setcmdline(cmd .. " " .. table.concat(files, " "), #cmd + 1)
     end)
-end
-
-local function open_cd()
-    vim.api.nvim_input("<ESC>:Oil ")
 end
 
 local function goto_git_ancestor()
@@ -214,7 +212,6 @@ local function filter_items()
     end)
 end
 
---- Calls vim.cmd
 ---@param command string
 local function git_command(command)
     local dir = require("oil").get_current_dir(0)
@@ -307,7 +304,6 @@ M.opts = {
         -- toggle hidden
         ["gh"]             = "actions.toggle_hidden",
 
-        ["gf"]             = filter_items,
         ["=s"]             = function() set_sort("size") end,
         ["=t"]             = function() set_sort("mtime") end,
         ["=i"]             = function() set_sort("invert") end,
@@ -318,6 +314,7 @@ M.opts = {
         ["<localleader>m"] = function() toggle_column("permissions") end,
         ["<localleader>t"] = function() toggle_column("time") end,
         ["<localleader>b"] = function() toggle_column("birthtime") end,
+        ["<localleader>f"] = filter_items,
 
         ["<space>+q"]      = "actions.add_to_qflist",
 
