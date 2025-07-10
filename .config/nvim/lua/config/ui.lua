@@ -89,7 +89,7 @@ M.nvim_input = function(opts, callback)
 
     -- HACK: add my own extension
     if opts._ts_lang then
-        require("nvim-treesitter.highlight").attach(buf, opts._ts_lang)
+        vim.treesitter.start(buf, opts._ts_lang)
     end
 
     local augroup

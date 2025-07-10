@@ -5,17 +5,18 @@ Utilities and mappings for LSPs
 local M = {}
 
 local api = vim.api
+local fn = vim.fn
 local utils = require("config.utils")
 local lsp = vim.lsp
 
 local rename_visually = function()
-    local old_name = vim.fn.expand("<cword>")
+    local old_name = fn.expand("<cword>")
     vim.cmd("normal! viw")
     api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
         buffer = api.nvim_get_current_buf(),
         once = true,
         callback = function()
-            local new_name = vim.fn.expand("<cword>")
+            local new_name = fn.expand("<cword>")
             if new_name == old_name then
                 return
             end
@@ -146,8 +147,8 @@ local sdo_command = function(args)
     lsp.buf.references(nil, {
         on_list = function(res)
             for _, elem in ipairs(res.items) do
-                local buf = vim.fn.bufadd(elem.filename)
-                vim.fn.bufload(buf)
+                local buf = fn.bufadd(elem.filename)
+                fn.bufload(buf)
                 api.nvim_buf_call(buf, function()
                     api.nvim_win_set_cursor(0, { elem.lnum, elem.col - 1 })
                     vim.cmd(args.args)
@@ -199,7 +200,7 @@ local on_lsp_attached = function(ev)
         map(action[1], action[2], action[3], action[4])
     end
 
-    local client = lsp.get_client_by_id(ev.data.client_id)
+    local client = lsp.get_client_by_id(ev.data.client_id) --[[@as vim.lsp.Client]]
 
     -- make the 'path' match the one of the language server
     -- NOTE: don't replace the whole 'path', since that might be set by ftplugins
@@ -212,7 +213,7 @@ local on_lsp_attached = function(ev)
         vim.opt_local.path:remove { "*", "../*" }
         vim.opt_local.path:prepend(workspace_path)
 
-        vim.fn.chdir(vim.uri_to_fname(client.workspace_folders[1].uri))
+        fn.chdir(vim.uri_to_fname(client.workspace_folders[1].uri))
     end
 
     for cmd, action in pairs(lsp_commands) do
@@ -289,7 +290,7 @@ end
 -- Enable all configured servers
 local servers = {}
 for _, file in pairs(api.nvim_get_runtime_file("lsp/*.lua", true)) do
-    local server = vim.fn.fnamemodify(file, ":t:r")
+    local server = fn.fnamemodify(file, ":t:r")
     table.insert(servers, server)
 end
 
