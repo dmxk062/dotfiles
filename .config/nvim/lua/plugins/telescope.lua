@@ -13,7 +13,6 @@ local builtin_picker_maps = {
     oldfiles = "<space>o",
     registers = "\"<space>",
     search_history = "<space>?",
-    treesitter = "<space>v",
 
     -- git ones, under the same prefix as the fugitive & gitsigns mappings
     git_files = "<space>gf",

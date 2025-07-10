@@ -216,6 +216,18 @@ local M = {
     },
 }
 
+local attach = function(buf, language)
+    if not vim.treesitter.language.add(language) then
+        vim.bo[buf].syntax = "ON"
+        return false
+    end
+
+    vim.treesitter.start(buf, language)
+    vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+    return true
+end
+
 M.init = function()
     local ts = require("nvim-treesitter")
     ts.install(ensure_installed)
@@ -226,12 +238,11 @@ M.init = function()
             local ft = vim.bo[buf].ft
 
             local language = vim.treesitter.language.get_lang(ft) or ft
-            if not vim.treesitter.language.add(language) then
-                return
+            if not attach(buf, language) then
+                ts.install(language):await(function()
+                    attach(buf, language)
+                end)
             end
-
-            vim.treesitter.start(buf, language)
-            vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end
     })
 end
