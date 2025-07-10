@@ -109,7 +109,11 @@ local function get_git_status(cb, dir)
                         end
                     end
                 else
-                    status[file] = { index, worktree }
+                    if index == "R" then
+                        status[vim.split(file, " -> ")[2]] = { "R", " " }
+                    else
+                        status[file] = { index, worktree }
+                    end
                 end
 
                 ::continue::

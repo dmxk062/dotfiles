@@ -503,7 +503,7 @@ add_with_prefix(colorscheme, "OilGitStatus", {
     WorktreeDeleted     = { link = "*IndexDeleted" },
     IndexModified       = { fg = col.yellow },
     WorktreeModified    = { link = "*IndexModified" },
-    IndexRenamed        = { fg = col.light_blue },
+    IndexRenamed        = { fg = col.magenta },
     WorktreeRenamed     = { link = "*IndexRenamed" },
     IndexTypeChanged    = { fg = col.orange },
     WorktreeTypeChanged = { link = "*IndexTypeChanged" },
