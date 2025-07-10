@@ -335,14 +335,15 @@ M.config = function(_, opts)
     local oil = require("oil")
     oil.setup(opts)
 
-    local my_columns = require("config.plugins.oil_owner")
+    local my_columns = require("config.plugins.oil-owner")
     local columns = require("oil.columns")
     columns.register("user", my_columns.user)
     columns.register("group", my_columns.group)
 
-    local git_status = require("config.plugins.oil_git")
 
+    local git_status = require("config.plugins.oil-git")
     -- change directory if not ssh, only for current window
+    -- only attach git status for remote as well
     utils.user_autogroup("config.oil", {
         OilEnter = function(ev)
             local dir = oil.get_current_dir()
