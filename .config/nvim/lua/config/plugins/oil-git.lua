@@ -35,6 +35,10 @@ local hl_for_status = {
 ---@param status config.oil.git.status
 local function set_signs(buf, status)
     buffer_status[buf] = status
+    if not api.nvim_buf_is_valid(buf) then
+        return
+    end
+
     api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
     if not status then

@@ -86,11 +86,13 @@ local function smart_split(args)
     vim.cmd[cmd](split_args)
 end
 
+---@type vim.api.keyset.user_command
 local split_cmd_opts = {
     desc = "Split based on spiral layout",
     complete = "file",
     nargs = "?",
     count = 0,
+    bar = true,
 }
 
 command("Sp", smart_split, split_cmd_opts)

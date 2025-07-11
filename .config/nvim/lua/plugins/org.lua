@@ -1,6 +1,20 @@
 ---@type LazySpec
-local M = {
+local M = {}
+
+M = {
     "nvim-orgmode/orgmode",
+    cmd = { "Org" },
+    ft = { "org" },
+    keys = { "<space>A", "<space>w" },
+    init = function()
+        -- HACK: forward requests to the global Org object until it is loaded
+        _G.Org = setmetatable({}, {
+            __index = function(_, k)
+                require("orgmode")
+                return Org[k]
+            end
+        })
+    end,
 }
 
 ---@type fun(data: OrgMenuData)
@@ -56,6 +70,10 @@ end
 
 ---@type OrgConfigOpts
 local opts = {
+    hyperlinks = {
+        sources = {
+        }
+    },
     ui = {
         folds = {
             colored = true
@@ -89,15 +107,9 @@ local opts = {
 opts.org_capture_templates = {
     u = {
         description = "Unix Workflow",
-        target = "~/org/unix/%^{Shell Utility|}.org",
-        template = {
-            "#+title: %?",
-            "#+filetags: :unix: :cli: :programs:",
-            "",
-            "* Description",
-            "* Usage",
-            "** Recipes"
-        }
+        target = "~/org/unix/%^{Shell Utility}.org",
+        template = "#+title: %?\n#+filetags: :unix: :cli: :programs:"
+
     },
     j = {
         description = "Journal",
@@ -159,7 +171,6 @@ opts.mappings.note = {
 opts.mappings.org = {
     org_toggle_heading                      = "<localleader>*",
     org_store_link                          = "<localleader>#",
-    org_insert_link                         = "<localleader>l",
     org_edit_special                        = "<localleader>e",
     org_add_note                            = "<localleader>n",
     org_archive_subtree                     = "<localleader>$",
@@ -195,11 +206,28 @@ opts.mappings.org = {
     ---@diagnostic disable: assign-type-mismatch
     org_insert_todo_heading                 = false,
     org_set_effort                          = false,
+    org_insert_link                         = false,
     ---@diagnostic enable
 }
 
 M.config = function()
     require("orgmode").setup(opts)
+
+    local utils = require("config.utils")
+    utils.autogroup("config.orgmode", {
+        FileType = {
+            pattern = "org",
+            callback = function(ev)
+                local map = utils.local_mapper(ev.buf)
+                map("n", "<localleader>l", "<cmd>Telescope orgmode insert_link<cr>")
+                map("i", "<C-l>", "<cmd>Telescope orgmode insert_link<cr>")
+                map("n", "<localleader>/", "<cmd>Telescope orgmode search_headings<cr>")
+
+                -- The default <cr> mapping is nothing but broken
+                map("i", "<cr>", "<cr>")
+            end
+        }
+    })
 end
 
 return M

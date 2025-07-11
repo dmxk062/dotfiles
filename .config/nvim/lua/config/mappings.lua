@@ -72,8 +72,6 @@ The loclist per each buffer/window
 -- qflist: more mappings, larger lists
 map("n", "<C-j>", cmd_with_count("cnext"))
 map("n", "<C-k>", cmd_with_count("cprev"))
-map("n", "<space>n", cmd_with_count("cnfile"))
-map("n", "<space>N", cmd_with_count("cpfile"))
 map("n", "<space>0", "<cmd>cfirst<cr>")
 map("n", "<space>$", "<cmd>clast<cr>")
 

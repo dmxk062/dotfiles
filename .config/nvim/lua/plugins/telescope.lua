@@ -32,6 +32,9 @@ local M = {
         },
         {
             "nvim-telescope/telescope-ui-select.nvim"
+        },
+        {
+            "nvim-orgmode/telescope-orgmode.nvim"
         }
     },
 }
@@ -268,6 +271,7 @@ M.config = function()
     telescope.setup(opts)
     telescope.load_extension("zf-native")
     telescope.load_extension("ui-select")
+    telescope.load_extension("orgmode")
 
     local builtin = require("telescope.builtin")
     local map = utils.map
