@@ -53,6 +53,12 @@ local function set_signs(buf, status)
             virt_text_pos = "inline",
         })
 
+        if codes[3] then
+            api.nvim_buf_set_extmark(buf, ns, i - 1, 0, {
+                virt_text = { { codes[3], "Comment" } },
+                virt_text_pos = "eol",
+            })
+        end
         ::continue::
     end
 end
@@ -110,7 +116,8 @@ local function get_git_status(cb, dir)
                     end
                 else
                     if index == "R" then
-                        status[vim.split(file, " -> ")[2]] = { "R", " " }
+                        local names = vim.split(file, " -> ", { plain = true })
+                        status[names[2]] = { "R", " ", ("<- %s"):format(names[1]) }
                     else
                         status[file] = { index, worktree }
                     end
