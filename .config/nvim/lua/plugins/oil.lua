@@ -98,10 +98,6 @@ local function get_entries()
     return ret
 end
 
-local function goto_dir(path)
-    require("oil").open(vim.fn.expand(path))
-end
-
 local function open_cmd(cmd)
     local files = vim.tbl_map(function(e)
         return vim.fn.fnameescape(e.name)
@@ -239,37 +235,51 @@ end
 -- }}}
 
 -- Options {{{
+local is_git_tracked = function(path)
+    return vim.system(
+        { "git", "ls-files", "--error-unmatch", path },
+        { stdout = false, stderr = false }
+    ):wait().code == 0
+end
+
 ---@type oil.setupOpts
 M.opts = {
-    default_file_explorer = true,
-    win_options = {
-        cursorlineopt = "number",
-        signcolumn    = "auto"
-    },
     buf_options = {
         buflisted = true
     },
     columns = vim.tbl_map(function(c)
         return oil_columns[c] or c
     end, vim.tbl_values(enabled_columns)),
-    constrain_cursor = "editable",
     skip_confirm_for_simple_edits = true,
+
+    git = {
+        -- TODO: Evaluate whether I also want something similar for add and remove
+        mv = function(src_path, dest_path)
+            local should_git_mv = is_git_tracked(src_path) and is_git_tracked(vim.fs.dirname(dest_path))
+            -- Synchronise with my git plugin
+            if should_git_mv then
+                vim.api.nvim_create_autocmd("User", {
+                    pattern = "OilMutationComplete",
+                    once = true,
+                    callback = function(ev)
+                        require("config.plugins.oil-git").reload(ev.buf)
+                    end
+                })
+            end
+
+            return should_git_mv
+        end,
+    },
 
     float = {
         padding = 8,
         max_width = 80,
         max_height = 40,
     },
-    preview = {
-        max_width = 0.6,
-        min_width = 0.4,
-        max_height = 0.8,
-        min_height = 0.6,
 
-    },
-    use_default_keymaps = false,
     cleanup_delay_ms = 5000,
     extra_scp_args = { "-O" }, -- use scp instead of sftp
+    use_default_keymaps = false,
     watch_for_changes = true,
 
     view_options = {
@@ -285,50 +295,44 @@ M.opts = {
             return utils.highlight_fname(nil, entry, is_hidden)
         end
     },
+}
 
-    keymaps = {
-        ["!"]              = function() open_cmd("!") end,
-        ["cm"]             = function() open_cmd("!chmod ") end,
-        ["co"]             = function() open_cmd("!chown ") end,
-        ["<CR>"]           = "actions.select",
-        ["<S-CR>"]         = "actions.select_split",
-        ["<C-CR>"]         = "actions.select_vsplit",
+M.opts.keymaps = {
+    ["!"]              = function() open_cmd("!") end,
+    ["<CR>"]           = "actions.select",
+    ["<S-CR>"]         = "actions.select_split",
+    ["<C-CR>"]         = "actions.select_vsplit",
 
-        ["es"]             = "actions.select_split",
-        ["ev"]             = "actions.select_vsplit",
-        ["gx"]             = "actions.open_external",
+    ["es"]             = "actions.select_split",
+    ["ev"]             = "actions.select_vsplit",
+    ["gx"]             = "actions.open_external",
 
-        -- goto repository
-        ["gr"]             = { goto_git_ancestor, mode = "n" },
-        -- only applies to my machines
-        ["gw"]             = function() goto_dir("~/ws") end,
-        ["gt"]             = function() goto_dir("~/Tmp") end,
+    -- goto repository
+    ["gr"]             = { goto_git_ancestor, mode = "n" },
 
-        -- toggle hidden
-        ["gh"]             = "actions.toggle_hidden",
+    -- toggle hidden
+    ["gh"]             = "actions.toggle_hidden",
 
-        ["=s"]             = function() set_sort("size") end,
-        ["=t"]             = function() set_sort("mtime") end,
-        ["=i"]             = function() set_sort("invert") end,
-        ["=d"]             = function() set_sort("default") end,
+    ["=s"]             = function() set_sort("size") end,
+    ["=t"]             = function() set_sort("mtime") end,
+    ["=i"]             = function() set_sort("invert") end,
+    ["=d"]             = function() set_sort("default") end,
 
-        ["<localleader>p"] = "actions.preview",
-        ["<localleader>s"] = function() toggle_column("size") end,
-        ["<localleader>m"] = function() toggle_column("permissions") end,
-        ["<localleader>t"] = function() toggle_column("time") end,
-        ["<localleader>b"] = function() toggle_column("birthtime") end,
-        ["<localleader>u"] = function() toggle_column("user") end,
-        ["<localleader>g"] = function() toggle_column("group") end,
-        ["<localleader>f"] = filter_items,
+    ["<localleader>f"] = filter_items,
+    ["<localleader>p"] = "actions.preview",
+    ["<localleader>:"] = function() open_cmd("") end,
+    ["<localleader>b"] = function() toggle_column("birthtime") end,
+    ["<localleader>g"] = function() toggle_column("group") end,
+    ["<localleader>m"] = function() toggle_column("permissions") end,
+    ["<localleader>s"] = function() toggle_column("size") end,
+    ["<localleader>t"] = function() toggle_column("time") end,
+    ["<localleader>u"] = function() toggle_column("user") end,
+    ["<localleader>q"] = "actions.add_to_qflist",
 
-        ["<space>+q"]      = "actions.add_to_qflist",
-
-        ["<space>gs"]      = function() git_command("add") end,
-        ["<space>gu"]      = function() git_command("reset --") end,
-    },
+    ["<space>gs"]      = function() git_command("add") end,
+    ["<space>gu"]      = function() git_command("reset --") end,
 }
 -- }}}
-
 
 M.config = function(_, opts)
     local map = utils.map

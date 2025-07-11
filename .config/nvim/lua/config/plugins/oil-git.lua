@@ -224,4 +224,8 @@ M.attach = function(buf)
     update_buf(buf)
 end
 
+M.reload = function(buf)
+    update_buf(buf or api.nvim_get_current_buf())
+end
+
 return M

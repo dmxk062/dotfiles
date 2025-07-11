@@ -33,9 +33,7 @@ do
 end
 
 
-local render_owner = function(entry, stfield, field, lookup)
-end
-
+---@param line string
 local parse_owner = function(line)
     local group, rest = line:match("^(%S+)%s+(.*)$")
 
@@ -48,6 +46,7 @@ end
 ---@param highlight string
 ---@param name_lookup table<integer, string>
 local make_entry = function(statfield, fallback, highlight, name_lookup)
+    ---@type oil.ColumnDefinition
     return {
         parse = parse_owner,
         render = function(entry)
