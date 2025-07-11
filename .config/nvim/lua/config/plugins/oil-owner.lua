@@ -11,9 +11,13 @@ local constants = require("oil.constants")
 local FIELD_META = constants.FIELD_META
 
 ---@type {[integer]: string}
-local Users, Groups = {}, {}
+local Users
+---@type {[integer]: string}
+local Groups
 do
-    local read_passwd_file = function(path, dest)
+    local read_passwd_file = function(path)
+        ---@type {[integer]: string}
+        local out = {}
         local file = assert(io.open(path))
         local entries = vim.split(file:read("*a"), "\n")
         for _, entry in ipairs(entries) do
@@ -22,14 +26,16 @@ do
             if not id then
                 goto continue
             end
-            dest[id] = fields[1]
+            out[id] = fields[1]
             ::continue::
         end
         file:close()
+
+        return out
     end
 
-    read_passwd_file("/etc/passwd", Users)
-    read_passwd_file("/etc/group", Groups)
+    Users = read_passwd_file("/etc/passwd")
+    Groups = read_passwd_file("/etc/group")
 end
 
 

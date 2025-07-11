@@ -8,6 +8,14 @@ local api = vim.api
 local oil = require("oil")
 local ns = api.nvim_create_namespace("config.oil.git")
 
+---@class (exact) config.oil.git.entry
+---@field [1] string index
+---@field [2] string worktree
+---@field [3] string? description
+
+---@alias config.oil.git.status table<string, config.oil.git.entry>|true
+
+---@type table<integer, config.oil.git.status>
 local buffer_status = {}
 
 local hl_for_status = {
@@ -23,6 +31,8 @@ local hl_for_status = {
     [" "] = "Unmodified",
 }
 
+---@param buf integer
+---@param status config.oil.git.status
 local function set_signs(buf, status)
     buffer_status[buf] = status
     api.nvim_buf_clear_namespace(buf, ns, 0, -1)
@@ -63,6 +73,8 @@ local function set_signs(buf, status)
     end
 end
 
+---@param funcs (fun(cb: fun(res: any), args: ...))[]
+---@param cb function
 local function async_at_once(funcs, cb, ...)
     local count = 0
     local results = {}
@@ -78,6 +90,8 @@ local function async_at_once(funcs, cb, ...)
     end
 end
 
+---@param cb fun(status: config.oil.git.status)
+---@param dir string
 local function get_git_status(cb, dir)
     vim.system(
         { "git", "-c", "core.quotepath=false", "-c", "status.relativePaths=true", "status", ".", "--short" },
@@ -87,6 +101,7 @@ local function get_git_status(cb, dir)
                 return
             end
 
+            ---@type config.oil.git.status
             local status = {}
             for line in vim.gsplit(out.stdout, "\n") do
                 if line == "" then
@@ -129,6 +144,8 @@ local function get_git_status(cb, dir)
         end)
 end
 
+---@param cb fun(status: config.oil.git.status)
+---@param dir string
 local function get_git_unchanged(cb, dir)
     vim.system(
         { "git", "-c", "core.quotepath=false", "ls-tree", "HEAD", ".", "--name-only" },
@@ -152,6 +169,7 @@ local function get_git_unchanged(cb, dir)
         end)
 end
 
+---@param buf integer
 local function update_buf(buf)
     local dir = require("oil").get_current_dir(buf)
     if not dir then
@@ -170,6 +188,7 @@ local function update_buf(buf)
     )
 end
 
+---@param buf integer
 M.attach = function(buf)
     if buffer_status[buf] then
         return
@@ -224,6 +243,7 @@ M.attach = function(buf)
     update_buf(buf)
 end
 
+---@param buf integer?
 M.reload = function(buf)
     update_buf(buf or api.nvim_get_current_buf())
 end
