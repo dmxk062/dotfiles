@@ -84,11 +84,10 @@ local function update_buflist()
         end
 
 
-        local res = string.format("%s%s%%#%s#%s%d %%#%s#%s %s%s%s",
+        local res = string.format("%s%s%%#%s#%d %%#%s#%s %s%s%s",
             current and "%#SlASL#" or (count > 1 and "%#SlASL#|" or " "),
             grapple_mark,
             hlprefix .. btypehighlights[kind],
-            btypesymbols[kind],
             count,
             hlprefix .. (wincount == 0 and "Hidden" or "Text"),
             (name or "[-]"),
