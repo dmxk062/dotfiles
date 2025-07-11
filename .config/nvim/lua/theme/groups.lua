@@ -295,7 +295,7 @@ add_with_prefix(colorscheme, "@", {
     ["markup.heading.gitcommit"]     = {},
 
     ["markup.math"]                  = { italic = true },
-    ["markup.raw.markdown_inline"]   = { bg = pal.bg1 },
+    ["markup.raw.markdown_inline"]   = { bg = pal.bg01 },
     ["markup.link"]                  = { fg = col.blue },
     ["markup.link.url"]              = { fg = col.blue, underline = true, nocombine = true },
     ["markup.link.label"]            = { fg = col.light_blue },
@@ -340,8 +340,8 @@ add_with_prefix(colorscheme, "Sl", {
     IReg        = { fg = col.light_blue },
     ASpecial    = { bg = pal.bg1, fg = col.yellow },
     ISpecial    = { fg = col.yellow },
-    AHelp       = { bg = pal.bg1, fg = col.green },
-    IHelp       = { fg = col.green },
+    AHelp       = { bg = pal.bg1, fg = col.yellow },
+    IHelp       = { fg = col.yellow },
     ATab        = { bg = pal.bg1, fg = col.pink },
     ITab        = { fg = col.pink },
     ATerm       = { bg = pal.bg1, fg = col.orange },
@@ -405,8 +405,8 @@ add_with_prefix(colorscheme, "Dashboard", {
 
     FindFiles = { fg = col.blue },
     EditFiles = { fg = col.light_blue },
-    GrepFiles = { fg = col.teal },
-    GitFiles  = { fg = col.green },
+    Agenda    = { fg = col.teal },
+    Capture   = { fg = col.green },
     Lazy      = { fg = col.yellow },
     Mason     = { fg = col.orange },
     Quit      = { fg = col.red },
@@ -711,5 +711,51 @@ add_with_prefix(colorscheme, "GrugFar", {
     ResultsPath = { link = "Directory" },
 })
 -- }}}
+
+add_with_prefix(colorscheme, "@org.", {
+    ["headline.level1"]       = { fg = col.yellow, bold = true },
+    ["headline.level2"]       = { fg = col.green, bold = true },
+    ["headline.level3"]       = { fg = col.teal, bold = true },
+    ["headline.level4"]       = { fg = col.light_cyan },
+    ["headline.level5"]       = { fg = col.light_blue },
+    ["headline.level6"]       = { fg = col.pink },
+    ["headline.level7"]       = { fg = pal.fg0 },
+    ["headline.level8"]       = { fg = pal.fg0 },
+
+    ["table.delimiter"]       = { link = "@punctuation.delimiter" },
+
+    ["keyword.todo"]          = { fg = pal.fg0, italic = true, nocombine = true },
+    ["keyword.done"]          = { fg = col.bright_gray, nocombine = true },
+    ["keyword.face.NEXT"]     = { fg = col.green, italic = true, nocombine = true },
+    ["keyword.face.WAITING"]  = { fg = col.teal, italic = true, nocombine = true },
+    ["keyword.face.CURRENT"]  = { fg = col.magenta, italic = true, nocombine = true },
+    ["keyword.face.NOPE"]     = { fg = col.bright_gray, strikethrough = true, nocombine = true },
+    ["priority.highest"]      = { fg = col.orange, nocombine = true },
+    ["priority.default"]      = { fg = col.green, nocombine = true },
+    ["priority.lowest"]       = { fg = col.bright_gray, nocombine = true },
+    ["plan"]                  = { fg = col.light_blue },
+    ["timestamp.active"]      = { fg = col.magenta },
+    ["tag"]                   = { fg = col.teal, nocombine = true },
+    ["verbatim"]              = { bg = pal.bg01 },
+    ["code"]                  = { bg = pal.bg01 },
+
+    ["agenda.header"]         = { link = "*headline.level1" },
+    ["agenda.day"]            = { fg = pal.fg0 },
+    ["agenda.today"]          = { fg = pal.fg0, bg = pal.bg01 },
+    ["agenda.scheduled_past"] = { fg = pal.fg0, italic = true },
+    ["agenda.deadline"]       = { fg = col.orange, italic = true },
+    ["agenda.weekend"]        = { fg = col.bright_gray },
+
+    ["checkbox"]              = { fg = col.bright_gray },
+    ["checkbox.checked"]      = { fg = col.bright_gray },
+    ["checkbox.halfchecked"]  = { fg = col.magenta },
+
+    properties                = { fg = col.bright_gray },
+})
+
+add_with_prefix(colorscheme, "Org", {
+    CalendarSelected = { bg = pal.bg1 },
+    CalendarToday    = { fg = col.teal },
+})
 
 return colorscheme

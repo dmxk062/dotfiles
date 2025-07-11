@@ -373,6 +373,12 @@ map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end, { des
 
 -- Improve Builtin Mappings {{{
 -- stop {} from polluting the jumplist
+
+-- make them wait until I press another key
+-- most useful for leaders like this
+map("n", "\\", "<nop>")
+map("n", "<space>", "<nop>")
+
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 

@@ -11,6 +11,7 @@ local nomodified_names = {
     checkhealth = { "[health]" },
     lazy = { "[lazy]" },
     mason = { "[mason]" },
+    orgagenda = { "[org: Agenda]" },
     ["grug-far"] = { "[grug-far]" }
 }
 

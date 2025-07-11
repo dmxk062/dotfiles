@@ -143,10 +143,11 @@ M.config = function(_, opts)
             vim.api.nvim_win_set_width(winid, new_width)
         end
     end)
+
     --HACK: reset colorscheme
-    vim.schedule(function()
+    vim.defer_fn(function()
         vim.cmd.colorscheme(vim.g.colors_name)
-    end)
+    end, 1000)
 end
 
 return M

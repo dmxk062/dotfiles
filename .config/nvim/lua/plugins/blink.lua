@@ -112,9 +112,14 @@ M.opts.sources = {
     default = { "lsp", "path", "snippets", "buffer" },
     per_filetype = {
         oil = { "path", "buffer", "snippets" },
+        org = { "orgmode", "snippets", "buffer"},
         Input = { "omni" },
     },
     providers = {
+        orgmode = {
+            module = "orgmode.org.autocompletion.blink",
+            fallbacks = { "buffer" },
+        },
         path = {
             opts = {
                 -- more useful tbh

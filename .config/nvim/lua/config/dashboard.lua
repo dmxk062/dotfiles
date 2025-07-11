@@ -277,22 +277,22 @@ do
             hl = "EditFiles"
         },
         {
-            "Live Grep",
-            desc = "Search by content",
-            key = "*",
+            "Agenda",
+            desc = "Show current org agenda",
+            key = "a",
             on_click = function()
-                require("telescope.builtin").live_grep()
+                Org.agenda.a()
             end,
-            hl = "GrepFiles"
+            hl = "Agenda"
         },
         {
-            "Git Files",
-            desc = "List tracked files",
-            key = "G",
+            "Capture",
+            desc = "Capture note using org",
+            key = "w",
             on_click = function()
-                require("telescope.builtin").git_files()
+                Org.capture()
             end,
-            hl = "GitFiles"
+            hl = "Capture"
         },
         {
             "Plugins",
