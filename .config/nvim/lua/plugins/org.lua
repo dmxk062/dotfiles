@@ -244,14 +244,17 @@ M.config = function()
                     ---@type vim.quickfix.entry[]
                     local entries = {}
                     for _, headline in ipairs(headlines) do
-                        local pos = headline:get_range()
-                        ---@type vim.quickfix.entry
-                        local entry = {
-                            lnum = pos.start_line,
-                            bufnr = buf,
-                            text = headline:get_title()
-                        }
-                        table.insert(entries, entry)
+                        local level = headline:get_level()
+                        if level < 4 then
+                            local pos = headline:get_range()
+                            ---@type vim.quickfix.entry
+                            local entry = {
+                                lnum = pos.start_line,
+                                bufnr = buf,
+                                text = headline:get_title(),
+                            }
+                            table.insert(entries, entry)
+                        end
                     end
 
                     vim.fn.setloclist(0, entries)
