@@ -26,7 +26,8 @@ return {
                 break
             end
         end
-        if not is_in_rtp
+        if not vim.g.is_neovim and
+            not is_in_rtp
             and not vim.startswith(path, vim.fn.stdpath("data")) then
             return
         end
