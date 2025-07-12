@@ -1,0 +1,11 @@
+{
+    "source": {
+        "prefix": "src",
+        "description": "Source code block",
+        "body": [
+            "#+begin_src ${1}",
+            "$0",
+            "#+end_src"
+        ] 
+    }
+}

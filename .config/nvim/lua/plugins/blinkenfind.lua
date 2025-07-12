@@ -1,5 +1,5 @@
 ---@type LazySpec
 return {
-    "dmxk062/nvim-blinkenfind",
+    "johk06/nvim-blinkenfind",
     opts = {}
 }

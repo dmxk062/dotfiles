@@ -185,6 +185,8 @@ local colorscheme = {
     manBold                     = { bg = pal.bg0 },
     manReference                = { link = "@markup.link" },
 
+    SniprunVirtualTextOk        = { link = "@comment" },
+    SniprunVirtualTextErr        = { italic = true, fg = col.red },
 }
 -- }}}
 
@@ -338,8 +340,8 @@ add_with_prefix(colorscheme, "@lsp.", {
 add_with_prefix(colorscheme, "Sl", {
     AReg        = { bg = pal.bg1, fg = col.light_blue },
     IReg        = { fg = col.light_blue },
-    ASpecial    = { bg = pal.bg1, fg = col.yellow },
-    ISpecial    = { fg = col.yellow },
+    ASpecial    = { bg = pal.bg1, fg = col.magenta },
+    ISpecial    = { fg = col.magenta },
     AHelp       = { bg = pal.bg1, fg = col.yellow },
     IHelp       = { fg = col.yellow },
     ATab        = { bg = pal.bg1, fg = col.pink },

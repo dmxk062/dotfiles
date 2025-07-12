@@ -2,7 +2,8 @@
     "name": "config-snippets",
     "contributes": {
         "snippets": [
-            { "language": "lua", "path": "./lua.json" }
+            { "language": "lua", "path": "./lua.json" },
+            { "language": "org", "path": "./org.json" }
         ]
     }
 }

@@ -151,8 +151,8 @@ opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins", {
     -- so i can work on my own local plugins
     dev = {
-        path = "~/ws/nvim_plugins",
-        patterns = { "dmxk062" },
+        path = "~/ws/",
+        patterns = { "johk06" },
         fallback = true,
     },
 

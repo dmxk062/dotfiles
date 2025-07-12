@@ -15,6 +15,10 @@ M = {
             end
         })
     end,
+    dependencies = {
+        "johk06/orgmode-eval",
+        opts = {},
+    }
 }
 
 ---@type fun(data: OrgMenuData)
@@ -211,7 +215,10 @@ opts.mappings.org = {
 }
 
 M.config = function()
-    require("orgmode").setup(opts)
+    local orgmode = require("orgmode")
+    orgmode.setup(opts)
+    local eval = require("orgmode-eval")
+
 
     local utils = require("config.utils")
     utils.autogroup("config.orgmode", {
@@ -220,11 +227,36 @@ M.config = function()
             callback = function(ev)
                 local map = utils.local_mapper(ev.buf)
                 map("n", "<localleader>l", "<cmd>Telescope orgmode insert_link<cr>")
-                map("i", "<C-l>", "<cmd>Telescope orgmode insert_link<cr>")
                 map("n", "<localleader>/", "<cmd>Telescope orgmode search_headings<cr>")
+                map("i", "<C-l>", "<cmd>Telescope orgmode insert_link<cr>")
 
                 -- The default <cr> mapping is nothing but broken
                 map("i", "<cr>", "<cr>")
+
+                map("n", "<space>e", eval.run_code_block)
+                map("n", "<space>E", eval.clear_buffer)
+
+                -- Mimic markdown
+                map("n", "gO", function()
+                    local file = orgmode.files:get_current_file()
+                    local buf = file:bufnr()
+                    local headlines = file:get_headlines()
+                    ---@type vim.quickfix.entry[]
+                    local entries = {}
+                    for _, headline in ipairs(headlines) do
+                        local pos = headline:get_range()
+                        ---@type vim.quickfix.entry
+                        local entry = {
+                            lnum = pos.start_line,
+                            bufnr = buf,
+                            text = headline:get_title()
+                        }
+                        table.insert(entries, entry)
+                    end
+
+                    vim.fn.setloclist(0, entries)
+                    vim.cmd.lwin()
+                end)
             end
         }
     })
