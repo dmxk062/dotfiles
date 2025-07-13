@@ -56,6 +56,8 @@ mode "media" {
     Mod1+Shift+N exec $sc/pulse_cycle.sh source prev
     Mod1+M       exec $sc/audio_popup.sh DEFAULT_SOURCE mute
 
+
+    S exec playerctl position 0
     H exec playerctl position 5-
     L exec playerctl position 5+
     Shift+H exec playerctl previous

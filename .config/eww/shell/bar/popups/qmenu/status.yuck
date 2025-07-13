@@ -172,7 +172,7 @@
                 (label :halign "start" :class "weather-wind"
                     :text "󱪈  ${weather.current_condition[0].windspeedKmph} km/h")
                 (label :halign "start" :class "weather-description"
-                    :limit-width 16
+                    :limit-width 14
                     :text "󰋽   ${weather.current_condition[0].weatherDesc[0].value}"))
             (box :vexpand false :hexpand true :valign "start" :halign "end"
                 (button :class "sbutton" 

@@ -16,6 +16,7 @@
     {"keys": "[0-9]", "action": "Set Volume" },
     {"keys": "[nN]", "action": "Cycle Device"},
     {"keys": "m", "action": "Mute / Unmute"},
+    {"keys": "s", "action": "Start"},
     {"keys": "<Space>", "action": "Play / Pause"}
 ],
 "screenshot": [
@@ -50,11 +51,11 @@
 ],
 "clipboard": [
     {"keys": "<M-*>", "action": "Operate on Selection"},
-    {"keys": "P", "action": "Print"},
-    {"keys": "Y", "action": "Copy other"},
-    {"keys": "E", "action": "Edit"},
-    {"keys": "T", "action": "Translate"},
-    {"keys": "C", "action": "Clear"}
+    {"keys": "p", "action": "Print"},
+    {"keys": "y", "action": "Copy other"},
+    {"keys": "e", "action": "Edit"},
+    {"keys": "t", "action": "Translate"},
+    {"keys": "c", "action": "Clear"}
 ]
 }')
 
