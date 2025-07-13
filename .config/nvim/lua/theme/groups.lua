@@ -184,9 +184,6 @@ local colorscheme = {
 
     manBold                     = { bg = pal.bg0 },
     manReference                = { link = "@markup.link" },
-
-    SniprunVirtualTextOk        = { link = "@comment" },
-    SniprunVirtualTextErr        = { italic = true, fg = col.red },
 }
 -- }}}
 
@@ -328,11 +325,6 @@ add_with_prefix(colorscheme, "@lsp.", {
     -- so --HACK etc work
     ["type.comment"]                    = {},
     ["typemod.keyword.documentation"]   = { fg = col.light_blue },
-
-    -- remove unnecessary highlights
-    ["type.class.markdown"]             = {},
-    -- tags in zettelkasten
-    ["type.enumMember.markdown"]        = { fg = col.teal, bg = pal.bg1 },
 })
 -- }}}
 
@@ -737,7 +729,7 @@ add_with_prefix(colorscheme, "@org.", {
     ["priority.lowest"]       = { fg = col.bright_gray, nocombine = true },
     ["plan"]                  = { fg = col.light_blue },
     ["timestamp.active"]      = { fg = col.magenta },
-    ["tag"]                   = { fg = col.teal, nocombine = true },
+    ["tag"]                   = { fg = col.purple, nocombine = true },
     ["verbatim"]              = { bg = pal.bg01 },
     ["code"]                  = { bg = pal.bg01 },
 
@@ -748,6 +740,8 @@ add_with_prefix(colorscheme, "@org.", {
     ["agenda.deadline"]       = { fg = col.orange, italic = true },
     ["agenda.weekend"]        = { fg = col.bright_gray },
 
+    ["hyperlink"]             = { link = "@punctuation.delimiter" },
+    ["bullet"]                = { fg = col.bright_gray },
     ["checkbox"]              = { fg = col.bright_gray },
     ["checkbox.checked"]      = { fg = col.bright_gray },
     ["checkbox.halfchecked"]  = { fg = col.magenta },

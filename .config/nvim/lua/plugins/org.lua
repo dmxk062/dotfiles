@@ -180,7 +180,8 @@ opts.mappings.org = {
     org_archive_subtree                     = "<localleader>$",
     org_set_tags_command                    = "<localleader>t",
     org_toggle_archive_tag                  = "<localleader>a",
-    org_insert_heading_respect_content      = "<localleader>o",
+    org_meta_return                         = "<localleader>o",
+    org_insert_heading_respect_content      = "<localleader>h",
     org_insert_todo_heading_respect_content = "<localleader>t",
 
     org_move_subtree_up                     = "<t",
@@ -188,29 +189,31 @@ opts.mappings.org = {
     org_timestamp_down_day                  = "<d",
     org_timestamp_up_day                    = ">d",
 
+
     -- Use [y]ou like surround, e.g. [y]ou [s]urround
-    org_deadline                            = "yd",
-    org_priority                            = "yp",
-    org_schedule                            = "y@",
-    org_time_stamp                          = "y.",
-    org_time_stamp_inactive                 = "y!",
-    org_toggle_timestamp_type               = "g!",
+    org_deadline              = "yd",
+    org_priority              = "yp",
+    org_schedule              = "y@",
+    org_time_stamp            = "y.",
+    org_time_stamp_inactive   = "y!",
+    org_toggle_timestamp_type = "g!",
 
-    org_clock_in                            = "<localleader>ci",
-    org_clock_out                           = "<localleader>cq",
-    org_clock_cancel                        = "<localleader>cc",
-    org_clock_goto                          = "<localleader>cg",
+    org_clock_in              = "<localleader>ci",
+    org_clock_out             = "<localleader>cq",
+    org_clock_cancel          = "<localleader>cc",
+    org_clock_goto            = "<localleader>cg",
 
-    org_export                              = "<localleader>x",
-    org_babel_tangle                        = "<localleader>X",
-    org_refile                              = "<localleader>r",
+    org_export                = "<localleader>x",
+    org_babel_tangle          = "<localleader>X",
+    org_refile                = "<localleader>r",
 
-    org_open_at_point                       = "<cr>",
+    org_open_at_point         = "<cr>",
 
     ---@diagnostic disable: assign-type-mismatch
-    org_insert_todo_heading                 = false,
-    org_set_effort                          = false,
-    org_insert_link                         = false,
+    org_insert_todo_heading   = false,
+    org_set_effort            = false,
+    org_insert_link           = false,
+    org_cycle                 = false,
     ---@diagnostic enable
 }
 
@@ -232,6 +235,10 @@ M.config = function()
 
                 -- The default <cr> mapping is nothing but broken
                 map("i", "<cr>", "<cr>")
+
+                map("i", "<M-CR>", function()
+                    orgmode.action("org_mappings.meta_return")
+                end)
 
                 map("n", "<space>e", eval.run_code_block)
                 map("n", "<space>E", eval.clear_buffer)
