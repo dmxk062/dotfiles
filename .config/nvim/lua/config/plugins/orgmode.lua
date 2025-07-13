@@ -1,0 +1,168 @@
+local M = {}
+
+local org = require("orgmode")
+
+---@type fun(data: OrgMenuData)
+M.Menu = function(data)
+    local max_width = math.floor(vim.o.columns / 2)
+    for _, item in ipairs(data.items) do
+        local width = vim.fn.strdisplaywidth(item.label) + 2
+        if width > max_width then
+            max_width = width
+        end
+    end
+
+    local keys = {}
+    local buf = vim.api.nvim_create_buf(false, true)
+    local items = {}
+    for _, item in ipairs(data.items) do
+        if item.key then
+            keys[item.key] = item
+            table.insert(items, ("%s %s"):format(item.key, item.label))
+        end
+    end
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, items)
+    local win = vim.api.nvim_open_win(buf, false, {
+        title = data.title,
+        title_pos = "center",
+        style = "minimal",
+        relative = "laststatus",
+        anchor = "SW",
+        col = 0,
+        row = 0,
+        width = max_width + 2,
+        height = #items,
+    })
+
+    local ns = require("config.ui").ns
+    for i = 1, #items do
+        vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0, {
+            end_line = i - 1,
+            end_col = 1,
+            hl_group = "SpecialChar",
+        })
+    end
+
+    vim.cmd.redraw()
+    local key = vim.fn.getcharstr(-1, { cursor = "hide" })
+    vim.api.nvim_win_close(win, true)
+
+    local entry = keys[key]
+    if entry and entry.action then
+        return entry.action()
+    end
+end
+
+M.table_of_contents = function()
+    local file = org.files:get_current_file()
+    local buf = file:bufnr()
+    local headlines = file:get_headlines()
+    ---@type vim.quickfix.entry[]
+    local entries = {}
+    for _, headline in ipairs(headlines) do
+        local level = headline:get_level()
+        if level < 4 then
+            local pos = headline:get_range()
+            ---@type vim.quickfix.entry
+            local entry = {
+                lnum = pos.start_line,
+                bufnr = buf,
+                text = headline:get_title(),
+            }
+            table.insert(entries, entry)
+        end
+    end
+
+    vim.fn.setloclist(0, entries)
+    vim.cmd.lwin()
+end
+
+---@param targets vim.quickfix.entry[]
+local jump_using_loclist = function(targets)
+    if #targets == 0 then
+        return
+    end
+
+    local buf = vim.api.nvim_get_current_buf()
+    vim.cmd("normal! m'") -- set jump
+    if #targets == 1 then
+        local target = targets[1]
+        if target.bufnr == buf then
+            vim.api.nvim_win_set_cursor(0, { target.lnum, target.col - 1 })
+        else
+            local newbuf = target.bufnr or vim.fn.bufadd(target.filename)
+            vim.api.nvim_win_set_buf(0, newbuf)
+            vim.api.nvim_win_set_cursor(0, { target.lnum, target.col - 1 })
+        end
+        return
+    end
+
+    vim.fn.setloclist(0, targets)
+    vim.cmd.lwin()
+end
+
+---@type OrgLinkType
+M.LineSearchLink = {
+    get_name = function(self)
+        return "line"
+    end,
+    follow = function(self, link)
+        if not vim.startswith(link, "^:") then
+            return false
+        end
+        local buf = vim.api.nvim_get_current_buf()
+
+        local locations = {}
+        local search = link:sub(3)
+        local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+        for i, line in ipairs(lines) do
+            if vim.startswith(line, search) then
+                table.insert(locations, { lnum = i, col = 1, text = line, bufnr = buf })
+            end
+        end
+
+        jump_using_loclist(locations)
+
+        return true
+    end,
+    autocomplete = function(self, link)
+        if not vim.startswith(link, "^:") then
+            return { "^:" }
+        end
+
+        local out = {}
+        local search = link:gsub("^%^:", "")
+        local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+        for _, line in ipairs(lines) do
+            if vim.startswith(line, search) then
+                table.insert(out, "^:" .. line)
+            end
+        end
+        return out
+    end
+}
+
+---@type OrgLinkType
+M.GrepSearchLink = {
+    get_name = function(self)
+        return "grep"
+    end,
+    follow = function(self, link)
+        if not vim.startswith(link, "?:") then
+            return false
+        end
+
+        vim.api.nvim_cmd({
+            cmd = "grep",
+            args = {link:sub(3)},
+        }, {})
+        vim.cmd.grep(link:sub(3))
+        vim.cmd.cwin()
+        return true
+    end,
+    autocomplete = function(self, link)
+        return {"?:"}
+    end
+}
+
+return M

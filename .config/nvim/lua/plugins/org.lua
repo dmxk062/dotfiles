@@ -21,57 +21,6 @@ M = {
     }
 }
 
----@type fun(data: OrgMenuData)
-local Menu = function(data)
-    local max_width = math.floor(vim.o.columns / 2)
-    for _, item in ipairs(data.items) do
-        local width = vim.fn.strdisplaywidth(item.label) + 2
-        if width > max_width then
-            max_width = width
-        end
-    end
-
-    local keys = {}
-    local buf = vim.api.nvim_create_buf(false, true)
-    local items = {}
-    for _, item in ipairs(data.items) do
-        if item.key then
-            keys[item.key] = item
-            table.insert(items, ("%s %s"):format(item.key, item.label))
-        end
-    end
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, items)
-    local win = vim.api.nvim_open_win(buf, false, {
-        title = data.title,
-        title_pos = "center",
-        style = "minimal",
-        relative = "laststatus",
-        anchor = "SW",
-        col = 0,
-        row = 0,
-        width = max_width + 2,
-        height = #items,
-    })
-
-    local ns = require("config.ui").ns
-    for i = 1, #items do
-        vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0, {
-            end_line = i - 1,
-            end_col = 1,
-            hl_group = "SpecialChar",
-        })
-    end
-
-    vim.cmd.redraw()
-    local key = vim.fn.getcharstr(-1, { cursor = "hide" })
-    vim.api.nvim_win_close(win, true)
-
-    local entry = keys[key]
-    if entry and entry.action then
-        return entry.action()
-    end
-end
-
 ---@type OrgConfigOpts
 local opts = {
     hyperlinks = {
@@ -82,9 +31,6 @@ local opts = {
         folds = {
             colored = true
         },
-        menu = {
-            handler = Menu
-        }
     },
     org_agenda_files = {
         "~/org/**/*"
@@ -218,12 +164,17 @@ opts.mappings.org = {
 }
 
 M.config = function()
-    local orgmode = require("orgmode")
-    orgmode.setup(opts)
+    local utils = require("config.utils")
+    local custom = require("config.plugins.orgmode")
     local eval = require("orgmode-eval")
 
+    opts.ui.menu = { handler = custom.Menu }
+    local orgmode = require("orgmode")
+    orgmode.setup(opts)
 
-    local utils = require("config.utils")
+    orgmode.links:add_type(custom.LineSearchLink)
+    orgmode.links:add_type(custom.GrepSearchLink)
+
     utils.autogroup("config.orgmode", {
         FileType = {
             pattern = "org",
@@ -244,29 +195,7 @@ M.config = function()
                 map("n", "<space>E", eval.clear_buffer)
 
                 -- Mimic markdown
-                map("n", "gO", function()
-                    local file = orgmode.files:get_current_file()
-                    local buf = file:bufnr()
-                    local headlines = file:get_headlines()
-                    ---@type vim.quickfix.entry[]
-                    local entries = {}
-                    for _, headline in ipairs(headlines) do
-                        local level = headline:get_level()
-                        if level < 4 then
-                            local pos = headline:get_range()
-                            ---@type vim.quickfix.entry
-                            local entry = {
-                                lnum = pos.start_line,
-                                bufnr = buf,
-                                text = headline:get_title(),
-                            }
-                            table.insert(entries, entry)
-                        end
-                    end
-
-                    vim.fn.setloclist(0, entries)
-                    vim.cmd.lwin()
-                end)
+                map("n", "gO", custom.table_of_contents)
             end
         }
     })
