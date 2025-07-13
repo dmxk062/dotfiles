@@ -101,6 +101,21 @@ local jump_using_loclist = function(targets)
     vim.cmd.lwin()
 end
 
+local select_buf_lines = function(predicate)
+    local buf = vim.api.nvim_get_current_buf()
+
+    local locations = {}
+    local start_line = vim.api.nvim_win_get_cursor(0)[1]
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    for i, line in ipairs(lines) do
+        if i ~= start_line and predicate(line) then
+            table.insert(locations, { lnum = i, col = 1, text = line, bufnr = buf })
+        end
+    end
+
+    jump_using_loclist(locations)
+end
+
 ---@type OrgLinkType
 M.LineSearchLink = {
     get_name = function(self)
@@ -110,18 +125,11 @@ M.LineSearchLink = {
         if not vim.startswith(link, "^:") then
             return false
         end
-        local buf = vim.api.nvim_get_current_buf()
 
-        local locations = {}
         local search = link:sub(3)
-        local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-        for i, line in ipairs(lines) do
-            if vim.startswith(line, search) then
-                table.insert(locations, { lnum = i, col = 1, text = line, bufnr = buf })
-            end
-        end
-
-        jump_using_loclist(locations)
+        select_buf_lines(function(line)
+            return vim.startswith(line, search)
+        end)
 
         return true
     end,
@@ -143,25 +151,25 @@ M.LineSearchLink = {
 }
 
 ---@type OrgLinkType
-M.GrepSearchLink = {
+M.RegexSearchLink = {
     get_name = function(self)
-        return "grep"
+        return "search"
     end,
     follow = function(self, link)
         if not vim.startswith(link, "?:") then
             return false
         end
 
-        vim.api.nvim_cmd({
-            cmd = "grep",
-            args = {link:sub(3)},
-        }, {})
-        vim.cmd.grep(link:sub(3))
-        vim.cmd.cwin()
+        local regex = vim.regex(link:sub(3))
+
+        select_buf_lines(function(line)
+            return regex:match_str(line)
+        end)
+
         return true
     end,
     autocomplete = function(self, link)
-        return {"?:"}
+        return { "?:" }
     end
 }
 

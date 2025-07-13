@@ -173,7 +173,7 @@ M.config = function()
     orgmode.setup(opts)
 
     orgmode.links:add_type(custom.LineSearchLink)
-    orgmode.links:add_type(custom.GrepSearchLink)
+    orgmode.links:add_type(custom.RegexSearchLink)
 
     utils.autogroup("config.orgmode", {
         FileType = {
