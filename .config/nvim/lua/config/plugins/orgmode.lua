@@ -23,7 +23,7 @@ M.Menu = function(data)
     end
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, items)
     local win = vim.api.nvim_open_win(buf, false, {
-        title = data.title,
+        title = data.title ~= data.prompt and ("%s - %s"):format(data.title, data.prompt) or data.title,
         title_pos = "center",
         style = "minimal",
         relative = "laststatus",
@@ -170,6 +170,18 @@ M.RegexSearchLink = {
     end,
     autocomplete = function(self, link)
         return { "?:" }
+    end
+}
+
+---@type OrgCustomExport
+M.typst_exporter = {
+    label = "Export to Typst",
+    ---@param export fun(command: string[], target: string)
+    action = function(export)
+        local file = vim.api.nvim_buf_get_name(0)
+        local target = vim.fn.fnamemodify(file, ":p:r") .. ".typ"
+        local command = { "pandoc", file, "-o", target }
+        export(command, target)
     end
 }
 

@@ -169,6 +169,9 @@ M.config = function()
     local eval = require("orgmode-eval")
 
     opts.ui.menu = { handler = custom.Menu }
+    opts.org_custom_exports = {
+        t = custom.typst_exporter
+    }
     local orgmode = require("orgmode")
     orgmode.setup(opts)
 

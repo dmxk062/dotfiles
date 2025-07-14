@@ -580,7 +580,8 @@ map("n", "<space>ci", function()
 end, { desc = "Cycle Indent" })
 
 map("n", "<space>cc", function()
-    vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
+    vim.wo.conceallevel =
+        vim.v.count ~= 0 and vim.v.count or (vim.wo.conceallevel == 0 and 2 or 0)
 end, { desc = "Toggle Conceal" })
 
 map("n", "<space>cC", function()
