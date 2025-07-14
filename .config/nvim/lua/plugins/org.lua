@@ -168,15 +168,15 @@ M.config = function()
     local custom = require("config.plugins.orgmode")
     local eval = require("orgmode-eval")
 
-    opts.ui.menu = { handler = custom.Menu }
+    opts.ui.menu = { handler = custom.menu }
     opts.org_custom_exports = {
         t = custom.typst_exporter
     }
     local orgmode = require("orgmode")
     orgmode.setup(opts)
 
-    orgmode.links:add_type(custom.LineSearchLink)
-    orgmode.links:add_type(custom.RegexSearchLink)
+    orgmode.links:add_type(custom.line_search_link)
+    orgmode.links:add_type(custom.regex_search_link)
 
     utils.autogroup("config.orgmode", {
         FileType = {

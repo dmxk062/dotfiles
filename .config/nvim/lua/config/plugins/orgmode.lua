@@ -3,7 +3,7 @@ local M = {}
 local org = require("orgmode")
 
 ---@type fun(data: OrgMenuData)
-M.Menu = function(data)
+M.menu = function(data)
     local max_width = math.floor(vim.o.columns / 2)
     for _, item in ipairs(data.items) do
         local width = vim.fn.strdisplaywidth(item.label) + 2
@@ -117,7 +117,7 @@ local select_buf_lines = function(predicate)
 end
 
 ---@type OrgLinkType
-M.LineSearchLink = {
+M.line_search_link = {
     get_name = function(self)
         return "line"
     end,
@@ -151,7 +151,7 @@ M.LineSearchLink = {
 }
 
 ---@type OrgLinkType
-M.RegexSearchLink = {
+M.regex_search_link = {
     get_name = function(self)
         return "search"
     end,
