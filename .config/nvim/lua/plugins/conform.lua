@@ -18,7 +18,7 @@ local M = {
 ---@type conform.setupOpts
 M.opts = {
     formatters_by_ft = {
-        _    = { "trim_whitespace" },
+        _    = { "trim_whitespace", "injected", lsp_format = "last" },
         c    = { "clang-format" },
         go   = { "gofmt" },
         json = { "jq" },
@@ -27,7 +27,7 @@ M.opts = {
         xml  = { "xmllint" },
     },
     default_format_opts = {
-        lsp_format = "fallback"
+        lsp_format = "fallback",
     },
     formatters = {
         jq = {
