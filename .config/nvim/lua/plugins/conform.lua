@@ -1,4 +1,4 @@
-local utils = require "config.utils"
+local utils = require("config.utils")
 ---@type LazySpec
 local M = {
     "stevearc/conform.nvim",
@@ -10,22 +10,21 @@ local M = {
             function()
                 require("conform").format { async = true }
             end,
-            mode = { "n", "x" }
-        }
-    }
+            mode = { "n", "x" },
+        },
+    },
 }
 
 ---@type conform.setupOpts
 M.opts = {
     formatters_by_ft = {
-        lua  = { "stylua" },
+        _    = { "trim_whitespace" },
         c    = { "clang-format" },
         go   = { "gofmt" },
         json = { "jq" },
         sh   = { "shfmt" },
         toml = { "taplo" },
         xml  = { "xmllint" },
-        _    = { "trim_whitespace" },
     },
     default_format_opts = {
         lsp_format = "fallback"
