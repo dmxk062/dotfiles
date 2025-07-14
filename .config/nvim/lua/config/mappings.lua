@@ -61,6 +61,7 @@ unmap("n", "grn") -- rename
 unmap("n", "gra") -- actions
 unmap("n", "grr") -- references
 unmap("n", "gri") -- implementation
+unmap("n", "grt") -- type definition
 -- }}}
 
 --[[ qflist / loclist {{{

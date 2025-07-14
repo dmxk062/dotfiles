@@ -70,6 +70,11 @@ local lsp_mappings = {
         function() require("telescope.builtin").lsp_implementations() end,
         { desc = "LSP: Select Implementations" }
     },
+    {
+        "n", "gT",
+        function() require("telescope.builtin").lsp_type_definitions() end,
+        { desc = "LSP: Select Type Definitions" }
+    },
 
     -- Open in a split
     {
@@ -209,9 +214,9 @@ local on_lsp_attached = function(ev)
             return vim.uri_to_fname(t.uri) .. "/**"
         end, client.workspace_folders)
 
+        vim.opt_local.path:prepend(workspace_path)
         -- remove all the basic wildcards
         vim.opt_local.path:remove { "*", "../*" }
-        vim.opt_local.path:prepend(workspace_path)
 
         fn.chdir(vim.uri_to_fname(client.workspace_folders[1].uri))
     end
