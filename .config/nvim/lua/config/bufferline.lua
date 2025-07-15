@@ -41,6 +41,7 @@ local function update_buflist()
     local count = 1
     local out = {}
     local active_buf = api.nvim_get_current_buf()
+    local alt_buf = vim.fn.bufnr("#")
     local buffers = api.nvim_list_bufs()
 
     local windows = api.nvim_list_wins()
@@ -77,20 +78,21 @@ local function update_buflist()
         if mark then
             for i, tag in ipairs(grapple_tags) do
                 if tag.path == mark.path then
-                    grapple_mark = string.format("%%#%sGrapple#'%d ", hlprefix, i)
+                    grapple_mark = string.format("%%#%sGrapple#'%d", hlprefix, i)
                     break
                 end
             end
         end
 
 
-        local res = string.format("%s%s%%#%s#%d %%#%s#%s %s%s%s",
+        local res = string.format("%s%%#%s#%d %%#%s#%s%%#%s#%s %s%s%s",
             current and "%#SlASL#" or (count > 1 and "%#SlASL#|" or " "),
-            grapple_mark,
             hlprefix .. btypehighlights[kind],
             count,
-            hlprefix .. (wincount == 0 and "Hidden" or "Text"),
+            hlprefix .. (alt_buf == b and "Alt" or "") .. (wincount == 0 and "Hidden" or "Text"),
             (name or "[-]"),
+            hlprefix .. (wincount == 0 and "Hidden" or "Text"),
+            grapple_mark,
             (readonly and show_modified and "%#" .. hlprefix .. "Readonly#[ro]" or ""),
             (show_modified and not readonly
                 and (changed and "%#" .. hlprefix .. "Changed#~" or " ")
