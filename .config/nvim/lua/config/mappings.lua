@@ -136,8 +136,8 @@ end, { desc = "Loclist: Vertical" })
 map("n", "glE", function() vim.diagnostic.setqflist { open = true } end, { desc = "Qflist: Diagnostics ([E]rrors)" })
 map("n", "gle", function() vim.diagnostic.setloclist { open = true } end, { desc = "Loclist: Diagnostics ([E]rrors)" })
 -- list all TODOs, only when followed by a description
-map("n", "glT", "<cmd>silent grep '\\bTODO:'|cwin<cr>", { desc = "Qflist: TODOs" })
-map("n", "glt", "<cmd>silent lvimgrep /\\<TODO:/ %|lwin<cr>", { desc = "Loclist: TODOs" })
+map("n", "glT", [[<cmd>silent grep '\b(TODO\|HACK\|FIXME):'|cwin<cr>]], { desc = "Qflist: List TODOs" })
+map("n", "glt", [[<cmd>silent lvimgrep /\<\%(TODO\|HACK\|FIXME\):/ %|lwin<cr>]], { desc = "Loclist: List TODOs" })
 
 local spell_severity_mapping = {
     ["bad"] = "E",
