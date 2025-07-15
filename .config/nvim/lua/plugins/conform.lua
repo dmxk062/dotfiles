@@ -18,13 +18,14 @@ local M = {
 ---@type conform.setupOpts
 M.opts = {
     formatters_by_ft = {
-        _    = { "trim_whitespace", "injected", lsp_format = "last" },
-        c    = { "clang-format" },
-        go   = { "gofmt" },
-        json = { "jq" },
-        sh   = { "shfmt" },
-        toml = { "taplo" },
-        xml  = { "xmllint" },
+        _     = { "trim_whitespace", "injected", lsp_format = "last" },
+        c     = { "clang-format" },
+        go    = { "gofmt" },
+        query = { "format-queries" },
+        json  = { "jq" },
+        sh    = { "shfmt" },
+        toml  = { "taplo" },
+        xml   = { "xmllint" },
     },
     default_format_opts = {
         lsp_format = "fallback",
