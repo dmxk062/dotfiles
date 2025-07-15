@@ -94,7 +94,7 @@ local colorized_display = function(entry, content)
     }
 end
 
----@type grapple.options
+---@type grapple.settings
 local opts = {
     scope = "lsp",
     icons = false,
@@ -155,6 +155,14 @@ M.config = function()
             grapple.open_tags()
         else
             grapple.select { index = vim.v.count }
+        end
+    end)
+    -- split
+    map("n", '<M-C-g>', function()
+        if vim.v.count == 0 then
+            grapple.open_tags()
+        else
+            grapple.select { index = vim.v.count, command = vim.cmd.Split }
         end
     end)
 end
