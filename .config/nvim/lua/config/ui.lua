@@ -5,7 +5,6 @@ local ns = api.nvim_create_namespace("config.ui")
 M.ns = ns
 local utils = require("config.utils")
 
--- vim.ui.input {{{
 local cur_completion
 M.nvim_input_omnifunc = function(start, base)
     local compl = cur_completion
@@ -145,10 +144,9 @@ M.nvim_input = function(opts, callback)
     map({ "n" }, "<esc>", confirm)
     map({ "i", "s" }, "<Tab>", "<C-n>", { remap = true })
 
-    if not opts.default then
+    if not opts.default or opts.default:match("^%s*$") then
         vim.cmd.startinsert()
     end
 end
--- }}}
 
 return M

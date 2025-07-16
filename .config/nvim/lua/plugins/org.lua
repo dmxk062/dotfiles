@@ -28,6 +28,9 @@ local opts = {
         }
     },
     ui = {
+        input = {
+            use_vim_ui = true,
+        },
         folds = {
             colored = true
         },
@@ -120,15 +123,15 @@ opts.mappings.note = {
 
 opts.mappings.org = {
     org_toggle_heading                      = "<localleader>*",
-    org_store_link                          = "<localleader>#",
+    org_store_link                          = "<localleader>s",
     org_edit_special                        = "<localleader>e",
     org_add_note                            = "<localleader>n",
-    org_archive_subtree                     = "<localleader>$",
-    org_set_tags_command                    = "<localleader>t",
+    org_archive_subtree                     = "<localleader>A",
     org_toggle_archive_tag                  = "<localleader>a",
+    org_set_tags_command                    = "<localleader>t",
     org_meta_return                         = "<localleader>o",
     org_insert_heading_respect_content      = "<localleader>h",
-    org_insert_todo_heading_respect_content = "<localleader>t",
+    org_insert_todo_heading_respect_content = "<localleader>d",
 
     org_move_subtree_up                     = "<t",
     org_move_subtree_down                   = ">t",
@@ -154,11 +157,12 @@ opts.mappings.org = {
     org_refile                = "<localleader>r",
 
     org_open_at_point         = "<cr>",
+    org_insert_link           = "<localleader>i",
 
     ---@diagnostic disable: assign-type-mismatch
     org_insert_todo_heading   = false,
     org_set_effort            = false,
-    org_insert_link           = false,
+    -- I prefer my own tab
     org_cycle                 = false,
     ---@diagnostic enable
 }

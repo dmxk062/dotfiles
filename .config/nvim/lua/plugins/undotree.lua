@@ -19,7 +19,7 @@ M.config = function()
     g.undotree_TreeSplitShape = "⟋"
     g.undotree_TreeReturnShape = "⟍"
 
-    _Undotree_on_win_enter = function()
+    Jhk.Undotree_on_win_enter = function()
         vim.wo[0][0].cursorlineopt = "both"
         local buf = vim.api.nvim_get_current_buf()
 
@@ -39,7 +39,7 @@ M.config = function()
     -- TODO: Get rid of this vimscript
     vim.cmd [[
     function g:Undotree_CustomMap()
-        call v:lua._Undotree_on_win_enter()
+        call v:lua.Jhk.Undotree_on_win_enter()
     endfunction
     ]]
 end
