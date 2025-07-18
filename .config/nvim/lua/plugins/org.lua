@@ -99,9 +99,9 @@ opts.mappings.agenda = {
     org_agenda_add_note           = "<localleader>n",
     org_agenda_deadline           = "d",
     org_agenda_schedule           = "s",
+    org_agenda_archive            = "A",
 
     ---@diagnostic disable: assign-type-mismatch Type annotations do not match the docs
-    org_agenda_archive            = false,
     org_agenda_set_effort         = false,
     org_agenda_clock_goto         = false,
     org_agenda_refile             = false,

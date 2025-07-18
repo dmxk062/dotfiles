@@ -321,7 +321,7 @@ add_with_prefix(colorscheme, "@lsp.", {
 
     ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
 
-    ["typemod.function.defaultLibrary"] = { link = "@function.builtin" },
+    -- ["typemod.function.defaultLibrary"] = { link = "@function.builtin" },
     -- so --HACK etc work
     ["type.comment"]                    = {},
     ["typemod.keyword.documentation"]   = { fg = col.light_blue },
