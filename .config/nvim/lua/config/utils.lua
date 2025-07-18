@@ -141,6 +141,7 @@ local extension_highlights = {
     ["a"]       = "Archive",
     ["as"]      = "Code",
     ["c"]       = "Code",
+    ["cc"]      = "Code",
     ["cfg"]     = "Config",
     ["conf"]    = "Config",
     ["cpp"]     = "Code",
