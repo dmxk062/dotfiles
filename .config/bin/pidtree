@@ -1,0 +1,15 @@
+#!/bin/sh
+
+for pid in "$@"; do
+    if [ ! -d /proc/$pid ]; then
+        echo "No such process $pid" >&2
+        break
+    fi
+    while [ "$pid" -gt 0 ]; do
+        read -r id _ _ pid _ </proc/$pid/stat
+        printf "%5d " "$id"
+        sed s'/\x00/ /g' </proc/$id/cmdline
+        echo
+    done
+    echo
+done
