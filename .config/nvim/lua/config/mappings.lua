@@ -144,8 +144,8 @@ local spell_severity_mapping = {
     ["caps"] = "W",
     ["rare"] = "H",
     ["local"] = "I"
-
 }
+
 local get_spelling_errors = function()
     if not vim.wo.spell then
         utils.error("Spell", "'spell' is not set")
@@ -220,6 +220,15 @@ end, { desc = "Qflist: Spelling" })
 
 map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true }) end)
 map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true }) end)
+
+map("n", "<space>m", function()
+    vim.cmd [[
+    write
+    silent make
+    cwindow
+    ]]
+    require("quicker").refresh()
+end, { desc = "Make" })
 
 -- toggle them
 map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
