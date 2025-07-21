@@ -63,13 +63,13 @@ function M.format_buf_name(buf, short)
     elseif vim.b[buf].special_buftype then
         return fn.fnamemodify(name, ":t"), vim.b[buf].special_buftype, true
     elseif ft == "help" then
-        return fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
+        return ":h " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
     elseif ft == "git" then
         return "[git]", "git", false
     elseif ft == "fugitiveblame" then
         return "[git-blame]", "git", false
     elseif ft == "man" then
-        return fn.fnamemodify(name, ":t"), "help", false
+        return "man " .. fn.fnamemodify(name, ":t"), "help", false
     elseif ft == "qf" then
         if not buf_list_type[buf] then
             local win = fn.bufwinid(buf)
