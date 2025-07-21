@@ -604,6 +604,18 @@ map("n", "<space>cC", function()
         vim.wo.concealcursor = "n"
     end
 end, { desc = "Cycle Concealcursor" })
+
+map("n", "<space>cd", function()
+    if vim.wo.number then
+        vim.wo.number = false
+        vim.wo.foldcolumn = "0"
+        vim.wo.relativenumber = false
+    else
+        vim.wo.number = true
+        vim.wo.foldcolumn = "1"
+        vim.wo.relativenumber = true
+    end
+end, { desc = "Change Decoration" })
 -- }}}
 
 -- Give Q more purpose {{{
