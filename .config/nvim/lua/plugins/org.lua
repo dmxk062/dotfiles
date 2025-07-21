@@ -91,8 +91,8 @@ opts.mappings.agenda = {
     org_agenda_filter             = "<localleader>/",
 
     -- I like my find motions
-    org_agenda_later              = "{",
-    org_agenda_earlier            = "}",
+    org_agenda_later              = ">",
+    org_agenda_earlier            = "<",
     org_agenda_today              = ".",
     org_agenda_goto_date          = "?",
 

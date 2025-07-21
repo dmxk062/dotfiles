@@ -314,17 +314,17 @@ add_with_prefix(colorscheme, "@", {
 
 -- LSP semantic highlights {{{
 add_with_prefix(colorscheme, "@lsp.", {
-    ["type.macro"]                      = { link = "@macro" },
-    ["type.enum"]                       = { fg = col.yellow, },
-    ["type.escape"]                     = { link = "@string.escape" },
-    ["type.delim"]                      = { link = "@punctuation.delimiter" },
+    ["type.macro"]                    = { link = "@macro" },
+    ["type.enum"]                     = { fg = col.yellow, },
+    ["type.escape"]                   = { link = "@string.escape" },
+    ["type.delim"]                    = { link = "@punctuation.delimiter" },
 
-    ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
+    ["mod.deprecated"]                = { fg = col.bright_gray, italic = true, strikethrough = true },
 
     -- ["typemod.function.defaultLibrary"] = { link = "@function.builtin" },
     -- so --HACK etc work
-    ["type.comment"]                    = {},
-    ["typemod.keyword.documentation"]   = { fg = col.light_blue },
+    ["type.comment"]                  = {},
+    ["typemod.keyword.documentation"] = { fg = col.light_blue },
 })
 -- }}}
 
@@ -742,6 +742,7 @@ add_with_prefix(colorscheme, "@org.", {
     ["agenda.header"]         = { link = "*headline.level1" },
     ["agenda.day"]            = { fg = pal.fg0 },
     ["agenda.today"]          = { fg = pal.fg0, bg = pal.bg01 },
+    ["agenda.scheduled"]      = { fg = pal.fg0, italic = true },
     ["agenda.scheduled_past"] = { fg = pal.fg0, italic = true },
     ["agenda.deadline"]       = { fg = col.orange, italic = true },
     ["agenda.weekend"]        = { fg = col.bright_gray },
