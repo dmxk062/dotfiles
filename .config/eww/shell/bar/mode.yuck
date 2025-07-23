@@ -1,10 +1,10 @@
 (defvar mode-names '{
-"default": "insert",
-"normal": "normal",
-"media": "media",
-"screenshot": "print",
-"clipboard":"clip",
-"config":"config"
+"default": "Insert",
+"normal": "Normal",
+"media": "Media",
+"screenshot": "Print",
+"clipboard":"Clip",
+"config":"Options"
 }')
 
 (defvar mode-descs '{
