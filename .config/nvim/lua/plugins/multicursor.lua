@@ -29,27 +29,19 @@ Actions to perform on cursors:
 
 ---@param ctx mc.CursorContext
 ---@param capture string
----@param field string
 ---@param range [integer, integer, integer, integer]
-local cursor_for_ts_node = function(ctx, capture, field, range)
-    local query = require("nvim-treesitter.query")
-    local matches = query.get_capture_matches_recursively(0, capture, "textobjects")
+local cursor_for_ts_node = function(ctx, capture, range)
     local main = ctx:mainCursor()
 
-    for _, match in pairs(matches) do
-        local node
-        if match[field] then
-            node = match[field].node
-        end
-        if not node then
-            goto continue
-        end
-        local srow, scol, erow, ecol = vim.treesitter.get_node_range(node)
-        if vim.treesitter._range.contains(range, { srow, scol, erow, ecol }) then
-            main:clone():setMode("v"):setVisual({ erow + 1, ecol }, { srow + 1, scol + 1 })
-        end
+    local matches = require("config.query").get_matches_in_range(0, "textobjects", capture, range, false)
 
-        ::continue::
+    if not matches then
+        return
+    end
+
+    for _, node in pairs(matches) do
+        local srow, scol, erow, ecol = vim.treesitter.get_node_range(node)
+        main:clone():setMode("v"):setVisual({ erow + 1, ecol }, { srow + 1, scol + 1 })
     end
 
     main:delete()
@@ -58,7 +50,7 @@ end
 local map_select_operator = function(keys, capture, field, desc)
     require("config.operators").map_function(keys, function(mode, region, extra, get, set)
         require("multicursor-nvim").action(function(ctx)
-            cursor_for_ts_node(ctx, capture, field, { region[1][1] - 1, region[1][2], region[2][1], region[2][2] })
+            cursor_for_ts_node(ctx, capture, { region[1][1] - 1, region[1][2], region[2][1], region[2][2] })
         end)
     end, { desc = desc })
 end
@@ -150,11 +142,11 @@ function M.config()
     -- `-faa` to match all function arguments on the current line
     -- `-faiF` to match all arguments to a function call
     -- `-fvip` to match all assignments in the current paragraph
-    map_select_operator("-ff", "@function", "outer", "Cursor: Select functions")
-    map_select_operator("-fF", "@call", "inner", "Cursor: Select calls")
-    map_select_operator("-fa", "@parameter", "inner", "Cursor: Select arguments")
-    map_select_operator("-fv", "@assignment", "outer", "Cursor: Select variables")
-    map_select_operator("-fn", "@assignment", "lhs", "Cursor: Select names")
+    map_select_operator("-ff", "function.outer", "Cursor: Select functions")
+    map_select_operator("-fF", "call.inner", "Cursor: Select calls")
+    map_select_operator("-fa", "parameter.inner", "Cursor: Select arguments")
+    map_select_operator("-fv", "assignment.outer", "Cursor: Select variables")
+    map_select_operator("-fn", "assignment.lhs", "Cursor: Select names")
 
     -- a cursor on/selecting each reference of the symbol under the cursor
     require("config.lsp").lsp_map("n", "-r", function()
@@ -174,6 +166,16 @@ function M.config()
             end
         })
     end, { desc = "Cursor: Select references" })
+
+    map("n", "-s", function()
+        require("leap").leap {
+            action = function(args)
+                mc.action(function(ctx)
+                    ctx:addCursor():setPos(args.pos)
+                end)
+            end
+        }
+    end, { desc = "Cursor: New for leap" })
     -- }}}
 
     -- Visual Selections {{{
