@@ -169,6 +169,7 @@ function M.config()
 
     map("n", "-s", function()
         require("leap").leap {
+            target_windows = {0},
             action = function(args)
                 mc.action(function(ctx)
                     ctx:addCursor():setPos(args.pos)
