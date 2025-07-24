@@ -50,7 +50,7 @@ end
 local map_select_operator = function(keys, capture, field, desc)
     require("config.operators").map_function(keys, function(mode, region, extra, get, set)
         require("multicursor-nvim").action(function(ctx)
-            cursor_for_ts_node(ctx, capture, { region[1][1] - 1, region[1][2], region[2][1], region[2][2] })
+            cursor_for_ts_node(ctx, capture, { region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] })
         end)
     end, { desc = desc })
 end
@@ -104,8 +104,9 @@ function M.config()
             end)
         elseif mode == "char" then
             mc.action(function(ctx)
-                local cursor = ctx:addCursor()
-                cursor:setPos({ region[2][1], region[2][2] + 1 })
+                local main = ctx:mainCursor()
+                main:clone()
+                main:setPos({ region[2][1], region[2][2] + 1 })
             end)
         end
     end, { normal_only = true, no_repeated = true, desc = "Cursor: New for motion" })
@@ -169,7 +170,7 @@ function M.config()
 
     map("n", "-s", function()
         require("leap").leap {
-            target_windows = {0},
+            target_windows = { 0 },
             action = function(args)
                 mc.action(function(ctx)
                     ctx:addCursor():setPos(args.pos)
