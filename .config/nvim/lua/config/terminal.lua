@@ -26,7 +26,7 @@ local function operate_on_urls(buf, fun)
             break
         end
     end
-    require("leap.main").leap {
+    require("leap").leap {
         targets = targets,
         action = fun
     }

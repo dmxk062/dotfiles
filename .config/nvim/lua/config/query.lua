@@ -29,7 +29,7 @@ end
 ---@return boolean()
 local is_child_of_any_parent = function(parents, child)
     for _, parent in ipairs(parents) do
-    if parent:child_with_descendant(child) ~= nil then
+        if parent:child_with_descendant(child) ~= nil then
             return true
         end
     end

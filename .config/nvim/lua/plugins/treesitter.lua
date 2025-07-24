@@ -130,7 +130,7 @@ local ts_texobjects = {
         for direction, mappings in pairs(swaps) do
             for keys, capture in pairs(mappings) do
                 map("n", keys, function()
-                    ts_swap[direction](capture)
+                    return ts_swap[direction](capture)
                 end)
             end
         end
