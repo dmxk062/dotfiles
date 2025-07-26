@@ -94,12 +94,13 @@ opts.defaults = {
     path_display = custom "path_display",
     default_mappings = {
         n = {
+            ["<tab>"] = "toggle_selection",
             ["<cr>"]  = custom "select_all_or_one",
+
             ["t"]     = "select_tab",
             ["e"]     = "file_edit",
             ["s"]     = "select_horizontal",
             ["v"]     = "select_vertical",
-            ["<tab>"] = "toggle_selection",
 
             ["j"]     = "move_selection_next",
             ["k"]     = "move_selection_previous",
@@ -114,7 +115,6 @@ opts.defaults = {
             ["$"]     = "smart_send_to_qflist",
             ["#"]     = "smart_send_to_loclist",
 
-            ["<esc>"] = "close",
             ["q"]     = "close",
         },
         i = {
@@ -127,10 +127,12 @@ opts.defaults = {
             ["<M-k>"]  = "move_selection_previous",
             ["<Down>"] = "move_selection_next",
             ["<Up>"]   = "move_selection_previous",
-            ["<C-t>"]  = "select_tab",
-            ["<C-e>"]  = "file_edit",
-            ["<C-s>"]  = "select_horizontal",
-            ["<C-v>"]  = "select_vertical",
+
+            -- By default <C-w> in a prompt buffer behaves like normal mode
+            -- That isn't what I want for telescope at all
+            ["<C-w>"]  = function()
+                vim.api.nvim_input("<C-S-W>")
+            end,
         }
     },
     dynamic_preview_title = true,

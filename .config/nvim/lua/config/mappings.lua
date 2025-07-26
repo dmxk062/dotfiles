@@ -699,7 +699,7 @@ end)
 
 -- exit terminal mode with a single chord instead of 2
 map("t", "<M-Esc>", "<C-\\><C-n>")
-map("t", "<C-w>", "<C-\\><C-n><C-w>")
+map("t", "<M-C-w>", "<C-\\><C-n><C-w>")
 
 map("n", termleader .. "p", function()
     local termbuf = vim.b[0].terminal_buffer or terminal.last_term
