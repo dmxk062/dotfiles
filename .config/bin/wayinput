@@ -1,0 +1,117 @@
+#!/usr/bin/env python
+
+import argparse, sys
+
+import gi
+
+gi.require_version("Gtk", "3.0")
+gi.require_version("GtkLayerShell", "0.1")
+
+from gi.repository import Gtk, GtkLayerShell as LayerShell
+from gi.repository import Gdk
+
+CSS = b"""
+label {
+    font-size: 2rem;
+}
+box {
+    border-radius: 20px;
+    background-color: @theme_bg_color;
+    padding: 1rem;
+    margin: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
+}
+window {
+    background-color: transparent;
+}
+"""
+
+
+
+class InputWindow(Gtk.Window):
+    def __init__(self, args, on_done):
+        super().__init__()
+        self.chars = []
+        self.max_length = args.max_length
+        self.callback = on_done
+
+        self.connect("key-press-event", self.on_key)
+
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        entry = Gtk.Entry()
+        prompt = Gtk.Label(
+            label=f"{args.title or 'Input'}"
+        )
+
+        if args.choices and len(args.choices) > 0:
+            liststore = Gtk.ListStore(str)
+            for choice in args.choices:
+                liststore.append([choice])
+
+            completion = Gtk.EntryCompletion()
+            completion.set_model(liststore)
+            completion.set_text_column(0)
+            completion.set_inline_completion(True)
+
+            entry.set_completion(completion)
+
+
+        entry.connect("activate", self.on_activate)
+        buffer = entry.get_buffer()
+        buffer.connect("inserted-text", self.on_add)
+
+        box.pack_start(prompt, False, False, 0)
+        box.add(entry)
+        self.add(box)
+
+
+
+    def on_key(self, _, ev: Gdk.EventKey):
+        if ev.keyval == Gdk.KEY_Escape:
+            self.on_cancel()
+            return True
+        return False
+
+    def on_done(self, text):
+        self.callback(text)
+        Gtk.main_quit()
+
+    def on_cancel(self):
+        Gtk.main_quit()
+        sys.exit(1)
+
+    def on_activate(self, entry):
+        self.on_done(entry.get_text())
+
+    def on_add(self, buffer, pos, text, len):
+        len = buffer.get_length()
+        if len == self.max_length:
+            self.on_done(buffer.get_text())
+
+
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-l", "--max-length", type=int, default=1)
+    parser.add_argument("-t", "--title", type=str)
+    parser.add_argument("-c", "--choices", nargs="*", action="extend")
+    args = parser.parse_args()
+
+    provider = Gtk.CssProvider()
+    provider.load_from_data(CSS)
+    context = Gtk.StyleContext()
+    screen = Gdk.Screen.get_default()
+    context.add_provider_for_screen(
+        screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+    )
+
+
+    window = InputWindow(args, lambda s: print(s))
+    LayerShell.init_for_window(window)
+    LayerShell.set_layer(window, LayerShell.Layer.OVERLAY)
+    LayerShell.set_keyboard_mode(window, LayerShell.KeyboardMode.EXCLUSIVE)
+
+    window.show_all()
+
+    Gtk.main()
