@@ -24,7 +24,7 @@ class State:
         self.count += 1
         if self.max_length > 0:
             if self.count == self.max_length:
-                self.quit(0)
+                self.quit(True)
         self.update()
 
     def backspace(self):
@@ -58,7 +58,7 @@ class State:
             self.quit(True)
         elif ev.keyval == Gdk.KEY_BackSpace:
             self.backspace()
-        elif (ev.state & Gdk.ModifierType.CONTROL_MASK):
+        elif ev.state & Gdk.ModifierType.CONTROL_MASK:
             if ev.keyval == Gdk.KEY_w or ev.keyval == Gdk.KEY_W:
                 self.backword()
             elif ev.keyval == Gdk.KEY_u or ev.keyval == Gdk.KEY_U:
@@ -78,12 +78,13 @@ label {
 }
 box {
     border-radius: 20px;
+    background-color: @theme_bg_color;
     padding: 1rem;
     margin: 1rem;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
 }
-window decoration {
-    background: transparent;
+window {
+    background-color: transparent;
 }
 """
 
@@ -110,7 +111,9 @@ if __name__ == "__main__":
         screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
     )
 
-    prompt = Gtk.Label(label=f"{args.title or "Input"}{"[0-9]" if args.numeric else ""}: ")
+    prompt = Gtk.Label(
+        label=f"{args.title or 'Input'}{'[0-9]' if args.numeric else ''}: "
+    )
     box.pack_start(prompt, False, False, 0)
     box.add(label)
     window.add(box)
