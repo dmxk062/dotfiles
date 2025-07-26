@@ -361,26 +361,17 @@ M.config = function(_, opts)
     -- [p]arent, why use <C-p> if k exists
     map("n", "<C-p>", oil.open)
 
-    local prefix = "<space>f"
-    map("n", prefix .. "f", oil.open)
-
-    map("n", prefix .. "s", function()
+    map("n", "<C-w>e", function()
         vim.cmd("split")
         oil.open()
     end)
-    map("n", prefix .. "S", function()
-        vim.cmd("aboveleft split")
-        oil.open()
-    end)
-    map("n", prefix .. "v", function()
+    map("n", "<C-w>E", function()
         vim.cmd("vsplit")
         oil.open()
     end)
-    map("n", prefix .. "V", function()
-        vim.cmd("aboveleft vsplit")
-        oil.open()
+    map("n", "<C-w><C-e>", function()
+        oil.open_float()
     end)
-    map("n", prefix .. "F", oil.open_float)
 end
 
 return M
