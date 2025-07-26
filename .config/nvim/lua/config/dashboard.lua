@@ -2,6 +2,20 @@
  My *third* attempt at a handcrafted dashboard
 ]]
 
+-- Configuration Variables {{{
+local MAX_OLDFILES = 32
+local MAX_PROJECTS = 8
+local MESSAGES = {
+    ":3 is a valid ex command, and you're valid too 🏳️‍⚧️",
+    ":find is often faster than :e",
+    "All your issues are in the :cwindow",
+    "Enjoy your day!",
+    "It is our duty to keep computing gay, we owe that to Turing",
+    "Never :q me for emacs",
+    "Tired? Just <C-z>",
+}
+-- }}}
+
 local fn = vim.fn
 local uv = vim.uv
 local api = vim.api
@@ -26,6 +40,7 @@ local State = {
 }
 
 local strwidth = require("plenary.strings").strdisplaywidth
+
 local linewidth = function(line)
     local width = 0
     for _, chunk in pairs(line) do
@@ -121,24 +136,10 @@ end, {
     ---@format enable
 })
 local LETTER_WIDTH = 70
-
-local Messages = {
-    ":3 is a valid ex command, and you're valid too 🏳️‍⚧️",
-    ":find is often faster than :e",
-    "All your issues are in the :cwindow",
-    "Enjoy your day!",
-    "Gæð a wyrd swā heo sċeal",
-    "It is our duty to keep computing gay, we owe that to Turing",
-    "Never :q me for emacs",
-    "Prefer using :h text-objects over motions",
-    "Tired? Just <C-z>",
-    "Þæs ofereode, þisses swā mæġ",
-}
 -- }}}
 
--- Sections {{{
 ---@type dashboard.section
-local Projects = {
+local ProjectSection = {
     title = "Projects",
     titlehl = "DashboardProjects",
     map = "p",
@@ -170,7 +171,7 @@ do
                 end
             end
 
-            table.insert(Projects.items, {
+            table.insert(ProjectSection.items, {
                 left = { nil, { head, "NonText" }, { name, "Identifier" } },
                 right = { last_access },
                 data = { mtime = mtime or 0 },
@@ -181,24 +182,25 @@ do
         end
     end
 
-    table.sort(Projects.items, function(p1, p2)
+    table.sort(ProjectSection.items, function(p1, p2)
         return p1.data.mtime > p2.data.mtime
     end)
+    if #ProjectSection.items > MAX_PROJECTS then
+        ProjectSection.items[MAX_PROJECTS + 1] = nil -- HACKY: protect from ipairs
+    end
 
-    for i, proj in ipairs(Projects.items) do
+    for i, proj in ipairs(ProjectSection.items) do
         proj.left[1] = { ("%2d. "):format(i - 1), "Number" }
     end
 end
 
 ---@type dashboard.section
-local Oldfiles = {
+local OldfileSection = {
     title = "Old Files",
     titlehl = "DashboardRecents",
     map = "o",
     items = {}
 }
-
-local MAX_OLDFILES = 32
 do
     local helpdir = vim.env.VIMRUNTIME .. "/doc/"
     local index = 0
@@ -234,7 +236,7 @@ do
                 head = head .. "/"
             end
 
-            table.insert(Oldfiles.items, {
+            table.insert(OldfileSection.items, {
                 data = {},
                 left = { { ("%2d. "):format(index), "Number" }, { head, "NonText" }, { tail, highlight } },
                 right = { { timestring, timehl } },
@@ -251,7 +253,7 @@ do
 end
 
 ---@type dashboard.section
-local Actions = {
+local ActionSection = {
     title = "Quick Actions",
     titlehl = "DashboardActions",
     items = {}
@@ -318,7 +320,7 @@ do
     }
 
     for _, action in ipairs(actions) do
-        table.insert(Actions.items, {
+        table.insert(ActionSection.items, {
             map = action.key,
             left = { { " " .. action.key .. " ", "SpecialChar" }, { action[1], "Dashboard" .. action.hl } },
             right = { { action.desc, "Comment" } },
@@ -329,11 +331,10 @@ do
 end
 
 local Sections = {
-    Actions,
-    Projects,
-    Oldfiles
+    ActionSection,
+    ProjectSection,
+    OldfileSection
 }
--- }}}
 
 -- Drawing {{{
 local draw_title = function()
@@ -356,31 +357,30 @@ local draw_lazy = function()
     end
 
     local took_time = stats.times.LazyDone - stats.times.LazyStart
-    local message = {
+    local plugin_info = {
         { "" },
-        { ("Loaded %d of %d plugins in "):format(stats.loaded, stats.count) },
-        { ("%.2fms"):format(took_time),                                      "SpecialChar" },
-        { " took " },
-        { ("%.2fms"):format(stats.times.UIEnter or 0),                       "SpecialChar" },
-        { " in total" },
+        { ("Loaded %d of %d plugins in "):format(stats.loaded, stats.count), "@comment" },
+        { ("%.2fms"):format(took_time),                                      "@comment.note" },
+        { " took ",                                                          "@comment" },
+        { ("%.2fms"):format(stats.times.UIEnter or 0),                       "@comment.todo" },
+        { " in total",                                                       "@comment" },
     }
-    local padding = get_center_spaces(linewidth(message))
-    message[1] = { padding }
+    local padding = get_center_spaces(linewidth(plugin_info))
+    plugin_info[1] = { padding }
 
     set_virt_lines(State.current, {
         { { "" } },
-        message,
-
+        plugin_info,
     })
 end
 
+local message_of_the_day = MESSAGES[(vim.fn.rand() % #MESSAGES) + 1]
 local draw_message = function()
-    local message = Messages[(vim.fn.rand() % #Messages) + 1]
-    local width = strwidth(message)
+    local width = strwidth(message_of_the_day)
 
     set_virt_lines(State.current, {
         { { "" } },
-        { { get_center_spaces(width) }, { message, "DashboardMessage" } }
+        { { get_center_spaces(width) }, { message_of_the_day, "DashboardMessage" } }
     })
 end
 
@@ -408,6 +408,10 @@ local draw_sections = function()
     local initial_padding = (" "):rep(start_offset)
 
     for _, section in ipairs(Sections) do
+        if #section.items == 0 then
+            goto continue
+        end
+
         local suffix = section.map and (" - [count]%s"):format(section.map) or ""
         local title = (" %s%s "):format(section.title, suffix)
         local titlewidth = strwidth(title)
@@ -451,6 +455,8 @@ local draw_sections = function()
             table.insert(to_draw, line)
         end
         insert_text(to_draw)
+
+        ::continue::
     end
 end
 -- }}}
