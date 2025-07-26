@@ -7,6 +7,16 @@
 "config":"Options"
 }')
 
+(deflisten marks 'bin/marks.sh')
+
+(defwidget mark-list []
+    (box :space-evenly false
+        (for mark in marks
+            (button 
+                :class "mark" 
+                :onclick `swaymsg '[con_mark=${mark}] focus'`
+                {mark}))))
+
 (defvar mode-descs '{
 "default": [ ],
 "media": [

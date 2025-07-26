@@ -29,7 +29,8 @@
     (centerbox :class "top-bar"
     (box :space-evenly false
         (mode-symbol)
-        (mode-hints))
+        (mode-hints)
+        (mark-list))
     (box :space-evenly false
         (workspace-list)
         (notifications))
