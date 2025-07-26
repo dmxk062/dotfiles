@@ -75,10 +75,10 @@ local colorscheme = {
     Deleted                     = { fg = col.red },
     Removed                     = { link = "Deleted" },
     Changed                     = { fg = col.yellow },
-    DiffDelete                  = { bg = blend(col.red, pal.bg3, 0.3) },
     DiffChange                  = { bg = pal.bg1 },
     DiffAdd                     = { bg = pal.bg1, fg = col.green, italic = true },
     DiffText                    = { bg = pal.bg1, fg = col.yellow, italic = true },
+    DiffDelete                  = { bg = blend(col.red, pal.bg3, 0.3) },
     diffFile                    = { link = "Directory" },
 
     Question                    = { fg = col.fg0 },
@@ -707,11 +707,14 @@ add_with_prefix(colorscheme, "Telescope", {
 
 -- Grug-Far {{{
 add_with_prefix(colorscheme, "GrugFar", {
-    InputLabel = { fg = col.teal, italic = true },
-    ResultsPath = { link = "Directory" },
+    InputLabel         = { fg = col.teal, italic = true },
+    ResultsPath        = { link = "Directory" },
+    ResultsMatch       = { bg = pal.bg01 },
+    ResultsNumberLabel = { link = "Label" },
 })
 -- }}}
 
+-- Orgmode {{{
 add_with_prefix(colorscheme, "@org.", {
     ["headline.level1"]       = { fg = col.yellow, bold = true },
     ["headline.level2"]       = { fg = col.green, bold = true },
@@ -760,5 +763,6 @@ add_with_prefix(colorscheme, "Org", {
     CalendarSelected = { bg = pal.bg1 },
     CalendarToday    = { fg = col.teal },
 })
+-- }}}
 
 return colorscheme

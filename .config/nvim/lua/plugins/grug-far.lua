@@ -2,6 +2,7 @@
 ---@type LazySpec
 local M = {
     "MagicDuck/grug-far.nvim",
+    cmd = { "GrugFar", "GrugFarWithin" }
 }
 
 ---@type grug.far.OptionsOverride
@@ -20,10 +21,11 @@ M.opts = {
     },
     resultLocation = {
         numberLabelPosition = "right_align",
-        numberLabelFormat = " <%d>",
+        numberLabelFormat = " %d",
     },
     resultsSeparatorLineChar = "─",
-    keymaps = {}
+    keymaps = {},
+    windowCreationCommand = "Split",
 }
 
 M.init = function()

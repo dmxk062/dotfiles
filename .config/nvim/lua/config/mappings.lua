@@ -266,7 +266,7 @@ local function get_buf_idx()
         target = Bufs_for_idx[count]
     end
     if not target or not api.nvim_buf_is_valid(target) then
-        utils.error("Mappings", "No Buffer " .. count)
+        utils.error("Mappings", "No Buffer #" .. count)
         return
     end
 
