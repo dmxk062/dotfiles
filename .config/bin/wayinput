@@ -11,15 +11,18 @@ from gi.repository import Gtk, GtkLayerShell as LayerShell
 from gi.repository import Gdk
 
 CSS = b"""
-label {
+#prompt {
     font-size: 2rem;
 }
-box {
+#container {
     border-radius: 20px;
     background-color: @theme_bg_color;
     padding: 1rem;
     margin: 1rem;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
+}
+entry {
+    font-size: 1.2rem;
 }
 window {
     background-color: transparent;
@@ -37,21 +40,18 @@ class InputWindow(Gtk.Window):
 
         self.connect("key-press-event", self.on_key)
 
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         entry = Gtk.Entry()
-        prompt = Gtk.Label(
-            label=f"{args.title or 'Input'}"
-        )
-
         if args.choices and len(args.choices) > 0:
             liststore = Gtk.ListStore(str)
             for choice in args.choices:
                 liststore.append([choice])
 
-            completion = Gtk.EntryCompletion()
-            completion.set_model(liststore)
-            completion.set_text_column(0)
-            completion.set_inline_completion(True)
+            completion = Gtk.EntryCompletion(
+                model = liststore,
+                text_column = 0,
+                inline_completion = True,
+                popup_completion = False,
+            )
 
             entry.set_completion(completion)
 
@@ -59,6 +59,17 @@ class InputWindow(Gtk.Window):
         entry.connect("activate", self.on_activate)
         buffer = entry.get_buffer()
         buffer.connect("inserted-text", self.on_add)
+
+        prompt = Gtk.Label(
+            label=f"{args.title or 'Input'}",
+            name = "prompt"
+        )
+
+        box = Gtk.Box(
+            orientation=Gtk.Orientation.VERTICAL,
+            spacing=16,
+            name = "container"
+        )
 
         box.pack_start(prompt, False, False, 0)
         box.add(entry)
@@ -95,6 +106,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--max-length", type=int, default=1)
     parser.add_argument("-t", "--title", type=str)
+    parser.add_argument("-i", "--icon", type=str, default="dialog-question")
     parser.add_argument("-c", "--choices", nargs="*", action="extend")
     args = parser.parse_args()
 
