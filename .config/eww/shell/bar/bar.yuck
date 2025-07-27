@@ -2,6 +2,7 @@
 
 (include "./bar/popups/qmenu/menu.yuck")
 (include "./bar/workspace.yuck")
+(include "./bar/window.yuck")
 (include "./bar/status.yuck")
 (include "./bar/mode.yuck")
 (include "./bar/mpris.yuck")
@@ -30,7 +31,7 @@
     (box :space-evenly false
         (mode-symbol)
         (mode-hints)
-        )
+        (active-window))
     (box :space-evenly false
         (box :space-evenly false
             (mark-list)

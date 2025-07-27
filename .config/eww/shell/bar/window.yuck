@@ -1,0 +1,4 @@
+(defwidget active-window []
+    (box :space-evenly false :style "margin-left: 1rem;"
+        (label :class "text" :style "margin-left: .4rem;"
+            :text {sway.active == "null" ? "[Empty]" : sway.active.name})))

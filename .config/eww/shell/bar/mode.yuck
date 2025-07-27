@@ -13,7 +13,8 @@
     (box :space-evenly false
         (for mark in marks
             (button 
-                :class "mark" 
+                :class "button ${sway.active != "null" && sway.active.marks[0] == mark ? " active" : ""}" 
+                :style "transition: none;"
                 :onclick `swaymsg '[con_mark=${mark}] focus'`
                 "#${mark}"))))
 

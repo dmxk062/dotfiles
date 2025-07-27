@@ -40,56 +40,65 @@ def get_icon(icon_name, size=48, fallback="window-manager"):
         return get_icon(None)
 
 
+def dump_con(w: i3ipc.Con, output: i3ipc.Con):
+    if not w or not w.pid:
+        return None, False
+    app_id = w.app_id or w.window_class or None
+    app_id = CLASS_OVERRIDES.get(app_id, app_id)
+
+    if app_id == TERMINAL:
+        for override in TERM_OVERRIDES:
+            if re.match(override[0], w.name):
+                app_id = override[1]
+    # overrides
+    for override in REGEX_NAMES:
+        if re.match(override[0], w.name):
+            app_id = override[1]
+
+    # past this point, we have no clue
+    # give smth that at least helps us a bit
+    if not app_id:
+        if w.window_instance:
+            app_id = "xorg"
+        else:
+            app_id = "wayland"
+
+    rect = {"x": 0, "y": 0, "width": 0, "height": 0}
+
+    width_scale = output.rect.width
+    height_scale = output.rect.height
+
+    rect["x"] = (w.rect.x - output.rect.x) / width_scale
+    rect["y"] = (w.rect.y - output.rect.y) / height_scale
+
+    rect["width"] = w.rect.width / width_scale
+    rect["height"] = w.rect.height / height_scale
+
+    win = {
+        "float": w.type == "floating_con",
+        "app_id": app_id,
+        "id": w.id,
+        "name": w.name,
+        "pid": w.pid,
+        "focused": w.focused,
+        "rect": rect,
+        "icon": get_icon(app_id),
+        "marks": w.marks,
+    }
+
+    return win, w.focused
+
+
 def get_for_ws(workspace: i3ipc.Con, output):
     on_ws = []
     is_active = False
     for w in workspace.descendants():
         if not w.pid:
             continue
-        app_id = w.app_id or w.window_class or None
-        app_id = CLASS_OVERRIDES.get(app_id, app_id)
-        
-        if app_id == TERMINAL:
-            for override in TERM_OVERRIDES:
-                if re.match(override[0], w.name):
-                    app_id = override[1]
-        # overrides
-        for override in REGEX_NAMES:
-            if re.match(override[0], w.name):
-                app_id = override[1]
 
-        # past this point, we have no clue
-        # give smth that at least helps us a bit
-        if not app_id:
-            if w.window_instance:
-                app_id = "xorg"
-            else:
-                app_id = "wayland"
-
-        rect = {"x": 0, "y": 0, "width": 0, "height": 0}
-
-        width_scale =  output.rect.width
-        height_scale =  output.rect.height
-
-        rect["x"] = (w.rect.x - output.rect.x) / width_scale
-        rect["y"] = (w.rect.y - output.rect.y) / height_scale
-
-        rect["width"] = w.rect.width / width_scale
-        rect["height"] = w.rect.height / height_scale
-
-        win = {
-            "float": w.type == "floating_con",
-            "app_id": app_id,
-            "id": w.id,
-            "name": w.name,
-            "pid": w.pid,
-            "focused": w.focused,
-            "rect": rect,
-            "icon": get_icon(app_id),
-        }
-        if w.focused:
+        win, win_active = dump_con(w, output)
+        if win_active:
             is_active = True
-
         on_ws.append(win)
     return sorted(on_ws, key=lambda w: w["float"]), is_active
 
@@ -106,18 +115,21 @@ def update(i3, e):
     root = i3.get_tree()
 
     workspaces = []
+    active_output = None
     for output in root.nodes:
         if output.name == "__i3":
             continue
 
         for workspace in output.nodes:
             windows, is_active = get_for_ws(workspace, output)
+            if is_active:
+                active_output = output
             ws = {
-                    "wins": windows,
-                    "focused": workspace.focused or is_active,
-                    "wsnum": workspace.num,
-                    "ws": workspace.name,
-                    "is_virtual": False,
+                "wins": windows,
+                "focused": workspace.focused or is_active,
+                "wsnum": workspace.num,
+                "ws": workspace.name,
+                "is_virtual": False,
             }
             workspaces.append(ws)
 
@@ -134,9 +146,11 @@ def update(i3, e):
             }
         )
 
+    active, _ = dump_con(root.find_focused(), active_output)
     print(
         json.dumps(
             {
+                "active": active or None,
                 "workspaces": sorted_ws,
                 "scratch_count": len(root.scratchpad().floating_nodes),
             }

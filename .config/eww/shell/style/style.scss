@@ -86,6 +86,13 @@
             background-color: fade($magenta);
         }
     }
+    &.pink {
+        color: $inv;
+        background-color: $pink;
+        &:hover {
+            background-color: fade($pink);
+        }
+    }
 }
 
 .inline-button {
