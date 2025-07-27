@@ -11,5 +11,5 @@ bindsym {
     $mod+Semicolon      exec gtklock -d
     $mod+Period         exec swaync-client --close-latest
     $mod+Slash          exec killall rofi || rofi -show win
-    $mod+T              exec $eww/shell/bin/set_timer.sh
+    # $mod+T              exec $eww/shell/bin/set_timer.sh
 }
