@@ -39,8 +39,8 @@ bindsym $mod+Z focus mode_toggle
 # may a --exec option?
 
 # Like VIM
-bindsym $mod+Apostrophe exec $sc/goto-mark.sh initial focus
-bindsym $mod+Shift+Apostrophe exec $sc/goto-mark.sh search focus
+bindsym $mod+Apostrophe exec $sc/on-mark.sh initial focus
+bindsym $mod+Shift+Apostrophe exec $sc/on-mark.sh search focus
 
 # (G)et
 bindsym $mod+G exec $sc/on-mark.sh initial move workspace current
