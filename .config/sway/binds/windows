@@ -37,7 +37,15 @@ bindsym $mod+Z focus mode_toggle
 
 # TODO: make sure it exits with empty input
 # may a --exec option?
-bindsym $mod+Apostrophe exec $sc/goto-mark.sh
-bindsym $mod+Shift+Apostrophe exec $sc/goto-mark.sh -l -1
+
+# Like VIM
+bindsym $mod+Apostrophe exec $sc/goto-mark.sh initial focus
+bindsym $mod+Shift+Apostrophe exec $sc/goto-mark.sh search focus
+
+# (G)et
+bindsym $mod+G exec $sc/on-mark.sh initial move workspace current
+bindsym $mod+Shift+G exec $sc/on-mark.sh search move workspace current
+
+# (T)ag, (M)ark is used for media
 bindsym $mod+T exec swaymsg mark $(wayinput -t "Mark")
 bindsym $mod+Shift+T exec swaymsg mark $(wayinput -l -1 -t "Mark")
