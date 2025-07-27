@@ -15,7 +15,7 @@
             (button 
                 :class "mark" 
                 :onclick `swaymsg '[con_mark=${mark}] focus'`
-                {mark}))))
+                "#${mark}"))))
 
 (defvar mode-descs '{
 "default": [ ],

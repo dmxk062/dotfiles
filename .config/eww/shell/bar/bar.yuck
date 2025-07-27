@@ -30,9 +30,11 @@
     (box :space-evenly false
         (mode-symbol)
         (mode-hints)
-        (mark-list))
+        )
     (box :space-evenly false
-        (workspace-list)
+        (box :space-evenly false
+            (mark-list)
+            (workspace-list))
         (notifications))
     (right-box)))
 
