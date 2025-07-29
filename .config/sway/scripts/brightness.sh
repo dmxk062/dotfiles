@@ -8,7 +8,7 @@ function has_internal {
 case "$1" in
 get)
     if has_internal; then
-        brightnessctl  get
+        brightnessctl -P get
     else
         ddcutil -d 1 getvcp 10 --lazy-sleep --sleep-multiplier 0.1 -t | cut -d" " -f4 | grep -v "Retrying"
     fi
@@ -17,11 +17,11 @@ set)
     delta="$2"
     if has_internal; then
         if ((delta < 0)); then
-            brightnessctl set -$delta
+            brightnessctl set $delta%-
         else
-            brightnessctl set +$delta
+            brightnessctl set $delta%+
         fi
-        new_current=$(brightnessctl get)
+        new_current=$(brightnessctl -P get)
         "$XDG_CONFIG_HOME/eww/shell/bin/center_popup.sh" bright 2
         eww -c "$XDG_CONFIG_HOME/eww/shell" update brightness="$new_current"
     else
@@ -39,7 +39,7 @@ set)
 rawset)
     new="$2"
     if has_internal;  then
-        brightnessctl  set $new
+        brightnessctl set $new%
     else
         for ((d = 1; d <= $(swaymsg -t get_outputs | jq 'length'); d++)); do
             ddcutil setvcp 10 -d $d $new --lazy-sleep --disable-dynamic-sleep --sleep-multiplier 0.1 >/dev/null 2>&1
