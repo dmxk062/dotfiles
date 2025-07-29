@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 function has_internal {
-    [[ "$(ls /sys/class/backlight/* 2>/dev/null)" != "" ]] && command -v light 2>/dev/null
+    [[ "$(ls /sys/class/backlight/* 2>/dev/null)" != "" ]] && command -v brightnessctl 2>/dev/null
     return $?
 }
 
 case "$1" in
 get)
     if has_internal; then
-        light -G
+        brightnessctl  get
     else
         ddcutil -d 1 getvcp 10 --lazy-sleep --sleep-multiplier 0.1 -t | cut -d" " -f4 | grep -v "Retrying"
     fi
@@ -17,12 +17,11 @@ set)
     delta="$2"
     if has_internal; then
         if ((delta < 0)); then
-            ((delta = -delta))
-            light -U "$delta"
+            brightnessctl set -$delta
         else
-            light -A "$delta"
+            brightnessctl set +$delta
         fi
-        new_current=$(light -G)
+        new_current=$(brightnessctl get)
         "$XDG_CONFIG_HOME/eww/shell/bin/center_popup.sh" bright 2
         eww -c "$XDG_CONFIG_HOME/eww/shell" update brightness="$new_current"
     else
@@ -40,7 +39,7 @@ set)
 rawset)
     new="$2"
     if has_internal;  then
-        light -S "$new"
+        brightnessctl  set $new
     else
         for ((d = 1; d <= $(swaymsg -t get_outputs | jq 'length'); d++)); do
             ddcutil setvcp 10 -d $d $new --lazy-sleep --disable-dynamic-sleep --sleep-multiplier 0.1 >/dev/null 2>&1
