@@ -4,21 +4,20 @@ local M = {
     event = { "InsertEnter" },
 }
 
+-- Don't mess up my apostrophes
+-- I *will* be sad
 local text_types = {
-    "text",
-    "markdown",
-    "typst",
+    "gitcommit",
     "latex",
-}
-
-local markup_types = {
+    "markdown",
+    "org",
+    "text",
     "typst",
-    "markdown"
 }
 
 local xml_types = {
+    "html",
     "xml",
-    "html"
 }
 
 M.opts = {
@@ -34,10 +33,8 @@ M.opts = {
         [">"] = { escape = true, close = false, pair = "<>", enabled_filetypes = xml_types },
 
         ['"'] = { escape = true, close = true, pair = '""' },
-        -- don't mess up my apostrophes
         ["'"] = { escape = true, close = true, pair = "''", disabled_filetypes = text_types },
         ["`"] = { escape = true, close = true, pair = "``" },
-        ["$"] = { escape = true, close = true, pair = "$$", enabled_filetypes = markup_types },
     },
     options = {
         disable_when_touch = true,
