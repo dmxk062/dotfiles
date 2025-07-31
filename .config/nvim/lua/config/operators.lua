@@ -37,14 +37,15 @@ function Jhk.opfunc(mode)
     Ctx.funs[Ctx.last](mode)
 end
 
----@alias op_extra {saved: table, repeated: boolean}
+---@alias op_extra {saved: table, repeated: boolean, arg: any}
 ---@alias config.op.get fun(mode: string?): string[]
 ---@alias config.op.set fun(range: config.region, replacement: string[])
 ---@alias config.op.cb fun(mode: string, region: config.region, extra: op_extra, get: config.op.get, set: config.op.set)
 
 ---@param name string
 ---@param cb function
-function M.make_operator(name, cb)
+---@param arg any
+function M.make_operator(name, cb, arg)
     local function operator(mode)
         local is_repeat = true
         if mode == nil then
@@ -84,6 +85,7 @@ function M.make_operator(name, cb)
         local extra = {
             saved = Ctx.extra_data[name],
             repeated = is_repeat,
+            arg = arg,
         }
         cb(mode, region, extra, get_content, set_content)
     end
@@ -96,14 +98,15 @@ end
 ---@param keys string
 ---@param cb config.op.cb
 ---@param opts {normal_only: boolean?, no_repeated: boolean?, desc: string?}?
-function M.map_function(keys, cb, opts)
+---@param arg any
+function M.map_function(keys, cb, opts, arg)
     opts = opts or {}
     local mapopts = {
         expr = true,
         desc = opts.desc
     }
     local id = keys
-    local operator = M.make_operator(id, cb)
+    local operator = M.make_operator(id, cb, arg)
     -- use last char of string to indicate repeat for one line
     local repeat_char = keys:sub(-1, -1)
 

@@ -787,7 +787,19 @@ map("o", "=", textobjs.variable_value)
 -- }}}
 
 -- Custom Operators {{{
-operators.map_function("g=", require("config.operators.sort"))
+local sort = require("config.operators.sort")
+for _, m in ipairs {
+    { "g>",  "Ascending" },
+    { "g<",  "Descending",             { reverse = true } },
+    { "g=l", "Length, ascending",      { method = "length" } },
+    { "g=L", "Length, descending",     { method = "length", reverse = true } },
+    { "g=n", "Numeric, ascending",     { method = "numeric" } },
+    { "g=N", "Numeric, descending",    { method = "numeric", reverse = true } },
+    { "g=a", "Alphabetic, ascending",  { method = "alphabetic" } },
+    { "g=A", "Alphabetic, descending", { method = "alphabetic", reverse = true } },
+} do
+    operators.map_function(m[1], sort, { desc = ("Sort: %s"):format(m[2]) }, m[3])
+end
 -- }}}
 
 -- Command in Region {{{

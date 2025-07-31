@@ -21,10 +21,10 @@ local length_sort = function(x, y)
     return vim.fn.strdisplaywidth(x) < vim.fn.strdisplaywidth(y)
 end
 
-local type_shortcuts = {
-    a = alphabetic_sort,
-    l = length_sort,
-    n = numeric_sort,
+local sort_methods = {
+    alphabetic = alphabetic_sort,
+    length = length_sort,
+    numeric = numeric_sort,
 }
 
 ---@param str string
@@ -42,6 +42,7 @@ end
 
 ---@type config.op.cb
 local sort_operator = function(mode, region, extra, get, set)
+    local args = extra.arg or {}
     local split, delimiter
     if mode == "char" then
         local content = table.concat(get(), "")
@@ -63,15 +64,9 @@ local sort_operator = function(mode, region, extra, get, set)
         starting_whitespace[i], to_sort[i], ending_whitespace[i]
         = val:match("^(%s*)(.-)(%s*)$")
     end
-
-    local register = vim.v.register
-    local regcode = register:byte()
-    local is_inverted = (regcode >= 65 and regcode <= 90) or register == "i"
-    local force_type = register:lower()
-
     local sort_fun
-    if type_shortcuts[force_type] then
-        sort_fun = type_shortcuts[force_type]
+    if args.method and sort_methods[args.method] then
+        sort_fun = sort_methods[args.method]
     elseif to_sort[1]:match("^[+-]?%d*%.?%d+") then
         sort_fun = numeric_sort
     else
@@ -79,7 +74,7 @@ local sort_operator = function(mode, region, extra, get, set)
     end
 
     table.sort(to_sort, function(x, y)
-        if is_inverted then
+        if args.reverse then
             return sort_fun(y, x)
         else
             return sort_fun(x, y)
