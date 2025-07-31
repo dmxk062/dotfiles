@@ -527,7 +527,7 @@ end)
 
 ---@param c string
 local is_ascii_lower = function(c)
-    local code = c:byte()
+    local c = c:byte()
     return c <= "\x7a" and c >= '\x61'
 end
 
@@ -741,8 +741,6 @@ map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 
 -- Diagnostics {{{
-map("n", "<space>d", vim.diagnostic.open_float)
-
 -- target the area of a diagnostic with a textobject
 -- <id> matches every type
 map(obj, "id", textobjs.diagnostic)
@@ -802,7 +800,7 @@ map(obj, "gG", textobjs.entire_buffer)
 map("o", "=", textobjs.variable_value)
 -- }}}
 
--- {{{ Custom Operators
+-- Custom Operators {{{
 operators.map_function("g=", require("config.operators.sort"))
 -- }}}
 

@@ -51,16 +51,17 @@ local map_on_git_buffer = function(buf)
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
     map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
 
-    map("n", "H", gitsigns.setqflist, { desc = "Git: Hunks to qflist" })
+    map("n", "H", "<cmd>G difftool .<cr>", { desc = "Git: Hunks to qflist" })
     map("n", "h", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
+
     map("n", "l", "<cmd>0Gllog<cr>", { desc = "Git: Log to loclist" })
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
     map("n", "S", gitsigns.stage_buffer, { desc = "Git: Stage Buffer" })
     mapboth("s", gitsigns.stage_hunk, "Git: Toggle stage")
-    mapboth("U", gitsigns.reset_hunk, "Git: Reset Hunk")
-    mapboth("R", gitsigns.reset_buffer, "Git: Reset Buffer")
+    mapboth("U", gitsigns.reset_hunk, "Git: Reset Hunk")     -- mirror builtin U
+    mapboth("R", gitsigns.reset_buffer, "Git: Reset Buffer") -- maybe <C-u> instead?
 
     local nh, ph = utils.make_mov_pair(
         function() gitsigns.nav_hunk("next") end,

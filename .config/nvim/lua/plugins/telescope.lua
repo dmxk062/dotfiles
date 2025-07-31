@@ -2,7 +2,7 @@ local builtin_picker_maps = {
     ["custom.jumplist"] = "<space>j",
     buffers = "<space><space>",
     command_history = "<space>:",
-    diagnostics = "<space>D",
+    diagnostics = "<space>d",
     find_files = "<space>f",
     grep_string = "<space>*",
     help_tags = "<space>h",
@@ -13,6 +13,8 @@ local builtin_picker_maps = {
     oldfiles = "<space>o",
     registers = "\"<space>",
     search_history = "<space>?",
+    quickfix = "<space>qf",
+    loclist = "<space>lf",
 
     -- git ones, under the same prefix as the fugitive & gitsigns mappings
     git_files = "<space>gf",
