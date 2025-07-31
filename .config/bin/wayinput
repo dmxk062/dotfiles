@@ -14,6 +14,13 @@ CSS = b"""
 #prompt {
     font-size: 2rem;
 }
+#input {
+    border: none;
+    box-shadow: unset;
+    font-size: 1.8rem;
+    background-color: transparent;
+    padding-bottom: .4rem;
+}
 #container {
     border-radius: 20px;
     background-color: @theme_bg_color;
@@ -21,14 +28,10 @@ CSS = b"""
     margin: 1rem;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
 }
-entry {
-    font-size: 1.2rem;
-}
 window {
     background-color: transparent;
 }
 """
-
 
 
 class InputWindow(Gtk.Window):
@@ -40,42 +43,34 @@ class InputWindow(Gtk.Window):
 
         self.connect("key-press-event", self.on_key)
 
-        entry = Gtk.Entry()
+        entry = Gtk.Entry(name="input", xalign=0.5)
         if args.choices and len(args.choices) > 0:
             liststore = Gtk.ListStore(str)
             for choice in args.choices:
                 liststore.append([choice])
 
             completion = Gtk.EntryCompletion(
-                model = liststore,
-                text_column = 0,
-                inline_completion = True,
-                popup_completion = False,
+                model=liststore,
+                text_column=0,
+                inline_completion=True,
+                popup_completion=False,
             )
 
             entry.set_completion(completion)
-
 
         entry.connect("activate", self.on_activate)
         buffer = entry.get_buffer()
         buffer.connect("inserted-text", self.on_add)
 
-        prompt = Gtk.Label(
-            label=f"{args.title or 'Input'}",
-            name = "prompt"
-        )
+        prompt = Gtk.Label(label=f"{args.title or 'Input'}", name="prompt")
 
         box = Gtk.Box(
-            orientation=Gtk.Orientation.VERTICAL,
-            spacing=16,
-            name = "container"
+            orientation=Gtk.Orientation.VERTICAL, spacing=16, name="container"
         )
 
         box.pack_start(prompt, False, False, 0)
         box.add(entry)
         self.add(box)
-
-
 
     def on_key(self, _, ev: Gdk.EventKey):
         if ev.keyval == Gdk.KEY_Escape:
@@ -100,8 +95,6 @@ class InputWindow(Gtk.Window):
             self.on_done(buffer.get_text())
 
 
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--max-length", type=int, default=1)
@@ -116,7 +109,6 @@ if __name__ == "__main__":
     context.add_provider_for_screen(
         screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
     )
-
 
     window = InputWindow(args, lambda s: print(s))
     LayerShell.init_for_window(window)
