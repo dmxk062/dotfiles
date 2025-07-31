@@ -409,20 +409,6 @@ map(obj, "m", "<plug>(matchup-%)")
 map(obj, "im", "<plug>(matchup-i%)")
 map(obj, "am", "<plug>(matchup-a%)")
 
--- more humane spell popup
-map("n", "z=", function()
-    local word = fn.expand("<cWORD>")
-    local suggestions = fn.spellsuggest(word, 32)
-    vim.ui.select(suggestions, { prompt = "Spell" }, function(replacement)
-        if not replacement then
-            return
-        end
-
-        vim.cmd([[normal! "_diW]])
-        api.nvim_paste(replacement, false, -1)
-    end)
-end)
-
 -- allow modifying count in o-pending mode
 local modify_operator_count = function(delta)
     local keys = ("\x1b%s%d"):format(vim.v.operator, math.max(1, vim.v.count + delta))
@@ -525,9 +511,9 @@ map("n", "`", function()
     end
 end)
 
----@param c string
-local is_ascii_lower = function(c)
-    local c = c:byte()
+---@param char string
+local is_ascii_lower = function(char)
+    local c = char:byte()
     return c <= "\x7a" and c >= '\x61'
 end
 

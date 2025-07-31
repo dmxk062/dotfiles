@@ -21,6 +21,8 @@ local builtin_picker_maps = {
     git_status = "<space>gi", -- <space>gs is taken for stage already
     git_commits = "<space>g/",
     git_bcommits = "<space>g?",
+
+    spell_suggest = "z=",
 }
 
 ---@type LazySpec
@@ -152,6 +154,10 @@ opts.pickers = {
     lsp_references = lsp_config,
     loclist = qfconfig,
     quickfix = qfconfig,
+    spell_suggest = default_config {
+        prompt_prefix = "fix: ",
+        create_layout = custom "short_layout",
+    },
     lsp_workspace_symbols = default_config {
         entry_maker = custom "lsp_symbol_entries",
     },
