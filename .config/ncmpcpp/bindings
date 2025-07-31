@@ -35,26 +35,65 @@ def_key "V"
 # Search {{{
 # [f]ind
 def_key "ctrl-f"
-    show_search_engine
+    require_screen "search_engine"
     move_home
     push_character "enter"
+def_key "ctrl-f"
+    show_search_engine
+    reset_search_engine
+    move_home
+    push_character "enter"
+
 # [a]rtist
 def_key "ctrl-a"
-    show_search_engine
+    require_screen "search_engine"
     move_home
     push_characters "j"
     push_character "enter"
+def_key "ctrl-a"
+    show_search_engine
+    reset_search_engine
+    move_home
+    push_characters "j"
+    push_character "enter"
+
 # al[b]um
 def_key "ctrl-b"
-    show_search_engine
+    require_screen "search_engine"
     move_home
     push_characters "jjjj"
     push_character "enter"
+def_key "ctrl-b"
+    show_search_engine
+    reset_search_engine
+    move_home
+    push_characters "jjjj"
+    push_character "enter"
+
 # [t]itle
 def_key "ctrl-t"
-    show_search_engine
+    require_screen "search_engine"
     move_home
     push_characters "jjj"
+    push_character "enter"
+def_key "ctrl-t"
+    show_search_engine
+    reset_search_engine
+    move_home
+    push_characters "jjj"
+    push_character "enter"
+
+# [g]enre
+def_key "ctrl-g"
+    require_screen "search_engine"
+    move_home
+    push_characters "jjjjjjjj"
+    push_character "enter"
+def_key "ctrl-g"
+    show_search_engine
+    reset_search_engine
+    move_home
+    push_characters "jjjjjjjj"
     push_character "enter"
 # }}}
 
