@@ -800,11 +800,11 @@ for _, m in ipairs {
 } do
     operators.map_function(m[1], sort, { desc = ("Sort: %s"):format(m[2]) }, m[3])
 end
--- }}}
 
--- Command in Region {{{
+-- Command in Region
 -- open a cmdline in a region specified by a textobject or motion
 -- allows me to repeat commands like they're regular mappings
+-- mostly useful with things like :g and :s
 ---@diagnostic disable-next-line: unused-local
 operators.map_function("g:", function(mode, region, extra, get, set)
     if extra.repeated then
