@@ -55,12 +55,14 @@ exec playerctld
 exec nm-applet
 exec blueman-applet
 exec ydotoold
+exec mpd-mpris
 exec ~/.config/background/wallpaper.sh set
 exec $eww/eww.sh
 # dbus secrets agent
 exec gnome-keyring-daemon
 # polkit
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec udiskie
 
 # autotiling layout
 exec_always pkill -f "python.*layout.py"
@@ -72,6 +74,8 @@ exec_always sleep 1 && $sc/smart_resize.py
 
 # handle effects for rofi in the compositor, much nicer and more consistent
 layer_effects "rofi" shadows enable; corner_radius 18; blur disable
+# layer_effects "notifications" shadows enable; corner_radius 18; blur disable
+# layer_effects "eww-bar" shadow disable
 
 include /etc/sway/config.d/*
 # not set by the above files yet

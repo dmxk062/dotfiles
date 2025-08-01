@@ -1,0 +1,5 @@
+program_options:
+  tray: true
+  file_manager: kitty zsh -ic "lf $@" ''
+  password_prompt: [zenity, --title, "Decrypt device", --entry, --hide-text, --text, "Enter password for {drive_vendor} {drive_model} ({device_presentation})"]
+  menu: flat
