@@ -3,7 +3,7 @@
         "prefix": "src",
         "description": "Source code block",
         "body": [
-            "#+begin_src ${1}",
+            "#+begin_src ${1:lua}",
             "$0",
             "#+end_src"
         ] 
