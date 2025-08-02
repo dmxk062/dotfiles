@@ -1,20 +1,137 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 
-function deepl_request {
-    local request="$1"
-    local auth_key="$( < "$XDG_DATA_HOME/keys/deepl" )"
-    if [[ "$auth_key" == "" ]]; then
-        echo "No key at $XDG_DATA_HOME/keys/deepl" >&2
-        return 1
-    fi
-    curl -s --request POST --header "Authorization: DeepL-Auth-Key $auth_key" \
-        --header "Content-Type: application/json" \
-        --data "$request" \
-        'https://api-free.deepl.com/v2/translate'
+import argparse
+import os
+import sys
+import requests
+import json
+
+APIURL = "https://api-free.deepl.com/v2/"
+KEYPATH = (
+    f"{os.getenv('XDG_DATA_HOME', os.getenv('HOME') + '/.local/share')}/keys/deepl"
+)
+
+with open(KEYPATH) as f:
+    KEY = f.read().strip()
+
+HEADERS = {"Content-Type": "application/json", "Authorization": f"DeepL-Auth-Key {KEY}"}
+
+
+def request_translation(text: list[str], params: dict) -> tuple[str, str] | str:
+    request = {
+        "text": text,
+    } | params
+
+    res = requests.post(APIURL + "translate", headers=HEADERS, data=json.dumps(request))
+    if res.ok:
+        as_json = res.json()["translations"][0]
+        return as_json["detected_source_language"], as_json["text"]
+    else:
+        return res.text
+
+
+FORMALITIES = {
+    "default",
+    "more",
+    "prefer_more",
+    "less",
+    "prefer_less",
 }
 
-target="${1:-EN}"
-source="${2:-""}"
-request="$(jq -Rs --arg target "$target" --arg source "$source" \
-    '{text: [.], target_lang: $target} + (if $source != "" then {source_lang: $source} else {} end)')"
-deepl_request "$request"|jq '.translations.[0].text' -r
+LANGUAGES = {
+    "AR",
+    "BG",
+    "CS",
+    "DA",
+    "DE",
+    "EL",
+    "EN",
+    "ES",
+    "ET",
+    "FI",
+    "FR",
+    "HU",
+    "ID",
+    "IT",
+    "JA",
+    "KO",
+    "LT",
+    "LV",
+    "NB",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "RU",
+    "SK",
+    "SL",
+    "SV",
+    "TR",
+    "UK",
+    "ZH",
+}
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-s",
+        "--source",
+        choices=LANGUAGES,
+        metavar="LANGUAGE",
+        type=str,
+        dest="source",
+        help="Force source language instead of auto-detecting",
+    )
+    parser.add_argument(
+        "-t",
+        "--target",
+        choices=LANGUAGES,
+        metavar="LANGUAGE",
+        type=str,
+        dest="target",
+        default="EN",
+        help="Language to translate to (default EN)",
+    )
+    parser.add_argument("-p", "--print-header", action="store_true")
+    parser.add_argument("-c", "--context", type=str)
+    parser.add_argument("-f", "--formality", type=str, choices=FORMALITIES)
+    parser.add_argument(
+        "-U",
+        "--check-usage",
+        action="store_true",
+        help="Show used/available characters on account",
+    )
+    parser.add_argument("input_files", nargs="*", type=argparse.FileType("r"))
+    args = parser.parse_args(sys.argv)
+
+    if args.check_usage:
+        response = requests.get(APIURL + "usage", headers=HEADERS)
+        if response.ok:
+            as_json = response.json()
+            print(
+                f"{as_json['character_count'] / as_json['character_limit'] * 100}%",
+                as_json["character_count"],
+                "of",
+                as_json["character_limit"],
+            )
+        sys.exit(0)
+
+    params = {
+        "target_lang": args.target,
+        "source_lang": args.source,
+        "formality": args.formality,
+        "context": args.context,
+    }
+
+    if not args.input_files:
+        args.input_files = [sys.stdin]
+
+    for file in args.input_files:
+        while chunk := file.read():
+            translation = request_translation([chunk], params)
+            if translation is str:
+                sys.stderr.write(translation)
+            else:
+                if args.print_header:
+                    print(f"{translation[0]} -> {args.target}:")
+                sys.stdout.write(translation[1])
