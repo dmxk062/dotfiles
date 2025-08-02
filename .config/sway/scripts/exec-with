@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 
 # execute a window with rules
-# two options:
-#   class: a bit more cumbersome and does not work for x11 processes
+# $1: type:
+#   class: a bit more cumbersome, takes another argument
 #   pid: logical, but wont work for applications that spawn more than one window in the same process
+# $2: command
+# $3: 1st rule: swaymsg command, run with [con_id=$id]
+# ${@:4} 2nd rule: shell command, every %p is replaced by the pid
 
 case "$1" in
 --class)
-    PREDICATE=".container.app_id == \"$2\""
+    PREDICATE="(.container.app_id == \"$2\" or .container.class == \"$2\")"
     $3 &
     disown
     pid=$!
