@@ -12,6 +12,8 @@ mode "clipboard" {
     bindsym Mod1+P exec $sc/print_clipboard.sh -p
     bindsym T exec $sc/translate.sh; mode "default"
     bindsym Mod1+T exec $sc/translate.sh -p; mode "default"
+    bindsym S exec $sc/speak-clipboard.sh; mode "default"
+    bindsym Mod1+S exec $sc/speak-clipboard.sh -p; mode "default"
 }
 
 bindsym $mod+Y mode "clipboard"

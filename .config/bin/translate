@@ -102,7 +102,7 @@ if __name__ == "__main__":
         help="Show used/available characters on account",
     )
     parser.add_argument("input_files", nargs="*", type=argparse.FileType("r"))
-    args = parser.parse_args(sys.argv)
+    args = parser.parse_args()
 
     if args.check_usage:
         response = requests.get(APIURL + "usage", headers=HEADERS)

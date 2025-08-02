@@ -1,16 +1,33 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-TEXT="$(wl-paste $1 | translate -p)"
-response="$(notify-send -i config-language \
-    "Translated $(echo "$TEXT" | head -n 1)" \
-    "$(echo "$TEXT" | tail -n +3)" \
-    --action=copy="Copy" \
-    --action=view="View")"
-case "$response" in
-copy) echo "$TEXT" | wl-copy ;;
-view)
-    tmpfile="$(mktemp)"
-    echo "$TEXT" >"$tmpfile"
-    xdg-open "$tmpfile"
-    ;;
-esac
+target="$(wayinput -l -1 -t "Language(s)")"
+declare -a args
+if [[ -n "$target" ]]; then
+    read -r language rest <<< "$target"
+    IFS=":" read -r dest source <<< "$language"
+    if [[ -n "$source" ]]; then args+=("-s$source"); fi
+    if [[ -n "$dest" ]]; then args+=("-t$dest"); fi
+
+    for extra in $rest; do
+        args+=("$extra")
+    done
+fi
+
+
+wl-paste $1 | translate -p "${args[@]}" | {
+    read -r header
+    read -r -d '' content
+    response="$(notify-send -i config-language \
+        "$header" \
+        "$content" \
+        --action=copy="Copy" \
+        --action=view="View")"
+    case "$response" in
+    copy) echo "$content" | wl-copy ;;
+    view)
+        tmpfile="$(mktemp)"
+        echo "$content" >"$tmpfile"
+        xdg-open "$tmpfile"
+        ;;
+    esac
+}
