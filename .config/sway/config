@@ -7,6 +7,8 @@ set $mainS DP-1
 set $leftS DP-3
 set $eww ~/.config/eww
 
+set $floating "floating enable, resize set width 800px height 600px"
+
 # emulate spiral layout
 # for_window [app_id=".*"] split toggle
 # default_orientation vertical

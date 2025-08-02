@@ -1,16 +1,15 @@
 # vim: ft=swayconfig
 
 bindsym {
-    $mod+Return         exec $term
-    $mod+Shift+Return   exec $sc/exec_with pid kitty "floating enable, resize set width 800px height 600px"
-    $mod+W              exec firefox
-    $mod+E              exec nautilus -w
-    $mod+Shift+E        exec $sc/exec_with class org.gnome.Nautilus "nautilus -w" "floating enable, resize set width 800px height 600px"
-    $mod+Space          exec killall rofi || rofi -show drun
+    $mod+Return          exec $term
+    $mod+Shift+Return    exec $sc/exec-with --pid kitty $floating
+    $mod+W               exec firefox
+    $mod+E               exec nautilus -w
+    $mod+Shift+E         exec $sc/exec-with --class org.gnome.Nautilus "nautilus -w" $floating
+    $mod+Space           exec killall rofi || rofi -show drun
     $mod+Shift+Semicolon exec killall rofi || ~/.config/rofi/applets/power/run.sh
-    $mod+Semicolon      exec gtklock -d
-    $mod+Period         exec swaync-client --close-latest
-    $mod+Shift+Period   exec $sc/invoke-notification.sh
-    $mod+Slash          exec killall rofi || rofi -show win
-    # $mod+T              exec $eww/shell/bin/set_timer.sh
+    $mod+Semicolon       exec gtklock -d
+    $mod+Period          exec swaync-client --close-latest
+    $mod+Shift+Period    exec $sc/invoke-notification.sh
+    $mod+Slash           exec killall rofi || rofi -show win
 }

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# execute a window with rules
+# two options:
+#   class: a bit more cumbersome and does not work for x11 processes
+#   pid: logical, but wont work for applications that spawn more than one window in the same process
+
+case "$1" in
+--class)
+    PREDICATE=".container.app_id == \"$2\""
+    $3 &
+    disown
+    pid=$!
+    shift 3
+    ;;
+--pid)
+    $2 &
+    disown
+    pid=$!
+    PREDICATE=".container.pid == $pid"
+    shift 2
+    ;;
+esac
+
+sway_cmd="$1"
+shift
+declare -a command
+for word in "$@"; do
+    command+=("${word//%p/$pid}")
+done
+
+swaymsg -t subscribe '["window"]' -- monitor | jq --unbuffered "select(.change == \"new\" and $PREDICATE)|.container.id, halt" | {
+    read -r id
+    sleep 0.2
+    swaymsg "[con_id=$id] $sway_cmd"
+    if ((${#command} > 0)); then
+        "${command[@]}"
+    fi
+}

@@ -14,6 +14,7 @@ mode "clipboard" {
     bindsym Mod1+T exec $sc/translate.sh -p; mode "default"
     bindsym S exec $sc/speak-clipboard.sh; mode "default"
     bindsym Mod1+S exec $sc/speak-clipboard.sh -p; mode "default"
+    bindsym Exclam exec $sc/exec-with --pid kitty $floating kitten @ --to unix:/tmp/kitty-%p send-text "wl-paste "; mode "default"
 }
 
 bindsym $mod+Y mode "clipboard"
