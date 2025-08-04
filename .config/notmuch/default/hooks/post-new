@@ -1,0 +1,3 @@
+#!/bin/sh
+
+notmuch tag +archive folder:Archive/
