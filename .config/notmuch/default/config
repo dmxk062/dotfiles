@@ -1,0 +1,7 @@
+[database]
+mail_root=mail
+[user]
+primary_email=jhk06@mailbox.org
+[new]
+[search]
+[maildir]

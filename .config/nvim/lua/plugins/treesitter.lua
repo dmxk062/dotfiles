@@ -14,6 +14,7 @@ local ensure_installed = {
     "lua",
     "luadoc",
     "luap",
+    "mail",
     "markdown",
     "markdown_inline",
     "printf",
@@ -231,6 +232,18 @@ local attach = function(buf, language)
 end
 
 M.init = function()
+    require("config.utils").user_autogroup("config.treesitter", {
+        TSUpdate = function()
+            require("nvim-treesitter.parsers").mail = {
+                install_info = {
+                    url = "https://github.com/stevenxxiu/tree-sitter-mail",
+                    queries = "queries",
+                    branch = "master",
+                },
+                filetype = "mail",
+            }
+        end
+    })
     local ts = require("nvim-treesitter")
     ts.install(ensure_installed)
 
