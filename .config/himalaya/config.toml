@@ -1,8 +1,8 @@
 [accounts.main]
 default = true
 email = "jhk06@mailbox.org"
-backend.type = "notmuch"
-backend.dp-path = "~/mail"
+backend.type = "maildir"
+backend.root-dir = "~/mail"
 folder.aliases.inbox = "Inbox"
 
 # SMTP
