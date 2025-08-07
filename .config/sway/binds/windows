@@ -18,7 +18,8 @@ bindsym $mod+S splitv
 bindsym $mod+V splith
 
 bindsym $mod+F fullscreen
-bindsym $mod+Shift+F exec $sc/fake_fullscreen.sh
+# only hide gaps around window
+bindsym $mod+Shift+F exec $sc/fake-fullscreen.sh
 
 # Like vim for numbers
 bindsym $mod+A resize grow width 64px; resize grow height 64px
@@ -31,7 +32,7 @@ bindsym $mod+Ctrl+K nop resize up 32
 bindsym $mod+Ctrl+L nop resize right 32
 
 # suspend a windows underlying process
-bindsym $mod+Ctrl+Z exec $sc/stop_continue_window.sh
+bindsym $mod+Ctrl+Z exec $sc/stop-or-continue.sh
 
 bindsym $mod+Z focus mode_toggle
 
@@ -47,5 +48,4 @@ bindsym $mod+G exec $sc/on-mark.sh initial move workspace current
 bindsym $mod+Shift+G exec $sc/on-mark.sh search move workspace current
 
 # (T)ag, (M)ark is used for media
-bindsym $mod+T exec swaymsg mark $(wayinput -t "Mark")
-bindsym $mod+Shift+T exec swaymsg mark $(wayinput -l -1 -t "Mark")
+bindsym $mod+T exec swaymsg mark $(wayinput -l -1 -t "Mark")
