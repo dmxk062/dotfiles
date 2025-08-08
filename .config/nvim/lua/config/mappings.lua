@@ -387,6 +387,7 @@ map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end, { des
 map("n", "\\", "<nop>")
 map("n", "<space>", "<nop>")
 
+-- keep jumplist intact for {}, it's a relatively small motion
 map(mov, "{", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "{<cr>" end, { remap = false, expr = true })
 map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" end, { remap = false, expr = true })
 
@@ -394,9 +395,9 @@ map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" 
 map(mov, "<C-o>", "<C-o>zz")
 map(mov, "<C-i>", "<C-i>zz")
 
---[[ those are hard to reach by default,
-I do not use Low and High for navigation and even rarer in o-pending mode
-also kinda logical, a stronger version of lh ]]
+-- those are hard to reach by default,
+-- I do not use Low and High for navigation and even rarer in o-pending mode
+-- also kinda logical, a stronger version of lh
 map(mov, "L", "$")
 map(mov, "H", "^")
 
@@ -409,21 +410,12 @@ map(obj, "m", "<plug>(matchup-%)")
 map(obj, "im", "<plug>(matchup-i%)")
 map(obj, "am", "<plug>(matchup-a%)")
 
--- allow modifying count in o-pending mode
-local modify_operator_count = function(delta)
-    local keys = ("\x1b%s%d"):format(vim.v.operator, math.max(1, vim.v.count + delta))
-    api.nvim_feedkeys(keys, "")
-end
-
-map("o", "<C-a>", function()
-    modify_operator_count(1)
-end)
-map("o", "<C-x>", function()
-    modify_operator_count(-1)
-end)
-
+-- turn the *Ncgn pattern into nice and small textobject
 map("o", "*", function()
     return "\x1b*N" .. vim.v.operator .. "gn"
+end, { expr = true })
+map("o", "#", function()
+    return "\x1b#N" .. vim.v.operator .. "gn"
 end, { expr = true })
 
 -- like (now-default) []<space>, but for characters inside a line, e.g. to separate words
@@ -435,12 +427,8 @@ local insert_spaces = function(direction)
     api.nvim_buf_set_text(0, row, col, row, col, { spaces })
 end
 
-map("n", "<<space>", function()
-    insert_spaces(-1)
-end)
-map("n", "><space>", function()
-    insert_spaces(1)
-end)
+map("n", "<<space>", function() insert_spaces(-1) end)
+map("n", "><space>", function() insert_spaces(1) end)
 
 -- show marks before jumping
 map("n", "`", function()
@@ -450,6 +438,7 @@ map("n", "`", function()
             m.pos[2],
             { api.nvim_buf_get_lines(m.pos[1], m.pos[2] - 1, m.pos[2], false)[1] or "" }
         }
+        ---@diagnostic disable-next-line: param-type-mismatch "" Is a valid argument
     end, fn.getmarklist(""))
 
     vim.list_extend(marks, vim.tbl_map(function(m)
@@ -514,7 +503,7 @@ end)
 ---@param char string
 local is_ascii_lower = function(char)
     local c = char:byte()
-    return c <= "\x7a" and c >= '\x61'
+    return c <= 0x7a and c >= 0x61
 end
 
 -- Set next mark that matches the line text
@@ -726,16 +715,6 @@ map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 
--- Diagnostics {{{
--- target the area of a diagnostic with a textobject
--- <id> matches every type
-map(obj, "id", textobjs.diagnostic)
-map(obj, "iDe", textobjs.diagnostic_error)
-map(obj, "iDw", textobjs.diagnostic_warn)
-map(obj, "iDi", textobjs.diagnostic_info)
-map(obj, "iDh", textobjs.diagnostic_hint)
--- }}}
-
 -- Additional Textobjects {{{
 -- less annoying to type
 map(obj, "iq", [[i"]])
@@ -743,13 +722,21 @@ map(obj, "aq", [[a"]])
 map(obj, "iQ", [[i']])
 map(obj, "aQ", [[a']])
 
---[[ indents, very useful for python or other indent based languages
- a includes one line above and below,
- except for filetypes like python or lisps where only the above line is included by default
- aI always includes the line below too, even for python et cetera,
- useful for object literals like dicts or lists
+-- target the area of a diagnostic with a textobject
+-- <id> matches every type
+map(obj, "id", textobjs.diagnostic)
+map(obj, "iDe", textobjs.diagnostic_error)
+map(obj, "iDw", textobjs.diagnostic_warn)
+map(obj, "iDi", textobjs.diagnostic_info)
+map(obj, "iDh", textobjs.diagnostic_hint)
 
- if present, v:count specifies the amount of indent levels instead of the current cursor position
+--[[ indents, very useful for python or other indent based languages
+ `a` includes one line above and below, except for filetypes like python or
+ lisps where only the above line is included by default.
+ `aI` always includes the line below too, even for python et cetera, useful for
+ object literals like dicts or lists or nested languages
+
+ If present, v:count specifies the amount of indent levels instead of the current cursor position
  this is particularly useful for languages like python where
  c1ii comes to mean "change in the topmost scope"
  d2ai for example then means "delete this method"
@@ -834,8 +821,7 @@ end)
 
 --[[ Change Directory {{{
 Sometimes I need a quicker way to change directory than :cd, :lcd etc
-This may benefit from being turned into a sub mode sometime
-]]
+This may benefit from being turned into a sub mode sometime (e.g. using hydra) ]]
 local cdleader = "<space>."
 
 local function get_cur_buf_parent()
