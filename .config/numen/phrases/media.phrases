@@ -1,1 +1,14 @@
-media play: run playerctl play-pause
+play: run playerctl play
+pause: run playerctl pause
+
+next track: run playerctl next
+previous track: run playerctl previous
+next player: run playerctld shift
+previous player: run playerctld unshift
+
+@transcribe play track: run ~/.config/numen/scripts/play-search query & disown
+@transcribe play artist: run ~/.config/numen/scripts/play-search artist & disown
+@transcribe play album: run ~/.config/numen/scripts/play-search album & disown
+@transcribe find in queue: run ~/.config/numen/scripts/play-search query queue & disown
+
+what's playing: run ~/.config/numen/scripts/media-status

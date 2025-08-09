@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+function genquery {
+    if ((!strict)); then
+        pattern=${2//the/}
+        # vowels are hard
+        pattern=${ echo "$pattern" | sed 's/[aeiouy]\+/[aeiouy]+/g' ;}
+    else
+        pattern="$2"
+    fi
+    pattern="${pattern%% }"
+    pattern="${pattern## }"
+    printf -v REPLY '(%s =~ "%s")' "$1" "$pattern"
+}
+
+read -ra input <"$NUMEN_STATE_DIR/transcripts"
+if [[ "${input[0]}" == "spell" ]]; then
+    input=()
+    read -ra input < <(zenity --entry --title="Search media library" --text="Regex enabled & case insensitive")
+    strict=1
+fi
+
+if [[ "$1" == query ]]; then
+    field="title"
+    declare -A fields=()
+    current=""
+    for word in "${input[@]}"; do
+        case "$word" in
+        by)
+            fields[$field]="$current"
+            current=""
+            field="artist"
+            ;;
+        from)
+            fields[$field]="$current"
+            current=""
+            field="album"
+            ;;
+        *) current+=" $word" ;;
+        esac
+    done
+    if [[ -n "$current" ]]; then
+        fields[$field]="$current"
+    fi
+
+    query=""
+    for key in "${!fields[@]}"; do
+        value="${fields[$key]}"
+        if [[ -n "$value" ]]; then
+            genquery "$key" "$value"
+            if [[ -n "$query" ]]; then
+                query+=" AND $REPLY"
+            else
+                query="$REPLY"
+            fi
+        fi
+    done
+
+    query="($query)"
+else
+    genquery "$1" "${input[*]}"
+    query="($REPLY)"
+fi
+
+if [[ "$2" == queue ]]; then
+    awk -F"\t" 'FNR==NR { a[$0]; next } $2 in a { print $1 }' \
+        <(mpc search "$query") <(mpc -f $'%position%\t%file%' playlist) |
+        head -n 1 | {
+        read -r position
+        mpc play $position
+    }
+else
+    mpc clear
+    mpc search "$query" | mpc add
+fi
+
+mpc play

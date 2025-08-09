@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+IFS=$'\t' read -r title artist album < <(playerctl -f $'{{title}}\t{{artist}}\t{{album}}' metadata)
+message="$title"
+if [[ -n "$artist" ]]; then
+    message+="; by $artist"
+fi
+
+if [[ -n "$album" ]]; then
+    message+="; from $album"
+fi
+
+echo "$message" | espeak

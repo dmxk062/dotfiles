@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+read -ra words <"$NUMEN_STATE_DIR/transcripts"
+
+found=1
+engine="${words[0]}"
+case "$engine" in
+web) url="https://duckduckgo.com/?q=%s" ;;
+wikipedia) url="https://en.wikipedia.org/w/index.php?search=%s" ;;
+dictionary) url="https://en.wiktionary.org/w/index.php?search=%s" ;;
+*)
+	url="https://duckduckgo.com/?q=%s"
+	found=0
+	;;
+esac
+
+if ((found)); then
+	unset 'words[0]'
+fi
+
+printf -v search "$url" "${words[*]}"
+launch-or-inside firefox firefox --new-window "$search"

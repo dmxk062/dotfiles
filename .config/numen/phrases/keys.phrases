@@ -21,7 +21,7 @@ sun: press s
 tea: press t
 us: press u
 void: press v
-wynn: press w
+wish: press w
 # like Xen
 zen: press x
 yew: press y
@@ -110,7 +110,7 @@ kill all: press control+shift+BackSpace
 wipe word: press control+Delete
 wipe all: press control+shift+Delete
 
-out: stick off \
+quit: stick off \
 	press Escape
 
 meta: mod alt
@@ -132,7 +132,7 @@ post: press control+Right
 prime: press Home
 ultimate: press End
 
-page next: press Next
-page last: press Prior
+next: press Next
+previous: press Prior
 
 # vim: ft=conf
