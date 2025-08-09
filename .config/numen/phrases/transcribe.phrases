@@ -1,0 +1,62 @@
+@cancel oops:
+
+@transcribe repeat: eval ~/.config/numen/scripts/number repeat
+
+# input a number
+@transcribe num: pen ~/.config/numen/scripts/number
+
+# Transcribe a sentence
+# For example, "scribe please type this".
+@transcribe scribe: set numen_fmt echo normal \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+
+# Transcribe a sentence formatted...
+# With the first letter uppercase
+@transcribe say: set numen_fmt echo sentence \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# With Each First Letter Uppercase
+@transcribe tight scribe: set numen_fmt echo title \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# with_underscrores_inbetween
+@transcribe snake: set numen_fmt echo snake \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# with-dashes-inbetween
+@transcribe dash: set numen_fmt echo dash \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# with.dots.inbetween
+@transcribe dot scribe: set numen_fmt echo dot \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# with, commas, inbetween
+@transcribe roh scribe: set numen_fmt echo list \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# with/slashes/inbetween
+@transcribe path scribe: set numen_fmt echo path \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# allsmashedtogether
+@transcribe kludge: set numen_fmt echo smash \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# camelCase
+@transcribe camel: set numen_fmt echo camel \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# PascalCase
+@transcribe pascal: set numen_fmt echo pascal \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# dot.camelCase
+@transcribe dot camel: set numen_fmt echo dotcamel \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# dot.PascalCase
+@transcribe dot pascal: set numen_fmt echo dotpascal \
+	pen /etc/numen/scripts/tweak; /etc/numen/scripts/transcripts | head -n 1
+# (You can also do "shout scribe" etc.)
+
+# Erase the transcription
+drop: eval /etc/numen/scripts/transcripts | sed 's/./ BackSpace/g; s/^/press/; q'
+
+# Go to the start of the transcription
+rewind: eval /etc/numen/scripts/transcripts | sed 's/./ Left/g; s/^/press/; q'
+
+
+# Ignore this, vosk-model-small-en-us-0.15 can output huh after a long silence.
+huh:
+
+stop: run ~/.config/sway/scripts/toggle-numen

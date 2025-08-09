@@ -1,0 +1,38 @@
+# Move {{{
+win left: stick off \
+	press super+h
+win right: stick off \
+	press super+l
+win up: stick off \
+	press super+k
+win down: stick off \
+	press super+j
+# }}}
+
+win level: stick off \
+	press super+z
+win shift: stick off \
+	press super+d
+kill win: stick off \
+	press super+q
+win grow: stick off \
+	press super+a
+win shrink: stick off \
+	press super+x
+
+win west: stick off \
+	press super+shift+h
+win east: stick off \
+	press super+shift+l
+win north: stick off \
+	press super+shift+k
+win south: stick off \
+	press super+shift+j
+
+new term: stick off \
+	press super+Return
+
+new win: stick off \
+	press super+space
+
+# vim: ft=conf

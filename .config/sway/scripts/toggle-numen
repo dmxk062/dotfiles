@@ -1,0 +1,14 @@
+#!/bin/sh
+
+FILE="$XDG_CACHE_HOME/.numen_listening"
+
+if [ -f "$FILE" ]; then
+	unlink "$FILE"
+	sleep 0.5
+	echo "load" | numenc
+	eww -c "$XDG_CONFIG_HOME/eww/shell" update numen-running=false
+else
+	echo "1" >"$FILE"
+	echo load $XDG_CONFIG_HOME/numen/phrases/* | numenc
+	eww -c "$XDG_CONFIG_HOME/eww/shell" update numen-running=true
+fi

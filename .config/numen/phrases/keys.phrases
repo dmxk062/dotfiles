@@ -1,0 +1,138 @@
+# Letters, modelled on Old English Runes {{{
+ash: press a
+birch: press b
+can: press c
+day: press d
+ear: press e
+fee: press f
+good: press g
+hail: press h
+ice: press i
+joy: press j
+cap: press k
+lake: press l
+man: press m
+need: press n
+offer: press o
+pain: press p
+quad: press q
+road: press r
+sun: press s
+tea: press t
+us: press u
+void: press v
+wynn: press w
+# like Xen
+zen: press x
+yew: press y
+zed: press z
+# }}}
+
+# Numbers {{{
+naught: press 0
+one: press 1
+two: press 2
+three: press 3
+four: press 4
+five: press 5
+six: press 6
+sept: press 7
+eight: press 8
+nine: press 9
+ten: press 1 0
+eleven: press 1 1
+twelve: press 1 2
+thirteen: press 1 3
+fourteen: press 1 4
+fifteen: press 1 5
+sixteen: press 1 6
+seventeen: press 1 7
+eighteen: press 1 8
+nineteen: press 1 9
+twenty: press 2 0
+thirty: press 3 0
+forty: press 4 0
+fifty: press 5 0
+sixty: press 6 0
+seventy: press 7 0
+eighty: press 8 0
+ninety: press 9 0
+hundred: press 1 0 0
+# }}}
+
+# Punctuation etc {{{
+# TODO: €
+ask: press question
+plus: press plus
+mine: press minus
+tide: press asciitilde
+bang: press exclam
+dollar: press dollar
+euro: press Alt_R c equal
+under: press underscore
+clause: press colon
+semi: press semicolon
+info: press parenleft
+close info: press parenright
+curl: press braceleft
+close curl: press braceright
+bracket: press bracketleft
+close bracket: press bracketright
+lesser: press less
+greater: press greater
+star: press asterisk
+hash: press numbersign
+mood: press percent
+hat: press asciicircum
+at: press at
+and: press ampersand
+pipe: press bar
+quote: press quotedbl
+mark: press apostrophe
+tick: press grave
+slash: press slash
+slope: press backslash
+list: press comma
+point: press period
+equals: press equal
+# }}}
+
+space: press space
+yes: press Return
+tab: press Tab
+
+back: press BackSpace
+del: press Delete
+term word: press control+w
+term all: press control+u
+kill word: press control+BackSpace
+kill all: press control+shift+BackSpace
+wipe word: press control+Delete
+wipe all: press control+shift+Delete
+
+out: stick off \
+	press Escape
+
+meta: mod alt
+com: mod ctrl
+big: mod shift
+gui: mod super
+multi: press Alt_R
+
+rep: repeat 1
+
+left: press Left
+right: press Right
+up: press Up
+down: press Down
+
+ante: press control+Left
+post: press control+Right
+
+prime: press Home
+ultimate: press End
+
+page next: press Next
+page last: press Prior
+
+# vim: ft=conf
