@@ -30,7 +30,7 @@ done
 pactl set-default-"$what" "$dev"
 
 if [[ "$what" == "sink" ]]; then
-    ~/.config/eww/shell/bin/center_popup.sh audio 1 out
+    ~/.config/eww/bin/center_popup.sh audio 1 out
 else
-    ~/.config/eww/shell/bin/center_popup.sh audio 1 in
+    ~/.config/eww/bin/center_popup.sh audio 1 in
 fi

@@ -17,10 +17,10 @@ if ((time <= 0)); then
     exit
 fi
 
-eww -c "$XDG_CONFIG_HOME/eww/shell" update timer-start=$EPOCHSECONDS timer-time=$((EPOCHSECONDS + time))
+eww update timer-start=$EPOCHSECONDS timer-time=$((EPOCHSECONDS + time))
 
 sleep "$time"
-eww -c "$XDG_CONFIG_HOME/eww/shell" update timer-start=0 timer-time=0
+eww update timer-start=0 timer-time=0
 
 mpv --loop=yes /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga &
 pid=$!

@@ -66,6 +66,7 @@
     {"keys": "y", "action": "Copy other"},
     {"keys": "e", "action": "Edit"},
     {"keys": "t", "action": "Translate"},
+    {"keys": "s", "action": "Speak"},
     {"keys": "c", "action": "Clear"}
 ]
 }')

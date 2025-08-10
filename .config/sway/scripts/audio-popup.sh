@@ -15,7 +15,7 @@ set)
     ;;
 esac
 if [[ "$1" == "DEFAULT_SINK" ]]; then
-    ~/.config/eww/shell/bin/center_popup.sh audio 1 out
+    ~/.config/eww/bin/center_popup.sh audio 1 out
 else
-    ~/.config/eww/shell/bin/center_popup.sh audio 1 in
+    ~/.config/eww/bin/center_popup.sh audio 1 in
 fi

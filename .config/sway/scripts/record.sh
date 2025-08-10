@@ -28,10 +28,10 @@ path="$REPLY"
 wf-recorder -o "$screen" $extra "$region" -c hevc_vaapi -d /dev/dri/renderD128 -f "$path" -r 60 &
 pid=$!
 printf -v info '{"start":%s, "pid":%s, "path":"%s"}' $EPOCHSECONDS $pid "$path"
-eww -c "$XDG_CONFIG_HOME/eww/shell/" update recording=true recording-info="$info"
+eww update recording=true recording-info="$info"
 
 wait $pid
-eww -c "$XDG_CONFIG_HOME/eww/shell/" update recording=false recording-info='{}'
+eww update recording=false recording-info='{}'
 
 CACHEFILE="$XDG_CACHE_HOME/.thumb_$EPOCHSECONDS"
 ffmpegthumbnailer -s 512 -m -i "$path" -o "$CACHEFILE"

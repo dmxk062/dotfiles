@@ -1,4 +1,4 @@
-(deflisten secondary "wl-paste -w ~/.config/sway/eww/shell/bin/clipboard.sh")
+(deflisten secondary "wl-paste -w ~/.config/sway/eww/bin/clipboard.sh")
 (defvar clipicons '{
 "image":"󰋩",
 "file":"󰈔",

@@ -2,6 +2,7 @@
 
 (include "./bar/popups/qmenu/menu.yuck")
 (include "./bar/workspace.yuck")
+(include "./bar/numen.yuck")
 (include "./bar/window.yuck")
 (include "./bar/status.yuck")
 (include "./bar/mode.yuck")
@@ -21,6 +22,7 @@
 
 (defwidget right-box []
     (box :space-evenly false :halign "end"
+        (numen-status)
         (systray-expander)
         (mpris-current)
         (status)

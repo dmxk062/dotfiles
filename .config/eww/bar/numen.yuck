@@ -1,0 +1,5 @@
+(defvar numen-state "off")
+
+(defwidget numen-status []
+    (button :class "button ${numen-state == "listening" ? "active" : ""}"
+        { numen-state == "listening" ? "Listening..." : ( numen-state == "suspended" ? "Waiting..." :  "<G-i>")} ))

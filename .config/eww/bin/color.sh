@@ -38,7 +38,7 @@ recompile_scss "$XDG_CONFIG_HOME/gtklock/"
 
 wait
 sleep 0.1
-eww -c "$XDG_CONFIG_HOME/eww/shell/" reload &
+eww -c "$XDG_CONFIG_HOME/eww/" reload &
 swaync-client -rs >/dev/null &
 swaymsg reload >/dev/null &
 wait

@@ -1,14 +1,18 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 FILE="$XDG_CACHE_HOME/.numen_listening"
 
 if [ -f "$FILE" ]; then
 	unlink "$FILE"
 	sleep 0.5
-	echo "load" | numenc
-	eww -c "$XDG_CONFIG_HOME/eww/shell" update numen-running=false
+	echo load $XDG_CONFIG_HOME/numen/suspended/suspended.phrases | numenc
+	eww update numen-state='suspended'
 else
 	echo "1" >"$FILE"
-	echo load $XDG_CONFIG_HOME/numen/phrases/* | numenc
-	eww -c "$XDG_CONFIG_HOME/eww/shell" update numen-running=true
+	eww update numen-state='listening'
+	if ! pgrep numen >/dev/null; then
+		numen & disown
+	else
+		echo load $XDG_CONFIG_HOME/numen/phrases/* | numenc
+	fi
 fi

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-EWW="$XDG_CONFIG_HOME/eww/shell"
+EWW="$XDG_CONFIG_HOME/eww"
 
 function write_cur {
     if [[ "$(nmcli radio wifi)" != "enabled" ]]; then

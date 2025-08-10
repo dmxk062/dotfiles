@@ -52,6 +52,8 @@
     `pgrep fcitx5 >/dev/null 2>&1 && echo true || echo false`)
 (defpoll service-autotile :run-while {perf-revealed} :interval "20m"
     `pgrep -f 'python.*layout.py' >/dev/null 2>&1 && echo true || echo false`)
+(defpoll service-udiskie :run-while {perf-revealed} :interval "20m"
+    `pgrep -f 'udiskie' >/dev/null 2>&1 && echo true || echo false`)
 
 (defwidget pid-toggle [running to-kill command var text]
     (box :space-evenly false :halign "start" :style "margin-left: 1rem; padding: .2rem;"
@@ -117,6 +119,12 @@
             :to-kill "blueman-applet"
             :command "blueman-applet"
             :text "Blueman Applet")
+        (pid-toggle
+            :running service-udiskie
+            :var "service-udiskie"
+            :to-kill "udiskie"
+            :command "udiskie"
+            :text "Monitor Disks")
         (pid-toggle
             :running service-networkmanager
             :var "service-networkmanager"
