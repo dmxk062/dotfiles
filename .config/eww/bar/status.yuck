@@ -19,7 +19,10 @@
         (for dev in {batteries}
             (label :style "margin-left: .5rem;"
                 :class {dev.charging ? "" : (dev.value < 20 ? "red" : "")}
-                :tooltip "${dev.name}: ${dev.value}%${dev.to_empty != "null" ? formattime(dev.to_emty, "\n%H:%M left") : ""}${dev.to_full != "null" ? formattime(dev.to_full, "\n%H:%M until full") : ""}"
+                :tooltip "${dev.name}: ${dev.value}%${dev.to_empty != "null" ? "
+${formattime(dev.to_empty, "%H:%M left")}" : ""}${dev.to_full != "null" ? "
+${formattime(dev.to_full, "%H:%M until full")}" : ""}${dev.rate != "null" ? "
+${dev.rate}W" : ""}"
                 :text 
                     "${dev.charging 
                     ? (bat-charging[(dev.value - dev.value % 10)/10]) 
