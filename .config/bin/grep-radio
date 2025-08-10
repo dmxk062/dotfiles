@@ -4,13 +4,11 @@ read -r _ _ _ _ _ _ _ url < <(dig -t SRV _api._tcp.radio-browser.info +noall +an
 
 QUERY="$1"
 shift
-for arg in "$@"; do
-    if [[ "$arg" == "--" ]]; then
-        shift
-        break
-    fi
-    QUERY="$QUERY&$arg"
+while [[ -n "$1" && "$1" != "--" ]]; do
+    QUERY="$QUERY&$1"
+    shift
 done
 URL="https://${url:-1}/json/stations/search?$QUERY"
 
-curl --silent --header "User-Agent: script/1.0" "$URL" | jq "$@"
+curl --silent --header "User-Agent: script/1.0" "$URL" \
+| jq '.[]|.name, "URL: \(.url_resolved)", "Bitrate: \(.bitrate)kbps", "Country: \(.country)",  ""' -r
