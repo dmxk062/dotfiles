@@ -20,6 +20,7 @@ TERM_OVERRIDES = [
     ("^qalc$", "qalculator"),
     ("^btm$", "preferences-system-performance"),
     ("^pms$", "multimedia-audio-player"),
+    ("^ncmpcpp:", "multimedia-audio-player"),
 ]
 
 CLASS_OVERRIDES = {

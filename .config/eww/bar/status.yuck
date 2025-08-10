@@ -3,11 +3,7 @@
 (defvar bat-discharging '[ "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" ]' )
 (defvar bat-charging '[ "󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅" ]' )
 
-(defwidget status-battery [bat]
-    (revealer :reveal {bat.capacity >= 0} :visible {bat.capacity >= 0} :transition "slideright"
-            (label :style "margin-left: .5rem;"
-                :class {bat.capacity < 20 ? "red" : ""}
-                :text "${bat.status == "Discharging" ? (bat-discharging[(bat.capacity - bat.capacity % 10)/10]) : (bat-charging[(bat.capacity - bat.capacity % 10)/10])}  ${bat.capacity}%")))
+(deflisten batteries "bin/batteries.sh")
 
 (defwidget status-valent [dev]
     (button 
@@ -17,6 +13,14 @@
             : "No Devices Connected"}
         :onclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.text 1 s "$(wl-paste)" 0`
         ""))
+
+(defwidget status-batteries []
+    (box 
+        (for dev in {batteries}
+            (label :style "margin-left: .5rem;"
+                :class {dev.value < 20 ? "red" : ""}
+                :tooltip "${dev.name}: ${dev.value}%"
+                :text "${dev.charging ? (bat-charging[(dev.value - dev.value % 10)/10]) : (bat-discharging[(dev.value - dev.value % 10)/10])}"))))
 
 (defwidget status []
     (box :class "button" :space-evenly false :spacing 8
@@ -47,7 +51,7 @@
                 : (wifi.signal > 60 ? "󰤥"
                 : (wifi.signal > 40 ? "󰤢"
                 : (wifi.signal > 20 ? "󰤟" : "󰤯")))) : (wifi.powered  ? "󰤫" : "󰤮")})
-        (status-battery :bat {EWW_BATTERY?.["BAT0"]?: `{"status": "Discharging", "capacity": -1}`})
+        (status-batteries)
         (label :style "margin-left: .2rem;"
             :tooltip "Screen Brightness: ${brightness}%"
             :text {brightness < 10 ? "󰃛" 
