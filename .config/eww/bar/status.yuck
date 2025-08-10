@@ -18,9 +18,12 @@
     (box 
         (for dev in {batteries}
             (label :style "margin-left: .5rem;"
-                :class {dev.value < 20 ? "red" : ""}
+                :class {dev.charging ? "green" : (dev.value < 20 ? "red" : "")}
                 :tooltip "${dev.name}: ${dev.value}%"
-                :text "${dev.charging ? (bat-charging[(dev.value - dev.value % 10)/10]) : (bat-discharging[(dev.value - dev.value % 10)/10])}"))))
+                :text 
+                    "${dev.charging 
+                    ? (bat-charging[(dev.value - dev.value % 10)/10]) 
+                    : (bat-discharging[(dev.value - dev.value % 10)/10])}${dev.internal ? " ${dev.value}%": ""}"))))
 
 (defwidget status []
     (box :class "button" :space-evenly false :spacing 8
