@@ -1,5 +1,3 @@
-(include "icon.yuck")
-
 (defpoll bt-devices :run-while bt-revealed :interval "8s" "./bin/bluetooth.sh poll")
 (defpoll bt-meta  :run-while bt-revealed :interval "8s" "./bin/bluetooth.sh poll-meta")
 (deflisten rfkill "./bin/rfkill.sh")

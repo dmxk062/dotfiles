@@ -1,6 +1,4 @@
 (include "./bar/popups/center.yuck")
-
-(include "./bar/popups/qmenu/menu.yuck")
 (include "./bar/workspace.yuck")
 (include "./bar/numen.yuck")
 (include "./bar/window.yuck")
@@ -10,23 +8,20 @@
 (include "./bar/notifications.yuck")
 (include "./bar/clock.yuck")
 
-(defvar systray-expanded false)
-(defwidget systray-expander []
-    (box :space-evenly false 
-        (button :class "button"
-            :timeout "16s"
-            :onclick "${EWW_CMD} update systray-expanded=${!systray-expanded}"
-            {systray-expanded ? "" : ""})
-        (revealer :reveal {systray-expanded} :transition "slideleft"
-            (systray :class "tray-box"))))
-
-(defwidget right-box []
-    (box :space-evenly false :halign "end"
-        (numen-status)
-        (systray-expander)
-        (mpris-current)
-        (status)
-        (clock)))
+(defwindow bar
+    :monitor '["DP-1", "eDP-1", 0]'
+    :geometry (geometry 
+        :x "0px"
+        :y "0px"
+        :width "100%"
+        :height "32px"
+        :anchor "top center")
+    :stacking "fg"
+    :exclusive true
+    :namespace "eww-bar"
+    :hexpand false
+    :vexpand false
+    (top-bar))
 
 (defwidget top-bar []
     (centerbox :class "top-bar"
@@ -41,3 +36,21 @@
         (notifications))
     (right-box)))
 
+
+(defwidget right-box []
+    (box :space-evenly false :halign "end"
+        (numen-status)
+        (systray-expander)
+        (mpris-current)
+        (status)
+        (clock)))
+
+(defvar systray-expanded false)
+(defwidget systray-expander []
+    (box :space-evenly false 
+        (button :class "button"
+            :timeout "16s"
+            :onclick "${EWW_CMD} update systray-expanded=${!systray-expanded}"
+            {systray-expanded ? "" : ""})
+        (revealer :reveal {systray-expanded} :transition "slideleft"
+            (systray :class "tray-box"))))

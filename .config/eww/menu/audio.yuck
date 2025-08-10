@@ -1,4 +1,4 @@
-(include "./bar/popups/qmenu/brightness.yuck")
+(include "menu/brightness.yuck")
 (deflisten audio "./bin/volume.sh")
 
 (defvar audio-out-revealed false)
