@@ -15,7 +15,7 @@
         ""))
 
 (defwidget status-batteries []
-    (box 
+    (box :space-evenly false
         (for dev in {batteries}
             (label :style "margin-left: .5rem;"
                 :class {dev.charging ? "green" : (dev.value < 20 ? "red" : "")}
