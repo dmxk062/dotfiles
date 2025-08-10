@@ -72,41 +72,6 @@
         (label :class "text" :text {text})))
 
 
-(defwidget pref-pos-square [vvar hvar vval hval title]
-    (box :space-evenly false
-        (label :text {title} :class "text")
-        (box :orientation "v" :space-evenly false :hexpand true :halign "end"
-            (box :space-evenly false
-                (button :class "button tiny-circle ${vval == "start" && hval == "start"  ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=start ${hvar}=start"
-                    "")
-                (button :class "button tiny-circle ${vval == "start" && hval == "center" ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=start ${hvar}=center"
-                    "")
-                (button :class "button tiny-circle ${vval == "start" && hval == "end" ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=start ${hvar}=end"
-                    ""))
-            (box :space-evenly false
-                (button :class "button tiny-circle ${vval == "center" && hval == "start"  ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=center ${hvar}=start"
-                    "")
-                (button :class "button tiny-circle ${vval == "center" && hval == "center" ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=center ${hvar}=center"
-                    "")
-                (button :class "button tiny-circle ${vval == "center" && hval == "end" ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=center ${hvar}=end"
-                    ""))
-            (box :space-evenly false
-                (button :class "button tiny-circle ${vval == "end" && hval == "start"  ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=end ${hvar}=start"
-                    "")
-                (button :class "button tiny-circle ${vval == "end" && hval == "center" ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=end ${hvar}=center"
-                    "")
-                (button :class "button tiny-circle ${vval == "end" && hval == "end" ? "active" : ""}"
-                    :onclick "${EWW_CMD} update ${vvar}=end ${hvar}=end"
-                    "")))))
-
 (defwidget tasks-panel []
     (box :space-evenly false :orientation "vertical" :class "section" :style "padding: .8rem;"
         (pref-toggle
@@ -142,7 +107,4 @@
             :var "service-autotile"
             :to-kill "-f 'python.*layout.py'"
             :command "~/.config/sway/scripts/layout.py"
-            :text "Autotiling")
-        (pref-pos-square :title "Background Calendar Position"
-            :vvar "background-calendar-v" :hvar "background-calendar-h"
-            :vval background-calendar-v :hval background-calendar-h)))
+            :text "Autotiling")))
