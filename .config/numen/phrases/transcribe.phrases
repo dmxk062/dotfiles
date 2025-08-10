@@ -5,7 +5,7 @@
 # input a number
 @transcribe num: pen ~/.config/numen/scripts/number
 
-@transcribe search: run ~/.config/numen/scripts/search
+@transcribe search: run ~/.config/numen/scripts/search & disown
 
 # Transcribe a sentence
 # For example, "scribe please type this".
@@ -61,4 +61,4 @@ rewind: eval /etc/numen/scripts/transcripts | sed 's/./ Left/g; s/^/press/; q'
 # Ignore this, vosk-model-small-en-us-0.15 can output huh after a long silence.
 huh:
 
-stop interaction: run ~/.config/sway/scripts/toggle-numen
+end voice command: run ~/.config/sway/scripts/toggle-numen

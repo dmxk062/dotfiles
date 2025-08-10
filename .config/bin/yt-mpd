@@ -13,8 +13,8 @@ mkdir -p "$OUTDIR"
 cd "$OUTDIR" || exit 1
 
 URL="$1"
-yt-dlp -x "$URL" --no-simulate --embed-metadata --embed-thumbnail --print after_move:filepath \
-    | while read -r filename; do
+yt-dlp -x "$URL" --no-simulate --embed-metadata --embed-thumbnail --print after_move:filepath |
+    while read -r filename; do
         # adding files by path requires local socket connection
         mpc --host="$XDG_RUNTIME_DIR/mpd/socket" add "$filename"
     done

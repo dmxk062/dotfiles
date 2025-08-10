@@ -11,4 +11,4 @@ previous player: run playerctld unshift
 @transcribe play album: run ~/.config/numen/scripts/play-search album & disown
 @transcribe find in queue: run ~/.config/numen/scripts/play-search query queue & disown
 
-what's playing: run ~/.config/numen/scripts/media-status
+what's playing: run speak-media-status& disown

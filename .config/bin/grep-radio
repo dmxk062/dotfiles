@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+read -r _ _ _ _ _ _ _ url < <(dig -t SRV _api._tcp.radio-browser.info +noall +answer | shuf -n 1)
+
+QUERY="$1"
+shift
+for arg in "$@"; do
+    if [[ "$arg" == "--" ]]; then
+        shift
+        break
+    fi
+    QUERY="$QUERY&$arg"
+done
+URL="https://${url:-1}/json/stations/search?$QUERY"
+
+curl --silent --header "User-Agent: script/1.0" "$URL" | jq "$@"
