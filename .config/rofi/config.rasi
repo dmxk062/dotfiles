@@ -3,7 +3,7 @@ configuration {
     show-icons: true;
     terminal: "kitty";
     icon-theme: "Tela-dark";
-    drun-display-format: "{name}";
+    drun-display-format: "{name}\n{comment}";
     drun-match-fields: "name";
     case-sensitive: false;
     cycle: false;

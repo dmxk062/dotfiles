@@ -21,13 +21,13 @@
 (defvar mode-descs '{
 "default": [ ],
 "media": [
-    {"keys": "<M-*", "action": "On Microphone"},
-    {"keys": "[jk]", "action": "Change Volume"},
-    {"keys": "[hl]", "action": "Seek"},
-    {"keys": "[0-9]", "action": "Set Volume" },
-    {"keys": "[nN]", "action": "Cycle Device"},
-    {"keys": "m", "action": "Mute / Unmute"},
-    {"keys": "s", "action": "Start"},
+    {"keys": "<M-*", "action": "On Mic"},
+    {"keys": "[jk] [0-9]", "action": "Volume"},
+    {"keys": "[mM]", "action": "Mute"},
+    {"keys": "[shl]", "action": "Seek"},
+    {"keys": "[HL]", "action": "Track"},
+    {"keys": "q", "action": "Queue"},
+    {"keys": "[nN]", "action": "Device"},
     {"keys": "<Space>", "action": "Play / Pause"}
 ],
 "screenshot": [

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+function list-in-queue {
+	printf $"\0delim\x1f\t\n"
+	mpc -f $'%position%\t%title%\t%artist%\t%album%' playlist |
+		while IFS=$'\t' read -r position title artist album; do
+			printf "%d %s\n%s - %s %s\t" $position "$title" "$artist" "$album"
+		done
+}
+
+if ((ROFI_RETV != 0)); then
+	read -r position _ <<< "$1"
+	mpc -q play $position
+else
+	list-in-queue
+
+fi

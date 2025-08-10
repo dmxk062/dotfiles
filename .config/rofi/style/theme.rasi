@@ -48,7 +48,7 @@ listview {
 }
 
 element {
-    padding: 8px;
+    padding: 6px;
     border-radius: 14px;
     background-color: @bg0;
     color: @fg0;
@@ -68,6 +68,7 @@ element selected.active {
     text-color: @fg3;
 }
 element-text, element-icon {
+    padding: 4px;
     background-color: inherit;
     text-color: inherit;
 }
