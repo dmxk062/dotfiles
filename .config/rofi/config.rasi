@@ -4,6 +4,7 @@ configuration {
     terminal: "kitty";
     icon-theme: "Tela-dark";
     drun-display-format: "{name}";
+    drun-match-fields: "name";
     case-sensitive: false;
     cycle: false;
     scroll-method: 1;

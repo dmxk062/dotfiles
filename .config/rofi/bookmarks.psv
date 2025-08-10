@@ -1,6 +1,7 @@
 |duckduckgo|Search DuckDuckGo|https://duckduckgo.com/?q=%s
 dictionary|wiktionary|Search in Wiktionary|https://en.wiktionary.org/w/index.php?search=%s
 text-wiki|wikipedia|Search in Wikipedia|https://en.wikipedia.org/w/index.php?search=%s
+github|github|Search Github|https://github.com/search?q=%s
 youtube|youtube|Search Youtube|https://www.youtube.com/results?search_query=%s
 archlinux|aur|Search Arch User Repository|https://aur.archlinux.org/packages?K=%s
 archlinux|archwiki|Search Arch Documentation|https://wiki.archlinux.org/index.php?search=%s
