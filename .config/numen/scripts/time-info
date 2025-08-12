@@ -1,3 +1,3 @@
 #!/bin/sh
 
-date +"%M minutes after %l %p" | espeak
+date +"It's %_M minutes after %l %p" | espeak
