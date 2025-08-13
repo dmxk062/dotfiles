@@ -26,7 +26,7 @@ M.opts = {
         N = ".",
     },
     borders = {
-        vert = "│",
+        vert = " ",
 
         strong_header = "─",
         strong_cross = "┼",
