@@ -302,7 +302,6 @@ command("Shebang", function(args)
         api.nvim_buf_set_lines(0, 0, 1, false, { "#!" .. shebang, "" })
     end
 
-
     -- make the file executable when it's first written
     api.nvim_create_autocmd("BufWritePost", {
         command = "silent !chmod u+x %",
@@ -331,6 +330,49 @@ end, {
     desc = "Number lines in range",
     range = true,
     nargs = "*",
+})
+
+---@type table<integer, integer>
+local on_write_autocommands = {}
+command("OnWrite", function(args)
+    local buf = api.nvim_get_current_buf()
+    if on_write_autocommands[buf] then
+        api.nvim_del_autocmd(on_write_autocommands[buf])
+    end
+
+    local cmd = args.fargs
+    local callback = function()
+        if args.bang then
+            local com = {}
+            for _, item in ipairs(cmd) do
+                table.insert(com, vim.fn.expand(item))
+            end
+            vim.system(com, {text = true}, function(out)
+                if out.code ~= 0 then
+                    vim.schedule(function()
+                        utils.error("OnWrite", out.stderr)
+                    end)
+                end
+            end)
+            return
+        else
+            api.nvim_cmd({
+                cmd = "!",
+                args = cmd
+            }, {})
+        end
+    end
+
+    local id = api.nvim_create_autocmd("BufWritePost", {
+        buffer = buf,
+        callback = callback
+    })
+    on_write_autocommands[buf] = id
+end, {
+    desc = "Run command on buffer save",
+    nargs = "+",
+    bang = true,
+    complete = "shellcmd",
 })
 -- }}}
 
