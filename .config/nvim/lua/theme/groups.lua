@@ -216,6 +216,8 @@ add_with_prefix(colorscheme, "@", {
     ["comment.error"]                = { fg = col.red, italic = true, underline = true },
     ["comment.warning"]              = { fg = col.orange, italic = true, underline = true },
     ["comment.note"]                 = { fg = col.light_blue, italic = true, underline = true },
+    -- user names
+    ["constant.comment"]             = { fg = col.purple, italic = true },
 
     ["string"]                       = { fg = col.green },
     ["string.documentation"]         = { link = "*comment" },
