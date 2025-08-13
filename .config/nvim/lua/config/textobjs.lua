@@ -191,6 +191,7 @@ M.indent_outer_with_last = M.create_textobj(indent, { outer = true, always_last 
 -- }}}
 
 -- Variable assignments {{{
+-- Very coarse variable assigned value logic
 M.variable_value = M.create_textobj(function(pos, lcount, opts)
     local lnum = pos[1]
     local line = getline(lnum)
@@ -203,16 +204,7 @@ M.variable_value = M.create_textobj(function(pos, lcount, opts)
     local _, _, prefix = line:find("(%s*).*", eq_pos + 1)
     local eq_value_pos = eq_pos + #prefix
 
-    -- try to use treesitter to get a multiline node or a node that's only part of a line
-    local node = vim.treesitter.get_node { bufnr = 0, pos = { lnum - 1, eq_value_pos } }
-    if node then
-        local sline, scol, eline, ecol = vim.treesitter.get_node_range(node)
-        if eline > lnum then -- don't try to use treesitter if it's only a part of the line
-            return { { sline + 1, scol }, { eline + 1, ecol - 1 } }, "char"
-        end
-    end
-
-    -- otherwise at least try to avoid common suffixes
+    -- try to avoid common suffixes
     local trailing_sep = line:match("([,;]%s*)$")
     return { { lnum, eq_value_pos }, { lnum, #line - (trailing_sep and #trailing_sep + 1 or 1) } }, "char"
 end, {})
