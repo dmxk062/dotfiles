@@ -1,34 +1,34 @@
 local builtin_picker_maps = {
-    ["custom.jumplist"] = "<space>j",
-    buffers = "<space><space>",
-    command_history = "<space>:",
-    diagnostics = "<space>d",
-    find_files = "<space>f",
-    grep_string = "<space>*",
-    help_tags = "<space>h",
-    live_grep = "<space>/",
-    lsp_document_symbols = "<space>s",
-    lsp_workspace_symbols = "<space>S",
-    man_pages = "<space>H",
-    oldfiles = "<space>o",
-    registers = "\"<space>",
-    search_history = "<space>?",
-    quickfix = "<space>qf",
-    loclist = "<space>lf",
+    ["<space>j"] = { "jumplist", "Telescope: Jumps", custom = true },
+    ["<space><space>"] = { "buffers", "Telescope: Buffers" },
+    ["<space>:"] = { "command_history", "Telescope: Command History" },
+    ["<space>d"] = { "diagnostics", "Telescope: Diagnostics" },
+    ["<space>f"] = { "find_files", "Telescope: Files" },
+    ["<space>*"] = { "grep_string", "Telescope: Grep <cword>" },
+    ["<space>h"] = { "help_tags", "Telescope: Help" },
+    ["<space>/"] = { "live_grep", "Telescope: Grep" },
+    ["<space>s"] = { "lsp_document_symbols", "Telescope: Local Symbols" },
+    ["<space>S"] = { "lsp_workspace_symbols", "Telescope: Global Symbols" },
+    ["<space>H"] = { "man_pages", "Telescope: Manual Pages" },
+    ["<space>o"] = { "oldfiles", "Telescope: Oldfiles" },
+    ["\"<space>"] = { "registers", "Telescope: Registers" },
+    ["<space>?"] = { "search_history", "Telescope: Search History" },
+    ["<space>qf"] = { "quickfix", "Qflist: Telescope" },
+    ["<space>lf"] = { "loclist", "Loclist: Telescope" },
 
     -- git ones, under the same prefix as the fugitive & gitsigns mappings
-    git_files = "<space>gf",
-    git_status = "<space>gi", -- <space>gs is taken for stage already
-    git_commits = "<space>g/",
-    git_bcommits = "<space>g?",
+    ["<space>gf"] = { "git_files", "Git: Search Files" },
+    ["<space>gi"] = { "git_status", "Git: Search Info" }, -- <space>gs is taken for stage already
+    ["<space>g/"] = { "git_commits", "Git: Search Commits" },
+    ["<space>g?"] = { "git_bcommits", "Git: Search Commits touching <buf>" },
 
-    spell_suggest = "z=",
+    ["z="] = { "spell_suggest" },
 }
 
 ---@type LazySpec
 local M = {
     "nvim-telescope/telescope.nvim",
-    keys = vim.tbl_values(builtin_picker_maps),
+    keys = vim.tbl_keys(builtin_picker_maps),
     cmd = { "Telescope" },
     dependencies = {
         {
@@ -287,12 +287,8 @@ M.config = function()
 
     local builtin = require("telescope.builtin")
     local map = utils.map
-    for picker, keys in pairs(builtin_picker_maps) do
-        if vim.startswith(picker, "custom.") then
-            map("n", keys, custom(picker:sub(#"custom." + 1)))
-        else
-            map("n", keys, builtin[picker])
-        end
+    for lhs, rhs in pairs(builtin_picker_maps) do
+        map("n", lhs, rhs.custom and custom(rhs[1]) or builtin[rhs[1]], { desc = rhs[2] })
     end
 end
 -- }}}

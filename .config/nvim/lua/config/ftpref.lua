@@ -32,8 +32,6 @@ local F = {
     },
 }
 
-
-
 return setmetatable(F, {
     __index = function(t, k)
         return rawget(t, k) or {}

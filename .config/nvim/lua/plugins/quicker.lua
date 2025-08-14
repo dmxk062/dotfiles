@@ -24,6 +24,7 @@ M.opts = {
         I = "I",
         H = "H",
         N = ".",
+        U = ".",
     },
     borders = {
         vert = " ",

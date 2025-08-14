@@ -405,7 +405,8 @@ map(mov, "H", "^")
 map(mov, "gL", "L")
 map(mov, "gH", "H")
 
--- % is annoying to press, [m]atching, this takes some inspiration from helix
+-- % is annoying to press
+-- [m]atching, this takes some inspiration from helix
 map(obj, "m", "<plug>(matchup-%)")
 map(obj, "im", "<plug>(matchup-i%)")
 map(obj, "am", "<plug>(matchup-a%)")
@@ -700,13 +701,16 @@ so tapping one shift key while holding the other makes sense ]]
 map("i", "<S-BS>", "<C-w>")
 map("i", "<S-Del>", "<c-o>\"_dw")
 
--- fix spelling error ahead
-map("i", "<C-s>", "<esc>[sz=", { remap = true })
-
 -- move between arguments, that's one of the only things i actually do in insert mode
 -- [f]orward, [b]ackward
 map("i", "<C-f>", "<C-o>]a", { remap = true })
 map("i", "<C-b>", "<C-o>[a", { remap = true })
+
+-- leftover keys looking for a mapping
+-- <C-l>
+-- <C-j>
+-- <C-m> maybe, may conflict with <cr>
+-- <C-z>
 -- }}}
 
 -- Snippets {{{
@@ -770,6 +774,7 @@ map(obj, "a/", textobjs.create_pattern_obj("()[^/]+()/*"))
 map(obj, "gG", textobjs.entire_buffer)
 
 -- a C-style variable value; ignore visual mode since = is useful there
+-- this is a heuristic, for "proper variable" declarations use `iv` from treesitter
 map("o", "=", textobjs.variable_value)
 -- }}}
 

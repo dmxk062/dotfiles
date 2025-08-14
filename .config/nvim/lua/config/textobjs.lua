@@ -51,14 +51,12 @@ function M.create_textobj(fn, opts)
         end
 
         norm("m`")
-        ---@cast mode seltype
         -- motion
+        ---@cast mode seltype
         if type(sel[1]) == "number" then
             ---@cast sel config.point
             api.nvim_win_set_cursor(0, sel)
-
-            -- textobj
-        else
+        else -- textobject
             ---@cast sel config.region
             local vimode = api.nvim_get_mode().mode
             api.nvim_win_set_cursor(0, sel[1])
@@ -306,7 +304,7 @@ local function foldmarker_object(pos, count, opts)
 end
 
 M.entire_buffer = M.create_textobj(function(_, lcount, _)
-    return { { 1, 1 }, { lcount, 1 } }, "line"
+    return { { 1, 0 }, { lcount, 0 } }, "line"
 end, {})
 
 M.foldmarker_outer = M.create_textobj(foldmarker_object, { outer = true })
